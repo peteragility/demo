@@ -1,0 +1,778 @@
+{
+ "fetched_at": "2026-09-23T05:18:01.720854+00:00",
+ "sources": [
+  "https://docs.claude.com/en/docs/about-claude/pricing",
+  "https://platform.openai.com/docs/pricing",
+  "https://ai.google.dev/gemini-api/docs/pricing",
+  "https://docs.z.ai/guides/overview/pricing",
+  "https://api-docs.deepseek.com/quick_start/pricing",
+  "https://platform.moonshot.ai/docs/pricing/chat",
+  "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/ (us-east-1 2026-09-22)",
+  "https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/",
+  "https://azure.microsoft.com/en-us/pricing/details/ai-foundry-models/fireworks/",
+  "https://fireworks.ai/models",
+  "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+  "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+  "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
+  "https://www.databricks.com/product/pricing/foundation-model-serving"
+ ],
+ "models": {
+  "anthropic/claude-opus-5": {
+   "in": 5.0,
+   "out": 25.0,
+   "cache_write": 6.25,
+   "cache_read": 0.5,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "5m cache write; 1h cache write $10. Official docs.claude.com pricing page.",
+   "platforms": {
+    "databricks": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds (AWS/Azure/GCP)"
+    },
+    "bedrock": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_write": 6.25,
+     "cache_read": 0.5,
+     "note": "AWS 未入 bulk offer；慣例=官方平價（請核實）",
+     "regions": "US East (VA,OH), US West (OR), EU (Frankfurt, Ireland), APAC (Tokyo, Singapore)"
+    },
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Vertex Model Garden release notes 只去到 Opus 4.7（2026-04）；Opus 5 未見上架"
+    },
+    "alicloud": null,
+    "official": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "regions": "原廠 direct API（anthropic 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "anthropic/claude-sonnet-5": {
+   "in": 2.0,
+   "out": 10.0,
+   "cache_write": 2.5,
+   "cache_read": 0.2,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "5m cache write; 1h cache write $4.",
+   "platforms": {
+    "databricks": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_write": 2.5,
+     "cache_read": 0.2,
+     "note": "AWS 未入 bulk offer；AWS blog 確認 Sonnet 5 上 Bedrock，Sonnet pricing",
+     "regions": "US East (VA,OH), US West (OR), EU (Frankfurt, Ireland, Paris), APAC (Tokyo), GovCloud (per AWS blog 2026-07)"
+    },
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Vertex release notes 未見 Sonnet 5（只到 Sonnet 4.6）"
+    },
+    "alicloud": null,
+    "official": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "regions": "原廠 direct API（anthropic 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "anthropic/claude-haiku-4.5": {
+   "in": 1.0,
+   "out": 5.0,
+   "cache_write": 1.25,
+   "cache_read": 0.1,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Latest Haiku tier (no Haiku 5). 5m cache write; 1h write $2.",
+   "platforms": {
+    "databricks": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_write": 1.25,
+     "cache_read": 0.1,
+     "note": "AWS 未入 bulk offer；慣例=官方平價",
+     "regions": "US East (VA,OH), US West (OR), EU (Frankfurt, Ireland)"
+    },
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Claude 3.5 Haiku 已 deprecated；Haiku 4.5 on Vertex 未確認"
+    },
+    "alicloud": null,
+    "official": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "regions": "原廠 direct API（anthropic 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "anthropic/claude-fable-5": {
+   "in": 10.0,
+   "out": 50.0,
+   "cache_write": 12.5,
+   "cache_read": 1.0,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "New flagship tier above Opus; 1h cache write $20; Fable 5.1 cache read $0.25.",
+   "platforms": {
+    "databricks": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—"
+    },
+    "alicloud": null,
+    "official": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "regions": "原廠 direct API（anthropic 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "openai/gpt-6-astra": {
+   "in": 10.0,
+   "out": 50.0,
+   "cache_write": 12.5,
+   "cache_read": 1.0,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Standard, short-context; long-context $20/$2/$25/$75. Current flagship.",
+   "platforms": {
+    "databricks": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_write": 12.5,
+     "cache_read": 1.0,
+     "note": "FMAPI 確認上架（short context）",
+     "regions": "All Databricks clouds (FMAPI 2026-09 已上架)"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_write": 12.5,
+     "cache_read": 1.0,
+     "note": "Global tier = OpenAI list",
+     "regions": "Azure OpenAI: Global + Data Zone deployments"
+    },
+    "fireworks": null,
+    "gcloud": null,
+    "alicloud": null,
+    "official": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "regions": "原廠 direct API（openai 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "openai/gpt-5.6-sol": {
+   "in": 4.0,
+   "out": 20.0,
+   "cache_write": 5.0,
+   "cache_read": 0.4,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Promo pricing through at least Nov 21 2026; long-context $8/$0.80/$10/$30.",
+   "platforms": {
+    "databricks": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.4,
+     "cache_write": 5.0,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_write": 5.0,
+     "cache_read": 0.4,
+     "note": "Global tier",
+     "regions": "Global + Data Zone（Regional: PTU only）"
+    },
+    "fireworks": null,
+    "gcloud": null,
+    "alicloud": null,
+    "official": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.4,
+     "cache_write": 5.0,
+     "regions": "原廠 direct API（openai 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "openai/gpt-5.6-terra": {
+   "in": 2.0,
+   "out": 12.0,
+   "cache_write": 2.5,
+   "cache_read": 0.2,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Long-context $4/$0.40/$5/$18.",
+   "platforms": {
+    "databricks": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_write": 2.5,
+     "cache_read": 0.2,
+     "note": "Global tier",
+     "regions": "Global + Data Zone"
+    },
+    "fireworks": null,
+    "gcloud": null,
+    "alicloud": null,
+    "official": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "regions": "原廠 direct API（openai 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "openai/gpt-5.6-luna": {
+   "in": 0.2,
+   "out": 1.2,
+   "cache_write": 0.25,
+   "cache_read": 0.02,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Small tier; long-context $0.40/$0.04/$0.50/$1.80.",
+   "platforms": {
+    "databricks": {
+     "in": 0.2,
+     "out": 1.2,
+     "cache_read": 0.02,
+     "cache_write": 0.25,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 0.2,
+     "out": 1.2,
+     "cache_write": 0.25,
+     "cache_read": 0.02,
+     "note": "Global tier",
+     "regions": "Global + Data Zone"
+    },
+    "fireworks": null,
+    "gcloud": null,
+    "alicloud": null,
+    "official": {
+     "in": 0.2,
+     "out": 1.2,
+     "cache_read": 0.02,
+     "cache_write": 0.25,
+     "regions": "原廠 direct API（openai 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "google/gemini-3.1-pro-preview": {
+   "in": 2.0,
+   "out": 12.0,
+   "cache_write": null,
+   "cache_read": 0.2,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Prompts <=200k; >200k: $4 in/$18 out/$0.40 cache. Cache write not priced separately; $4.50/1M/hr storage.",
+   "platforms": {
+    "databricks": {
+     "in": 2.5,
+     "out": 15.0,
+     "cache_read": 0.25,
+     "note": "Databricks FMAPI: DBU 35.714/214.286/3.571（Gemini Pro +25% uplift vs 官方）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_write": null,
+     "cache_read": 0.2,
+     "note": "Vertex Global ≤200k",
+     "regions": "Vertex Global: Global deployment（≤200K 同 >200K 兩檔價）"
+    },
+    "alicloud": null,
+    "official": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": null,
+     "regions": "原廠 direct API（google 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "google/gemini-3.8-flash": {
+   "in": 0.75,
+   "out": 3.75,
+   "cache_write": null,
+   "cache_read": 0.075,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Intro price through Dec 31 2026 ($1.50/$7.50/$0.15 from Jan 1 2027). Cache storage $0.50/1M/hr.",
+   "platforms": {
+    "databricks": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_write": null,
+     "cache_read": 0.075,
+     "note": "Intro price 至 2026-12-31",
+     "regions": "Vertex Global（intro 價至 2026-12-31）"
+    },
+    "alicloud": null,
+    "official": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "cache_write": null,
+     "regions": "原廠 direct API（google 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "google/gemini-3.7-flash": {
+   "in": 0.75,
+   "out": 3.75,
+   "cache_write": null,
+   "cache_read": 0.075,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Same intro pricing schedule as 3.8 Flash.",
+   "platforms": {
+    "databricks": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_write": null,
+     "cache_read": 0.075,
+     "note": "Intro price 至 2026-12-31",
+     "regions": "Vertex Global（intro 價至 2026-12-31）"
+    },
+    "alicloud": null,
+    "official": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "cache_write": null,
+     "regions": "原廠 direct API（google 官網價）",
+     "verified": true
+    }
+   }
+  },
+  "zai/glm-5.3": {
+   "in": 1.4,
+   "out": 4.4,
+   "cache_write": 0.0,
+   "cache_read": 0.26,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Bedrock 只有 GLM 5/4.7（無 5.3）；Azure FW 同 Fireworks 直連、Databricks、AliCloud 都有 5.3",
+   "platforms": {
+    "databricks": {
+     "in": 1.4,
+     "out": 4.4,
+     "cache_read": 0.26,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds（FMAW serverless）"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 1.75,
+     "out": 5.5,
+     "cache_write": null,
+     "cache_read": 0.33,
+     "regions": "global-standard ×27 regions（eastus/westeurope/japaneast/korea…）；Data Zone(US) $2.10/$6.60/$0.39",
+     "note": "FW-GLM-5.3；deprecation 2027-09-01"
+    },
+    "fireworks": {
+     "in": 1.4,
+     "out": 4.4,
+     "cache_write": null,
+     "cache_read": 0.26,
+     "note": "Fireworks direct",
+     "regions": "Fireworks serverless（global）"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Model Garden 只有舊代（GLM 5、DeepSeek-V3.2、Kimi K2 Thinking）；5.3/V4/K3 未上 GCP"
+    },
+    "alicloud": {
+     "in": 1.4,
+     "out": 4.4,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "International flat-rate",
+     "regions": "Model Studio: Singapore（International）"
+    },
+    "_note_bedrock": null,
+    "official": {
+     "in": 1.4,
+     "out": 4.4,
+     "cache_read": 0.26,
+     "cache_write": 0.0,
+     "regions": "原廠 direct API（zai 官網價）",
+     "verified": true
+    }
+   },
+   "oss": true
+  },
+  "zai/glm-5.3-flash": {
+   "in": 0.15,
+   "out": 0.5,
+   "cache_write": 0.0,
+   "cache_read": 0.03,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "Cached-input storage limited-time free.",
+   "platforms": {
+    "databricks": {
+     "in": 0.15,
+     "out": 0.5,
+     "cache_read": 0.03,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 0.19,
+     "out": 0.63,
+     "cache_write": null,
+     "cache_read": 0.04,
+     "regions": "global-standard ×27 regions；deprecation 2027-09-13",
+     "note": "FW-GLM-5.3-Flash 已上架；價格為估算（直價 +25%），請以 Foundry console 核實"
+    },
+    "fireworks": {
+     "in": 0.15,
+     "out": 0.5,
+     "cache_write": null,
+     "cache_read": 0.03,
+     "note": "Fireworks direct",
+     "regions": "Fireworks serverless（global）"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Model Garden 只有舊代（GLM 5、DeepSeek-V3.2、Kimi K2 Thinking）；5.3/V4/K3 未上 GCP"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "regions": "—"
+    },
+    "official": {
+     "in": 0.15,
+     "out": 0.5,
+     "cache_read": 0.03,
+     "cache_write": 0.0,
+     "regions": "原廠 direct API（zai 官網價）",
+     "verified": true
+    }
+   },
+   "oss": true
+  },
+  "deepseek/deepseek-v4-pro": {
+   "in": 1.32,
+   "out": 3.96,
+   "cache_write": null,
+   "cache_read": 0.044,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "PEAK rates (cache-miss input / output / cache-hit input). Off-peak = half: $0.66 in / $1.98 out / $0.022 hit. Model listed as deepseek-v4-pro (V4-Pro-0813). Peak 01:00-04:00 & 06:00-10:00 UTC Mon-Fri.",
+   "platforms": {
+    "databricks": {
+     "in": 1.32,
+     "out": 3.96,
+     "cache_read": 0.132,
+     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 1.925,
+     "out": 3.828,
+     "cache_write": null,
+     "cache_read": 0.165,
+     "regions": "data-zone-standard (US) + global-provisioned-managed；deprecation 2027-08-01",
+     "note": "FW-DeepSeek-V4-Pro Data Zone"
+    },
+    "fireworks": {
+     "in": 1.32,
+     "out": 3.96,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "V4-Pro-0813",
+     "regions": "Fireworks serverless（global）"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Model Garden 只有舊代（GLM 5、DeepSeek-V3.2、Kimi K2 Thinking）；5.3/V4/K3 未上 GCP"
+    },
+    "alicloud": {
+     "in": 2.4,
+     "out": 4.8,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "deepseek-v4-pro international",
+     "regions": "Model Studio: Singapore（International）"
+    },
+    "official": {
+     "in": 1.32,
+     "out": 3.96,
+     "cache_read": 0.044,
+     "cache_write": null,
+     "regions": "原廠 direct API（deepseek 官網價）",
+     "verified": true
+    }
+   },
+   "oss": true
+  },
+  "deepseek/deepseek-v4.1-flash": {
+   "in": 0.3,
+   "out": 1.2,
+   "cache_write": null,
+   "cache_read": 0.006,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "API name 'deepseek-flash' (DeepSeek-V4.1-Flash). PEAK rates; off-peak = half: $0.15 in / $0.60 out / $0.003 hit.",
+   "platforms": {
+    "databricks": {
+     "in": 0.3,
+     "out": 1.2,
+     "cache_write": null,
+     "cache_read": 0.03,
+     "note": "V4.1 Flash 專 row（同 V4 Flash 分開計價）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": null,
+    "azure_foundry": {
+     "in": 0.28,
+     "out": 0.83,
+     "cache_write": null,
+     "cache_read": 0.056,
+     "regions": "global-standard ×27 regions；deprecation 2027-09-15",
+     "note": "FW-DeepSeek-V4.1-Flash 已上架；價格估算（直價+25%），請核實"
+    },
+    "fireworks": {
+     "in": 0.22,
+     "out": 0.66,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "V4-Flash-0731",
+     "regions": "Fireworks serverless（global）"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Model Garden 只有舊代（GLM 5、DeepSeek-V3.2、Kimi K2 Thinking）；5.3/V4/K3 未上 GCP"
+    },
+    "alicloud": {
+     "in": 0.3,
+     "out": 1.2,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "Busy hours；idle $0.15/$0.60",
+     "regions": "Model Studio: Singapore（busy/idle 分時價）"
+    },
+    "official": {
+     "in": 0.3,
+     "out": 1.2,
+     "cache_read": 0.006,
+     "cache_write": null,
+     "regions": "原廠 direct API（deepseek 官網價）",
+     "verified": true
+    }
+   },
+   "oss": true
+  },
+  "moonshot/kimi-k3": {
+   "in": 3.0,
+   "out": 15.0,
+   "cache_write": null,
+   "cache_read": 0.3,
+   "unit": "USD/1M",
+   "verified": false,
+   "note": "Confirmed via Moonshot docs referencing multiple secondary sources; official pricing/chat subpage fetch did not render per-model table. Cache-miss in $3, cache-hit in $0.30, out $15, 1M ctx flat.",
+   "platforms": {
+    "databricks": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "note": "Standard tier；Priority tier: $5.25/$26.25/$0.525（75/375/7.5 DBU）",
+     "regions": "All Databricks clouds"
+    },
+    "bedrock": {
+     "in": 3.3,
+     "out": 16.5,
+     "cache_write": 4.125,
+     "cache_read": 0.33,
+     "note": "Bedrock standard tier",
+     "regions": "US East (VA), EU (Frankfurt), APAC (Tokyo) — cross-region inference"
+    },
+    "azure_foundry": {
+     "in": 3.3,
+     "out": 16.5,
+     "cache_write": null,
+     "cache_read": 0.33,
+     "regions": "global-standard + data-zone-standard (US, 7 regions)；deprecation 2027-07-27",
+     "note": "FW-Kimi-K3"
+    },
+    "fireworks": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "Fireworks direct",
+     "regions": "Fireworks serverless（global）"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "regions": "—",
+     "note": "Model Garden 只有舊代（GLM 5、DeepSeek-V3.2、Kimi K2 Thinking）；5.3/V4/K3 未上 GCP"
+    },
+    "alicloud": {
+     "in": 2.827,
+     "out": 14.133,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "kimi-k3 international",
+     "regions": "Model Studio: Singapore"
+    },
+    "official": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": null,
+     "regions": "原廠 direct API（moonshot 官網價）",
+     "verified": false
+    }
+   },
+   "oss": true
+  },
+  "deepseek/deepseek-v3.2": {
+   "in": 1.24,
+   "out": 3.7,
+   "cache_write": null,
+   "cache_read": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "note": "DeepSeek v3.2 (Bedrock 獨有 mapping: 官方 peak $0.62/$1.85，Bedrock 加價 $1.24/$3.70 standard tier)",
+   "platforms": {
+    "bedrock": {
+     "in": 0.62,
+     "out": 1.85,
+     "cache_write": null,
+     "cache_read": null,
+     "note": "v3.2 standard",
+     "regions": "US East (VA), US West (OR), EU (Frankfurt), APAC (Tokyo)"
+    },
+    "azure_foundry": null,
+    "fireworks": null,
+    "gcloud": null,
+    "alicloud": null,
+    "databricks": null,
+    "official": {
+     "in": 1.24,
+     "out": 3.7,
+     "cache_read": null,
+     "cache_write": null,
+     "regions": "原廠 direct API（deepseek 官網價）",
+     "verified": true
+    }
+   },
+   "oss": true
+  }
+ }
+}

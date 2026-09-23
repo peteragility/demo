@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lakebase vs Aurora Serverless v2 — Technical Deep Dive</title>
+<style>
+  :root{
+    --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --dim:#8b949e;
+    --aurora:#ff9900; --lake:#4ecdc4; --accent:#58a6ff; --warn:#f85149; --ok:#3fb950;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro','Segoe UI',Roboto,sans-serif;line-height:1.6;padding:0 16px}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 0}
+  h1{font-size:2rem;margin-bottom:4px}
+  h1 .v{color:var(--dim);font-weight:400}
+  .sub{color:var(--dim);margin-bottom:8px}
+  .pitch{background:linear-gradient(135deg,rgba(78,205,196,.12),transparent);border:1px solid rgba(78,205,196,.4);border-radius:12px;padding:18px 20px;margin:20px 0;font-size:1.02rem}
+  h2{font-size:1.4rem;margin:44px 0 8px;padding-top:24px;border-top:1px solid var(--border)}
+  h2 .num{color:var(--lake);font-weight:800;margin-right:6px}
+  h2 .tag{font-size:.75rem;padding:2px 10px;border-radius:12px;vertical-align:middle;margin-left:8px}
+  .tag.l{background:rgba(78,205,196,.15);color:var(--lake)}
+  p.note{color:var(--dim);font-size:.9rem;margin-bottom:16px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .colA{border-top:3px solid var(--aurora)}
+  .colL{border-top:3px solid var(--lake)}
+  .colTitle{font-weight:700;font-size:1.05rem;margin-bottom:12px}
+  .colTitle.a{color:var(--aurora)} .colTitle.l{color:var(--lake)}
+  .box{border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;font-size:.85rem;background:#1c2129}
+  .box b{display:block;font-size:.95rem}
+  .box small{color:var(--dim)}
+  .side-arrow{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:.8rem;padding:6px 0}
+  .side-arrow .track{flex:1;height:2px;background:var(--border);position:relative;overflow:visible}
+  .side-arrow .dot{position:absolute;top:-4px;left:0;width:10px;height:10px;border-radius:50%}
+  .side-arrow .dot.a{background:var(--aurora);animation:slide 2.2s linear infinite}
+  .side-arrow .dot.l{background:var(--lake);animation:slide 2.2s linear infinite}
+  @keyframes slide{0%{left:-4px}100%{left:calc(100% - 6px)}}
+  .dupe{display:flex;gap:6px;justify-content:center;margin-top:8px}
+  .cell{width:34px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#0d1117;font-weight:700;animation:pulse 2s ease-in infinite}
+  @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+  .cell.g{background:var(--ok)} .cell.o{background:var(--aurora)}
+  .race{position:relative;height:120px;margin:12px 0}
+  .lane{position:absolute;left:0;right:0;height:44px}
+  .lane .runner{position:absolute;top:8px;left:2%;width:200px;padding:6px 10px;border-radius:8px;font-size:.8rem;font-weight:700}
+  .runner.a{background:rgba(255,153,0,.2);color:var(--aurora);animation:coldslow 6s cubic-bezier(.2,.9,.3,1) infinite}
+  .runner.l{background:rgba(78,205,196,.2);color:var(--lake);animation:coldfast 6s cubic-bezier(.2,.9,.25,1) infinite}
+  @keyframes coldfast{0%{left:2%}12%{left:88%}100%{left:88%}}
+  @keyframes coldslow{0%{left:2%}75%{left:88%}100%{left:88%}}
+  .finish{position:absolute;right:4%;top:0;bottom:0;border-left:2px dashed var(--dim)}
+  .laneTag{position:absolute;left:0;top:-2px;font-size:.72rem;color:var(--dim)}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+  th,td{padding:8px 10px;border:1px solid var(--border);text-align:left;vertical-align:top}
+  th{background:#1c2129}
+  td.a{color:var(--aurora)} td.l{color:var(--lake)}
+  .badge{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;margin:2px 4px 2px 0}
+  .bA{background:rgba(255,153,0,.15);color:var(--aurora)}
+  .bL{background:rgba(78,205,196,.15);color:var(--lake)}
+  .bG{background:rgba(63,185,80,.15);color:var(--ok)}
+  .bR{background:rgba(248,81,73,.15);color:var(--warn)}
+  .footer{color:var(--dim);font-size:.75rem;margin:48px 0 24px;text-align:center}
+  code{background:#1c2129;padding:1px 6px;border-radius:4px;font-size:.8em}
+  ul{padding-left:20px}
+  li{margin:4px 0;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Lakebase <span class="v">vs</span> Aurora Serverless v2</h1>
+  <div class="sub">Pure technical deep dive ｜ fact-checked 2026-08-30 · VLDB paper 09-04 · release notes 09-20 · EN · sales material moved to <code>lakebase-sales-play</code></div>
+
+  <div class="pitch">
+  🧭 <b>One-line summary:</b> Two databases that both believe "log is the database" — separated by where the page of truth lives. Aurora (Gen 2): private quorum storage, single cloud. Lakebase (Gen 3): open-format object storage, any engine reads. Every difference below follows from that single architectural choice.
+  </div>
+
+  <!-- ============ 1. ARCHITECTURE ============ -->
+  <h2><span class="num">1</span>Core Architecture — Where Does the Page of Truth Live?</h2>
+  <div class="grid2">
+    <div class="card colA">
+      <div class="colTitle a">Aurora Serverless v2 — Gen 2 (private quorum)</div>
+      <div class="box"><b>Writer Compute (ACU)</b><small>PostgreSQL fork · 0–256 ACU · emits redo log</small></div>
+      <div class="side-arrow"><span>WAL → 6 copies</span><div class="track"><span class="dot a"></span></div></div>
+      <div class="box"><b>Distributed Storage — 6 copies / 3 AZ</b><small>4/6 write quorum · storage nodes build pages · proprietary format</small></div>
+      <div class="dupe">
+        <div class="cell o" style="animation-delay:0s">AZ-a</div><div class="cell o" style="animation-delay:.3s">AZ-a</div>
+        <div class="cell g" style="animation-delay:.6s">AZ-b</div><div class="cell g" style="animation-delay:.9s">AZ-b</div>
+        <div class="cell o" style="animation-delay:1.2s">AZ-c</div><div class="cell g" style="animation-delay:1.5s">AZ-c</div>
+      </div>
+      <p style="font-size:.8rem;color:var(--dim);margin-top:10px">💡 No engine checkpoint → no full-page-write tax from day 1. Compute scales in place (0–256 ACU); pages of truth live in quorum block storage, readable only by that cloud's engine.</p>
+    </div>
+    <div class="card colL">
+      <div class="colTitle l">Lakebase — Gen 3 (open-format object store, Neon lineage)</div>
+      <div class="box"><b>Stateless Postgres Compute (CU)</b><small>replaceable "cattle" — dies, spin up another; 0.5–32 CU</small></div>
+      <div class="side-arrow"><span>WAL →</span><div class="track"><span class="dot l"></span></div></div>
+      <div class="box"><b>Pageserver</b><small>replays WAL into pages · image pushdown (FPW generated here, not on compute: 58KB → &lt;4KB, −94%)</small></div>
+      <div class="side-arrow"><span>pages →</span><div class="track"><span class="dot l" style="animation-delay:.5s"></span></div></div>
+      <div class="box"><b>Object Storage (S3/ADLS/GCS) + Delta</b><small>open format · any engine reads · page-history version chain = branching/PITR foundation</small></div>
+      <p style="font-size:.8rem;color:var(--dim);margin-top:10px">💡 Truth on cheap, durable object storage; compute is just cache → sub-second cold starts, true scale-to-zero, O(1) git-style branching, Spark/BI reads with zero ETL. VLDB 2026 (Pandis et al., Vol19 p4385) names Gen 2 architectures "transitional".</p>
+    </div>
+  </div>
+
+  <!-- ============ 2. WRITE PATH & THROUGHPUT ============ -->
+  <h2><span class="num">2</span>Write Path &amp; Measured Throughput — the honest numbers</h2>
+  <div class="card">
+    <table>
+      <tr><th>Metric</th><th>Result</th><th>Context</th></tr>
+      <tr><td><b>Full-page-write WAL overhead</b></td><td class="l">58KB → &lt;4KB per txn (−94%)</td><td>Image pushdown moves FPW generation to the storage layer; Aurora never had this tax (no engine checkpoints), Neon-lineage paid it until 2026</td></tr>
+      <tr><td><b>32-vCPU TPROC-C NOPM (vs own prior gen)</b></td><td class="l">95.6K → 439K (4.5x)</td><td>Debt repayment vs Neon's old architecture — <b>not</b> vs Aurora</td></tr>
+      <tr><td><b>Partner pgbench head-to-head vs Aurora</b></td><td>1,731 vs 1,508 TPS → <b style="color:var(--warn)">~15% gap only</b></td><td>Both ~1.5–1.7k TPS, zero failures, connection pooling advised on both</td></tr>
+      <tr><td><b>Avg latency per transaction</b></td><td class="l">Lakebase edges ahead (~15ms/txn)</td><td>Same-workload vectorised execution comparison (Medium field report, Sep 2026)</td></tr>
+      <tr><td><b>Topology sensitivity</b></td><td colspan="2">Driver VM in the same AZ as the DB <b>doubled</b> Lakebase TPS vs cross-AZ — network round-trips still rule OLTP; benchmark accordingly</td></tr>
+    </table>
+    <span class="badge bR">⚠️ "5x faster writes" = vs Neon's own old version, not vs Aurora</span>
+    <span class="badge bG">✅ Real advantages are architectural (branching/cold start/ETL), not raw TPS</span>
+  </div>
+
+  <!-- ============ 3. SCALING & COLD START ============ -->
+  <h2><span class="num">3</span>Scaling, Cold Start &amp; Cache Hierarchy</h2>
+  <div class="grid2">
+    <div class="card colA">
+      <div class="colTitle a">Aurora — in-place ramp</div>
+      <ul>
+        <li>0–256 ACU, scales in place: <b>30–90s</b> ramp (rate proportional to current capacity)</li>
+        <li>Scale-down deliberately slow (minutes) to prevent thrash</li>
+        <li><code>max_connections</code> tracks ACU (2 ACU ≈ 135 conns); during ramp windows the ceiling is stale → RDS Proxy + retries needed</li>
+        <li>Resume from auto-pause: <b>~15s</b> full instance boot + quorum reattach (status still shows "available" while resuming — PG 13.15+)</li>
+      </ul>
+    </div>
+    <div class="card colL">
+      <div class="colTitle l">Lakebase — compute swap</div>
+      <ul>
+        <li>0.5–32 CU, <b>seconds</b>: new compute attaches to the WAL stream; storage never moves</li>
+        <li>True scale-to-zero: idle 5 min → suspend (auto-disabled above 16 CU)</li>
+        <li>Built-in PgBouncer pooled endpoint (transaction mode)</li>
+        <li>Resume: boot a thin compute, pages lazy-stream from pageserver/object store</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <b>⚡ Cold-start race (first connection after scale-to-zero):</b>
+    <div class="race">
+      <div class="finish"></div>
+      <div class="lane" style="top:8px">
+        <span class="laneTag">Lakebase — stateless compute boot</span>
+        <div class="runner l">~300–500ms</div>
+      </div>
+      <div class="lane" style="top:64px">
+        <span class="laneTag">Aurora v2 — full instance resume</span>
+        <div class="runner a">~15 seconds</div>
+      </div>
+    </div>
+    <p style="font-size:.85rem;color:var(--dim)">A 30–100x gap. Caveat: after either resume the buffer cache is cold — there is no free resume; Lakebase just makes re-reads cheap (next tier is warm) and fast.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card colA">
+      <div class="colTitle a">Aurora — 2-tier cache, tied to instance life</div>
+      <ul>
+        <li>Buffer pool (ACU memory) → quorum storage (pages resident)</li>
+        <li>Scale-up: cache retained, new memory cold · Scale-down: eviction, hot pages can be lost</li>
+        <li>Auto-pause resume: entire cache cold + ~15s boot</li>
+      </ul>
+    </div>
+    <div class="card colL">
+      <div class="colTitle l">Lakebase — 4-tier waterfall, disposable compute</div>
+      <ul>
+        <li><b>RAM → local NVMe → pageserver → object store</b></li>
+        <li>NVMe survives scale events; pageserver stays warm across compute swaps</li>
+        <li>Cold start: RAM empty but lower tiers warm → pages stream back and re-warm automatically; failover works the same way (new compute attaches to WAL stream)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 4. BRANCHING (from VLDB paper) ============ -->
+  <h2><span class="num">4</span>Branching — the O(1) Primitive (VLDB 2026, on record)</h2>
+  <div class="grid2">
+    <div class="card colL">
+      <div class="colTitle l">Mechanics (paper, §4.2)</div>
+      <ul>
+        <li>Branch = fork the database history at a branch LSN; parent and child share all physical storage up to that LSN and diverge after</li>
+        <li><b>O(1) metadata operation</b> — writes a single remote file recording the new timeline identifiers; no physical data copy</li>
+        <li>Branch restore = attach the compute primary to a previous timeline</li>
+      </ul>
+    </div>
+    <div class="card colL">
+      <div class="colTitle l">Why agents care (paper, §3.1.4)</div>
+      <table>
+        <tr><td>Agents' DB creation vs humans</td><td class="l"><b>4x</b></td></tr>
+        <tr><td>New databases daily (ecosystem)</td><td class="l"><b>&gt;10M</b></td></tr>
+        <tr><td>Instance lifecycles &lt;10s</td><td class="l">common</td></tr>
+        <tr><td>Branch depth record</td><td class="l"><b>&gt;500 levels</b></td></tr>
+        <tr><td>Compute startup (warm pool + distributed WAL redo)</td><td class="l"><b>sub-second</b></td></tr>
+        <tr><td>Aurora equivalent</td><td class="a"><b>none</b> — copy-then-wait (dump/restore)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ 5. SCOREBOARD ============ -->
+  <h2><span class="num">5</span>Honest Scoreboard — Who Wins What</h2>
+  <table>
+    <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora wins</th><th style="color:var(--lake)">Lakebase wins</th></tr>
+    <tr><td><b>Track record</b></td><td class="a">10+ years battle-tested · 99.99% SLA</td><td class="l">GA 2026-03 · cell architecture (2026-05-08 AZ incident: 7/8 cells healthy, 13% DBs affected) · ~99.8% (target 99.99% not yet stable)</td></tr>
+    <tr><td><b>Cross-region DR</b></td><td class="a">Global Database &lt;1s lag · managed failover</td><td class="l">Not at parity (backups + PITR + branching/instant restore compensate)</td></tr>
+    <tr><td><b>Read replicas</b></td><td class="a">up to 15, independently autoscaling</td><td class="l">1–3 cross-AZ secondaries + read replicas (independent compute, shared storage, ms-level lag)</td></tr>
+    <tr><td><b>Replica lag</b></td><td class="a">tens of ms (shared volume)</td><td class="l">ms-level (shared WAL/pageserver); post-failover cache cold needs warm-up</td></tr>
+    <tr><td><b>Cold start / scale-to-zero</b></td><td class="a">~15s resume (no true zero)</td><td class="l">300–500ms · true scale-to-zero</td></tr>
+    <tr><td><b>Branching</b></td><td class="a">—</td><td class="l">O(1) primitive · agent sandbox · CI/CD environments</td></tr>
+    <tr><td><b>OLTP+OLAP</b></td><td class="a">requires DMS/Glue pipelines</td><td class="l">lakehouse reads pages directly · zero ETL · Unity Catalog governance</td></tr>
+    <tr><td><b>Postgres compatibility</b></td><td class="a">PG fork (feature gaps vs OSS)</td><td class="l">Open-source Postgres engine (not a fork) — 16.15 / 17.11 / <b>18.6</b> supported as of Aug 2026</td></tr>
+    <tr><td><b>Lock-in</b></td><td class="a">proprietary format, single cloud</td><td class="l">open format · S3/ADLS/GCS</td></tr>
+    <tr><td><b>Raw TPS</b></td><td colspan="2" style="color:var(--dim)">~15% head-to-head gap (Lakebase ahead); avg latency ~15ms/txn edge to Lakebase in field reports — neither is a speed story</td></tr>
+  </table>
+
+  <!-- ============ 6. LATEST ============ -->
+  <h2><span class="num">6</span>What's New (as of 2026-09-20) <span class="tag l">UPDATED</span></h2>
+  <div class="card">
+    <ul>
+      <li><b>Sep 3, 2026</b> — Lakebase available in <b>Azure Japan East</b> (japaneast)</li>
+      <li><b>Aug 24, 2026</b> — Supported Postgres versions updated to <b>16.15, 17.11, and 18.6</b> (latest upstream fixes/security patches; applied at next compute restart)</li>
+      <li><b>Aug 24, 2026</b> — <b>Genie Code available in the Lakebase project UI</b> (natural-language Lakebase development)</li>
+      <li><b>Mar 2, 2026</b> — GA on Azure: autoscaling compute, scale-to-zero, branching, instant restore; +11 new Azure regions beyond eastus2/westeurope/westus</li>
+      <li><b>Ongoing</b> — Community benchmarks continue to confirm the ~15% TPS / ~15ms-per-txn latency picture; same-AZ topology doubles throughput vs cross-AZ (network RTT dominates)</li>
+    </ul>
+    <span class="badge bL">Paper: vldb.org/pvldb/vol19/p4385-pandis.pdf</span>
+    <span class="badge bL">Release notes: learn.microsoft.com → Lakebase release notes</span>
+    <span class="badge bL">Partner pgbench: community.databricks.com → "Benchmarking Databricks Lakebase and AWS Aurora"</span>
+  </div>
+
+  <div class="footer">peteragility/databricks · technical deep dive EN · 2026-09-20 · sales material lives at <code>/lakebase-sales-play</code> · original MD: <code>lakebase-vs-aurora-serverless-v2.md</code></div>
+</div>
+</body>
+</html>

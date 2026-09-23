@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Trial of String Theory — A 50-Year Verdict</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg2: #12121a;
+  --card: #1a1a26;
+  --accent: #c9a84c;
+  --accent2: #e8c870;
+  --prosecution: #c54a4a;
+  --defense: #4a8cc5;
+  --text: #e0e0e8;
+  --muted: #8888a0;
+  --border: rgba(201, 168, 76, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ===== ANIMATED STARRY BG ===== */
+.stars {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle var(--dur, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at center, rgba(30, 20, 60, 0.4) 0%, transparent 70%);
+}
+
+.hero-scales {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: float 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.3));
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+.hero-tag {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #fff 0%, var(--accent2) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.hero h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--muted);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  font-size: 1.5rem;
+  animation: bounce 2s infinite;
+  color: var(--accent);
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(10px); opacity: 1; }
+}
+
+/* ===== TIMELINE ===== */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin: 5rem 0 0.5rem;
+  color: var(--accent2);
+  position: relative;
+  z-index: 1;
+}
+.section-sub {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+.tl-item.visible { opacity: 1; transform: translateY(0); }
+
+.tl-year {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: right;
+  position: relative;
+}
+.tl-year::after {
+  content: '';
+  position: absolute;
+  right: -2rem;
+  top: 0.8rem;
+  width: 1rem;
+  height: 1rem;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(201, 168, 76, 0.5);
+}
+
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: 120px;
+  top: 1rem;
+  bottom: -3rem;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--border), transparent);
+}
+.tl-item:last-child::before { display: none; }
+
+.tl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.tl-card:hover {
+  transform: translateX(-8px);
+  box-shadow: -8px 0 30px rgba(201, 168, 76, 0.1);
+  border-color: var(--accent);
+}
+
+.tl-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--accent2); }
+.tl-card .tl-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+.tl-tag.defense { background: rgba(74, 140, 197, 0.15); color: var(--defense); }
+.tl-tag.prosecution { background: rgba(197, 74, 74, 0.15); color: var(--prosecution); }
+.tl-tag.neutral { background: rgba(201, 168, 76, 0.15); color: var(--accent); }
+
+.tl-card p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+.tl-card .tl-person { color: var(--accent2); font-weight: 500; }
+
+/* ===== BATTLE SECTION ===== */
+.battle {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.battle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.battle-side {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  transition: transform 0.3s;
+}
+.battle-side:hover { transform: translateY(-5px); }
+
+.battle-side.prosecution { border-top: 3px solid var(--prosecution); }
+.battle-side.defense { border-top: 3px solid var(--defense); }
+
+.battle-side h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+.battle-side.prosecution h3 { color: var(--prosecution); }
+.battle-side.defense h3 { color: var(--defense); }
+
+.battle-side ul {
+  list-style: none;
+  padding: 0;
+}
+.battle-side li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.92rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.battle-side li::before {
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+}
+.battle-side.prosecution li::before { content: '✕'; color: var(--prosecution); }
+.battle-side.defense li::before { content: '✓'; color: var(--defense); }
+
+/* ===== KEY FIGURES ===== */
+.figures {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.fig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.fig-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+.fig-card:hover {
+  border-color: var(--accent);
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(201, 168, 76, 0.1);
+}
+
+.fig-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+.fig-card h4 { color: var(--accent2); font-size: 1rem; margin-bottom: 0.3rem; }
+.fig-card .fig-role { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.5rem; }
+.fig-card p { font-size: 0.82rem; color: var(--text); line-height: 1.5; }
+
+/* ===== VERDICT ===== */
+.verdict {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.verdict-stamp {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--accent);
+  transform: rotate(-3deg);
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  animation: stampIn 1.5s ease;
+}
+@keyframes stampIn {
+  0% { transform: rotate(-3deg) scale(3); opacity: 0; -webkit-text-stroke-width: 0px; }
+  60% { transform: rotate(-3deg) scale(0.9); opacity: 1; }
+  100% { transform: rotate(-3deg) scale(1); opacity: 1; -webkit-text-stroke-width: 2px; }
+}
+
+.verdict-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.verdict-quote::before, .verdict-quote::after {
+  content: '"';
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+/* ===== STATS BAR ===== */
+.stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding: 3rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.stat {
+  text-align: center;
+}
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+.footer a { color: var(--accent); text-decoration: none; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .tl-item { grid-template-columns: 80px 1fr; gap: 1.2rem; }
+  .tl-year { font-size: 1.3rem; }
+  .tl-year::after { right: -1.2rem; width: 0.7rem; height: 0.7rem; }
+  .tl-item::before { left: 80px; }
+  .battle-grid { grid-template-columns: 1fr; }
+  .stats { gap: 2rem; }
+}
+
+/* ===== REVEAL ANIMATION ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Progress bar */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--accent), var(--accent2));
+  z-index: 100;
+  width: 0%;
+  transition: width 0.1s;
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="stars" id="stars"></div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-scales">⚖️</div>
+  <div class="hero-tag">A 50-Year Trial</div>
+  <h1>The Trial of<br>String Theory</h1>
+  <h2>Physics' most beautiful dream, on trial for its life</h2>
+  <div class="hero-meta">
+    <span>🎬 History of the Universe</span>
+    <span>⏱️ 2h 38min</span>
+    <span>📅 Jul 2026</span>
+  </div>
+  <div class="scroll-hint">⌄</div>
+</section>
+
+<!-- ===== STATS ===== -->
+<div class="stats reveal">
+  <div class="stat"><div class="stat-num">60</div><div class="stat-label">Years on Trial</div></div>
+  <div class="stat"><div class="stat-num">11</div><div class="stat-label">Dimensions Required</div></div>
+  <div class="stat"><div class="stat-num">10⁵⁰⁰</div><div class="stat-label">Possible Universes</div></div>
+  <div class="stat"><div class="stat-num">0</div><div class="stat-label">Experimental Confirmations</div></div>
+</div>
+
+<!-- ===== TIMELINE ===== -->
+<h2 class="section-title reveal">The Trial Begins</h2>
+<p class="section-sub reveal">Six decades of elegance, evasion, and elusive evidence</p>
+
+<div class="timeline">
+
+  <div class="tl-item">
+    <div class="tl-year">1968</div>
+    <div class="tl-card">
+      <span class="tl-tag neutral">Origin</span>
+      <h3>The Euler-Beta Formula</h3>
+      <p><span class="tl-person">Gabriele Veneziano</span> plucks an 18th-century equation from mathematical obscurity to describe particle collisions. This becomes the founding discovery of string theory — though nobody knows it yet.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1969</div>
+    <div class="tl-card">
+      <span class="tl-tag defense">Defense</span>
+      <h3>Strings, Not Points</h3>
+      <p><span class="tl-person">Susskind, Nambu & Nielsen</span> independently realize: particles aren't infinitesimal dots, but vibrating strings. Different frequencies = different particles. Reviewers dismiss it. "I felt like I'd gotten hit over the head with a trash can." — Susskind</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1973</div>
+    <div class="tl-card">
+      <span class="tl-tag prosecution">Prosecution</span>
+      <h3>The QCD Assassination</h3>
+      <p>Stanford's accelerator confirms quarks inside protons. <span class="tl-person">Quantum Chromodynamics</span> perfectly explains the strong force. Original string theory is dead. Researchers flee the field.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1974</div>
+    <div class="tl-card">
+      <span class="tl-tag defense">Defense</span>
+      <h3>The Graviton Emerges</h3>
+      <p>Closed strings naturally produce a <strong>massless spin-2 particle</strong> — the exact signature of the graviton. Without even trying, string theory conjures gravity from mathematics. The dream of a Theory of Everything is reborn.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1971</div>
+    <div class="tl-card">
+      <span class="tl-tag neutral">Witness</span>
+      <h3>26 Dimensions & Supersymmetry</h3>
+      <p><span class="tl-person">Claude Lovelace</span> (no PhD, physics professor, parakeet owner) discovers stability at 26 dimensions. <span class="tl-person">Yuri Golfand</span> proposes supersymmetry — every boson has a fermion partner (squarks, selectrons, gluinos). Dimensions drop to 10. Tachyons vanish.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1985</div>
+    <div class="tl-card">
+      <span class="tl-tag defense">Defense</span>
+      <h3>First Superstring Revolution</h3>
+      <p><span class="tl-person">Calabi & Yau</span> provide the origami: manifolds that fold 6 extra dimensions invisible while preserving supersymmetry. <span class="tl-person">Green & Schwartz</span> fix致命 anomalies. But there isn't one theory — there are <strong>five</strong>.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1995</div>
+    <div class="tl-card">
+      <span class="tl-tag defense">Defense</span>
+      <h3>M-Theory — The Unification</h3>
+      <p><span class="tl-person">Edward Witten</span> — history → economics → philosophy → physics → Fields Medal — reveals that all 5 theories are shadows of one <strong>11-dimensional</strong> framework. Branes emerge as the real building blocks. Strings are just one type.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1995</div>
+    <div class="tl-card">
+      <span class="tl-tag defense">Defense</span>
+      <h3>D-Branes Are Real</h3>
+      <p><span class="tl-person">Joseph Polchinski</span> proves D-branes aren't mathematical fictions — they have mass, carry charge, and warp spacetime. "If there's one thing I hope I'm remembered for..." He later lost his battle with brain cancer, 2018.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1997</div>
+    <div class="tl-card">
+      <span class="tl-tag neutral">Witness</span>
+      <h3>The Holographic Universe</h3>
+      <p><span class="tl-person">Juan Maldacena</span> publishes the most-cited paper in string theory history. ADS/CFT: a universe with gravity = a flat boundary without gravity. Reality might be a <strong>hologram</strong>. But our universe isn't Anti-de Sitter...</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">1998</div>
+    <div class="tl-card">
+      <span class="tl-tag prosecution">Prosecution</span>
+      <h3>Dark Energy Bombshell</h3>
+      <p><span class="tl-person">Perlmutter</span> announces the universe's expansion is <strong>accelerating</strong>. String theory naturally produces negative curvature. Our universe has positive curvature. The theory points the wrong way.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">2003</div>
+    <div class="tl-card">
+      <span class="tl-tag prosecution">Prosecution</span>
+      <h3>The Landscape & The Swampland</h3>
+      <p>KKLT mechanism needs 10⁵⁰⁰ possible universes to fix dark energy. <span class="tl-person">Kamran Vafa</span> then shows most of them are in the "Swampland" — incompatible with string theory's own rules. Dark energy AND inflation may be forbidden.</p>
+    </div>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-year">2025</div>
+    <div class="tl-card">
+      <span class="tl-tag prosecution">Prosecution</span>
+      <h3>The Missing Superpartners</h3>
+      <p>A decade of searches — <strong>IceCube</strong> (Antarctic ice), <strong>LUX-ZEPLIN</strong> (abandoned gold mine), <strong>LHC</strong> (Geneva) — zero supersymmetric particles. The foundation string theory rests on remains experimentally invisible.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== KEY FIGURES ===== -->
+<h2 class="section-title reveal">Key Witnesses</h2>
+<p class="section-sub reveal">The minds behind the trial</p>
+
+<div class="figures">
+  <div class="fig-grid">
+    <div class="fig-card reveal">
+      <div class="fig-emoji">🧹</div>
+      <h4>Leonard Susskind</h4>
+      <div class="fig-role">Co-founder · Defense</div>
+      <p>Bronx plumber's son. Co-invented string theory, later its street fighter with the anthropic principle.</p>
+    </div>
+    <div class="fig-card reveal">
+      <div class="fig-emoji">🧠</div>
+      <h4>Edward Witten</h4>
+      <div class="fig-role">M-Theorist · Fields Medal</div>
+      <p>History → econ → philosophy → physics. Unified 5 string theories into one. "The smartest living physicist."</p>
+    </div>
+    <div class="fig-card reveal">
+      <div class="fig-emoji">🧲</div>
+      <h4>Joseph Polchinski</h4>
+      <div class="fig-role">D-Branes · 1954–2018</div>
+      <p>Proved D-branes are physical objects, not math tools. Wrote his memoirs while fighting brain cancer.</p>
+    </div>
+    <div class="fig-card reveal">
+      <div class="fig-emoji">🎭</div>
+      <h4>Juan Maldacena</h4>
+      <div class="fig-role">ADS/CFT Pioneer</div>
+      <p>Most-cited paper in string theory. Showed gravity might emerge from quantum information on a boundary.</p>
+    </div>
+    <div class="fig-card reveal">
+      <div class="fig-emoji">🌊</div>
+      <h4>Alan Guth</h4>
+      <div class="fig-role">Inflation Architect</div>
+      <p>3 AM realization, 1979. Cosmic inflation solves flatness, horizon, and monopole problems in one stroke.</p>
+    </div>
+    <div class="fig-card reveal">
+      <div class="fig-emoji">⛰️</div>
+      <h4>Nima Arkani-Hamed</h4>
+      <div class="fig-role">Split SUSY · Radical</div>
+      <p>Smuggled out of Iran on horseback at age 10. Proposed split supersymmetry — beauty, sacrificed.</p>
+    </div>
+    <div class="fig-card reveal">
+      <div class="fig-emoji">🔮</div>
+      <h4>Kamran Vafa</h4>
+      <div class="fig-role">Swampland · Dirac Medal</div>
+      <p>Showed most string theory solutions are self-inconsistent. The landscape might be a swamp.</p>
+    </div>
+    <div class="fig-card reveal">
+      <div class="fig-emoji">⚔️</div>
+      <h4>Lee Smolin</h4>
+      <div class="fig-role">Prosecution · Loop QG</div>
+      <p>String theory's harshest critic. "10⁵⁰⁰ theories = reductio ad absurdum." Clashed with Susskind publicly.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BATTLE ===== -->
+<h2 class="section-title reveal">Closing Arguments</h2>
+<p class="section-sub reveal">Six decades of evidence, weighed</p>
+
+<div class="battle">
+  <div class="battle-grid">
+    <div class="battle-side defense reveal">
+      <h3>🛡️ For the Defense</h3>
+      <ul>
+        <li>Only framework that unifies all 4 forces, including gravity</li>
+        <li>Closed strings naturally produce the graviton (spin-2)</li>
+        <li>ADS/CFT is now used in condensed matter, nuclear physics & quantum information</li>
+        <li>D-branes are real physical objects with mass and charge</li>
+        <li>Black hole information paradox resolved via holographic principle</li>
+        <li>Quarks, black holes & parity violation were also once dismissed</li>
+        <li>"Absence of evidence is not evidence of absence"</li>
+      </ul>
+    </div>
+    <div class="battle-side prosecution reveal">
+      <h3>🔪 For the Prosecution</h3>
+      <ul>
+        <li>Zero experimental confirmation in ~60 years</li>
+        <li>No supersymmetric particles found by LHC, IceCube, or LUX-ZEPLIN</li>
+        <li>Requires 7 extra dimensions that have never been observed</li>
+        <li>10⁵⁰⁰ possible universes = no predictive power</li>
+        <li>ADS/CFT describes a universe unlike our own</li>
+        <li>Swampland rules out most dark energy & inflation solutions</li>
+        <li>Every experimental failure → theory shape-shifts again</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VERDICT ===== -->
+<div class="verdict reveal">
+  <div class="verdict-stamp">MISTRIAL</div>
+  <p class="verdict-quote">Beauty has been both savior and saboteur. It rescued string theory when evidence failed, but also lured it into existential cul-de-sacs it could not escape. The file remains open — pending testimony only the universe can provide.</p>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p>Based on <a href="https://youtu.be/nPLKfvr_y4E" target="_blank">"The 50-Year Search for the Theory of Everything"</a> by History of the Universe</p>
+  <p style="margin-top: 0.5rem;">⭐ Built by Yuki 🐱 for Peter</p>
+</div>
+
+<script>
+// Generate stars
+const starsContainer = document.getElementById('stars');
+const starCount = 150;
+for (let i = 0; i < starCount; i++) {
+  const star = document.createElement('div');
+  star.className = 'star';
+  const size = Math.random() * 2 + 0.5;
+  star.style.width = size + 'px';
+  star.style.height = size + 'px';
+  star.style.left = Math.random() * 100 + '%';
+  star.style.top = Math.random() * 100 + '%';
+  star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+  star.style.setProperty('--delay', Math.random() * 5 + 's');
+  starsContainer.appendChild(star);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, .tl-item').forEach(el => observer.observe(el));
+
+// Progress bar
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  progress.style.width = scrolled + '%';
+});
+</script>
+
+</body>
+</html>

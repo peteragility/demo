@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>NEON ORBIT</title>
+<style>
+  /* Minimal page styling: canvas fills the window, no scrollbars. */
+  html, body { margin: 0; padding: 0; overflow: hidden; background: #05030f; height: 100%; }
+  canvas { display: block; touch-action: none; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<script>
+"use strict";
+
+// ============================================================
+// NEON ORBIT — a one-button gravity orbit game
+// Tap / click / space to release from orbit, fly straight,
+// and get caught by the next ring. Climb as high as you can.
+// ============================================================
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+// --- Viewport handling -------------------------------------------------
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * DPR;
+  canvas.height = H * DPR;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+window.addEventListener("resize", () => { resize(); initStars(); });
+resize();
+
+// --- Tunable constants --------------------------------------------------
+const CAPTURE_TOL     = 34;    // how far from the ring's orbit you can be caught
+const PERFECT_TOL     = 12;    // distance for a "perfect" (centered) catch
+const FLY_SPEED       = 560;   // px/s straight-line flight speed
+const METERS_PER_PX   = 0.05;  // height score conversion
+const RING_GAP_MIN    = 230;   // vertical gap between rings
+const RING_GAP_MAX    = 340;
+const RING_MARGIN     = 130;   // horizontal playfield inset for ring centers
+const RING_PULSE_AMT  = 0.15;  // pulsing rings: orbit radius breathes +/-15%
+const RING_DRIFT      = 40;    // drifting rings: horizontal slide in px (+/-)
+const COMBO_WINDOW    = 2;     // s: consecutive-capture window for the x1..x4 combo
+const CAPTURE_POINTS  = 5;     // base score per ring capture, before multipliers
+const NEAR_MISS_DIST  = 12;    // px past a hazard's edge that counts as a graze
+const NEAR_MISS_MAX   = 4;     // cap on stacked graze bonuses (+0.5x each -> +2.0x)
+const HAZARD_R        = 9;     // hazard (mine) radius
+const PHASE_PERIOD    = 4;     // s: full fade-in/out cycle of phase rings
+const PHASE_SPEED     = Math.PI * 2 / PHASE_PERIOD;
+const PHASE_CAPTURE_ALPHA = 0.5;  // phase rings are catchable only at/above this
+const GOLD_HUE        = 48;    // hue override for gold rings (every 5th)
+
+// --- Persistence -----------------------------------------------------------
+// localStorage can throw (Firefox on file://, Safari private mode), so guard
+// every access and fall back to the in-memory highscore variable.
+function loadHighscore() {
+  try { return Number(localStorage.getItem("neonorbit_hi") || 0); }
+  catch { return 0; }
+}
+function saveHighscore(m) {
+  try { localStorage.setItem("neonorbit_hi", String(m)); }
+  catch { /* keep the in-memory value only */ }
+}
+function loadSoundPref() {
+  try { return localStorage.getItem("neonorbit_snd") !== "0"; }  // default ON
+  catch { return true; }
+}
+function saveSoundPref(on) {
+  try { localStorage.setItem("neonorbit_snd", on ? "1" : "0"); }
+  catch { /* in-memory only */ }
+}
+// Daily Challenge persistence: best score + ghost replay for a given date
+// (key: neonorbit_daily_YYYY-MM-DD), plus an all-time streak counter.
+function loadDailyData(dateStr) {
+  try {
+    const s = localStorage.getItem("neonorbit_daily_" + dateStr);
+    return s ? JSON.parse(s) : null;
+  } catch { return null; }
+}
+function saveDailyData(dateStr, data) {
+  try { localStorage.setItem("neonorbit_daily_" + dateStr, JSON.stringify(data)); }
+  catch { /* in-memory only */ }
+}
+function loadDailyStreak() {
+  try {
+    const s = localStorage.getItem("neonorbit_daily_streak");
+    if (!s) return { last: null, count: 0 };
+    const v = JSON.parse(s);
+    if (!v || typeof v.count !== "number" || !isFinite(v.count)) return { last: null, count: 0 };
+    return { last: typeof v.last === "string" ? v.last : null, count: Math.floor(v.count) };
+  } catch { return { last: null, count: 0 }; }
+}
+function saveDailyStreak(v) {
+  try { localStorage.setItem("neonorbit_daily_streak", JSON.stringify(v)); }
+  catch { /* in-memory only */ }
+}
+
+// --- Game state ----------------------------------------------------------
+const STATE = { READY: 0, PLAYING: 1, DEAD: 2 };
+let state = STATE.READY;
+
+let rings = [];          // all rings above the start (world coords, y decreases upward)
+let stars = [];          // parallax starfield
+let particles = [];      // burst particles
+let trail = [];          // comet trail points {x, y, life}
+let floaters = [];       // floating score texts
+
+let cameraY = 0;         // world y at the top of the screen (world y decreases upward)
+let lastCameraY = 0;     // cameraY from the previous frame (for star parallax)
+let shake = 0;           // screen shake magnitude
+let score = 0;           // best height this run, in meters
+let pendingBonus = 0;    // perfect-catch bonus awaiting the height-floor update
+let combo = 0;           // consecutive perfect catches
+let highscore = loadHighscore();
+let time = 0;            // global animation clock (seconds)
+let deathTimer = 0;      // countdown before allowing restart
+let shield = false;      // comet carries a shield (absorbs one off-screen death)
+let slowmo = 0;          // seconds of slow-motion remaining (shield shatter)
+let comboMult = 1;       // ring-capture combo multiplier x1..x4
+let comboTimer = 0;      // seconds left in the combo window (0 = idle at x1)
+let nearMiss = 0;        // graze bonuses banked for the next capture (0..4)
+
+// Daily Challenge state
+let gameMode = "normal";   // "normal" | "daily"
+let runClock = 0;          // seconds of gameplay since the run started (slow-mo aware)
+let worldClock = 0;        // run-relative clock driving pulsing/drifting ring motion
+let replay = [];           // daily: recorded actions {t, a:0=release | a:1=capture}
+let ringGen = 1;           // sequential ring generation counter (stable across recycling)
+let ringRnd = Math.random; // seeded generator in daily mode -> same world for everyone
+let hazRnd = Math.random;  // separate hazard stream: daily ring layouts stay identical
+let dailyBest = 0;         // cached best score for today's daily
+let dailyStreakShown = 0;  // cached streak count for HUD/title
+const ghost = {            // best-run ghost (visual only, never collides)
+  active: false, events: [], idx: 0, t: 0, lastT: 0,
+  mode: "orbit", ring: null, angle: 0, x: 0, y: 0, vx: 0, vy: 0, trail: []
+};
+
+// The comet. When orbiting: ringIndex + angle. When flying: free x/y + velocity.
+const comet = {
+  mode: "orbit",         // "orbit" | "fly"
+  ringIndex: 0,
+  angle: 0,              // orbit angle (radians, 0 = right, CCW positive)
+  x: 0, y: 0,
+  vx: 0, vy: 0,
+  radius: 7
+};
+
+// --- Utility -------------------------------------------------------------
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const TAU = Math.PI * 2;
+const ringRand = (a, b) => a + ringRnd() * (b - a);   // ring layout randomness
+
+// --- Daily Challenge: dates, seeds, cached info -------------------------
+function dateStrOf(d) {
+  return d.getFullYear() + "-" +
+         String(d.getMonth() + 1).padStart(2, "0") + "-" +
+         String(d.getDate()).padStart(2, "0");
+}
+function todayStr() { return dateStrOf(new Date()); }
+function dateStrOffset(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return dateStrOf(d);
+}
+// "Daily #N": 1 on 2026-01-01, +1 per local calendar day (pure calendar
+// arithmetic on the local date components - no timezone mixing).
+function dailyNumber(dateStr) {
+  const p = dateStr.split("-");
+  return Math.round((Date.UTC(p[0], p[1] - 1, p[2]) - Date.UTC(2026, 0, 1)) / 86400000) + 1;
+}
+function hashSeed(str) {
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+}
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function refreshDailyInfo() {
+  const data = loadDailyData(todayStr());
+  dailyBest = data && typeof data.score === "number" ? Math.floor(data.score) : 0;
+  dailyStreakShown = loadDailyStreak().count;
+}
+
+// Variant ring motion as a pure function of the run-relative clock, so daily
+// worlds (and ghost replays) are perfectly reproducible.
+function ringRadiusAt(r, t) {
+  return r.type === "pulsing"
+    ? r.baseOrbitR * (1 + RING_PULSE_AMT * Math.sin(t * 1.8 + r.pulsePhase))
+    : r.baseOrbitR;
+}
+function ringCenterXAt(r, t) {
+  return r.type === "drifting"
+    ? r.baseX + RING_DRIFT * Math.sin(t * 0.7 + r.driftPhase)
+    : r.baseX;
+}
+// Phase-ring visibility as a pure function of the run-relative clock, so the
+// fade is identical on daily ghost replays. A phase ring is capturable only
+// while alpha >= PHASE_CAPTURE_ALPHA - the same value the renderer shows.
+function phaseAlpha(r, t) {
+  return 0.5 + 0.5 * Math.sin(t * PHASE_SPEED + r.pulsePhase);
+}
+
+// Convert world coordinates (y up = negative) to screen coordinates.
+function sx(x) { return x; }
+function sy(worldY) { return worldY - cameraY; }
+
+// --- Starfield -----------------------------------------------------------
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 140; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,          // screen space; wrapped vertically
+      size: rand(0.4, 1.8),
+      depth: rand(0.15, 0.9),        // parallax factor
+      tw: Math.random() * TAU,       // twinkle phase
+      hue: rand(180, 320)
+    });
+  }
+}
+initStars();
+
+// --- Ring generation -----------------------------------------------------
+// Rings stack upward with random x jitter. Difficulty (index-based) shrinks
+// orbit radius and raises spin speed as the player climbs.
+function makeRing(index, prev) {
+  // Hardening: tolerate a bare y (number) so a call-site regression fails
+  // soft (hazards skipped, layout still valid) instead of producing NaN rings.
+  const prevIsNum = typeof prev === "number";
+  const prevY = prevIsNum ? prev : prev.y;   // ring below (gaps + hazard placement)
+  const t = clamp(index / 40, 0, 1);              // difficulty ramp 0..1 over 40 rings
+  const orbitR  = ringRand(64, 84) - t * 34;      // 64..84 shrinking to 30..50
+  const spin    = ringRand(1.1, 1.6) + t * 1.6;   // rad/s, faster as you climb
+  const dir     = ringRnd() < 0.5 ? 1 : -1;
+  // Ring variants mixed in after ring 10:
+  //   normal   - the classic behaviour
+  //   pulsing  - orbit radius breathes, so release timing matters
+  //   drifting - slides horizontally, so you must lead your shot
+  let type = "normal";
+  if (index > 10) {
+    const roll = ringRnd();
+    if (roll < 0.25)     type = "pulsing";
+    else if (roll < 0.5) type = "drifting";
+  }
+  const margin = type === "drifting" ? RING_MARGIN + RING_DRIFT : RING_MARGIN;
+  // x comes from a single uniform sample mapped across the playfield, so a
+  // daily world has the same relative layout on every screen width.
+  const x = margin + ringRnd() * Math.max(1, W - 2 * margin);
+  const y = prevY - ringRand(RING_GAP_MIN, RING_GAP_MAX + t * 60);
+  // Hazards (neon mines) float in the vertical gap below this ring. They roll
+  // on their own RNG stream (hazRnd) so ring-layout randomness (ringRnd) is
+  // consumed in the same order as before and daily worlds stay identical.
+  // Mines keep clear of both neighbouring capture bands (with pulse + drift
+  // headroom) so a catch can never snap the comet onto a mine; placements
+  // that cannot satisfy that are simply dropped.
+  const hazards = [];
+  if (!prevIsNum && index > 3) {   // safe placement needs the full prev ring
+    const want = (hazRnd() < 0.55 ? 1 : 0) + (index > 25 && hazRnd() < 0.3 ? 1 : 0);
+    const clear = (rr) =>
+      rr.baseOrbitR * (1 + RING_PULSE_AMT) + CAPTURE_TOL + HAZARD_R + 16 +
+      (rr.type === "drifting" ? RING_DRIFT : 0);
+    for (let j = 0; j < want; j++) {
+      for (let tries = 0; tries < 5; tries++) {
+        const hx = RING_MARGIN + hazRnd() * Math.max(1, W - 2 * RING_MARGIN);
+        const hy = y + (prevY - y) * (0.3 + hazRnd() * 0.4);
+        const ok = Math.hypot(hx - x, hy - y) > clear({ baseOrbitR: orbitR, type }) &&
+                   Math.hypot(hx - prev.baseX, hy - prev.y) > clear(prev);
+        if (ok) {
+          hazards.push({ x: hx, y: hy, r: HAZARD_R, spin: hazRnd() * TAU, grazed: false });
+          break;
+        }
+      }
+    }
+  }
+  const ring = {
+    x, baseX: x,
+    y,
+    orbitR, baseOrbitR: orbitR,
+    spin: spin * dir,
+    rot: ringRnd() * TAU,           // visual rotation of the ring's dashes
+    hue: (200 + index * 17 + ringRand(-10, 10)) % 360,
+    // Ring counting is by spawn order (the single ringGen counter): every 5th
+    // ring is GOLD (3x capture score + burst on catch; shields already ride
+    // every 5th, so gold rings are double-bonus rings), every 7th PHASEs
+    // in/out and is only catchable while sufficiently visible. Every 35th is
+    // BOTH: the phase fade takes visual precedence, gold 3x still applies.
+    gold: index % 5 === 0,
+    phase: index % 7 === 0,
+    pulse: 0,                       // 0..1 flash when caught
+    type,
+    pulsePhase: ringRand(0, TAU),   // breathing phase for pulsing rings
+    driftPhase: ringRand(0, TAU),   // slide phase for drifting rings
+    // Every 5th ring carries a shield pickup riding its orbit path.
+    shield: index > 0 && index % 5 === 0 ? { angle: ringRnd() * TAU, on: true } : null,
+    hazards                        // mines floating in the gap below this ring
+  };
+  if (ring.gold) ring.hue = GOLD_HUE;  // gold look (ringRnd stream untouched)
+  return ring;
+}
+
+function buildWorld() {
+  rings = [];
+  // Start ring sits at world y = 0, centred, gentle spin.
+  rings.push({
+    x: W / 2, baseX: W / 2, y: 0,
+    orbitR: 78, baseOrbitR: 78, spin: 1.3, rot: 0,
+    hue: 300, pulse: 0,
+    type: "normal", pulsePhase: 0, driftPhase: 0, shield: null,
+    gold: false, phase: false, hazards: []
+  });
+  ringGen = 1;
+  for (let i = 1; i < 60; i++) {
+    rings.push(makeRing(ringGen++, rings[rings.length - 1]));
+  }
+}
+
+// --- Run lifecycle ---------------------------------------------------------
+function startRun(mode) {
+  gameMode = mode || "normal";
+  ringRnd = gameMode === "daily" ? mulberry32(hashSeed(todayStr())) : Math.random;
+  // Hazards get their own seeded stream (same daily world for everyone, while
+  // the ring-layout stream above stays byte-identical to earlier builds).
+  hazRnd = gameMode === "daily" ? mulberry32(hashSeed(todayStr() + "#haz")) : Math.random;
+  if (gameMode === "daily") refreshDailyInfo();
+  buildWorld();
+  comet.mode = "orbit";
+  comet.ringIndex = 0;
+  comet.angle = -Math.PI / 2;       // start at the top of the first ring
+  comet.x = rings[0].x;
+  comet.y = rings[0].y - rings[0].orbitR;
+  cameraY = rings[0].y - H * 0.65;  // comet sits ~65% down the screen
+  lastCameraY = cameraY;
+  score = 0;
+  pendingBonus = 0;
+  combo = 0;
+  comboMult = 1;
+  comboTimer = 0;
+  nearMiss = 0;
+  trail = [];
+  particles = [];
+  floaters = [];
+  shake = 0;
+  shield = false;
+  slowmo = 0;
+  runClock = 0;
+  worldClock = 0;
+  replay = [];
+  initGhost();
+  state = STATE.PLAYING;
+}
+
+// --- Ghost replay helpers ----------------------------------------------------
+// Ring snapshot for recording: x is stored as a fraction of screen width so
+// the replay still lines up after a window resize.
+function snapRing(r, angle) {
+  return {
+    xf: W > 0 ? r.baseX / W : 0.5, y: r.y, baseOrbitR: r.baseOrbitR,
+    type: r.type, spin: r.spin, pulsePhase: r.pulsePhase,
+    driftPhase: r.driftPhase, angle
+  };
+}
+function ghostRingFromSnap(s) {
+  return {
+    baseX: s.xf * W, y: s.y, baseOrbitR: s.baseOrbitR, type: s.type,
+    spin: s.spin, pulsePhase: s.pulsePhase, driftPhase: s.driftPhase
+  };
+}
+
+// Load today's best daily run and arm the ghost with its recorded actions.
+function initGhost() {
+  ghost.trail = [];
+  ghost.idx = 0;
+  ghost.t = 0;
+  ghost.active = false;
+  if (gameMode !== "daily") return;
+  const data = loadDailyData(todayStr());
+  if (!data || !Array.isArray(data.replay) || data.replay.length === 0) return;
+  ghost.events = data.replay;
+  const lastT = Number(data.replay[data.replay.length - 1].t);
+  ghost.lastT = isFinite(lastT) && lastT > 0 ? lastT : 0;
+  // The recorded run starts orbiting the fixed start ring.
+  ghost.ring = { baseX: W / 2, y: 0, baseOrbitR: 78, type: "normal",
+                 spin: 1.3, pulsePhase: 0, driftPhase: 0 };
+  ghost.mode = "orbit";
+  ghost.angle = -Math.PI / 2;
+  ghost.x = ghost.ring.baseX;
+  ghost.y = -ghost.ring.baseOrbitR;
+  ghost.vx = 0;
+  ghost.vy = 0;
+  ghost.active = true;
+}
+
+// Replays the recorded best run deterministically: orbit the recorded ring,
+// release at the recorded time with the matching tangent, snap onto the next
+// recorded ring at its recorded angle. Purely visual - no collision.
+function updateGhost(dt) {
+  if (!ghost.active) return;
+  ghost.t += dt;
+  while (ghost.idx < ghost.events.length && ghost.events[ghost.idx].t <= ghost.t) {
+    const ev = ghost.events[ghost.idx++];
+    if (ev.a === 0 && ghost.ring) {
+      // Release: tangent launch matching the recorded run.
+      const sign = ghost.ring.spin >= 0 ? 1 : -1;
+      ghost.vx = -Math.sin(ghost.angle) * sign * FLY_SPEED;
+      ghost.vy =  Math.cos(ghost.angle) * sign * FLY_SPEED;
+      ghost.mode = "fly";
+    } else if (ev.r) {
+      // Capture (or shield save): snap onto the recorded ring.
+      ghost.ring = ghostRingFromSnap(ev.r);
+      ghost.angle = ev.r.angle;
+      ghost.mode = "orbit";
+    }
+  }
+  if (ghost.mode === "orbit" && ghost.ring) {
+    ghost.angle += ghost.ring.spin * dt;
+    const or = ringRadiusAt(ghost.ring, worldClock);
+    ghost.x = ringCenterXAt(ghost.ring, worldClock) + Math.cos(ghost.angle) * or;
+    ghost.y = ghost.ring.y + Math.sin(ghost.angle) * or;
+  } else {
+    ghost.x += ghost.vx * dt;
+    ghost.y += ghost.vy * dt;
+  }
+  ghost.trail.push({ x: ghost.x, y: ghost.y, life: 0.5 });
+  if (ghost.trail.length > 60) ghost.trail.shift();
+  for (let i = ghost.trail.length - 1; i >= 0; i--) {
+    ghost.trail[i].life -= dt;
+    if (ghost.trail[i].life <= 0) ghost.trail.splice(i, 1);
+  }
+  // The recorded run is over - fade the ghost out.
+  if (ghost.idx >= ghost.events.length && ghost.t > ghost.lastT + 1.5) {
+    ghost.active = false;
+  }
+}
+
+// Shield save: absorb one off-screen death, shatter the shield, and drop the
+// comet back onto the nearest visible ring orbit with a brief slow-mo beat.
+function useShield() {
+  shield = false;
+  slowmo = 0.9;
+  shake = 12;
+  burstAt(comet.x, comet.y, 185, 46, 380);
+  addFloater("SHIELD BROKEN", comet.x, comet.y, 185);
+  sfxCrash(0.5);
+  // Pick the closest ring that is actually on screen (fall back to nearest).
+  let best = -1, bestD = Infinity;
+  let any = -1, anyD = Infinity;
+  for (let i = 0; i < rings.length; i++) {
+    const d = Math.hypot(comet.x - rings[i].x, comet.y - rings[i].y);
+    if (d < anyD) { anyD = d; any = i; }
+    const rY = sy(rings[i].y);
+    if (d < bestD && rY > -40 && rY < H + 40) { bestD = d; best = i; }
+  }
+  const idx = best >= 0 ? best : any;
+  const ring = rings[idx];
+  comet.mode = "orbit";
+  comet.ringIndex = idx;
+  comet.angle = Math.atan2(comet.y - ring.y, comet.x - ring.x);
+  comet.x = ring.x + Math.cos(comet.angle) * ring.orbitR;
+  comet.y = ring.y + Math.sin(comet.angle) * ring.orbitR;
+  ring.pulse = 1;
+  combo = 0;
+  // The ring was missed (shield save): capture combo and grazes drop off.
+  comboMult = 1;
+  comboTimer = 0;
+  nearMiss = 0;
+  if (gameMode === "daily" && replay.length < 2000) replay.push({ t: runClock, a: 1, r: snapRing(ring, comet.angle) });
+}
+
+function die() {
+  state = STATE.DEAD;
+  deathTimer = 0.6;
+  shake = 18;
+  // Clear combo/graze state so the death-screen HUD shows no stale status.
+  combo = 0;
+  comboMult = 1;
+  comboTimer = 0;
+  nearMiss = 0;
+  sfxCrash();
+  // Death explosion: a ring of neon shards.
+  for (let i = 0; i < 70; i++) {
+    const a = Math.random() * TAU;
+    const sp = rand(60, 420);
+    const life = rand(0.4, 1.1);
+    particles.push({
+      x: comet.x, y: comet.y,
+      vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+      life, maxLife: life,
+      size: rand(1.5, 4), hue: rand(160, 340)
+    });
+  }
+  const m = Math.floor(score);
+  if (gameMode === "daily") {
+    // Daily runs keep their own per-day best (with ghost replay data) and
+    // never touch the global highscore.
+    const ds = todayStr();
+    const data = loadDailyData(ds);
+    if (m > 0 && (!data || typeof data.score !== "number" || m > data.score)) {
+      saveDailyData(ds, { score: m, replay: replay });
+    }
+    // Streak: one increment per calendar day on which a daily run is finished.
+    const st = loadDailyStreak();
+    if (st.last !== ds && m > 0) {
+      st.count = st.last === dateStrOffset(-1) ? st.count + 1 : 1;
+      st.last = ds;
+      saveDailyStreak(st);
+    }
+    refreshDailyInfo();
+  } else if (m > highscore) {
+    highscore = m;
+    saveHighscore(m);
+  }
+}
+
+// --- Input: the one button -------------------------------------------------
+// --- Sound: WebAudio SFX, fully synthesized (no external files) ------------
+// The AudioContext is created lazily on the first user gesture (autoplay
+// policy). Everything routes through masterGain so the M key / on-screen icon
+// can mute instantly; the preference persists via the guarded helpers above.
+let audioCtx = null;
+let masterGain = null;
+let noiseBuf = null;
+let soundOn = loadSoundPref();
+
+function ensureAudio() {
+  if (!audioCtx) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      audioCtx = new AC();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = soundOn ? 0.8 : 0;
+      masterGain.connect(audioCtx.destination);
+    } catch { audioCtx = null; masterGain = null; }
+  }
+  if (audioCtx && audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+}
+function audioReady() { return soundOn && audioCtx && masterGain; }
+
+function getNoise() {
+  if (!noiseBuf) {
+    noiseBuf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.5, audioCtx.sampleRate);
+    const d = noiseBuf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  return noiseBuf;
+}
+
+// One synthesized tone with optional pitch ramp and start delay.
+function tone(type, f0, f1, dur, vol, when) {
+  if (!audioReady()) return;
+  const t = audioCtx.currentTime + (when || 0);
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(f0, t);
+  if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(Math.max(1, f1), t + dur);
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g).connect(masterGain);
+  o.start(t);
+  o.stop(t + dur + 0.02);
+}
+
+// Filtered white-noise burst with a frequency sweep.
+function noiseSweep(f0, f1, dur, vol, q) {
+  if (!audioReady()) return;
+  const t = audioCtx.currentTime;
+  const src = audioCtx.createBufferSource();
+  src.buffer = getNoise();
+  const bp = audioCtx.createBiquadFilter();
+  bp.type = "bandpass";
+  bp.Q.value = q || 1;
+  bp.frequency.setValueAtTime(f0, t);
+  bp.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  const g = audioCtx.createGain();
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  src.connect(bp).connect(g).connect(masterGain);
+  src.start(t);
+  src.stop(t + dur + 0.02);
+}
+
+function sfxWhoosh()  { noiseSweep(400, 3200, 0.22, 0.5, 0.8); }               // release
+function sfxDing(c)   { const f = 560 + Math.min(c, 12) * 55;                  // catch
+                        tone("sine", f, f * 1.02, 0.18, 0.35); }               // (rises with combo)
+function sfxChime()   { tone("sine", 880, 880, 0.16, 0.3);                     // perfect:
+                        tone("sine", 1318, 1318, 0.24, 0.3, 0.09); }          // two-note arpeggio
+function sfxCrash(v)  { const m = v || 1;                                       // death / shatter
+                        noiseSweep(2200, 200, 0.5, 0.55 * m, 0.6);
+                        tone("sine", 220, 45, 0.55, 0.5 * m); }
+function sfxSparkle() { [660, 880, 1108, 1477].forEach(                        // shield pickup
+                          (f, i) => tone("triangle", f, f, 0.12, 0.25, i * 0.055)); }
+function sfxNear()    { tone("triangle", 1250, 1650, 0.08, 0.2); }             // graze flash
+
+function toggleSound() {
+  soundOn = !soundOn;
+  saveSoundPref(soundOn);
+  if (masterGain) masterGain.gain.value = soundOn ? 0.8 : 0;
+  ensureAudio();
+  if (soundOn) sfxDing(2);   // audible confirmation
+}
+
+function press() {
+  ensureAudio();                                   // first gesture unlocks audio
+  if (state === STATE.READY) { startRun("normal"); return; }
+  if (state === STATE.DEAD) {
+    if (deathTimer <= 0) startRun(gameMode);       // retry stays in the same mode
+    return;
+  }
+  // PLAYING: release from orbit (only if currently orbiting).
+  if (comet.mode === "orbit") {
+    const ring = rings[comet.ringIndex];
+    // Tangent direction: perpendicular to the radius vector, matching spin.
+    const tx = -Math.sin(comet.angle) * Math.sign(ring.spin);
+    const ty =  Math.cos(comet.angle) * Math.sign(ring.spin);
+    comet.vx = tx * FLY_SPEED;
+    comet.vy = ty * FLY_SPEED;
+    comet.mode = "fly";
+    sfxWhoosh();
+    if (gameMode === "daily" && replay.length < 2000) replay.push({ t: runClock, a: 0 });   // ghost: release
+  }
+}
+
+window.addEventListener("keydown", e => {
+  if (e.code === "KeyM") {
+    e.preventDefault();
+    ensureAudio();
+    toggleSound();
+    return;
+  }
+  if (e.code === "KeyD") {
+    e.preventDefault();
+    ensureAudio();
+    if (state === STATE.READY || (state === STATE.DEAD && deathTimer <= 0)) {
+      startRun("daily");
+    }
+    return;
+  }
+  if (e.code === "Escape") {
+    e.preventDefault();
+    if (state !== STATE.READY) setupPreview();
+    return;
+  }
+  if (e.code === "Space" || e.code === "ArrowUp" || e.code === "Enter") {
+    e.preventDefault();
+    press();
+  }
+});
+// Ignore extra fingers while a pointer is already down (multi-touch would
+// otherwise release the comet immediately after starting the run).
+let activePointer = -1;
+window.addEventListener("pointerup", () => { activePointer = -1; });
+window.addEventListener("pointercancel", () => { activePointer = -1; });
+canvas.addEventListener("pointerup", () => { activePointer = -1; });
+canvas.addEventListener("pointercancel", () => { activePointer = -1; });
+canvas.addEventListener("pointerdown", e => {
+  e.preventDefault();
+  // Multi-touch guard: while a pointer is already down, extra fingers must
+  // never reach press() (even when the first tap hit the icon or DAILY button).
+  if (activePointer !== -1 && activePointer !== e.pointerId) return;
+  activePointer = e.pointerId;
+  // On-screen sound toggle: tapping the icon must not also release the comet.
+  const rect = canvas.getBoundingClientRect();
+  if (inSoundIcon(e.clientX - rect.left, e.clientY - rect.top)) {
+    toggleSound();
+    return;
+  }
+  // Daily Challenge button on the title screen (must not release the comet).
+  if (state === STATE.READY && inDailyButton(e.clientX - rect.left, e.clientY - rect.top)) {
+    ensureAudio();
+    startRun("daily");
+    return;
+  }
+  press();
+});
+
+// --- Particles / effects -----------------------------------------------------
+function burstAt(x, y, hue, count, speed) {
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * TAU;
+    const sp = rand(speed * 0.3, speed);
+    const life = rand(0.25, 0.6);
+    particles.push({
+      x, y,
+      vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+      life, maxLife: life,
+      size: rand(1, 3), hue: hue + rand(-20, 20)
+    });
+  }
+}
+
+function addFloater(text, x, y, hue) {
+  floaters.push({ text, x, y, hue, life: 1.2, maxLife: 1.2 });
+}
+
+// --- Update -------------------------------------------------------------------
+function update(dt) {
+  time += dt;
+  worldClock += dt;                                  // run-relative motion clock
+  if (state === STATE.PLAYING) {
+    runClock += dt;                                  // daily recording clock
+    // Combo window: expiring with no capture drops the multiplier to x1.
+    if (comboTimer > 0) {
+      comboTimer -= dt;
+      if (comboTimer <= 0) { comboTimer = 0; comboMult = 1; }
+    }
+  }
+  if (shake > 0) shake = Math.max(0, shake - dt * 30);
+
+  // Particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    p.vx *= 0.97; p.vy *= 0.97;
+    p.life -= dt;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+
+  // Floating texts
+  for (let i = floaters.length - 1; i >= 0; i--) {
+    const f = floaters[i];
+    f.y -= 40 * dt;
+    f.life -= dt;
+    if (f.life <= 0) floaters.splice(i, 1);
+  }
+
+  // Ring pulse decay + dash rotation + variant behaviour
+  for (const r of rings) {
+    r.pulse = Math.max(0, r.pulse - dt * 2.5);
+    r.rot += r.spin * 0.6 * dt;
+    if (r.type === "pulsing") {
+      // Orbit radius breathes RING_PULSE_AMT - release timing matters.
+      r.orbitR = ringRadiusAt(r, worldClock);
+    } else if (r.type === "drifting") {
+      // Slow horizontal slide of RING_DRIFT px - you must lead your shot.
+      r.x = ringCenterXAt(r, worldClock);
+    }
+  }
+
+  if (state === STATE.READY) {
+    // Slow idle orbit behind the title screen.
+    comet.angle += 0.8 * dt;
+    comet.x = rings[0].x + Math.cos(comet.angle) * rings[0].orbitR;
+    comet.y = rings[0].y + Math.sin(comet.angle) * rings[0].orbitR;
+    pushTrail(dt);
+    return;
+  }
+  if (state === STATE.DEAD) {
+    deathTimer -= dt;
+    return;
+  }
+
+  // --- Comet motion ---
+  if (comet.mode === "orbit") {
+    const ring = rings[comet.ringIndex];
+    comet.angle += ring.spin * dt;
+    comet.x = ring.x + Math.cos(comet.angle) * ring.orbitR;
+    comet.y = ring.y + Math.sin(comet.angle) * ring.orbitR;
+    // Shield pickup: sweep past it on the orbit path to collect it.
+    const s = ring.shield;
+    if (s && s.on) {
+      const px = ring.x + Math.cos(s.angle) * ring.orbitR;
+      const py = ring.y + Math.sin(s.angle) * ring.orbitR;
+      if (Math.hypot(comet.x - px, comet.y - py) < 22) {
+        s.on = false;
+        shield = true;
+        burstAt(px, py, 185, 30, 260);
+        addFloater("SHIELD", px, py - 18, 185);
+        sfxSparkle();
+      }
+    }
+  } else {
+    const flyX0 = comet.x, flyY0 = comet.y;   // fly-step start (graze sampling)
+    comet.x += comet.vx * dt;
+    comet.y += comet.vy * dt;
+
+    // Check capture against rings above the current one (skip the one we left).
+    let caught = -1;
+    let caughtDist = 0;
+    for (let i = comet.ringIndex + 1; i < rings.length; i++) {
+      const r = rings[i];
+      // Only test rings near the comet (cheap early-out).
+      if (r.y > comet.y + 200) continue;         // ring far below
+      if (r.y < comet.y - 200) break;            // rings sorted upward; rest are far above
+      const d = Math.hypot(comet.x - r.x, comet.y - r.y);
+      if (Math.abs(d - r.orbitR) <= CAPTURE_TOL) {
+        // Phase rings are intangible while faded below the threshold; skip
+        // so a further ring can still catch (gated on the same run-clock
+        // alpha the renderer shows).
+        if (r.phase && phaseAlpha(r, worldClock) < PHASE_CAPTURE_ALPHA) continue;
+        caught = i;
+        caughtDist = Math.abs(d - r.orbitR);
+        break;
+      }
+    }
+
+    if (caught >= 0) {
+      const r = rings[caught];
+      comet.mode = "orbit";
+      comet.ringIndex = caught;
+      comet.angle = Math.atan2(comet.y - r.y, comet.x - r.x);
+      comet.x = r.x + Math.cos(comet.angle) * r.orbitR;
+      comet.y = r.y + Math.sin(comet.angle) * r.orbitR;
+      r.pulse = 1;
+      shake = 6;
+      if (gameMode === "daily" && replay.length < 2000) replay.push({ t: runClock, a: 1, r: snapRing(r, comet.angle) });
+
+      // Capture score = CAPTURE_POINTS x gold(3x) x combo(x1..x4) x graze
+      // (1 + 0.5 per banked near-miss). Pure arithmetic on live state; ghost
+      // replays are visual-only and never recompute scores, so recordings
+      // made before this change still replay exactly as they were captured.
+      comboMult = comboTimer > 0 ? Math.min(comboMult + 1, 4) : 1;
+      comboTimer = COMBO_WINDOW;
+      const pts = CAPTURE_POINTS * (r.gold ? 3 : 1) * comboMult * (1 + 0.5 * nearMiss);
+      pendingBonus += pts;
+      addFloater((r.gold ? "GOLD +" : "+") + pts, comet.x, comet.y - 42,
+                 r.gold ? GOLD_HUE : r.hue);
+      if (r.gold) burstAt(comet.x, comet.y, GOLD_HUE, 40, 320);  // gold burst
+      nearMiss = 0;                                             // grazes consumed
+
+      const perfect = caughtDist <= PERFECT_TOL;
+      if (perfect) {
+        combo++;
+        const bonus = 10 * combo;
+        pendingBonus += bonus;   // applied after the height floor below
+        addFloater("PERFECT +" + bonus, comet.x, comet.y - 20, 55);
+        burstAt(comet.x, comet.y, 55, 26, 240);
+        shake = 10;
+        sfxChime();
+      } else {
+        sfxDing(combo);          // pitch reflects the streak we just broke
+        combo = 0;
+        burstAt(comet.x, comet.y, r.hue, 14, 160);
+      }
+    } else {
+      // Hazards (mines): contact is lethal (a shield saves you, matching the
+      // off-screen death). Grazing within NEAR_MISS_DIST of the orb's edge
+      // - without touching - flashes CLOSE! and banks a +0.5x bonus for the
+      // next capture. The grazed flag never clears: one trigger per hazard,
+      // and each hazard can only ever be passed once anyway.
+      let hitHazard = false;
+      // Frame-step hardening: dt is clamped at 0.05s (~28px/frame), which can
+      // jump the 12px graze band entirely on a tangential pass. The graze is
+      // therefore also sampled at the fly-step midpoint; contact is lethal at
+      // either sample - if the MIDPOINT itself lands inside the mine the pass
+      // is geometrically lethal and must not be survivable or graze-credited.
+      const midX = (flyX0 + comet.x) / 2, midY = (flyY0 + comet.y) / 2;
+      for (const rr of rings) {
+        if (!rr.hazards) continue;
+        for (const h of rr.hazards) {
+          const edge = Math.hypot(comet.x - h.x, comet.y - h.y) - comet.radius - h.r;
+          const midEdge = Math.hypot(midX - h.x, midY - h.y) - comet.radius - h.r;
+          if (edge <= 0 || midEdge <= 0) {
+            hitHazard = true;
+            break;
+          }
+          if ((edge <= NEAR_MISS_DIST || midEdge <= NEAR_MISS_DIST) && !h.grazed) {
+            h.grazed = true;
+            nearMiss = Math.min(nearMiss + 1, NEAR_MISS_MAX);
+            addFloater("CLOSE! +" + (nearMiss * 0.5).toFixed(1) + "x",
+                       comet.x, comet.y - 26, 40);
+            burstAt(comet.x, comet.y, 40, 6, 120);
+            sfxNear();
+          }
+        }
+        if (hitHazard) break;
+      }
+      if (hitHazard) {
+        if (shield) useShield();
+        else die();
+      } else {
+        // Missed ring: the comet climbed fully above a ring's capture band
+        // without being caught (e.g. it phased out) -> combo drops to x1.
+        for (let i = comet.ringIndex + 1; i < rings.length; i++) {
+          const r = rings[i];
+          if (r.y < comet.y - 200) break;      // rings still above: not passed yet
+          if (comet.y < r.y - (r.orbitR + CAPTURE_TOL)) {
+            if (comboMult > 1) addFloater("COMBO LOST", comet.x, comet.y - 30, 350);
+            comboMult = 1;
+            comboTimer = 0;
+            break;
+          }
+        }
+      }
+      // Death check: flew off the left/right edges, or below the visible screen.
+      if (state === STATE.PLAYING &&
+          (comet.x < -60 || comet.x > W + 60 || sy(comet.y) > H + 40)) {
+        if (shield) useShield();
+        else die();
+      }
+    }
+  }
+
+  if (gameMode === "daily") updateGhost(dt);
+
+  pushTrail(dt);
+
+  // Score from height (world y decreases upward, start ring at y = 0).
+  const heightM = Math.max(0, -comet.y * METERS_PER_PX);
+  if (heightM > score) score = heightM;
+  if (pendingBonus > 0) { score += pendingBonus; pendingBonus = 0; }
+
+  // Camera: keep the comet roughly 60% down the screen, never scroll down.
+  const targetCam = comet.y - H * 0.6;
+  if (targetCam < cameraY) cameraY += (targetCam - cameraY) * Math.min(1, dt * 6);
+
+  // Recycle rings: when the comet climbs, drop old rings and append new ones above.
+  while (rings.length > 0 && rings[0].y > cameraY + H + 300) {
+    rings.shift();
+    comet.ringIndex = Math.max(0, comet.ringIndex - 1);
+    rings.push(makeRing(ringGen++, rings[rings.length - 1]));
+  }
+}
+
+// Trail bookkeeping: append the comet's position, expire old points.
+function pushTrail(dt) {
+  trail.push({ x: comet.x, y: comet.y, life: 0.5 });
+  if (trail.length > 80) trail.shift();
+  for (let i = trail.length - 1; i >= 0; i--) {
+    trail[i].life -= dt;
+    if (trail[i].life <= 0) trail.splice(i, 1);
+  }
+}
+
+// --- Drawing --------------------------------------------------------------------
+function drawStars(dt) {
+  for (const s of stars) {
+    s.tw += dt * 3;
+    const alpha = 0.35 + 0.25 * Math.sin(s.tw) + 0.25;
+    ctx.fillStyle = `hsla(${s.hue}, 80%, 75%, ${alpha})`;
+    ctx.fillRect(s.x, s.y, s.size, s.size);
+  }
+}
+
+function scrollStars() {
+  // Move stars proportionally to camera movement for a parallax feel.
+  const dy = cameraY - lastCameraY;
+  lastCameraY = cameraY;
+  for (const s of stars) {
+    s.y -= dy * s.depth;
+    if (s.y > H + 4) { s.y -= H + 8; s.x = Math.random() * W; }
+    if (s.y < -4)    { s.y += H + 8; s.x = Math.random() * W; }
+  }
+}
+
+function drawRing(r) {
+  const y = sy(r.y);
+  if (y < -120 || y > H + 120) return;
+
+  ctx.save();
+  ctx.translate(r.x, y);
+  // Phase rings fade on the run clock; capture is gated on the very same
+  // alpha, so what you see is what you can catch. The 0.03 floor leaves a
+  // faint trace of the path when fully phased out (gold+phase keeps its hue).
+  if (r.phase) ctx.globalAlpha = Math.max(phaseAlpha(r, worldClock), 0.03);
+
+  // Glow ring (the orbit path); gold rings draw slightly bolder.
+  const glow = 0.5 + r.pulse * 0.5;
+  ctx.strokeStyle = `hsla(${r.hue}, 95%, 62%, ${glow})`;
+  ctx.lineWidth = (r.gold ? 3.5 : 2.5) + r.pulse * 3;
+  ctx.shadowColor = `hsla(${r.hue}, 100%, 60%, 0.9)`;
+  ctx.shadowBlur = 14 + r.pulse * 26;
+  ctx.beginPath();
+  ctx.arc(0, 0, r.orbitR, 0, TAU);
+  ctx.stroke();
+  if (r.gold) {
+    // Gold flair: extra halo circle reusing the glow state already set.
+    ctx.lineWidth = 1.5 + r.pulse * 2;
+    ctx.beginPath();
+    ctx.arc(0, 0, r.orbitR + 7, 0, TAU);
+    ctx.stroke();
+  }
+
+  // Rotating dashed inner ring for spin-direction readability
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = `hsla(${r.hue}, 90%, 75%, 0.35)`;
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([10, 14]);
+  ctx.lineDashOffset = -r.rot * r.orbitR;
+  ctx.beginPath();
+  ctx.arc(0, 0, r.orbitR - 9, 0, TAU);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Central star: pulsing core
+  const pulse = 1 + 0.18 * Math.sin(time * 3 + r.hue);
+  ctx.shadowColor = `hsla(${r.hue}, 100%, 70%, 1)`;
+  ctx.shadowBlur = 22;
+  ctx.fillStyle = `hsla(${r.hue}, 100%, 78%, 1)`;
+  ctx.beginPath();
+  ctx.arc(0, 0, 7 * pulse + r.pulse * 5, 0, TAU);
+  ctx.fill();
+
+  // Shield power-up: a spinning, breathing cyan diamond on the orbit path.
+  if (r.shield && r.shield.on) {
+    const a = r.shield.angle;
+    const px = Math.cos(a) * r.orbitR;
+    const py = Math.sin(a) * r.orbitR;
+    const sz = 9 + Math.sin(time * 5) * 1.5;
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.rotate(time * 2.5);
+    ctx.strokeStyle = "hsla(185, 100%, 70%, 0.95)";
+    ctx.fillStyle = "hsla(185, 100%, 80%, 0.35)";
+    ctx.lineWidth = 2;
+    ctx.shadowColor = "hsla(185, 100%, 65%, 1)";
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.moveTo(0, -sz);
+    ctx.lineTo(sz, 0);
+    ctx.lineTo(0, sz);
+    ctx.lineTo(-sz, 0);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  ctx.restore();
+}
+
+// Neon mines. Glow state is set once for the whole group (batched), and the
+// spin/breathing is a pure function of the global clock - no per-frame state.
+function drawHazards() {
+  ctx.save();
+  ctx.strokeStyle = "hsla(330, 100%, 68%, 0.9)";
+  ctx.fillStyle = "hsla(330, 100%, 55%, 0.3)";
+  ctx.lineWidth = 2;
+  ctx.shadowColor = "hsla(330, 100%, 60%, 0.9)";
+  ctx.shadowBlur = 13;
+  for (const r of rings) {
+    if (!r.hazards) continue;
+    for (const h of r.hazards) {
+      const y = sy(h.y);
+      if (y < -60 || y > H + 60) continue;
+      const s = h.r * (1 + 0.12 * Math.sin(time * 5 + h.spin));
+      ctx.save();
+      ctx.translate(h.x, y);
+      ctx.rotate(time * 1.6 + h.spin);
+      ctx.beginPath();
+      for (let k = 0; k < 8; k++) {
+        const a = (k * Math.PI) / 4;
+        const rad = k % 2 === 0 ? s : s * 0.4;
+        const px = Math.cos(a) * rad, py = Math.sin(a) * rad;
+        if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+}
+
+function drawTrail() {
+  // Draw the trail as tapered glowing segments, oldest = thinnest/faintest.
+  for (let i = 1; i < trail.length; i++) {
+    const a = trail[i - 1], b = trail[i];
+    const t = b.life / 0.5;
+    ctx.strokeStyle = `hsla(190, 100%, 65%, ${t * 0.7})`;
+    ctx.lineWidth = t * 6;
+    ctx.lineCap = "round";
+    ctx.shadowColor = "hsla(190, 100%, 60%, 0.8)";
+    ctx.shadowBlur = 8 * t;
+    ctx.beginPath();
+    ctx.moveTo(sx(a.x), sy(a.y));
+    ctx.lineTo(sx(b.x), sy(b.y));
+    ctx.stroke();
+  }
+  ctx.shadowBlur = 0;
+}
+
+// Translucent magenta ghost comet + dim trail, replaying the best daily run.
+function drawGhost() {
+  if (!ghost.active) return;
+  for (let i = 1; i < ghost.trail.length; i++) {
+    const a = ghost.trail[i - 1], b = ghost.trail[i];
+    const t = b.life / 0.5;
+    ctx.strokeStyle = `hsla(290, 100%, 70%, ${t * 0.35})`;
+    ctx.lineWidth = t * 4;
+    ctx.lineCap = "round";
+    ctx.shadowColor = "hsla(290, 100%, 60%, 0.5)";
+    ctx.shadowBlur = 6 * t;
+    ctx.beginPath();
+    ctx.moveTo(sx(a.x), sy(a.y));
+    ctx.lineTo(sx(b.x), sy(b.y));
+    ctx.stroke();
+  }
+  ctx.shadowColor = "hsla(290, 100%, 70%, 0.8)";
+  ctx.shadowBlur = 14;
+  ctx.fillStyle = "hsla(290, 100%, 82%, 0.45)";
+  ctx.beginPath();
+  ctx.arc(sx(ghost.x), sy(ghost.y), 6, 0, TAU);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function drawComet() {
+  const x = sx(comet.x), y = sy(comet.y);
+  ctx.save();
+  ctx.shadowColor = "hsla(190, 100%, 70%, 1)";
+  ctx.shadowBlur = 20;
+  ctx.fillStyle = "#eaffff";
+  ctx.beginPath();
+  ctx.arc(x, y, comet.radius, 0, TAU);
+  ctx.fill();
+  // Shield: a breathing cyan ring that lasts until it saves you once.
+  if (shield) {
+    const rr = comet.radius + 9 + Math.sin(time * 6) * 2;
+    ctx.strokeStyle = "hsla(185, 100%, 70%, 0.9)";
+    ctx.lineWidth = 2;
+    ctx.shadowColor = "hsla(185, 100%, 65%, 1)";
+    ctx.shadowBlur = 16;
+    ctx.beginPath();
+    ctx.arc(x, y, rr, 0, TAU);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// Capture-combo multiplier: glowing text next to the orb (only from x2 up).
+// One shadow setup for the single text, restored with the save/restore pair.
+function drawComboBadge() {
+  if (state !== STATE.PLAYING || comboMult < 2) return;
+  const x = sx(comet.x) + 22, y = sy(comet.y) - 16;
+  const hue = comboMult >= 4 ? 55 : comboMult === 3 ? 300 : 190;
+  const size = Math.round((16 + comboMult) * (1 + 0.08 * Math.sin(time * 9)));
+  ctx.save();
+  ctx.font = "bold " + size + "px 'Courier New', monospace";
+  ctx.textAlign = "center";
+  ctx.fillStyle = `hsla(${hue}, 100%, 72%, 0.95)`;
+  ctx.shadowColor = `hsla(${hue}, 100%, 60%, 0.9)`;
+  ctx.shadowBlur = 12;
+  ctx.fillText("x" + comboMult, x, y);
+  ctx.restore();
+}
+
+function drawParticles() {
+  for (const p of particles) {
+    const t = p.life / p.maxLife;
+    ctx.fillStyle = `hsla(${p.hue}, 100%, ${55 + t * 35}%, ${t})`;
+    ctx.fillRect(sx(p.x) - p.size / 2, sy(p.y) - p.size / 2, p.size, p.size * (1 + t));
+  }
+}
+
+function drawFloaters() {
+  ctx.textAlign = "center";
+  for (const f of floaters) {
+    const t = f.life / f.maxLife;
+    ctx.font = "bold 20px 'Courier New', monospace";
+    ctx.fillStyle = `hsla(${f.hue}, 100%, 70%, ${t})`;
+    ctx.shadowColor = `hsla(${f.hue}, 100%, 60%, ${t})`;
+    ctx.shadowBlur = 12;
+    ctx.fillText(f.text, sx(f.x), sy(f.y));
+  }
+  ctx.shadowBlur = 0;
+}
+
+// On-screen sound toggle (top-right corner), also mapped to the M key.
+const sndIcon = { x: 0, y: 0, w: 46, h: 38 };
+function inSoundIcon(px, py) {
+  return px >= sndIcon.x && px <= sndIcon.x + sndIcon.w &&
+         py >= sndIcon.y && py <= sndIcon.y + sndIcon.h;
+}
+function drawSoundIcon() {
+  sndIcon.x = W - sndIcon.w - 14;
+  sndIcon.y = 14;
+  const cx = sndIcon.x + 12, cy = sndIcon.y + sndIcon.h / 2;
+  const col = soundOn ? "hsla(185, 100%, 70%, 0.9)" : "rgba(150, 160, 190, 0.6)";
+  ctx.save();
+  ctx.strokeStyle = col;
+  ctx.fillStyle = col;
+  ctx.lineWidth = 2;
+  ctx.shadowColor = col;
+  ctx.shadowBlur = soundOn ? 10 : 0;
+  // Speaker body
+  ctx.beginPath();
+  ctx.moveTo(cx - 8, cy - 4);
+  ctx.lineTo(cx - 3, cy - 4);
+  ctx.lineTo(cx + 3, cy - 9);
+  ctx.lineTo(cx + 3, cy + 9);
+  ctx.lineTo(cx - 3, cy + 4);
+  ctx.lineTo(cx - 8, cy + 4);
+  ctx.closePath();
+  ctx.fill();
+  if (soundOn) {
+    ctx.beginPath();
+    ctx.arc(cx + 4, cy, 7, -0.9, 0.9);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx + 4, cy, 11, -0.8, 0.8);
+    ctx.stroke();
+  } else {
+    ctx.strokeStyle = "hsla(350, 100%, 70%, 0.9)";
+    ctx.shadowColor = "hsla(350, 100%, 70%, 0.8)";
+    ctx.beginPath();
+    ctx.moveTo(cx + 6, cy - 7);
+    ctx.lineTo(cx + 16, cy + 7);
+    ctx.stroke();
+  }
+  ctx.restore();
+  ctx.font = "10px 'Courier New', monospace";
+  ctx.textAlign = "right";
+  ctx.fillStyle = "rgba(190, 255, 255, 0.4)";
+  ctx.fillText("M", sndIcon.x + sndIcon.w, sndIcon.y + sndIcon.h);
+}
+
+// On-screen DAILY button (title screen only), mapped to the D key as well.
+const dailyBtn = { x: 0, y: 0, w: 190, h: 42 };
+function inDailyButton(px, py) {
+  return px >= dailyBtn.x && px <= dailyBtn.x + dailyBtn.w &&
+         py >= dailyBtn.y && py <= dailyBtn.y + dailyBtn.h;
+}
+
+// Reused status-line buffer: avoids a per-frame array allocation.
+const hudStatus = [];
+
+function drawHUD() {
+  ctx.textAlign = "left";
+  ctx.font = "bold 26px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(190, 255, 255, 0.95)";
+  ctx.shadowColor = "rgba(0, 255, 255, 0.6)";
+  ctx.shadowBlur = 10;
+  ctx.fillText(Math.floor(score) + " m", 20, 42);
+  ctx.shadowBlur = 0;
+
+  ctx.font = "14px 'Courier New', monospace";
+  if (gameMode === "daily") {
+    ctx.fillStyle = "hsla(290, 100%, 75%, 0.8)";
+    let line = "DAILY #" + dailyNumber(todayStr()) + "  ·  BEST " + dailyBest + " m";
+    if (dailyStreakShown > 0) line += "  ·  STREAK " + dailyStreakShown;
+    if (ghost.active) line += "  ·  GHOST";
+    ctx.fillText(line, 20, 66);
+  } else {
+    ctx.fillStyle = "rgba(190, 255, 255, 0.55)";
+    ctx.fillText("BEST " + highscore + " m", 20, 66);
+  }
+  // Status stack: perfect streak, shield, pending graze bonus.
+  const status = hudStatus;
+  status.length = 0;
+  if (combo >= 2) status.push({ t: "PERFECT x" + combo, c: "hsla(55, 100%, 70%, 0.95)" });
+  if (shield) status.push({ t: "SHIELD ACTIVE", c: "hsla(185, 100%, 70%, 0.95)" });
+  if (nearMiss > 0) status.push({ t: "GRAZE +" + (nearMiss * 0.5).toFixed(1) + "x", c: "hsla(40, 100%, 70%, 0.95)" });
+  for (let i = 0; i < status.length; i++) {
+    ctx.fillStyle = status[i].c;
+    ctx.fillText(status[i].t, 20, 88 + i * 22);
+  }
+
+  // Off-screen target arrow: point to the next ring if it's above the view.
+  if (state === STATE.PLAYING) {
+    const next = rings[comet.ringIndex + 1];
+    if (next && sy(next.y) < 0) {
+      const x = clamp(next.x, 30, W - 30);
+      const y = 26;
+      ctx.fillStyle = `hsla(${next.hue}, 100%, 70%, ${0.5 + 0.4 * Math.sin(time * 6)})`;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 10);
+      ctx.lineTo(x - 8, y + 4);
+      ctx.lineTo(x + 8, y + 4);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+}
+
+function drawTitleScreen() {
+  ctx.textAlign = "center";
+  const cy = H * 0.42;
+
+  ctx.font = "bold 64px 'Courier New', monospace";
+  const flicker = 0.85 + 0.15 * Math.sin(time * 2.2);
+  ctx.fillStyle = `rgba(120, 255, 255, ${flicker})`;
+  ctx.shadowColor = "rgba(0, 255, 255, 0.9)";
+  ctx.shadowBlur = 30;
+  ctx.fillText("NEON ORBIT", W / 2, cy);
+
+  ctx.shadowBlur = 0;
+  ctx.font = "16px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(200, 200, 255, 0.75)";
+  ctx.fillText("tap / click / space  to release", W / 2, cy + 50);
+  ctx.fillText("M toggles sound · D daily · ESC menu", W / 2, cy + 98);
+  ctx.fillText("catch the next ring · climb forever", W / 2, cy + 76);
+
+  ctx.fillStyle = `rgba(255, 220, 120, ${0.5 + 0.5 * Math.sin(time * 4)})`;
+  ctx.font = "bold 20px 'Courier New', monospace";
+  ctx.fillText("TAP TO START", W / 2, cy + 130);
+  ctx.shadowBlur = 0;
+
+  // Daily Challenge button: deterministic seeded run, same world for everyone.
+  dailyBtn.w = clamp(W * 0.45, 170, 280);
+  dailyBtn.h = 42;
+  dailyBtn.x = W / 2 - dailyBtn.w / 2;
+  dailyBtn.y = Math.min(cy + 150, H - dailyBtn.h - 40);   // keep on short screens
+  const btnGlow = 0.55 + 0.25 * Math.sin(time * 3);
+  ctx.strokeStyle = `hsla(290, 100%, 70%, ${btnGlow})`;
+  ctx.shadowColor = "hsla(290, 100%, 60%, 0.8)";
+  ctx.shadowBlur = 14;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(dailyBtn.x, dailyBtn.y, dailyBtn.w, dailyBtn.h);
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "hsla(290, 100%, 78%, 0.95)";
+  ctx.font = "bold 18px 'Courier New', monospace";
+  ctx.fillText("DAILY #" + dailyNumber(todayStr()), W / 2, dailyBtn.y + 27);
+  ctx.font = "13px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(220, 190, 255, 0.6)";
+  const bits = ["best " + dailyBest + " m"];
+  if (dailyStreakShown > 0) bits.push("streak " + dailyStreakShown);
+  if (dailyBest > 0) bits.push("ghost ready");
+  ctx.fillText(bits.join("  ·  "), W / 2, dailyBtn.y + dailyBtn.h + 22);
+  ctx.shadowBlur = 0;
+}
+
+function drawDeathScreen() {
+  ctx.fillStyle = "rgba(5, 3, 15, 0.55)";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.textAlign = "center";
+  ctx.font = "bold 48px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(255, 90, 140, 0.95)";
+  ctx.shadowColor = "rgba(255, 60, 120, 0.8)";
+  ctx.shadowBlur = 24;
+  ctx.fillText("LOST IN SPACE", W / 2, H * 0.4);
+
+  ctx.shadowBlur = 0;
+  ctx.font = "bold 30px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(190, 255, 255, 0.95)";
+  ctx.fillText(Math.floor(score) + " m", W / 2, H * 0.4 + 54);
+
+  const isBest = gameMode === "daily"
+    ? Math.floor(score) >= dailyBest && score > 0
+    : Math.floor(score) >= highscore && score > 0;
+  ctx.font = "16px 'Courier New', monospace";
+  ctx.fillStyle = "rgba(200, 200, 255, 0.7)";
+  if (gameMode === "daily") {
+    ctx.fillText(isBest ? "★ NEW DAILY BEST ★" : "DAILY BEST " + dailyBest + " m", W / 2, H * 0.4 + 84);
+    if (dailyStreakShown > 0) {
+      ctx.fillStyle = "hsla(290, 100%, 75%, 0.8)";
+      ctx.fillText("STREAK " + dailyStreakShown, W / 2, H * 0.4 + 104);
+    }
+  } else {
+    ctx.fillText(isBest ? "★ NEW HIGHSCORE ★" : "BEST " + highscore + " m", W / 2, H * 0.4 + 84);
+  }
+
+  if (deathTimer <= 0) {
+    ctx.fillStyle = `rgba(255, 220, 120, ${0.5 + 0.5 * Math.sin(time * 4)})`;
+    ctx.font = "bold 20px 'Courier New', monospace";
+    ctx.fillText("TAP TO RETRY", W / 2, H * 0.4 + 140);
+    ctx.font = "13px 'Courier New', monospace";
+    ctx.fillStyle = "rgba(190, 200, 230, 0.5)";
+    ctx.fillText("ESC for menu · D for daily", W / 2, H * 0.4 + 162);
+  }
+  ctx.shadowBlur = 0;
+}
+
+// --- Main loop -----------------------------------------------------------------
+let lastTime = performance.now();
+function frame(now) {
+  const rawDt = Math.min((now - lastTime) / 1000, 0.05); // clamp to avoid tunneling on tab-switch
+  lastTime = now;
+
+  // Shield-shatter slow-mo: game time runs at 30% while the timer decays in
+  // real time, so the beat is brief and self-terminating.
+  if (slowmo > 0) slowmo = Math.max(0, slowmo - rawDt);
+  update(rawDt * (slowmo > 0 ? 0.3 : 1));
+
+  scrollStars();
+
+  // Render with screen shake offset
+  ctx.save();
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  if (shake > 0) {
+    ctx.translate(rand(-shake, shake), rand(-shake, shake));
+  }
+
+  // Background: deep space vertical gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, "#0a0620");
+  grad.addColorStop(0.6, "#05030f");
+  grad.addColorStop(1, "#020108");
+  ctx.fillStyle = grad;
+  ctx.fillRect(-30, -30, W + 60, H + 60);
+
+  drawStars(rawDt);
+
+  // World objects
+  for (const r of rings) drawRing(r);
+  drawHazards();
+  drawTrail();
+  if (gameMode === "daily") drawGhost();
+  drawParticles();
+  if (state !== STATE.DEAD || deathTimer > 0.4) { // hide comet right at death
+    drawComet();
+    drawComboBadge();
+  }
+  drawFloaters();
+
+  ctx.restore(); // undo shake
+
+  // UI drawn without shake
+  if (state === STATE.PLAYING) drawHUD();
+  if (state === STATE.READY) drawTitleScreen();
+  if (state === STATE.DEAD) { drawHUD(); drawDeathScreen(); }
+  drawSoundIcon();
+
+  requestAnimationFrame(frame);
+}
+
+// Boot: show a live preview world behind the title screen.
+function setupPreview() {
+  state = STATE.READY;
+  gameMode = "normal";
+  ringRnd = Math.random;
+  hazRnd = Math.random;
+  ghost.active = false;
+  refreshDailyInfo();
+  buildWorld();
+  comet.mode = "orbit";
+  comet.ringIndex = 0;
+  comet.angle = -Math.PI / 2;
+  comet.x = rings[0].x;
+  comet.y = rings[0].y - rings[0].orbitR;
+  cameraY = rings[0].y - H * 0.65;
+  lastCameraY = cameraY;
+}
+setupPreview();
+
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Token Pricing — Databricks vs Platforms vs 原廠</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --panel:#ffffff; --panel2:#f0f2f8; --line:#e3e7f0;
+    --txt:#1a2233; --dim:#6b7688; --acc:#2563eb; --good:#0a9d58; --warn:#e08a00; --bad:#e5484d;
+    --dbx:#ff3621; --orig:#7c3aed;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,'SF Pro','Segoe UI',Roboto,'Noto Sans TC',sans-serif;font-size:13.5px;line-height:1.45}
+  .wrap{max-width:860px;margin:0 auto;padding:14px 10px 50px}
+  h1{font-size:19px;margin-bottom:2px;letter-spacing:-.3px}
+  .sub{color:var(--dim);font-size:11.5px;margin-bottom:10px}
+  .sub a{color:var(--acc);text-decoration:none}
+
+  /* provider toggle — trendy pill segmented control */
+  .toggles{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;position:sticky;top:8px;z-index:10;background:rgba(246,247,251,.92);backdrop-filter:blur(8px);padding:6px 0}
+  .toggles button{border:1px solid var(--line);background:var(--panel);color:var(--dim);padding:6px 14px;border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s}
+  .toggles button.on{background:var(--txt);color:#fff;border-color:var(--txt)}
+  .toggles button:hover{border-color:var(--txt);color:var(--txt)}
+  .toggles button.on:hover{color:#fff}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(20,30,60,.06)}
+  .card h2{font-size:14.5px;margin-bottom:2px;display:flex;align-items:center;gap:8px;letter-spacing:-.2px}
+  .mtag{display:inline-block;font-size:9.5px;padding:1px 8px;border-radius:999px;font-weight:700}
+  .mtag.oss{background:#e5f6ee;color:var(--good)}
+  .mtag.flag{background:#e8efff;color:var(--acc)}
+  .mnote{font-size:10.5px;color:var(--dim);margin-bottom:8px}
+
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th,td{padding:5px 7px;text-align:right;border-bottom:1px solid var(--line);font-size:12.5px;white-space:nowrap}
+  th{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+  td:first-child,th:first-child{text-align:left}
+  tr:last-child td{border-bottom:none}
+  .price-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  .dbx-row td{background:#fff4f1}
+  .dbx-name{color:var(--dbx);font-weight:700}
+  .orig-name{color:var(--orig);font-weight:600}
+  .best-tag{background:#e5f6ee;color:var(--good);font-size:9px;padding:1px 7px;border-radius:999px;margin-left:6px;font-weight:700}
+  .nope{color:var(--dim);opacity:.5}
+  .mnote-inline{font-size:10.5px;color:var(--dim);font-weight:400;white-space:normal;display:inline}
+  .regions{font-size:10px;color:var(--acc);white-space:normal;display:block;max-width:200px;line-height:1.3}
+
+  td input.p{width:64px;background:transparent;border:none;border-bottom:1px dashed #c6cede;color:var(--txt);font:inherit;font-size:12.5px;text-align:right;padding:1px 2px;font-variant-numeric:tabular-nums}
+  td input.p:focus{outline:none;border-bottom:2px solid var(--acc)}
+  td input.p.dirty{border-bottom:2px solid var(--warn)}
+
+  .legend{margin-top:6px;font-size:10px;color:var(--dim)}
+  .legend b{color:var(--txt)}
+
+  /* mobile: ultra-condensed */
+  @media(max-width:760px){
+    .wrap{padding:10px 8px 40px}
+    .price-table-wrap{overflow:visible}
+    table,thead,tbody,tr,td,th{display:block}
+    thead{display:none}
+    tr{border-radius:8px;padding:6px 8px;margin-bottom:6px;background:var(--panel2)}
+    tr.dbx-row{background:#fff4f1;border:1px solid #ffd6cd}
+    td{display:flex;justify-content:space-between;align-items:center;gap:10px;border:none;padding:2px 0;white-space:normal}
+    td:before{content:attr(data-l);color:var(--dim);font-size:10.5px;flex-shrink:0}
+    td.plat{font-weight:700;font-size:13px;justify-content:flex-start}
+    td.plat:before{display:none}
+    .regions{max-width:none;text-align:right;margin-left:auto}
+    td input.p{width:88px;font-size:13px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>⚡ LLM Token Pricing</h1>
+  <div class="sub">Databricks vs 平台 vs 原廠 · <span id="fetched"></span> · <a href="/">demo.peteragility.com</a> · ✏️ 價格可 edit（存 localStorage）</div>
+  <div class="toggles" id="toggles"></div>
+  <div id="app"></div>
+  <div class="sub" id="srcLine" style="margin-top:12px"></div>
+</div>
+
+<script>
+let DATA = {fetched_at:"", sources:[], models:{}};
+const PLATFORMS = ["databricks","bedrock","azure_foundry","fireworks","gcloud","alicloud"];
+const PLABEL = {official:"原廠", databricks:"Databricks", bedrock:"Bedrock", azure_foundry:"Azure", fireworks:"Fireworks", gcloud:"GCP", alicloud:"AliCloud"};
+const GROUPS = [
+  {id:'oss', label:'🔓 OSS', test:m=>m.oss},
+  {id:'anthropic', label:'🟣 Anthropic', test:m=>mk(m).startsWith('anthropic/')},
+  {id:'openai', label:'🟢 OpenAI', test:m=>mk(m).startsWith('openai/')},
+  {id:'google', label:'🔵 Gemini', test:m=>mk(m).startsWith('google/')},
+  {id:'all', label:'☰ All', test:m=>true},
+];
+let curGroup='oss', edits={};
+const LS_KEY='llm-pricing-edits-v2';
+function mk(m){ return m._key; }
+
+async function boot(){
+  try{ DATA = await (await fetch('data.json')).json(); }
+  catch(e){ document.getElementById('app').innerHTML='<p style="color:var(--bad)">data.json not found</p>'; return; }
+  for(const [k,m] of Object.entries(DATA.models)) m._key=k;
+  edits = JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+  applyEdits();
+  document.getElementById('fetched').textContent = DATA.fetched_at?.slice(0,10)||'';
+  const seen=new Set();
+  document.getElementById('srcLine').innerHTML = 'Sources: '+DATA.sources.filter(s=>{try{const h=new URL(s.startsWith('http')?s:'https://'+s).hostname;if(seen.has(h))return false;seen.add(h);return true}catch(e){return false}}).map(s=>`<a href="${s}" target="_blank">${new URL(s.startsWith('http')?s:'https://'+s).hostname}</a>`).join(' · ');
+  renderToggles(); render();
+}
+function applyEdits(){
+  for(const [key,val] of Object.entries(edits)){
+    const [mkK,pl,f]=key.split('|');
+    const cell=DATA.models[mkK]&&DATA.models[mkK].platforms[pl];
+    if(cell&&typeof cell==='object'&&!cell.not_offered) cell[f]=val===''?null:+val;
+  }
+}
+function fv(cell,f){ return cell&&!cell.not_offered&&cell[f]!=null?cell[f]:null; }
+function renderToggles(){
+  document.getElementById('toggles').innerHTML = GROUPS.map(g=>`<button class="${g.id===curGroup?'on':''}" onclick="setGroup('${g.id}')">${g.label}</button>`).join('');
+}
+function setGroup(id){ curGroup=id; renderToggles(); render(); }
+function officialCell(m){
+  if(m.platforms.official&&!m.platforms.official.not_offered) return m.platforms.official;
+  return {in:m.in,out:m.out,cache_read:m.cache_read,cache_write:m.cache_write,regions:'原廠 direct API'};
+}
+function cellInput(mkK,pl,cell,f){
+  const v=fv(cell,f);
+  return `<input class="p" data-k="${mkK}|${pl}|${f}" value="${v==null?'':v}" placeholder="—">`;
+}
+function platformRow(mkK,pl,cell,isBest,isDbx,isOrig){
+  const platCls=isDbx?'dbx-row':'';
+  const nameCls=isDbx?'dbx-name':(isOrig?'orig-name':'');
+  const badge=isBest&&!isDbx&&!isOrig?'<span class="best-tag">BEST</span>':(isDbx?'<span class="best-tag" style="background:#ffe4de;color:var(--dbx)">基準</span>':'');
+  if(!cell||cell.not_offered){
+    return `<tr class="${platCls}">
+      <td class="plat" data-l="Platform"><span class="${nameCls}">${PLABEL[pl]}</span>${badge}</td>
+      <td data-l="Regions" class="nope">—</td>
+      <td colspan="4" data-l="Status" class="nope">不提供</td>
+    </tr>`;
+  }
+  return `<tr class="${platCls}">
+    <td class="plat" data-l="Platform"><span class="${nameCls}">${PLABEL[pl]}</span>${badge}</td>
+    <td data-l="Regions"><span class="regions">${cell.regions||'—'}</span></td>
+    <td data-l="In $/M">${cellInput(mkK,pl,cell,'in')}</td>
+    <td data-l="Out $/M">${cellInput(mkK,pl,cell,'out')}</td>
+    <td data-l="Cache R $/M">${cellInput(mkK,pl,cell,'cache_read')}</td>
+    <td data-l="Cache W $/M">${cellInput(mkK,pl,cell,'cache_write')}</td>
+  </tr>`;
+}
+function render(){
+  let models = Object.values(DATA.models).filter(m=>{
+    const g=GROUPS.find(g=>g.id===curGroup);
+    return g&&g.test(m);
+  });
+  let html='';
+  for(const m of models){
+    let bestPl=null,bestIn=null;
+    for(const pl of PLATFORMS){
+      if(pl==='databricks')continue;
+      const i=fv(m.platforms[pl],'in');
+      if(i!=null&&(bestIn==null||i<bestIn)){bestIn=i;bestPl=pl;}
+    }
+    let rows=platformRow(m._key,'official',officialCell(m),false,false,true);
+    rows+=platformRow(m._key,'databricks',m.platforms.databricks,false,true,false);
+    for(const pl of PLATFORMS){
+      if(pl==='databricks')continue;
+      rows+=platformRow(m._key,pl,m.platforms[pl],pl===bestPl,false,false);
+    }
+    html+=`<div class="card">
+      <h2>${m._key} <span class="mtag ${m.oss?'oss':'flag'}">${m.oss?'OSS':'FLAGSHIP'}</span></h2>
+      ${m.note?`<div class="mnote">${m.note}</div>`:''}
+      <div class="price-table-wrap"><table>
+        <thead><tr><th>Platform</th><th>Regions</th><th>In $/M</th><th>Out $/M</th><th>Cache R</th><th>Cache W</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>
+    </div>`;
+  }
+  document.getElementById('app').innerHTML = html || '<p style="color:var(--dim)">no models in this group</p>';
+  bindInputs();
+}
+function bindInputs(){
+  document.querySelectorAll('input.p').forEach(el=>{
+    el.addEventListener('change',()=>{
+      const [mkK,pl,f]=el.dataset.k.split('|');
+      edits[el.dataset.k]=el.value;
+      localStorage.setItem(LS_KEY,JSON.stringify(edits));
+      el.classList.add('dirty');
+      const cell=DATA.models[mkK].platforms[pl];
+      if(cell&&!cell.not_offered)cell[f]=el.value===''?null:+el.value;
+    });
+  });
+}
+boot();
+</script>
+</body>
+</html>

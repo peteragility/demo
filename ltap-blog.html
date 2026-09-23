@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTAP: The End of the 40-Year Database Divide | Peter Chan</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --heading: #f0f6fc;
+    --accent: #ff6b35;
+    --link: #58a6ff;
+    --quote: #8b949e;
+    --code-bg: #1c2128;
+    --tag-bg: #1f6feb22;
+    --tag-border: #1f6feb55;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    line-height: 1.8;
+    font-size: 17px;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Top bar */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+  .topbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar a {
+    color: var(--link);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .topbar a:hover { text-decoration: underline; }
+  .topbar .logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .topbar .logo span { color: var(--accent); }
+
+  /* Hero */
+  .hero {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid var(--tag-border);
+    background: var(--tag-bg);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--link);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    color: var(--heading);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .hero .subtitle {
+    font-size: 1.15rem;
+    color: var(--quote);
+    margin-bottom: 24px;
+  }
+  .hero .meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--quote);
+  }
+  .hero .meta .author {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .hero .meta .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #f7c948);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #000;
+    font-size: 16px;
+  }
+
+  /* Article */
+  .article {
+    padding: 48px 0;
+  }
+  .article h2 {
+    font-size: 1.6rem;
+    color: var(--heading);
+    margin-top: 48px;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-size: 1.2rem;
+    color: var(--heading);
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+  .article p {
+    margin-bottom: 20px;
+  }
+  .article strong {
+    color: var(--heading);
+    font-weight: 600;
+  }
+  .article em {
+    color: var(--text);
+    font-style: italic;
+  }
+  .article a {
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid var(--link);
+    border-bottom-color: transparent;
+    transition: border-color 0.2s;
+  }
+  .article a:hover { border-bottom-color: var(--link); }
+
+  /* Blockquote */
+  .article blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 12px 20px;
+    margin: 24px 0;
+    background: var(--card);
+    border-radius: 0 8px 8px 0;
+    color: var(--quote);
+    font-style: italic;
+  }
+  .article blockquote strong { color: var(--text); }
+
+  /* Code */
+  .article code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    color: #f0883e;
+  }
+  .article pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 24px 0;
+  }
+  .article pre code {
+    background: none;
+    padding: 0;
+    color: var(--text);
+  }
+
+  /* List */
+  .article ul, .article ol {
+    margin: 16px 0 24px 24px;
+  }
+  .article li {
+    margin-bottom: 8px;
+  }
+
+  /* HR */
+  .article hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* Diagram box */
+  .diagram {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 32px 0;
+    font-family: 'SF Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .diagram .label {
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .diagram .arch {
+    color: var(--text);
+    white-space: pre;
+  }
+  .diagram .arrow { color: var(--accent); }
+  .diagram .highlight { color: #7ee787; }
+
+  /* Callout */
+  .callout {
+    background: linear-gradient(135deg, #1f6feb11, #ff6b3511);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 32px 0;
+  }
+  .callout .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0 60px;
+    text-align: center;
+    color: var(--quote);
+    font-size: 14px;
+  }
+  .footer a { color: var(--link); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* Author bio */
+  .bio {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 40px 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .bio .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #f7c948);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #000;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .bio .info p {
+    margin: 0;
+    font-size: 14px;
+  }
+  .bio .info .name {
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 4px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.8rem; }
+    .container { padding: 0 16px; }
+    body { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="container">
+    <div class="logo">Peter<span>.dev</span></div>
+    <a href="/ltap-blog.html">&larr; Back to Blog</a>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="container">
+    <div class="tag">Data Architecture &middot; Databricks &middot; LTAP</div>
+    <h1>The End of the 40-Year Database Divide:<br>Why LTAP Changes Everything</h1>
+    <p class="subtitle">For four decades, we've accepted that transactions and analytics need separate systems. LTAP just made that obsolete.</p>
+    <div class="meta">
+      <div class="avatar">PC</div>
+      <div>
+        <div class="author">Peter Chan</div>
+        <div>Head of Field Engineering, HK & Taiwan, Databricks &middot; August 11, 2026 &middot; 8 min read</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Article -->
+<div class="article">
+  <div class="container">
+
+    <p>For four decades, the database world has accepted a fundamental compromise. If you wanted to run transactions and analytics on the same business data, you needed two systems. Two copies of your data. Two governance models. And a pipeline sitting between them, quietly breaking at 3 AM.</p>
+
+    <p>We've lived with this compromise for so long that most engineers can't imagine an alternative. We've invented elaborate workarounds &mdash; ETL, CDC, reverse ETL, "zero-ETL," data mesh, data fabric &mdash; each one adding another layer of complexity on top of a problem that should not exist in the first place.</p>
+
+    <p>At DAIS SF in June 2026, Databricks announced <strong>LTAP</strong> &mdash; Lake Transactional/Analytical Processing &mdash; and I believe it represents the most significant architectural shift in the data infrastructure space since the invention of the columnar database. Not because it's a new engine or a new format, but because it's a fundamentally different answer to a question the industry has been asking since the 1980s.</p>
+
+    <p>Let me explain why.</p>
+
+    <hr>
+
+    <h2>The Shape Problem: Why OLTP and OLAP Were Always Separated</h2>
+
+    <p>To understand why this problem is so hard, you need to understand something fundamental about how databases store data.</p>
+
+    <p><strong>OLTP systems</strong> &mdash; the databases that power your checkout flow, your banking app, your inventory management &mdash; are optimized for finding and updating individual records quickly. When a customer places an order, the database needs to find that one row out of a billion, update it, and commit the transaction in milliseconds. This requires <strong>row-oriented storage</strong>. Think of it as a filing cabinet where each folder contains everything about one customer, one order, one transaction. You grab the folder, make your change, put it back. Fast, precise, surgical.</p>
+
+    <p><strong>OLAP systems</strong> &mdash; the engines that power your dashboards, your ML feature pipelines, your financial reporting &mdash; are optimized for scanning across millions of records to compute aggregates. When you ask "what was the average order value by region last quarter," the database needs to read the order amount field across hundreds of millions of rows and do math on it. This requires <strong>column-oriented storage</strong>. Think of it as a spreadsheet where every column is stored separately. You only read the column you need, skip everything else, and stream through it at blistering speed.</p>
+
+    <p>Here's the problem: <strong>the same data has a different ideal shape depending on what you're doing with it.</strong></p>
+
+    <p>A row-oriented layout is catastrophic for analytical scans because you end up reading entire rows when you only need one field. A column-oriented layout is catastrophic for point updates because changing a single value means rewriting an entire column file. This isn't a software limitation. It's a physics problem. The optimal physical layout for random access is fundamentally incompatible with the optimal physical layout for sequential scanning.</p>
+
+    <p>This is why, for 40 years, the industry's answer has been: keep two copies. One in row format for transactions. One in column format for analytics. And build a pipeline to move data between them.</p>
+
+    <hr>
+
+    <h2>The Pipeline Tax</h2>
+
+    <p>We call these pipelines different things depending on the era. ETL. ELT. CDC. Reverse ETL. "Data pipelines." "Streaming ingestion." The naming changes; the tax remains.</p>
+
+    <p>Every pipeline is essentially a contract that says: <em>"We will accept a delay between when a transaction happens and when that transaction is visible to analytics, in exchange for not having to run both workloads on the same system."</em> That delay might be seconds, minutes, hours, or days. That contract has hidden costs:</p>
+
+    <p><strong>Operational complexity.</strong> Every pipeline is a distributed system. It has its own failure modes, its own monitoring, its own on-call rotation. I've met enterprise teams spending more engineering hours maintaining their CDC pipelines than building the analytics those pipelines feed.</p>
+
+    <p><strong>Data drift.</strong> The analytical copy is always slightly behind the transactional truth. Sometimes that's acceptable. Sometimes it isn't. When a fraud detection model is scoring a transaction, "slightly behind" can mean "the fraud already happened."</p>
+
+    <p><strong>Governance duplication.</strong> Two copies of data means two sets of permissions, two audit trails, two compliance boundaries. In regulated industries &mdash; banking, healthcare, insurance &mdash; this isn't just annoying. It's a material risk.</p>
+
+    <p><strong>Cost.</strong> You're paying for storage twice, compute twice, and the pipeline itself. The industry spends billions annually on pipeline infrastructure that exists solely to compensate for the row-vs-column shape mismatch.</p>
+
+    <blockquote>At Databricks, there's an internal joke that CDC stands for "Continuous Data Corruption." Like all good jokes, it's funny because it's partially true.</blockquote>
+
+    <p>The "zero ETL" and "mirroring" solutions that some vendors now offer are essentially managed CDC with the pipelines hidden behind a nicer UI. The data still gets copied. The delay still exists. The governance boundary still fragments.</p>
+
+    <p>The pipeline tax is real, and we've all been paying it for decades.</p>
+
+    <hr>
+
+    <h2>Previous Attempts: Why HTAP Didn't Work</h2>
+
+    <p>The industry hasn't ignored this problem. The most ambitious attempt to solve it was <strong>HTAP</strong> &mdash; Hybrid Transactional/Analytical Processing &mdash; which aimed to run both workloads on a single engine.</p>
+
+    <p>The idea was seductively simple: if you can't bridge the gap with pipelines, eliminate the gap by running everything on one system. Several companies built impressive HTAP engines. Some are still in production today. But HTAP fundamentally failed to deliver on its promise, and understanding why is critical to understanding why LTAP is different.</p>
+
+    <p>HTAP's core mistake was trying to unify at the <strong>compute and engine layer</strong>. One engine, one query processor, one storage format &mdash; trying to serve two workloads with fundamentally conflicting access patterns. The result was predictable in hindsight:</p>
+
+    <p><strong>Resource contention.</strong> OLTP workloads generate low-latency, random I/O patterns. OLAP workloads generate high-throughput, sequential I/O patterns. When you run both on the same compute, they fight each other for memory, CPU, and I/O bandwidth. A heavy analytical query can starve transactional workloads. A spike in transaction volume can degrade analytical performance.</p>
+
+    <p><strong>The shape compromise.</strong> Since HTAP uses one storage format, it has to pick a side &mdash; or split the difference. Row-oriented HTAP engines sacrifice analytical scan performance. Column-oriented HTAP engines sacrifice transactional write performance. Dual-format engines add enormous complexity and essentially rebuild the two-system problem inside one product.</p>
+
+    <p><strong>Proprietary lock-in.</strong> Most HTAP engines are tightly coupled to proprietary storage formats. In an industry increasingly moving toward open formats &mdash; Parquet, Delta Lake, Apache Iceberg &mdash; this is a significant strategic risk.</p>
+
+    <p>HTAP didn't fail because the idea was wrong. It failed because it tried to solve the problem at the wrong layer.</p>
+
+    <div class="callout">
+      <div class="label">Key Insight</div>
+      <p style="margin:0">HTAP tried to unify the <strong>engines</strong>. LTAP unifies the <strong>storage</strong>. That difference is everything.</p>
+    </div>
+
+    <hr>
+
+    <h2>LTAP: Unify at the Lake, Not the Engine</h2>
+
+    <p><strong>LTAP &mdash; Lake Transactional/Analytical Processing</strong> &mdash; takes a fundamentally different approach. Instead of forcing one engine to do two jobs, it unifies at the storage layer while letting each workload use the best engine for its purpose.</p>
+
+    <p>The key insight is elegant: the problem was never that we needed one engine. The problem was that we needed two copies of data. If you can eliminate the second copy &mdash; if you can serve both workloads from a single, governed, open-format storage layer &mdash; then you get the benefits of unification without the performance compromises that killed HTAP.</p>
+
+    <blockquote>Ali Ghodsi framed it simply: "OLTP plus OLAP equals LTAP." Internally, the team briefly called it <strong>"minus-one ETL"</strong> &mdash; because it doesn't just reduce ETL, it removes the need for it entirely.</blockquote>
+
+    <div class="diagram">
+      <div class="label">LTAP Architecture Overview</div>
+      <div class="arch">
+<span class="highlight">  Application / AI Agent</span>
+         <span class="arrow">|</span>
+         <span class="arrow">v</span>
+  +------------------+          +------------------+
+  |    <span class="highlight">Lakebase</span>       |          |  <span class="highlight">Lakehouse//RT</span>   |
+  | (Serverless       |          | (Real-time       |
+  |  Postgres, OLTP)  |          |  Analytics, OLAP)|
+  |    ACID writes    |          |  10ms latency    |
+  +--------+----------+          +--------+---------+
+           <span class="arrow">|</span>                            <span class="arrow">|</span>
+           <span class="arrow">+----------+   +----------------+</span>
+                      <span class="arrow">v   v</span>
+              +------------------------+
+              |   <span class="highlight">LTAP Writer Library</span>   |
+              | (Row <span class="arrow">--&gt;</span> Columnar at    |
+              |  write time, automatic) |
+              +-----------+------------+
+                          <span class="arrow">|</span>
+                          <span class="arrow">v</span>
+              +------------------------+
+              |     <span class="highlight">The Lake</span>           |
+              |  One copy. Open formats|
+              |  (Delta / Iceberg /    |
+              |   Parquet)             |
+              +------------------------+
+                          <span class="arrow">|</span>
+              +------------------------+
+              |   <span class="highlight">Unity Catalog</span>        |
+              | One governance model   |
+              | Permissions + Lineage  |
+              +------------------------+
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>Architecture Deep Dive</h2>
+
+    <h3>1. Lakebase: Serverless Postgres on the Lake</h3>
+
+    <p>Lakebase is Databricks' serverless, fully managed PostgreSQL database &mdash; but it's architecturally unlike any Postgres you've seen before. Traditional Postgres couples compute and storage tightly. Lakebase breaks this apart.</p>
+
+    <p><strong>SafeKeeper</strong> nodes protect the write-ahead log (WAL) &mdash; ensuring durability even if a compute node fails. <strong>PageServer</strong> nodes manage data pages and transparently move them to cloud object storage (S3, ADLS, GCS). Your Postgres database isn't bound by a single machine's disk. It scales elastically. It recovers instantly.</p>
+
+    <p>Lakebase already serves thousands of customers and handles <strong>12 million database launches per day</strong>.</p>
+
+    <h3>2. LTAP Writer Library: Automatic Columnar Materialization</h3>
+
+    <p>This is where the magic happens. The <strong>LTAP Writer Library</strong> (open source, coming soon) automatically converts PostgreSQL's row-oriented data into Parquet-based columnar formats at write time. Every insert, update, and delete in Postgres is materialized as columnar data in the lake &mdash; transparently, without application changes, without pipeline configuration.</p>
+
+    <p>This is the critical difference from CDC. CDC copies data asynchronously, with delay, through fragile pipelines. The LTAP Writer Library materializes data as part of the write path. There's no delay because there's no second system to delay into.</p>
+
+    <h3>3. Lakehouse//RT: Real-Time Analytics on the Lake</h3>
+
+    <p><strong>Lakehouse//RT</strong> (Beta) is a new real-time SQL warehouse type delivering as low as <strong>10ms latency</strong> for analytical queries directly on Delta/Iceberg tables. It's powered by <strong>Reyden</strong>, a new ML-trained query engine that uses machine learning models to select optimal query plans based on real workload patterns.</p>
+
+    <p>For LTAP, Lakehouse//RT reads the bulk of its data from columnar files in the lake (materialized by the LTAP Writer Library) and merges in the most recent changes from Lakebase's PageServer. Analytical queries always see fresh data.</p>
+
+    <h3>4. Unity Catalog: One Governance Model</h3>
+
+    <p>This is what makes LTAP genuinely different from every previous unification attempt. <strong>Unity Catalog</strong> governs both the transactional side (Lakebase) and the analytical side (Lakehouse) with:</p>
+
+    <ul>
+      <li>A single identity and permission model</li>
+      <li>Column-level, row-level, and mask-based access controls</li>
+      <li>Lineage tracking across both transactional and analytical workloads</li>
+      <li>A single audit trail</li>
+    </ul>
+
+    <p>Previous hybrid approaches unified compute but kept governance separate. Unity Catalog eliminates that boundary.</p>
+
+    <hr>
+
+    <h2>Why This Matters for AI Agents</h2>
+
+    <p>Here's where the story gets forward-looking. If LTAP were just about saving on pipeline costs, it would be interesting but not revolutionary. What makes it revolutionary is what happens when <strong>AI agents</strong> enter the picture.</p>
+
+    <p>AI agents are not human users. They don't query dashboards once a day. They don't tolerate stale data. They operate continuously, making decisions at machine speed, and they need to simultaneously understand:</p>
+
+    <ul>
+      <li><strong>What just happened</strong> (live transactional state)</li>
+      <li><strong>What happened before</strong> (historical analytical context)</li>
+      <li><strong>What to do next</strong> (predictive modeling, retrieval-augmented generation)</li>
+    </ul>
+
+    <p>In the old architecture, an AI agent reading live transactional data via APIs while pulling analytical context from a warehouse is working across two systems with two consistency models and two governance boundaries. The agent might see a transaction that hasn't been replicated to the analytical layer yet. Or it might make a decision based on a snapshot that's minutes old.</p>
+
+    <p>In a world where agents are increasingly making autonomous decisions &mdash; approving loans, flagging transactions, routing customer service requests &mdash; this inconsistency is not a technical annoyance. It's an operational risk.</p>
+
+    <div class="callout">
+      <div class="label">The AI Agent Primitive</div>
+      <p style="margin:0">LTAP gives agents a <strong>single governed surface</strong> to read, reason, and act. One copy of data. One governance model. One source of truth. The agent sees the same data the application sees, at the same time, with the same permissions.</p>
+    </div>
+
+    <hr>
+
+    <h2>What's New and What's Coming</h2>
+
+    <p>LTAP was announced at DAIS SF 2026, and the components are at different stages:</p>
+
+    <ul>
+      <li><strong>Lakebase</strong>: Generally available. Thousands of customers. 12M database launches per day. New capabilities include cross-cloud disaster recovery, git-style branching, and autonomous operations.</li>
+      <li><strong>Lakehouse//RT</strong>: Beta. Real-time SQL warehouse with sub-10ms latency, powered by the Reyden engine.</li>
+      <li><strong>LTAP Writer Library</strong>: Open source, coming soon. The critical component that bridges Postgres writes to columnar lake storage.</li>
+      <li><strong>Reyden engine</strong>: Beta. ML-trained query engine powering Lakehouse//RT.</li>
+    </ul>
+
+    <p>LTAP as an end-to-end architecture is new, and we're still early in the journey. But the foundations are solid, the components are shipping, and the trajectory is clear.</p>
+
+    <hr>
+
+    <h2>Conclusion</h2>
+
+    <p>For 40 years, the database industry has accepted a tax: two systems, two copies, pipelines between them. We've optimized the tax, reduced it, hidden it behind abstractions, but we've never eliminated it.</p>
+
+    <p><strong>LTAP doesn't optimize the tax. It eliminates the need for it.</strong></p>
+
+    <p>By unifying at the storage layer &mdash; not the compute layer &mdash; LTAP lets each workload use the best engine for its purpose while sharing a single governed copy of data in open formats. No ETL. No CDC. No replicas. No drift. One source of truth for transactions, analytics, and AI agents.</p>
+
+    <p>The companies that will win in the AI era won't be the ones with the biggest models. They'll be the ones with the best data infrastructure. And the best data infrastructure doesn't have pipelines. It doesn't have replicas. It has one copy of data, governed once, serving every workload.</p>
+
+    <p>That's what LTAP delivers. And that's why I believe this is the most important architectural shift since the columnar database.</p>
+
+    <!-- Author Bio -->
+    <div class="bio">
+      <div class="avatar">PC</div>
+      <div class="info">
+        <div class="name">Peter Chan</div>
+        <p>Head of Field Engineering, HK &amp; Taiwan at Databricks. Helping enterprises across Asia transform their data and AI capabilities. Previously Head of Enterprise SA at AWS Hong Kong.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="container">
+    <p>&copy; 2026 Peter Chan &middot; <a href="/">Peter.dev</a> &middot; <a href="https://www.linkedin.com/in/peteragility/">LinkedIn</a> &middot; <a href="https://x.com/peteragility">X</a></p>
+  </div>
+</div>
+
+</body>
+</html>

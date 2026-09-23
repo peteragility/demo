@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arsenal Summer 2026 Transfer Hub ⚽🔴</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0F1A2E 0%, #1C1C1C 50%, #0F1A2E 100%);
+  color: #fff; min-height: 100vh; padding: 20px;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+header { text-align: center; padding: 40px 0 30px; }
+header h1 { font-size: 2.8rem; background: linear-gradient(90deg, #EF010D, #FF6B35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+header p { color: #9DB4C7; margin-top: 8px; font-size: 1.1rem; }
+.badge { display: inline-block; background: rgba(239,1,13,0.15); color: #EF010D; padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-top: 10px; border: 1px solid rgba(239,1,13,0.3); }
+
+.tabs { display: flex; justify-content: center; gap: 12px; margin: 30px 0; flex-wrap: wrap; }
+.tab { padding: 12px 28px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.3s; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #9DB4C7; }
+.tab:hover { border-color: rgba(239,1,13,0.4); color: #fff; }
+.tab.active { background: linear-gradient(135deg, #EF010D, #9C0006); border-color: #EF010D; color: #fff; box-shadow: 0 4px 20px rgba(239,1,13,0.3); }
+.tab .count { display: inline-block; background: rgba(0,0,0,0.3); padding: 1px 8px; border-radius: 10px; font-size: 0.8rem; margin-left: 6px; }
+
+.section { display: none; animation: fadeIn 0.4s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.card { 
+  background: rgba(255,255,255,0.04); border-radius: 16px; padding: 24px; 
+  margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.3s; display: flex; align-items: flex-start; gap: 20px;
+}
+.card:hover { border-color: rgba(239,1,13,0.2); background: rgba(255,255,255,0.06); transform: translateX(4px); }
+.card-in { border-left: 4px solid #00FF87; }
+.card-out { border-left: 4px solid #FF4444; }
+.card-rumor { border-left: 4px solid #FFA500; }
+
+.flag { font-size: 2.5rem; flex-shrink: 0; }
+.card-body { flex: 1; }
+.card-body h3 { font-size: 1.3rem; margin-bottom: 4px; }
+.card-body .pos { color: #9DB4C7; font-size: 0.9rem; margin-bottom: 8px; }
+.card-body .detail { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px; }
+.tag { font-size: 0.8rem; padding: 3px 10px; border-radius: 12px; }
+.tag-fee { background: rgba(0,255,135,0.1); color: #00FF87; border: 1px solid rgba(0,255,135,0.2); }
+.tag-free { background: rgba(100,200,255,0.1); color: #64C8FF; border: 1px solid rgba(100,200,255,0.2); }
+.tag-loan { background: rgba(255,165,0,0.1); color: #FFA500; border: 1px solid rgba(255,165,0,0.2); }
+.tag-age { background: rgba(255,255,255,0.06); color: #9DB4C7; }
+
+/* Probability meter */
+.prob-container { margin-top: 12px; }
+.prob-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px; }
+.prob-bar { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.prob-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.prob-high { background: linear-gradient(90deg, #00FF87, #00CC6A); }
+.prob-medium { background: linear-gradient(90deg, #FFA500, #FF8C00); }
+.prob-low { background: linear-gradient(90deg, #FF4444, #CC2222); }
+
+.analysis { 
+  background: rgba(239,1,13,0.05); border: 1px solid rgba(239,1,13,0.15);
+  border-radius: 16px; padding: 28px; margin-top: 30px; 
+}
+.analysis h2 { color: #EF010D; margin-bottom: 16px; font-size: 1.5rem; }
+.analysis-item { margin-bottom: 16px; padding-left: 20px; border-left: 3px solid rgba(239,1,13,0.3); }
+.analysis-item h4 { color: #fff; margin-bottom: 6px; }
+.analysis-item p { color: #9DB4C7; line-height: 1.6; font-size: 0.95rem; }
+.priority { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; margin-left: 8px; }
+.p-critical { background: rgba(255,68,68,0.15); color: #FF4444; }
+.p-high { background: rgba(255,165,0,0.15); color: #FFA500; }
+.p-medium { background: rgba(100,200,255,0.15); color: #64C8FF; }
+
+.note { 
+  text-align: center; color: #9DB4C7; font-size: 0.8rem; margin-top: 30px; padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.note a { color: #64C8FF; text-decoration: none; }
+
+@media (max-width: 768px) {
+  header h1 { font-size: 1.8rem; }
+  .card { flex-direction: column; gap: 10px; }
+  .flag { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>⚽ Arsenal Transfer Hub</h1>
+    <p>Summer 2026 Window · Last updated: 19 July 2026</p>
+    <div class="badge">🔴 Champions 2025-26 · Window closes 1 Sep</div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showSection('in')">✅ Confirmed IN <span class="count">3</span></div>
+    <div class="tab" onclick="showSection('out')">🔴 Confirmed OUT <span class="count">3</span></div>
+    <div class="tab" onclick="showSection('rumors')">🔥 Targets & Rumors <span class="count">7</span></div>
+    <div class="tab" onclick="showSection('analysis')">🧠 Yuki's Analysis</div>
+  </div>
+
+  <!-- CONFIRMED IN -->
+  <div id="in" class="section active">
+    <div class="card card-in">
+      <div class="flag">🇪🇨</div>
+      <div class="card-body">
+        <h3>Piero Hincapié</h3>
+        <p class="pos">Centre-Back / Left-Back · Age 24</p>
+        <p>Strong, ball-playing defender from Bayer Leverkusen. Can play LCB or LB. Brings pace, aggression and distribution from the back.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 £34.5M (loan made permanent)</span>
+          <span class="tag tag-age">📅 Age 24</span>
+          <span class="tag" style="background:rgba(0,255,135,0.1);color:#00FF87;">✅ Signed</span>
+        </div>
+      </div>
+    </div>
+    <div class="card card-in">
+      <div class="flag">🇬🇷</div>
+      <div class="card-body">
+        <h3>Christos Tzolis</h3>
+        <p class="pos">Left Winger / Forward · Age 24</p>
+        <p>Exciting Greek winger from Club Brugge. Direct, quick, great dribbling. Signed as Trossard replacement — younger, faster, higher ceiling.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 €40M (~£34M)</span>
+          <span class="tag tag-age">📅 Age 24</span>
+          <span class="tag" style="background:rgba(0,255,135,0.1);color:#00FF87;">✅ Signed (medical booked)</span>
+        </div>
+      </div>
+    </div>
+    <div class="card card-in">
+      <div class="flag">🇫🇷</div>
+      <div class="card-body">
+        <h3>Illan Meslier</h3>
+        <p class="pos">Goalkeeper · Age 26</p>
+        <p>Experienced PL goalkeeper with 100+ appearances for Leeds. Provides depth behind David Raya and Kepa. Young enough to push for #1.</p>
+        <div class="detail">
+          <span class="tag tag-free">🆓 Free Transfer</span>
+          <span class="tag tag-age">📅 Age 26</span>
+          <span class="tag" style="background:rgba(0,255,135,0.1);color:#00FF87;">✅ Signed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMED OUT -->
+  <div id="out" class="section">
+    <div class="card card-out">
+      <div class="flag">🇧🇪</div>
+      <div class="card-body">
+        <h3>Leandro Trossard → Beşiktaş</h3>
+        <p class="pos">Left Winger / Forward · Age 31</p>
+        <p>Key contributor to Arsenal's PL title win. Scored crucial goals. Sold at the right time — 31yo, replaced by younger Tzolis. Thank you, Leo! ❤️</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£17M received</span>
+          <span class="tag tag-age">📅 Age 31</span>
+          <span class="tag" style="background:rgba(255,68,68,0.1);color:#FF4444;">🔴 Sold</span>
+        </div>
+      </div>
+    </div>
+    <div class="card card-out">
+      <div class="flag">🇵🇱</div>
+      <div class="card-body">
+        <h3>Jakub Kiwior → Porto</h3>
+        <p class="pos">Centre-Back · Age 25</p>
+        <p>Never fully established in first XI. Hincapié arrival made him surplus. Good move for his career — Porto is a good step.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 Undisclosed</span>
+          <span class="tag tag-age">📅 Age 25</span>
+          <span class="tag" style="background:rgba(255,68,68,0.1);color:#FF4444;">🔴 Sold</span>
+        </div>
+      </div>
+    </div>
+    <div class="card card-out">
+      <div class="flag">🇪🇪</div>
+      <div class="card-body">
+        <h3>Karl Hein → Werder Bremen</h3>
+        <p class="pos">Goalkeeper · Age 23</p>
+        <p>Third-choice GK, needed regular football. Meslier arrival pushes him out. Smart squad management.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 Undisclosed</span>
+          <span class="tag tag-age">📅 Age 23</span>
+          <span class="tag" style="background:rgba(255,68,68,0.1);color:#FF4444;">🔴 Sold</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUMORS & TARGETS -->
+  <div id="rumors" class="section">
+    <div class="card card-rumor">
+      <div class="flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+      <div class="card-body">
+        <h3>Morgan Rogers</h3>
+        <p class="pos">Attacking Midfielder / Left Wing · Aston Villa · Age 23</p>
+        <p>Arsenal's TOP target. Personal terms agreed weeks ago. Direct club-to-club talks underway. Villa want £100M+. Chelsea also interested — bidding war risk.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£100M+ expected</span>
+          <span class="tag tag-age">📅 Age 23</span>
+          <span class="tag" style="background:rgba(255,165,0,0.1);color:#FFA500;">⚠️ Chelsea competition</span>
+        </div>
+        <div class="prob-container">
+          <div class="prob-label"><span>Probability</span><span>65%</span></div>
+          <div class="prob-bar"><div class="prob-fill prob-high" style="width:65%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-rumor">
+      <div class="flag">🇧🇷</div>
+      <div class="card-body">
+        <h3>Bruno Guimarães</h3>
+        <p class="pos">Central Midfielder · Newcastle · Age 27</p>
+        <p>Elite CM target. Newcastle reluctant to sell but Arsenal pushing. Would be a massive upgrade on Nørgaard. Newcastle's Tonali sale to Spurs may ease their need to sell.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£80M+</span>
+          <span class="tag tag-age">📅 Age 27</span>
+          <span class="tag" style="background:rgba(255,165,0,0.1);color:#FFA500;">⚠️ Newcastle reluctant</span>
+        </div>
+        <div class="prob-container">
+          <div class="prob-label"><span>Probability</span><span>40%</span></div>
+          <div class="prob-bar"><div class="prob-fill prob-medium" style="width:40%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-rumor">
+      <div class="flag">🇦🇷</div>
+      <div class="card-body">
+        <h3>Julian Alvarez</h3>
+        <p class="pos">Striker / Forward · Atlético Madrid · Age 25</p>
+        <p>World-class striker target. Arsenal considering Gyökeres swap deal. Atlético insist he's staying. Alvarez prefers Barcelona if he leaves. Long shot.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£100M+</span>
+          <span class="tag tag-age">📅 Age 25</span>
+          <span class="tag" style="background:rgba(255,68,68,0.1);color:#FF4444;">❌ Atlético insist staying</span>
+        </div>
+        <div class="prob-container">
+          <div class="prob-label"><span>Probability</span><span>20%</span></div>
+          <div class="prob-bar"><div class="prob-fill prob-low" style="width:20%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-rumor">
+      <div class="flag">🇫🇷</div>
+      <div class="card-body">
+        <h3>Bradley Barcola</h3>
+        <p class="pos">Right Winger / Forward · PSG · Age 23</p>
+        <p>French international, explosive pace. PSG open to sell at the right price. Arsenal monitoring but not yet engaged. Could accelerate if Rogers deal falls through.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£60-70M</span>
+          <span class="tag tag-age">📅 Age 23</span>
+          <span class="tag" style="background:rgba(100,200,255,0.1);color:#64C8FF;">👀 Monitoring</span>
+        </div>
+        <div class="prob-container">
+          <div class="prob-label"><span>Probability</span><span>35%</span></div>
+          <div class="prob-bar"><div class="prob-fill prob-medium" style="width:35%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-rumor">
+      <div class="flag">🇸🇪</div>
+      <div class="card-body">
+        <h3>Viktor Gyökeres</h3>
+        <p class="pos">Striker · Sporting CP · Age 27</p>
+        <p>Prolific goal-scorer. Could be used as swap asset for Alvarez deal. Arsenal assessing options. Would be cheaper than Alvarez but older.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£60-70M</span>
+          <span class="tag tag-age">📅 Age 27</span>
+          <span class="tag" style="background:rgba(100,200,255,0.1);color:#64C8FF;">👀 Swap option</span>
+        </div>
+        <div class="prob-container">
+          <div class="prob-label"><span>Probability</span><span>30%</span></div>
+          <div class="prob-bar"><div class="prob-fill prob-medium" style="width:30%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-rumor">
+      <div class="flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+      <div class="card-body">
+        <h3>Alex Scott</h3>
+        <p class="pos">Central Midfielder · Bournemouth · Age 22</p>
+        <p>Young English midfielder. Talented, homegrown quota benefit. Bournemouth will demand premium fee. Alternative to Guimarães if that deal falls through.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£40-50M</span>
+          <span class="tag tag-age">📅 Age 22</span>
+          <span class="tag" style="background:rgba(100,200,255,0.1);color:#64C8FF;">👀 Alternative option</span>
+        </div>
+        <div class="prob-container">
+          <div class="prob-label"><span>Probability</span><span>25%</span></div>
+          <div class="prob-bar"><div class="prob-fill prob-low" style="width:25%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-rumor">
+      <div class="flag">🇧🇷</div>
+      <div class="card-body">
+        <h3>Gabriel Jesus — Potential Exit</h3>
+        <p class="pos">Striker · Arsenal · Age 28</p>
+        <p>Arsenal ready to sell for ~£20M. Juventus, Atlético Madrid, Beşiktaş, Fenerbahçe all interested. Injury-prone but quality on his day. If sold, Arsenal MUST sign a replacement striker.</p>
+        <div class="detail">
+          <span class="tag tag-fee">💰 ~£20M asking</span>
+          <span class="tag tag-age">📅 Age 28</span>
+          <span class="tag" style="background:rgba(255,165,0,0.1);color:#FFA500;">⚠️ Multiple suitors</span>
+        </div>
+        <div class="prob-container">
+          <div class="prob-label"><span>Exit Probability</span><span>55%</span></div>
+          <div class="prob-bar"><div class="prob-fill prob-high" style="width:55%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div id="analysis" class="section">
+    <div class="analysis">
+      <h2>🧠 Yuki's Transfer Analysis</h2>
+
+      <div class="analysis-item">
+        <h4>🔴 STRIKER — Critical Gap <span class="priority p-critical">CRITICAL</span></h4>
+        <p>Arsenal's biggest weakness. Havertz is not a natural #9, and Jesus is injury-prone and potentially leaving. <strong>Must sign a world-class striker.</strong> Alvarez is the dream but unlikely. Gyökeres is the pragmatic option — proven goal machine, knows the league's style. If both fail, Arsenal risk going into the season under-equipped up top. Title defence demands a 20+ goal striker.</p>
+      </div>
+
+      <div class="analysis-item">
+        <h4>🟠 MIDFIELD — Elite Upgrade Needed <span class="priority p-high">HIGH</span></h4>
+        <p>Rice + Ødegaard is world-class, but the #8/#10 rotation needs strengthening. Nørgaard is solid but not elite — Arteta doesn't fully trust him in big games. <strong>Rogers</strong> is the ideal signing: young, versatile, Premier League proven, can play multiple positions. <strong>Guimarães</strong> would be transformative — elite ball progression, physicality, and creativity. If only one big signing happens, midfield or striker should be it.</p>
+      </div>
+
+      <div class="analysis-item">
+        <h4>🟡 DEFENCE — Saliba Uncertainty <span class="priority p-high">HIGH</span></h4>
+        <p>Saliba's injury is a massive concern. Surgery option still on the table — could be out for months. Hincapié is a smart signing (versatile, young, ball-playing). But if Saliba is out long-term, Arsenal need another CB. Gabriel + Hincapié + Timber is okay, but Champions League depth requires more. <strong>Monitor Saliba situation closely — if surgery, must sign another CB.</strong></p>
+      </div>
+
+      <div class="analysis-item">
+        <h4>🟢 WINGER — Well Covered <span class="priority p-medium">MEDIUM</span></h4>
+        <p>Saka + Tzolis + Martinelli + Nwaneri. Tzolis replaces Trossard with younger, faster profile. Nwaneri's emergence makes this position deep. <strong>Barcola would be luxury</strong> — exciting but not essential. Focus budget on striker + midfield first.</p>
+      </div>
+
+      <div class="analysis-item">
+        <h4>🔵 GOALKEEPER — Sorted <span class="priority p-medium">LOW</span></h4>
+        <p>Raya #1, Kepa #2, Meslier #3. Solid depth. No action needed.</p>
+      </div>
+
+      <div class="analysis-item">
+        <h4>📋 SUMMARY: What Arsenal Should Do</h4>
+        <p><strong>Must-do:</strong> 1) Sign a striker (Gyökeres or bust). 2) Sign Rogers or Guimarães for midfield.<br>
+        <strong>Should-do:</strong> 3) Monitor Saliba — prepare CB backup plan. 4) Sell Jesus if good offer arrives.<br>
+        <strong>Nice-to-have:</strong> 5) Barcola as luxury winger signing if budget allows.<br><br>
+        <strong>Predicted spending:</strong> ~£200-250M net. Champions PL prize money + CL revenue covers it. Berta knows this window defines the title defence. COYG! 🔴⚽</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p>⚽ Data sourced from ESPN, Sky Sports, The Athletic, Arsenal.com, Fabrizio Romano · 19 Jul 2026</p>
+    <p>Built by Yuki 🐱 for Peter · <a href="https://demo.peteragility.com">← Back to Demo</a></p>
+  </div>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// Animate probability bars on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill').forEach(bar => {
+      const w = bar.style.width;
+      bar.style.width = '0%';
+      requestAnimationFrame(() => {
+        setTimeout(() => bar.style.width = w, 100);
+      });
+    });
+  }, 300);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>arsenal 2025-26 champions 🔴</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--red:#EF0107;--gold:#9C8245;--dark:#023474;--black:#063672;--white:#fff;--bg:#0a0a0a}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;position:relative;background:linear-gradient(180deg,#023474 0%,#EF0107 100%);overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect width='60' height='60' fill='none'/%3E%3Cpath d='M30 0L0 60h60L30 0z' fill='%23ffffff' fill-opacity='0.02'/%3E%3C/svg%3E")}
+.cannon{font-size:5rem;animation:spin 3s ease-in-out infinite}
+.hero h1{font-family:'Anton',sans-serif;font-size:clamp(3rem,12vw,9rem);letter-spacing:2px;text-transform:uppercase;text-shadow:0 8px 40px rgba(0,0,0,0.5);line-height:0.9;margin:1rem 0}
+.hero h1 span{color:var(--gold);-webkit-text-stroke:0}
+.hero .subtitle{font-size:clamp(1rem,3vw,1.5rem);font-weight:300;letter-spacing:3px;text-transform:uppercase;opacity:0.9}
+.hero .year{font-family:'Anton',sans-serif;font-size:clamp(4rem,15vw,12rem);color:rgba(255,255,255,0.08);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none}
+.hero-info{position:relative;z-index:2;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
+.hero-badge{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:50px;padding:0.5rem 1.5rem;font-size:0.85rem;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.wave{position:absolute;bottom:0;left:0;width:100%}
+.wave svg{display:block;width:100%}
+.wave path{fill:var(--bg)}
+
+/* SECTION */
+.section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
+.section-title{font-family:'Anton',sans-serif;font-size:clamp(2rem,6vw,4rem);text-transform:uppercase;text-align:center;margin-bottom:0.5rem;letter-spacing:1px}
+.section-title .red{color:var(--red)}
+.section-sub{text-align:center;color:#888;font-size:1rem;margin-bottom:3rem;text-transform:uppercase;letter-spacing:2px;font-size:0.8rem}
+
+/* TIMELINE */
+.timeline{position:relative;max-width:900px;margin:0 auto}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(var(--red),var(--gold));transform:translateX(-50%)}
+.moment{display:flex;margin-bottom:3rem;position:relative}
+.moment:nth-child(odd){flex-direction:row-reverse}
+.moment-content{width:45%;background:#111;border-radius:16px;padding:1.8rem;border:1px solid #222;transition:transform 0.3s,border-color 0.3s}
+.moment-content:hover{transform:translateY(-5px);border-color:var(--red)}
+.moment-date{position:absolute;left:50%;transform:translateX(-50%);width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.7rem;z-index:2;border:3px solid var(--bg);background:var(--red);color:#fff;flex-shrink:0}
+.moment-tag{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:0.2rem 0.6rem;border-radius:10px;margin-bottom:0.5rem}
+.tag-win{background:rgba(0,200,83,0.15);color:#00c853}
+.tag-loss{background:rgba(255,50,50,0.15);color:#ff3232}
+.tag-milestone{background:rgba(255,193,7,0.15);color:#ffc107}
+.tag-record{background:rgba(156,130,69,0.2);color:var(--gold)}
+.tag-heartbreak{background:rgba(200,50,50,0.15);color:#ff6b6b}
+.moment-title{font-size:1.15rem;font-weight:700;margin-bottom:0.4rem}
+.moment-desc{font-size:0.88rem;color:#aaa;line-height:1.6}
+.moment-score{font-family:'Anton',sans-serif;font-size:1.5rem;color:var(--red);margin:0.5rem 0}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;max-width:900px;margin:0 auto}
+.stat-card{background:#111;border-radius:16px;padding:2rem 1rem;text-align:center;border:1px solid #222;transition:all 0.3s}
+.stat-card:hover{border-color:var(--red);transform:scale(1.05)}
+.stat-number{font-family:'Anton',sans-serif;font-size:3rem;color:var(--red);line-height:1}
+.stat-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px;color:#888;margin-top:0.5rem}
+
+/* TOP SCORERS */
+.scorers{max-width:600px;margin:0 auto}
+.scorer-row{display:flex;align-items:center;gap:1rem;padding:1rem;margin-bottom:0.8rem;background:#111;border-radius:12px;border:1px solid #222;transition:border-color 0.3s}
+.scorer-row:hover{border-color:var(--gold)}
+.scorer-rank{font-family:'Anton',sans-serif;font-size:2rem;color:#333;width:40px}
+.scorer-row:first-child .scorer-rank{color:var(--gold)}
+.scorer-name{flex:1;font-weight:700;font-size:1rem}
+.scorer-pos{font-size:0.7rem;color:#666;text-transform:uppercase}
+.scorer-goals{font-family:'Anton',sans-serif;font-size:1.8rem;color:var(--red)}
+
+/* QUOTE */
+.quote-section{text-align:center;padding:4rem 1.5rem;max-width:800px;margin:0 auto}
+.quote{font-size:clamp(1.2rem,4vw,2rem);font-weight:300;line-height:1.5;font-style:italic;color:#ddd}
+.quote-author{margin-top:1rem;font-size:0.9rem;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:700}
+
+/* SQUAD */
+.squad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem;max-width:900px;margin:0 auto}
+.player-card{background:#111;border-radius:12px;padding:1.5rem 1rem;text-align:center;border:1px solid #222;transition:all 0.3s}
+.player-card:hover{border-color:var(--red);transform:translateY(-5px)}
+.player-num{font-family:'Anton',sans-serif;font-size:2.5rem;color:var(--red)}
+.player-name{font-size:0.85rem;font-weight:600;margin-top:0.3rem}
+.player-role{font-size:0.7rem;color:#666;text-transform:uppercase;letter-spacing:1px}
+
+/* JOURNEY BAR */
+.journey{max-width:900px;margin:0 auto;display:flex;align-items:end;gap:2px;height:200px;padding:2rem 0}
+.journey-bar{flex:1;border-radius:4px 4px 0 0;min-height:20px;transition:opacity 0.3s;position:relative;cursor:default}
+.journey-bar.win{background:var(--red)}
+.journey-bar.draw{background:#333}
+.journey-bar.loss{background:#1a1a1a}
+.journey-bar:hover{opacity:0.7}
+.journey-bar[data-info]:hover::after{content:attr(data-info);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#000;color:#fff;padding:0.3rem 0.6rem;border-radius:6px;font-size:0.7rem;white-space:nowrap;z-index:10}
+
+/* FOOTER */
+.footer{text-align:center;padding:3rem 1.5rem;border-top:1px solid #222}
+.footer h3{font-family:'Anton',sans-serif;font-size:1.8rem;color:var(--red)}
+.footer p{font-size:0.8rem;color:#555;margin-top:0.5rem}
+.footer .emoji{font-size:2rem;margin-bottom:0.5rem}
+
+@keyframes spin{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:768px){
+.timeline::before{left:25px}
+.moment{flex-direction:row!important}
+.moment-content{width:calc(100% - 40px);margin-left:50px}
+.moment-date{left:25px!important}
+.journey{height:150px;overflow-x:auto;flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+<div class="year">2026</div>
+<div class="cannon">🔴</div>
+<h1>ARSENAL<br><span>CHAMPIONS</span></h1>
+<p class="subtitle">Premier League 2025-26</p>
+<div class="hero-info">
+<div class="hero-badge">🏆 14th Title · 4th PL Era</div>
+<div class="hero-badge">⏱ 22 Year Wait</div>
+<div class="hero-badge">🔥 26 Wins</div>
+<div class="hero-badge">🧤 19 Clean Sheets · Raya Golden Glove 🧤</div>
+</div>
+</div>
+<div class="wave"><svg viewBox="0 0 1200 50" preserveAspectRatio="none"><path d="M0,25 C300,50 600,0 900,25 C1050,40 1150,15 1200,25 L1200,50 L0,50Z"/></svg></div>
+</div>
+
+<!-- KEY STATS -->
+<div class="section">
+<div class="section-title">THE <span class="red">NUMBERS</span></div>
+<div class="section-sub">A season of dominance</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-number">85</div><div class="stat-label">Points</div></div>
+<div class="stat-card"><div class="stat-number">26</div><div class="stat-label">Wins</div></div>
+<div class="stat-card"><div class="stat-number">7</div><div class="stat-label">Draws</div></div>
+<div class="stat-card"><div class="stat-number">5</div><div class="stat-label">Losses</div></div>
+<div class="stat-card"><div class="stat-number">71</div><div class="stat-label">Goals Scored</div></div>
+<div class="stat-card"><div class="stat-number">27</div><div class="stat-label">Goals Conceded</div></div>
+<div class="stat-card"><div class="stat-number">+44</div><div class="stat-label">Goal Difference</div></div>
+<div class="stat-card"><div class="stat-number">19</div><div class="stat-label">Clean Sheets · Raya 🧤</div></div>
+</div>
+</div>
+
+<!-- JOURNEY BAR (38 PL gameweeks) -->
+<div class="section">
+<div class="section-title">THE <span class="red">JOURNEY</span></div>
+<div class="section-sub">38 Premier League matches · Red = Win · Grey = Draw · Dark = Loss</div>
+<div class="journey">
+<div class="journey-bar win" style="height:75%" data-info="GW1: Man Utd 0-1 Arsenal (A) ✅"></div>
+<div class="journey-bar win" style="height:95%" data-info="GW2: Arsenal 5-0 Leeds (H) ✅"></div>
+<div class="journey-bar loss" style="height:35%" data-info="GW3: Liverpool 1-0 Arsenal (A) ❌"></div>
+<div class="journey-bar win" style="height:88%" data-info="GW4: Arsenal 3-0 Nott'm Forest (H) ✅"></div>
+<div class="journey-bar draw" style="height:50%" data-info="GW5: Arsenal 1-1 Man City (H) ➖"></div>
+<div class="journey-bar win" style="height:78%" data-info="GW6: Newcastle 1-2 Arsenal (A) ✅"></div>
+<div class="journey-bar win" style="height:82%" data-info="GW7: Arsenal 2-0 West Ham (H) ✅"></div>
+<div class="journey-bar win" style="height:72%" data-info="GW8: Fulham 0-1 Arsenal (A) ✅"></div>
+<div class="journey-bar win" style="height:72%" data-info="GW9: Arsenal 1-0 Crystal Palace (H) ✅"></div>
+<div class="journey-bar win" style="height:80%" data-info="GW10: Burnley 0-2 Arsenal (A) ✅"></div>
+<div class="journey-bar draw" style="height:50%" data-info="GW11: Sunderland 2-2 Arsenal (A) ➖"></div>
+<div class="journey-bar win" style="height:92%" data-info="GW12: Arsenal 4-1 Tottenham (H) 🔴 NLD!"></div>
+<div class="journey-bar draw" style="height:50%" data-info="GW13: Chelsea 1-1 Arsenal (A) ➖"></div>
+<div class="journey-bar win" style="height:82%" data-info="GW14: Arsenal 2-0 Brentford (H) ✅"></div>
+<div class="journey-bar loss" style="height:38%" data-info="GW15: Aston Villa 2-1 Arsenal (A) ❌"></div>
+<div class="journey-bar win" style="height:75%" data-info="GW16: Arsenal 2-1 Wolves (H) ✅"></div>
+<div class="journey-bar win" style="height:72%" data-info="GW17: Everton 0-1 Arsenal (A) ✅"></div>
+<div class="journey-bar win" style="height:75%" data-info="GW18: Arsenal 2-1 Brighton (H) ✅"></div>
+<div class="journey-bar win" style="height:92%" data-info="GW19: Arsenal 4-1 Aston Villa (H) ✅ Statement!"></div>
+<div class="journey-bar win" style="height:80%" data-info="GW20: Bournemouth 2-3 Arsenal (A) ✅"></div>
+<div class="journey-bar draw" style="height:48%" data-info="GW21: Arsenal 0-0 Liverpool (H) ➖"></div>
+<div class="journey-bar draw" style="height:48%" data-info="GW22: Nott'm Forest 0-0 Arsenal (A) ➖"></div>
+<div class="journey-bar loss" style="height:38%" data-info="GW23: Arsenal 2-3 Man Utd (H) ❌"></div>
+<div class="journey-bar win" style="height:90%" data-info="GW24: Leeds 0-4 Arsenal (A) ✅"></div>
+<div class="journey-bar win" style="height:88%" data-info="GW25: Arsenal 3-0 Sunderland (H) ✅"></div>
+<div class="journey-bar draw" style="height:50%" data-info="GW26: Brentford 1-1 Arsenal (A) ➖"></div>
+<div class="journey-bar draw" style="height:50%" data-info="GW27: Wolves 2-2 Arsenal (A) ➖"></div>
+<div class="journey-bar win" style="height:92%" data-info="GW28: Tottenham 1-4 Arsenal (A) 🔴 NLD!"></div>
+<div class="journey-bar win" style="height:75%" data-info="GW29: Arsenal 2-1 Chelsea (H) ✅"></div>
+<div class="journey-bar win" style="height:72%" data-info="GW30: Brighton 0-1 Arsenal (A) ✅"></div>
+<div class="journey-bar win" style="height:82%" data-info="GW31: Arsenal 2-0 Everton (H) ✅ Dowman record!"></div>
+<div class="journey-bar loss" style="height:38%" data-info="GW32: Arsenal 1-2 Bournemouth (H) ❌"></div>
+<div class="journey-bar loss" style="height:35%" data-info="GW33: Man City 2-1 Arsenal (A) ❌"></div>
+<div class="journey-bar win" style="height:72%" data-info="GW34: Arsenal 1-0 Newcastle (H) ✅"></div>
+<div class="journey-bar win" style="height:88%" data-info="GW35: Arsenal 3-0 Fulham (H) ✅"></div>
+<div class="journey-bar win" style="height:72%" data-info="GW36: West Ham 0-1 Arsenal (A) ✅"></div>
+<div class="journey-bar win" style="height:72%" data-info="GW37: Arsenal 1-0 Burnley (H) ✅ Havertz!"></div>
+<div class="journey-bar win" style="height:78%" data-info="GW38: Crystal Palace 1-2 Arsenal (A) 🏆 CHAMPIONS!"></div>
+</div>
+</div>
+
+<!-- KEY MOMENTS -->
+<div class="section">
+<div class="section-title">KEY <span class="red">MOMENTS</span></div>
+<div class="section-sub">The story of how it was won</div>
+<div class="timeline">
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-win">Perfect Start</div>
+<div class="moment-title">Man Utd 0-1 Arsenal</div>
+<div class="moment-score">17 Aug 2025 · Old Trafford · GW1</div>
+<div class="moment-desc">Arsenal's 100th consecutive top-flight season begins with a win at Old Trafford. Calafiori headers in Rice's corner. First club ever to spend 100 straight seasons in the English top flight. The perfect start.</div>
+</div>
+<div class="moment-date">AUG</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-win">Statement Win</div>
+<div class="moment-title">Arsenal 5-0 Leeds United</div>
+<div class="moment-score">23 Aug 2025 · Emirates · GW2</div>
+<div class="moment-desc">Biggest win of the season. Timber braces from corners, Gyökeres scores his first Arsenal goal. 15-year-old Max Dowman makes his PL debut. Five-star Gunners announce title intentions. Eze unveiled to the Emirates pre-match.</div>
+</div>
+<div class="moment-date">AUG</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-win">🔴 North London Derby</div>
+<div class="moment-title">Arsenal 4-1 Tottenham Hotspur</div>
+<div class="moment-score">23 Nov 2025 · Emirates · GW12 · 60,345</div>
+<div class="moment-desc">Derby day demolition. Eze's first career hat-trick. Trossard adds the fourth. Highest home attendance of the season. Spurs dismantled at the Emirates. London is RED. 🔴</div>
+</div>
+<div class="moment-date">NOV</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-win">Statement</div>
+<div class="moment-title">Arsenal 4-1 Aston Villa</div>
+<div class="moment-score">30 Dec 2025 · Emirates · GW19</div>
+<div class="moment-desc">End-of-year statement. Villa arrived on an 11-match winning streak — Arsenal destroyed them 4-1. Gabriel, Zubimendi, Trossard, and Jesus all score. Title momentum building heading into 2026.</div>
+</div>
+<div class="moment-date">DEC</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-loss">Setback</div>
+<div class="moment-title">Arsenal 2-3 Manchester United</div>
+<div class="moment-score">25 Jan 2026 · Emirates · GW23</div>
+<div class="moment-desc">Rare home defeat — first competitive home loss of the campaign. Three goals conceded at home for the first time since 2023-24. Cunha's late winner after Merino's equaliser. A wobble in the title race.</div>
+</div>
+<div class="moment-date">JAN</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-win">🔴 North London Derby (A)</div>
+<div class="moment-title">Tottenham 1-4 Arsenal</div>
+<div class="moment-score">22 Feb 2026 · Tottenham · GW28</div>
+<div class="moment-desc">Double over Spurs. Eze nets twice again, Gyökeres braces at the Lane. Arsenal go five points clear at the summit. Emirates-era dominance over their North London rivals complete.</div>
+</div>
+<div class="moment-date">FEB</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-record">History Maker 🌟</div>
+<div class="moment-title">Max Dowman = Youngest Ever PL Scorer</div>
+<div class="moment-score">14 Mar 2026 · Arsenal 2-0 Everton · GW31</div>
+<div class="moment-desc">16 years and 73 days old. Dowman carries the ball 65 yards after a corner counter to finish into an empty net, becoming the youngest goalscorer in Premier League history. Shatters James Vaughan's record by over half a year. The academy delivers again.</div>
+</div>
+<div class="moment-date">MAR</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-win">Title-Clutch Run</div>
+<div class="moment-title">Four wins, zero goals conceded</div>
+<div class="moment-score">25 Apr – 18 May 2026 · GW34-37</div>
+<div class="moment-desc">After back-to-back defeats vs Bournemouth and Man City, Arsenal go ruthless: Newcastle 1-0 (Eze) → Fulham 3-0 (Gyökeres ×2, Saka) → West Ham 0-1 (Trossard) → Burnley 1-0 (Havertz header). Championship mentality.</div>
+</div>
+<div class="moment-date">APR-MAY</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-milestone">🔴 TITLE WON</div>
+<div class="moment-title">CHAMPIONS! Man City draw at Bournemouth</div>
+<div class="moment-score">19 May 2026</div>
+<div class="moment-desc">ARSENAL ARE PREMIER LEAGUE CHAMPIONS! 🏆 City held 1-1 at the Vitality Stadium. Arsenal's 22-year wait is OVER. 14th English title, 4th in the PL era. First club to complete a PL season without conceding a penalty or receiving a red card.</div>
+</div>
+<div class="moment-date">🏆</div>
+</div>
+
+<div class="moment">
+<div class="moment-content">
+<div class="moment-tag tag-win">Trophy Lift 🏆</div>
+<div class="moment-title">Crystal Palace 1-2 Arsenal</div>
+<div class="moment-score">24 May 2026 · Selhurst Park · GW38</div>
+<div class="moment-desc">Martin Ødegaard lifts the Premier League trophy after a final-day win. 85 points, 26 wins, 19 clean sheets, +44 goal difference. 22 years of waiting is over. CHAMPIONS. 💛</div>
+</div>
+<div class="moment-date">🏆</div>
+</div>
+
+</div>
+</div>
+
+<!-- TOP SCORERS (PL only) -->
+<div class="section">
+<div class="section-title">TOP <span class="red">GUNNERS</span></div>
+<div class="section-sub">Premier League goals only 2025-26</div>
+<div class="scorers">
+<div class="scorer-row"><div class="scorer-rank">1</div><div><div class="scorer-name">Viktor Gyökeres</div><div class="scorer-pos">Forward · Sweden · 36 apps</div></div><div class="scorer-goals">14</div></div>
+<div class="scorer-row"><div class="scorer-rank">=2</div><div><div class="scorer-name">Bukayo Saka</div><div class="scorer-pos">Winger · England · 35 apps</div></div><div class="scorer-goals">7</div></div>
+<div class="scorer-row"><div class="scorer-rank">=2</div><div><div class="scorer-name">Eberechi Eze</div><div class="scorer-pos">Midfielder · England</div></div><div class="scorer-goals">7</div></div>
+<div class="scorer-row"><div class="scorer-rank">4</div><div><div class="scorer-name">Leandro Trossard</div><div class="scorer-pos">Forward · Belgium · 31 apps</div></div><div class="scorer-goals">6</div></div>
+<div class="scorer-row"><div class="scorer-rank">5</div><div><div class="scorer-name">Martín Zubimendi</div><div class="scorer-pos">Midfielder · Spain · 38 apps</div></div><div class="scorer-goals">5</div></div>
+<div class="scorer-row"><div class="scorer-rank">5</div><div><div class="scorer-name">Declan Rice</div><div class="scorer-pos">Midfielder · England · 36 apps</div></div><div class="scorer-goals">4</div></div>
+</div>
+</div>
+
+<!-- SQUAD HEROES -->
+<div class="section">
+<div class="section-title">THE <span class="red">HEROES</span></div>
+<div class="section-sub">PL title-winning squad 2025-26</div>
+<div class="squad-grid">
+<div class="player-card"><div class="player-num">1</div><div class="player-name">David Raya</div><div class="player-role">GK · Golden Glove 🧤</div></div>
+<div class="player-card"><div class="player-num">2</div><div class="player-name">William Saliba</div><div class="player-role">DEF · Rock ⛰️</div></div>
+<div class="player-card"><div class="player-num">6</div><div class="player-name">Gabriel Magalhães</div><div class="player-role">DEF · Leader 💪</div></div>
+<div class="player-card"><div class="player-num">8</div><div class="player-name">Martin Ødegaard</div><div class="player-role">MID · Captain 🎖️</div></div>
+<div class="player-card"><div class="player-num">41</div><div class="player-name">Declan Rice</div><div class="player-role">MID · Lighthouse 🗼</div></div>
+<div class="player-card"><div class="player-num">7</div><div class="player-name">Bukayo Saka</div><div class="player-role">FWD · Star ⭐</div></div>
+<div class="player-card"><div class="player-num">23</div><div class="player-name">Viktor Gyökeres</div><div class="player-role">FWD · Top Scorer ⚽</div></div>
+<div class="player-card"><div class="player-num">10</div><div class="player-name">Eberechi Eze</div><div class="player-role">MID · Maestro 🎩</div></div>
+<div class="player-card"><div class="player-num">12</div><div class="player-name">Jurriën Timber</div><div class="player-role">DEF · Warrior 🛡️</div></div>
+<div class="player-card"><div class="player-num">29</div><div class="player-name">Kai Havertz</div><div class="player-role">FWD · Title Clutch 🏆</div></div>
+<div class="player-card"><div class="player-num">3</div><div class="player-name">Riccardo Calafiori</div><div class="player-role">DEF · Italian 🇮🇹</div></div>
+<div class="player-card"><div class="player-num">15</div><div class="player-name">Max Dowman</div><div class="player-role">FWD · Record Breaker 🌟</div></div>
+</div>
+</div>
+
+<!-- TITLE-DECIDING RUN -->
+<div class="quote-section">
+<div class="quote">"You keep digging, digging, digging, and you have to keep digging because one day the gold is going to be there. Finally, Arsenal have found their way to the treasure."</div>
+<div class="quote-author">— Mikel Arteta</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div class="emoji">🔴🏆🔴</div>
+<h3>ARSENAL CHAMPIONS 2025-26</h3>
+<p>14th English Title · 22 Year Wait · London Is Red</p>
+<p style="margin-top:0.5rem;font-size:0.7rem;color:#444">Made with ❤️ by Yuki 🐱 · COYG</p>
+</div>
+
+</body>
+</html>

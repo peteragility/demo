@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSS Models on Databricks FMAPI — Platform Comparison</title>
+<style>
+  :root{--bg:#0e1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#ff3621;--green:#3fb950;--red:#f85149;--yellow:#d29922;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 20px 80px;}
+  header{text-align:center;padding:36px 0 28px;border-bottom:1px solid var(--border);margin-bottom:36px;}
+  header h1{font-size:28px;font-weight:800;letter-spacing:-0.5px;}
+  header h1 .hl{color:var(--accent);}
+  header p{color:var(--muted);margin-top:8px;font-size:14px;}
+  .updated{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 14px;font-size:12px;color:var(--muted);margin-top:14px;}
+  h2{font-size:20px;margin:44px 0 6px;display:flex;align-items:center;gap:10px;}
+  h2 .num{color:var(--accent);font-weight:800;}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:18px;}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:14px;margin-bottom:14px;}
+  th{background:#1c2333;text-align:left;padding:12px 14px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);border-bottom:1px solid var(--border);}
+  td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .yes{color:var(--green);font-weight:700;}
+  .no{color:var(--red);font-weight:600;}
+  .warn{color:var(--yellow);font-weight:600;}
+  .dbx{background:rgba(255,54,33,0.08);}
+  .dbcol{border-left:3px solid var(--accent);}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin:1px 2px;background:#21262d;color:var(--text);white-space:nowrap;}
+  .tag.new{background:rgba(63,185,80,0.15);color:var(--green);}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:18px 0;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;}
+  .card h3{font-size:15px;margin-bottom:10px;color:var(--accent);}
+  .card ul{list-style:none;}
+  .card li{font-size:13px;padding:5px 0 5px 22px;position:relative;color:var(--text);}
+  .card li:before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700;}
+  .card li.x:before{content:'✗';color:var(--red);}
+  .callout{background:linear-gradient(135deg,rgba(255,54,33,0.12),rgba(255,54,33,0.03));border:1px solid rgba(255,54,33,0.35);border-radius:12px;padding:20px 22px;margin:20px 0;font-size:14px;}
+  .callout b{color:var(--accent);}
+  .footnote{font-size:12px;color:var(--muted);margin-top:8px;}
+  .footnote a{color:#58a6ff;text-decoration:none;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:800px){.grid2{grid-template-columns:1fr;}}
+  .big{font-size:26px;font-weight:800;color:var(--accent);}
+  .stat{text-align:center;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+  .stat .lbl{font-size:12px;color:var(--muted);margin-top:4px;}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:18px 0;}
+  .pill{font-size:11px;border-radius:6px;padding:2px 8px;display:inline-block;}
+  .pill.g{background:rgba(63,185,80,0.15);color:var(--green);}
+  .pill.y{background:rgba(210,153,34,0.15);color:var(--yellow);}
+  .pill.r{background:rgba(248,81,73,0.15);color:var(--red);}
+  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Open-Weight Models: <span class="hl">Databricks FMAPI</span> vs Bedrock vs Azure Foundry vs Vertex AI</h1>
+  <p>Team reference — GLM 5.3 · Kimi K3 · DeepSeek V4.1 Flash and the broader OSS lineup</p>
+  <span class="updated">Data verified 2026-09-19 · official docs &amp; announcements</span>
+</header>
+
+<!-- SECTION 1: AVAILABILITY -->
+<h2><span class="num">01</span> Model Availability &amp; Day-Zero Updates</h2>
+<p class="sub">Exact versions matter. Sources: Databricks supported-models docs, AWS Bedrock blog (Sep 19), Microsoft Learn Fireworks catalog (Sep 2), Vertex AI release notes (Sep 13).</p>
+
+<table>
+<tr><th>Model</th><th class="dbcol">Databricks FMAPI</th><th>Azure Foundry<br><span style="font-weight:400">(via Fireworks)</span></th><th>AWS Bedrock</th><th>Vertex AI</th></tr>
+<tr>
+  <td><b>GLM 5.3</b></td>
+  <td class="dbx"><span class="yes">✓ Databricks-hosted</span><br><span class="tag new">day-0 / latest</span></td>
+  <td><span class="yes">✓ FW-GLM-5.3</span><br><span class="tag">pay-per-token</span></td>
+  <td><span class="no">✗ GLM 5 only</span><br><span class="tag">1 gen behind</span></td>
+  <td><span class="no">✗ GLM 5 (exp.)</span><br><span class="tag">no 5.x</span></td>
+</tr>
+<tr>
+  <td><b>Kimi K3</b><br><span style="color:var(--muted);font-size:12px">2.8T params · 1M ctx · vision</span></td>
+  <td class="dbx"><span class="yes">✓ databricks-kimi-k3</span><br><span class="tag new">day-0 / latest</span></td>
+  <td><span class="yes">✓ FW-Kimi-K3</span><br><span class="tag">pay-per-token</span></td>
+  <td><span class="yes">✓ kimi-k3 (new launch)</span><br><span class="tag">global profile −10%</span> <span class="tag">explicit prompt caching</span> <span class="tag new">1st OSS w/ caching on Bedrock</span></td>
+  <td><span class="no">✗ K2 Thinking max</span><br><span class="tag">2 gens behind</span></td>
+</tr>
+<tr>
+  <td><b>DeepSeek V4.1 Flash</b></td>
+  <td class="dbx"><span class="yes">✓ v4-1-flash</span><br><span class="tag new">ONLY platform with 4.1</span></td>
+  <td><span class="warn">△ V4 Flash 0731</span><br><span class="tag">same gen, diff naming</span></td>
+  <td><span class="no">✗ V3.2 max</span><br><span class="tag">1 gen behind</span></td>
+  <td><span class="no">✗ V3.2 max</span><br><span class="tag">1 gen behind</span></td>
+</tr>
+<tr>
+  <td><b>GLM 5.3 Flash · GLM 5.2 (+Fast) · Kimi K2.6/K2.7 · DeepSeek V4 Pro · Qwen 3.5 · Llama 4 · Gemma 4 …</b></td>
+  <td class="dbx"><span class="yes">✓ full lineup</span></td>
+  <td><span class="yes">✓ most</span></td>
+  <td><span class="warn">△ partial, lags 1–2 gens</span></td>
+  <td><span class="no">✗ sparsest</span></td>
+</tr>
+</table>
+
+<div class="cards">
+  <div class="card"><h3>Why Databricks updates day-0</h3><ul>
+    <li>Self-hosted open weights on our own GPU fleet — no partner dependency</li>
+    <li>Our engineering serves new checkpoints as they drop</li>
+    <li>DS V4.1 Flash: <b>exclusive</b> — no other platform has this exact version</li>
+  </ul></div>
+  <div class="card"><h3>How the others do it</h3><ul>
+    <li class="x">Azure: relies on <b>Fireworks AI partnership</b> to deliver new OSS (day-0 yes, but it's a partner's engine, not Azure's)</li>
+    <li class="x">Bedrock: self-managed but ships slower — GLM/DeepSeek trail a generation</li>
+    <li class="x">Vertex: no inference partner at all; slowest OSS cadence of the three hyperscalers</li>
+  </ul></div>
+</div>
+
+<!-- SECTION 2: PERFORMANCE -->
+<h2><span class="num">02</span> Inference Performance &amp; Latency</h2>
+<p class="sub">Verified claims only. Honest framing: there is no apples-to-apples public cross-platform benchmark for platform-hosted OSS models — numbers below are each vendor's own guarantees plus independent third-party data where it exists.</p>
+
+<div class="stats">
+  <div class="stat"><div class="big">&lt;50ms</div><div class="lbl">Databricks FMAPI overhead latency <b>per request</b> (official docs)</div></div>
+  <div class="stat"><div class="big">7,200</div><div class="lbl">requests/min per workspace (GLM 5.3 / DS 4.1 Flash) — official limits</div></div>
+  <div class="stat"><div class="big">200K</div><div class="lbl">tokens/min throughput per workspace (official limits)</div></div>
+  <div class="stat"><div class="big">200 QPS</div><div class="lbl">with Provisioned Throughput + SLA-backed dedicated capacity</div></div>
+</div>
+
+<table>
+<tr><th>Dimension</th><th class="dbcol">Databricks FMAPI</th><th>Azure (Fireworks)</th><th>Bedrock</th><th>Vertex</th></tr>
+<tr><td><b>Published overhead guarantee</b></td><td class="dbx"><span class="yes">&lt;50ms (docs)</span></td><td><span class="warn">not published</span></td><td><span class="warn">not published</span></td><td><span class="warn">not published</span></td></tr>
+<tr><td><b>3rd-party throughput data</b></td><td class="dbx"><span class="warn">not independently tracked*</span></td><td><span class="yes">Artificial Analysis: K3 112 t/s · DS V4 Flash 249 t/s · GLM-5.2 227 t/s (Fireworks direct)</span></td><td><span class="warn">not tracked for OSS</span></td><td><span class="warn">not tracked</span></td></tr>
+<tr><td><b>Latency tiers</b></td><td class="dbx"><span class="yes">Standard → Priority → Provisioned (SLA)</span></td><td><span class="yes">Data Zone → PTU</span></td><td><span class="yes">On-demand → Provisioned</span></td><td><span class="yes">MaaS → dedicated</span></td></tr>
+<tr><td><b>Prompt caching</b></td><td class="dbx"><span class="yes">Cache-read pricing ~10-20% (built-in)</span></td><td><span class="warn">per-model</span></td><td><span class="yes">K3 explicit caching (first OSS model)</span></td><td><span class="warn">per-model</span></td></tr>
+</table>
+<p class="footnote">*Independent speed boards (Artificial Analysis) cover Fireworks direct endpoints, not platform-hosted equivalents. Recommend a 50-request ping benchmark on your own traffic before committing — we can share a script.</p>
+
+<div class="callout">📣 <b>Selling point (fact-check version):</b> "Our engineering makes inference fastest" — <b>defensible claims:</b> &lt;50ms overhead guarantee, highest published RPM/TPM for these exact models, Priority + Provisioned SLA tiers. <b>Avoid claiming:</b> "fastest vs everyone" — no public apples-to-apples data; specialized inference clouds (Cerebras/Groq) publish higher raw t/s on their own silicon. Say: <i>"fastest where it's verifiable, SLA-backed where it matters."</i></div>
+
+<!-- SECTION 3: COST -->
+<h2><span class="num">03</span> Token Cost — Input / Output / Cache</h2>
+<p class="sub">Databricks: official DBU pricing (Standard pay-per-token). Azure: Microsoft pricing page (US Data Zone). Bedrock: AWS Bedrock pricing page, Standard tier. USD per 1M tokens.</p>
+
+<table>
+<tr><th>Model</th><th class="dbcol">Databricks (DBU→USD*)</th><th>Azure Fireworks</th><th>AWS Bedrock (K3)</th><th>Verdict</th></tr>
+<tr>
+  <td><b>Kimi K3</b></td>
+  <td class="dbx">in $3.00 · out $15.00<br><span class="tag">cache-read $0.30</span></td>
+  <td>in $3.30 · out $16.50<br><span class="tag">cache $0.33</span></td>
+  <td>Global CRIS: in $3.00 · out $15.00<br>US CRIS: in $3.30 · out $16.50<br><span class="tag">cache-read $0.30/$0.33</span> <span class="tag">cache-write $3.75</span></td>
+  <td><span class="yes">Databricks Global-tier parity with Bedrock; ~9% cheaper than Azure/US tiers</span></td>
+</tr>
+<tr>
+  <td><b>GLM 5.3</b></td>
+  <td class="dbx">in ~$1.40 · out ~$4.40<br><span class="tag">cache-read $0.26</span></td>
+  <td>check current FW-GLM-5.3 rate<br><span class="tag">same ballpark</span></td>
+  <td><span class="pill g">on par / cheaper</span></td>
+</tr>
+<tr>
+  <td><b>DeepSeek V4.x Flash</b></td>
+  <td class="dbx">in <b>$0.14</b> · out <b>$0.28</b><br><span class="tag">cache-read $0.028</span></td>
+  <td>comparable class</td>
+  <td><span class="yes">commodity-cheap on both; 4.1 exclusive here</span></td>
+</tr>
+</table>
+<p class="footnote">*1 DBU ≈ $0.07 serverless SKU; exact USD varies with your DBU contract. Azure prices carry regional data-zone multipliers. Verify list: databricks.com/product/pricing/foundation-model-serving.</p>
+
+<div class="callout">💰 <b>Cost story for customers:</b> on par or cheaper than Azure Fireworks on every head-to-head (K3 ~9% cheaper), with built-in cache-read discounts that compound for agent workloads (repeated system prompts + tool defs). Plus: FMAPI traffic flows through Unity Gateway → per-team spend caps, token attribution, and routing at no extra plumbing.</div>
+
+<!-- SECTION 5: REGIONS & CACHING -->
+<h2><span class="num">05</span> Regions, Residency &amp; Prompt Caching</h2>
+<p class="sub">How each platform exposes endpoints, whether global cross-region routing is needed, and what it costs in data-residency terms.</p>
+
+<table>
+<tr><th></th><th class="dbcol">Databricks FMAPI</th><th>AWS Bedrock</th><th>Azure (Fireworks)</th><th>Vertex AI</th></tr>
+<tr><td><b>Endpoint model</b></td><td class="dbx">Built into your workspace (serverless pay-per-token). No region prefixes to manage — platform routes automatically.</td><td>Three tiers: In-Region / Geo (us.) / Global (global.) cross-region inference profiles — <b>you must choose</b></td><td>Data Zone Standard/Provisioned (6 US regions); Global PTU all regions except Gov cloud</td><td>Model Garden MaaS, per-region</td></tr>
+<tr><td><b>Global cross-region endpoint?</b></td><td class="dbx"><span class="yes">Not needed</span> — serverless endpoints auto-route; data boundary stays with your workspace region + Unity Catalog governance</td><td><span class="warn">Yes, and it's a trade-off:</span> global profile is ~10% cheaper BUT requests can route to <b>any commercial region</b> — no data-residency guarantee (FSI caution ⚠️). US profile locks residency, costs 10% more.</td><td>Data Zone locks US residency; Global PTU broader but check compliance per deployment</td><td>Direct per-region</td></tr>
+</table>
+
+<table>
+<tr><th>Prompt caching</th><th class="dbcol">Databricks FMAPI</th><th>AWS Bedrock (K3)</th><th>Azure (Fireworks)</th></tr>
+<tr><td><b>Coverage</b></td><td class="dbx"><span class="yes">All open-weight models, built-in</span> — batch, pay-per-token &amp; provisioned; Agent Bricks / Genie / AI Functions inherit automatically</td><td>K3 only (first OSS model with explicit caching on Bedrock)</td><td>Per-model</td></tr>
+<tr><td><b>Mode</b></td><td class="dbx"><span class="yes">Automatic</span> — zero config</td><td>Explicit: mark <span class="tag">prompt_cache_breakpoint</span> (≥1,024 tokens) yourself</td><td>Per-model</td></tr>
+<tr><td><b>Price</b></td><td class="dbx">Cache-read ~10–20% of input price · <span class="yes">no write premium</span></td><td>Cache-read $0.30 · <span class="warn">cache-write $3.75 (+25% premium)</span>, held 30 min</td><td>K3 cache-read $0.33</td></tr>
+</table>
+<div class="callout">⚡ <b>Caching story:</b> agent workloads resend stable context (system prompts, tool definitions) every turn. On Databricks that discount applies automatically across the whole OSS lineup with no write premium — on Bedrock you opt in per-request, on the one model that supports it, and pay 25% extra to write the cache.</div>
+
+<table>
+<tr><th>Inference features</th><th class="dbcol">Databricks</th><th>Bedrock</th><th>Azure FW</th></tr>
+<tr><td><b>Latency tiers</b></td><td class="dbx">Standard → <b>Priority</b> (queue jump) → <b>Provisioned (SLA)</b></td><td>Standard / Flex / Priority / Reserved</td><td>Data Zone → PTU</td></tr>
+<tr><td><b>Published overhead guarantee</b></td><td class="dbx"><span class="yes">&lt;50ms per request</span></td><td>—</td><td>—</td></tr>
+<tr><td><b>Rate limits (these models)</b></td><td class="dbx">200K TPM · 7,200 RPM · 20K output tokens</td><td>per-model quotas</td><td>Tokens/min set at deployment</td></tr>
+<tr><td><b>Tool calling + structured output</b></td><td class="dbx">✅</td><td>✅ (2026 platform-level)</td><td>✅ OpenAI/v1 compatible</td></tr>
+<tr><td><b>Fine-tuned model serving</b></td><td class="dbx">✅ Provisioned serves the full model family incl. fine-tunes</td><td>limited</td><td>✅ Fireworks training/LoRA</td></tr>
+<tr><td><b>Governance add-ons</b></td><td class="dbx"><span class="yes">Unity Gateway: spend caps + audit + routing built-in</span></td><td>Guardrails billed separately</td><td>Azure Policy / Entra (separate layer)</td></tr>
+</table>
+
+<!-- SUMMARY -->
+<h2><span class="num">04</span> One-Slide Summary</h2>
+<table>
+<tr><th></th><th class="dbcol">Databricks FMAPI</th><th>Azure + Fireworks</th><th>Bedrock</th><th>Vertex</th></tr>
+<tr><td><b>Exact models (5.3/K3/4.1)</b></td><td class="dbx"><span class="yes">3/3 ✓</span></td><td><span class="warn">2.5/3</span></td><td><span class="warn">1.5/3 (K3 ✓, GLM/DS lag)</span></td><td><span class="no">0/3</span></td></tr>
+<tr><td><b>Day-0 OSS updates</b></td><td class="dbx"><span class="pill g">self-engineered</span></td><td><span class="pill y">via partner</span></td><td><span class="pill y">lags 1-2 gens</span></td><td><span class="pill r">slowest</span></td></tr>
+<tr><td><b>Latency evidence</b></td><td class="dbx"><span class="pill g">&lt;50ms + SLA tiers</span></td><td><span class="pill g">3rd-party t/s data</span></td><td><span class="pill y">unpublished</span></td><td><span class="pill y">unpublished</span></td></tr>
+<tr><td><b>Cost</b></td><td class="dbx"><span class="pill g">on par–cheaper</span></td><td><span class="pill y">competitive</span></td><td><span class="pill y">older models only</span></td><td><span class="pill r">n/a for lineup</span></td></tr>
+</table>
+
+<div class="callout" style="border-color:var(--green);background:linear-gradient(135deg,rgba(63,185,80,0.1),transparent);">
+🎯 <b>The pitch:</b> "The only platform where all three models run <b>on our own engineering</b> — not a partner's engine — with day-0 support for every new open-weight release, published latency guarantees, and per-token costs at or below partner-hosted alternatives. <b>The model is a rental; the platform is the asset.</b>"
+</div>
+
+<!-- SECTION 6: SALES PLAYBOOK -->
+<h2><span class="num">06</span> Sell It — Playbook for Sales &amp; SA</h2>
+<p class="sub">Key points to capture, by role. One pitch, one proof stack, one objection table.</p>
+
+<div class="callout">
+🗣️ <b>The 30-second pitch:</b> "Every hyperscaler will serve you open-weight models — eventually. The question is <b>when</b>, <b>on whose engineering</b>, and <b>under whose governance</b>. Databricks is the only platform serving the exact latest OSS models (GLM 5.3, Kimi K3, DeepSeek V4.1 Flash) <b>on our own infrastructure, day-0</b> — not via a partner's engine — with automatic prompt caching, published latency guarantees, and spend governance built in. <b>The model is a rental. The platform is the asset.</b>"
+</div>
+
+<div class="grid2">
+  <div class="card"><h3>🎯 Sales — lead with these 3</h3><ul>
+    <li><b>Day-0 OSS, self-engineered.</b> Azure needs Fireworks (a partner engine) for new open models; Bedrock trails a generation; Vertex two. We host on our own fleet — newest checkpoints, no partner dependency</li>
+    <li><b>Cost: on par or cheaper.</b> K3 matches Bedrock's best tier ($3/$15), beats Azure by ~9%; DeepSeek Flash at $0.14/$0.28 is commodity-cheap. Cache-read discounts apply <b>automatically</b> across the whole lineup</li>
+    <li><b>Governance included, not bolted on.</b> Traffic through Unity Gateway = per-team spend caps, audit trails, model routing. Bedrock charges separately for Guardrails; Azure governance lives in another stack</li>
+  </ul></div>
+  <div class="card"><h3>🔧 SA — prove with these 3</h3><ul>
+    <li><b>&lt;50ms overhead</b> per request (published), Priority queue-jump tier, Provisioned Throughput with SLA + fine-tuned model serving on the same endpoints</li>
+    <li><b>Automatic prompt caching on every open-weight model</b> — batch, pay-per-token, provisioned; Agent Bricks/Genie inherit it. Bedrock's K3-only explicit caching costs +25% to write</li>
+    <li><b>No region-prefix gymnastics.</b> Serverless endpoints live in the workspace; data boundary is clean. Bedrock's cheap global tier routes requests to <b>any commercial region</b> — an FSI compliance conversation</li>
+  </ul></div>
+</div>
+
+<table>
+<tr><th>Objection</th><th>Response</th></tr>
+<tr><td>"Bedrock just added Kimi K3 too"</td><td>True — one model, and their first OSS with caching. Ask them for GLM 5.3 or DeepSeek 4.1: they stop at GLM 5 / V3.2. One model arriving late ≠ a day-0 platform.</td></tr>
+<tr><td>"We're an Azure shop — Foundry is native"</td><td>Fair, and Fireworks on Foundry is good — it's a <b>partner engine</b>, several older FW models are already PTU-only (pay-per-token deprecated), excluded from EU Data Boundary, no FedRAMP/PCI. If data gravity is in your lakehouse, inference belongs next to it.</td></tr>
+<tr><td>"Fireworks direct is cheaper than everyone"</td><td>Check the K3 numbers: FW on Azure is $3.30/$16.50; we're $3.00/$15.00 with automatic caching. Direct Fireworks = another vendor, another governance gap, no UC integration.</td></tr>
+<tr><td>"GPU speed records are on Cerebras/Groq"</td><td>Specialized silicon, different comparison set — no enterprise lakehouse, no governance. We publish &lt;50ms overhead + SLA tiers and will benchmark your workload on request (official notebook exists).</td></tr>
+<tr><td>"Open models are risky for FSI"</td><td>On our platform they run inside your governance boundary: UC permissions, inference tables, spend caps, PII guardrails via Gateway. Azure's Fireworks route is explicitly outside EU Data Boundary and FedRAMP.</td></tr>
+<tr><td>"We'll just wait for our cloud to catch up"</td><td>Model generations are moving quarterly. Every quarter of waiting = paying frontier prices for tier-3 tasks. The 4-lever cost story (up to 90%) starts with model choice — which requires the models.</td></tr>
+</table>
+
+<div class="card"><h3>❓ Discovery questions (qualify fast)</h3><ul>
+  <li>Which open models are you evaluating — and does your current platform have those <b>exact versions</b> today?</li>
+  <li>How much of your AI spend is tier-3 tasks on frontier-priced tokens?</li>
+  <li>Who audits your model calls today — and is it runtime enforcement or after-the-fact logs?</li>
+  <li>Any data-residency requirements? (If yes → the Bedrock global-tier trade-off lands hard)</li>
+</ul></div>
+
+<div class="callout" style="border-color:var(--green);background:linear-gradient(135deg,rgba(63,185,80,0.1),transparent);">
+📎 <b>Proof stack (all public):</b> FMAPI supported-models &amp; limits docs · FMAPI pricing page · prompt-caching blog · Bedrock K3 launch blog (Sep 19) · Microsoft Learn Fireworks catalog (Sep 2) · Vertex release notes. Offer on request: benchmark notebook run on customer's workload.
+</div>
+
+<footer>
+  Sources: docs.databricks.com FMAPI supported-models &amp; limits · databricks.com FMAPI pricing · aws.amazon.com Bedrock blog "Introducing Kimi K3" (Sep 19, 2026) · learn.microsoft.com Fireworks on Foundry catalog (updated Sep 2, 2026) · cloud.google.com Vertex AI release notes (Sep 13, 2026) · artificialanalysis.ai Fireworks provider page.<br><br>
+  ⚠️ Model availability is fast-moving — this page reflects verified data as of 2026-09-19. Re-verify before customer-facing use. Compiled for internal team reference.
+</footer>
+
+</div>
+</body>
+</html>

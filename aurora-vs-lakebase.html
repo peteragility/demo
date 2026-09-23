@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurora vs Lakebase · Architecture Deep Dive</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-card: #111827;
+    --bg-card-hover: #1a2236;
+    --border: #1f2937;
+    --text: #e5e7eb;
+    --text-dim: #9ca3af;
+    --text-muted: #6b7280;
+    --accent: #ff3621;        /* Databricks red */
+    --accent-2: #ff8a00;       /* AWS orange */
+    --green: #10b981;
+    --blue: #3b82f6;
+    --purple: #a855f7;
+    --yellow: #fbbf24;
+    --code-bg: #0f1623;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Hiragino Sans", sans-serif;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(255, 54, 33, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(255, 138, 0, 0.06) 0%, transparent 50%);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 24px 120px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(255, 54, 33, 0.15);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 42px;
+    margin: 0 0 12px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ff3621 0%, #ff8a00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 28px;
+    margin-bottom: 50px;
+  }
+  .toc h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 22px;
+    columns: 2;
+    column-gap: 28px;
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .toc a:hover { color: var(--accent); }
+
+  h2 {
+    font-size: 30px;
+    margin: 60px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-size: 22px;
+    margin: 36px 0 12px;
+    color: var(--text);
+  }
+  h4 {
+    font-size: 17px;
+    margin: 24px 0 10px;
+    color: var(--accent-2);
+  }
+  p { margin: 0 0 16px; color: var(--text-dim); }
+  p strong, li strong { color: var(--text); }
+  ul, ol { color: var(--text-dim); padding-left: 24px; }
+  li { margin-bottom: 6px; }
+
+  code {
+    font-family: "SF Mono", Monaco, Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    color: #fbbf24;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-family: "SF Mono", Monaco, Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #d1d5db;
+  }
+  pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* Side-by-side cards */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  @media (max-width: 720px) {
+    .vs-grid { grid-template-columns: 1fr; }
+    .toc ol { columns: 1; }
+    h1 { font-size: 32px; }
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .card.aurora {
+    border-top: 3px solid var(--accent-2);
+  }
+  .card.lakebase {
+    border-top: 3px solid var(--accent);
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .card-tag {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  th {
+    background: var(--bg-card);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td strong { color: var(--text); }
+
+  /* Architecture diagrams (ASCII feel via styled boxes) */
+  .arch {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: "SF Mono", Monaco, monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #d1d5db;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* Callouts */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(255, 54, 33, 0.06);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+  }
+  .callout.tip { border-color: var(--green); background: rgba(16, 185, 129, 0.06); }
+  .callout.warn { border-color: var(--yellow); background: rgba(251, 191, 36, 0.06); }
+  .callout.info { border-color: var(--blue); background: rgba(59, 130, 246, 0.06); }
+  .callout strong { color: var(--text); }
+
+  /* Pattern blocks */
+  .pattern {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .pattern h4 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 18px;
+  }
+
+  .killer {
+    background: linear-gradient(135deg, rgba(255, 54, 33, 0.1), rgba(255, 138, 0, 0.05));
+    border: 1px solid rgba(255, 54, 33, 0.3);
+  }
+  .star {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+    font-weight: 600;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--accent-2); text-decoration: none; }
+
+  a.ext {
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--border);
+  }
+  a.ext:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <span class="badge">Architecture Deep Dive · 2026-05-12</span>
+  <h1>Amazon Aurora vs Databricks Lakebase</h1>
+  <p class="subtitle">Cloud-native OLTP, two philosophies. From distributed block storage to Postgres-on-Lakehouse — and what it means for AI agents.</p>
+  <div class="meta">Prepared for Peter Chan · Databricks HK+TW SA Lead (from Apr 27, 2026)</div>
+</header>
+
+<nav class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#overview">Architecture Overview</a></li>
+    <li><a href="#technical">Technical Comparison</a></li>
+    <li><a href="#usecases">Use Case Positioning</a></li>
+    <li><a href="#philosophy">Architectural Philosophy</a></li>
+    <li><a href="#neon">Neon Architecture Deep Dive</a></li>
+    <li><a href="#agents">AI / Agentic Workload Fit</a></li>
+    <li><a href="#strategic">Strategic Take</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ -->
+<h2 id="overview">🏛️ Architecture Overview</h2>
+
+<div class="vs-grid">
+  <div class="card aurora">
+    <div class="card-title">Amazon Aurora</div>
+    <div class="card-tag">Cloud-native OLTP · MySQL/PostgreSQL compatible · GA 2014</div>
+    <div class="arch">┌─────────────────────────────────┐
+│   Compute Layer (stateless)     │
+│   Primary + up to 15 Read Reps  │
+└──────────┬──────────────────────┘
+           │ (log records only)
+┌──────────▼──────────────────────┐
+│   Distributed Storage Layer     │
+│   6 copies across 3 AZs         │
+│   Auto-scaling 10GB → 128TB     │
+└─────────────────────────────────┘</div>
+    <h4>Core innovations</h4>
+    <ul>
+      <li><strong>Compute / Storage separation</strong> — compute only ships redo log records to storage</li>
+      <li><strong>Quorum writes</strong> — 6 copies, 4/6 write quorum, 3/6 read quorum</li>
+      <li><strong>Self-healing storage</strong> via peer gossip + parallel re-replication</li>
+      <li><strong>No log replay on crash</strong> — storage layer handles redo asynchronously</li>
+    </ul>
+  </div>
+
+  <div class="card lakebase">
+    <div class="card-title">Databricks Lakebase</div>
+    <div class="card-tag">Postgres-on-Lakehouse · Built on Neon · GA late 2025</div>
+    <div class="arch">┌─────────────────────────────────┐
+│   Postgres Compute (Neon-based) │
+│   Serverless · branching        │
+└──────────┬──────────────────────┘
+           │ (WAL stream)
+┌──────────▼──────────────────────┐
+│   Object Storage (S3/ADLS/GCS)  │
+│   Delta Lake format             │
+│   Unity Catalog governance      │
+└─────────────────────────────────┘</div>
+    <h4>Core innovations</h4>
+    <ul>
+      <li><strong>Acquired Neon</strong> May 2025 (~$1B) — Postgres serverless engine</li>
+      <li><strong>Storage-compute separation</strong> via object storage (not block)</li>
+      <li><strong>Bidirectional Delta sync</strong> — OLTP data instantly available for analytics</li>
+      <li><strong>Git-like branching</strong> — copy-on-write Postgres branches</li>
+      <li><strong>Unity Catalog</strong> unifies governance for OLTP + OLAP</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="technical">⚙️ Technical Comparison</h2>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Dimension</th><th>Aurora</th><th>Lakebase</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Engine</strong></td><td>MySQL 5.7/8.0, PostgreSQL 11–16 fork</td><td>PostgreSQL (vanilla, via Neon)</td></tr>
+<tr><td><strong>Storage</strong></td><td>Custom distributed block storage</td><td>Object storage (S3) + Delta</td></tr>
+<tr><td><strong>Compute scaling</strong></td><td>Aurora Serverless v2 (ACUs, sub-second)</td><td>Serverless, scale-to-zero</td></tr>
+<tr><td><strong>Read replicas</strong></td><td>Up to 15, &lt;100ms lag</td><td>Branches (instant CoW)</td></tr>
+<tr><td><strong>Write throughput</strong></td><td>Single writer; Limitless DB GA 2024 for sharded writes</td><td>Single writer per Postgres instance</td></tr>
+<tr><td><strong>OLTP latency</strong></td><td>Sub-ms</td><td>Sub-ms (Neon-optimized)</td></tr>
+<tr><td><strong>Analytics integration</strong></td><td>Aurora Zero-ETL → Redshift (separate)</td><td><strong>Native Delta sync</strong>, query from Databricks SQL</td></tr>
+<tr><td><strong>Governance</strong></td><td>IAM + RDS-native</td><td><strong>Unity Catalog</strong> (unified with lakehouse)</td></tr>
+<tr><td><strong>HTAP capability</strong></td><td>Limited — needs zero-ETL pipeline</td><td><strong>Built-in</strong> (one platform)</td></tr>
+<tr><td><strong>Branching</strong></td><td>Aurora Clone (CoW, slowish)</td><td>Git-like instant branches (~1.5s)</td></tr>
+<tr><td><strong>Pricing model</strong></td><td>Per-instance + storage + I/O</td><td>Per-CU + storage</td></tr>
+<tr><td><strong>Multi-region</strong></td><td>Aurora Global Database (&lt;1s lag)</td><td>Not yet (early product)</td></tr>
+<tr><td><strong>Maturity</strong></td><td>GA 2014, battle-tested</td><td><strong>GA late 2025</strong>, very new</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="usecases">🎯 Use Case Positioning</h2>
+
+<div class="vs-grid">
+  <div class="card aurora">
+    <div class="card-title">Aurora strengths</div>
+    <ul>
+      <li>Pure OLTP workloads (e-commerce, SaaS, finance)</li>
+      <li>Extreme write throughput + low latency</li>
+      <li>AWS ecosystem (Lambda, API Gateway, etc.)</li>
+      <li>Mature production workloads</li>
+      <li>Multi-region active-active (Global Database)</li>
+    </ul>
+  </div>
+  <div class="card lakebase">
+    <div class="card-title">Lakebase strengths</div>
+    <ul>
+      <li><strong>HTAP scenarios</strong> — same data for transactions + analytics, no ETL</li>
+      <li>AI/ML — feature store + serving from same DB</li>
+      <li>Tight OLTP + lakehouse integration</li>
+      <li>Postgres branching for dev/test/agents</li>
+      <li>Existing Databricks customers simplifying stack</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="philosophy">💡 Architectural Philosophy</h2>
+
+<div class="callout">
+  <strong>Aurora</strong> — <em>"Best-in-class OLTP, integrate with analytics via pipelines."</em><br>
+  Focus on doing OLTP perfectly. Analytics arrives via Zero-ETL → Redshift / S3 → Athena. Two systems, data movement between them.
+</div>
+<div class="callout">
+  <strong>Lakebase</strong> — <em>"One platform, OLTP + analytics on the same data."</em><br>
+  Break the OLTP / OLAP silo. Operational data is instantly queryable from the lakehouse. Postgres protocol on the wire, lakehouse architecture underneath.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="neon">🔬 Neon Architecture Deep Dive</h2>
+
+<p>Traditional Postgres runs as <strong>one stateful box</strong> — compute + storage tightly coupled on one filesystem. Neon (acquired by Databricks May 2025, $1B) <strong>splits</strong> the two layers and connects them only via the <strong>WAL (Write-Ahead Log)</strong> stream.</p>
+
+<div class="arch">┌──────────────────────────────────────────────────┐
+│  COMPUTE LAYER (Ephemeral, Stateless)            │
+│  ┌─────────────────────────────────────────┐     │
+│  │  Postgres process                       │     │
+│  │  • Parse / Plan / Execute               │     │
+│  │  • Buffer cache (RAM)                   │     │
+│  │  • Local NVMe cache (hot pages)         │     │
+│  │  • NO local data files (!)              │     │
+│  └─────────────────────────────────────────┘     │
+└────────────┬───────────────────┬─────────────────┘
+             │                   │
+       WAL stream out      Page reads in
+             │                   │
+┌────────────▼───────────────────▼─────────────────┐
+│  DURABLE STORAGE LAYER (Disaggregated)           │
+│                                                  │
+│  ┌──────────────┐    ┌────────────────────────┐  │
+│  │ Safekeepers  │───▶│  Pageservers           │  │
+│  │ (Paxos)      │    │  (LSM-tree on local    │  │
+│  │ • WAL only   │    │   NVMe + S3 tiering)   │  │
+│  │ • 3-way repl │    │  • Materialize pages   │  │
+│  │ • Quorum ack │    │    on demand from WAL  │  │
+│  │   = COMMIT   │    │  • Cache hot pages     │  │
+│  └──────────────┘    └─────────┬──────────────┘  │
+│                                │                 │
+│                                ▼                 │
+│                   ┌────────────────────────┐     │
+│                   │  Object Storage (S3)   │     │
+│                   │  • Cold pages          │     │
+│                   │  • Long-term history   │     │
+│                   │  • Snapshots           │     │
+│                   └────────────────────────┘     │
+└──────────────────────────────────────────────────┘</div>
+
+<h3>🔑 The Three Storage Components</h3>
+
+<div class="pattern">
+  <h4>1. Safekeepers — Durability</h4>
+  <ul>
+    <li>Receive the WAL stream from compute</li>
+    <li><strong>Paxos quorum</strong>: 3 safekeepers, 2/3 acknowledge → commit</li>
+    <li>Forward WAL to Pageservers</li>
+    <li><strong>Commit latency</strong> = quorum WAL ack time (millisecond range)</li>
+  </ul>
+</div>
+
+<div class="pattern">
+  <h4>2. Pageservers — Page reconstruction</h4>
+  <ul>
+    <li>Rebuild Postgres 8KB pages from WAL deltas</li>
+    <li><strong>LSM-tree</strong> on local NVMe (RocksDB-style)</li>
+    <li>On page request: find latest materialized image + replay WAL deltas on top</li>
+    <li>Tier cold pages out to S3</li>
+  </ul>
+</div>
+
+<div class="pattern">
+  <h4>3. Object Storage — S3 / ADLS / GCS</h4>
+  <ul>
+    <li>Long-term durability</li>
+    <li><strong>Not on the critical path</strong> — query latency is independent of S3</li>
+    <li>Snapshots, time travel, branch base layers</li>
+  </ul>
+</div>
+
+<h3>⚡ Key Architectural Wins</h3>
+
+<div class="pattern killer">
+  <h4>A. Image Generation Pushdown <span class="star">2026 Q1</span></h4>
+  <p>Traditional Postgres protects against <strong>torn pages</strong> (OS crash mid-page-write) by embedding <strong>Full Page Writes (FPW)</strong> in WAL — first modification of any page writes the entire 8KB to WAL. Massive write amplification.</p>
+  <p><strong>Lakebase fix:</strong></p>
+  <ul>
+    <li>Compute is stateless → <strong>no local page, no torn-page risk</strong></li>
+    <li>Disable FPW → WAL volume drops dramatically</li>
+    <li>Reads need long delta replay? → <strong>Pageserver itself emits periodic page images</strong> as reset points</li>
+    <li>Result: <strong>~5× faster Postgres writes</strong> (<a class="ext" href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank">Databricks blog</a>)</li>
+  </ul>
+</div>
+
+<div class="pattern">
+  <h4>B. Instant Branching (storage-layer copy-on-write)</h4>
+  <ul>
+    <li>A branch = new compute + a logical pointer into existing storage</li>
+    <li>Branch creation: <strong>~1.5 seconds</strong> (vs RDS clone in minutes)</li>
+    <li>Stores only diff, no data duplication</li>
+    <li>True git-like semantics for databases</li>
+  </ul>
+</div>
+
+<div class="pattern">
+  <h4>C. Scale-to-Zero</h4>
+  <ul>
+    <li>Idle compute → suspended</li>
+    <li>Resume in ~hundreds of ms (cold start)</li>
+    <li>Storage continues handling WAL (which is empty when idle) → real cost savings</li>
+  </ul>
+</div>
+
+<div class="pattern">
+  <h4>D. Zero-Downtime Patching (Prewarming)</h4>
+  <ul>
+    <li>Stateless compute → spin a new replica, prewarm buffer cache, then failover</li>
+    <li>Eliminates traditional Postgres upgrade downtime</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="agents">🤖 AI / Agentic Workload Fit</h2>
+
+<p>Databricks explicitly positions Lakebase as <strong>"the operational database for AI agents and apps."</strong> This is where it gets genuinely interesting.</p>
+
+<h3>🎯 Why Postgres for Agents?</h3>
+
+<p>Agentic AI demands an unusual mix of database capabilities:</p>
+<ul>
+  <li><strong>High write volume</strong> — agent state, tool calls, traces</li>
+  <li><strong>Vector search</strong> — RAG, semantic memory</li>
+  <li><strong>Strong consistency</strong> — don't lose tasks, payments, side effects</li>
+  <li><strong>Low-latency reads</strong> — feature serving, sub-10ms</li>
+  <li><strong>Ephemeral environments</strong> — agents that spin up DBs and throw them away</li>
+  <li><strong>Audit trail</strong> — governance and compliance</li>
+</ul>
+
+<div class="callout info">
+No traditional database stack covers all of these. Lakebase's combination — Postgres + pgvector + scale-to-zero + branching + Unity Catalog + Delta sync — is the specific bundle agents need.
+</div>
+
+<h3>⚙️ 5 Core Patterns Lakebase Enables</h3>
+
+<div class="pattern">
+  <h4>1. Feature Serving for Inference (sub-10ms)</h4>
+  <ul>
+    <li>Online feature store <strong>inside Postgres</strong> (hot features in RAM/NVMe cache)</li>
+    <li><strong>Synced tables</strong> auto-materialize Delta features → Lakebase</li>
+    <li>No Redis / DynamoDB middle layer required</li>
+    <li><code>pgvector</code> for embeddings + similarity search</li>
+    <li>True single-digit-ms feature lookup</li>
+  </ul>
+</div>
+
+<div class="pattern">
+  <h4>2. Agent Memory & State (Durable, Transactional)</h4>
+<pre><code>-- Agent conversation history
+CREATE TABLE agent_sessions (
+  session_id   UUID PRIMARY KEY,
+  user_id      TEXT,
+  started_at   TIMESTAMPTZ,
+  state        JSONB,
+  embedding    VECTOR(1536)   -- pgvector
+);</code></pre>
+  <ul>
+    <li>ACID transactions for tool-call atomicity</li>
+    <li>JSONB for flexible state schemas</li>
+    <li>pgvector for semantic memory recall</li>
+    <li>Directly queryable from Databricks SQL / dashboards</li>
+  </ul>
+</div>
+
+<div class="pattern killer">
+  <h4>3. Ephemeral Sandboxes per Agent Task <span class="star">KILLER</span></h4>
+  <p>Pattern from Syren's <a class="ext" href="https://syrencloud.com/databricks-lakebase-ai-pricing-agent/" target="_blank">pricing agent example</a>:</p>
+<pre><code># 1. Agent generates UPDATE statement (LLM, 0.5-1.5s)
+sql = llm.generate_sql(user_intent, schema)
+
+# 2. Spin up Lakebase branch (~1.5s, copy-on-write)
+branch = lakebase.create_branch(parent="prod")
+
+# 3. Run on branch — production untouched
+branch.execute(sql)
+
+# 4. Run impact analysis / model inference on branch data
+impact = model_serving.predict(branch.query("SELECT ..."))
+
+# 5. Show user → if approved, atomic commit to prod
+if user_approves:
+    branch.merge_to("prod")   # atomic
+else:
+    branch.delete()           # zero-cost rollback</code></pre>
+  <p><strong>Why it matters:</strong> agents can rehearse destructive operations safely. Without branching, an agent writing to prod = potential disaster.</p>
+</div>
+
+<div class="pattern">
+  <h4>4. RAG with Operational Data</h4>
+  <ul>
+    <li>Operational tables auto-sync to Delta (governed by Unity Catalog)</li>
+    <li>Reverse: Delta features sync back to Lakebase for hot serving</li>
+    <li>One source of truth — agent answers and dashboards stay consistent</li>
+    <li>pgvector handles embedding search (no separate Pinecone / Weaviate)</li>
+  </ul>
+</div>
+
+<div class="pattern">
+  <h4>5. Multi-Tenant Agent Platforms — "Databases as Cattle"</h4>
+  <ul>
+    <li>Spin a database <strong>per user / per agent / per task</strong> via API</li>
+    <li>Cost approaches zero (scale-to-zero + shared storage)</li>
+    <li>Versioning: every agent action = checkpoint, rollback = single API call</li>
+    <li>Impossible on traditional Postgres — each instance is a GB-scale cost</li>
+  </ul>
+</div>
+
+<h3>🏆 Why Aurora Can't Match (Yet)</h3>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Capability</th><th>Aurora</th><th>Lakebase</th></tr></thead>
+<tbody>
+<tr><td>pgvector</td><td>✅ (Postgres only)</td><td>✅</td></tr>
+<tr><td>Sub-10ms feature serving</td><td>⚠️ via app cache</td><td>✅ native</td></tr>
+<tr><td>Branching</td><td>⚠️ Clone (slow, copy)</td><td>✅ Instant CoW</td></tr>
+<tr><td>Native Delta sync</td><td>❌ (Zero-ETL → Redshift only)</td><td>✅</td></tr>
+<tr><td>Per-agent ephemeral DBs</td><td>❌ cost-prohibitive</td><td>✅ scale-to-zero</td></tr>
+<tr><td>Unified governance with lakehouse</td><td>❌</td><td>✅ Unity Catalog</td></tr>
+<tr><td>Foundation Models co-located</td><td>❌</td><td>✅ Databricks Model Serving</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🎬 Real Patterns in Production</h3>
+<ol>
+  <li><strong>Conversational commerce agents</strong> — chat history + product catalog + inventory in one DB</li>
+  <li><strong>Pricing agents</strong> (Syren) — branch-safe sandboxes for destructive operations</li>
+  <li><strong>Customer support agents</strong> — feature serving + memory + actions</li>
+  <li><strong>Trading copilots</strong> — fresh OLTP positions + historical analytics + LLM reasoning</li>
+  <li><strong>Supply-chain agents</strong> — operational state + planning analytics on the same data</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="strategic">🎯 Strategic Take for the Databricks Role</h2>
+
+<p>Lakebase is the final piece of the Databricks <strong>"Data + AI Platform"</strong> story:</p>
+
+<div class="callout warn">
+  <strong>Before:</strong> Databricks = lakehouse for analytics + ML training. Customers still need a separate OLTP DB (Aurora / Postgres) for apps.<br><br>
+  <strong>After:</strong> Databricks = <strong>one platform</strong> for OLTP + OLAP + ML training + ML serving + AI agents. Aurora becomes commodity infrastructure; Lakebase sits higher in the customer's AI value chain.
+</div>
+
+<h3>Talking points for HK / TW SA team</h3>
+<ul>
+  <li>Customers building AI agents → Lakebase is a natural fit (vs stitching Aurora + pgvector + Redis + Snowflake)</li>
+  <li>Customers fed up with two-tier data architecture pain → sell simplification directly</li>
+  <li>Postgres compatibility → clean migration path, not a new SQL dialect lock-in</li>
+  <li>Branching = killer demo for dev/test workflows</li>
+</ul>
+
+<h3>Competitive lens</h3>
+<ul>
+  <li><strong>vs Aurora + Bedrock</strong> — Lakebase + Mosaic AI is true vertical integration</li>
+  <li><strong>vs Snowflake Hybrid Tables / Unistore</strong> — Snowflake remains weak on OLTP latency and branching</li>
+  <li><strong>vs Oracle 23ai</strong> — Oracle has vector + JSON but proprietary; Lakebase wins developer mindshare on open Postgres</li>
+</ul>
+
+<footer>
+  <p>Built with ☕ and a lot of 🧠 by Yuki 🐱 · Sources: <a href="https://neon.com/docs/introduction/architecture-overview">Neon docs</a> · <a href="https://www.databricks.com/blog/databricks-lakebase-generally-available">Databricks blog</a> · <a href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes">5x faster writes blog</a> · <a href="https://syrencloud.com/databricks-lakebase-ai-pricing-agent/">Syren pricing agent</a></p>
+  <p>For Peter · Databricks HK+TW SA Lead · 2026-05-12</p>
+</footer>
+
+</div>
+</body>
+</html>

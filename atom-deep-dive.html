@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atom Deep Dive — 原子結構深潛</title>
+<style>
+  :root{
+    --bg:#05060e; --panel:rgba(13,17,23,.72); --line:#1f2733;
+    --txt:#dbe4f0; --dim:#7d8ca3; --acc:#4fc3f7; --hot:#ff6b6b; --gold:#ffd166; --grn:#7ee787; --vio:#c792ea;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:radial-gradient(1200px 700px at 70% -10%, #101a33 0%, var(--bg) 60%);
+    color:var(--txt); font-family:-apple-system,'SF Pro Text','PingFang TC','Microsoft JhengHei',sans-serif;
+    overflow:hidden;
+  }
+  #stage{position:fixed;inset:0}
+  canvas{display:block;width:100%;height:100%}
+
+  /* HUD */
+  .hud{position:fixed;z-index:10;pointer-events:none}
+  .hud *{pointer-events:auto}
+  #topbar{top:0;left:0;right:0;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;background:linear-gradient(180deg,rgba(5,6,14,.9),transparent)}
+  #levelChip{
+    background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;
+    font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);white-space:nowrap;
+    backdrop-filter:blur(8px);
+  }
+  #levelChip b{color:#fff}
+  #crumbs{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--dim)}
+  #crumbs a{color:var(--dim);text-decoration:none;padding:4px 10px;border-radius:999px;border:1px solid transparent}
+  #crumbs a:hover{color:var(--txt);border-color:var(--line)}
+  #crumbs .sep{opacity:.4}
+  #crumbs a.here{color:#fff;border-color:var(--line);background:var(--panel)}
+
+  /* info card */
+  #card{
+    position:fixed;z-index:10;right:18px;bottom:18px;width:min(330px,calc(100vw - 36px));
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 18px 14px;
+    backdrop-filter:blur(12px);box-shadow:0 12px 40px rgba(0,0,0,.5);
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  #card h2{font-size:1.15rem;margin-bottom:2px;display:flex;align-items:center;gap:8px}
+  #card .en{font-size:12px;color:var(--dim);letter-spacing:.08em;margin-bottom:10px}
+  #card p{font-size:13.5px;line-height:1.65;color:var(--txt)}
+  #card .facts{margin-top:10px;display:grid;gap:6px}
+  #card .fact{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;border-top:1px dashed var(--line);padding-top:6px}
+  #card .fact span:first-child{color:var(--dim)}
+  #card .fact span:last-child{color:#fff;text-align:right}
+  #card .go{
+    margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;
+  }
+  #card .go a,#card .go button{
+    flex:1;min-width:120px;text-align:center;padding:9px 12px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(79,195,247,.12);color:var(--acc);font-size:13px;cursor:pointer;text-decoration:none;
+    transition:background .15s;
+  }
+  #card .go a:hover,#card .go button:hover{background:rgba(79,195,247,.24)}
+  #card .go button.dis{opacity:.35;pointer-events:none}
+
+  /* bottom hint */
+  #hint{
+    position:fixed;z-index:10;left:18px;bottom:18px;font-size:12px;color:var(--dim);
+    background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px;backdrop-filter:blur(8px);
+  }
+  #scalebar{
+    position:fixed;z-index:10;left:50%;transform:translateX(-50%);bottom:20px;
+    font-size:12px;color:var(--dim);letter-spacing:.06em;
+    background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;backdrop-filter:blur(8px);
+  }
+  #scalebar b{color:var(--gold)}
+
+  /* zoom flash */
+  #flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:50;transition:opacity .18s}
+
+  /* intro overlay */
+  #intro{
+    position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+    background:rgba(5,6,14,.82);backdrop-filter:blur(6px);transition:opacity .4s;
+  }
+  #intro .box{max-width:520px;text-align:center;padding:32px}
+  #intro h1{font-size:1.7rem;margin-bottom:10px}
+  #intro h1 span{background:linear-gradient(90deg,var(--acc),var(--vio),var(--hot));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #intro p{color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:22px}
+  #intro button{
+    padding:12px 34px;border-radius:999px;border:1px solid var(--acc);
+    background:linear-gradient(90deg,rgba(79,195,247,.18),rgba(199,146,234,.18));
+    color:#fff;font-size:15px;cursor:pointer;letter-spacing:.06em;
+  }
+  #intro button:hover{background:linear-gradient(90deg,rgba(79,195,247,.32),rgba(199,146,234,.32))}
+
+  #cardToggle{position:fixed;z-index:11;right:18px;bottom:0px;display:none}
+  #card.collapsed{display:none}
+  @media (max-width:640px){
+    #card{right:12px;left:12px;bottom:12px;width:auto}
+    #card.collapsed{width:auto}
+    #hint{display:none}
+    #topbar{flex-direction:column;gap:8px}
+    #crumbs{font-size:11px}
+  }
+</style>
+</head>
+<body>
+
+<div id="stage"><canvas id="cv"></canvas></div>
+
+<div class="hud" id="topbar">
+  <div id="levelChip">LAYER <b id="lvlNum">1</b>/6 · <b id="lvlName">ATOM</b></div>
+  <div id="crumbs"></div>
+</div>
+
+<button id="cardToggle" title="收起/展開資訊卡" style="position:fixed;z-index:12;right:18px;top:60px;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--acc);background:rgba(13,17,23,.92);color:var(--acc);font-size:20px;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,.5)">▾</button>
+<div id="card">
+  <h2 id="cTitle">原子</h2>
+  <div class="en" id="cEn">ATOM</div>
+  <p id="cDesc"></p>
+  <div class="facts" id="cFacts"></div>
+  <div class="go">
+    <button id="btnOut">⬅ 向外</button>
+    <button id="btnIn">深入內裡 ➡</button>
+  </div>
+</div>
+
+<div id="hint">🖱️ 拖曳旋轉 · 滾輪縮放 · 點擊發光核心深潛</div>
+<div id="scalebar">尺度 <b id="scaleTxt">10⁻¹⁰ m</b></div>
+<div id="flash"></div>
+
+<div id="intro">
+  <div class="box">
+    <h1>原子深潛 <span>Atom Deep Dive</span></h1>
+    <p>從一粒碳原子開始，一路深入：<br>
+    原子 → 原子核 → 質子/中子 → 夸克 → 強相互作用（膠子）→ 弦？<br>
+    六層結構，每層都係人類知識嘅邊界。</p>
+    <button id="btnStart">開始深潛 🔬</button>
+  </div>
+</div>
+
+<script>
+/* ============ LEVELS ============ */
+const LEVELS = [
+ {
+  id:'atom', name:'ATOM 原子', num:1, scale:'10⁻¹⁰ m',
+  title:'原子 Atom', en:'Carbon-12 Atom',
+  desc:'一切嘅起點。原子由中心的原子核同圍繞嘅電子雲組成 — 99.9999% 係真空。原子直徑大約 0.1 納米，即係將 100 萬粒原子排成一列先有一粒米咁長。',
+  facts:[['組成','原子核 + 6 電子'],['直徑','~0.1 nm'],['空曠程度','99.9999% 真空'],['質量集中','99.97% 喺原子核']],
+  inner:'nucleus'
+ },
+ {
+  id:'nucleus', name:'NUCLEUS 原子核', num:2, scale:'10⁻¹⁴ m',
+  title:'原子核 Nucleus', en:'6 Protons + 6 Neutrons',
+  desc:'縮細 10,000 倍，我哋見到原子核：6 粒質子同 6 粒中子（碳-12）。質子帶正電所以互斥，係「強相互作用力」將佢哋黐埋一齊。呢種力好奇怪 — 距離遠過某個臨界點反而變排斥，所以原子核唔會無限收縮。',
+  facts:[['直徑','~3 fm（飛米）'],['密度','2×10¹⁷ kg/m³'],['密度比喻','1 cm³ = 2 億噸'],['束縛力','強相互作用（殘餘）']],
+  inner:'nucleon'
+ },
+ {
+  id:'nucleon', name:'NUCLEON 核子', num:3, scale:'10⁻¹⁵ m',
+  title:'質子 Proton', en:'3 Valence Quarks + Sea',
+  desc:'再縮 100 倍，單粒質子（或中子）。入面唔係三粒靜靜哋嘅波子 — 係一鍋沸騰嘅湯：3 粒「價夸克」決定粒子身份，但佢哋只佔質量嘅約 1%；其餘 99% 質量來自夸克間狂舞嘅能量同短命嘅夸克-反夸克對（海夸克）。E=mc² 嘅最佳示範。',
+  facts:[['直徑','~0.84 fm'],['價夸克','2 up + 1 down'],['質量來源','99% 係 QCD 能量'],['壽命','>10³⁴ 年（極穩定）']],
+  inner:'quark'
+ },
+ {
+  id:'quark', name:'QUARK 夸克', num:4, scale:'10⁻¹⁸ m',
+  title:'夸克 Quark', en:'Point-like, confinement',
+  desc:'深入價夸克 — 到而家為止，所有實驗都話夸克係*點粒子*：冇內部結構、冇大小（<10⁻¹⁸ m）。但夸克有個詭異特性叫「禁閉」：你永遠唔會見到單粒夸克 — 拉開兩粒夸克嘅能量會喺中間生出新一對夸克。好似切斷一條磁鐵，即刻得到兩塊新磁鐵。',
+  facts:[['種類','6 味：u d c s t b'],['up 電荷','+2/3'],['down 電荷','-1/3'],['尺寸','< 10⁻¹⁸ m（點粒子）']],
+  inner:'qcd'
+ },
+ {
+  id:'qcd', name:'QCD 強相互作用', num:5, scale:'10⁻¹⁸ m · 力場',
+  title:'膠子與色力 Gluons', en:'Quantum Chromodynamics',
+  desc:'夸克點解黐得咁實？答案係膠子 — 強力嘅傳遞粒子。同光子唔同，膠子自己都帶「色荷」，所以膠子可以黐埋其他膠子：呢個特性令強力愈拉愈勁（漸近自由嘅反面）。質子入面係一張由膠子編成嘅動態網，能量場本身就係質量嘅來源。',
+  facts:[['媒介粒子','8 種膠子'],['色荷','紅綠藍 + 反色'],['特殊','膠子自交互作用'],['理論','量子色動力學 QCD']],
+  inner:'string'
+ },
+ {
+  id:'string', name:'STRING 弦？', num:6, scale:'10⁻³⁵ m · 推測',
+  title:'弦 String（假說）', en:'Planck scale — beyond experiment',
+  desc:'最後一層係人類知識嘅邊界。弦論推測：夸克、輕子、膠子 — 所有粒子其實係一維「弦」嘅唔同振動模式，尺度係普朗克長度 10⁻³⁵ 米 — 比夸克再細 10¹⁷ 倍。⚠️ 呢層冇任何實驗證據，現有加速器（LHC 能標 ~10⁻¹⁹ m）差好遠好遠。行到呢度，你已經站喺物理學嘅崖邊。',
+  facts:[['尺度','~10⁻³⁵ m（普朗克）'],['狀態','數學假說，0 實驗驗證'],['振動模式','= 唔同粒子'],['能量需求','比 LHC 高 10¹⁵ 倍']],
+  inner:null
+ }
+];
+
+/* ============ RENDERERS ============ */
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+let W=0,H=0,DPR=Math.min(devicePixelRatio||1,2);
+function resize(){W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+addEventListener('resize',resize);resize();
+
+let cur=0, t=0, rotY=0, rotX=-0.25, zoom=1, pZoom=1;
+let dragging=false,lx=0,ly=0;
+let auto=true;
+
+/* particles for ambient stars */
+const stars=[...Array(140)].map(()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.3,tw:Math.random()*6.28}));
+
+const state={}; // per-level animated state
+
+function onEnter(i){
+  state.stars=[];state.rings=[];state.flux=[];
+  if(LEVELS[i].id==='atom'){
+    // 6 electrons orbits
+    state.e=[...Array(6)].map((_,k)=>({a:Math.random()*6.28,r:.55+ (k%2)*.35, sp:.4+Math.random()*.5, tilt:(k/6)*Math.PI, ph:Math.random()*6.28}));
+  }
+  if(LEVELS[i].id==='nucleus'){
+    state.nuc=[...Array(12)].map((_,k)=>({
+      th:Math.acos(1-2*((k+0.5)/12)), ph:(k*2.399963)%(6.28),
+      r:.55, proton:k%2===0, w:Math.random()*6.28, sp:.3+Math.random()*.5
+    }));
+  }
+  if(LEVELS[i].id==='nucleon'){
+    state.val=[{c:'#ffd166',a:0},{c:'#4fc3f7',a:2.1},{c:'#ff6b6b',a:4.2}];
+    state.sea=[...Array(26)].map(()=>({a:Math.random()*6.28,r:.15+Math.random()*.75,sp:(Math.random()-.5)*2.4,life:Math.random()*6.28}));
+    state.gl=[...Array(3)].map((_,k)=>({a:k*2.1,ph:k}));
+  }
+  if(LEVELS[i].id==='quark'){
+    state.q=[{c:'#ffd166',lbl:'u',a:0},{c:'#4fc3f7',lbl:'d',a:2.1},{c:'#ff6b6b',lbl:'d',a:4.2}];
+    state.pulse=0;
+  }
+  if(LEVELS[i].id==='qcd'){
+    state.gn=[...Array(8)].map((_,k)=>({a:k*(6.28/8),r:.25+ (k%2)*.28,sp:.5+(k%3)*.4}));
+    state.waves=[];
+  }
+  if(LEVELS[i].id==='string'){
+    state.str=[...Array(7)].map((_,k)=>({ph:k*0.9, hue:[190,265,340][k%3]}));
+  }
+}
+
+function project(x,y,z){
+  // rotate Y then X, simple perspective
+  const cy=Math.cos(rotY),sy=Math.sin(rotY);
+  let X=x*cy - z*sy, Z=x*sy + z*cy;
+  const cx=Math.cos(rotX),sx=Math.sin(rotX);
+  let Y=y*cx - Z*sx; Z=y*sx + Z*cx;
+  const persp=2.4/(2.4+Z);
+  return {x:W/2+X*persp*zoom*Math.min(W,H)*0.40, y:H*0.44+Y*persp*zoom*Math.min(W,H)*0.40, s:persp, z:Z};
+}
+
+function drawGlow(x,y,r,color,alpha){
+  const g=ctx.createRadialGradient(x,y,0,x,y,r*3);
+  g.addColorStop(0,color);g.addColorStop(1,'transparent');
+  ctx.globalAlpha=alpha;ctx.fillStyle=g;
+  ctx.beginPath();ctx.arc(x,y,r*3,0,6.28);ctx.fill();ctx.globalAlpha=1;
+}
+function ball(x,y,r,color,glow=1){
+  drawGlow(x,y,r*1.2,color,0.28*glow);
+  const g=ctx.createRadialGradient(x-r*.4,y-r*.4,r*.1,x,y,r);
+  g.addColorStop(0,'#fff');g.addColorStop(.25,color);g.addColorStop(1,shade(color,-.55));
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,6.28);ctx.fill();
+}
+function shade(hex,f){ // f -1..1
+  const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;
+  r=Math.min(255,Math.max(0,r+r*f));g=Math.min(255,Math.max(0,g+g*f));b=Math.min(255,Math.max(0,b+b*f));
+  return `rgb(${r|0},${g|0},${b|0})`;
+}
+
+function bg(){
+  ctx.fillStyle='#05060e';ctx.fillRect(0,0,W,H);
+  for(const s of stars){
+    const a=.25+.35*Math.abs(Math.sin(t*.5+s.tw));
+    ctx.fillStyle=`rgba(160,190,230,${a})`;
+    ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,6.28);ctx.fill();
+  }
+}
+
+/* ---- L1 ATOM ---- */
+function drawAtom(){
+  const c=project(0,0,0);
+  // nucleus hint
+  ball(c.x,c.y,7*Math.min(c.s,1.4)*zoom>0?7*c.s*zoom*pZoom:7,'#ff6b6b');
+  // electron orbits (3 rings tilted)
+  const rings=[[0,.4],[2.1,.75],[4.2,.75]];
+  for(const [rot,rr] of rings){
+    ctx.strokeStyle='rgba(79,195,247,.16)';ctx.lineWidth=1;
+    ctx.beginPath();
+    for(let a=0;a<=6.3;a+=.05){
+      const x0=Math.cos(a)*rr,y0=Math.sin(a)*rr*.92;
+      // tilt
+      const x1=x0*Math.cos(rot),z1=x0*Math.sin(rot);
+      const p=project(x1,y0,z1*1.2);
+      a===0?p.x&&ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+    }
+    ctx.stroke();
+  }
+  // electrons
+  for(const e of state.e){
+    const a=e.a+t*e.sp*1.6;
+    const x0=Math.cos(a)*e.r, y0=Math.sin(a)*e.r*.92;
+    const x1=x0*Math.cos(e.ph+e.tilt*3), z1=x0*Math.sin(e.ph+e.tilt*3);
+    const p=project(x1,y0,z1*1.2);
+    drawGlow(p.x,p.y,4,'#4fc3f7',.5);
+    ctx.fillStyle='#bfe9ff';ctx.beginPath();ctx.arc(p.x,p.y,3.2*p.s*zoom*pZoom,0,6.28);ctx.fill();
+  }
+}
+
+/* ---- L2 NUCLEUS ---- */
+function drawNucleus(){
+  // sort by z for depth
+  const pts=state.nuc.map(n=>{
+    const w=n.w+t*n.sp;
+    const x=Math.sin(n.th)*Math.cos(n.ph+w*.15)*n.r;
+    const y=Math.cos(n.th)*n.r;
+    const z=Math.sin(n.th)*Math.sin(n.ph+w*.15)*n.r;
+    return {p:project(x,y,z),proton:n.proton};
+  }).sort((a,b)=>a.p.z-b.p.z);
+  for(const n of pts){
+    const col=n.proton?'#ff6b6b':'#7ee787';
+    ball(n.p.x,n.p.y,13*n.p.s*zoom*pZoom*.72,col);
+  }
+  // binding shimmer
+  const c=project(0,0,0);
+  drawGlow(c.x,c.y,60*zoom*pZoom*c.s,'rgba(255,209,102,0.35)',.5);
+}
+
+/* ---- L3 NUCLEON (proton soup) ---- */
+function drawNucleon(){
+  const c=project(0,0,0);
+  // boundary glow sphere
+  const g=ctx.createRadialGradient(c.x,c.y,10,c.x,c.y,150*zoom*pZoom*c.s);
+  g.addColorStop(0,'rgba(255,107,107,.05)');g.addColorStop(.85,'rgba(255,107,107,.14)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(c.x,c.y,150*zoom*pZoom*c.s,0,6.28);ctx.fill();
+
+  // sea pairs
+  for(const s of state.sea){
+    s.a+=.01*s.sp; s.life+=.008;
+    if(s.life>6.28){s.life=0;s.a=Math.random()*6.28;s.r=.15+Math.random()*.7;s.sp=(Math.random()-.5)*2.4;}
+    const fade=Math.sin(s.life)*.5+.5;
+    const x=Math.cos(s.a)*s.r,y=Math.sin(s.a)*s.r*.9,z=Math.sin(s.a*2)*.4;
+    const p=project(x,y,z);
+    ctx.globalAlpha=fade*.7;
+    ctx.fillStyle='#9db8d9';ctx.beginPath();ctx.arc(p.x,p.y,2.6*p.s*zoom*pZoom,0,6.28);ctx.fill();
+    ctx.fillStyle='rgba(255,120,120,.7)';ctx.beginPath();ctx.arc(p.x+6*p.s*zoom*pZoom,p.y,2*p.s*zoom*pZoom,0,6.28);ctx.fill();
+    ctx.globalAlpha=1;
+  }
+  // gluon flux lines between valence quarks
+  const vp=state.val.map(v=>{
+    const a=v.a+t*.5;
+    return {p:project(Math.cos(a)*.5,Math.sin(a)*.5*.9,Math.sin(a*1.7)*.3), c:v.c};
+  });
+  ctx.lineWidth=2;
+  for(let i=0;i<3;i++)for(let j=i+1;j<3;j++){
+    const A=vp[i],B=vp[j];
+    ctx.strokeStyle='rgba(199,146,234,.35)';
+    ctx.beginPath();ctx.moveTo(A.p.x,A.p.y);
+    const mx=(A.p.x+B.p.x)/2, my=(A.p.y+B.p.y)/2;
+    const wob=Math.sin(t*4+i+j)*12*zoom*pZoom;
+    ctx.quadraticCurveTo(mx+wob,my+wob,B.p.x,B.p.y);ctx.stroke();
+  }
+  for(const v of vp) ball(v.p.x,v.p.y,12*v.p.s*zoom*pZoom,v.c);
+
+  // label
+  ctx.fillStyle='rgba(219,228,240,.75)';ctx.font='12px -apple-system';
+  ctx.fillText('sea 夸克-反夸克對（泡沫）', c.x+160*zoom*pZoom*c.s, c.y-90*zoom*pZoom*c.s);
+  ctx.fillText('價夸克 ×3', c.x+120*zoom*pZoom*c.s, c.y+110*zoom*pZoom*c.s);
+}
+
+/* ---- L4 QUARK ---- */
+function drawQuark(){
+  const c=project(0,0,0);
+  state.pulse=Math.sin(t*2)*.5+.5;
+  for(const q of state.q){
+    const a=q.a+t*.35;
+    const p=project(Math.cos(a)*.42,Math.sin(a)*.42*.85,Math.sin(a*1.3)*.35);
+    // confining color field halo
+    drawGlow(p.x,p.y,26,'#'+((parseInt(q.c.slice(1),16)&0xffffff)).toString(16).padStart(6,'0'),.45);
+    ball(p.x,p.y,14*p.s*zoom*pZoom,q.c);
+    ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='bold 13px monospace';
+    ctx.fillText(q.lbl,p.x-4,p.y+5);
+  }
+  // confinement note: pull apart → new pair illustration
+  ctx.fillStyle='rgba(125,140,163,.9)';ctx.font='12px -apple-system';
+  ctx.fillText('禁閉 confinement：拉開兩粒夸克 → 能量生出新一對', c.x-150*zoom*pZoom*c.s, c.y+150*zoom*pZoom*c.s);
+}
+
+/* ---- L5 QCD / GLUONS ---- */
+function drawQCD(){
+  const c=project(0,0,0);
+  // color field waves
+  if(Math.random()<.12) state.waves.push({r:0,a:Math.random()*6.28});
+  for(const w of state.waves){
+    w.r+=.006;
+    const p=Math.min(1,w.r);
+    ctx.strokeStyle=`rgba(199,146,234,${(1-p)*.4})`;ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.ellipse(c.x,c.y,220*zoom*pZoom*p*c.s,90*zoom*pZoom*p*c.s,0,0,6.28);ctx.stroke();
+  }
+  state.waves=state.waves.filter(w=>w.r<1);
+  // quark cores
+  for(let i=0;i<3;i++){
+    const a=i*2.1+t*.4;
+    const p=project(Math.cos(a)*.35,Math.sin(a)*.35*.8,Math.sin(a*2)*.25);
+    ball(p.x,p.y,11*p.s*zoom*pZoom,['#ffd166','#4fc3f7','#ff6b6b'][i]);
+  }
+  // gluon network
+  for(const g of state.gn){
+    g.a+=.012*g.sp;
+    const x=Math.cos(g.a)*g.r,y=Math.sin(g.a*1.4)*g.r*.8,z=Math.sin(g.a)*.4;
+    const p=project(x,y,z);
+    // mini gluon spring (squiggle)
+    ctx.strokeStyle=`rgba(126,231,135,.8)`;ctx.lineWidth=1.6;
+    ctx.beginPath();
+    const px=p.x,py=p.y,len=10*zoom*pZoom;
+    for(let k=0;k<=12;k++){
+      const kk=k/12;
+      ctx.lineTo(px+Math.cos(kk*9+t*3)*len*kk, py+Math.sin(kk*9+t*3)*len*kk);
+    }
+    ctx.stroke();
+    ctx.fillStyle='#7ee787';ctx.beginPath();ctx.arc(px,py,3*p.s*zoom*pZoom,0,6.28);ctx.fill();
+  }
+  ctx.fillStyle='rgba(219,228,240,.8)';ctx.font='12px -apple-system';
+  ctx.fillText('膠子自交互作用：力場本身帶色荷', c.x-120*zoom*pZoom*c.s, c.y-140*zoom*pZoom*c.s);
+}
+
+/* ---- L6 STRING ---- */
+function drawString(){
+  const c=project(0,0,0);
+  for(const s of state.str){
+    ctx.strokeStyle=`hsla(${s.hue},80%,70%,.85)`;ctx.lineWidth=2;
+    ctx.beginPath();
+    const amp=40*zoom*pZoom, len=170*zoom*pZoom;
+    for(let k=0;k<=60;k++){
+      const kk=k/60;
+      const x=c.x-len/2+kk*len;
+      const y=c.y+Math.sin(kk*10+t*2.4+s.ph)*amp*Math.sin(kk*3.14);
+      k===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // endpoints (loops hint)
+    drawGlow(c.x-len/2,c.y,6,`hsla(${s.hue},80%,70%,.5)`,.6);
+    drawGlow(c.x+len/2,c.y,6,`hsla(${s.hue},80%,70%,.5)`,.6);
+  }
+  ctx.fillStyle='rgba(199,146,234,.9)';ctx.font='13px -apple-system';
+  ctx.fillText('每條弦嘅振動模式 = 一種粒子',c.x-90,c.y-100*zoom*pZoom);
+  ctx.fillStyle='rgba(255,107,107,.85)';
+  ctx.fillText('⚠️ 推測 — 無實驗證據 · 人類知識邊界',c.x-120,c.y+120*zoom*pZoom);
+}
+
+/* ============ LOOP ============ */
+function frame(){
+  t+=0.016;
+  if(auto&&!dragging) rotY+=0.0035;
+  pZoom+=(zoom-pZoom)*0.1;
+  bg();
+  const L=LEVELS[cur].id;
+  if(L==='atom')drawAtom();
+  else if(L==='nucleus')drawNucleus();
+  else if(L==='nucleon')drawNucleon();
+  else if(L==='quark')drawQuark();
+  else if(L==='qcd')drawQCD();
+  else if(L==='string')drawString();
+  requestAnimationFrame(frame);
+}
+
+/* ============ UI ============ */
+const $=id=>document.getElementById(id);
+function renderUI(){
+  const L=LEVELS[cur];
+  $('lvlNum').textContent=L.num;
+  $('lvlName').textContent=L.name.split(' ')[0];
+  $('scaleTxt').textContent=L.scale;
+  $('cTitle').textContent=L.title;
+  $('cEn').textContent=L.en;
+  $('cDesc').textContent=L.desc;
+  $('cFacts').innerHTML=L.facts.map(f=>`<div class="fact"><span>${f[0]}</span><span>${f[1]}</span></div>`).join('');
+  $('btnIn').classList.toggle('dis',!L.inner);
+  $('btnOut').classList.toggle('dis',cur===0);
+  // crumbs
+  $('crumbs').innerHTML=LEVELS.map((l,i)=>
+    (i>0?'<span class="sep">›</span>':'')+
+    `<a href="javascript:go(${i})" class="${i===cur?'here':''}">${l.name.split(' ')[0]}</a>`
+  ).join('');
+}
+function go(i){
+  if(i===cur||i<0||i>=LEVELS.length)return;
+  const deeper=i>cur;
+  // flash
+  const fl=$('flash');
+  fl.style.opacity=.55;setTimeout(()=>fl.style.opacity=0,180);
+  cur=i;zoom=deeper?0.55:2.6;onEnter(i);renderUI();
+}
+$('btnIn').onclick=()=>{const L=LEVELS[cur];if(L.inner){const j=LEVELS.findIndex(x=>x.id===L.inner);go(j);}};
+$('btnOut').onclick=()=>go(cur-1);
+$('btnStart').onclick=()=>{$('intro').style.opacity=0;setTimeout(()=>$('intro').style.display='none',400);};
+$('cardToggle').onclick=()=>{const c=$('card');const col=c.classList.toggle('collapsed');$('cardToggle').textContent=col?'▴':'▾';$('cardToggle').style.bottom=col?'18px':'auto';$('cardToggle').style.top=col?'auto':'60px';};
+
+cv.addEventListener('pointerdown',e=>{dragging=true;lx=e.clientX;ly=e.clientY;auto=false;});
+addEventListener('pointerup',()=>dragging=false);
+addEventListener('pointermove',e=>{
+  if(!dragging)return;
+  rotY+=(e.clientX-lx)*.006; rotX+=(e.clientY-ly)*.004;
+  rotX=Math.max(-1.2,Math.min(1.2,rotX));
+  lx=e.clientX;ly=e.clientY;
+});
+cv.addEventListener('wheel',e=>{
+  e.preventDefault();
+  zoom*=e.deltaY<0?1.08:0.93;
+  zoom=Math.max(.35,Math.min(3.2,zoom));
+},{passive:false});
+
+onEnter(0);renderUI();frame();
+</script>
+</body>
+</html>

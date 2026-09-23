@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>破解量子位元數量迷思</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a1a;--cyan:#00d4ff;--purple:#a855f7;--pink:#ec4899;--gold:#f59e0b;--red:#ef4444;--green:#10b981;--text:#e2e8f0;--muted:#94a3b8;--glass:rgba(255,255,255,0.05)}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.8}
+
+/* Progress bar */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));z-index:1000;transition:width .1s}
+
+/* Scroll animations */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .8s ease,transform .8s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity .8s ease,transform .8s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+section{min-height:100vh;padding:80px 20px;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;max-width:100%}
+
+/* HERO */
+#hero{position:relative;overflow:hidden;text-align:center}
+#hero canvas{position:absolute;inset:0;z-index:0}
+#hero .content{position:relative;z-index:1}
+#hero h1{font-size:clamp(2rem,8vw,4.5rem);font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;letter-spacing:2px}
+#hero .subtitle{font-size:clamp(1rem,3vw,1.5rem);color:var(--muted);font-weight:300;margin-bottom:40px}
+.scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:1;animation:bounce 2s infinite}
+.scroll-hint span{display:block;width:24px;height:24px;border-right:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(45deg);margin:0 auto}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(12px)}}
+
+/* Section titles */
+.section-tag{font-size:.75rem;text-transform:uppercase;letter-spacing:4px;color:var(--cyan);margin-bottom:8px}
+.section-title{font-size:clamp(1.5rem,5vw,2.5rem);font-weight:900;margin-bottom:24px;text-align:center}
+.section-body{max-width:680px;text-align:center;font-size:1.05rem;color:var(--muted);line-height:2}
+
+/* Stat cards */
+.stat-highlight{display:inline-block;font-size:clamp(3rem,10vw,6rem);font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:20px 0}
+.stat-label{color:var(--muted);font-size:1rem}
+
+/* Comparison */
+.compare{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:30px;width:100%;max-width:700px}
+.compare-card{flex:1;min-width:260px;background:var(--glass);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px 20px;text-align:center;backdrop-filter:blur(10px);transition:transform .3s,border-color .3s}
+.compare-card:hover{transform:translateY(-4px)}
+.compare-card.classical{border-color:rgba(239,68,68,0.3)}
+.compare-card.quantum{border-color:rgba(0,212,255,0.3)}
+.compare-card h3{font-size:1.2rem;margin-bottom:12px}
+.compare-card .icon{font-size:3rem;margin-bottom:12px}
+
+/* Metric cards */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;width:100%;max-width:700px;margin-top:24px}
+.metric{background:var(--glass);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px 14px;text-align:center;transition:transform .3s}
+.metric:hover{transform:translateY(-3px)}
+.metric .m-icon{font-size:2rem;margin-bottom:8px}
+.metric h4{font-size:.9rem;margin-bottom:4px}
+.metric p{font-size:.75rem;color:var(--muted)}
+.metric.critical{border-color:rgba(0,212,255,0.4);box-shadow:0 0 20px rgba(0,212,255,0.1)}
+
+/* Error chain */
+.error-chain{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+.error-step{background:var(--glass);border-radius:10px;padding:10px 14px;font-size:.85rem;text-align:center;border:1px solid rgba(255,255,255,0.06);min-width:60px;transition:all .5s}
+.error-step.bad{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.1)}
+.arrow{color:var(--muted);font-size:1.2rem}
+
+/* Balance */
+.balance{display:flex;align-items:flex-end;justify-content:center;gap:30px;margin:30px 0;perspective:400px}
+.balance-side{text-align:center}
+.balance-side .bal-icon{font-size:3rem;margin-bottom:8px;display:block}
+.balance-side p{font-size:.8rem;color:var(--muted);max-width:140px}
+.balance-mid{display:flex;flex-direction:column;align-items:center}
+.balance-mid .tri{width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-bottom:30px solid var(--cyan);margin-bottom:4px}
+.balance-mid span{font-size:.7rem;color:var(--cyan);letter-spacing:2px}
+
+/* Quote */
+.quote{position:relative;font-style:italic;font-size:1.1rem;color:var(--text);max-width:600px;padding:20px 30px;margin:20px 0;border-left:3px solid var(--cyan)}
+
+/* Audio player */
+#audio-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,26,0.95);border-top:1px solid rgba(255,255,255,0.08);padding:10px 16px;z-index:999;display:flex;align-items:center;gap:12px;backdrop-filter:blur(20px)}
+#audio-bar button{background:none;border:none;color:var(--cyan);font-size:1.4rem;cursor:pointer;padding:4px;transition:transform .2s}
+#audio-bar button:active{transform:scale(.9)}
+#audio-bar .track-name{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+#audio-bar .seek{flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:4px;cursor:pointer;position:relative;overflow:hidden}
+#audio-bar .seek .fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:4px;width:0%;transition:width .3s}
+#audio-bar .time{font-size:.7rem;color:var(--muted);min-width:70px;text-align:right}
+
+/* Glow decorators */
+.glow-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;pointer-events:none}
+
+/* Footer */
+footer{padding:60px 20px 120px;text-align:center;color:var(--muted);font-size:.85rem}
+footer a{color:var(--cyan);text-decoration:none}
+
+/* Extra padding for audio bar */
+body{padding-bottom:70px}
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="particles"></canvas>
+  <div class="content">
+    <div class="reveal">
+      <h1>破解量子位元<br>數量迷思</h1>
+      <p class="subtitle">量子運算：人類的福音還是潛在危機？</p>
+      <p style="color:var(--muted);font-size:.85rem">基於 IonQ Quantum Computing 101 · The Debate Podcast</p>
+    </div>
+  </div>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<!-- 組合爆炸 -->
+<section style="background:linear-gradient(180deg,var(--bg) 0%,#0d0d2b 100%)">
+  <div class="glow-orb" style="width:300px;height:300px;background:var(--purple);top:10%;right:-100px"></div>
+  <p class="section-tag reveal">The Problem</p>
+  <h2 class="section-title reveal">組合爆炸</h2>
+  <div class="section-body reveal">
+    <p>一個物流司機每天要送 <strong style="color:var(--cyan)">120 個包裹</strong></p>
+    <p>最省時、最省油的完美路線有多少種組合？</p>
+  </div>
+  <div class="stat-highlight reveal" id="counter-199">0</div>
+  <p class="stat-label reveal">位數的天文數字 — 比用納秒計算宇宙年齡還要大</p>
+  <div class="section-body reveal" style="margin-top:30px">
+    <div class="quote">就算把地球上所有的超級電腦全部連線，讓它們算上 1000 年，也絕對算不出最佳解。</div>
+    <p style="margin-top:16px">傳統電腦就像<strong>一個人走進超級迷宮</strong> — 走到死胡同、做記號、退出來、再走另一條路…… 當路線有 199 位數種可能，就算跑得跟光速一樣快，時間也根本不夠用。</p>
+  </div>
+</section>
+
+<!-- 疊加態 & 糾纏 -->
+<section style="background:linear-gradient(180deg,#0d0d2b 0%,#0f0f2f 100%)">
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--cyan);bottom:5%;left:-150px"></div>
+  <p class="section-tag reveal">Quantum Solution</p>
+  <h2 class="section-title reveal">疊加態 & 糾纏</h2>
+  <div class="compare reveal">
+    <div class="compare-card classical">
+      <div class="icon">🔲</div>
+      <h3 style="color:var(--red)">傳統位元</h3>
+      <p style="color:var(--muted)">只能是 <strong>0</strong> 或 <strong>1</strong><br>一個人走迷宮<br>一次只能探索一條路</p>
+    </div>
+    <div class="compare-card quantum">
+      <div class="icon">⚛️</div>
+      <h3 style="color:var(--cyan)">量子位元</h3>
+      <p style="color:var(--muted)">同時處於 <strong>0 和 1</strong><br>像把水倒進迷宮<br>瞬間蔓延所有通道</p>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top:40px;text-align:center">
+    <div class="stat-highlight" style="font-size:clamp(2rem,6vw,4rem)">≈ 60</div>
+    <p class="stat-label">個高品質量子位元</p>
+    <p style="color:var(--cyan);font-size:1.1rem;margin-top:8px">= 全球最大超級電腦數十億年的運算量</p>
+    <p style="color:var(--muted);font-size:.9rem;margin-top:4px">在幾分鐘內完成 ⚡</p>
+  </div>
+</section>
+
+<!-- 數量迷思 -->
+<section style="background:linear-gradient(180deg,#0f0f2f 0%,#0a0a22 100%)">
+  <div class="glow-orb" style="width:350px;height:350px;background:var(--pink);top:20%;right:-120px"></div>
+  <p class="section-tag reveal">The Myth</p>
+  <h2 class="section-title reveal">量子位元數量迷思</h2>
+  <div class="section-body reveal">
+    <div class="quote">評估一台量子電腦只看它有幾個量子位元，就像評估一個國家的鐵路系統只測量它有多少英里的鐵軌。</div>
+    <p style="margin-top:16px">一萬公里的鐵軌——但如果<strong style="color:var(--red)">橋樑是壞的</strong>、拓撲結構一團糟，只要幾個關鍵節點斷裂，整個系統就完全癱瘓。</p>
+    <p style="margin-top:8px">如果火車上載的是社會關鍵的基礎設施決策呢？</p>
+  </div>
+  <h3 class="reveal" style="margin-top:40px;font-size:1.1rem;color:var(--text)">五大核心衡量標準</h3>
+  <div class="metrics reveal">
+    <div class="metric"><div class="m-icon">📊</div><h4>數量</h4><p>量子位元總數</p></div>
+    <div class="metric"><div class="m-icon">⏱️</div><h4>相干時間</h4><p>量子態維持壽命</p></div>
+    <div class="metric"><div class="m-icon">🔗</div><h4>連通性</h4><p>位元間互聯能力</p></div>
+    <div class="metric"><div class="m-icon">🎯</div><h4>一致性</h4><p>每個位元完全相同</p></div>
+    <div class="metric critical"><div class="m-icon">🛡️</div><h4>閘保真度</h4><p style="color:var(--cyan)">最關鍵指標</p></div>
+  </div>
+</section>
+
+<!-- 誤差爆炸 -->
+<section style="background:linear-gradient(180deg,#0a0a22 0%,#0e0a1f 100%)">
+  <div class="glow-orb" style="width:300px;height:300px;background:var(--red);bottom:10%;left:-100px;opacity:.1"></div>
+  <p class="section-tag reveal">Error Explosion</p>
+  <h2 class="section-title reveal">誤差爆炸 💥</h2>
+  <div class="section-body reveal">
+    <p>假設閘保真度 <strong style="color:var(--gold)">95%</strong>（已經算不錯了）</p>
+    <p>執行 2×2 = 4 ± 0.2 → 看起來可以接受</p>
+  </div>
+  <div class="reveal" style="margin-top:30px;text-align:center">
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:12px">但連續 9 次運算後……</p>
+    <div class="error-chain" id="error-chain">
+      <div class="error-step">2×2<br><small>4±0.2</small></div>
+      <span class="arrow">→</span>
+      <div class="error-step">×2<br><small>8±0.6</small></div>
+      <span class="arrow">→</span>
+      <div class="error-step">×2<br><small>16±2</small></div>
+      <span class="arrow">→</span>
+      <div class="error-step">×2<br><small>32±5</small></div>
+      <span class="arrow">→</span>
+      <div class="error-step bad">…×2<br><small style="font-size:.7rem">512±172!</small></div>
+    </div>
+    <div class="quote reveal" style="margin-top:20px;border-color:var(--red)">
+      這就像用影印機印一張圖，然後拿副本再去影印。每次影印都會把微小的污點放大。到了第七、八次，整張紙就變成一團黑。
+    </div>
+    <p class="reveal" style="color:var(--red);font-size:1rem;margin-top:16px">一個帶有 ±172 誤差的物流路線<br>可能會讓司機開進海裡 🌊</p>
+  </div>
+</section>
+
+<!-- 超導體 vs 離子阱 -->
+<section style="background:linear-gradient(180deg,#0e0a1f 0%,#0a0e1f 100%)">
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--green);top:15%;right:-150px;opacity:.08"></div>
+  <p class="section-tag reveal">Two Paths</p>
+  <h2 class="section-title reveal">超導體 vs 離子阱</h2>
+  <div class="compare reveal">
+    <div class="compare-card classical" style="border-color:rgba(245,158,11,0.3)">
+      <div class="icon">🏭</div>
+      <h3 style="color:var(--gold)">超導體</h3>
+      <p style="color:var(--muted)">在晶片上<strong>製造人造原子</strong><br>不管多精密，都不可能百分之百一模一樣<br><br>相干時間：<strong style="color:var(--red)">幾微秒</strong></p>
+    </div>
+    <div class="compare-card quantum" style="border-color:rgba(16,185,129,0.3)">
+      <div class="icon">🔬</div>
+      <h3 style="color:var(--green)">離子阱 (IonQ)</h3>
+      <p style="color:var(--muted)">直接借用<strong>大自然的真正原子</strong><br>同種元素的原子完美且完全相同<br><br>相干時間：<strong style="color:var(--green)">秒 → 分鐘</strong></p>
+    </div>
+  </div>
+  <div class="section-body reveal" style="margin-top:30px">
+    <p>離子阱技術用雷射在 3D 真空空間操控完美的自然原子<br>從根本上消除了個體差異與製造瑕疵</p>
+    <p style="margin-top:12px;color:var(--cyan)">加上<strong>完全連通性</strong>優勢 — 每個量子位元都能直接與其他任何位元互動</p>
+  </div>
+</section>
+
+<!-- 恰到好處原則 -->
+<section style="background:linear-gradient(180deg,#0a0e1f 0%,#0a0a1a 100%)">
+  <div class="glow-orb" style="width:350px;height:350px;background:var(--purple);bottom:20%;left:-100px;opacity:.1"></div>
+  <p class="section-tag reveal">The Goldilocks Principle</p>
+  <h2 class="section-title reveal">恰到好處原則 ⚖️</h2>
+  <div class="balance reveal">
+    <div class="balance-side">
+      <span class="bal-icon">📦📦📦</span>
+      <p><strong style="color:var(--red)">數量多，保真度低</strong><br>= 一堆廢鐵</p>
+    </div>
+    <div class="balance-mid">
+      <div class="tri"></div>
+      <span>BALANCE</span>
+    </div>
+    <div class="balance-side">
+      <span class="bal-icon">💎</span>
+      <p><strong style="color:var(--gold)">數量少，保真度極高</strong><br>= 解不了大問題</p>
+    </div>
+  </div>
+  <div class="section-body reveal" style="margin-top:20px">
+    <div class="quote" style="border-color:var(--green)">
+      真正恰到好處的系統：擁有足夠的保真度，來允許在相干時間內執行至少 <strong>n × n</strong> 個邏輯閘的運算。
+    </div>
+    <p style="margin-top:16px">不追求無限的相干時間，也不追求 100% 保真度。<br>只要在量子態崩潰前<strong style="color:var(--green)">把正確答案算出來</strong>——<br>那就是一台能造福社會的實用系統。</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="reveal">
+    <p style="font-size:1rem;color:var(--text);margin-bottom:8px">🎧 收聽完整 Podcast</p>
+    <p>資料來源：IonQ Quantum Computing 101<br>節目：The Debate Podcast</p>
+    <p style="margin-top:20px;font-size:.75rem">Built with ❤️ by Yuki 🐱</p>
+  </div>
+</footer>
+
+<!-- Audio Bar -->
+<div id="audio-bar">
+  <button id="playBtn" onclick="togglePlay()">▶</button>
+  <div class="track-name">破解量子位元數量迷思</div>
+  <div class="seek" id="seekBar" onclick="seek(event)"><div class="fill" id="seekFill"></div></div>
+  <div class="time" id="timeDisplay">0:00 / 0:00</div>
+</div>
+<audio id="audio" preload="metadata" src="破解量子位元數量迷思.mp3"></audio>
+
+<script>
+// Particle canvas
+const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+const pts=Array.from({length:80},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:Math.random()*2+1}));
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  for(const p of pts){
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,212,255,'+(p.r/3*.4)+')';ctx.fill();
+  }
+  // Lines between close particles
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+    if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle='rgba(0,212,255,'+(1-d/120)*.15+')';ctx.stroke()}
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// Scroll reveal
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.15});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+// Progress bar
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(window.scrollY/h*100)+'%';
+});
+
+// Counter animation
+let counted=false;
+const counterEl=document.getElementById('counter-199');
+const cObs=new IntersectionObserver(([e])=>{
+  if(e.isIntersecting&&!counted){counted=true;animateCount(counterEl,0,199,1500)}
+},{threshold:.5});
+cObs.observe(counterEl);
+function animateCount(el,from,to,dur){
+  const start=performance.now();
+  function step(now){
+    const p=Math.min((now-start)/dur,1);
+    el.textContent=Math.floor(from+(to-from)*easeOut(p));
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function easeOut(t){return 1-Math.pow(1-t,3)}
+
+// Audio player
+const audio=document.getElementById('audio');
+const playBtn=document.getElementById('playBtn');
+const seekFill=document.getElementById('seekFill');
+const timeDisplay=document.getElementById('timeDisplay');
+function togglePlay(){
+  if(audio.paused){audio.play();playBtn.textContent='⏸'}
+  else{audio.pause();playBtn.textContent='▶'}
+}
+audio.addEventListener('timeupdate',()=>{
+  if(audio.duration){
+    seekFill.style.width=(audio.currentTime/audio.duration*100)+'%';
+    timeDisplay.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);
+  }
+});
+audio.addEventListener('ended',()=>{playBtn.textContent='▶'});
+function seek(e){
+  const r=e.currentTarget.getBoundingClientRect();
+  audio.currentTime=(e.clientX-r.left)/r.width*audio.duration;
+}
+function fmt(s){const m=Math.floor(s/60);return m+':'+(''+(Math.floor(s%60))).padStart(2,'0')}
+</script>
+</body>
+</html>
