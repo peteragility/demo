@@ -23,6 +23,18 @@
   .toggles button.on{background:var(--txt);color:#fff;border-color:var(--txt)}
   .toggles button:hover{border-color:var(--txt);color:var(--txt)}
   .toggles button.on:hover{color:#fff}
+  .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  .bar input#search{flex:1;min-width:120px;max-width:240px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font:inherit;font-size:12.5px;background:var(--panel)}
+  .bar input#search:focus{outline:none;border-color:var(--acc)}
+  .bar select{border:1px solid var(--line);border-radius:8px;padding:5px 8px;font:inherit;font-size:12px;background:var(--panel);color:var(--txt)}
+  .summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .summary .chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:11.5px;color:var(--dim)}
+  .summary .chip b{color:var(--txt);font-size:12.5px}
+  .summary .chip .g{color:var(--good);font-weight:700}
+  .summary .chip .r{color:var(--dbx);font-weight:700}
+  .delta{font-size:9.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px}
+  .delta.cheap{background:#e5f6ee;color:var(--good)}
+  .delta.prem{background:#ffe9e9;color:var(--bad)}
 
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(20,30,60,.06)}
   .card h2{font-size:14.5px;margin-bottom:2px;display:flex;align-items:center;gap:8px;letter-spacing:-.2px}
@@ -73,7 +85,17 @@
 <body>
 <div class="wrap">
   <h1>⚡ LLM Token Pricing</h1>
-  <div class="sub">Databricks vs 平台 vs 原廠 · <span id="fetched"></span> · <a href="/">demo.peteragility.com</a> · ✏️ 價格可 edit（存 localStorage）</div>
+  <div class="sub">Databricks vs 平台 vs 原廠 · <span id="fetched"></span> · <a href="/">demo index</a> · ✏️ 價格可 edit（存 localStorage）· <button id="resetBtn" onclick="resetEdits()" style="border:none;background:none;color:var(--bad);font-size:11px;cursor:pointer;text-decoration:underline;padding:0">reset edits</button></div>
+  <div class="bar">
+    <input id="search" placeholder="🔍 搜模型…" oninput="render()">
+    <select id="sortSel" onchange="render()">
+      <option value="default">排序：預設</option>
+      <option value="in">最平 In $/M</option>
+      <option value="out">最平 Out $/M</option>
+    </select>
+    <label style="display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--dim);cursor:pointer"><input type="checkbox" id="hideNope" onchange="render()">收起「不提供」</label>
+  </div>
+  <div id="summary" class="summary"></div>
   <div class="toggles" id="toggles"></div>
   <div id="app"></div>
   <div class="sub" id="srcLine" style="margin-top:12px"></div>
@@ -125,19 +147,26 @@ function cellInput(mkK,pl,cell,f){
   const v=fv(cell,f);
   return `<input class="p" data-k="${mkK}|${pl}|${f}" value="${v==null?'':v}" placeholder="—">`;
 }
-function platformRow(mkK,pl,cell,isBest,isDbx,isOrig){
+function platformRow(mkK,pl,cell,isBest,isDbx,isOrig,st){
   const platCls=isDbx?'dbx-row':'';
   const nameCls=isDbx?'dbx-name':(isOrig?'orig-name':'');
   const badge=isBest&&!isDbx&&!isOrig?'<span class="best-tag">BEST</span>':(isDbx?'<span class="best-tag" style="background:#ffe4de;color:var(--dbx)">基準</span>':'');
   if(!cell||cell.not_offered){
+    if(document.getElementById('hideNope')&&document.getElementById('hideNope').checked)return '';
     return `<tr class="${platCls}">
       <td class="plat" data-l="Platform"><span class="${nameCls}">${PLABEL[pl]}</span>${badge}</td>
       <td data-l="Regions" class="nope">—</td>
       <td colspan="4" data-l="Status" class="nope">不提供</td>
     </tr>`;
   }
+  // delta badge: vs 原廠 for platform rows
+  let delta='';
+  if(st&&!isOrig&&!isDbx&&st.origIn&&cell.in!=null){
+    const pct=Math.round((cell.in/st.origIn-1)*100);
+    if(pct!==0) delta=`<span class="delta ${pct<0?'cheap':'prem'}">${pct>0?'+':''}${pct}%</span>`;
+  }
   return `<tr class="${platCls}">
-    <td class="plat" data-l="Platform"><span class="${nameCls}">${PLABEL[pl]}</span>${badge}</td>
+    <td class="plat" data-l="Platform"><span class="${nameCls}">${PLABEL[pl]}</span>${badge}${delta}</td>
     <td data-l="Regions"><span class="regions">${cell.regions||'—'}</span></td>
     <td data-l="In $/M">${cellInput(mkK,pl,cell,'in')}</td>
     <td data-l="Out $/M">${cellInput(mkK,pl,cell,'out')}</td>
@@ -145,24 +174,63 @@ function platformRow(mkK,pl,cell,isBest,isDbx,isOrig){
     <td data-l="Cache W $/M">${cellInput(mkK,pl,cell,'cache_write')}</td>
   </tr>`;
 }
+function resetEdits(){
+  if(!confirm('清除所有手動改過嘅價格？'))return;
+  edits={};localStorage.removeItem(LS_KEY);
+  boot();
+}
+function modelStats(m){
+  // cheapest platform (excl official & databricks) by in; plus dbx & official ins for delta
+  let bestPl=null,bestIn=null,bestOut=null;
+  for(const pl of PLATFORMS){
+    if(pl==='databricks')continue;
+    const i=fv(m.platforms[pl],'in');
+    if(i!=null&&(bestIn==null||i<bestIn)){bestIn=i;bestOut=fv(m.platforms[pl],'out')??0;bestPl=pl;}
+  }
+  const dbxIn=fv(m.platforms.databricks,'in'), origIn=fv(officialCell(m),'in');
+  return {bestPl,bestIn,bestOut,dbxIn,origIn};
+}
 function render(){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const sort=document.getElementById('sortSel').value;
+  const hideNope=document.getElementById('hideNope').checked;
   let models = Object.values(DATA.models).filter(m=>{
     const g=GROUPS.find(g=>g.id===curGroup);
-    return g&&g.test(m);
+    if(!g||!g.test(m))return false;
+    if(q&&!(m._key.toLowerCase().includes(q)||(m.note||'').toLowerCase().includes(q)))return false;
+    return true;
   });
+  if(sort!=='default'){
+    models.sort((a,b)=>{
+      const A=modelStats(a),B=modelStats(b);
+      if(sort==='in'){
+        const ai=A.dbxIn??A.bestIn??A.origIn??9e9, bi=B.dbxIn??B.bestIn??B.origIn??9e9;
+        return ai-bi;
+      }
+      const ao=A.bestOut??fv(officialCell(a),'out')??9e9, bo=B.bestOut??fv(officialCell(b),'out')??9e9;
+      return ao-bo;
+    });
+  }
+  // summary chips
+  const withPlat=models.map(m=>({m,s:modelStats(m)})).filter(x=>x.s.bestIn!=null);
+  let chips='';
+  if(withPlat.length){
+    const cIn=[...withPlat].sort((a,b)=>a.s.bestIn-b.s.bestIn)[0];
+    const cOut=[...withPlat].sort((a,b)=>(a.s.bestOut||9e9)-(b.s.bestOut||9e9))[0];
+    chips=`<div class="chip">🏆 最平 In：<b>${cIn.m._key.replace(/^\w+\//,'')}</b> <span class="g">$${cIn.s.bestIn} @ ${PLABEL[cIn.s.bestPl]}</span></div>
+    <div class="chip">💸 最平 Out：<b>${cOut.m._key.replace(/^\w+\//,'')}</b> <span class="g">$${cOut.s.bestOut} @ ${PLABEL[cOut.s.bestPl]}</span></div>
+    <div class="chip">📦 ${models.length} 個模型</div>`;
+  }
+  document.getElementById('summary').innerHTML=chips;
   let html='';
   for(const m of models){
-    let bestPl=null,bestIn=null;
+    const st=modelStats(m);
+    let bestPl=st.bestPl,bestIn=st.bestIn;
+    let rows=platformRow(m._key,'official',officialCell(m),false,false,true,st);
+    rows+=platformRow(m._key,'databricks',m.platforms.databricks,false,true,false,st);
     for(const pl of PLATFORMS){
       if(pl==='databricks')continue;
-      const i=fv(m.platforms[pl],'in');
-      if(i!=null&&(bestIn==null||i<bestIn)){bestIn=i;bestPl=pl;}
-    }
-    let rows=platformRow(m._key,'official',officialCell(m),false,false,true);
-    rows+=platformRow(m._key,'databricks',m.platforms.databricks,false,true,false);
-    for(const pl of PLATFORMS){
-      if(pl==='databricks')continue;
-      rows+=platformRow(m._key,pl,m.platforms[pl],pl===bestPl,false,false);
+      rows+=platformRow(m._key,pl,m.platforms[pl],pl===bestPl,false,false,st);
     }
     html+=`<div class="card">
       <h2>${m._key} <span class="mtag ${m.oss?'oss':'flag'}">${m.oss?'OSS':'FLAGSHIP'}</span></h2>
