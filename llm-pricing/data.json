@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-09-23T05:18:01.720854+00:00",
+ "fetched_at": "2026-09-23T22:30:00+08:00",
  "sources": [
   "https://docs.claude.com/en/docs/about-claude/pricing",
   "https://platform.openai.com/docs/pricing",
@@ -14,7 +14,10 @@
   "https://cloud.google.com/vertex-ai/generative-ai/pricing",
   "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
   "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
-  "https://www.databricks.com/product/pricing/foundation-model-serving"
+  "https://www.databricks.com/product/pricing/foundation-model-serving",
+  "https://venturebeat.com/technology/openai-releases-gpt-6-sol-and-luna-models-slashing-api-costs-50-or-more",
+  "https://the-decoder.com/claude-opus-5-5-matches-fable-5-1-at-40-percent-lower-cost-as-anthropic-promises-to-fix-claudish-writing",
+  "https://docs.databricks.com/aws/en/release-notes/product/2026/september"
  ],
  "models": {
   "anthropic/claude-opus-5": {
@@ -158,10 +161,10 @@
     "databricks": {
      "in": 10.0,
      "out": 50.0,
-     "cache_read": 1.0,
+     "cache_read": 0.25,
      "cache_write": 12.5,
-     "note": "Databricks FMAPI 官方掛牌（DBU×$0.07）",
-     "regions": "All Databricks clouds"
+     "regions": "FMAPI serverless",
+     "note": "Fable 5.1 row：cache read 由 $1 降到 $0.25"
     },
     "bedrock": null,
     "azure_foundry": null,
@@ -773,6 +776,42 @@
     }
    },
    "oss": true
+  },
+  "openai/gpt-6-sol": {
+   "oss": false,
+   "in": 2.0,
+   "out": 10.0,
+   "cache_read": 0.2,
+   "cache_write": null,
+   "note": "2026-09-22 發佈；DBX FMAPI 仲未見 row（公佈話「launching on Databricks today」，價表未更新）",
+   "platforms": {}
+  },
+  "openai/gpt-6-luna": {
+   "oss": false,
+   "in": 0.1,
+   "out": 0.5,
+   "cache_read": 0.01,
+   "cache_write": null,
+   "note": "GPT-6 低階（高吞吐簡單任務）；1.05M ctx；cache read 10% in；DBX 未見 row",
+   "platforms": {}
+  },
+  "anthropic/claude-opus-5.5": {
+   "oss": false,
+   "in": 4.0,
+   "out": 20.0,
+   "cache_read": 0.2,
+   "cache_write": 5.0,
+   "note": "Fable 5.1 級性能 @ Opus 5 -20%；cache read -60%；enterprise 文件 parsing 強；DBX row 已上架（=官方價慣例）",
+   "platforms": {
+    "databricks": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.2,
+     "cache_write": 5.0,
+     "regions": "FMAPI serverless（standard tier）",
+     "note": "Opus 5.5 已喺 DBX 標準價表"
+    }
+   }
   }
  }
 }
