@@ -69,7 +69,8 @@
 <body>
 <div class="wrap">
   <h1>Lakebase <span class="v">vs</span> Aurora Serverless v2</h1>
-  <div class="sub">Pure technical deep dive ｜ fact-checked 2026-08-30 · VLDB paper 09-04 · release notes 09-20 · EN · sales material moved to <code>lakebase-sales-play</code></div>
+  <div class="sub">Pure technical deep dive ｜ fact-checked 2026-09-23 · VLDB paper 09-04 · release notes 09-20 · EN · sales material moved to <code>lakebase-sales-play</code></div>
+  <div class="sub" style="font-size:.78rem">⚠️ AWS renamed "Aurora Serverless v2" to <b>Aurora serverless</b> in April 2026 (no action required). This page still says "Aurora Serverless v2" where the source material does.</div>
 
   <div class="pitch">
   🧭 <b>One-line summary:</b> Two databases that both believe "log is the database" — separated by where the page of truth lives. Aurora (Gen 2): private quorum storage, single cloud. Lakebase (Gen 3): open-format object storage, any engine reads. Every difference below follows from that single architectural choice.
@@ -92,7 +93,7 @@
     </div>
     <div class="card colL">
       <div class="colTitle l">Lakebase — Gen 3 (open-format object store, Neon lineage)</div>
-      <div class="box"><b>Stateless Postgres Compute (CU)</b><small>replaceable "cattle" — dies, spin up another; 0.5–32 CU</small></div>
+      <div class="box"><b>Stateless Postgres Compute (CU)</b><small>replaceable "cattle" — dies, spin up another; 0.5–64 CU autoscale, 65–112 CU fixed</small></div>
       <div class="side-arrow"><span>WAL →</span><div class="track"><span class="dot l"></span></div></div>
       <div class="box"><b>Pageserver</b><small>replays WAL into pages · image pushdown (FPW generated here, not on compute: 58KB → &lt;4KB, −94%)</small></div>
       <div class="side-arrow"><span>pages →</span><div class="track"><span class="dot l" style="animation-delay:.5s"></span></div></div>
@@ -107,8 +108,8 @@
     <table>
       <tr><th>Metric</th><th>Result</th><th>Context</th></tr>
       <tr><td><b>Full-page-write WAL overhead</b></td><td class="l">58KB → &lt;4KB per txn (−94%)</td><td>Image pushdown moves FPW generation to the storage layer; Aurora never had this tax (no engine checkpoints), Neon-lineage paid it until 2026</td></tr>
-      <tr><td><b>32-vCPU TPROC-C NOPM (vs own prior gen)</b></td><td class="l">95.6K → 439K (4.5x)</td><td>Debt repayment vs Neon's old architecture — <b>not</b> vs Aurora</td></tr>
-      <tr><td><b>Partner pgbench head-to-head vs Aurora</b></td><td>1,731 vs 1,508 TPS → <b style="color:var(--warn)">~15% gap only</b></td><td>Both ~1.5–1.7k TPS, zero failures, connection pooling advised on both</td></tr>
+      <tr><td><b>32-vCPU TPROC-C NOPM (with image pushdown)</b></td><td class="l">95.7K → 439.3K (4.5x+)</td><td>Databricks eng blog + VLDB §7.3: NOPM at p95 NewOrder &lt;20ms, before vs after image pushdown — <b>not</b> vs Aurora. Paper's Gen-2 archetype comparison: Lakebase 22–43% ahead at 4–16 vCPU, +26% at 24 vCPU</td></tr>
+      <tr><td><b>Partner pgbench head-to-head vs Aurora</b></td><td>1,731–1,737 vs 1,508–1,509 TPS → <b style="color:var(--warn)">~15% gap</b>; latency 104ms vs 119ms per txn</td><td>4M-row dataset, 180 clients, default config both sides, zero failed txns, pooling advised on both. Single partner benchmark (Diggibyte) — not an official Databricks or AWS number</td></tr>
       <tr><td><b>Topology sensitivity</b></td><td colspan="2">Driver VM in the same AZ as the DB <b>doubled</b> Lakebase TPS vs cross-AZ — network round-trips still rule OLTP; benchmark accordingly</td></tr>
     </table>
     <span class="badge bR">⚠️ "5x faster writes" = vs Neon's own old version, not vs Aurora</span>
@@ -121,17 +122,17 @@
     <div class="card colA">
       <div class="colTitle a">Aurora — in-place ramp</div>
       <ul>
-        <li>0–256 ACU, scales in place: <b>30–90s</b> ramp (rate proportional to current capacity)</li>
+        <li>0–256 ACU, scales in place. April 2026 platform version 4: <b>up to 45% faster scaling</b> (0.5→256 ACU in ~22 min, was ~40 min); Aug 2026: scale-up events now reach <b>up to 12 ACU within a second</b> before continuing to 256</li>
         <li>Scale-down deliberately slow (minutes) to prevent thrash</li>
         <li><code>max_connections</code> tracks ACU (2 ACU ≈ 135 conns); during ramp windows the ceiling is stale → RDS Proxy + retries needed</li>
-        <li>Resume from auto-pause: <b>~15s</b> full instance boot + quorum reattach (status still shows "available" while resuming — PG 13.15+)</li>
+        <li>Resume from auto-pause: <b>~15s</b> (30s+ if paused &gt;24h — "deep sleep") (status still shows "available" while resuming — PG 13.15+)</li>
       </ul>
     </div>
     <div class="card colL">
       <div class="colTitle l">Lakebase — compute swap</div>
       <ul>
-        <li>0.5–32 CU, <b>seconds</b>: new compute attaches to the WAL stream; storage never moves</li>
-        <li>True scale-to-zero: idle 5 min → suspend (auto-disabled above 16 CU)</li>
+        <li>0.5–64 CU autoscale (max−min ≤ 16 CU spread), fixed 65–112 CU; <b>seconds</b>: new compute attaches to the WAL stream; storage never moves</li>
+        <li>True scale-to-zero: configurable idle timeout, <b>default 24h</b> (60s–7 days range); only for computes ≤32 CU; not available with HA</li>
         <li>Built-in PgBouncer pooled endpoint (transaction mode)</li>
         <li>Resume: boot a thin compute, pages lazy-stream from pageserver/object store</li>
       </ul>
@@ -144,14 +145,14 @@
       <div class="finish"></div>
       <div class="lane" style="top:8px">
         <span class="laneTag">Lakebase — stateless compute boot</span>
-        <div class="runner l">~300–500ms</div>
+        <div class="runner l">~300–500ms (median &lt;500ms, per VLDB paper §5.3)</div>
       </div>
       <div class="lane" style="top:64px">
         <span class="laneTag">Aurora v2 — full instance resume</span>
         <div class="runner a">~15 seconds</div>
       </div>
     </div>
-    <p style="font-size:.85rem;color:var(--dim)">A 30–100x gap. Caveat: after either resume the buffer cache is cold — there is no free resume; Lakebase just makes re-reads cheap (next tier is warm) and fast.</p>
+    <p style="font-size:.85rem;color:var(--dim)">~30x median gap (500ms vs ~15s; Aurora can hit 30s+ after a &gt;24h pause). Caveat: after either resume the buffer cache is cold — there is no free resume; Lakebase just makes re-reads cheap (next tier is warm) and fast.</p>
   </div>
 
   <div class="grid2">
@@ -190,7 +191,7 @@
         <tr><td>Agents' DB creation vs humans</td><td class="l"><b>4x</b></td></tr>
         <tr><td>New databases daily (ecosystem)</td><td class="l"><b>&gt;10M</b></td></tr>
         <tr><td>Instance lifecycles &lt;10s</td><td class="l">common</td></tr>
-        <tr><td>Branch depth record</td><td class="l"><b>&gt;500 levels</b></td></tr>
+        <tr><td>Branch depth observed</td><td class="l"><b>some &gt;500 branches</b> (production telemetry, Fig 2)</td></tr>
         <tr><td>Compute startup (warm pool + distributed WAL redo)</td><td class="l"><b>sub-second</b></td></tr>
         <tr><td>Aurora equivalent</td><td class="a"><b>none</b> — copy-then-wait (dump/restore)</td></tr>
       </table>
@@ -201,25 +202,28 @@
   <h2><span class="num">5</span>Honest Scoreboard — Who Wins What</h2>
   <table>
     <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora</th><th style="color:var(--lake)">Lakebase</th><th>Verdict</th></tr>
-    <tr><td><b>Track record</b></td><td>10+ years battle-tested · 99.99% SLA</td><td>GA 2026-03 · cell architecture · ~99.8% actual (2026-05-08 AZ incident: 7/8 cells healthy, 13% DBs affected; 99.99% target not yet stable)</td><td class="verdict a">Aurora</td></tr>
-    <tr><td><b>Cross-region DR</b></td><td>Global Database &lt;1s lag · managed failover</td><td>Not at parity — backups + PITR + branching/instant restore compensate</td><td class="verdict a">Aurora</td></tr>
-    <tr><td><b>Read replicas</b></td><td>Up to 15, independently autoscaling</td><td>1–3 cross-AZ secondaries + read replicas (independent compute, shared storage)</td><td class="verdict a">Aurora</td></tr>
-    <tr><td><b>Cold start / scale-to-zero</b></td><td>~15s resume, no true zero</td><td>300–500ms · true scale-to-zero</td><td class="verdict l">Lakebase (30–100x)</td></tr>
+    <tr><td><b>Track record</b></td><td>10+ years battle-tested · 99.99% SLA</td><td>GA 2026-01 (AWS) / 2026-03 (Azure) · cell architecture · 99.9% SLA single-compute, <b>99.99% SLA with zone-redundant HA</b> · 2026-05-08 us-east-1 AZ incident: 7/8 cells failed over correctly, ~13% DBs affected; Jan–Apr 2026 attainment: 99.75–99.85% of DBs met 99.99%</td><td class="verdict a">Aurora (maturity gap closing)</td></tr>
+    <tr><td><b>Cross-region DR</b></td><td>Global Database &lt;1s lag · managed failover · RPO=0 managed planned failover</td><td>DR in Private Preview: periodic storage-layer replication to a secondary workspace, manual failover; no cross-region read replicas, no RPO=0 switchover, no global endpoint yet</td><td class="verdict a">Aurora (clear gap)</td></tr>
+    <tr><td><b>Read replicas</b></td><td>Up to 15, independently autoscaling</td><td>1–3 HA secondaries (failover + optional reads) + up to 6 read replicas per branch (independent compute, shared storage, no data duplication)</td><td class="verdict a">Aurora (raw count)</td></tr>
+    <tr><td><b>Cold start / scale-to-zero</b></td><td>~15s resume (30s+ after &gt;24h pause) · true zero since Nov 2024</td><td>Median &lt;500ms (VLDB §5.3) · true scale-to-zero</td><td class="verdict l">Lakebase (~30x)</td></tr>
     <tr><td><b>Branching</b></td><td>None — copy-then-wait (dump/restore)</td><td>O(1) primitive · agent sandbox · CI/CD environments</td><td class="verdict l">Lakebase (unique)</td></tr>
     <tr><td><b>OLTP + OLAP</b></td><td>Requires DMS/Glue pipelines</td><td>Lakehouse reads pages directly · zero ETL · Unity Catalog governance</td><td class="verdict l">Lakebase</td></tr>
-    <tr><td><b>Postgres compatibility</b></td><td>PG fork (feature gaps vs OSS)</td><td>Open-source Postgres engine (not a fork) — 16.15 / 17.11 / 18.6 as of Aug 2026</td><td class="verdict l">Lakebase</td></tr>
+    <tr><td><b>Postgres compatibility</b></td><td>PG fork (feature gaps vs OSS)</td><td>Open-source Postgres engine (not a fork) — 16 / 17 (default) / 18; minor versions 16.15 / 17.11 / 18.6 as of Aug 2026; some limits: no tablespaces, session state lost on suspend, extension list not total</td><td class="verdict l">Lakebase</td></tr>
     <tr><td><b>Lock-in</b></td><td>Proprietary format, single cloud</td><td>Open format · S3/ADLS/GCS</td><td class="verdict l">Lakebase</td></tr>
     <tr><td><b>Replica lag</b></td><td colspan="3" class="verdict n">Near parity: tens of ms (Aurora, shared volume) vs ms-level (Lakebase, shared WAL/pageserver); both need cache warm-up after failover — not a decision factor</td></tr>
-    <tr><td><b>Raw TPS / latency</b></td><td colspan="3" class="verdict n">~15% head-to-head TPS gap, Lakebase ahead; ~15ms/txn latency edge in one field report — neither is a speed story, pick on architecture</td></tr>
+    <tr><td><b>Raw TPS / latency</b></td><td colspan="3" class="verdict n">One partner pgbench: ~15% TPS gap and ~15ms/txn latency edge, both to Lakebase (default config, single benchmark) — neither is a speed story, pick on architecture</td></tr>
   </table>
 
   <!-- ============ 6. LATEST ============ -->
-  <h2><span class="num">6</span>What's New (as of 2026-09-20) <span class="tag l">UPDATED</span></h2>
+  <h2><span class="num">6</span>What's New (as of 2026-09-23) <span class="tag l">UPDATED</span></h2>
   <div class="card">
     <ul>
-      <li><b>Sep 3, 2026</b> — Lakebase available in <b>Azure Japan East</b> (japaneast)</li>
-      <li><b>Aug 24, 2026</b> — Supported Postgres versions updated to <b>16.15, 17.11, and 18.6</b> (latest upstream fixes/security patches; applied at next compute restart)</li>
-      <li><b>Aug 24, 2026</b> — <b>Genie Code available in the Lakebase project UI</b> (natural-language Lakebase development)</li>
+      <li><b>Sep 17, 2026</b> — <b>Lakebase Search GA</b>: `lakebase_vector` (pgvector-compatible ANN, `lakebase_ann` index, RaBitQ quantization, 1B+ vectors) + `lakebase_text` (BM25 via `lakebase_bm25`), hybrid search with Reciprocal Rank Fusion</li>
+      <li><b>Sep 3, 2026</b> — Lakebase available in <b>Azure Japan East</b> (japaneast); Aug 19: +4 Azure regions (North Central US, France Central, Germany West Central, East Asia)</li>
+      <li><b>Aug 24, 2026</b> — Supported Postgres minor versions updated to <b>16.15, 17.11, and 18.6</b> (latest upstream fixes/security patches; applied at next compute restart)</li>
+      <li><b>Aug 24, 2026</b> — <b>Genie Code available in the Lakebase project UI</b> (agentic natural-language Lakebase development)</li>
+      <li><b>Aug 14, 2026</b> — <b>Lakebase Postgres APIs GA</b> (REST API, CLI, SDKs for Python/Java/Go: projects, branches, endpoints, roles, credentials, synced tables)</li>
+      <li><b>Aug 10, 2026</b> — <b>PCI-DSS and HITRUST</b> compliance added</li>
       <li><b>Mar 2, 2026</b> — GA on Azure: autoscaling compute, scale-to-zero, branching, instant restore; +11 new Azure regions beyond eastus2/westeurope/westus</li>
     </ul>
     <span class="badge bL">Paper: vldb.org/pvldb/vol19/p4385-pandis.pdf</span>
@@ -227,7 +231,7 @@
     <span class="badge bL">Partner pgbench: community.databricks.com → "Benchmarking Databricks Lakebase and AWS Aurora"</span>
   </div>
 
-  <div class="footer">peteragility · technical deep dive EN · fact-checked 2026-09-20 · sales material lives at <code>/demo/lakebase-sales-play/</code></div>
+  <div class="footer">peteragility · technical deep dive EN · fact-checked 2026-09-23 · sales material lives at <code>/demo/lakebase-sales-play/</code></div>
 </div>
 </body>
 </html>
