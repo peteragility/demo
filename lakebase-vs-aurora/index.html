@@ -62,6 +62,9 @@
   code{background:#1c2129;padding:1px 6px;border-radius:4px;font-size:.8em}
   ul{padding-left:20px}
   li{margin:4px 0;font-size:.9rem}
+  .toc a:hover{color:var(--lake);border-color:var(--lake)}
+  html{scroll-behavior:smooth}
+  th,td{word-break:normal}
   .verdict{font-weight:700;white-space:nowrap}
   .verdict.a{color:var(--aurora)} .verdict.l{color:var(--lake)} .verdict.n{color:var(--dim);font-weight:400}
 </style>
@@ -69,15 +72,25 @@
 <body>
 <div class="wrap">
   <h1>Lakebase <span class="v">vs</span> Aurora Serverless v2</h1>
-  <div class="sub">Pure technical deep dive ｜ fact-checked 2026-09-23 · VLDB paper 09-04 · release notes 09-20 · EN · sales material moved to <code>lakebase-sales-play</code></div>
-  <div class="sub" style="font-size:.78rem">⚠️ AWS renamed "Aurora Serverless v2" to <b>Aurora serverless</b> in April 2026 (no action required). This page still says "Aurora Serverless v2" where the source material does.</div>
+  <div class="sub">Pure technical deep dive ｜ fact-checked 2026-09-23 · VLDB paper 09-04 · release notes 09-23 · EN · sales material moved to <code>lakebase-sales-play</code></div>
+  <div class="sub" style="font-size:.78rem">⚠️ AWS renamed "Aurora Serverless v2" to <b>Aurora serverless</b> in April 2026 (no action required). This page keeps the old name where the source material uses it.</div>
+
+  <div class="toc" style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+    <a href="#arch" style="font-size:.75rem;padding:4px 10px;border:1px solid var(--border);border-radius:12px;color:var(--dim);text-decoration:none">Architecture</a>
+    <a href="#throughput" style="font-size:.75rem;padding:4px 10px;border:1px solid var(--border);border-radius:12px;color:var(--dim);text-decoration:none">Throughput</a>
+    <a href="#scaling" style="font-size:.75rem;padding:4px 10px;border:1px solid var(--border);border-radius:12px;color:var(--dim);text-decoration:none">Scaling</a>
+    <a href="#branching" style="font-size:.75rem;padding:4px 10px;border:1px solid var(--border);border-radius:12px;color:var(--dim);text-decoration:none">Branching</a>
+    <a href="#scoreboard" style="font-size:.75rem;padding:4px 10px;border:1px solid var(--border);border-radius:12px;color:var(--dim);text-decoration:none">Scoreboard</a>
+    <a href="#pricing" style="font-size:.75rem;padding:4px 10px;border:1px solid var(--border);border-radius:12px;color:var(--dim);text-decoration:none">Pricing 💰</a>
+    <a href="#latest" style="font-size:.75rem;padding:4px 10px;border:1px solid var(--border);border-radius:12px;color:var(--dim);text-decoration:none">What's New</a>
+  </div>
 
   <div class="pitch">
   🧭 <b>One-line summary:</b> Two databases that both believe "log is the database" — separated by where the page of truth lives. Aurora (Gen 2): private quorum storage, single cloud. Lakebase (Gen 3): open-format object storage, any engine reads. Every difference below follows from that single architectural choice.
   </div>
 
   <!-- ============ 1. ARCHITECTURE ============ -->
-  <h2><span class="num">1</span>Core Architecture — Where Does the Page of Truth Live?</h2>
+  <h2 id="arch"><span class="num">1</span>Core Architecture — Where Does the Page of Truth Live?</h2>
   <div class="grid2">
     <div class="card colA">
       <div class="colTitle a">Aurora Serverless v2 — Gen 2 (private quorum)</div>
@@ -103,7 +116,7 @@
   </div>
 
   <!-- ============ 2. WRITE PATH & THROUGHPUT ============ -->
-  <h2><span class="num">2</span>Write Path &amp; Measured Throughput — the honest numbers</h2>
+  <h2 id="throughput"><span class="num">2</span>Write Path &amp; Measured Throughput — the honest numbers</h2>
   <div class="card">
     <table>
       <tr><th>Metric</th><th>Result</th><th>Context</th></tr>
@@ -117,7 +130,7 @@
   </div>
 
   <!-- ============ 3. SCALING & COLD START ============ -->
-  <h2><span class="num">3</span>Scaling, Cold Start &amp; Cache Hierarchy</h2>
+  <h2 id="scaling"><span class="num">3</span>Scaling, Cold Start &amp; Cache Hierarchy</h2>
   <div class="grid2">
     <div class="card colA">
       <div class="colTitle a">Aurora — in-place ramp</div>
@@ -175,7 +188,7 @@
   </div>
 
   <!-- ============ 4. BRANCHING (from VLDB paper) ============ -->
-  <h2><span class="num">4</span>Branching — the O(1) Primitive (VLDB 2026, on record)</h2>
+  <h2 id="branching"><span class="num">4</span>Branching — the O(1) Primitive (VLDB 2026, on record)</h2>
   <div class="grid2">
     <div class="card colL">
       <div class="colTitle l">Mechanics (paper, §4.2)</div>
@@ -199,7 +212,7 @@
   </div>
 
   <!-- ============ 5. SCOREBOARD ============ -->
-  <h2><span class="num">5</span>Honest Scoreboard — Who Wins What</h2>
+  <h2 id="scoreboard"><span class="num">5</span>Honest Scoreboard — Who Wins What</h2>
   <table>
     <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora</th><th style="color:var(--lake)">Lakebase</th><th>Verdict</th></tr>
     <tr><td><b>Track record</b></td><td>10+ years battle-tested · 99.99% SLA</td><td>GA 2026-01 (AWS) / 2026-03 (Azure) · cell architecture · 99.9% SLA single-compute, <b>99.99% SLA with zone-redundant HA</b> · 2026-05-08 us-east-1 AZ incident: 7/8 cells failed over correctly, ~13% DBs affected; Jan–Apr 2026 attainment: 99.75–99.85% of DBs met 99.99%</td><td class="verdict a">Aurora (maturity gap closing)</td></tr>
@@ -215,7 +228,7 @@
   </table>
 
   <!-- ============ 6. PRICING ============ -->
-  <h2><span class="num">6</span>Pricing — What Does $5,000/Month Buy?</h2>
+  <h2 id="pricing"><span class="num">6</span>Pricing — What Does $5,000/Month Buy?</h2>
   <p style="font-size:.85rem;color:var(--dim);margin-bottom:8px">List prices, us-east-1, on-demand, Sep 2026. Lakebase bills in DBUs (compute) + DSUs (storage) — the ~$0.111/CU-hr figure below is the AWS Enterprise-tier effective rate and varies by tier/region; verify in your own console. Aurora serverless: $0.12/ACU-hr (Standard) / $0.156 (I/O-Optimized), storage $0.10 vs $0.225/GB-month, I/O $0.20/M requests (included on I/O-Optimized). Both units ≈ 2GB RAM.</p>
   <table>
     <tr><th>Rate</th><th style="color:var(--aurora)">Aurora serverless</th><th style="color:var(--lake)">Lakebase</th></tr>
@@ -239,13 +252,14 @@
     <ul>
       <li><b>24/7 constant load:</b> Aurora ~57 ACU average vs Lakebase ~62 CU average (~114–124GB RAM-class compute either way)</li>
       <li><b>Office-hours dev DB</b> (8h × 22 days ≈ 176 active hrs): ~237 ACU avg on Aurora vs ~256 CU avg on Lakebase — i.e. one comfortably-sized dev instance plus change, on either</li>
-      <li><b>Many small environments</b> is where Lakebase's model shines: 20 dev DBs × 1 CU × 176 hrs ≈ $392 on Lakebase vs $422 on Aurora (scale-to-zero both) — but Lakebase branches make those 20 environments free to *create*</li>
-      <li><b>Real 24/7 production app</b> (scenario 2 above): $5k covers it on either, with ~$500–800/mo headroom on Lakebase</li>
+      <li><b>Many small environments</b> is where Lakebase's model shines: 20 dev DBs × 1 CU × 176 hrs ≈ $392 on Lakebase vs $422 on Aurora (scale-to-zero both) — but Lakebase branches make those 20 environments instant and storage-free to *create*</li>
+      <li><b>Real 24/7 production app</b> (scenario 2 above): $5k covers it on either — Aurora leaves ~$1,250 headroom, Lakebase ~$1,880 (or ~$2,250 with Always-On)</li>
+      <li><b>What $5k does NOT cover:</b> HA on Lakebase (scale-to-zero off, compute bills 24/7), Aurora Global Database cross-region replication, heavy read-replica fleets — budget those separately on both sides</li>
     </ul>
   </div>
 
   <!-- ============ 7. LATEST ============ -->
-  <h2><span class="num">7</span>What's New (as of 2026-09-23) <span class="tag l">UPDATED</span></h2>
+  <h2 id="latest"><span class="num">7</span>What's New (as of 2026-09-23) <span class="tag l">UPDATED</span></h2>
   <div class="card">
     <ul>
       <li><b>Sep 17, 2026</b> — <b>Lakebase Search GA</b>: `lakebase_vector` (pgvector-compatible ANN, `lakebase_ann` index, RaBitQ quantization, 1B+ vectors) + `lakebase_text` (BM25 via `lakebase_bm25`), hybrid search with Reciprocal Rank Fusion</li>
