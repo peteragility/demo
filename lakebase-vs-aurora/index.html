@@ -20,7 +20,6 @@
   h2 .num{color:var(--lake);font-weight:800;margin-right:6px}
   h2 .tag{font-size:.75rem;padding:2px 10px;border-radius:12px;vertical-align:middle;margin-left:8px}
   .tag.l{background:rgba(78,205,196,.15);color:var(--lake)}
-  p.note{color:var(--dim);font-size:.9rem;margin-bottom:16px}
   .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:760px){.grid2{grid-template-columns:1fr}}
@@ -63,6 +62,8 @@
   code{background:#1c2129;padding:1px 6px;border-radius:4px;font-size:.8em}
   ul{padding-left:20px}
   li{margin:4px 0;font-size:.9rem}
+  .verdict{font-weight:700;white-space:nowrap}
+  .verdict.a{color:var(--aurora)} .verdict.l{color:var(--lake)} .verdict.n{color:var(--dim);font-weight:400}
 </style>
 </head>
 <body>
@@ -108,7 +109,6 @@
       <tr><td><b>Full-page-write WAL overhead</b></td><td class="l">58KB → &lt;4KB per txn (−94%)</td><td>Image pushdown moves FPW generation to the storage layer; Aurora never had this tax (no engine checkpoints), Neon-lineage paid it until 2026</td></tr>
       <tr><td><b>32-vCPU TPROC-C NOPM (vs own prior gen)</b></td><td class="l">95.6K → 439K (4.5x)</td><td>Debt repayment vs Neon's old architecture — <b>not</b> vs Aurora</td></tr>
       <tr><td><b>Partner pgbench head-to-head vs Aurora</b></td><td>1,731 vs 1,508 TPS → <b style="color:var(--warn)">~15% gap only</b></td><td>Both ~1.5–1.7k TPS, zero failures, connection pooling advised on both</td></tr>
-      <tr><td><b>Avg latency per transaction</b></td><td class="l">Lakebase edges ahead (~15ms/txn)</td><td>Same-workload vectorised execution comparison (Medium field report, Sep 2026)</td></tr>
       <tr><td><b>Topology sensitivity</b></td><td colspan="2">Driver VM in the same AZ as the DB <b>doubled</b> Lakebase TPS vs cross-AZ — network round-trips still rule OLTP; benchmark accordingly</td></tr>
     </table>
     <span class="badge bR">⚠️ "5x faster writes" = vs Neon's own old version, not vs Aurora</span>
@@ -200,17 +200,17 @@
   <!-- ============ 5. SCOREBOARD ============ -->
   <h2><span class="num">5</span>Honest Scoreboard — Who Wins What</h2>
   <table>
-    <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora wins</th><th style="color:var(--lake)">Lakebase wins</th></tr>
-    <tr><td><b>Track record</b></td><td class="a">10+ years battle-tested · 99.99% SLA</td><td class="l">GA 2026-03 · cell architecture (2026-05-08 AZ incident: 7/8 cells healthy, 13% DBs affected) · ~99.8% (target 99.99% not yet stable)</td></tr>
-    <tr><td><b>Cross-region DR</b></td><td class="a">Global Database &lt;1s lag · managed failover</td><td class="l">Not at parity (backups + PITR + branching/instant restore compensate)</td></tr>
-    <tr><td><b>Read replicas</b></td><td class="a">up to 15, independently autoscaling</td><td class="l">1–3 cross-AZ secondaries + read replicas (independent compute, shared storage, ms-level lag)</td></tr>
-    <tr><td><b>Replica lag</b></td><td class="a">tens of ms (shared volume)</td><td class="l">ms-level (shared WAL/pageserver); post-failover cache cold needs warm-up</td></tr>
-    <tr><td><b>Cold start / scale-to-zero</b></td><td class="a">~15s resume (no true zero)</td><td class="l">300–500ms · true scale-to-zero</td></tr>
-    <tr><td><b>Branching</b></td><td class="a">—</td><td class="l">O(1) primitive · agent sandbox · CI/CD environments</td></tr>
-    <tr><td><b>OLTP+OLAP</b></td><td class="a">requires DMS/Glue pipelines</td><td class="l">lakehouse reads pages directly · zero ETL · Unity Catalog governance</td></tr>
-    <tr><td><b>Postgres compatibility</b></td><td class="a">PG fork (feature gaps vs OSS)</td><td class="l">Open-source Postgres engine (not a fork) — 16.15 / 17.11 / <b>18.6</b> supported as of Aug 2026</td></tr>
-    <tr><td><b>Lock-in</b></td><td class="a">proprietary format, single cloud</td><td class="l">open format · S3/ADLS/GCS</td></tr>
-    <tr><td><b>Raw TPS</b></td><td colspan="2" style="color:var(--dim)">~15% head-to-head gap (Lakebase ahead); avg latency ~15ms/txn edge to Lakebase in field reports — neither is a speed story</td></tr>
+    <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora</th><th style="color:var(--lake)">Lakebase</th><th>Verdict</th></tr>
+    <tr><td><b>Track record</b></td><td>10+ years battle-tested · 99.99% SLA</td><td>GA 2026-03 · cell architecture · ~99.8% actual (2026-05-08 AZ incident: 7/8 cells healthy, 13% DBs affected; 99.99% target not yet stable)</td><td class="verdict a">Aurora</td></tr>
+    <tr><td><b>Cross-region DR</b></td><td>Global Database &lt;1s lag · managed failover</td><td>Not at parity — backups + PITR + branching/instant restore compensate</td><td class="verdict a">Aurora</td></tr>
+    <tr><td><b>Read replicas</b></td><td>Up to 15, independently autoscaling</td><td>1–3 cross-AZ secondaries + read replicas (independent compute, shared storage)</td><td class="verdict a">Aurora</td></tr>
+    <tr><td><b>Cold start / scale-to-zero</b></td><td>~15s resume, no true zero</td><td>300–500ms · true scale-to-zero</td><td class="verdict l">Lakebase (30–100x)</td></tr>
+    <tr><td><b>Branching</b></td><td>None — copy-then-wait (dump/restore)</td><td>O(1) primitive · agent sandbox · CI/CD environments</td><td class="verdict l">Lakebase (unique)</td></tr>
+    <tr><td><b>OLTP + OLAP</b></td><td>Requires DMS/Glue pipelines</td><td>Lakehouse reads pages directly · zero ETL · Unity Catalog governance</td><td class="verdict l">Lakebase</td></tr>
+    <tr><td><b>Postgres compatibility</b></td><td>PG fork (feature gaps vs OSS)</td><td>Open-source Postgres engine (not a fork) — 16.15 / 17.11 / 18.6 as of Aug 2026</td><td class="verdict l">Lakebase</td></tr>
+    <tr><td><b>Lock-in</b></td><td>Proprietary format, single cloud</td><td>Open format · S3/ADLS/GCS</td><td class="verdict l">Lakebase</td></tr>
+    <tr><td><b>Replica lag</b></td><td colspan="3" class="verdict n">Near parity: tens of ms (Aurora, shared volume) vs ms-level (Lakebase, shared WAL/pageserver); both need cache warm-up after failover — not a decision factor</td></tr>
+    <tr><td><b>Raw TPS / latency</b></td><td colspan="3" class="verdict n">~15% head-to-head TPS gap, Lakebase ahead; ~15ms/txn latency edge in one field report — neither is a speed story, pick on architecture</td></tr>
   </table>
 
   <!-- ============ 6. LATEST ============ -->
@@ -221,14 +221,13 @@
       <li><b>Aug 24, 2026</b> — Supported Postgres versions updated to <b>16.15, 17.11, and 18.6</b> (latest upstream fixes/security patches; applied at next compute restart)</li>
       <li><b>Aug 24, 2026</b> — <b>Genie Code available in the Lakebase project UI</b> (natural-language Lakebase development)</li>
       <li><b>Mar 2, 2026</b> — GA on Azure: autoscaling compute, scale-to-zero, branching, instant restore; +11 new Azure regions beyond eastus2/westeurope/westus</li>
-      <li><b>Ongoing</b> — Community benchmarks continue to confirm the ~15% TPS / ~15ms-per-txn latency picture; same-AZ topology doubles throughput vs cross-AZ (network RTT dominates)</li>
     </ul>
     <span class="badge bL">Paper: vldb.org/pvldb/vol19/p4385-pandis.pdf</span>
     <span class="badge bL">Release notes: learn.microsoft.com → Lakebase release notes</span>
     <span class="badge bL">Partner pgbench: community.databricks.com → "Benchmarking Databricks Lakebase and AWS Aurora"</span>
   </div>
 
-  <div class="footer">peteragility/databricks · technical deep dive EN · 2026-09-20 · sales material lives at <code>/lakebase-sales-play</code> · original MD: <code>lakebase-vs-aurora-serverless-v2.md</code></div>
+  <div class="footer">peteragility · technical deep dive EN · fact-checked 2026-09-20 · sales material lives at <code>/demo/lakebase-sales-play/</code></div>
 </div>
 </body>
 </html>
