@@ -214,8 +214,38 @@
     <tr><td><b>Raw TPS / latency</b></td><td colspan="3" class="verdict n">One partner pgbench: ~15% TPS gap and ~15ms/txn latency edge, both to Lakebase (default config, single benchmark) — neither is a speed story, pick on architecture</td></tr>
   </table>
 
-  <!-- ============ 6. LATEST ============ -->
-  <h2><span class="num">6</span>What's New (as of 2026-09-23) <span class="tag l">UPDATED</span></h2>
+  <!-- ============ 6. PRICING ============ -->
+  <h2><span class="num">6</span>Pricing — What Does $5,000/Month Buy?</h2>
+  <p style="font-size:.85rem;color:var(--dim);margin-bottom:8px">List prices, us-east-1, on-demand, Sep 2026. Lakebase bills in DBUs (compute) + DSUs (storage) — the ~$0.111/CU-hr figure below is the AWS Enterprise-tier effective rate and varies by tier/region; verify in your own console. Aurora serverless: $0.12/ACU-hr (Standard) / $0.156 (I/O-Optimized), storage $0.10 vs $0.225/GB-month, I/O $0.20/M requests (included on I/O-Optimized). Both units ≈ 2GB RAM.</p>
+  <table>
+    <tr><th>Rate</th><th style="color:var(--aurora)">Aurora serverless</th><th style="color:var(--lake)">Lakebase</th></tr>
+    <tr><td><b>Compute</b></td><td>$0.12 / ACU-hr (I/O-Opt: $0.156)</td><td>~$0.111 / CU-hr · Always-On: −25% on baseline after 24h continuous (promo to 2027-01-31)</td></tr>
+    <tr><td><b>Storage</b></td><td>$0.10 / GB-month (I/O-Opt: $0.225)</td><td>~$0.345 / GB-month · branches copy-on-write (only divergent data bills)</td></tr>
+    <tr><td><b>I/O</b></td><td>$0.20 / M requests (I/O-Opt: included)</td><td>No separate I/O meter</td></tr>
+    <tr><td><b>Idle compute</b></td><td>$0 when paused (0 ACU auto-pause)</td><td>$0 when suspended (scale-to-zero)</td></tr>
+  </table>
+  <div class="card">
+    <b>Three scenarios, all-in monthly cost (compute + storage + I/O):</b>
+    <table>
+      <tr><th>Workload</th><th style="color:var(--aurora)">Aurora Standard</th><th style="color:var(--aurora)">Aurora I/O-Opt</th><th style="color:var(--lake)">Lakebase</th></tr>
+      <tr><td><b>Dev / mostly idle</b> — 1 unit avg, 12h/day, 100GB, 300M I/O</td><td>~$113</td><td>—</td><td class="l"><b>~$74</b> (−34%)</td></tr>
+      <tr><td><b>Production API</b> — 4 units avg 24/7, 500GB, 1B I/O</td><td>~$600</td><td>~$709</td><td class="l"><b>~$497</b> (−17%) · ~$416 with Always-On</td></tr>
+      <tr><td><b>Heavy 24/7</b> — 16 units avg, 2TB, 5B I/O</td><td>~$2,602</td><td>~$2,272</td><td class="l"><b>~$1,986</b> (−24% vs Standard)</td></tr>
+    </table>
+    <p style="font-size:.8rem;color:var(--dim)">Lakebase cheaper in every I/O-inclusive scenario on list price. Aurora wins when: you need I/O-Optimized at very high storage-to-I/O ratios, Reserved/Savings commitments (Lakebase has none), or AWS native billing consolidation. Watch Lakebase's extra meters: synced-table pipelines and each read replica bill their own compute.</p>
+  </div>
+  <div class="card">
+    <b>💰 $5,000/month buys (compute only):</b>
+    <ul>
+      <li><b>24/7 constant load:</b> Aurora ~57 ACU average vs Lakebase ~62 CU average (~114–124GB RAM-class compute either way)</li>
+      <li><b>Office-hours dev DB</b> (8h × 22 days ≈ 176 active hrs): ~237 ACU avg on Aurora vs ~256 CU avg on Lakebase — i.e. one comfortably-sized dev instance plus change, on either</li>
+      <li><b>Many small environments</b> is where Lakebase's model shines: 20 dev DBs × 1 CU × 176 hrs ≈ $392 on Lakebase vs $422 on Aurora (scale-to-zero both) — but Lakebase branches make those 20 environments free to *create*</li>
+      <li><b>Real 24/7 production app</b> (scenario 2 above): $5k covers it on either, with ~$500–800/mo headroom on Lakebase</li>
+    </ul>
+  </div>
+
+  <!-- ============ 7. LATEST ============ -->
+  <h2><span class="num">7</span>What's New (as of 2026-09-23) <span class="tag l">UPDATED</span></h2>
   <div class="card">
     <ul>
       <li><b>Sep 17, 2026</b> — <b>Lakebase Search GA</b>: `lakebase_vector` (pgvector-compatible ANN, `lakebase_ann` index, RaBitQ quantization, 1B+ vectors) + `lakebase_text` (BM25 via `lakebase_bm25`), hybrid search with Reciprocal Rank Fusion</li>
