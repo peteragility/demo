@@ -67,16 +67,20 @@
   th,td{word-break:normal}
   .verdict{font-weight:700}
   .verdict.a{color:var(--aurora)} .verdict.l{color:var(--lake)} .verdict.n{color:var(--dim);font-weight:400}
-  /* Mobile: keep tables readable instead of overflowing */
+  /* Mobile: tables keep a readable width and scroll inside their own wrapper */
   @media(max-width:760px){
-    .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-    table{font-size:.78rem;min-width:640px}
+    body{padding:0 10px}
+    .wrap{padding:20px 0}
+    h1{font-size:1.5rem}
+    h2{font-size:1.15rem}
+    .pitch{font-size:.92rem;padding:14px 16px}
+    .card{padding:14px}
+    .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px -10px;padding:0 10px}
+    .tblwrap.wide table{min-width:640px}
+    .tblwrap table{font-size:.78rem}
     th,td{padding:6px 8px}
     .verdict{white-space:nowrap}
-  }
-  @media(max-width:760px){
-    /* Wide scoreboard/pricing tables scroll horizontally inside their own wrapper */
-    .sub{font-size:.85rem}
+    .runner{width:150px}
   }
 </style>
 </head>
@@ -224,7 +228,7 @@
 
   <!-- ============ 5. SCOREBOARD ============ -->
   <h2 id="scoreboard"><span class="num">5</span>Honest Scoreboard — Who Wins What</h2>
-  <div class="tblwrap"><table>
+  <div class="tblwrap wide"><table>
     <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora</th><th style="color:var(--lake)">Lakebase</th><th>Verdict</th></tr>
     <tr><td><b>Track record</b></td><td>10+ years battle-tested · 99.99% SLA</td><td>GA 2026-01 (AWS) / 2026-03 (Azure) · cell architecture · 99.9% SLA single-compute, <b>99.99% SLA with zone-redundant HA</b> · 2026-05-08 us-east-1 AZ incident: 7/8 cells failed over correctly, ~13% DBs affected; Jan–Apr 2026 attainment: 99.75–99.85% of DBs met 99.99%</td><td class="verdict a">Aurora (maturity gap closing)</td></tr>
     <tr><td><b>Cross-region DR</b></td><td>Global Database &lt;1s lag · managed failover · RPO=0 managed planned failover</td><td>DR in Private Preview: periodic storage-layer replication to a secondary workspace, manual failover; no cross-region read replicas, no RPO=0 switchover, no global endpoint yet</td><td class="verdict a">Aurora (clear gap)</td></tr>
@@ -250,7 +254,7 @@
   </table></div>
   <div class="card">
     <b>Three scenarios, all-in monthly cost (compute + storage + I/O):</b>
-    <div class="tblwrap"><table>
+    <div class="tblwrap wide"><table>
       <tr><th>Workload</th><th style="color:var(--aurora)">Aurora Standard</th><th style="color:var(--aurora)">Aurora I/O-Opt</th><th style="color:var(--lake)">Lakebase</th></tr>
       <tr><td><b>Dev / mostly idle</b> — 1 unit avg, 12h/day, 100GB, 300M I/O</td><td>~$113</td><td>—</td><td class="l"><b>~$74</b> (−34%)</td></tr>
       <tr><td><b>Production API</b> — 4 units avg 24/7, 500GB, 1B I/O</td><td>~$600</td><td>~$709</td><td class="l"><b>~$497</b> (−17%) · ~$416 with Always-On</td></tr>
