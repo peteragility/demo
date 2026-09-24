@@ -65,8 +65,19 @@
   .toc a:hover{color:var(--lake);border-color:var(--lake)}
   html{scroll-behavior:smooth}
   th,td{word-break:normal}
-  .verdict{font-weight:700;white-space:nowrap}
+  .verdict{font-weight:700}
   .verdict.a{color:var(--aurora)} .verdict.l{color:var(--lake)} .verdict.n{color:var(--dim);font-weight:400}
+  /* Mobile: keep tables readable instead of overflowing */
+  @media(max-width:760px){
+    .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    table{font-size:.78rem;min-width:640px}
+    th,td{padding:6px 8px}
+    .verdict{white-space:nowrap}
+  }
+  @media(max-width:760px){
+    /* Wide scoreboard/pricing tables scroll horizontally inside their own wrapper */
+    .sub{font-size:.85rem}
+  }
 </style>
 </head>
 <body>
@@ -118,13 +129,13 @@
   <!-- ============ 2. WRITE PATH & THROUGHPUT ============ -->
   <h2 id="throughput"><span class="num">2</span>Write Path &amp; Measured Throughput — the honest numbers</h2>
   <div class="card">
-    <table>
+    <div class="tblwrap"><table>
       <tr><th>Metric</th><th>Result</th><th>Context</th></tr>
       <tr><td><b>Full-page-write WAL overhead</b></td><td class="l">58KB → &lt;4KB per txn (−94%)</td><td>Image pushdown moves FPW generation to the storage layer; Aurora never had this tax (no engine checkpoints), Neon-lineage paid it until 2026</td></tr>
       <tr><td><b>32-vCPU TPROC-C NOPM (with image pushdown)</b></td><td class="l">95.7K → 439.3K (4.5x+)</td><td>Databricks eng blog + VLDB §7.3: NOPM at p95 NewOrder &lt;20ms, before vs after image pushdown — <b>not</b> vs Aurora. Paper's Gen-2 archetype comparison: Lakebase 22–43% ahead at 4–16 vCPU, +26% at 24 vCPU</td></tr>
       <tr><td><b>Partner pgbench head-to-head vs Aurora</b></td><td>1,731–1,737 vs 1,508–1,509 TPS → <b style="color:var(--warn)">~15% gap</b>; latency 104ms vs 119ms per txn</td><td>4M-row dataset, 180 clients, default config both sides, zero failed txns, pooling advised on both. Single partner benchmark (Diggibyte) — not an official Databricks or AWS number</td></tr>
       <tr><td><b>Topology sensitivity</b></td><td colspan="2">Driver VM in the same AZ as the DB <b>doubled</b> Lakebase TPS vs cross-AZ — network round-trips still rule OLTP; benchmark accordingly</td></tr>
-    </table>
+    </table></div>
     <span class="badge bR">⚠️ "5x faster writes" = vs Neon's own old version, not vs Aurora</span>
     <span class="badge bG">✅ Real advantages are architectural (branching/cold start/ETL), not raw TPS</span>
   </div>
@@ -200,20 +211,20 @@
     </div>
     <div class="card colL">
       <div class="colTitle l">Why agents care (paper, §3.1.4)</div>
-      <table>
+      <div class="tblwrap"><table>
         <tr><td>Agents' DB creation vs humans</td><td class="l"><b>4x</b></td></tr>
         <tr><td>New databases daily (ecosystem)</td><td class="l"><b>&gt;10M</b></td></tr>
         <tr><td>Instance lifecycles &lt;10s</td><td class="l">common</td></tr>
         <tr><td>Branch depth observed</td><td class="l"><b>some &gt;500 branches</b> (production telemetry, Fig 2)</td></tr>
         <tr><td>Compute startup (warm pool + distributed WAL redo)</td><td class="l"><b>sub-second</b></td></tr>
         <tr><td>Aurora equivalent</td><td class="a"><b>none</b> — copy-then-wait (dump/restore)</td></tr>
-      </table>
+      </table></div>
     </div>
   </div>
 
   <!-- ============ 5. SCOREBOARD ============ -->
   <h2 id="scoreboard"><span class="num">5</span>Honest Scoreboard — Who Wins What</h2>
-  <table>
+  <div class="tblwrap"><table>
     <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora</th><th style="color:var(--lake)">Lakebase</th><th>Verdict</th></tr>
     <tr><td><b>Track record</b></td><td>10+ years battle-tested · 99.99% SLA</td><td>GA 2026-01 (AWS) / 2026-03 (Azure) · cell architecture · 99.9% SLA single-compute, <b>99.99% SLA with zone-redundant HA</b> · 2026-05-08 us-east-1 AZ incident: 7/8 cells failed over correctly, ~13% DBs affected; Jan–Apr 2026 attainment: 99.75–99.85% of DBs met 99.99%</td><td class="verdict a">Aurora (maturity gap closing)</td></tr>
     <tr><td><b>Cross-region DR</b></td><td>Global Database &lt;1s lag · managed failover · RPO=0 managed planned failover</td><td>DR in Private Preview: periodic storage-layer replication to a secondary workspace, manual failover; no cross-region read replicas, no RPO=0 switchover, no global endpoint yet</td><td class="verdict a">Aurora (clear gap)</td></tr>
@@ -225,26 +236,26 @@
     <tr><td><b>Lock-in</b></td><td>Proprietary format, single cloud</td><td>Open format · S3/ADLS/GCS</td><td class="verdict l">Lakebase</td></tr>
     <tr><td><b>Replica lag</b></td><td colspan="3" class="verdict n">Near parity: tens of ms (Aurora, shared volume) vs ms-level (Lakebase, shared WAL/pageserver); both need cache warm-up after failover — not a decision factor</td></tr>
     <tr><td><b>Raw TPS / latency</b></td><td colspan="3" class="verdict n">One partner pgbench: ~15% TPS gap and ~15ms/txn latency edge, both to Lakebase (default config, single benchmark) — neither is a speed story, pick on architecture</td></tr>
-  </table>
+  </table></div>
 
   <!-- ============ 6. PRICING ============ -->
   <h2 id="pricing"><span class="num">6</span>Pricing — What Does $5,000/Month Buy?</h2>
-  <p style="font-size:.85rem;color:var(--dim);margin-bottom:8px">List prices, us-east-1, on-demand, Sep 2026. Lakebase bills in DBUs (compute) + DSUs (storage) — the ~$0.111/CU-hr figure below is the AWS Enterprise-tier effective rate and varies by tier/region; verify in your own console. Aurora serverless: $0.12/ACU-hr (Standard) / $0.156 (I/O-Optimized), storage $0.10 vs $0.225/GB-month, I/O $0.20/M requests (included on I/O-Optimized). Both units ≈ 2GB RAM.</p>
-  <table>
+  <p style="font-size:.82rem;color:var(--dim);margin-bottom:8px">List prices, us-east-1, on-demand, Sep 2026. Lakebase bills in DBUs + DSUs — the ~$0.111/CU-hr below is the AWS Enterprise-tier effective rate; it varies by tier/region, verify in your console. Aurora: $0.12/ACU-hr Standard, $0.156 I/O-Optimized; storage $0.10 vs $0.225/GB-month; I/O $0.20/M (included on I/O-Opt). Both units ≈ 2GB RAM.</p>
+  <div class="tblwrap"><table>
     <tr><th>Rate</th><th style="color:var(--aurora)">Aurora serverless</th><th style="color:var(--lake)">Lakebase</th></tr>
     <tr><td><b>Compute</b></td><td>$0.12 / ACU-hr (I/O-Opt: $0.156)</td><td>~$0.111 / CU-hr · Always-On: −25% on baseline after 24h continuous (promo to 2027-01-31)</td></tr>
     <tr><td><b>Storage</b></td><td>$0.10 / GB-month (I/O-Opt: $0.225)</td><td>~$0.345 / GB-month · branches copy-on-write (only divergent data bills)</td></tr>
     <tr><td><b>I/O</b></td><td>$0.20 / M requests (I/O-Opt: included)</td><td>No separate I/O meter</td></tr>
     <tr><td><b>Idle compute</b></td><td>$0 when paused (0 ACU auto-pause)</td><td>$0 when suspended (scale-to-zero)</td></tr>
-  </table>
+  </table></div>
   <div class="card">
     <b>Three scenarios, all-in monthly cost (compute + storage + I/O):</b>
-    <table>
+    <div class="tblwrap"><table>
       <tr><th>Workload</th><th style="color:var(--aurora)">Aurora Standard</th><th style="color:var(--aurora)">Aurora I/O-Opt</th><th style="color:var(--lake)">Lakebase</th></tr>
       <tr><td><b>Dev / mostly idle</b> — 1 unit avg, 12h/day, 100GB, 300M I/O</td><td>~$113</td><td>—</td><td class="l"><b>~$74</b> (−34%)</td></tr>
       <tr><td><b>Production API</b> — 4 units avg 24/7, 500GB, 1B I/O</td><td>~$600</td><td>~$709</td><td class="l"><b>~$497</b> (−17%) · ~$416 with Always-On</td></tr>
       <tr><td><b>Heavy 24/7</b> — 16 units avg, 2TB, 5B I/O</td><td>~$2,602</td><td>~$2,272</td><td class="l"><b>~$1,986</b> (−24% vs Standard)</td></tr>
-    </table>
+    </table></div>
     <p style="font-size:.8rem;color:var(--dim)">Lakebase cheaper in every I/O-inclusive scenario on list price. Aurora wins when: you need I/O-Optimized at very high storage-to-I/O ratios, Reserved/Savings commitments (Lakebase has none), or AWS native billing consolidation. Watch Lakebase's extra meters: synced-table pipelines and each read replica bill their own compute.</p>
   </div>
   <div class="card">
