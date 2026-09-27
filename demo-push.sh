@@ -8,6 +8,7 @@ python3 - <<'PYEOF'
 import os, json, datetime
 
 META = {
+  'tongjian/':         ('資治通鑑 · 294卷全文','司馬光 · 周威烈王至後周世宗 · 前403–959','📖 讀史','#8b2f1f'),
   'llm-pricing/':      ('LLM Token Pricing 對比','Databricks FMAPI vs Bedrock / Azure / Fireworks / GCP / AliCloud · 原廠價 · regions','🔥 Hot','#ff6b35'),
   'ltap-blog.html':    ('The End of the 40-Year Database Divide','Why LTAP Changes Everything · 8 min read','Latest Post','#ff6b35'),
   'atom-deep-dive.html':('Atom Deep Dive — 原子結構深潛','Atom → Nucleus → Quark → Gluon → String · 互動 3D','Interactive','#c792ea'),

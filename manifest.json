@@ -30,13 +30,6 @@
    "color": "#58a6ff"
   },
   {
-   "path": "digests/",
-   "title": "digests/",
-   "desc": "",
-   "tag": "New",
-   "color": "#3fb950"
-  },
-  {
    "path": "lakebase-sales-play/",
    "title": "Lakebase Sales Play",
    "desc": "銷售 playbook",
@@ -105,6 +98,13 @@
    "desc": "弦理論試驗場",
    "tag": "Interactive",
    "color": "#4ecdc4"
+  },
+  {
+   "path": "tongjian/",
+   "title": "資治通鑑 · 294卷全文",
+   "desc": "司馬光 · 周威烈王至後周世宗 · 前403–959",
+   "tag": "📖 讀史",
+   "color": "#8b2f1f"
   }
  ]
 }
