@@ -22,6 +22,7 @@
   "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
   "https://docs.fireworks.ai/serverless/pricing",
   "https://fireworks.ai/models",
+  "https://docs.fireworks.ai/nexus/provider-keys",
   "https://cloud.google.com/vertex-ai/generative-ai/pricing",
   "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
   "https://www.alibabacloud.com/help/en/model-studio/regions/"
@@ -98,6 +99,10 @@
   "fireworks_models": {
    "url": "https://fireworks.ai/models",
    "label": "Fireworks model library (serverless availability per model)"
+  },
+  "fireworks_nexus": {
+   "url": "https://docs.fireworks.ai/nexus/provider-keys",
+   "label": "Fireworks Nexus — closed models need your own provider key"
   },
   "vertex": {
    "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
@@ -179,12 +184,12 @@
    "List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates.",
    "Regional / data-residency endpoints are +10% on Bedrock, Vertex and Databricks (⌖); Anthropic's US-only inference is ×1.1.",
    "Microsoft Foundry deploys Claude only from US or Sweden Central resources, with no APAC region. Vertex offers asia-east1 (Taiwan) and asia-southeast1 regional endpoints.",
-   "On Databricks, Sonnet 4.6 and Haiku 4.5 run in-region in Singapore / Tokyo; Opus, Fable and Sonnet 5 use cross-geo routing."
+   "On Databricks, Sonnet 4.6 and Haiku 4.5 run in-region in Singapore and Tokyo. Opus 5.5, Fable 5.1 and Sonnet 5 use cross-geo routing in APAC; Opus 5 is in-region on AWS Sydney and GCP Singapore."
   ],
   "openai": [
    "List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
    "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
-   "APAC: GPT-6 and GPT-5.6 on Databricks are US-region only. Bedrock serves GPT-6 Astra and GPT-5.6 to Tokyo, Singapore and Taipei via global cross-region. Azure has no Hong Kong or Singapore region for them.",
+   "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
    "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform."
   ],
   "google": [
@@ -217,7 +222,7 @@
      "out": 15.0,
      "cache_read": 0.3,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "note": "No cache-write charge listed (Bedrock charges $3.75; Moonshot $3.00 / $6.00 for 1 h).",
      "variants": [
       {
@@ -369,7 +374,7 @@
      "out": 4.4,
      "cache_read": 0.26,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "note": "GLM 5.2 is the same price.",
      "variants": [
       {
@@ -486,7 +491,7 @@
      "out": 3.96,
      "cache_read": 0.132,
      "tier": "Standard pay-per-token",
-     "regions": "Limited regions (not listed for APAC)",
+     "regions": "US only: AWS us-west-2",
      "note": "Retires 30 Oct 2026. See Databricks deprecation page for the replacement.",
      "src": "dbx_oss"
     },
@@ -606,7 +611,7 @@
      "out": 1.2,
      "cache_read": 0.03,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "src": "dbx_oss"
     },
     "official": {
@@ -717,7 +722,7 @@
      "out": 0.28,
      "cache_read": 0.028,
      "tier": "Standard pay-per-token",
-     "regions": "Limited regions (not listed for APAC)",
+     "regions": "US only: AWS us-west-2, GCP US regions",
      "src": "dbx_oss"
     },
     "official": {
@@ -836,7 +841,7 @@
      "out": 0.5,
      "cache_read": 0.03,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "variants": [
       {
        "label": "Priority",
@@ -930,7 +935,7 @@
      "out": 4.0,
      "cache_read": 0.19,
      "tier": "Standard pay-per-token",
-     "regions": "Limited regions (not listed for APAC)",
+     "regions": "Not in the region table (retiring 30 Oct 2026)",
      "note": "Retirement announced 17 Sep 2026; Databricks recommends Kimi K3.",
      "src": "dbx_oss",
      "url": "https://docs.databricks.com/aws/en/release-notes/product/2026/september"
@@ -1033,7 +1038,7 @@
      "out": 4.05,
      "cache_read": 0.17,
      "tier": "Standard pay-per-token · Public Preview",
-     "regions": "US regions only",
+     "regions": "US only (AWS and GCP US regions)",
      "src": "dbx_oss"
     },
     "official": {
@@ -1098,7 +1103,7 @@
      "in": 0.22,
      "out": 2.2,
      "tier": "Standard pay-per-token · Public Preview",
-     "regions": "APAC in-region: AWS Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS Tokyo, Seoul, Mumbai; GCP SG, Mumbai (not AWS SG)",
      "variants": [
       {
        "label": "Priority",
@@ -1202,7 +1207,7 @@
      "in": 0.15,
      "out": 1.2,
      "tier": "Standard pay-per-token",
-     "regions": "APAC in-region: AWS SG / Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS SG, Tokyo, Mumbai; GCP SG, Mumbai",
      "src": "dbx_oss"
     },
     "official": {
@@ -1291,7 +1296,7 @@
      "in": 0.15,
      "out": 0.6,
      "tier": "Standard pay-per-token",
-     "regions": "APAC in-region: AWS SG / Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Mumbai, Sydney; GCP SG, Mumbai",
      "src": "dbx_oss"
     },
     "official": {
@@ -1386,7 +1391,7 @@
      "in": 0.07,
      "out": 0.3,
      "tier": "Standard pay-per-token",
-     "regions": "APAC in-region: AWS SG / Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Sydney; GCP SG",
      "src": "dbx_oss"
     },
     "official": {
@@ -1458,7 +1463,7 @@
      "in": 0.5,
      "out": 1.5,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "AWS APAC via cross-geo only; not on GCP",
      "src": "dbx_oss"
     },
     "official": {
@@ -1526,7 +1531,7 @@
      "in": 0.5,
      "out": 1.5,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "In-region: AWS Seoul, Mumbai; SG, Tokyo and GCP via cross-geo",
      "src": "dbx_oss"
     },
     "official": {
@@ -1593,7 +1598,7 @@
      "in": 0.15,
      "out": 0.5,
      "tier": "Standard pay-per-token",
-     "regions": "APAC: AWS Tokyo in-region; SG via cross-geo",
+     "regions": "In-region: AWS Tokyo, Seoul, Mumbai, Sydney; SG and GCP via cross-geo",
      "src": "dbx_oss"
     },
     "official": {
@@ -1669,7 +1674,7 @@
      "in": 0.15,
      "out": 0.45,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "In-region: AWS Seoul, Mumbai; SG, Tokyo via cross-geo; not on GCP",
      "src": "dbx_oss"
     },
     "official": {
@@ -1729,7 +1734,7 @@
      "cache_write": 12.5,
      "cache_write_1h": 20.0,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "variants": [
       {
        "label": "Regional processing ⌖ +10%",
@@ -1767,6 +1772,7 @@
      "out": 50.0,
      "cache_read": 0.25,
      "cache_write": 12.5,
+     "cache_write_1h": 20.0,
      "tier": "Global cross-region",
      "regions": "Tokyo: global only",
      "variants": [
@@ -1797,7 +1803,7 @@
      "cache_write": 12.5,
      "cache_write_1h": 20.0,
      "tier": "Global endpoint",
-     "regions": "Regional endpoints +10%, incl. asia-east1 (Taiwan) and asia-southeast1",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
      "variants": [
       {
        "label": "Regional endpoint +10%",
@@ -1810,7 +1816,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -1843,7 +1850,7 @@
      "cache_write": 5.0,
      "cache_write_1h": 8.0,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "variants": [
       {
        "label": "Regional processing ⌖ +10%",
@@ -1881,6 +1888,7 @@
      "out": 20.0,
      "cache_read": 0.2,
      "cache_write": 5.0,
+     "cache_write_1h": 8.0,
      "tier": "Global cross-region",
      "regions": "Tokyo: global + regional",
      "variants": [
@@ -1911,7 +1919,7 @@
      "cache_write": 5.0,
      "cache_write_1h": 8.0,
      "tier": "Global endpoint",
-     "regions": "Regional endpoints +10%, incl. asia-east1 (Taiwan) and asia-southeast1",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
      "variants": [
       {
        "label": "Regional endpoint +10%",
@@ -1924,7 +1932,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -1957,7 +1966,7 @@
      "cache_write": 6.25,
      "cache_write_1h": 10.0,
      "tier": "Standard pay-per-token",
-     "regions": "AWS SG / Tokyo via cross-geo; GCP SG in-region",
+     "regions": "In-region: AWS Sydney, GCP SG; other APAC via cross-geo",
      "variants": [
       {
        "label": "Regional processing ⌖ +10%",
@@ -1995,6 +2004,7 @@
      "out": 25.0,
      "cache_read": 0.5,
      "cache_write": 6.25,
+     "cache_write_1h": 10.0,
      "tier": "Global cross-region",
      "regions": "Tokyo: global + regional",
      "variants": [
@@ -2025,7 +2035,7 @@
      "cache_write": 6.25,
      "cache_write_1h": 10.0,
      "tier": "Global endpoint",
-     "regions": "Regional endpoints +10%, incl. asia-east1 (Taiwan) and asia-southeast1",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
      "variants": [
       {
        "label": "Regional endpoint +10%",
@@ -2038,7 +2048,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2071,7 +2082,7 @@
      "cache_write": 2.5,
      "cache_write_1h": 4.0,
      "tier": "Standard pay-per-token",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (not Mumbai)",
      "variants": [
       {
        "label": "Regional processing ⌖ +10%",
@@ -2109,6 +2120,7 @@
      "out": 10.0,
      "cache_read": 0.2,
      "cache_write": 2.5,
+     "cache_write_1h": 4.0,
      "tier": "Global cross-region",
      "regions": "Tokyo: global + regional",
      "variants": [
@@ -2139,7 +2151,7 @@
      "cache_write": 2.5,
      "cache_write_1h": 4.0,
      "tier": "Global endpoint",
-     "regions": "Regional endpoints +10%, incl. asia-east1 (Taiwan) and asia-southeast1",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
      "variants": [
       {
        "label": "Regional endpoint +10%",
@@ -2152,7 +2164,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2185,7 +2198,7 @@
      "cache_write": 3.75,
      "cache_write_1h": 6.0,
      "tier": "Standard pay-per-token",
-     "regions": "APAC in-region: AWS SG / Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Sydney; GCP SG",
      "variants": [
       {
        "label": "Regional processing ⌖ +10%",
@@ -2254,7 +2267,7 @@
      "cache_write": 3.75,
      "cache_write_1h": 6.0,
      "tier": "Global endpoint",
-     "regions": "Regional endpoints +10%, incl. asia-east1 (Taiwan) and asia-southeast1",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
      "variants": [
       {
        "label": "Regional endpoint +10%",
@@ -2267,7 +2280,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2300,7 +2314,7 @@
      "cache_write": 1.25,
      "cache_write_1h": 2.0,
      "tier": "Standard pay-per-token",
-     "regions": "APAC in-region: AWS SG / Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Sydney; GCP SG",
      "variants": [
       {
        "label": "Regional processing ⌖ +10%",
@@ -2323,12 +2337,6 @@
        "label": "Batch −50%",
        "in": 0.5,
        "out": 2.5
-      },
-      {
-       "label": "US-only inference ×1.1",
-       "in": 1.1,
-       "out": 5.5,
-       "cache_read": 0.11
       }
      ],
      "src": "anthropic"
@@ -2369,7 +2377,7 @@
      "cache_write": 1.25,
      "cache_write_1h": 2.0,
      "tier": "Global endpoint",
-     "regions": "Regional endpoints +10%, incl. asia-east1 (Taiwan) and asia-southeast1",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
      "variants": [
       {
        "label": "Regional endpoint +10%",
@@ -2382,7 +2390,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2396,7 +2405,7 @@
    "maker": "OpenAI",
    "group": "openai",
    "oss": false,
-   "ctx": null,
+   "ctx": "1.05M",
    "about": null,
    "badges": [],
    "note": "Flagship.",
@@ -2414,7 +2423,7 @@
      "cache_read": 1.0,
      "cache_write": 12.5,
      "tier": "Standard · short context",
-     "regions": "US regions only (not listed for APAC)",
+     "regions": "US, Canada and EU only; not available in APAC",
      "variants": [
       {
        "label": "Long context",
@@ -2423,7 +2432,7 @@
        "cache_read": 2.0
       },
       {
-       "label": "Priority ×2",
+       "label": "Priority",
        "in": 20.0,
        "out": 100.0,
        "cache_read": 2.0
@@ -2456,6 +2465,12 @@
        "out": 25.0
       },
       {
+       "label": "Fast mode (was Priority)",
+       "in": 20.0,
+       "out": 100.0,
+       "cache_read": 2.0
+      },
+      {
        "label": "Regional processing +10%",
        "in": 11.0,
        "out": 55.0,
@@ -2470,8 +2485,8 @@
      "cache_read": 1.0,
      "cache_write": 12.5,
      "tier": "Global cross-region",
-     "regions": "Global cross-region callable from Tokyo, Seoul, Osaka, Singapore, Sydney, Mumbai; in-region endpoint US West (Oregon) only",
-     "note": "30-minute cache write $12.50.",
+     "regions": "From US and APAC (Tokyo, Seoul, Osaka, SG, Sydney, Mumbai); in-region endpoint US West (Oregon) only",
+     "note": "No Priority / Flex tier on Bedrock. 30-minute cache write $12.50.",
      "variants": [
       {
        "label": "In-region / US geo +10%",
@@ -2492,7 +2507,7 @@
      "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
      "variants": [
       {
-       "label": "Data Zone +10%",
+       "label": "Data Zone +10% (higher in some regions)",
        "in": 11.0,
        "out": 55.0,
        "cache_read": 1.1
@@ -2513,7 +2528,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2527,7 +2543,7 @@
    "maker": "OpenAI",
    "group": "openai",
    "oss": false,
-   "ctx": null,
+   "ctx": "1.05M",
    "about": null,
    "badges": [],
    "note": null,
@@ -2545,7 +2561,7 @@
      "cache_read": 0.2,
      "cache_write": 2.5,
      "tier": "Standard · short context",
-     "regions": "US regions only (not listed for APAC)",
+     "regions": "US, Canada and EU only; not available in APAC",
      "variants": [
       {
        "label": "Long context",
@@ -2554,7 +2570,7 @@
        "cache_read": 0.4
       },
       {
-       "label": "Priority ×2",
+       "label": "Priority",
        "in": 4.0,
        "out": 20.0,
        "cache_read": 0.4
@@ -2587,6 +2603,12 @@
        "out": 5.0
       },
       {
+       "label": "Fast mode (was Priority)",
+       "in": 4.0,
+       "out": 20.0,
+       "cache_read": 0.4
+      },
+      {
        "label": "Regional processing +10%",
        "in": 2.2,
        "out": 11.0,
@@ -2601,7 +2623,8 @@
      "cache_read": 0.2,
      "cache_write": 2.5,
      "tier": "Global cross-region",
-     "regions": "US East (N. Virginia) · GA 22 Sep 2026",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, SG; no in-region endpoint",
+     "note": "GA on Bedrock 22 Sep 2026.",
      "variants": [
       {
        "label": "In-region / US geo +10%",
@@ -2619,10 +2642,10 @@
      "cache_read": 0.2,
      "cache_write": 2.5,
      "tier": "Global Standard · short context",
-     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India, Indonesia Central, Malaysia West (no HK / SG)",
      "variants": [
       {
-       "label": "Data Zone +10%",
+       "label": "Data Zone +10% (higher in some regions)",
        "in": 2.2,
        "out": 11.0,
        "cache_read": 0.22
@@ -2643,7 +2666,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2675,7 +2699,7 @@
      "cache_read": 0.01,
      "cache_write": 0.125,
      "tier": "Standard · short context",
-     "regions": "US regions only (not listed for APAC)",
+     "regions": "US, Canada and EU only; not available in APAC",
      "variants": [
       {
        "label": "Long context",
@@ -2684,7 +2708,7 @@
        "cache_read": 0.02
       },
       {
-       "label": "Priority ×2",
+       "label": "Priority",
        "in": 0.2,
        "out": 1.0,
        "cache_read": 0.02
@@ -2717,6 +2741,12 @@
        "out": 0.25
       },
       {
+       "label": "Fast mode (was Priority)",
+       "in": 0.2,
+       "out": 1.0,
+       "cache_read": 0.02
+      },
+      {
        "label": "Regional processing +10%",
        "in": 0.11,
        "out": 0.55,
@@ -2731,7 +2761,8 @@
      "cache_read": 0.01,
      "cache_write": 0.125,
      "tier": "Global cross-region",
-     "regions": "US East (N. Virginia) · GA 22 Sep 2026",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, SG; no in-region endpoint",
+     "note": "GA on Bedrock 22 Sep 2026.",
      "variants": [
       {
        "label": "In-region / US geo +10%",
@@ -2749,10 +2780,10 @@
      "cache_read": 0.01,
      "cache_write": 0.125,
      "tier": "Global Standard · short context",
-     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India, Indonesia Central, Malaysia West (no HK / SG)",
      "variants": [
       {
-       "label": "Data Zone +10%",
+       "label": "Data Zone +10% (higher in some regions)",
        "in": 0.11,
        "out": 0.55,
        "cache_read": 0.011
@@ -2773,7 +2804,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2805,7 +2837,7 @@
      "cache_read": 0.4,
      "cache_write": 5.0,
      "tier": "Standard · short context",
-     "regions": "US regions only (not listed for APAC)",
+     "regions": "US, Canada and EU only; not available in APAC",
      "variants": [
       {
        "label": "Long context",
@@ -2814,7 +2846,7 @@
        "cache_read": 0.8
       },
       {
-       "label": "Priority ×2",
+       "label": "Priority",
        "in": 8.0,
        "out": 40.0,
        "cache_read": 0.8
@@ -2847,6 +2879,12 @@
        "out": 10.0
       },
       {
+       "label": "Fast mode (was Priority)",
+       "in": 8.0,
+       "out": 40.0,
+       "cache_read": 0.8
+      },
+      {
        "label": "Regional processing +10%",
        "in": 4.4,
        "out": 22.0,
@@ -2861,7 +2899,8 @@
      "cache_read": 0.4,
      "cache_write": 5.0,
      "tier": "Global cross-region",
-     "regions": "Callable from APAC incl. Tokyo, Seoul, Singapore, Taipei (global cross-region)",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, Seoul, SG",
+     "note": "No Priority / Flex tier on Bedrock.",
      "variants": [
       {
        "label": "In-region / US geo +10%",
@@ -2879,10 +2918,10 @@
      "cache_read": 0.4,
      "cache_write": 5.0,
      "tier": "Global Standard · short context",
-     "regions": "APAC: Japan East, Korea Central, Australia East, Malaysia West, South India (no HK / SG)",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
      "variants": [
       {
-       "label": "Data Zone +10%",
+       "label": "Data Zone +10% (higher in some regions)",
        "in": 4.4,
        "out": 22.0,
        "cache_read": 0.44
@@ -2903,7 +2942,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -2935,7 +2975,7 @@
      "cache_read": 0.2,
      "cache_write": 2.5,
      "tier": "Standard · short context",
-     "regions": "US regions only (not listed for APAC)",
+     "regions": "US, Canada and EU only; not available in APAC",
      "variants": [
       {
        "label": "Long context",
@@ -2944,7 +2984,7 @@
        "cache_read": 0.4
       },
       {
-       "label": "Priority ×2",
+       "label": "Priority",
        "in": 4.0,
        "out": 24.0,
        "cache_read": 0.4
@@ -2977,6 +3017,12 @@
        "out": 6.0
       },
       {
+       "label": "Fast mode (was Priority)",
+       "in": 4.0,
+       "out": 24.0,
+       "cache_read": 0.4
+      },
+      {
        "label": "Regional processing +10%",
        "in": 2.2,
        "out": 13.2,
@@ -2991,7 +3037,8 @@
      "cache_read": 0.2,
      "cache_write": 2.5,
      "tier": "Global cross-region",
-     "regions": "Callable from APAC incl. Tokyo, Seoul, Singapore, Taipei (global cross-region)",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, Seoul, SG",
+     "note": "No Priority / Flex tier on Bedrock.",
      "variants": [
       {
        "label": "In-region / US geo +10%",
@@ -3009,10 +3056,10 @@
      "cache_read": 0.2,
      "cache_write": 2.5,
      "tier": "Global Standard · short context",
-     "regions": "APAC: Japan East, Korea Central, Australia East, Malaysia West, South India (no HK / SG)",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
      "variants": [
       {
-       "label": "Data Zone +10%",
+       "label": "Data Zone +10% (higher in some regions)",
        "in": 2.2,
        "out": 13.2,
        "cache_read": 0.22
@@ -3033,7 +3080,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -3065,7 +3113,7 @@
      "cache_read": 0.02,
      "cache_write": 0.25,
      "tier": "Standard · short context",
-     "regions": "US regions only (not listed for APAC)",
+     "regions": "US, Canada and EU only; not available in APAC",
      "variants": [
       {
        "label": "Long context",
@@ -3074,7 +3122,7 @@
        "cache_read": 0.04
       },
       {
-       "label": "Priority ×2",
+       "label": "Priority",
        "in": 0.4,
        "out": 2.4,
        "cache_read": 0.04
@@ -3107,6 +3155,12 @@
        "out": 0.6
       },
       {
+       "label": "Fast mode (was Priority)",
+       "in": 0.4,
+       "out": 2.4,
+       "cache_read": 0.04
+      },
+      {
        "label": "Regional processing +10%",
        "in": 0.22,
        "out": 1.32,
@@ -3121,7 +3175,8 @@
      "cache_read": 0.02,
      "cache_write": 0.25,
      "tier": "Global cross-region",
-     "regions": "Callable from APAC incl. Tokyo, Seoul, Singapore, Taipei (global cross-region)",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, Seoul, SG",
+     "note": "No Priority / Flex tier on Bedrock.",
      "variants": [
       {
        "label": "In-region / US geo +10%",
@@ -3139,10 +3194,10 @@
      "cache_read": 0.02,
      "cache_write": 0.25,
      "tier": "Global Standard · short context",
-     "regions": "APAC: Japan East, Korea Central, Australia East, Malaysia West, South India (no HK / SG)",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
      "variants": [
       {
-       "label": "Data Zone +10%",
+       "label": "Data Zone +10% (higher in some regions)",
        "in": 0.22,
        "out": 1.32,
        "cache_read": 0.022
@@ -3163,7 +3218,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -3194,7 +3250,7 @@
      "out": 30.0,
      "cache_read": 0.5,
      "tier": "Standard · short context",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "variants": [
       {
        "label": "Long context",
@@ -3203,10 +3259,10 @@
        "cache_read": 1.0
       },
       {
-       "label": "Priority ×2",
-       "in": 10.0,
-       "out": 60.0,
-       "cache_read": 1.0
+       "label": "Priority",
+       "in": 12.5,
+       "out": 75.0,
+       "cache_read": 1.25
       },
       {
        "label": "Regional processing ⌖ +10%",
@@ -3235,6 +3291,12 @@
        "out": 15.0
       },
       {
+       "label": "Fast mode (was Priority)",
+       "in": 12.5,
+       "out": 75.0,
+       "cache_read": 1.25
+      },
+      {
        "label": "Regional processing +10%",
        "in": 5.5,
        "out": 33.0,
@@ -3248,8 +3310,8 @@
      "out": 33.0,
      "cache_read": 0.55,
      "tier": "In-region only (+10% over OpenAI list)",
-     "regions": "No global cross-region option",
-     "note": "Bedrock sells GPT-5.5 in-region only.",
+     "regions": "In-region only: US East (N. Virginia)",
+     "note": "No global cross-region and no Priority / Flex tier on Bedrock.",
      "src": "aws_openai",
      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-55.html"
     },
@@ -3261,7 +3323,7 @@
      "regions": "Incl. East Asia (HK), SE Asia, Japan, Korea",
      "variants": [
       {
-       "label": "Data Zone +10%",
+       "label": "Data Zone +10% (higher in some regions)",
        "in": 5.5,
        "out": 33.0,
        "cache_read": 0.55
@@ -3282,7 +3344,8 @@
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -3315,7 +3378,7 @@
      "out": 12.0,
      "cache_read": 0.2,
      "tier": "Promo price (−20% until 31 Jan 2027)",
-     "regions": "APAC via cross-geo routing (AWS SG / Tokyo, GCP SG)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
      "note": "Databricks lists $2.50 / $15.00 excluding the 20% promo.",
      "variants": [
       {
@@ -3372,13 +3435,25 @@
        "in": 4.0,
        "out": 18.0,
        "cache_read": 0.4
+      },
+      {
+       "label": "Priority",
+       "in": 3.6,
+       "out": 21.6,
+       "cache_read": 0.36
+      },
+      {
+       "label": "Flex / Batch −50%",
+       "in": 1.0,
+       "out": 6.0
       }
      ],
      "src": "vertex"
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI (not Gemini) models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -3409,7 +3484,7 @@
      "out": 3.75,
      "cache_read": 0.075,
      "tier": "Intro promo (−50%) until 31 Dec 2026",
-     "regions": "APAC in-region: AWS SG / Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS SG, Tokyo, Mumbai; GCP SG, Mumbai",
      "variants": [
       {
        "label": "From 1 Jan 2027",
@@ -3455,20 +3530,32 @@
      "out": 3.75,
      "cache_read": 0.075,
      "tier": "Global endpoint · intro until 31 Dec 2026",
-     "note": "Non-global endpoints are priced higher (+10%).",
      "variants": [
       {
        "label": "From 1 Jan 2027",
        "in": 1.5,
        "out": 7.5,
        "cache_read": 0.15
+      },
+      {
+       "label": "Priority",
+       "in": 1.35,
+       "out": 6.75,
+       "cache_read": 0.135
+      },
+      {
+       "label": "Flex / Batch −50%",
+       "in": 0.375,
+       "out": 1.875,
+       "cache_read": 0.0375
       }
      ],
      "src": "vertex"
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI (not Gemini) models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
@@ -3499,7 +3586,7 @@
      "out": 3.75,
      "cache_read": 0.075,
      "tier": "Intro promo (−50%) until 31 Dec 2026",
-     "regions": "APAC in-region: AWS SG / Tokyo, GCP SG",
+     "regions": "APAC in-region: AWS SG, Tokyo, Mumbai; GCP SG, Mumbai",
      "variants": [
       {
        "label": "From 1 Jan 2027",
@@ -3545,20 +3632,32 @@
      "out": 3.75,
      "cache_read": 0.075,
      "tier": "Global endpoint · intro until 31 Dec 2026",
-     "note": "Non-global endpoints are priced higher (+10%).",
      "variants": [
       {
        "label": "From 1 Jan 2027",
        "in": 1.5,
        "out": 7.5,
        "cache_read": 0.15
+      },
+      {
+       "label": "Priority",
+       "in": 1.35,
+       "out": 6.75,
+       "cache_read": 0.135
+      },
+      {
+       "label": "Flex / Batch −50%",
+       "in": 0.375,
+       "out": 1.875,
+       "cache_read": 0.0375
       }
      ],
      "src": "vertex"
     },
     "fireworks": {
      "not_offered": true,
-     "src": "fireworks"
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI (not Gemini) models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
     },
     "alicloud": {
      "not_offered": true,
