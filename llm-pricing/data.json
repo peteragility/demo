@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-09-27T23:30:00+08:00",
+ "fetched_at": "2026-09-28T23:30:00+08:00",
  "schema": 3,
  "usd_per_dbu": 0.07,
  "basis": "Standard on-demand global tier per platform; USD per 1M tokens.",
@@ -14,11 +14,14 @@
   "https://docs.z.ai/guides/overview/pricing",
   "https://api-docs.deepseek.com/quick_start/pricing",
   "https://platform.kimi.ai/docs/pricing/chat",
+  "https://thinkingmachines.ai/",
   "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
   "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
+  "https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards-openai.html",
   "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27",
   "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
   "https://docs.fireworks.ai/serverless/pricing",
+  "https://fireworks.ai/models",
   "https://cloud.google.com/vertex-ai/generative-ai/pricing",
   "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
   "https://www.alibabacloud.com/help/en/model-studio/regions/"
@@ -64,6 +67,10 @@
    "url": "https://platform.kimi.ai/docs/pricing/chat",
    "label": "Moonshot Kimi pricing"
   },
+  "tml": {
+   "url": "https://thinkingmachines.ai/",
+   "label": "Thinking Machines Lab — Inkling (open weights)"
+  },
   "aws": {
    "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
    "label": "AWS Price List API — Amazon Bedrock (us-east-1, ap-northeast-1)"
@@ -71,6 +78,10 @@
   "aws_fm": {
    "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
    "label": "AWS Price List API — Bedrock Marketplace models (Claude)"
+  },
+  "aws_openai": {
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards-openai.html",
+   "label": "Amazon Bedrock — OpenAI model cards (pricing & regions)"
   },
   "azure": {
    "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27",
@@ -83,6 +94,10 @@
   "fireworks": {
    "url": "https://docs.fireworks.ai/serverless/pricing",
    "label": "Fireworks serverless pricing"
+  },
+  "fireworks_models": {
+   "url": "https://fireworks.ai/models",
+   "label": "Fireworks model library (serverless availability per model)"
   },
   "vertex": {
    "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
@@ -140,15 +155,15 @@
    "title": "Open models on Databricks"
   },
   "anthropic": {
-   "label": "Claude",
+   "label": "Anthropic",
    "title": "Anthropic Claude"
   },
   "openai": {
-   "label": "GPT",
+   "label": "OpenAI",
    "title": "OpenAI GPT"
   },
   "google": {
-   "label": "Gemini",
+   "label": "Google",
    "title": "Google Gemini"
   }
  },
@@ -167,9 +182,9 @@
    "On Databricks, Sonnet 4.6 and Haiku 4.5 run in-region in Singapore / Tokyo; Opus, Fable and Sonnet 5 use cross-geo routing."
   ],
   "openai": [
-   "List-price parity on Databricks and Azure Global Standard; Azure Data Zone is +10%.",
-   "Not on Bedrock or Vertex, which carry gpt-oss only.",
-   "GPT-6 and GPT-5.6 on Databricks are US-region only. On Azure they have no Hong Kong or Singapore region (APAC: Japan, Korea, Australia, India).",
+   "List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
+   "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
+   "APAC: GPT-6 and GPT-5.6 on Databricks are US-region only. Bedrock serves GPT-6 Astra and GPT-5.6 to Tokyo, Singapore and Taipei via global cross-region. Azure has no Hong Kong or Singapore region for them.",
    "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform."
   ],
   "google": [
@@ -902,7 +917,7 @@
    "about": null,
    "badges": [],
    "note": null,
-   "warn": null,
+   "warn": "Retires on Databricks 30 Oct 2026 (replacement: Kimi K3)",
    "in": 0.95,
    "out": 4.0,
    "cache_read": 0.19,
@@ -916,7 +931,9 @@
      "cache_read": 0.19,
      "tier": "Standard pay-per-token",
      "regions": "Limited regions (not listed for APAC)",
-     "src": "dbx_oss"
+     "note": "Retirement announced 17 Sep 2026; Databricks recommends Kimi K3.",
+     "src": "dbx_oss",
+     "url": "https://docs.databricks.com/aws/en/release-notes/product/2026/september"
     },
     "official": {
      "in": 0.95,
@@ -1020,8 +1037,9 @@
      "src": "dbx_oss"
     },
     "official": {
-     "unknown": true,
-     "note": "No public per-token price found."
+     "not_offered": true,
+     "note": "Open weights (Hugging Face: thinkingmachines/Inkling); Thinking Machines sells no per-token API.",
+     "src": "tml"
     },
     "bedrock": {
      "not_offered": true,
@@ -1043,8 +1061,12 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the Fireworks headline price list."
+     "in": 1.0,
+     "out": 4.05,
+     "cache_read": 0.17,
+     "tier": "Serverless",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/inkling"
     },
     "alicloud": {
      "not_offered": true,
@@ -1133,8 +1155,10 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the headline list (size-based MoE 56–176B tier is $1.20 if served)."
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/qwen3p5-122b-a10b"
     },
     "alicloud": {
      "in": 0.115,
@@ -1225,8 +1249,10 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the Fireworks headline price list."
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/qwen3-next-80b-a3b-instruct"
     },
     "alicloud": {
      "in": 0.144,
@@ -1399,8 +1425,10 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the Fireworks headline price list."
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/gpt-oss-20b"
     },
     "alicloud": {
      "not_offered": true,
@@ -1465,8 +1493,10 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the Fireworks headline price list."
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/llama4-maverick-instruct-basic"
     },
     "alicloud": {
      "not_offered": true,
@@ -1530,8 +1560,10 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the headline list (size-based >16B tier is $0.90 if served)."
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/llama-v3p3-70b-instruct"
     },
     "alicloud": {
      "not_offered": true,
@@ -1604,8 +1636,10 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the Fireworks headline price list."
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/gemma-3-12b-it"
     },
     "alicloud": {
      "not_offered": true,
@@ -1659,8 +1693,10 @@
      "src": "vertex"
     },
     "fireworks": {
-     "unknown": true,
-     "note": "Not in the Fireworks headline price list."
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/llama-v3p1-8b-instruct"
     },
     "alicloud": {
      "not_offered": true,
@@ -2363,7 +2399,7 @@
    "ctx": null,
    "about": null,
    "badges": [],
-   "note": "Flagship. Long context = >128K.",
+   "note": "Flagship.",
    "warn": null,
    "in": 10.0,
    "out": 50.0,
@@ -2429,9 +2465,23 @@
      "src": "openai"
     },
     "bedrock": {
-     "not_offered": true,
-     "note": "No proprietary GPT on Bedrock (gpt-oss only).",
-     "src": "aws"
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "tier": "Global cross-region",
+     "regions": "Global cross-region callable from Tokyo, Seoul, Osaka, Singapore, Sydney, Mumbai; in-region endpoint US West (Oregon) only",
+     "note": "30-minute cache write $12.50.",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 1.1
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html"
     },
     "azure_foundry": {
      "in": 10.0,
@@ -2546,9 +2596,22 @@
      "src": "openai"
     },
     "bedrock": {
-     "not_offered": true,
-     "note": "No proprietary GPT on Bedrock (gpt-oss only).",
-     "src": "aws"
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Global cross-region",
+     "regions": "US East (N. Virginia) · GA 22 Sep 2026",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-sol.html"
     },
     "azure_foundry": {
      "in": 2.0,
@@ -2663,9 +2726,22 @@
      "src": "openai"
     },
     "bedrock": {
-     "not_offered": true,
-     "note": "No proprietary GPT on Bedrock (gpt-oss only).",
-     "src": "aws"
+     "in": 0.1,
+     "out": 0.5,
+     "cache_read": 0.01,
+     "cache_write": 0.125,
+     "tier": "Global cross-region",
+     "regions": "US East (N. Virginia) · GA 22 Sep 2026",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 0.11,
+       "out": 0.55,
+       "cache_read": 0.011
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-luna.html"
     },
     "azure_foundry": {
      "in": 0.1,
@@ -2780,9 +2856,22 @@
      "src": "openai"
     },
     "bedrock": {
-     "not_offered": true,
-     "note": "No proprietary GPT on Bedrock (gpt-oss only).",
-     "src": "aws"
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.4,
+     "cache_write": 5.0,
+     "tier": "Global cross-region",
+     "regions": "Callable from APAC incl. Tokyo, Seoul, Singapore, Taipei (global cross-region)",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.44
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html"
     },
     "azure_foundry": {
      "in": 4.0,
@@ -2897,9 +2986,22 @@
      "src": "openai"
     },
     "bedrock": {
-     "not_offered": true,
-     "note": "No proprietary GPT on Bedrock (gpt-oss only).",
-     "src": "aws"
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Global cross-region",
+     "regions": "Callable from APAC incl. Tokyo, Seoul, Singapore, Taipei (global cross-region)",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 2.2,
+       "out": 13.2,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-terra.html"
     },
     "azure_foundry": {
      "in": 2.0,
@@ -3014,9 +3116,22 @@
      "src": "openai"
     },
     "bedrock": {
-     "not_offered": true,
-     "note": "No proprietary GPT on Bedrock (gpt-oss only).",
-     "src": "aws"
+     "in": 0.2,
+     "out": 1.2,
+     "cache_read": 0.02,
+     "cache_write": 0.25,
+     "tier": "Global cross-region",
+     "regions": "Callable from APAC incl. Tokyo, Seoul, Singapore, Taipei (global cross-region)",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 0.22,
+       "out": 1.32,
+       "cache_read": 0.022
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-luna.html"
     },
     "azure_foundry": {
      "in": 0.2,
@@ -3129,9 +3244,14 @@
      "src": "openai"
     },
     "bedrock": {
-     "not_offered": true,
-     "note": "No proprietary GPT on Bedrock (gpt-oss only).",
-     "src": "aws"
+     "in": 5.5,
+     "out": 33.0,
+     "cache_read": 0.55,
+     "tier": "In-region only (+10% over OpenAI list)",
+     "regions": "No global cross-region option",
+     "note": "Bedrock sells GPT-5.5 in-region only.",
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-55.html"
     },
     "azure_foundry": {
      "in": 5.0,

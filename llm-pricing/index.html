@@ -283,8 +283,9 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   const LONG = {databricks:'Databricks',official:'原廠 API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
   const SHORT = {databricks:'DBX',official:'原廠',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
   const ORDER = ['oss','anthropic','openai','google'];
-  const TABS = [['oss','OSS'],['anthropic','Claude'],['openai','GPT'],['google','Gemini'],['all','All']];
-  const HASH = {oss:'oss',anthropic:'claude',openai:'gpt',google:'gemini',all:'all'};
+  const TABS = [['oss','OSS'],['anthropic','Anthropic'],['openai','OpenAI'],['google','Google'],['all','All']];
+  const HASH = {oss:'oss',anthropic:'anthropic',openai:'openai',google:'google',all:'all'};
+  const HASH_ALIAS = {claude:'anthropic',gpt:'openai',gemini:'google'};
   const FIELDS = ['in','out','cache_read','cache_write','cache_write_1h'];
   const EDIT_KEY = 'llm-pricing-edits-v3', PREF_KEY = 'llm-pricing-prefs-v3';
   const store = {
@@ -315,7 +316,7 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
     if (s.indexOf('e') >= 0) s = v.toFixed(4);
     return (s.split('.')[1] || '').length < 2 ? v.toFixed(2) : s;
   }
-  const srcUrl = (c, pl) => { const id = (c && c.src) || (DATA.platform_meta && DATA.platform_meta[pl] && DATA.platform_meta[pl].src); return id && DATA.source_meta && DATA.source_meta[id] ? DATA.source_meta[id].url : null; };
+  const srcUrl = (c, pl) => { if (c && c.url) return c.url; const id = (c && c.src) || (DATA.platform_meta && DATA.platform_meta[pl] && DATA.platform_meta[pl].src); return id && DATA.source_meta && DATA.source_meta[id] ? DATA.source_meta[id].url : null; };
   const shortAlt = a => a.short || String(a.name).replace(/^(DeepSeek|Kimi|Claude)\s+/i, '');
 
   function applyEdits() {
@@ -514,7 +515,7 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
     if (push) { try { history.replaceState(null, '', '#' + HASH[g]); } catch (e) {} }
     render();
   }
-  function fromHash() { const h = (location.hash || '').slice(1).toLowerCase(); return Object.keys(HASH).find(k => HASH[k] === h); }
+  function fromHash() { const h = (location.hash || '').slice(1).toLowerCase(); return HASH_ALIAS[h] || Object.keys(HASH).find(k => HASH[k] === h); }
 
   function bind() {
     $('#tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) setGroup(b.dataset.g, true); });
