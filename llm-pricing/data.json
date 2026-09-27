@@ -18,8 +18,8 @@
   "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
   "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27",
   "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
-  "https://cloud.google.com/vertex-ai/generative-ai/pricing",
   "https://docs.fireworks.ai/serverless/pricing",
+  "https://cloud.google.com/vertex-ai/generative-ai/pricing",
   "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
   "https://www.alibabacloud.com/help/en/model-studio/regions/"
  ],
@@ -80,13 +80,13 @@
    "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
    "label": "Microsoft Foundry — Claude models & regions"
   },
-  "vertex": {
-   "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
-   "label": "Vertex AI generative AI pricing"
-  },
   "fireworks": {
    "url": "https://docs.fireworks.ai/serverless/pricing",
    "label": "Fireworks serverless pricing"
+  },
+  "vertex": {
+   "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+   "label": "Vertex AI generative AI pricing"
   },
   "ali": {
    "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
@@ -118,15 +118,15 @@
    "label": "Azure Foundry",
    "src": "azure"
   },
-  "gcloud": {
-   "short": "GCP",
-   "label": "Google Vertex AI",
-   "src": "vertex"
-  },
   "fireworks": {
    "short": "FW",
    "label": "Fireworks",
    "src": "fireworks"
+  },
+  "gcloud": {
+   "short": "GCP",
+   "label": "Google Vertex AI",
+   "src": "vertex"
   },
   "alicloud": {
    "short": "Ali",
