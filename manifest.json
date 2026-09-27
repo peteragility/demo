@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-24",
+ "generated": "2026-09-27",
  "pages": [
   {
    "path": "arsenal-champions/",
@@ -28,6 +28,13 @@
    "desc": "兩代 DB 之爭",
    "tag": "Reference",
    "color": "#58a6ff"
+  },
+  {
+   "path": "digests/",
+   "title": "digests/",
+   "desc": "",
+   "tag": "New",
+   "color": "#3fb950"
   },
   {
    "path": "lakebase-sales-play/",
