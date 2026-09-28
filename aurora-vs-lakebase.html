@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aurora vs Lakebase · Architecture Deep Dive</title>
+<meta name="description" content="Amazon Aurora vs Databricks Lakebase: architecture, trade-offs and AI-agent fit. Fact-checked 28 Sep 2026.">
 <style>
   :root {
     --bg: #0a0e1a;
@@ -14,6 +15,7 @@
     --text-dim: #9ca3af;
     --text-muted: #6b7280;
     --accent: #ff3621;        /* Databricks red */
+    --accent-soft: #ff6b5a;   /* red, readable as text on dark */
     --accent-2: #ff8a00;       /* AWS orange */
     --green: #10b981;
     --blue: #3b82f6;
@@ -41,8 +43,8 @@
   }
   header {
     text-align: center;
-    margin-bottom: 60px;
-    padding-bottom: 40px;
+    margin-bottom: 44px;
+    padding-bottom: 36px;
     border-bottom: 1px solid var(--border);
   }
   .badge {
@@ -70,9 +72,10 @@
   .subtitle {
     font-size: 18px;
     color: var(--text-dim);
-    max-width: 700px;
+    max-width: 760px;
     margin: 0 auto;
   }
+  .subtitle strong { color: var(--text); }
   .meta {
     margin-top: 16px;
     font-size: 13px;
@@ -165,6 +168,7 @@
     .vs-grid { grid-template-columns: 1fr; }
     .toc ol { columns: 1; }
     h1 { font-size: 32px; }
+    .container { padding: 40px 16px 80px; }
   }
   .card {
     background: var(--bg-card);
@@ -172,6 +176,7 @@
     border-radius: 12px;
     padding: 22px 24px;
     transition: border-color 0.2s, transform 0.2s;
+    min-width: 0;
   }
   .card:hover {
     border-color: var(--accent);
@@ -202,17 +207,20 @@
     margin: 20px 0;
     border-radius: 8px;
     border: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
   }
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
   }
+  table.wide { min-width: 760px; }
   th, td {
     text-align: left;
     padding: 12px 16px;
     border-bottom: 1px solid var(--border);
     color: var(--text-dim);
+    vertical-align: top;
   }
   th {
     background: var(--bg-card);
@@ -225,6 +233,21 @@
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: rgba(255,255,255,0.02); }
   td strong { color: var(--text); }
+  .table-note { font-size: 13px; color: var(--text-muted); margin: -8px 0 20px; }
+
+  /* Edge pills in the comparison table */
+  .edge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .edge.a { background: rgba(255, 138, 0, 0.15); color: var(--accent-2); }
+  .edge.l { background: rgba(255, 54, 33, 0.15); color: var(--accent-soft); }
+  .edge.t { background: rgba(156, 163, 175, 0.14); color: var(--text-dim); }
 
   /* Architecture diagrams (ASCII feel via styled boxes) */
   .arch {
@@ -232,13 +255,34 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 20px;
-    font-family: "SF Mono", Monaco, monospace;
+    font-family: "SF Mono", Monaco, Menlo, monospace;
     font-size: 12.5px;
     line-height: 1.5;
     color: #d1d5db;
     overflow-x: auto;
     white-space: pre;
   }
+
+  /* TL;DR */
+  .tldr {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 0 0 22px;
+  }
+  .tldr .t {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .tldr .t h4 { margin: 0 0 6px; font-size: 13px; letter-spacing: 0.6px; text-transform: uppercase; }
+  .tldr .t.s h4 { color: var(--blue); }
+  .tldr .t.a h4 { color: var(--accent-2); }
+  .tldr .t.l h4 { color: var(--accent-soft); }
+  .tldr .t.n h4 { color: var(--yellow); }
+  .tldr .t p { margin: 0; font-size: 14.5px; }
+  @media (max-width: 720px) { .tldr { grid-template-columns: 1fr; } }
 
   /* Callouts */
   .callout {
@@ -247,11 +291,14 @@
     padding: 14px 18px;
     border-radius: 0 8px 8px 0;
     margin: 20px 0;
+    color: var(--text-dim);
   }
   .callout.tip { border-color: var(--green); background: rgba(16, 185, 129, 0.06); }
   .callout.warn { border-color: var(--yellow); background: rgba(251, 191, 36, 0.06); }
   .callout.info { border-color: var(--blue); background: rgba(59, 130, 246, 0.06); }
   .callout strong { color: var(--text); }
+  .callout ul { margin: 8px 0 0; }
+  .callout li { margin-bottom: 7px; }
 
   /* Pattern blocks */
   .pattern {
@@ -283,9 +330,22 @@
     font-weight: 600;
   }
 
+  /* Sources */
+  .src {
+    font-size: 13px;
+    color: var(--text-muted);
+    columns: 2;
+    column-gap: 32px;
+    padding-left: 18px;
+  }
+  .src li { margin-bottom: 5px; break-inside: avoid; }
+  .src a { color: var(--text-dim); text-decoration: none; border-bottom: 1px dashed var(--border); }
+  .src a:hover { color: var(--accent-2); }
+  @media (max-width: 720px) { .src { columns: 1; } }
+
   /* Footer */
   footer {
-    margin-top: 80px;
+    margin-top: 70px;
     padding-top: 30px;
     border-top: 1px solid var(--border);
     text-align: center;
@@ -306,11 +366,30 @@
 <div class="container">
 
 <header>
-  <span class="badge">Architecture Deep Dive · 2026-05-12</span>
+  <span class="badge">Architecture Deep Dive · fact-checked 28 Sep 2026</span>
   <h1>Amazon Aurora vs Databricks Lakebase</h1>
-  <p class="subtitle">Cloud-native OLTP, two philosophies. From distributed block storage to Postgres-on-Lakehouse — and what it means for AI agents.</p>
-  <div class="meta">Prepared for Peter Chan · Databricks HK+TW SA Lead (from Apr 27, 2026)</div>
+  <p class="subtitle">Both split compute from storage. They disagree on <strong>where the page of truth lives</strong>, and that one choice decides branching, cold starts, openness and what AI agents can do with the database.</p>
+  <div class="meta">Peter Chan · Field Engineering, HK + TW · v2 (first edition 12 May 2026)<br>Companions: <a class="ext" href="lakebase-vs-aurora/">Lakebase vs Aurora: the numbers</a> · <a class="ext" href="lakebase-sales-play/">Lakebase Sales Play</a> · <a class="ext" href="ltap-blog.html">Why LTAP changes everything</a></div>
 </header>
+
+<section class="tldr" aria-label="Summary">
+  <div class="t s"><h4>🧭 The one-line difference</h4><p>Aurora keeps pages in <strong>private quorum block storage</strong> that only Aurora can read. Lakebase keeps <strong>Postgres pages + WAL in cloud object storage</strong> and wires them to the lakehouse: Delta in through synced tables, changes out through Change Data Feed.</p></div>
+  <div class="t a"><h4>🟧 Where Aurora wins</h4><p>10+ years in production · cross-region DR (Global Database, up to 10 regions) · 15 replicas · 256 TiB · scale-out writes (Limitless, DSQL) · MySQL.</p></div>
+  <div class="t l"><h4>🟥 Where Lakebase wins</h4><p><strong>&lt;500 ms</strong> median cold start (Aurora: ~15 s) · O(1) branching · open-source Postgres 16–18, not a fork · Unity Catalog + lakehouse sync · vector + BM25 search inside the database.</p></div>
+  <div class="t n"><h4>⚠️ What not to argue</h4><p>Raw TPS. The "5× faster writes" headline is Lakebase vs <em>its own</em> previous write path, and Aurora never paid that tax. Pick on architecture fit, not benchmarks.</p></div>
+</section>
+
+<div class="callout info">
+  <strong>What changed since the May edition</strong> (every number re-verified 28 Sep 2026)
+  <ul>
+    <li><strong>Lakebase is GA</strong>: AWS 22 Jan 2026, Azure 2 Mar 2026, with a public SLA since July (99.99% with HA · 99.9% single compute). The May page said "GA late 2025".</li>
+    <li><strong>Aurora grew too</strong>: the storage ceiling is now 256 TiB (not 128), Aurora PostgreSQL ships PG 18, and Serverless v2 has scaled to <strong>0 ACU</strong> since Nov 2024. It resumes in about 15 s.</li>
+    <li><strong>Global Database is not active-active</strong>. It has one writer region and up to 10 read-only regions. AWS's active-active answer is Aurora DSQL.</li>
+    <li><strong>Lakebase doesn't store Delta.</strong> It stores Postgres pages + WAL. Delta arrives through Change Data Feed (Public Preview, ~15 s).</li>
+    <li><strong>Branches don't merge back.</strong> The agent-sandbox pattern below is corrected: rehearse on a branch, then replay the vetted change on production.</li>
+    <li><strong>New since May</strong>: HA with 1–3 secondaries, up to 6 read replicas, 64 CU autoscaling, Postgres 18, Lakebase Search GA (18 Sep), PCI-DSS + HITRUST on AWS.</li>
+  </ul>
+</div>
 
 <nav class="toc">
   <h3>Contents</h3>
@@ -319,9 +398,10 @@
     <li><a href="#technical">Technical Comparison</a></li>
     <li><a href="#usecases">Use Case Positioning</a></li>
     <li><a href="#philosophy">Architectural Philosophy</a></li>
-    <li><a href="#neon">Neon Architecture Deep Dive</a></li>
+    <li><a href="#neon">Inside Lakebase (Neon architecture)</a></li>
     <li><a href="#agents">AI / Agentic Workload Fit</a></li>
     <li><a href="#strategic">Strategic Take</a></li>
+    <li><a href="#sources">Sources</a></li>
   </ol>
 </nav>
 
@@ -331,46 +411,51 @@
 <div class="vs-grid">
   <div class="card aurora">
     <div class="card-title">Amazon Aurora</div>
-    <div class="card-tag">Cloud-native OLTP · MySQL/PostgreSQL compatible · GA 2014</div>
+    <div class="card-tag">Cloud-native OLTP · PostgreSQL / MySQL-compatible · GA 2014</div>
     <div class="arch">┌─────────────────────────────────┐
-│   Compute Layer (stateless)     │
-│   Primary + up to 15 Read Reps  │
+│  Compute: writer + ≤15 readers  │
+│  provisioned or Serverless v2   │
 └──────────┬──────────────────────┘
-           │ (log records only)
+           │  redo log records only
 ┌──────────▼──────────────────────┐
-│   Distributed Storage Layer     │
-│   6 copies across 3 AZs         │
-│   Auto-scaling 10GB → 128TB     │
+│  Quorum block storage (private) │
+│  6 copies × 3 AZs · 4/6 writes  │
+│  grows to 256 TiB               │
 └─────────────────────────────────┘</div>
     <h4>Core innovations</h4>
     <ul>
-      <li><strong>Compute / Storage separation</strong> — compute only ships redo log records to storage</li>
-      <li><strong>Quorum writes</strong> — 6 copies, 4/6 write quorum, 3/6 read quorum</li>
+      <li><strong>"The log is the database"</strong>: compute ships only redo records, and storage materializes the pages</li>
+      <li><strong>Quorum writes</strong>: 6 copies, 4/6 write quorum, 3/6 read quorum</li>
       <li><strong>Self-healing storage</strong> via peer gossip + parallel re-replication</li>
-      <li><strong>No log replay on crash</strong> — storage layer handles redo asynchronously</li>
+      <li><strong>No log replay on crash</strong>: storage applies redo asynchronously</li>
+      <li><strong>Scale-out options</strong>: Global Database (reads + DR), Limitless (sharded PG), DSQL (active-active)</li>
     </ul>
   </div>
 
   <div class="card lakebase">
     <div class="card-title">Databricks Lakebase</div>
-    <div class="card-tag">Postgres-on-Lakehouse · Built on Neon · GA late 2025</div>
+    <div class="card-tag">Serverless Postgres on lake storage · Neon architecture · GA 2026</div>
     <div class="arch">┌─────────────────────────────────┐
-│   Postgres Compute (Neon-based) │
-│   Serverless · branching        │
+│  Stateless Postgres compute     │
+│  0.5–112 CU · scale to zero     │
 └──────────┬──────────────────────┘
-           │ (WAL stream)
+           │  WAL stream only
 ┌──────────▼──────────────────────┐
-│   Object Storage (S3/ADLS/GCS)  │
-│   Delta Lake format             │
-│   Unity Catalog governance      │
+│  Safekeepers → Pageservers      │
+│  object storage (S3 / ADLS)     │
+│  Postgres pages + WAL history   │
+└──────────┬──────────────────────┘
+           │  synced tables ⇄ CDF
+┌──────────▼──────────────────────┐
+│  Lakehouse · Delta · Unity Cat. │
 └─────────────────────────────────┘</div>
     <h4>Core innovations</h4>
     <ul>
-      <li><strong>Acquired Neon</strong> May 2025 (~$1B) — Postgres serverless engine</li>
-      <li><strong>Storage-compute separation</strong> via object storage (not block)</li>
-      <li><strong>Bidirectional Delta sync</strong> — OLTP data instantly available for analytics</li>
-      <li><strong>Git-like branching</strong> — copy-on-write Postgres branches</li>
-      <li><strong>Unity Catalog</strong> unifies governance for OLTP + OLAP</li>
+      <li><strong>Neon engine</strong>: acquisition announced 14 May 2025 (reported ~$1B)</li>
+      <li><strong>Compute is cattle</strong>: storage never moves, so resume, resize and failover just attach a new compute (median cold start &lt;500 ms)</li>
+      <li><strong>Git-like branching + point-in-time restore</strong> from the page-history chain (2–30-day window)</li>
+      <li><strong>Lakehouse on both sides</strong>: Delta → Postgres synced tables; Postgres → Delta Change Data Feed (Public Preview)</li>
+      <li><strong>Unity Catalog</strong> governance · open-source Postgres 16 / 17 / 18</li>
     </ul>
   </div>
 </div>
@@ -379,70 +464,83 @@
 <h2 id="technical">⚙️ Technical Comparison</h2>
 
 <div class="table-wrap">
-<table>
+<table class="wide">
 <thead>
-<tr><th>Dimension</th><th>Aurora</th><th>Lakebase</th></tr>
+<tr><th>Dimension</th><th>Aurora</th><th>Lakebase</th><th>Edge</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Engine</strong></td><td>MySQL 5.7/8.0, PostgreSQL 11–16 fork</td><td>PostgreSQL (vanilla, via Neon)</td></tr>
-<tr><td><strong>Storage</strong></td><td>Custom distributed block storage</td><td>Object storage (S3) + Delta</td></tr>
-<tr><td><strong>Compute scaling</strong></td><td>Aurora Serverless v2 (ACUs, sub-second)</td><td>Serverless, scale-to-zero</td></tr>
-<tr><td><strong>Read replicas</strong></td><td>Up to 15, &lt;100ms lag</td><td>Branches (instant CoW)</td></tr>
-<tr><td><strong>Write throughput</strong></td><td>Single writer; Limitless DB GA 2024 for sharded writes</td><td>Single writer per Postgres instance</td></tr>
-<tr><td><strong>OLTP latency</strong></td><td>Sub-ms</td><td>Sub-ms (Neon-optimized)</td></tr>
-<tr><td><strong>Analytics integration</strong></td><td>Aurora Zero-ETL → Redshift (separate)</td><td><strong>Native Delta sync</strong>, query from Databricks SQL</td></tr>
-<tr><td><strong>Governance</strong></td><td>IAM + RDS-native</td><td><strong>Unity Catalog</strong> (unified with lakehouse)</td></tr>
-<tr><td><strong>HTAP capability</strong></td><td>Limited — needs zero-ETL pipeline</td><td><strong>Built-in</strong> (one platform)</td></tr>
-<tr><td><strong>Branching</strong></td><td>Aurora Clone (CoW, slowish)</td><td>Git-like instant branches (~1.5s)</td></tr>
-<tr><td><strong>Pricing model</strong></td><td>Per-instance + storage + I/O</td><td>Per-CU + storage</td></tr>
-<tr><td><strong>Multi-region</strong></td><td>Aurora Global Database (&lt;1s lag)</td><td>Not yet (early product)</td></tr>
-<tr><td><strong>Maturity</strong></td><td>GA 2014, battle-tested</td><td><strong>GA late 2025</strong>, very new</td></tr>
+<tr><td><strong>Engine</strong></td><td>PostgreSQL-compatible fork (through PG 18) · MySQL 8.0-compatible</td><td>Open-source Postgres 16 / 17 (default) / 18, not a fork. Small gaps: no tablespaces, no native logical replication yet</td><td><span class="edge t">Depends</span></td></tr>
+<tr><td><strong>Where data lives</strong></td><td>Private quorum block storage · 6 copies × 3 AZs · up to 256 TiB</td><td>Object storage (S3 / ADLS) behind safekeepers + pageservers. Sized for app databases, not 100-TB monoliths</td><td><span class="edge a">Aurora</span> on size</td></tr>
+<tr><td><strong>Compute scaling</strong></td><td>Serverless v2: 0–256 ACU (1 ACU ≈ 2 GiB), scales in place</td><td>Autoscale up to 64 CU (1 CU ≈ 2 GB; max − min ≤ 16 CU) · fixed sizes 65–112 CU</td><td><span class="edge a">Aurora</span> on ceiling</td></tr>
+<tr><td><strong>Scale to zero</strong></td><td>Yes (0 ACU auto-pause). Resumes in ~15 s, 30 s+ after 24 h paused</td><td>Yes (computes ≤ 32 CU, non-HA). &lt;500 ms median cold start · idle timeout 60 s – 7 days (default 24 h)</td><td><span class="edge l">Lakebase</span> ~30×</td></tr>
+<tr><td><strong>Read scale</strong></td><td>Up to 15 replicas, lag usually well under 100 ms</td><td>1–3 readable HA secondaries + up to 6 read replicas per branch, on shared storage (no copies)</td><td><span class="edge a">Aurora</span> on count</td></tr>
+<tr><td><strong>Write scale</strong></td><td>Single writer · Limitless Database (sharded, GA Oct 2024) · Aurora DSQL (active-active, GA May 2025)</td><td>Single writer per branch</td><td><span class="edge a">Aurora</span></td></tr>
+<tr><td><strong>HA &amp; SLA</strong></td><td>Multi-AZ failover · 99.99% SLA</td><td>1 primary + 1–3 secondaries across AZs · 99.99% SLA with HA, 99.9% single compute</td><td><span class="edge t">Tie</span></td></tr>
+<tr><td><strong>Cross-region DR</strong></td><td>Global Database: up to 10 read-only regions, lag typically &lt;1 s, write forwarding</td><td>Not GA yet</td><td><span class="edge a">Aurora</span> clear gap</td></tr>
+<tr><td><strong>Branching</strong></td><td>Clones are copy-on-write, but each clone is a new cluster to provision. No branch tree, no reset</td><td>O(1) branch at any point in history · 500 branches per project · reset from parent · PITR lands as a branch</td><td><span class="edge l">Lakebase</span></td></tr>
+<tr><td><strong>Lakehouse integration</strong></td><td>Zero-ETL into Redshift or a SageMaker AI lakehouse, i.e. a managed second copy</td><td>Synced tables Delta → Postgres (snapshot / triggered / continuous) · Change Data Feed Postgres → Delta (Public Preview, ~15 s) · one Unity Catalog</td><td><span class="edge l">Lakebase</span></td></tr>
+<tr><td><strong>Search &amp; AI</strong></td><td>pgvector · Aurora ML integrations (external calls)</td><td>pgvector + Lakebase Search (GA Sep 2026): vector, BM25 keyword and hybrid, in Postgres</td><td><span class="edge l">Lakebase</span></td></tr>
+<tr><td><strong>Governance</strong></td><td>IAM + database grants</td><td>Unity Catalog + Postgres / OAuth roles</td><td><span class="edge l">Lakebase</span></td></tr>
+<tr><td><strong>Pricing shape</strong></td><td>ACU-hours + storage + I/O (or I/O-Optimized)</td><td>CU-hours + storage · no I/O meter · branches and replicas share storage</td><td><span class="edge t">Workload</span></td></tr>
+<tr><td><strong>Clouds</strong></td><td>AWS only</td><td>AWS + Azure (GA)</td><td><span class="edge l">Lakebase</span></td></tr>
+<tr><td><strong>Maturity</strong></td><td>GA 2014: a decade of production scar tissue</td><td>GA 2026. The service already creates and manages 10M+ databases a day</td><td><span class="edge a">Aurora</span></td></tr>
 </tbody>
 </table>
 </div>
+<p class="table-note">No independent benchmark settles raw TPS between the two. Treat any single head-to-head as noise, and sell neither side on speed.</p>
 
 <!-- ============================================================ -->
 <h2 id="usecases">🎯 Use Case Positioning</h2>
 
 <div class="vs-grid">
   <div class="card aurora">
-    <div class="card-title">Aurora strengths</div>
+    <div class="card-title">Aurora strengths (say these first)</div>
     <ul>
-      <li>Pure OLTP workloads (e-commerce, SaaS, finance)</li>
-      <li>Extreme write throughput + low latency</li>
-      <li>AWS ecosystem (Lambda, API Gateway, etc.)</li>
-      <li>Mature production workloads</li>
-      <li>Multi-region active-active (Global Database)</li>
+      <li>Steady, always-hot OLTP at very large scale (256 TiB, 15 replicas)</li>
+      <li>Cross-region DR and global reads (Global Database, up to 10 regions)</li>
+      <li>Scale-out writes: Limitless (sharded) or DSQL (active-active, 99.999% multi-region)</li>
+      <li>MySQL estates and deep AWS-native wiring (IAM, RDS Proxy, Lambda)</li>
+      <li>Change-averse production that values a 10-year track record</li>
     </ul>
   </div>
   <div class="card lakebase">
     <div class="card-title">Lakebase strengths</div>
     <ul>
-      <li><strong>HTAP scenarios</strong> — same data for transactions + analytics, no ETL</li>
-      <li>AI/ML — feature store + serving from same DB</li>
-      <li>Tight OLTP + lakehouse integration</li>
-      <li>Postgres branching for dev/test/agents</li>
-      <li>Existing Databricks customers simplifying stack</li>
+      <li><strong>Apps on lakehouse data</strong>: synced tables turn curated Delta into millisecond reads</li>
+      <li><strong>Agent memory, state and search</strong> (pgvector + Lakebase Search) in one governed Postgres</li>
+      <li><strong>Fleets of small or spiky databases</strong> (per tenant, per agent, dev/test) with sub-second resume</li>
+      <li><strong>Branch-per-PR / per-agent sandboxes</strong>, and PITR as a branch</li>
+      <li>Databricks customers consolidating governance in Unity Catalog</li>
     </ul>
   </div>
+</div>
+
+<div class="callout tip">
+  <strong>The one-question qualifier:</strong> does this app's data also need to be <em>analyzed</em>, <em>copied</em> (dev/test, branches) or <em>made smarter</em> (AI)? If yes, it's Lakebase territory. If it's always-hot 24×7 OLTP with a hard cross-region RPO requirement and no analytics need, respect Aurora.
 </div>
 
 <!-- ============================================================ -->
 <h2 id="philosophy">💡 Architectural Philosophy</h2>
 
 <div class="callout">
-  <strong>Aurora</strong> — <em>"Best-in-class OLTP, integrate with analytics via pipelines."</em><br>
-  Focus on doing OLTP perfectly. Analytics arrives via Zero-ETL → Redshift / S3 → Athena. Two systems, data movement between them.
+  <strong>Aurora</strong>: <em>"Best-in-class OLTP; feed analytics through pipelines."</em><br>
+  Pages of truth live in storage that only Aurora's engine can read. Analytics gets a copy, via zero-ETL into Redshift or a SageMaker lakehouse. Two systems, with managed data movement between them.
 </div>
 <div class="callout">
-  <strong>Lakebase</strong> — <em>"One platform, OLTP + analytics on the same data."</em><br>
-  Break the OLTP / OLAP silo. Operational data is instantly queryable from the lakehouse. Postgres protocol on the wire, lakehouse architecture underneath.
+  <strong>Lakebase</strong>: <em>"The database is a view over lake storage."</em><br>
+  Pages and WAL live in cheap, durable object storage; compute is a disposable cache. The lakehouse sits on both sides, with Delta in (synced tables) and changes out (Change Data Feed), under one Unity Catalog.
+</div>
+<div class="callout info">
+  <strong>The research framing.</strong> Databricks' VLDB 2026 paper classes Aurora, Socrates and AlloyDB as <em>second-generation</em> systems: storage separated internally, but formats proprietary and access single-engine, which it calls <em>"a transitional architecture."</em> Lakebase is presented as the <em>third</em> generation: transactional systems rebuilt natively for object storage, elastic compute and AI-era workloads.
+</div>
+<div class="callout tip">
+  <strong>Where it's heading: LTAP.</strong> Announced at Data + AI Summit (June 2026), LTAP unifies OLTP and OLAP at the <em>storage</em> layer instead of forcing one engine to do both jobs. The first pieces are in Beta: LTAP Direct Writes loads synced tables straight into Lakebase storage, and Lakehouse Real-Time serves low-latency SQL on lake tables. Sell the direction; scope deals on what's GA. (<a class="ext" href="ltap-blog.html">LTAP explainer</a>)
 </div>
 
 <!-- ============================================================ -->
-<h2 id="neon">🔬 Neon Architecture Deep Dive</h2>
+<h2 id="neon">🔬 Inside Lakebase (Neon architecture)</h2>
 
-<p>Traditional Postgres runs as <strong>one stateful box</strong> — compute + storage tightly coupled on one filesystem. Neon (acquired by Databricks May 2025, $1B) <strong>splits</strong> the two layers and connects them only via the <strong>WAL (Write-Ahead Log)</strong> stream.</p>
+<p>Traditional Postgres runs as <strong>one stateful box</strong>, with compute and storage tightly coupled on one filesystem. The Neon architecture behind Lakebase <strong>splits</strong> the two and connects them only through the <strong>WAL (write-ahead log)</strong> stream.</p>
 
 <div class="arch">┌──────────────────────────────────────────────────┐
 │  COMPUTE LAYER (Ephemeral, Stateless)            │
@@ -462,243 +560,264 @@
 │                                                  │
 │  ┌──────────────┐    ┌────────────────────────┐  │
 │  │ Safekeepers  │───▶│  Pageservers           │  │
-│  │ (Paxos)      │    │  (LSM-tree on local    │  │
-│  │ • WAL only   │    │   NVMe + S3 tiering)   │  │
-│  │ • 3-way repl │    │  • Materialize pages   │  │
+│  │ (Paxos)      │    │  (LSM-like layers on   │  │
+│  │ • WAL only   │    │   NVMe → object store) │  │
+│  │ • 3 AZs      │    │  • Materialize pages   │  │
 │  │ • Quorum ack │    │    on demand from WAL  │  │
 │  │   = COMMIT   │    │  • Cache hot pages     │  │
 │  └──────────────┘    └─────────┬──────────────┘  │
 │                                │                 │
 │                                ▼                 │
 │                   ┌────────────────────────┐     │
-│                   │  Object Storage (S3)   │     │
+│                   │  Object store (S3/ADLS)│     │
 │                   │  • Cold pages          │     │
 │                   │  • Long-term history   │     │
-│                   │  • Snapshots           │     │
+│                   │  • Branch base layers  │     │
 │                   └────────────────────────┘     │
 └──────────────────────────────────────────────────┘</div>
 
 <h3>🔑 The Three Storage Components</h3>
 
 <div class="pattern">
-  <h4>1. Safekeepers — Durability</h4>
+  <h4>1. Safekeepers: durability</h4>
   <ul>
     <li>Receive the WAL stream from compute</li>
-    <li><strong>Paxos quorum</strong>: 3 safekeepers, 2/3 acknowledge → commit</li>
-    <li>Forward WAL to Pageservers</li>
-    <li><strong>Commit latency</strong> = quorum WAL ack time (millisecond range)</li>
+    <li><strong>Paxos quorum</strong>: 3 safekeepers across AZs, 2 of 3 acknowledge = commit</li>
+    <li>Forward WAL to the pageservers</li>
+    <li><strong>Commit latency</strong> = quorum WAL ack time (low milliseconds, cross-AZ)</li>
   </ul>
 </div>
 
 <div class="pattern">
-  <h4>2. Pageservers — Page reconstruction</h4>
+  <h4>2. Pageservers: page reconstruction</h4>
   <ul>
-    <li>Rebuild Postgres 8KB pages from WAL deltas</li>
-    <li><strong>LSM-tree</strong> on local NVMe (RocksDB-style)</li>
-    <li>On page request: find latest materialized image + replay WAL deltas on top</li>
-    <li>Tier cold pages out to S3</li>
+    <li>Rebuild Postgres 8 KB pages from WAL deltas (a <em>GetPage@LSN</em> call)</li>
+    <li>Store <strong>image layers + delta layers</strong> in an LSM-tree-like structure on local NVMe</li>
+    <li>On request: find the latest page image before the LSN, replay the deltas on top, return the page</li>
+    <li>Tier cold layers out to object storage</li>
   </ul>
 </div>
 
 <div class="pattern">
-  <h4>3. Object Storage — S3 / ADLS / GCS</h4>
+  <h4>3. Object storage: S3 / ADLS</h4>
   <ul>
-    <li>Long-term durability</li>
-    <li><strong>Not on the critical path</strong> — query latency is independent of S3</li>
-    <li>Snapshots, time travel, branch base layers</li>
+    <li>Long-term durability at object-storage prices</li>
+    <li><strong>Off the commit path</strong>: reads touch it only on a cache miss for cold layers</li>
+    <li>History that powers branching, point-in-time restore and snapshots</li>
   </ul>
 </div>
 
 <h3>⚡ Key Architectural Wins</h3>
 
 <div class="pattern killer">
-  <h4>A. Image Generation Pushdown <span class="star">2026 Q1</span></h4>
-  <p>Traditional Postgres protects against <strong>torn pages</strong> (OS crash mid-page-write) by embedding <strong>Full Page Writes (FPW)</strong> in WAL — first modification of any page writes the entire 8KB to WAL. Massive write amplification.</p>
+  <h4>A. Image Generation Pushdown <span class="star">May 2026</span></h4>
+  <p>Stock Postgres protects against <strong>torn pages</strong> (an OS crash mid-page-write) by embedding <strong>full-page writes (FPW)</strong> in the WAL: the first change to any page after a checkpoint writes the whole 8 KB page to WAL. That's massive write amplification.</p>
   <p><strong>Lakebase fix:</strong></p>
   <ul>
-    <li>Compute is stateless → <strong>no local page, no torn-page risk</strong></li>
-    <li>Disable FPW → WAL volume drops dramatically</li>
-    <li>Reads need long delta replay? → <strong>Pageserver itself emits periodic page images</strong> as reset points</li>
-    <li>Result: <strong>~5× faster Postgres writes</strong> (<a class="ext" href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank">Databricks blog</a>)</li>
+    <li>Compute is stateless, so there's <strong>no local page and no torn-page risk</strong></li>
+    <li>Turn FPW off, and WAL volume drops dramatically</li>
+    <li>Long delta chains on read? The <strong>pageserver emits page images itself</strong> as reset points</li>
+    <li>Result: <strong>up to 5× write throughput</strong> (4.5× on 32 vCPU), <strong>−94% WAL</strong>, 2× lower read tail latency (<a class="ext" href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank" rel="noopener">Databricks engineering blog</a>)</li>
   </ul>
+  <p><strong>Read it right:</strong> this is Lakebase against its own previous write path. Aurora's storage never needed full-page writes, so this <em>closes</em> a gap rather than opening one against Aurora.</p>
 </div>
 
 <div class="pattern">
   <h4>B. Instant Branching (storage-layer copy-on-write)</h4>
   <ul>
-    <li>A branch = new compute + a logical pointer into existing storage</li>
-    <li>Branch creation: <strong>~1.5 seconds</strong> (vs RDS clone in minutes)</li>
-    <li>Stores only diff, no data duplication</li>
-    <li>True git-like semantics for databases</li>
+    <li>A branch = a fork of the database history at an LSN; parent and child share every page up to that point</li>
+    <li>Created in <strong>seconds</strong> regardless of size (an Aurora clone is a new cluster to provision)</li>
+    <li>Stores only the diff; up to 500 branches per project, with optional TTL expiry</li>
+    <li>Production telemetry shows some databases <strong>more than 500 branches deep</strong> (VLDB 2026)</li>
   </ul>
 </div>
 
 <div class="pattern">
   <h4>C. Scale-to-Zero</h4>
   <ul>
-    <li>Idle compute → suspended</li>
-    <li>Resume in ~hundreds of ms (cold start)</li>
-    <li>Storage continues handling WAL (which is empty when idle) → real cost savings</li>
+    <li>Idle compute suspends after a timeout you choose (60 s – 7 days; default 24 h)</li>
+    <li><strong>&lt;500 ms median cold start</strong>, from a pool of warm VMs (VLDB 2026 §5.3)</li>
+    <li>Suspended = zero compute cost; the lower cache tiers stay warm, so pages stream back fast</li>
+    <li>Limits: computes ≤ 32 CU, and not with HA; production branches can stay always-on</li>
   </ul>
 </div>
 
 <div class="pattern">
-  <h4>D. Zero-Downtime Patching (Prewarming)</h4>
+  <h4>D. Fast Failover and Resize</h4>
   <ul>
-    <li>Stateless compute → spin a new replica, prewarm buffer cache, then failover</li>
-    <li>Eliminates traditional Postgres upgrade downtime</li>
+    <li>HA runs 1–3 secondaries in other AZs; on failure one is promoted and the app continues from the last committed transaction</li>
+    <li>The primary connection string follows the new primary automatically</li>
+    <li>Resizing or replacing compute never moves data: a new compute simply attaches to the same storage</li>
   </ul>
 </div>
 
 <!-- ============================================================ -->
 <h2 id="agents">🤖 AI / Agentic Workload Fit</h2>
 
-<p>Databricks explicitly positions Lakebase as <strong>"the operational database for AI agents and apps."</strong> This is where it gets genuinely interesting.</p>
+<p>Databricks positions Lakebase as <strong>the operational database for AI agents and apps</strong>, and the telemetry backs the bet. Per the VLDB 2026 paper, Lakebase <strong>creates and manages more than 10 million databases a day</strong>, and <strong>AI agents now create roughly 4× more of them than humans</strong>.</p>
 
 <h3>🎯 Why Postgres for Agents?</h3>
 
 <p>Agentic AI demands an unusual mix of database capabilities:</p>
 <ul>
-  <li><strong>High write volume</strong> — agent state, tool calls, traces</li>
-  <li><strong>Vector search</strong> — RAG, semantic memory</li>
-  <li><strong>Strong consistency</strong> — don't lose tasks, payments, side effects</li>
-  <li><strong>Low-latency reads</strong> — feature serving, sub-10ms</li>
-  <li><strong>Ephemeral environments</strong> — agents that spin up DBs and throw them away</li>
-  <li><strong>Audit trail</strong> — governance and compliance</li>
+  <li><strong>High write volume</strong>: agent state, tool calls, traces</li>
+  <li><strong>Search</strong>: semantic (vector) and exact-term (keyword) recall over memory</li>
+  <li><strong>Strong consistency</strong>: don't lose tasks, payments or side effects</li>
+  <li><strong>Low-latency reads</strong>: feature and context serving in single-digit ms</li>
+  <li><strong>Ephemeral environments</strong>: agents that spin up databases and throw them away</li>
+  <li><strong>Audit trail</strong>: governance and compliance</li>
 </ul>
 
 <div class="callout info">
-No traditional database stack covers all of these. Lakebase's combination — Postgres + pgvector + scale-to-zero + branching + Unity Catalog + Delta sync — is the specific bundle agents need.
+No traditional stack covers all of these in one place. Lakebase's bundle of Postgres, pgvector + Lakebase Search, scale-to-zero, branching, Unity Catalog and lakehouse sync is the specific set agents need.
 </div>
 
 <h3>⚙️ 5 Core Patterns Lakebase Enables</h3>
 
 <div class="pattern">
-  <h4>1. Feature Serving for Inference (sub-10ms)</h4>
+  <h4>1. Feature and Context Serving for Inference</h4>
   <ul>
-    <li>Online feature store <strong>inside Postgres</strong> (hot features in RAM/NVMe cache)</li>
-    <li><strong>Synced tables</strong> auto-materialize Delta features → Lakebase</li>
-    <li>No Redis / DynamoDB middle layer required</li>
-    <li><code>pgvector</code> for embeddings + similarity search</li>
-    <li>True single-digit-ms feature lookup</li>
+    <li><strong>Synced tables</strong> materialize Delta features into Lakebase (continuous mode: seconds of lag)</li>
+    <li>Hot rows stay in RAM / NVMe cache, so point reads return in single-digit milliseconds</li>
+    <li>No Redis or DynamoDB side-copy to build and reconcile</li>
+    <li>The PostgREST-compatible Data API exposes tables over HTTP when the caller isn't a Postgres client</li>
   </ul>
 </div>
 
 <div class="pattern">
-  <h4>2. Agent Memory & State (Durable, Transactional)</h4>
+  <h4>2. Agent Memory &amp; State (durable, transactional)</h4>
 <pre><code>-- Agent conversation history
 CREATE TABLE agent_sessions (
   session_id   UUID PRIMARY KEY,
   user_id      TEXT,
   started_at   TIMESTAMPTZ,
   state        JSONB,
-  embedding    VECTOR(1536)   -- pgvector
+  embedding    VECTOR(1536)   -- pgvector (or lakebase_vector)
 );</code></pre>
   <ul>
     <li>ACID transactions for tool-call atomicity</li>
     <li>JSONB for flexible state schemas</li>
-    <li>pgvector for semantic memory recall</li>
-    <li>Directly queryable from Databricks SQL / dashboards</li>
+    <li>Vector + BM25 hybrid recall with Lakebase Search (GA 18 Sep 2026)</li>
+    <li>Every change can land in Delta through Change Data Feed, for dashboards and evals</li>
   </ul>
 </div>
 
 <div class="pattern killer">
   <h4>3. Ephemeral Sandboxes per Agent Task <span class="star">KILLER</span></h4>
-  <p>Pattern from Syren's <a class="ext" href="https://syrencloud.com/databricks-lakebase-ai-pricing-agent/" target="_blank">pricing agent example</a>:</p>
-<pre><code># 1. Agent generates UPDATE statement (LLM, 0.5-1.5s)
+  <p>Pattern from Syren's <a class="ext" href="https://syrencloud.com/databricks-lakebase-ai-pricing-agent/" target="_blank" rel="noopener">pricing-agent example</a>, with the last step corrected:</p>
+<pre><code># 1. Agent drafts a risky change (LLM, ~1 s)
 sql = llm.generate_sql(user_intent, schema)
 
-# 2. Spin up Lakebase branch (~1.5s, copy-on-write)
-branch = lakebase.create_branch(parent="prod")
+# 2. Branch production in seconds (copy-on-write, no data copied)
+branch = lakebase.create_branch(parent="production", ttl="4h")
 
-# 3. Run on branch — production untouched
+# 3. Rehearse on the branch; production untouched
 branch.execute(sql)
 
-# 4. Run impact analysis / model inference on branch data
+# 4. Score the impact on the branch's data
 impact = model_serving.predict(branch.query("SELECT ..."))
 
-# 5. Show user → if approved, atomic commit to prod
-if user_approves:
-    branch.merge_to("prod")   # atomic
-else:
-    branch.delete()           # zero-cost rollback</code></pre>
-  <p><strong>Why it matters:</strong> agents can rehearse destructive operations safely. Without branching, an agent writing to prod = potential disaster.</p>
+# 5. Branches don't merge back: if approved, replay the vetted SQL on prod
+if user_approves(impact):
+    prod.execute_in_transaction(sql)
+branch.delete()   # zero-cost cleanup either way (or let the TTL expire)</code></pre>
+  <p><strong>Why it matters:</strong> agents can rehearse destructive operations on real data safely. Without branching, an agent writing straight to production is a potential disaster.</p>
 </div>
 
 <div class="pattern">
   <h4>4. RAG with Operational Data</h4>
   <ul>
-    <li>Operational tables auto-sync to Delta (governed by Unity Catalog)</li>
-    <li>Reverse: Delta features sync back to Lakebase for hot serving</li>
-    <li>One source of truth — agent answers and dashboards stay consistent</li>
-    <li>pgvector handles embedding search (no separate Pinecone / Weaviate)</li>
+    <li>Change Data Feed lands every insert, update and delete in a Unity Catalog Delta table (~15 s, Public Preview)</li>
+    <li>Synced tables push curated Delta back into Lakebase for hot serving</li>
+    <li>One source of truth, so agent answers and dashboards stay consistent</li>
+    <li>Lakebase Search does vector + keyword retrieval in the same database, with no separate Pinecone or Elastic</li>
   </ul>
 </div>
 
 <div class="pattern">
-  <h4>5. Multi-Tenant Agent Platforms — "Databases as Cattle"</h4>
+  <h4>5. Multi-Tenant Agent Platforms: "Databases as Cattle"</h4>
   <ul>
-    <li>Spin a database <strong>per user / per agent / per task</strong> via API</li>
-    <li>Cost approaches zero (scale-to-zero + shared storage)</li>
-    <li>Versioning: every agent action = checkpoint, rollback = single API call</li>
-    <li>Impossible on traditional Postgres — each instance is a GB-scale cost</li>
+    <li>Spin up a database <strong>per user, per agent or per task</strong> through the API (Postgres APIs GA, Aug 2026)</li>
+    <li>Idle cost approaches zero: scale-to-zero plus shared storage</li>
+    <li>Every agent action can be a checkpoint; rollback is a branch reset or a point-in-time branch</li>
+    <li>Aurora can idle at 0 ACU too, but minutes-long cluster creation and ~15 s resumes make per-task databases impractical</li>
   </ul>
 </div>
 
-<h3>🏆 Why Aurora Can't Match (Yet)</h3>
+<h3>🏆 Agent-Era Scorecard</h3>
 
 <div class="table-wrap">
 <table>
 <thead><tr><th>Capability</th><th>Aurora</th><th>Lakebase</th></tr></thead>
 <tbody>
-<tr><td>pgvector</td><td>✅ (Postgres only)</td><td>✅</td></tr>
-<tr><td>Sub-10ms feature serving</td><td>⚠️ via app cache</td><td>✅ native</td></tr>
-<tr><td>Branching</td><td>⚠️ Clone (slow, copy)</td><td>✅ Instant CoW</td></tr>
-<tr><td>Native Delta sync</td><td>❌ (Zero-ETL → Redshift only)</td><td>✅</td></tr>
-<tr><td>Per-agent ephemeral DBs</td><td>❌ cost-prohibitive</td><td>✅ scale-to-zero</td></tr>
-<tr><td>Unified governance with lakehouse</td><td>❌</td><td>✅ Unity Catalog</td></tr>
-<tr><td>Foundation Models co-located</td><td>❌</td><td>✅ Databricks Model Serving</td></tr>
+<tr><td>Vector search</td><td>✅ pgvector</td><td>✅ pgvector + Lakebase Search (vector, BM25, hybrid)</td></tr>
+<tr><td>Serve lakehouse data / features</td><td>⚠️ build and run your own pipeline in</td><td>✅ synced tables from Unity Catalog</td></tr>
+<tr><td>Branch per task or test</td><td>⚠️ clone = new cluster, no reset</td><td>✅ O(1) branch, reset, TTL expiry</td></tr>
+<tr><td>Database per agent at ~$0 idle</td><td>⚠️ 0 ACU possible, ~15 s resume</td><td>✅ &lt;500 ms median cold start</td></tr>
+<tr><td>Operational data → analytics</td><td>⚠️ zero-ETL copy to Redshift / SageMaker</td><td>✅ Change Data Feed → UC Delta (preview)</td></tr>
+<tr><td>One governance plane with the lakehouse</td><td>❌ IAM + DB grants, separate</td><td>✅ Unity Catalog</td></tr>
+<tr><td>Models next to the data</td><td>⚠️ Aurora ML calls out to other services</td><td>✅ Model Serving · AI Functions · Agent Bricks</td></tr>
 </tbody>
 </table>
 </div>
 
-<h3>🎬 Real Patterns in Production</h3>
+<h3>🎬 Patterns Showing Up in the Field</h3>
 <ol>
-  <li><strong>Conversational commerce agents</strong> — chat history + product catalog + inventory in one DB</li>
-  <li><strong>Pricing agents</strong> (Syren) — branch-safe sandboxes for destructive operations</li>
-  <li><strong>Customer support agents</strong> — feature serving + memory + actions</li>
-  <li><strong>Trading copilots</strong> — fresh OLTP positions + historical analytics + LLM reasoning</li>
-  <li><strong>Supply-chain agents</strong> — operational state + planning analytics on the same data</li>
+  <li><strong>Conversational commerce agents</strong>: chat history + product catalog + inventory in one database</li>
+  <li><strong>Pricing agents</strong> (Syren): branch-safe sandboxes for destructive operations</li>
+  <li><strong>Customer-support agents</strong>: memory + hybrid search over tickets + actions</li>
+  <li><strong>Internal app fleets</strong>: dozens of Databricks Apps, each with its own small, scale-to-zero database</li>
+  <li><strong>Data-serving APIs</strong>: curated Delta synced into Lakebase and served over the Data API, replacing a document-DB serving copy</li>
 </ol>
 
 <!-- ============================================================ -->
-<h2 id="strategic">🎯 Strategic Take for the Databricks Role</h2>
+<h2 id="strategic">🎯 Strategic Take</h2>
 
-<p>Lakebase is the final piece of the Databricks <strong>"Data + AI Platform"</strong> story:</p>
+<p>Lakebase closes the last gap in the Databricks <strong>"Data + AI Platform"</strong> story:</p>
 
 <div class="callout warn">
-  <strong>Before:</strong> Databricks = lakehouse for analytics + ML training. Customers still need a separate OLTP DB (Aurora / Postgres) for apps.<br><br>
-  <strong>After:</strong> Databricks = <strong>one platform</strong> for OLTP + OLAP + ML training + ML serving + AI agents. Aurora becomes commodity infrastructure; Lakebase sits higher in the customer's AI value chain.
+  <strong>Before:</strong> Databricks = lakehouse for analytics and ML. Customers still ran a separate OLTP database (Aurora / RDS / Azure SQL) for their apps, plus pipelines to keep the two in sync.<br><br>
+  <strong>After:</strong> Databricks = <strong>one platform</strong> for OLTP, OLAP, ML training and serving, and AI agents, with the operational database sitting on the same storage and governance as everything else. Aurora stays excellent at being a database; Lakebase aims to be the database <em>of the data platform</em>.
 </div>
 
-<h3>Talking points for HK / TW SA team</h3>
+<h3>Talking points for the HK / TW team</h3>
 <ul>
-  <li>Customers building AI agents → Lakebase is a natural fit (vs stitching Aurora + pgvector + Redis + Snowflake)</li>
-  <li>Customers fed up with two-tier data architecture pain → sell simplification directly</li>
-  <li>Postgres compatibility → clean migration path, not a new SQL dialect lock-in</li>
-  <li>Branching = killer demo for dev/test workflows</li>
+  <li><strong>Agent builders</strong>: memory + state + search in one governed Postgres, vs stitching Aurora + pgvector + Redis + a search engine</li>
+  <li><strong>Start where the data already is</strong>: synced tables turn curated Delta into millisecond APIs. It's the fastest path to production</li>
+  <li><strong>Postgres compatibility</strong>: open-source PG 16–18, so RDS / Aurora PostgreSQL apps move with few changes. Plan the cutover, though: no tablespaces, and native logical replication isn't available yet</li>
+  <li><strong>Branching is the demo</strong>: a prod-sized branch in seconds, reset in one click</li>
+  <li><strong>Regions</strong>: Azure East Asia (Hong Kong), Japan East and Southeast Asia; AWS Singapore, Tokyo, Sydney and Mumbai. There is no AWS Hong Kong region yet</li>
 </ul>
 
 <h3>Competitive lens</h3>
 <ul>
-  <li><strong>vs Aurora + Bedrock</strong> — Lakebase + Mosaic AI is true vertical integration</li>
-  <li><strong>vs Snowflake Hybrid Tables / Unistore</strong> — Snowflake remains weak on OLTP latency and branching</li>
-  <li><strong>vs Oracle 23ai</strong> — Oracle has vector + JSON but proprietary; Lakebase wins developer mindshare on open Postgres</li>
+  <li><strong>vs Aurora + Bedrock</strong>: Lakebase + Agent Bricks keeps data, models and governance on one plane, not three services</li>
+  <li><strong>vs Aurora DSQL</strong>: active-active and 99.999% multi-region, but a different job (global writes) on a PostgreSQL-compatible subset. Don't fight it on its turf</li>
+  <li><strong>vs Snowflake Postgres</strong> (from the Crunchy Data acquisition, on AWS + Azure): a credible managed Postgres now. Differentiate on serverless architecture (branching, scale-to-zero), lakehouse sync and Unity Catalog</li>
+  <li><strong>vs Azure SQL + Fabric Mirroring / Azure HorizonDB (Preview)</strong>: Microsoft's OLTP-to-analytics answer is mirroring, a managed copy into OneLake</li>
+  <li><strong>vs Oracle AI Database 26ai</strong>: vector + JSON, but proprietary. Lakebase wins developers on open Postgres</li>
+  <li><strong>vs Google AlloyDB</strong>: strong columnar engine + AlloyDB AI, but in the VLDB framing it's second-generation: proprietary storage, one engine</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="sources">📚 Sources (checked 28 Sep 2026)</h2>
+<ul class="src">
+  <li><a href="https://docs.databricks.com/aws/en/release-notes/lakebase/" target="_blank" rel="noopener">Lakebase release notes (AWS)</a>: GA 22 Jan · 64 CU · SLA · Tokyo · Search GA</li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/databricks/release-notes/lakebase/" target="_blank" rel="noopener">Lakebase release notes (Azure)</a>: GA 2 Mar · East Asia · Japan East · SLA %</li>
+  <li><a href="https://docs.databricks.com/aws/en/oltp/projects/autoscaling" target="_blank" rel="noopener">Lakebase autoscaling</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-computes" target="_blank" rel="noopener">compute sizes</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero" target="_blank" rel="noopener">scale to zero</a></li>
+  <li><a href="https://docs.databricks.com/aws/en/oltp/projects/high-availability" target="_blank" rel="noopener">Lakebase high availability</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">project limits &amp; regions</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/compatibility" target="_blank" rel="noopener">Postgres compatibility</a></li>
+  <li><a href="https://docs.databricks.com/aws/en/oltp/projects/lakebase-cdf" target="_blank" rel="noopener">Lakebase Change Data Feed</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/lakebase-search" target="_blank" rel="noopener">Lakebase Search</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/data-api" target="_blank" rel="noopener">Data API</a></li>
+  <li><a href="https://www.vldb.org/pvldb/vol19/p4385-pandis.pdf" target="_blank" rel="noopener">VLDB 2026: "Lakebase: Serverless Postgres over Open Lake Storage"</a></li>
+  <li><a href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank" rel="noopener">5× faster Postgres writes (7 May 2026)</a> · <a href="https://www.databricks.com/company/newsroom/press-releases/databricks-agrees-acquire-neon-help-developers-deliver-ai-systems" target="_blank" rel="noopener">Neon acquisition (14 May 2025)</a></li>
+  <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.how-it-works.html" target="_blank" rel="noopener">Aurora Serverless v2 capacity (0–256 ACU)</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2-auto-pause.html" target="_blank" rel="noopener">auto-pause &amp; resume</a></li>
+  <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.StorageReliability.html" target="_blank" rel="noopener">Aurora storage (256 TiB)</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html" target="_blank" rel="noopener">Global Database</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/zero-etl.html" target="_blank" rel="noopener">zero-ETL</a></li>
+  <li><a href="https://aws.amazon.com/about-aws/whats-new/2025/05/amazon-aurora-dsql-generally-available/" target="_blank" rel="noopener">Aurora DSQL GA</a> · <a href="https://aws.amazon.com/about-aws/whats-new/2024/10/amazon-aurora-postgresql-limitless-database-generally-available/" target="_blank" rel="noopener">Limitless GA</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraPostgreSQLReleaseNotes/aurorapostgresql-release-calendar.html" target="_blank" rel="noopener">Aurora PostgreSQL versions</a></li>
+  <li><a href="https://neon.com/docs/introduction/architecture-overview" target="_blank" rel="noopener">Neon architecture overview</a> · <a href="https://syrencloud.com/databricks-lakebase-ai-pricing-agent/" target="_blank" rel="noopener">Syren pricing agent</a></li>
 </ul>
 
 <footer>
-  <p>Built with ☕ and a lot of 🧠 by Yuki 🐱 · Sources: <a href="https://neon.com/docs/introduction/architecture-overview">Neon docs</a> · <a href="https://www.databricks.com/blog/databricks-lakebase-generally-available">Databricks blog</a> · <a href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes">5x faster writes blog</a> · <a href="https://syrencloud.com/databricks-lakebase-ai-pricing-agent/">Syren pricing agent</a></p>
-  <p>For Peter · Databricks HK+TW SA Lead · 2026-05-12</p>
+  <p>Built with ☕ and a lot of 🧠 by Yuki 🐱 · v2 fact-check refresh 28 Sep 2026</p>
+  <p>For Peter · Databricks HK + TW · first edition 12 May 2026</p>
 </footer>
 
 </div>

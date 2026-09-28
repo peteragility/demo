@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lakebase Sales Play — Use Cases, Activation &gt; $5K/mo, vs Aurora</title>
+<meta name="description" content="Lakebase sales play: where to lead, how accounts grow past $5K/month, and how to position against Aurora, RDS and Azure SQL. Fact-checked 28 Sep 2026.">
 <style>
   :root{
     --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --dim:#8b949e;
@@ -11,6 +12,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro','Segoe UI',Roboto,sans-serif;line-height:1.6;padding:0 16px}
+  a{color:var(--lake)}
   .wrap{max-width:1080px;margin:0 auto;padding:32px 0}
   h1{font-size:1.9rem;margin-bottom:4px}
   .sub{color:var(--dim);margin-bottom:8px}
@@ -18,6 +20,7 @@
   h2{font-size:1.35rem;margin:44px 0 8px;padding-top:24px;border-top:1px solid var(--border)}
   h2 .num{color:var(--lake);font-weight:800;margin-right:6px}
   p.note{color:var(--dim);font-size:.9rem;margin-bottom:16px}
+  p.note b{color:var(--text)}
   .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -26,165 +29,211 @@
   th,td{padding:8px 10px;border:1px solid var(--border);text-align:left;vertical-align:top}
   th{background:#1c2129}
   td.l{color:var(--lake)} td.a{color:var(--aurora)}
+  .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+  .tblwrap table{margin:0;min-width:640px}
   .uc{border-top:3px solid var(--lake)}
   .uc h3{font-size:1.02rem;margin-bottom:6px}
   .uc .money{font-size:.78rem;color:var(--gold);font-weight:700}
   .uc p{font-size:.85rem;color:var(--text)}
   .uc .why{font-size:.78rem;color:var(--dim);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
+  .uc .why b{color:var(--text)}
+  .tt{display:inline-block;font-size:.64rem;font-weight:800;padding:1px 7px;border-radius:8px;margin-left:6px;vertical-align:middle;background:rgba(227,179,65,.14);color:var(--gold);letter-spacing:.3px}
   .badge{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;margin:2px 4px 2px 0}
   .bL{background:rgba(78,205,196,.15);color:var(--lake)}
   .bG{background:rgba(63,185,80,.15);color:var(--ok)}
   .bR{background:rgba(248,81,73,.15);color:var(--warn)}
   .callout{background:linear-gradient(135deg,rgba(78,205,196,.1),transparent);border:1px solid rgba(78,205,196,.35);border-radius:12px;padding:16px 18px;margin:16px 0;font-size:.95rem}
+  .newstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:14px 0 8px}
+  .nw{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--lake);border-radius:10px;padding:10px 12px;font-size:.82rem}
+  .nw b{display:block;color:var(--lake);font-size:.72rem;letter-spacing:.4px;text-transform:uppercase;margin-bottom:2px}
+  .nw small{color:var(--dim);font-size:.78rem}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:860px){.rules{grid-template-columns:1fr}}
+  .rule{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px}
+  .rule h3{font-size:1rem;margin-bottom:6px}
+  .rule p{font-size:.88rem}
   .ladder{margin:10px 0}
   .step{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed var(--border)}
   .step:last-child{border-bottom:none}
   .step .n{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(78,205,196,.15);color:var(--lake);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem}
   .step .b{font-size:.88rem}
   .step .b small{color:var(--dim);display:block}
-  .footer{color:var(--dim);font-size:.75rem;margin:48px 0 24px;text-align:center}
+  .footer{color:var(--dim);font-size:.75rem;margin:48px 0 24px;text-align:center;line-height:1.8}
+  .footer a{color:var(--dim)}
   code{background:#1c2129;padding:1px 6px;border-radius:4px;font-size:.8em}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Lakebase Sales Play</h1>
-  <div class="sub">Use cases → Activation (&gt;$5K/mo) → Aurora positioning ｜ v1 EN · 2026-09-20</div>
+  <div class="sub">Use cases → Activation (&gt;$5K/mo) → Aurora positioning ｜ v2 · fact-checked 28 Sep 2026</div>
 
   <div class="pitch">
-  🗣️ <b>Positioning (30 seconds):</b> "Lakebase is not 'another Postgres' — it's <b>the operational layer in front of your lakehouse</b>: agent memory, feature serving, SaaS backends, live-data analytics — one open-format Postgres that talks to your Delta/UC data with zero ETL. <b>The agent-era database isn't for humans — it's for agents. And agents already create 4x more databases than humans.</b>"
+  🗣️ <b>Positioning (30 seconds):</b> "Lakebase isn't 'another Postgres'. It's <b>the operational layer of your lakehouse</b>: agent memory, app backends and data serving on open-source Postgres, with your Delta / Unity Catalog data synced in and zero pipelines to build. <b>It's built for the agent era: the service already creates and manages 10M+ databases a day, and agents create ~4× more of them than humans do.</b>"
   </div>
 
+  <div class="newstrip" aria-label="What's new">
+    <div class="nw"><b>GA + SLA</b>AWS (22 Jan) · Azure (2 Mar) · 99.99% with HA, 99.9% single <small>· PCI-DSS + HITRUST on AWS</small></div>
+    <div class="nw"><b>Near HK / TW</b>Azure East Asia (HK) · Japan East · SE Asia <small>· AWS Singapore · Tokyo</small></div>
+    <div class="nw"><b>Search · GA 18 Sep</b>Vector + BM25 + hybrid inside Postgres <small>· no separate vector DB</small></div>
+    <div class="nw"><b>Bigger computes</b>64 CU autoscale (112 fixed) · 6 read replicas · Postgres 18</div>
+    <div class="nw"><b>Lake ⇄ Postgres</b>Synced tables in · Change Data Feed out <small>(Public Preview)</small></div>
+  </div>
+  <p class="note">Changed since v1 (20 Sep): corrected the Aurora scale-to-zero, billing, SLA and replica claims; added lakehouse data serving as a lead use case, the fan-out rule, and a 3-question qualifier.</p>
+
   <!-- ============ 1. USE CASES ============ -->
-  <h2><span class="num">1</span>Target Use Cases — What to Lead With, and Why</h2>
-  <p class="note">Ordered by "existing Databricks footprint × ease of starting × natural growth". The first three are the activation engines.</p>
+  <h2><span class="num">1</span>Target Use Cases: What to Lead With, and Why</h2>
+  <p class="note">Ordered by "existing Databricks footprint × ease of starting × natural growth". The first three are the activation engines. Tags map to the four play types in the AE/SA brief: <b>T1</b> lakehouse-adjacent serving · <b>T2</b> agentic + app backend · <b>T3</b> LTAP (OLTP + OLAP) · <b>T4</b> OLTP takeout.</p>
 
   <div class="grid3">
     <div class="card uc">
-      <h3>🤖 1. Agent Memory Backend</h3>
-      <span class="money">Primary activation driver — every production agent needs one</span>
-      <p>Persist agent chat sessions/messages (users resume conversations, agents reason over prior turns across deploys) + structured task state + tool-call records. pgvector for memory retrieval.</p>
-      <div class="why">Why we win: session/state is a transactional workload — it doesn't belong in Delta (no low-latency point reads); it's exactly Postgres territory. Suncorp's 16 production agents run this exact pattern.</div>
+      <h3>🤖 1. Agent Memory &amp; Search <span class="tt">T2</span></h3>
+      <span class="money">Primary activation driver: every production agent needs one</span>
+      <p>Persist sessions and messages (users resume conversations; agents reason over prior turns across deploys), structured task state and tool-call records. Recall them with <b>Lakebase Search</b>: vector, BM25 keyword or hybrid, in the same Postgres.</p>
+      <div class="why">Why we win: session state is a transactional workload that needs millisecond point reads and writes, which Delta isn't built for. That's exactly Postgres territory. Memory, search and governance live in one database instead of Postgres + a vector DB + a cache.</div>
     </div>
     <div class="card uc">
-      <h3>⚙️ 2. Agentic Orchestration State</h3>
-      <span class="money">Sold together with #1 — task queues + checkpoints</span>
-      <p>Task queues, approval gates, human-in-the-loop checkpoints, shared agent sessions for multi-agent systems — all low-latency transactional state. Postgres-as-queue is a proven pattern.</p>
-      <div class="why">Why we win: orchestration state must be transactional and share one governance surface. Add branching = agent dev-loop sandbox (experiment/rollback in O(1)).</div>
+      <h3>⚙️ 2. Agentic Orchestration State <span class="tt">T2</span></h3>
+      <span class="money">Sold with #1: task queues + checkpoints</span>
+      <p>Task queues, approval gates, human-in-the-loop checkpoints and shared sessions for multi-agent systems: all low-latency transactional state. Postgres-as-queue is a proven pattern.</p>
+      <div class="why">Why we win: orchestration state must be transactional and share one governance surface. Add branching and you get an agent dev-loop sandbox: fork, experiment, reset in seconds.</div>
     </div>
     <div class="card uc">
-      <h3>📊 3. Real-time Feature Serving</h3>
-      <span class="money">For existing ML customers — zero new concepts</span>
-      <p>Online features for ML models: low-latency point reads + write paths fed by lakehouse batch features. Tables registered under the same UC governance.</p>
-      <div class="why">Why we win: the feature-store online-store budget already exists (currently going to DynamoDB/Redis) — it's not new money, it's redirected money.</div>
+      <h3>📡 3. Lakehouse Data Serving <span class="tt">T1</span></h3>
+      <span class="money">Fastest path to production: the data is already in UC</span>
+      <p>Serve curated Delta tables to apps, APIs and ML features in milliseconds: <b>synced tables</b> (snapshot / triggered / continuous) plus the PostgREST-compatible <b>Data API</b>. This replaces the Redis, DynamoDB or document-DB serving copy that teams build and babysit today.</p>
+      <div class="why">Why we win: no pipeline to build, and one governance surface. The budget already exists, because it's paying for the serving copy. It's redirected money, not new money.</div>
     </div>
     <div class="card uc">
-      <h3>📱 4. SaaS / Data App Backend</h3>
-      <span class="money">High ACV — the entire app backend</span>
-      <p>Operational backend for Databricks Apps: user accounts, tenant configs, app state. 8TB/instance, PITR, pgvector, Postgres 17 — production-grade SaaS DB.</p>
-      <div class="why">Why we win: app + analytics on one platform — user behavior writes land and are instantly analyzable by Spark/BI (zero ETL). Aurora customers can't do this.</div>
+      <h3>📱 4. SaaS / Data App Backend <span class="tt">T2</span></h3>
+      <span class="money">High ACV: the entire app backend</span>
+      <p>Operational backend for Databricks Apps and citizen-dev apps: user accounts, tenant configs, app state. Up to 112 CU, HA with 1–3 secondaries, 6 read replicas, point-in-time restore (2–30 days), Postgres 16–18.</p>
+      <div class="why">Why we win: app + analytics on one platform. App writes can stream to Delta through Change Data Feed (Public Preview), so behavior data lands in the lakehouse without a pipeline. Aurora needs a zero-ETL copy for the same thing.</div>
     </div>
     <div class="card uc">
       <h3>🔁 5. Dev/Test Environments (Branching)</h3>
-      <span class="money">Quick win — sell branching, not migration</span>
-      <p>One-click branch of prod with real data (O(1), seconds), one branch per PR in CI/CD, dispose when done.</p>
-      <div class="why">Why we win: dump/restore hours → seconds. The easiest PoC "wow moment" — no need to touch the customer's production DB.</div>
+      <span class="money">Quick win: sell branching, not migration</span>
+      <p>Branch production with real data in seconds (O(1), up to 500 branches per project), one branch per PR in CI/CD, reset from parent in one click, auto-expire with a TTL.</p>
+      <div class="why">Why we win: dump/restore hours become seconds. It's the easiest PoC "wow moment", and there's no need to touch the customer's production database.</div>
     </div>
     <div class="card uc">
-      <h3>🏦 6. FSI: Operational + Analytics Unified</h3>
-      <span class="money">Large deal size — longer cycle</span>
-      <p>Transactional/account workloads + instant risk/reporting on the same data — traditionally OLTP (Aurora) + ETL + lakehouse, two stacks. Lakebase: one.</p>
-      <div class="why">Why we win: one dataset, one governance surface (UC) — the FSI compliance dream. Cross-region DR not yet at parity — handle honestly.</div>
+      <h3>🏦 6. FSI: Operational + Analytics Unified <span class="tt">T3</span></h3>
+      <span class="money">Large deal size: longer cycle</span>
+      <p>Transactional and account workloads plus risk and reporting on the same data. Traditionally that's OLTP (Aurora) + ETL + a lakehouse: two stacks. With Lakebase it's one, with PCI-DSS + HITRUST on AWS and a 99.99% SLA with HA.</p>
+      <div class="why">Why we win: one dataset and one governance surface (UC), the FSI compliance dream. Cross-region DR is not GA yet, so raise it honestly and early.</div>
     </div>
   </div>
 
+  <div class="rules">
+    <div class="rule"><h3>📐 The fan-out rule</h3><p>Big Lakebase spend comes in two shapes: <b>many apps</b> (a portfolio of internal or citizen-dev apps, each on its own database) or <b>one app × many users</b> (a customer-facing app, agent or search). Qualify for one of the two. A single small internal app rarely gets past $1–2K/mo.</p></div>
+    <div class="rule"><h3>🧭 Sell to the app team</h3><p>Data teams buy tables; <b>app and platform teams buy databases</b>. If your only contact is the data team, you'll stall at reverse-ETL. Get introduced to whoever owns the app backend, the DocumentDB / Aurora / RDS estate, or the agent platform.</p></div>
+  </div>
+
   <!-- ============ 1b. CLASSIC OLTP EDGE MAP ============ -->
-  <h2><span class="num">1b</span>Targeting RDS / Aurora PgSQL / Azure SQL Estates — Where the OLTP Edge Is</h2>
-  <p class="note">Agentic and app backends grow the account; classic OLTP displacement grows the ACV. Not every OLTP workload is winnable — these four segments are where Lakebase has a real edge, plus the honest no-go zone.</p>
+  <h2><span class="num">1b</span>Targeting RDS / Aurora PostgreSQL / Azure SQL Estates: Where the OLTP Edge Is</h2>
+  <p class="note">Agentic and app backends grow the account; classic OLTP displacement grows the ACV. Not every OLTP workload is winnable. These four segments are where Lakebase has a real edge, followed by the honest no-go zone.</p>
 
   <div class="grid2">
     <div class="card uc">
       <h3>📈 A. Analytics-Adjacent OLTP <span class="money">the biggest real edge</span></h3>
-      <p>Applications whose transactional data also feeds reporting/BI/ML: SaaS with customer-facing dashboards, ops platforms with internal analytics, fintech transaction + risk/compliance reporting, IoT platforms with operational + historical views.</p>
-      <div class="why">Edge: on Aurora/RDS/Azure SQL the data needs ETL (DMS/Glue/Factories) before analytics sees it — double storage, double pipeline, double ops. Lakebase: the same pages the lakehouse reads. <b>One copy, one governance surface, zero ETL.</b> Sell to the CFO as pipeline elimination.</div>
+      <p>Apps whose transactional data also feeds reporting, BI or ML: SaaS with customer-facing dashboards, ops platforms with internal analytics, fintech transactions + risk/compliance reporting, IoT with operational + historical views.</p>
+      <div class="why">Edge: on Aurora / RDS / Azure SQL, the data needs a pipeline (DMS, Glue, zero-ETL or Fabric mirroring) before analytics sees it. That's a second copy, a second pipeline, a second set of ops. Lakebase keeps it on the lakehouse's storage and governance: synced tables in, Change Data Feed out. <b>Sell it to the CFO as pipeline elimination.</b></div>
     </div>
     <div class="card uc">
       <h3>🔁 B. Multi-Copy / Multi-Environment Estates</h3>
-      <p>Enterprises running many copies of the same prod DB: dev/test/UAT refresh cycles, compliance-testing environments, per-release verification copies. A bank with 20 env copies pays 20x storage + compute on Aurora.</p>
-      <div class="why">Edge: branching is O(1) metadata — every environment is a branch at storage cost, created in seconds, disposed freely. Typical candidates: financial services, healthcare, any regulated shop with heavy test-data-management overhead.</div>
+      <p>Enterprises running many copies of the same production database: dev/test/UAT refresh cycles, compliance-testing environments, per-release verification copies. A bank with 20 environment copies pays for 20× compute and storage.</p>
+      <div class="why">Edge: a branch is O(1) metadata. Every environment becomes a branch, created in seconds, billed only for what diverges, and disposed of freely. Typical candidates: financial services, healthcare, any regulated shop with heavy test-data-management overhead.</div>
     </div>
     <div class="card uc">
       <h3>💤 C. Long-Tail / Spiky App Portfolios</h3>
-      <p>The "200 small databases" estate: business-hours internal tools, region-specific apps, batch-driven jobs, seasonal apps. On RDS/Aurora each idles at minimum capacity 24/7 — thousands/month of dead spend.</p>
-      <div class="why">Edge: true scale-to-zero + 300–500ms resume (Aurora v2: ~15s resume, no true zero). Consolidate the long tail onto Lakebase and the resume gap is invisible to users. <b>Sell as portfolio cost consolidation.</b></div>
+      <p>The "200 small databases" estate: business-hours internal tools, regional apps, batch-driven jobs, seasonal apps. Most of them sit idle most of the day.</p>
+      <div class="why">Edge: scale-to-zero with a <b>sub-second resume</b> (median &lt;500 ms). Aurora Serverless v2 can pause at 0 ACU too, but it resumes in ~15 s (30 s+ after a day idle), and Azure SQL serverless only auto-pauses after 15+ idle minutes (General Purpose tier). Users don't notice Lakebase waking up. <b>Sell it as portfolio consolidation.</b></div>
     </div>
     <div class="card uc">
       <h3>🤖 D. OLTP Apps Adding AI Features</h3>
-      <p>Existing Postgres applications modernizing with AI: adding copilots, RAG over business data, recommendations, agent features. The DB suddenly needs pgvector, agent state, and AI-adjacent workloads next to the OLTP core.</p>
-      <div class="why">Edge: pgvector + agent memory + lakehouse grounding on the same platform as the OLTP core — and open-source Postgres (not a fork) means the app's SQL moves as-is from RDS/Aurora PgSQL. Azure SQL (T-SQL) is a rewrite — target the Postgres pool first.</div>
+      <p>Existing Postgres apps modernizing with AI: copilots, RAG over business data, recommendations, agent features. Suddenly the database needs vectors, agent state and lakehouse grounding next to the OLTP core.</p>
+      <div class="why">Edge: Lakebase Search + agent memory + lakehouse data on the same platform as the OLTP core. Open-source Postgres (not a fork) means RDS / Aurora PostgreSQL SQL moves largely as-is. Azure SQL (T-SQL) is a rewrite, so target the Postgres pool first.</div>
     </div>
   </div>
 
   <div class="card" style="border-left:3px solid var(--warn)">
-    <b>🚫 Honest no-go zone (don't chase these):</b> steady-state high-utilization classic OLTP with no analytics need (ERP-style, always-hot, 24/7 full load); workloads hard-requiring mature cross-region sync DR; workloads dependent on vendor-specific engine features (Oracle/SQL Server richness). These are Aurora/RDS/committed-license territory — spending cycles here loses deals and credibility. <b>Qualify with one question: "does this app's data also need to be analyzed, copied, or made smarter?"</b> If yes → segment A/B/C/D above. If no → walk away.
+    <b>🚫 Honest no-go zone (don't chase these):</b> steady-state, always-hot classic OLTP with no analytics need (ERP-style, 24/7 full load); workloads that hard-require cross-region DR today; massive write scale-out (Aurora Limitless / DSQL territory); MySQL or T-SQL lift-and-shift; heavy dependence on engine-specific features. Spending cycles here loses deals and credibility. <b>Qualify with one question: "does this app's data also need to be analyzed, copied, or made smarter?"</b> If yes, it's segment A/B/C/D. If no, walk away.
   </div>
 
-  <table>
+  <div class="tblwrap"><table>
     <tr><th>Source platform</th><th>Natural fit</th><th>Notes</th></tr>
-    <tr><td><b>RDS PostgreSQL</b></td><td class="l">★★★★★ — cleanest migration</td><td>Vanilla open-source PG → moves as-is; the easiest displacement story (also wins on branching/scale-to-zero vs RDS's weaker serverless)</td></tr>
-    <tr><td><b>Aurora PostgreSQL</b></td><td class="l">★★★★ — fit where segments A–D apply</td><td>Same PG surface; lead with branching/cold-start/ETL edges, concede track record &amp; DR honestly</td></tr>
-    <tr><td><b>Azure SQL / SQL Server</b></td><td class="l">★★ — only via app modernization</td><td>T-SQL rewrite required; enter through new builds, AI features, or app re-platforms — not lift-and-shift</td></tr>
-  </table>
+    <tr><td><b>RDS PostgreSQL</b></td><td class="l">★★★★★ cleanest migration</td><td>Vanilla open-source PG moves largely as-is; the easiest displacement story (plus branching and scale-to-zero)</td></tr>
+    <tr><td><b>Azure Database for PostgreSQL</b></td><td class="l">★★★★★ same story on Azure</td><td>Lakebase is GA on Azure, including East Asia (Hong Kong), Japan East and Southeast Asia</td></tr>
+    <tr><td><b>Aurora PostgreSQL</b></td><td class="l">★★★★ fit where segments A–D apply</td><td>Same PG surface. Lead with branching, cold start and pipeline elimination; concede track record and DR honestly</td></tr>
+    <tr><td><b>Serving copies</b> (DocumentDB, MongoDB, DynamoDB, Redis) fed from the lakehouse</td><td class="l">★★★★ replace the copy</td><td>If the data originates in Delta, synced tables + the Data API remove the copy and its pipeline entirely</td></tr>
+    <tr><td><b>Azure SQL / SQL Server</b></td><td class="l">★★ only via app modernization</td><td>T-SQL rewrite required. Enter through new builds, AI features or app re-platforms, not lift-and-shift</td></tr>
+    <tr><td><b>Aurora MySQL / MySQL</b></td><td class="l">★ engine change</td><td>Only when the app is being rebuilt anyway</td></tr>
+  </table></div>
+  <p class="note">⚙️ <b>Cutover reality:</b> native Postgres logical replication into Lakebase isn't available yet. Plan migrations as dump/restore windows or with a CDC tool, and check tablespace use and extensions first.</p>
 
   <!-- ============ 2. ACTIVATION ============ -->
-  <h2><span class="num">2</span>Activation Play — The Natural Path Past $5K/mo</h2>
-  <p class="note">Lakebase billing: baseline capacity (25% discount) + overage; always-on, no scale-to-zero. $5K/mo ≈ a mid-size always-on workload, or several agent environments stacked.</p>
+  <h2><span class="num">2</span>Activation Play: The Natural Path Past $5K/mo</h2>
+  <p class="note"><b>How it bills:</b> compute per CU-hour while running (1 CU ≈ 2 GB RAM) plus storage per GB-month, with no I/O meter. Scale-to-zero stops compute billing on idle databases (computes ≤ 32 CU, non-HA). HA and always-on production run 24×7, and that's where steady spend comes from. Rates vary by cloud and tier, so size deals in the pricing calculator.</p>
 
   <div class="card">
     <div class="ladder">
-      <div class="step"><div class="n">1</div><div class="b"><b>Land ($500–1K/mo):</b> one agent-memory PoC or one dev-branching environment.<small>Sell "branch a copy and try for a week" — zero risk, no production migration</small></div></div>
-      <div class="step"><div class="n">2</div><div class="b"><b>Expand ($1–3K/mo):</b> second and third agents to production (memory + orchestration state) + staging branches as standard practice.<small>Every new production agent = recurring spend</small></div></div>
-      <div class="step"><div class="n">3</div><div class="b"><b>Activate (&gt;$5K/mo):</b> any one of: (a) a fleet of 5–10 production agents' memory/state (b) one data app / SaaS backend moving in (c) feature serving + agent memory + dev branches stacked.<small>At this level spend starts matching Aurora ACU spend — use the Section 3 positioning</small></div></div>
-      <div class="step"><div class="n">4</div><div class="b"><b>Compound ($15K+/mo):</b> multiple teams, environments, FSI unified use case — Lakebase becomes the platform standard; ACV grows linearly with agent count.<small>Agents create 4x more databases than humans — the curve works for you</small></div></div>
+      <div class="step"><div class="n">1</div><div class="b"><b>Land ($500–1K/mo):</b> one agent-memory PoC, one synced-table serving app, or one dev-branching environment.<small>Sell "branch a copy and try it for a week": zero risk, no production migration</small></div></div>
+      <div class="step"><div class="n">2</div><div class="b"><b>Expand ($1–3K/mo):</b> the 2nd and 3rd agent or app go to production, with HA on the first, and branches per PR become standard practice.<small>Every production app ≈ recurring database spend</small></div></div>
+      <div class="step"><div class="n">3</div><div class="b"><b>Activate (&gt;$5K/mo, sustained):</b> reach one of the two shapes. Either <b>(a) fan-out</b>, with 10+ production apps or agents on Lakebase, or <b>(b) scale</b>, with one customer-facing app or API platform on HA with read replicas. Failing that, <b>(c)</b> stack serving + memory + dev branches.<small>At this level spend starts to match Aurora ACU spend, so use the Section 3 positioning</small></div></div>
+      <div class="step"><div class="n">4</div><div class="b"><b>Compound ($15K+/mo):</b> multiple teams and environments, the FSI unified use case, DocumentDB / Aurora-class systems migrating in. Lakebase becomes the platform standard.<small>Agents create ~4× more databases than humans, so the curve works for you</small></div></div>
     </div>
-    <span class="badge bG">✅ Key activation trigger: the day the customer's first agent goes from PoC to production — memory/state cannot be skipped</span>
-    <span class="badge bL">Every production agent ≈ one durable revenue unit</span>
-    <span class="badge bR">⚠️ Don't lead with migration — sell new workloads (agents/apps/branches)</span>
+    <span class="badge bG">✅ Key trigger: the day the first agent or app goes from PoC to production with HA</span>
+    <span class="badge bL">Fan-out or scale: qualify which one</span>
+    <span class="badge bR">⚠️ Don't lead with migration: land new workloads, migrate once proven</span>
   </div>
 
   <!-- ============ 3. VS AURORA ============ -->
-  <h2><span class="num">3</span>Positioning — How to Win Aurora Accounts (Scoreboard + Killers)</h2>
-  <table>
-    <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora wins</th><th style="color:var(--lake)">Lakebase wins</th></tr>
-    <tr><td><b>Track record</b></td><td class="a">10+ years · 99.99% SLA</td><td class="l">GA 2026-03 · cell architecture · ~99.8% — be honest, negotiate SLA indemnity</td></tr>
-    <tr><td><b>Cross-region DR</b></td><td class="a">Global DB &lt;1s lag</td><td class="l">Not at parity yet — roadmap conversation</td></tr>
-    <tr><td><b>Replicas</b></td><td class="a">up to 15</td><td class="l">secondaries + read replicas, ms-level lag</td></tr>
-    <tr><td><b>Cold start</b></td><td class="a">~15s resume</td><td class="l">300–500ms — unlocks the scale-to-zero class</td></tr>
-    <tr><td><b>Branching</b></td><td class="a">—</td><td class="l">O(1) primitive · agent sandbox</td></tr>
-    <tr><td><b>OLTP+OLAP</b></td><td class="a">requires ETL pipelines</td><td class="l">lakehouse reads directly · zero ETL · unified UC governance</td></tr>
-    <tr><td><b>Lock-in</b></td><td class="a">proprietary format, single cloud</td><td class="l">open format · S3/ADLS/GCS</td></tr>
-    <tr><td><b>Speed</b></td><td colspan="2" style="color:var(--dim)">head-to-head ~15% gap (the "5x" is Neon paying down its own debt) — sell architecture fit, not speed</td></tr>
-  </table>
+  <h2><span class="num">3</span>Positioning: How to Win Aurora Accounts (Scoreboard + Killers)</h2>
+  <div class="tblwrap"><table>
+    <tr><th>Dimension</th><th style="color:var(--aurora)">Aurora</th><th style="color:var(--lake)">Lakebase</th></tr>
+    <tr><td><b>Track record &amp; SLA</b></td><td class="a">10+ years · 99.99% (Multi-AZ)</td><td class="l">GA Jan 2026 (AWS) / Mar 2026 (Azure) · 99.99% SLA with HA, 99.9% single compute. Lead with the HA configuration</td></tr>
+    <tr><td><b>Cross-region DR</b></td><td class="a">Global Database: up to 10 read-only regions, &lt;1 s lag</td><td class="l">Not GA yet. Treat it as a roadmap conversation, and qualify who truly needs cross-region RPO≈0</td></tr>
+    <tr><td><b>Read scale</b></td><td class="a">Up to 15 replicas</td><td class="l">1–3 readable HA secondaries + up to 6 read replicas per branch, on shared storage (no copies)</td></tr>
+    <tr><td><b>Write scale-out</b></td><td class="a">Limitless (sharded) · DSQL (active-active)</td><td class="l">Single writer per branch, so don't chase global-write workloads</td></tr>
+    <tr><td><b>Cold start</b></td><td class="a">Scales to 0 ACU (since Nov 2024) but resumes in ~15 s; 30 s+ after 24 h</td><td class="l">&lt;500 ms median, which unlocks per-tenant, per-agent and dev fleets</td></tr>
+    <tr><td><b>Branching</b></td><td class="a">Clones are copy-on-write, but each is a new cluster; no branch tree, no reset</td><td class="l">O(1) branches (500 per project) · reset from parent · PITR as a branch</td></tr>
+    <tr><td><b>OLTP + OLAP</b></td><td class="a">Zero-ETL into Redshift / SageMaker lakehouse: a managed second copy</td><td class="l">Synced tables in (GA) · Change Data Feed out (~15 s, preview) · one Unity Catalog</td></tr>
+    <tr><td><b>Search</b></td><td class="a">pgvector</td><td class="l">pgvector + Lakebase Search (GA): vector, BM25, hybrid</td></tr>
+    <tr><td><b>Lock-in</b></td><td class="a">PG / MySQL fork, AWS-only</td><td class="l">Open-source Postgres 16–18 · AWS + Azure</td></tr>
+    <tr><td><b>Speed</b></td><td colspan="2" style="color:var(--dim)">Not a speed story. "5× faster writes" (May 2026) is Lakebase vs its own previous write path, removing a full-page-write tax Aurora never paid. Sell architecture fit, not TPS.</td></tr>
+  </table></div>
 
   <div class="grid2">
     <div class="card"><h3>🎯 Three battlegrounds</h3><ul style="list-style:none;padding-left:0">
-      <li style="padding:6px 0"><b>AI agents:</b> Suncorp's 16 production agents already run this — there is no second lakehouse-native option for agent memory/state</li>
-      <li style="padding:6px 0"><b>OLTP+OLAP unified:</b> one number moves the CFO (saves ETL pipelines + dual-system ops)</li>
-      <li style="padding:6px 0"><b>Dev/CI branching:</b> hours → seconds — the easiest PoC wow moment</li>
+      <li style="padding:6px 0"><b>AI agents:</b> memory + state + search in one governed Postgres, the lakehouse-native home for agent data</li>
+      <li style="padding:6px 0"><b>Lakehouse data serving:</b> synced tables + the Data API. No pipeline and no serving copy: the number that moves the CFO</li>
+      <li style="padding:6px 0"><b>Dev/CI branching:</b> hours become seconds. The easiest PoC wow moment</li>
     </ul></div>
     <div class="card"><h3>❌ Objection quick answers</h3><ul style="list-style:none;padding-left:0">
-      <li style="padding:5px 0"><b>"It's faster"</b> → 15% at best; your bottleneck isn't TPS</li>
-      <li style="padding:5px 0"><b>"Too new"</b> → Suncorp + Neon lineage; branch a copy and try a week — you don't have to trust me</li>
-      <li style="padding:5px 0"><b>"DR not at parity"</b> → which workloads truly need it? For most, PITR is enough</li>
-      <li style="padding:5px 0"><b>"We don't want to migrate"</b> → don't migrate yet — land new workloads first</li>
+      <li style="padding:5px 0"><b>"Is it faster?"</b> → Don't claim it. The 5× is against our own old engine, and your bottleneck isn't TPS.</li>
+      <li style="padding:5px 0"><b>"Too new"</b> → GA on AWS and Azure, a public SLA, PCI-DSS + HITRUST, and 10M+ databases a day on the engine. Branch a copy and try it for a week.</li>
+      <li style="padding:5px 0"><b>"Aurora scales to zero too"</b> → Yes, since 2024, in ~15 s. Lakebase does it in under half a second, and branches in seconds.</li>
+      <li style="padding:5px 0"><b>"DR not at parity"</b> → True today. Which workloads really need cross-region RPO≈0? For most, HA across AZs + 2–30-day point-in-time restore is enough.</li>
+      <li style="padding:5px 0"><b>"We don't want to migrate"</b> → Don't, yet. Land new apps and agents first.</li>
+      <li style="padding:5px 0"><b>"We're in Hong Kong"</b> → Azure East Asia (HK) is live. On AWS use Singapore or Tokyo; there's no AWS HK region yet.</li>
     </ul></div>
   </div>
 
   <div class="callout" style="border-color:#3fb950">
-  📎 <b>Proof stack:</b> VLDB 2026 Gen 3 paper · Suncorp DAIS session (16 agents) · siddontang convergence thesis · agents create 4x more databases than humans (paper, on record). <b>Closing line:</b> "Agents are already creating 4x more databases than humans at your customer — where those databases live decides which cloud calls the shots."
+  📎 <b>Proof stack:</b> <a href="https://www.vldb.org/pvldb/vol19/p4385-pandis.pdf" target="_blank" rel="noopener">VLDB 2026 paper</a> (10M+ databases a day, agents ~4× humans, &lt;500 ms median cold start) · <a href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank" rel="noopener">5× writes engineering blog</a> · <a href="https://docs.databricks.com/aws/en/release-notes/lakebase/" target="_blank" rel="noopener">release notes</a> (GA, SLA, Search) · Suncorp's Data + AI Summit 2026 session (16 production agents). <b>Closing line:</b> "Agents already create ~4× more databases than humans. Where those databases live decides which platform calls the shots."
   </div>
 
-  <div class="footer">peteragility/databricks · Lakebase Sales Play v1 EN · 2026-09-20 · companion: lakebase-vs-aurora (technical deep dive)</div>
+  <!-- ============ 4. RUN THE PLAY ============ -->
+  <h2><span class="num">4</span>Run the Play: Qualify in 3 Questions</h2>
+  <div class="card">
+    <div class="ladder">
+      <div class="step"><div class="n">1</div><div class="b"><b>Who owns the app?</b> Find the app, platform or agent owner, not just the data team.<small>No app owner = reverse-ETL at best</small></div></div>
+      <div class="step"><div class="n">2</div><div class="b"><b>Which shape: many apps, or one app × many users?</b><small>Neither = a nice PoC, not an activation</small></div></div>
+      <div class="step"><div class="n">3</div><div class="b"><b>Does the data also need to be analyzed, served from the lakehouse, copied or made smarter?</b> Pick the use case from Section 1 and leave with one opportunity, one next step and a date.<small>No = the no-go zone: walk away politely</small></div></div>
+    </div>
+  </div>
+
+  <div class="footer">Lakebase Sales Play v2 · fact-checked 28 Sep 2026 (v1: 20 Sep) · companions: <a href="../lakebase-vs-aurora/">Lakebase vs Aurora (the numbers)</a> · <a href="../aurora-vs-lakebase.html">Aurora vs Lakebase (architecture)</a><br>Sources: Databricks Lakebase docs &amp; release notes · AWS Aurora docs · Microsoft Learn · VLDB 2026</div>
 </div>
 </body>
 </html>
