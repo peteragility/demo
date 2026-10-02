@@ -40,9 +40,9 @@ python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review
 
 Exit codes are `0` for no source changes, `1` for a failed or incomplete source, and `2` for changes needing review. JSON reports contain full diffs; Markdown reports provide a readable summary. Check every failure before relying on a report. An unchanged source document is not a guarantee of account-specific availability or unpublished prices.
 
-The [workflow template](workflow-template.yml) runs validation and daily source checks at **02:17 UTC / 10:17 HKT**, with manual dispatch and scoped push/PR checks. To activate it, copy it to `.github/workflows/llm-pricing-v2-review.yml` on `main`. GitHub credentials need permission to write workflow files. The workflow has read-only repository permissions and stores review artifacts for 30 days; it never publishes prices or commits updates.
+The installed [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs validation and daily source checks at **02:17 UTC / 10:17 HKT**, with manual dispatch and scoped push/PR checks. The [workflow template](workflow-template.yml) provides the same setup for another repository. The workflow has read-only repository permissions and stores review artifacts for 30 days; it never publishes prices or commits updates.
 
-Once installed, view its [source-check runs](https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml).
+View its [source-check runs](https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml).
 
 ## Reviewing a source change
 

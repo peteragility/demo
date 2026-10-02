@@ -1,0 +1,68 @@
+name: LLM pricing v2 review
+
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'llm-pricing/v2*'
+      - 'llm-pricing/v2-maintenance/**'
+      - '.github/workflows/llm-pricing-v2-review.yml'
+  pull_request:
+    paths:
+      - 'llm-pricing/v2*'
+      - 'llm-pricing/v2-maintenance/**'
+      - '.github/workflows/llm-pricing-v2-review.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: llm-pricing-v2-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: llm-pricing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate reviewed data and calculations
+        run: |
+          python v2-maintenance/build-data.py --check
+          python v2-maintenance/validate-data.py
+          python v2-maintenance/test-review-sources.py
+          node --test v2-maintenance/pricing.test.cjs
+      - name: Compare official sources (review only)
+        if: github.event_name != 'pull_request'
+        run: python v2-maintenance/review-sources.py --report-dir "${{ runner.temp }}/llm-pricing-v2-review"
+      - name: Add review report to job summary
+        if: always() && github.event_name != 'pull_request'
+        shell: python
+        env:
+          REVIEW_DIRECTORY: ${{ runner.temp }}/llm-pricing-v2-review
+        run: |
+          import os
+          from pathlib import Path
+          reports = sorted(Path(os.environ['REVIEW_DIRECTORY']).glob('*.md'))
+          if reports:
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+                  summary.write(reports[-1].read_text())
+      - name: Save review artifacts
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: llm-pricing-v2-source-review
+          path: ${{ runner.temp }}/llm-pricing-v2-review/
+          retention-days: 30
+          if-no-files-found: warn
