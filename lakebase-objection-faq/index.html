@@ -164,14 +164,14 @@ pre{border-radius:var(--radius)}
   <ul>
     <li>LFC is custom-built, not the OS page cache. It's a plain file deliberately placed so the OS page cache backs it: DRAM available → fully in memory; under pressure → spills to NVMe.</li>
     <li><strong>In-place scaling does not restart Postgres and does not drop connections.</strong> The autoscaler tracks working-set size to protect cache hit rate. Be precise about eviction: <strong>yes, both layers can evict during scale-down</strong> — DRAM shrinks, so shared buffers give up pages and LFC shrinks too. What scaling improves is <em>which</em> pages get evicted (working-set-aware, not blind) and where misses land afterwards (the NVMe tier absorbs them before the pageserver is touched).</li>
-    <li>On <strong>fixed computes ≥80 CU</strong> (≥18 on Neon), the old setup was replaced: previously <em>autoscaling</em> computes were capped at ~1 GB shared buffers with LFC taking the rest (up to 75% of DRAM). Now, on those fixed sizes, <strong>LFC is disabled entirely and shared buffers = 75% of DRAM</strong> with huge pages — an 80 CU compute shows <span class="mono">shared_buffers = 120GB</span>. Production results: 2× throughput, storage reads 8K→1.5K/s (5× fewer), one customer's CPU 20→4 cores, cache hit ~100%. Dynamic shared buffers for <em>autoscaling</em> computes are still on the roadmap.</li>
+    <li>On <strong>fixed computes ≥80 CU</strong> (≥18 on Neon), the old setup was replaced: previously <em>all</em> computes were capped at ~1 GB shared buffers with LFC taking the rest (up to 75% of DRAM). Now, on fixed sizes, <strong>LFC is disabled entirely and shared buffers = 75% of DRAM</strong> with huge pages — an 80 CU compute shows <span class="mono">shared_buffers = 120GB</span>. Production results: 2× throughput, storage reads 8K→1.5K/s (5× fewer), one customer's CPU 20→4 cores, cache hit ~100%. Dynamic shared buffers for <em>autoscaling</em> computes are still on the roadmap.</li>
   </ul>
 
   <div class="rule">Sizing rule: each CU = 2 GB RAM. Set min CU so its RAM covers the working set — then steady-state reads never leave the machine, regardless of scaling.</div>
 
-  <p><strong>The fixed-only threshold:</strong> autoscaling exists only up to 64 CU. <strong>65–112 CU computes are fixed-size only</strong> — a dedicated, always-on machine with a huge stable shared buffer and zero scaling movement.</p>
+  <p><strong>The fixed-only threshold:</strong> autoscaling exists only up to 64 CU, and the autoscaling range is capped at max − min ≤ 16 CU. Scale-to-zero is only available on computes ≤ 32 CU. <strong>65–112 CU computes are fixed-size only</strong> — a dedicated, always-on machine with a huge stable shared buffer and zero scaling movement.</p>
 
-  <div class="honest"><b>Honest caveat:</b> pausing (scale-to-zero) clears layers 1–2 — compute is stateless and its NVMe contents aren't guaranteed to follow rescheduling. Layer 3 survives, so first queries after resume hit in-region NVMe, not cold object storage. Median cold start &lt;500 ms (VLDB §5.3). Production guidance: turn scale-to-zero off — it's unavailable with HA anyway.</div>
+  <div class="honest"><b>Honest caveat:</b> pausing (scale-to-zero) clears layers 1–2 — compute is stateless and its NVMe contents aren't guaranteed to follow rescheduling. Layer 3 survives, so first queries after resume hit in-region NVMe, not cold object storage. Reactivation takes a few hundred milliseconds (official docs). Production guidance: turn scale-to-zero off — it's unavailable with HA anyway.</div>
 </section>
 
 <section id="q6">
@@ -183,7 +183,7 @@ pre{border-radius:var(--radius)}
     <li><strong>Smarter eviction:</strong> the OS page cache evicts blind (generic kernel heuristics); LFC evicts based on which pages Postgres is actually re-reading, so the working set survives longer.</li>
     <li><strong>Resizes with autoscaling, live:</strong> the autoscaler adjusts LFC size in step with CU changes while Postgres keeps running. Shared buffers are a static startup parameter — changing them requires a restart. (That's exactly why fixed computes skip LFC and put the whole cache in shared buffers: with a fixed size there's nothing to resize.)</li>
   </ul>
-  <p><strong>Scale-to-zero clears layers 1–2</strong> (shared buffers + LFC) — the compute is stateless. Layers 3–4 untouched. Resumption: &lt;500 ms median, first queries served from the pageserver warm tier.</p>
+  <p><strong>Scale-to-zero clears layers 1–2</strong> (shared buffers + LFC) — the compute is stateless. Layers 3–4 untouched. Resumption: a few hundred milliseconds; first queries served from the pageserver warm tier.</p>
 </section>
 
 <section id="q3">
@@ -252,7 +252,7 @@ pre{border-radius:var(--radius)}
     <li>Compliance requires it? Bring your own. Property that matters: <strong>revoking the key revokes all access to the data</strong> — the control point auditors care about.</li>
     <li>Private Link / private connectivity supported.</li>
   </ul>
-  <p><strong>Attestations:</strong> SOC 2 Type 2 · PCI-DSS · HITRUST (all AWS regions) · HIPAA, C5, TISAX via compliance security profile.</p>
+  <p><strong>Attestations:</strong> SOC 2 Type 2 · PCI-DSS and HITRUST supported in all AWS regions · HIPAA, C5, TISAX supported via the compliance security profile.</p>
 
   <div class="honest"><b>Honest boundary:</b> if a customer mandates physically single-tenant hardware, no managed serverless database qualifies — Lakebase included. Qualify out.</div>
 </section>
@@ -272,7 +272,7 @@ query_wait_timeout = 120</pre>
   <p><strong>Use pooled mode when:</strong> many short-lived connections (serverless functions, web APIs, ORMs opening per-request connections); client count above max_connections; no reliance on session-level state.</p>
   <p><strong>Connect directly (no -pooler) when:</strong> you need session <span class="mono">SET</span>, session advisory locks, <span class="mono">LISTEN/NOTIFY</span>, cursors held across transactions, or per-client temp tables; long-lived sessions needing guaranteed backend identity; or OAuth-role authentication (pooling supports native password only).</p>
 
-  <p><strong>What the app side must do (both modes):</strong> connection timeouts, retry-on-error with backoff, never hold transactions open across user think-time. If scale-to-zero is enabled, connection retry logic is mandatory — suspending drops all connections; reactivation &lt;500 ms but the TCP connections are gone.</p>
+  <p><strong>What the app side must do (both modes):</strong> connection timeouts, retry-on-error with backoff, never hold transactions open across user think-time. If scale-to-zero is enabled, connection retry logic is mandatory — suspending drops all connections; reactivation takes a few hundred milliseconds but the TCP connections are gone.</p>
 
   <p><strong>Connection-breakage matrix:</strong></p>
   <div class="tblwrap"><table>
@@ -280,7 +280,7 @@ query_wait_timeout = 120</pre>
     <tr><td>Autoscaling within min/max range</td><td><strong style="color:var(--ok)">Not interrupted</strong> — in-place, no restart</td></tr>
     <tr><td>Changing min/max CU configuration</td><td>Possible brief interruption (one-off)</td></tr>
     <tr><td>Scale-to-zero suspension</td><td>All dropped; reactivation &lt;500 ms; app retry required</td></tr>
-    <tr><td>HA failover</td><td>Resumes from last committed transaction; pooler absorbs most of it</td></tr>
+    <tr><td>HA failover</td><td>All committed transactions preserved; existing connections are terminated — apps reconnect within seconds with retry logic</td></tr>
   </table></div>
   <div class="rule">Rule of thumb: production = scale-to-zero off → the only connection-breaking events are deliberate config changes and failovers.</div>
 </section>
@@ -290,7 +290,7 @@ query_wait_timeout = 120</pre>
   <h2>My workload is stable — I want provisioned and dedicated. Is Lakebase only for test/bursty?</h2>
   <p>No. <strong>"Serverless is how Lakebase can run, not how it must run."</strong></p>
   <ul>
-    <li>Choose <strong>fixed size</strong> (0.5–64 CU, or fixed-only 65–112 CU), disable scale-to-zero, add HA (1–3 secondaries, auto-failover resuming from the last committed transaction). Result: a dedicated, always-on database with a stable cache and a <strong>99.99% SLA</strong>.</li>
+    <li>Choose <strong>fixed size</strong> (0.5–64 CU, or fixed-only 65–112 CU), disable scale-to-zero, add HA (1–3 secondaries, auto-failover resuming from the last committed transaction). Result: a dedicated, always-on database with a stable cache and an SLA of <strong>99.99% (zone-redundant HA mode)</strong> or 99.9% (single compute).</li>
     <li>Specs: 2 GB RAM per CU (112 CU = 224 GB). Up to 6 read replicas on shared storage — no data copies.</li>
     <li>What a provisioned box typically doesn't give you: second-level <strong>branching</strong> (copy-on-write, zero duplication), <strong>PITR 2–30 days</strong>, <strong>zero I/O charges</strong>, synced tables / Change Data Feed, Unity Catalog governance, native Postgres 16–18.</li>
   </ul>
@@ -304,20 +304,20 @@ query_wait_timeout = 120</pre>
     <li>Physically single-tenant hardware requirement</li>
     <li>&gt;112 CU single node, or writes that must shard horizontally → Aurora Limitless / DSQL</li>
     <li>Hard cross-region DR requirement (not GA yet)</li>
-    <li>Single-instance logical capacity &gt;2 TB</li>
+    <li>Storage needs &gt;8 TB per project (GA limit)</li>
     <li>Heavy session-level Postgres feature dependencies with no willingness to adjust pooling</li>
   </ul>
 
   <div class="closing">
     <p class="line">"Serverless is <em>how Lakebase can run</em>, not how it must run."</p>
-    <p>Stable high-throughput: fixed compute (fixed-only above 64 CU), 75%-DRAM shared buffers, HA, 99.99% SLA, zero I/O charges. Bursty, dev and agent workloads: autoscaling and scale-to-zero. Same engine, two postures.</p>
+    <p>Stable high-throughput: fixed compute (fixed-only above 64 CU), 75%-DRAM shared buffers, HA, 99.99%/99.9% SLA, zero I/O charges. Bursty, dev and agent workloads: autoscaling and scale-to-zero. Same engine, two postures.</p>
   </div>
 </section>
 
 </main>
 
 <footer>
-  Internal field enablement · fact-checked against public sources · not for external distribution without review.
+  Fact-checked 2026-10-02 against: docs.databricks.com (autoscaling, manage-computes, connection-pooling, high-availability, scale-to-zero, data-protection, CMK, PITR) · Neon eng blogs (compute cache Part 1, FPW) · PVLDB vol.19 p4385 (Lakebase paper, Table 1).
 </footer>
 
 <script>
