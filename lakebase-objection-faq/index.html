@@ -133,7 +133,7 @@ pre{border-radius:var(--radius)}
   <div class="inner">
     <div class="kicker">Lakebase Postgres · Field Enablement</div>
     <h1>Objections, answered honestly.</h1>
-    <p>Seven technical objections we hear most — each answered with the architecture, the published numbers, and the limits we won't pretend don't exist.</p>
+    <p>Eight technical objections we hear most — each answered with the architecture, the published numbers, and the limits we won't pretend don't exist.</p>
     <div class="sources">Sources: Lakebase docs · VLDB 2026 paper · May &amp; Aug 2026 engineering blogs</div>
   </div>
 </header>
@@ -147,6 +147,7 @@ pre{border-radius:var(--radius)}
     <a href="#q2">Isolation &amp; CMK</a>
     <a href="#q5">Connection pooling</a>
     <a href="#q4">Provisioned mode</a>
+    <a href="#ha">HA &amp; DR</a>
     <a href="#nogo">No-go list</a>
   </div>
 </nav>
@@ -294,7 +295,40 @@ query_wait_timeout = 120</pre>
     <li>Specs: 2 GB RAM per CU (112 CU = 224 GB); up to 6 read replicas on shared storage, zero data copies, created in seconds.</li>
     <li>Beyond a provisioned box: second-level <strong>branching</strong> (copy-on-write), <strong>PITR 2–30 days</strong> (default 7), <strong>zero I/O charges</strong>, synced tables / Change Data Feed, Unity Catalog, native Postgres 16–18.</li>
   </ul>
-  <div class="honest"><b>Real no-gos — say them out loud:</b> pure OLTP with no analytics/branching need, hard cross-region DR (not GA), or &gt;112 CU single-node → Aurora/RDS.</div>
+  <div class="honest"><b>Real no-gos — say them out loud:</b> pure OLTP with no analytics/branching need, cross-region DR with RPO=0/automatic failover (preview only), or &gt;112 CU single-node → Aurora/RDS.</div>
+</section>
+
+
+<section id="ha">
+  <span class="qnum">Objection 08</span>
+  <h2>Does Lakebase support HA? And regional DR?</h2>
+  <p><strong>Yes to both — different failure domains, different designs.</strong></p>
+
+  <p><strong>High availability (GA):</strong> primary + 1–3 secondaries across availability zones.</p>
+  <ul>
+    <li><strong>RPO = 0.</strong> Replication is synchronous; a failover preserves every committed transaction.</li>
+    <li><strong>Automatic failover</strong> — promotion needs no new provisioning (standby hardware is always allocated), connection string unchanged, typically seconds.</li>
+    <li>Existing connections are terminated on failover; apps with retry logic reconnect automatically. Secondaries can optionally serve reads via the <span class="mono">-ro</span> endpoint.</li>
+    <li>SLA: <strong>99.99% zone-redundant HA</strong> / 99.9% single compute. Storage is highly available regardless of the HA setting.</li>
+    <li>Constraints: scale-to-zero unavailable with HA; secondaries never scale below the primary; autoscaling range ≤ 16 CU.</li>
+  </ul>
+
+  <p><strong>Regional DR (Private Preview — not yet for production):</strong> cross-region replication to a Secondary Workspace.</p>
+  <ul>
+    <li>Replication is <strong>periodic</strong> (minutes-range RPO), happens at the storage layer — the secondary's compute stays idle, so no standby compute cost.</li>
+    <li><strong>Failover is always manual</strong>: you promote a possibly-stale copy; unreplicated transactions are preserved as a recovery branch for reconciliation (never auto-merged). New connection string + token required after failover.</li>
+    <li>Not yet: cross-region read replicas, RPO=0 switchover, global endpoint; replication traffic travels encrypted over the public internet.</li>
+  </ul>
+
+  <div class="tblwrap"><table>
+    <tr><th></th><th>High availability (GA)</th><th>Disaster recovery (Private Preview)</th></tr>
+    <tr><td>Protects against</td><td>Compute / AZ failure, in-region</td><td>Full region outage</td></tr>
+    <tr><td>Standby compute</td><td>Always running, instant promotion</td><td>Idle until failover — no standby cost</td></tr>
+    <tr><td>RPO</td><td><strong>0 (synchronous)</strong></td><td>Minutes (periodic)</td></tr>
+    <tr><td>Failover</td><td>Automatic, same connection string</td><td>Manual, new connection string</td></tr>
+    <tr><td>SLA</td><td>99.99% (zone-redundant)</td><td>n/a (preview)</td></tr>
+  </table></div>
+  <p><strong>Talk track:</strong> HA for compute/AZ failure — synchronous, automatic, RPO=0, GA today. Regional DR exists but is Private Preview with periodic replication and manual failover; hard DR requirements today → qualify or design around (e.g. app-level dual-write or storage-layer export). HA config replicates to the secondary project, so posture survives a DR failover.</p>
 </section>
 
 <section id="nogo">
@@ -303,7 +337,7 @@ query_wait_timeout = 120</pre>
   <ul>
     <li>Physically single-tenant hardware requirement</li>
     <li>&gt;112 CU single node, or writes that must shard horizontally → Aurora Limitless / DSQL</li>
-    <li>Hard cross-region DR requirement (not GA yet)</li>
+    <li>Hard cross-region DR with RPO=0 or automatic failover (DR is Private Preview: periodic, manual)</li>
     <li>Storage needs &gt;8 TB per project (GA limit)</li>
     <li>Heavy session-level Postgres feature dependencies with no willingness to adjust pooling</li>
   </ul>
