@@ -1,0 +1,3669 @@
+{
+ "fetched_at": "2026-09-28T23:30:00+08:00",
+ "schema": 3,
+ "usd_per_dbu": 0.07,
+ "basis": "Standard on-demand global tier per platform; USD per 1M tokens.",
+ "sources": [
+  "https://www.databricks.com/product/pricing/foundation-model-serving",
+  "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
+  "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models",
+  "https://docs.databricks.com/aws/en/unity-gateway/model-region-availability",
+  "https://platform.claude.com/docs/en/about-claude/pricing",
+  "https://developers.openai.com/api/docs/pricing",
+  "https://ai.google.dev/gemini-api/docs/pricing",
+  "https://docs.z.ai/guides/overview/pricing",
+  "https://api-docs.deepseek.com/quick_start/pricing",
+  "https://platform.kimi.ai/docs/pricing/chat",
+  "https://thinkingmachines.ai/",
+  "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
+  "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
+  "https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards-openai.html",
+  "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27",
+  "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
+  "https://docs.fireworks.ai/serverless/pricing",
+  "https://fireworks.ai/models",
+  "https://docs.fireworks.ai/nexus/provider-keys",
+  "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+  "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+  "https://www.alibabacloud.com/help/en/model-studio/regions/"
+ ],
+ "source_meta": {
+  "dbx_oss": {
+   "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
+   "label": "Databricks FMAPI pricing — open models (DBU × $0.07)"
+  },
+  "dbx_prop": {
+   "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
+   "label": "Databricks FMAPI pricing — Claude / GPT / Gemini (DBU × $0.07)"
+  },
+  "dbx_models": {
+   "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models",
+   "label": "Databricks supported models"
+  },
+  "dbx_region": {
+   "url": "https://docs.databricks.com/aws/en/unity-gateway/model-region-availability",
+   "label": "Databricks model availability by region"
+  },
+  "anthropic": {
+   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "label": "Anthropic API pricing"
+  },
+  "openai": {
+   "url": "https://developers.openai.com/api/docs/pricing",
+   "label": "OpenAI API pricing"
+  },
+  "google": {
+   "url": "https://ai.google.dev/gemini-api/docs/pricing",
+   "label": "Gemini API pricing"
+  },
+  "zai": {
+   "url": "https://docs.z.ai/guides/overview/pricing",
+   "label": "Z.ai pricing"
+  },
+  "deepseek": {
+   "url": "https://api-docs.deepseek.com/quick_start/pricing",
+   "label": "DeepSeek API pricing"
+  },
+  "moonshot": {
+   "url": "https://platform.kimi.ai/docs/pricing/chat",
+   "label": "Moonshot Kimi pricing"
+  },
+  "tml": {
+   "url": "https://thinkingmachines.ai/",
+   "label": "Thinking Machines Lab — Inkling (open weights)"
+  },
+  "aws": {
+   "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
+   "label": "AWS Price List API — Amazon Bedrock (us-east-1, ap-northeast-1)"
+  },
+  "aws_fm": {
+   "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
+   "label": "AWS Price List API — Bedrock Marketplace models (Claude)"
+  },
+  "aws_openai": {
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards-openai.html",
+   "label": "Amazon Bedrock — OpenAI model cards (pricing & regions)"
+  },
+  "azure": {
+   "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27",
+   "label": "Azure Retail Prices API — Foundry Models"
+  },
+  "azure_claude": {
+   "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
+   "label": "Microsoft Foundry — Claude models & regions"
+  },
+  "fireworks": {
+   "url": "https://docs.fireworks.ai/serverless/pricing",
+   "label": "Fireworks serverless pricing"
+  },
+  "fireworks_models": {
+   "url": "https://fireworks.ai/models",
+   "label": "Fireworks model library (serverless availability per model)"
+  },
+  "fireworks_nexus": {
+   "url": "https://docs.fireworks.ai/nexus/provider-keys",
+   "label": "Fireworks Nexus — closed models need your own provider key"
+  },
+  "vertex": {
+   "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+   "label": "Vertex AI generative AI pricing"
+  },
+  "ali": {
+   "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+   "label": "Alibaba Cloud Model Studio pricing"
+  },
+  "ali_regions": {
+   "url": "https://www.alibabacloud.com/help/en/model-studio/regions/",
+   "label": "Model Studio regions & deployment scopes"
+  }
+ },
+ "platform_meta": {
+  "databricks": {
+   "short": "DBX",
+   "label": "Databricks FMAPI",
+   "src": "dbx_oss"
+  },
+  "official": {
+   "short": "原廠",
+   "label": "原廠 direct API",
+   "src": null
+  },
+  "bedrock": {
+   "short": "AWS",
+   "label": "AWS Bedrock",
+   "src": "aws"
+  },
+  "azure_foundry": {
+   "short": "Azure",
+   "label": "Azure Foundry",
+   "src": "azure"
+  },
+  "fireworks": {
+   "short": "FW",
+   "label": "Fireworks",
+   "src": "fireworks"
+  },
+  "gcloud": {
+   "short": "GCP",
+   "label": "Google Vertex AI",
+   "src": "vertex"
+  },
+  "alicloud": {
+   "short": "Ali",
+   "label": "Alibaba Model Studio",
+   "src": "ali"
+  }
+ },
+ "groups": {
+  "oss": {
+   "label": "OSS",
+   "title": "Open models on Databricks"
+  },
+  "anthropic": {
+   "label": "Anthropic",
+   "title": "Anthropic Claude"
+  },
+  "openai": {
+   "label": "OpenAI",
+   "title": "OpenAI GPT"
+  },
+  "google": {
+   "label": "Google",
+   "title": "Google Gemini"
+  }
+ },
+ "insights": {
+  "oss": [
+   "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
+   "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither has Kimi K3 on Vertex, GLM 5.3 or DeepSeek V4.",
+   "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.22 / $0.66 Fireworks and $0.44 / $1.32 Azure.",
+   "Watch-outs priced below Databricks: Llama 4 Maverick (Bedrock, Azure, Vertex), gpt-oss-120b on Vertex, Gemma 3 12B on Bedrock, Alibaba Global-scope Qwen / GLM / Kimi.",
+   "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models."
+  ],
+  "anthropic": [
+   "List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates.",
+   "Regional / data-residency endpoints are +10% on Bedrock, Vertex and Databricks (⌖); Anthropic's US-only inference is ×1.1.",
+   "Microsoft Foundry deploys Claude only from US or Sweden Central resources, with no APAC region. Vertex offers asia-east1 (Taiwan) and asia-southeast1 regional endpoints.",
+   "On Databricks, Sonnet 4.6 and Haiku 4.5 run in-region in Singapore and Tokyo. Opus 5.5, Fable 5.1 and Sonnet 5 use cross-geo routing in APAC; Opus 5 is in-region on AWS Sydney and GCP Singapore."
+  ],
+  "openai": [
+   "List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
+   "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
+   "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
+   "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform."
+  ],
+  "google": [
+   "Databricks matches Google today: a 20% promo on Gemini Pro runs to 31 Jan 2027, then Databricks lists +25% ($2.50 / $15.00).",
+   "Flash intro pricing (50% off) ends 31 Dec 2026 everywhere, then $1.50 / $7.50.",
+   "Only Databricks and Vertex sell Gemini, not Bedrock, Azure or Alibaba."
+  ]
+ },
+ "models": {
+  "moonshot/kimi-k3": {
+   "name": "Kimi K3",
+   "short": "Kimi K3",
+   "maker": "Moonshot",
+   "group": "oss",
+   "oss": true,
+   "ctx": "1M",
+   "about": "2.8T params · vision",
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 3.0,
+   "out": 15.0,
+   "cache_read": 0.3,
+   "cache_write": 3.0,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "note": "No cache-write charge listed (Bedrock charges $3.75; Moonshot $3.00 / $6.00 for 1 h).",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 5.25,
+       "out": 26.25,
+       "cache_read": 0.525
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 3.3,
+       "out": 16.5,
+       "cache_read": 0.33
+      }
+     ],
+     "src": "dbx_oss"
+    },
+    "official": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": 3.0,
+     "cache_write_1h": 6.0,
+     "tier": "Moonshot API",
+     "note": "Explicit context caching: 5-min write $3.00, 1-hour write $6.00.",
+     "src": "moonshot"
+    },
+    "bedrock": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": 3.75,
+     "tier": "Global cross-region",
+     "regions": "In-region US / EU / APAC (Tokyo, SG, Seoul, Mumbai)",
+     "note": "Charges cache writes ($3.75); Databricks does not.",
+     "variants": [
+      {
+       "label": "In-region",
+       "in": 3.3,
+       "out": 16.5,
+       "cache_read": 0.33
+      },
+      {
+       "label": "Priority",
+       "in": 5.775,
+       "out": 28.875,
+       "cache_read": 0.525
+      },
+      {
+       "label": "Flex",
+       "in": 1.5,
+       "out": 7.5,
+       "cache_read": 0.15
+      }
+     ],
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "tier": "Global Standard · FW-Kimi-K3 (Fireworks-hosted)",
+     "regions": "No APAC deployment region",
+     "variants": [
+      {
+       "label": "Data Zone",
+       "in": 3.3,
+       "out": 16.5,
+       "cache_read": 0.33
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "Kimi K2 Thinking",
+      "in": 0.6,
+      "out": 2.5,
+      "short": "K2 Think"
+     },
+     "note": "No Kimi K3 on Vertex MaaS.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "tier": "Serverless Standard",
+     "regions": "Global · US-only is 1.5×",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 3.75,
+       "out": 18.75,
+       "cache_read": 0.375
+      },
+      {
+       "label": "US-only",
+       "in": 4.5,
+       "out": 22.5,
+       "cache_read": 0.45
+      },
+      {
+       "label": "Fast",
+       "in": 4.5,
+       "out": 22.5,
+       "cache_read": 0.45
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "in": 2.827,
+     "out": 14.133,
+     "tier": "Global scope",
+     "regions": "Global scope via HK, Tokyo, Frankfurt, Virginia · International = Singapore",
+     "variants": [
+      {
+       "label": "International (Singapore)",
+       "in": 3.0,
+       "out": 15.0
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "zai/glm-5.3": {
+   "name": "GLM 5.3",
+   "short": "GLM 5.3",
+   "maker": "Z.ai",
+   "group": "oss",
+   "oss": true,
+   "ctx": "1M",
+   "about": "text · reasoning always on",
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 1.4,
+   "out": 4.4,
+   "cache_read": 0.26,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 1.4,
+     "out": 4.4,
+     "cache_read": 0.26,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "note": "GLM 5.2 is the same price.",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 2.45,
+       "out": 7.7,
+       "cache_read": 0.455
+      }
+     ],
+     "src": "dbx_oss"
+    },
+    "official": {
+     "in": 1.4,
+     "out": 4.4,
+     "cache_read": 0.26,
+     "tier": "Z.ai API",
+     "note": "Cache storage free for a limited time.",
+     "src": "zai"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "alt": {
+      "name": "GLM 5",
+      "in": 1.0,
+      "out": 3.2
+     },
+     "note": "Bedrock tops out at GLM 5. Tokyo in-region is +20% ($1.20 / $3.84).",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 1.75,
+     "out": 5.5,
+     "cache_read": 0.325,
+     "tier": "Global Standard · FW GLM 5.3 (Fireworks-hosted)",
+     "regions": "36 regions incl. Japan, Korea, SE Asia, Australia",
+     "note": "+25% vs Z.ai list.",
+     "variants": [
+      {
+       "label": "Data Zone",
+       "in": 2.1,
+       "out": 6.6,
+       "cache_read": 0.39
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "GLM-5.2",
+      "in": 1.4,
+      "out": 4.4,
+      "short": "GLM 5.2"
+     },
+     "note": "Vertex MaaS lists GLM-4.7, GLM-5 and GLM-5.2.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 1.4,
+     "out": 4.4,
+     "cache_read": 0.26,
+     "tier": "Serverless Standard",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 1.75,
+       "out": 5.5,
+       "cache_read": 0.325
+      },
+      {
+       "label": "US-only",
+       "in": 2.1,
+       "out": 6.6,
+       "cache_read": 0.39
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "in": 1.131,
+     "out": 3.957,
+     "tier": "Global scope",
+     "variants": [
+      {
+       "label": "International (Singapore)",
+       "in": 1.4,
+       "out": 4.4
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "deepseek/deepseek-v4-pro": {
+   "name": "DeepSeek V4 Pro (0813)",
+   "short": "DS V4 Pro",
+   "maker": "DeepSeek",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": "Retires on Databricks 30 Oct 2026",
+   "in": 1.32,
+   "out": 3.96,
+   "cache_read": 0.044,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 1.32,
+     "out": 3.96,
+     "cache_read": 0.132,
+     "tier": "Standard pay-per-token",
+     "regions": "US only: AWS us-west-2",
+     "note": "Retires 30 Oct 2026. See Databricks deprecation page for the replacement.",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "in": 1.32,
+     "out": 3.96,
+     "cache_read": 0.044,
+     "tier": "Peak (01–04 & 06–10 UTC, Mon–Fri)",
+     "variants": [
+      {
+       "label": "Off-peak",
+       "in": 0.66,
+       "out": 1.98,
+       "cache_read": 0.022
+      }
+     ],
+     "src": "deepseek"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "alt": {
+      "name": "DeepSeek V3.2",
+      "in": 0.62,
+      "out": 1.85
+     },
+     "note": "No DeepSeek V4 on Bedrock.",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 1.74,
+     "out": 3.48,
+     "cache_read": 0.145,
+     "tier": "Global Standard · “V4 Pro” (Microsoft-hosted)",
+     "regions": "42 regions incl. East Asia (HK), SE Asia",
+     "note": "Snapshot not stated. Some regions up to +20%.",
+     "variants": [
+      {
+       "label": "Data Zone",
+       "in": 1.91,
+       "out": 3.83,
+       "cache_read": 0.16
+      },
+      {
+       "label": "FW-DeepSeek-V4-Pro · Data Zone",
+       "in": 1.925,
+       "out": 3.828,
+       "cache_read": 0.165
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "DeepSeek V3.2",
+      "in": 0.56,
+      "out": 1.68
+     },
+     "note": "No DeepSeek V4 on Vertex MaaS.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 1.32,
+     "out": 3.96,
+     "cache_read": 0.044,
+     "tier": "Serverless Standard · V4 Pro (0813)",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 1.65,
+       "out": 4.95,
+       "cache_read": 0.055
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "in": 1.272,
+     "out": 3.816,
+     "tier": "Global scope · busy hours (deepseek-v4-pro-0813)",
+     "variants": [
+      {
+       "label": "Global · idle hours",
+       "in": 0.636,
+       "out": 1.908
+      },
+      {
+       "label": "International (SG) · busy",
+       "in": 1.32,
+       "out": 3.96
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "deepseek/deepseek-v4.1-flash": {
+   "name": "DeepSeek V4.1 Flash",
+   "short": "DS V4.1 Flash",
+   "maker": "DeepSeek",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": "552B · multimodal",
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.3,
+   "out": 1.2,
+   "cache_read": 0.006,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.3,
+     "out": 1.2,
+     "cache_read": 0.03,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "in": 0.3,
+     "out": 1.2,
+     "cache_read": 0.006,
+     "tier": "Peak (API: deepseek-flash)",
+     "variants": [
+      {
+       "label": "Off-peak",
+       "in": 0.15,
+       "out": 0.6,
+       "cache_read": 0.003
+      }
+     ],
+     "src": "deepseek"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "alt": {
+      "name": "DeepSeek V3.2",
+      "in": 0.62,
+      "out": 1.85
+     },
+     "note": "No DeepSeek V4 on Bedrock.",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 0.375,
+     "out": 1.5,
+     "cache_read": 0.008,
+     "tier": "Global Standard · FW-DS-V4.1-Flash (Fireworks-hosted)",
+     "regions": "No APAC deployment region",
+     "note": "+25% vs DeepSeek list.",
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "DeepSeek V3.2",
+      "in": 0.56,
+      "out": 1.68
+     },
+     "note": "No DeepSeek V4 on Vertex MaaS.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 0.3,
+     "out": 1.2,
+     "cache_read": 0.006,
+     "tier": "Serverless Standard",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 0.375,
+       "out": 1.5,
+       "cache_read": 0.0075
+      },
+      {
+       "label": "US-only",
+       "in": 0.45,
+       "out": 1.8,
+       "cache_read": 0.009
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "in": 0.283,
+     "out": 1.131,
+     "tier": "Global scope · busy hours",
+     "variants": [
+      {
+       "label": "Global · idle hours",
+       "in": 0.141,
+       "out": 0.565
+      },
+      {
+       "label": "International (SG) · busy",
+       "in": 0.3,
+       "out": 1.2
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "deepseek/deepseek-v4-flash": {
+   "name": "DeepSeek V4 Flash (0731)",
+   "short": "DS V4 Flash",
+   "maker": "DeepSeek",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": "284B · 13B active",
+   "badges": [],
+   "note": "Two V4 Flash SKUs exist in the market: “0731” (the Databricks endpoint) and an earlier “v4-flash” (~$0.14 / $0.28 on Alibaba Global).",
+   "warn": null,
+   "in": 0.14,
+   "out": 0.28,
+   "cache_read": 0.028,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.14,
+     "out": 0.28,
+     "cache_read": 0.028,
+     "tier": "Standard pay-per-token",
+     "regions": "US only: AWS us-west-2, GCP US regions",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "alt": {
+      "name": "V4.1 Flash",
+      "in": 0.3,
+      "out": 1.2,
+      "short": "V4.1"
+     },
+     "note": "DeepSeek retired the V4 Flash name; requests are served by V4.1 Flash.",
+     "src": "deepseek"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "alt": {
+      "name": "DeepSeek V3.2",
+      "in": 0.62,
+      "out": 1.85
+     },
+     "note": "No DeepSeek V4 on Bedrock.",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 0.44,
+     "out": 1.32,
+     "cache_read": 0.014,
+     "tier": "Global Standard · “V4 Flash 0731” (Microsoft-hosted)",
+     "regions": "Incl. East Asia (HK), SE Asia",
+     "variants": [
+      {
+       "label": "Data Zone",
+       "in": 0.484,
+       "out": 1.452,
+       "cache_read": 0.015
+      },
+      {
+       "label": "“V4 Flash” SKU · Global",
+       "in": 0.19,
+       "out": 0.51,
+       "cache_read": 0.028
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "DeepSeek V3.2",
+      "in": 0.56,
+      "out": 1.68
+     },
+     "note": "No DeepSeek V4 on Vertex MaaS.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 0.22,
+     "out": 0.66,
+     "cache_read": 0.007,
+     "tier": "Serverless Standard · V4 Flash (0731)",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 0.275,
+       "out": 0.825,
+       "cache_read": 0.0088
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "in": 0.424,
+     "out": 1.272,
+     "tier": "Global scope · busy hours (deepseek-v4-flash-0731)",
+     "variants": [
+      {
+       "label": "Global · idle hours",
+       "in": 0.212,
+       "out": 0.636
+      },
+      {
+       "label": "International (SG) · busy",
+       "in": 0.44,
+       "out": 1.32
+      },
+      {
+       "label": "deepseek-v4-flash SKU · Global",
+       "in": 0.138,
+       "out": 0.275
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "zai/glm-5.3-flash": {
+   "name": "GLM 5.3 Flash",
+   "short": "GLM 5.3 Flash",
+   "maker": "Z.ai",
+   "group": "oss",
+   "oss": true,
+   "ctx": "1M",
+   "about": "320B · 18B active · multimodal",
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.15,
+   "out": 0.5,
+   "cache_read": 0.03,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.15,
+     "out": 0.5,
+     "cache_read": 0.03,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 0.2625,
+       "out": 0.875,
+       "cache_read": 0.0525
+      }
+     ],
+     "src": "dbx_oss"
+    },
+    "official": {
+     "in": 0.15,
+     "out": 0.5,
+     "cache_read": 0.03,
+     "tier": "Z.ai API",
+     "src": "zai"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "alt": {
+      "name": "GLM 4.7 Flash",
+      "in": 0.07,
+      "out": 0.4,
+      "short": "4.7 Flash"
+     },
+     "note": "No GLM 5.x Flash on Bedrock.",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 0.188,
+     "out": 0.625,
+     "cache_read": 0.038,
+     "tier": "Global Standard · FW GLM-5.3-Flash (Fireworks-hosted)",
+     "regions": "No APAC deployment region",
+     "note": "+25% vs Z.ai list.",
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "Vertex MaaS lists GLM-4.7, GLM-5 and GLM-5.2 only.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 0.15,
+     "out": 0.5,
+     "cache_read": 0.03,
+     "tier": "Serverless Standard",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 0.1875,
+       "out": 0.625,
+       "cache_read": 0.0375
+      },
+      {
+       "label": "US-only",
+       "in": 0.225,
+       "out": 0.75,
+       "cache_read": 0.045
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "note": "Model Studio lists glm-5.3, 5.2 and 5.1 only.",
+     "src": "ali"
+    }
+   }
+  },
+  "moonshot/kimi-k2.7": {
+   "name": "Kimi K2.7 Code",
+   "short": "Kimi K2.7",
+   "maker": "Moonshot",
+   "group": "oss",
+   "oss": true,
+   "ctx": "262K",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": "Retires on Databricks 30 Oct 2026 (replacement: Kimi K3)",
+   "in": 0.95,
+   "out": 4.0,
+   "cache_read": 0.19,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.95,
+     "out": 4.0,
+     "cache_read": 0.19,
+     "tier": "Standard pay-per-token",
+     "regions": "Not in the region table (retiring 30 Oct 2026)",
+     "note": "Retirement announced 17 Sep 2026; Databricks recommends Kimi K3.",
+     "src": "dbx_oss",
+     "url": "https://docs.databricks.com/aws/en/release-notes/product/2026/september"
+    },
+    "official": {
+     "in": 0.95,
+     "out": 4.0,
+     "cache_read": 0.19,
+     "tier": "Moonshot API",
+     "src": "moonshot"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "alt": {
+      "name": "Kimi K2.5",
+      "in": 0.6,
+      "out": 3.0
+     },
+     "note": "Bedrock tops out at Kimi K2.5 (and K3).",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 0.95,
+     "out": 4.0,
+     "cache_read": 0.19,
+     "tier": "Global Standard · “K2.7 Code” (Microsoft-hosted)",
+     "regions": "Incl. Japan, Korea, SE Asia, Australia",
+     "variants": [
+      {
+       "label": "FW Kimi K2.7 Code · Data Zone",
+       "in": 1.05,
+       "out": 4.4,
+       "cache_read": 0.21
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "Kimi K2 Thinking",
+      "in": 0.6,
+      "out": 2.5,
+      "short": "K2 Think"
+     },
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 0.95,
+     "out": 4.0,
+     "cache_read": 0.19,
+     "tier": "Serverless Standard",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 1.425,
+       "out": 6.0,
+       "cache_read": 0.285
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "in": 0.894,
+     "out": 3.713,
+     "tier": "Global scope (kimi-k2.7-code)",
+     "variants": [
+      {
+       "label": "International (Singapore)",
+       "in": 0.95,
+       "out": 4.0
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "tml/inkling": {
+   "name": "Inkling",
+   "short": "Inkling",
+   "maker": "Thinking Machines",
+   "group": "oss",
+   "oss": true,
+   "ctx": "1M",
+   "about": "975B · 41B active · text + image",
+   "badges": [
+    "Preview"
+   ],
+   "note": null,
+   "warn": null,
+   "in": 1.0,
+   "out": 4.05,
+   "cache_read": 0.17,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 1.0,
+     "out": 4.05,
+     "cache_read": 0.17,
+     "tier": "Standard pay-per-token · Public Preview",
+     "regions": "US only (AWS and GCP US regions)",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "note": "Open weights (Hugging Face: thinkingmachines/Inkling); Thinking Machines sells no per-token API.",
+     "src": "tml"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "note": "Not in the Bedrock price list.",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 1.1,
+     "out": 4.46,
+     "cache_read": 0.19,
+     "tier": "Data Zone · FW Inkling (Fireworks-hosted)",
+     "regions": "No APAC deployment region",
+     "note": "Only a Data Zone meter is listed.",
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "Not on Vertex.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 1.0,
+     "out": 4.05,
+     "cache_read": 0.17,
+     "tier": "Serverless",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/inkling"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "qwen/qwen3.5-122b": {
+   "name": "Qwen3.5 122B A10B",
+   "short": "Qwen3.5 122B",
+   "maker": "Alibaba Qwen",
+   "group": "oss",
+   "oss": true,
+   "ctx": "256K",
+   "about": "reasoning-only · 10B active",
+   "badges": [
+    "Preview"
+   ],
+   "note": null,
+   "warn": null,
+   "in": 0.115,
+   "out": 0.917,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.22,
+     "out": 2.2,
+     "tier": "Standard pay-per-token · Public Preview",
+     "regions": "APAC in-region: AWS Tokyo, Seoul, Mumbai; GCP SG, Mumbai (not AWS SG)",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 0.385,
+       "out": 3.85
+      }
+     ],
+     "src": "dbx_oss"
+    },
+    "official": {
+     "in": 0.115,
+     "out": 0.917,
+     "tier": "Alibaba Model Studio · Global scope ≤128K",
+     "note": "Alibaba Model Studio is Qwen's own API.",
+     "variants": [
+      {
+       "label": "Global 128K–256K",
+       "in": 0.287,
+       "out": 2.294
+      },
+      {
+       "label": "International (SG) ≤256K",
+       "in": 0.4,
+       "out": 3.2
+      }
+     ],
+     "src": "ali"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "alt": {
+      "name": "Qwen3 235B",
+      "in": 0.22,
+      "out": 0.88,
+      "short": "Q3 235B"
+     },
+     "note": "No Qwen 3.5 on Bedrock.",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "note": "Azure lists Qwen3 32B fine-tuning only.",
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "Qwen3 235B 2507",
+      "in": 0.22,
+      "out": 0.88,
+      "short": "Q3 235B"
+     },
+     "note": "No Qwen 3.5 on Vertex MaaS.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/qwen3p5-122b-a10b"
+    },
+    "alicloud": {
+     "in": 0.115,
+     "out": 0.917,
+     "tier": "Global scope ≤128K",
+     "variants": [
+      {
+       "label": "Global 128K–256K",
+       "in": 0.287,
+       "out": 2.294
+      },
+      {
+       "label": "International (SG) ≤256K",
+       "in": 0.4,
+       "out": 3.2
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "qwen/qwen3-next-80b-instruct": {
+   "name": "Qwen3-Next 80B",
+   "short": "Qwen3 80B",
+   "maker": "Alibaba Qwen",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": "Instruct · 3B active",
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.144,
+   "out": 0.574,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.15,
+     "out": 1.2,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC in-region: AWS SG, Tokyo, Mumbai; GCP SG, Mumbai",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "in": 0.144,
+     "out": 0.574,
+     "tier": "Alibaba Model Studio · Global scope",
+     "note": "Alibaba Model Studio is Qwen's own API.",
+     "variants": [
+      {
+       "label": "International (Singapore)",
+       "in": 0.15,
+       "out": 1.2
+      }
+     ],
+     "src": "ali"
+    },
+    "bedrock": {
+     "in": 0.14,
+     "out": 1.2,
+     "tier": "On-demand (us-east-1)",
+     "regions": "Tokyo in-region +20%",
+     "variants": [
+      {
+       "label": "Tokyo in-region",
+       "in": 0.168,
+       "out": 1.44
+      },
+      {
+       "label": "Priority",
+       "in": 0.26,
+       "out": 2.1
+      }
+     ],
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 0.15,
+     "out": 1.2,
+     "tier": "Vertex MaaS",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/qwen3-next-80b-a3b-instruct"
+    },
+    "alicloud": {
+     "in": 0.144,
+     "out": 0.574,
+     "tier": "Global scope",
+     "variants": [
+      {
+       "label": "International (Singapore)",
+       "in": 0.15,
+       "out": 1.2
+      }
+     ],
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-oss-120b": {
+   "name": "gpt-oss-120b",
+   "short": "gpt-oss 120b",
+   "maker": "OpenAI · open weights",
+   "group": "oss",
+   "oss": true,
+   "ctx": "128K",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.15,
+   "out": 0.6,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.15,
+     "out": 0.6,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Mumbai, Sydney; GCP SG, Mumbai",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "note": "Open weights; the maker sells no API for it.",
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 0.15,
+     "out": 0.6,
+     "tier": "On-demand (us-east-1)",
+     "regions": "Tokyo in-region +20%",
+     "variants": [
+      {
+       "label": "Tokyo in-region",
+       "in": 0.18,
+       "out": 0.73
+      },
+      {
+       "label": "Priority",
+       "in": 0.2625,
+       "out": 1.05
+      },
+      {
+       "label": "Flex",
+       "in": 0.075,
+       "out": 0.3
+      }
+     ],
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 0.15,
+     "out": 0.6,
+     "tier": "Global Standard (Microsoft-hosted)",
+     "regions": "Incl. Japan, Korea, SE Asia, India, Australia",
+     "variants": [
+      {
+       "label": "Data Zone",
+       "in": 0.165,
+       "out": 0.66
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 0.09,
+     "out": 0.36,
+     "tier": "Vertex MaaS",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "in": 0.15,
+     "out": 0.6,
+     "cache_read": 0.015,
+     "tier": "Serverless Standard",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 0.18,
+       "out": 0.72,
+       "cache_read": 0.018
+      }
+     ],
+     "src": "fireworks"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-oss-20b": {
+   "name": "gpt-oss-20b",
+   "short": "gpt-oss 20b",
+   "maker": "OpenAI · open weights",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.07,
+   "out": 0.3,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.07,
+     "out": 0.3,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Sydney; GCP SG",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "note": "Open weights; the maker sells no API for it.",
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 0.07,
+     "out": 0.3,
+     "tier": "On-demand (us-east-1)",
+     "variants": [
+      {
+       "label": "Priority",
+       "in": 0.1225,
+       "out": 0.525
+      },
+      {
+       "label": "Flex",
+       "in": 0.035,
+       "out": 0.15
+      }
+     ],
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "note": "Fine-tuning SKUs only; no serverless meter.",
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 0.07,
+     "out": 0.25,
+     "cache_read": 0.007,
+     "tier": "Vertex MaaS",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/gpt-oss-20b"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "meta/llama-4-maverick": {
+   "name": "Llama 4 Maverick",
+   "short": "Llama 4 Mav",
+   "maker": "Meta",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": "MoE · text + image",
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.5,
+   "out": 1.5,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.5,
+     "out": 1.5,
+     "tier": "Standard pay-per-token",
+     "regions": "AWS APAC via cross-geo only; not on GCP",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "note": "Meta sells no paid API."
+    },
+    "bedrock": {
+     "in": 0.24,
+     "out": 0.97,
+     "tier": "On-demand (us-east-1)",
+     "regions": "Not in the Tokyo price list",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 0.25,
+     "out": 1.0,
+     "tier": "Global Standard (Microsoft-hosted)",
+     "regions": "Incl. East Asia (HK), SE Asia, Japan",
+     "variants": [
+      {
+       "label": "Data Zone / Regional",
+       "in": 0.275,
+       "out": 1.1
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 0.35,
+     "out": 1.15,
+     "tier": "Vertex MaaS",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/llama4-maverick-instruct-basic"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "meta/llama-3.3-70b": {
+   "name": "Llama 3.3 70B",
+   "short": "Llama 3.3 70B",
+   "maker": "Meta",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.5,
+   "out": 1.5,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.5,
+     "out": 1.5,
+     "tier": "Standard pay-per-token",
+     "regions": "In-region: AWS Seoul, Mumbai; SG, Tokyo and GCP via cross-geo",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "note": "Meta sells no paid API."
+    },
+    "bedrock": {
+     "in": 0.72,
+     "out": 0.72,
+     "tier": "On-demand (us-east-1)",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "in": 0.71,
+     "out": 0.71,
+     "tier": "Global Standard (Microsoft-hosted)",
+     "regions": "Incl. East Asia (HK), SE Asia",
+     "variants": [
+      {
+       "label": "Data Zone",
+       "in": 0.781,
+       "out": 0.781
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 0.72,
+     "out": 0.72,
+     "tier": "Vertex MaaS",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/llama-v3p3-70b-instruct"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "google/gemma-3-12b": {
+   "name": "Gemma 3 12B",
+   "short": "Gemma 3 12B",
+   "maker": "Google · open weights",
+   "group": "oss",
+   "oss": true,
+   "ctx": "128K",
+   "about": "text + image",
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.15,
+   "out": 0.5,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.15,
+     "out": 0.5,
+     "tier": "Standard pay-per-token",
+     "regions": "In-region: AWS Tokyo, Seoul, Mumbai, Sydney; SG and GCP via cross-geo",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "note": "Google sells no paid API for Gemma."
+    },
+    "bedrock": {
+     "in": 0.09,
+     "out": 0.29,
+     "tier": "On-demand (us-east-1)",
+     "regions": "Tokyo in-region +20%",
+     "variants": [
+      {
+       "label": "Tokyo in-region",
+       "in": 0.11,
+       "out": 0.35
+      },
+      {
+       "label": "Priority",
+       "in": 0.16,
+       "out": 0.51
+      }
+     ],
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "note": "Not in the Foundry price list.",
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "alt": {
+      "name": "Gemma 4 26B",
+      "in": 0.15,
+      "out": 0.6,
+      "short": "Gemma 4"
+     },
+     "note": "Gemma 3 is self-deploy / fine-tune only on Vertex.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/gemma-3-12b-it"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "meta/llama-3.1-8b": {
+   "name": "Llama 3.1 8B",
+   "short": "Llama 3.1 8B",
+   "maker": "Meta",
+   "group": "oss",
+   "oss": true,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.15,
+   "out": 0.45,
+   "cache_read": null,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.15,
+     "out": 0.45,
+     "tier": "Standard pay-per-token",
+     "regions": "In-region: AWS Seoul, Mumbai; SG, Tokyo via cross-geo; not on GCP",
+     "src": "dbx_oss"
+    },
+    "official": {
+     "not_offered": true,
+     "note": "Meta sells no paid API."
+    },
+    "bedrock": {
+     "in": 0.22,
+     "out": 0.22,
+     "tier": "On-demand (us-east-1)",
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "note": "Not in the Foundry price list.",
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "Fine-tuning only on Vertex.",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
+     "src": "fireworks_models",
+     "url": "https://fireworks.ai/models/fireworks/llama-v3p1-8b-instruct"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "anthropic/claude-fable-5.1": {
+   "name": "Claude Fable 5.1",
+   "short": "Fable 5.1",
+   "maker": "Anthropic",
+   "group": "anthropic",
+   "oss": false,
+   "ctx": "1M",
+   "about": null,
+   "badges": [],
+   "note": "Highest tier. Cache reads $0.25 (Fable 5 was $1.00).",
+   "warn": null,
+   "in": 10.0,
+   "out": 50.0,
+   "cache_read": 0.25,
+   "cache_write": 12.5,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 0.25,
+     "cache_write": 12.5,
+     "cache_write_1h": 20.0,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "variants": [
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 0.275
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 0.25,
+     "cache_write": 12.5,
+     "cache_write_1h": 20.0,
+     "tier": "Claude API",
+     "variants": [
+      {
+       "label": "Batch −50%",
+       "in": 5.0,
+       "out": 25.0
+      },
+      {
+       "label": "US-only inference ×1.1",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 0.275
+      }
+     ],
+     "src": "anthropic"
+    },
+    "bedrock": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 0.25,
+     "cache_write": 12.5,
+     "cache_write_1h": 20.0,
+     "tier": "Global cross-region",
+     "regions": "Tokyo: global only",
+     "variants": [
+      {
+       "label": "Regional +10%",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 0.275
+      }
+     ],
+     "src": "aws_fm"
+    },
+    "azure_foundry": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 0.25,
+     "cache_write": 12.5,
+     "cache_write_1h": 20.0,
+     "tier": "Global Standard · billed via Azure Marketplace",
+     "regions": "Deploy from US or Sweden Central only (no APAC region)",
+     "note": "Anthropic: Foundry is billed at standard API rates.",
+     "src": "azure_claude"
+    },
+    "gcloud": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 0.25,
+     "cache_write": 12.5,
+     "cache_write_1h": 20.0,
+     "tier": "Global endpoint",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
+     "variants": [
+      {
+       "label": "Regional endpoint +10%",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 0.275
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "anthropic/claude-opus-5.5": {
+   "name": "Claude Opus 5.5",
+   "short": "Opus 5.5",
+   "maker": "Anthropic",
+   "group": "anthropic",
+   "oss": false,
+   "ctx": "1M",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 4.0,
+   "out": 20.0,
+   "cache_read": 0.2,
+   "cache_write": 5.0,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.2,
+     "cache_write": 5.0,
+     "cache_write_1h": 8.0,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "variants": [
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.2,
+     "cache_write": 5.0,
+     "cache_write_1h": 8.0,
+     "tier": "Claude API",
+     "variants": [
+      {
+       "label": "Batch −50%",
+       "in": 2.0,
+       "out": 10.0
+      },
+      {
+       "label": "US-only inference ×1.1",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "anthropic"
+    },
+    "bedrock": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.2,
+     "cache_write": 5.0,
+     "cache_write_1h": 8.0,
+     "tier": "Global cross-region",
+     "regions": "Tokyo: global + regional",
+     "variants": [
+      {
+       "label": "Regional +10%",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "aws_fm"
+    },
+    "azure_foundry": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.2,
+     "cache_write": 5.0,
+     "cache_write_1h": 8.0,
+     "tier": "Global Standard · billed via Azure Marketplace",
+     "regions": "Deploy from US or Sweden Central only (no APAC region)",
+     "note": "Anthropic: Foundry is billed at standard API rates.",
+     "src": "azure_claude"
+    },
+    "gcloud": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.2,
+     "cache_write": 5.0,
+     "cache_write_1h": 8.0,
+     "tier": "Global endpoint",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
+     "variants": [
+      {
+       "label": "Regional endpoint +10%",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "anthropic/claude-opus-5": {
+   "name": "Claude Opus 5",
+   "short": "Opus 5",
+   "maker": "Anthropic",
+   "group": "anthropic",
+   "oss": false,
+   "ctx": "1M",
+   "about": null,
+   "badges": [],
+   "note": "Opus 4.5 to 4.8 are the same price.",
+   "warn": null,
+   "in": 5.0,
+   "out": 25.0,
+   "cache_read": 0.5,
+   "cache_write": 6.25,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "cache_write_1h": 10.0,
+     "tier": "Standard pay-per-token",
+     "regions": "In-region: AWS Sydney, GCP SG; other APAC via cross-geo",
+     "variants": [
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 5.5,
+       "out": 27.5,
+       "cache_read": 0.55
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "cache_write_1h": 10.0,
+     "tier": "Claude API",
+     "variants": [
+      {
+       "label": "Batch −50%",
+       "in": 2.5,
+       "out": 12.5
+      },
+      {
+       "label": "US-only inference ×1.1",
+       "in": 5.5,
+       "out": 27.5,
+       "cache_read": 0.55
+      }
+     ],
+     "src": "anthropic"
+    },
+    "bedrock": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "cache_write_1h": 10.0,
+     "tier": "Global cross-region",
+     "regions": "Tokyo: global + regional",
+     "variants": [
+      {
+       "label": "Regional +10%",
+       "in": 5.5,
+       "out": 27.5,
+       "cache_read": 0.55
+      }
+     ],
+     "src": "aws_fm"
+    },
+    "azure_foundry": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "cache_write_1h": 10.0,
+     "tier": "Global Standard · billed via Azure Marketplace",
+     "regions": "Deploy from US or Sweden Central only (no APAC region)",
+     "note": "Anthropic: Foundry is billed at standard API rates.",
+     "src": "azure_claude"
+    },
+    "gcloud": {
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "cache_write_1h": 10.0,
+     "tier": "Global endpoint",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
+     "variants": [
+      {
+       "label": "Regional endpoint +10%",
+       "in": 5.5,
+       "out": 27.5,
+       "cache_read": 0.55
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "anthropic/claude-sonnet-5": {
+   "name": "Claude Sonnet 5",
+   "short": "Sonnet 5",
+   "maker": "Anthropic",
+   "group": "anthropic",
+   "oss": false,
+   "ctx": "1M",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 2.0,
+   "out": 10.0,
+   "cache_read": 0.2,
+   "cache_write": 2.5,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "cache_write_1h": 4.0,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC only via cross-geo routing (not Mumbai)",
+     "variants": [
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "cache_write_1h": 4.0,
+     "tier": "Claude API",
+     "variants": [
+      {
+       "label": "Batch −50%",
+       "in": 1.0,
+       "out": 5.0
+      },
+      {
+       "label": "US-only inference ×1.1",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "anthropic"
+    },
+    "bedrock": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "cache_write_1h": 4.0,
+     "tier": "Global cross-region",
+     "regions": "Tokyo: global + regional",
+     "variants": [
+      {
+       "label": "Regional +10%",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "aws_fm"
+    },
+    "azure_foundry": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "cache_write_1h": 4.0,
+     "tier": "Global Standard · billed via Azure Marketplace",
+     "regions": "Deploy from US or Sweden Central only (no APAC region)",
+     "note": "Anthropic: Foundry is billed at standard API rates.",
+     "src": "azure_claude"
+    },
+    "gcloud": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "cache_write_1h": 4.0,
+     "tier": "Global endpoint",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
+     "variants": [
+      {
+       "label": "Regional endpoint +10%",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "anthropic/claude-sonnet-4.6": {
+   "name": "Claude Sonnet 4.6",
+   "short": "Sonnet 4.6",
+   "maker": "Anthropic",
+   "group": "anthropic",
+   "oss": false,
+   "ctx": "1M",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 3.0,
+   "out": 15.0,
+   "cache_read": 0.3,
+   "cache_write": 3.75,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": 3.75,
+     "cache_write_1h": 6.0,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Sydney; GCP SG",
+     "variants": [
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 3.3,
+       "out": 16.5,
+       "cache_read": 0.33
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": 3.75,
+     "cache_write_1h": 6.0,
+     "tier": "Claude API",
+     "variants": [
+      {
+       "label": "Batch −50%",
+       "in": 1.5,
+       "out": 7.5
+      },
+      {
+       "label": "US-only inference ×1.1",
+       "in": 3.3,
+       "out": 16.5,
+       "cache_read": 0.33
+      }
+     ],
+     "src": "anthropic"
+    },
+    "bedrock": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": 3.75,
+     "cache_write_1h": 6.0,
+     "tier": "Global cross-region",
+     "regions": "Tokyo: global + regional",
+     "variants": [
+      {
+       "label": "Regional +10%",
+       "in": 3.3,
+       "out": 16.5,
+       "cache_read": 0.33
+      }
+     ],
+     "src": "aws_fm"
+    },
+    "azure_foundry": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": 3.75,
+     "cache_write_1h": 6.0,
+     "tier": "Global Standard · billed via Azure Marketplace",
+     "regions": "Deploy from US or Sweden Central only (no APAC region)",
+     "note": "Anthropic: Foundry is billed at standard API rates.",
+     "src": "azure_claude"
+    },
+    "gcloud": {
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "cache_write": 3.75,
+     "cache_write_1h": 6.0,
+     "tier": "Global endpoint",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
+     "variants": [
+      {
+       "label": "Regional endpoint +10%",
+       "in": 3.3,
+       "out": 16.5,
+       "cache_read": 0.33
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "anthropic/claude-haiku-4.5": {
+   "name": "Claude Haiku 4.5",
+   "short": "Haiku 4.5",
+   "maker": "Anthropic",
+   "group": "anthropic",
+   "oss": false,
+   "ctx": "200K",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 1.0,
+   "out": 5.0,
+   "cache_read": 0.1,
+   "cache_write": 1.25,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "cache_write_1h": 2.0,
+     "tier": "Standard pay-per-token",
+     "regions": "APAC in-region: AWS SG, Tokyo, Seoul, Sydney; GCP SG",
+     "variants": [
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 1.1,
+       "out": 5.5,
+       "cache_read": 0.11
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "cache_write_1h": 2.0,
+     "tier": "Claude API",
+     "variants": [
+      {
+       "label": "Batch −50%",
+       "in": 0.5,
+       "out": 2.5
+      }
+     ],
+     "src": "anthropic"
+    },
+    "bedrock": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "cache_write_1h": 2.0,
+     "tier": "Global cross-region",
+     "regions": "Tokyo: global + regional",
+     "variants": [
+      {
+       "label": "Regional +10%",
+       "in": 1.1,
+       "out": 5.5,
+       "cache_read": 0.11
+      }
+     ],
+     "src": "aws_fm"
+    },
+    "azure_foundry": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "cache_write_1h": 2.0,
+     "tier": "Global Standard · billed via Azure Marketplace",
+     "regions": "Deploy from US or Sweden Central only (no APAC region)",
+     "note": "Anthropic: Foundry is billed at standard API rates.",
+     "src": "azure_claude"
+    },
+    "gcloud": {
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "cache_write_1h": 2.0,
+     "tier": "Global endpoint",
+     "regions": "Regional endpoints +10%; listed regions include asia-east1 (Taiwan) and asia-southeast1 (SG)",
+     "variants": [
+      {
+       "label": "Regional endpoint +10%",
+       "in": 1.1,
+       "out": 5.5,
+       "cache_read": 0.11
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-6-astra": {
+   "name": "GPT-6 Astra",
+   "short": "GPT-6 Astra",
+   "maker": "OpenAI",
+   "group": "openai",
+   "oss": false,
+   "ctx": "1.05M",
+   "about": null,
+   "badges": [],
+   "note": "Flagship.",
+   "warn": null,
+   "in": 10.0,
+   "out": 50.0,
+   "cache_read": 1.0,
+   "cache_write": 12.5,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "tier": "Standard · short context",
+     "regions": "US, Canada and EU only; not available in APAC",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 20.0,
+       "out": 75.0,
+       "cache_read": 2.0
+      },
+      {
+       "label": "Priority",
+       "in": 20.0,
+       "out": 100.0,
+       "cache_read": 2.0
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 1.1
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "tier": "Standard · short context",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 20.0,
+       "out": 75.0,
+       "cache_read": 2.0
+      },
+      {
+       "label": "Batch / Flex −50%",
+       "in": 5.0,
+       "out": 25.0
+      },
+      {
+       "label": "Fast mode (was Priority)",
+       "in": 20.0,
+       "out": 100.0,
+       "cache_read": 2.0
+      },
+      {
+       "label": "Regional processing +10%",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 1.1
+      }
+     ],
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "tier": "Global cross-region",
+     "regions": "From US and APAC (Tokyo, Seoul, Osaka, SG, Sydney, Mumbai); in-region endpoint US West (Oregon) only",
+     "note": "No Priority / Flex tier on Bedrock. 30-minute cache write $12.50.",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 1.1
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html"
+    },
+    "azure_foundry": {
+     "in": 10.0,
+     "out": 50.0,
+     "cache_read": 1.0,
+     "cache_write": 12.5,
+     "tier": "Global Standard · short context",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
+     "variants": [
+      {
+       "label": "Data Zone +10% (higher in some regions)",
+       "in": 11.0,
+       "out": 55.0,
+       "cache_read": 1.1
+      },
+      {
+       "label": "Long context",
+       "in": 20.0,
+       "out": 75.0,
+       "cache_read": 2.0
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "No GPT on Vertex (gpt-oss only).",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-6-sol": {
+   "name": "GPT-6 Sol",
+   "short": "GPT-6 Sol",
+   "maker": "OpenAI",
+   "group": "openai",
+   "oss": false,
+   "ctx": "1.05M",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 2.0,
+   "out": 10.0,
+   "cache_read": 0.2,
+   "cache_write": 2.5,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Standard · short context",
+     "regions": "US, Canada and EU only; not available in APAC",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 4.0,
+       "out": 15.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Priority",
+       "in": 4.0,
+       "out": 20.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Standard · short context",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 4.0,
+       "out": 15.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Batch / Flex −50%",
+       "in": 1.0,
+       "out": 5.0
+      },
+      {
+       "label": "Fast mode (was Priority)",
+       "in": 4.0,
+       "out": 20.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Regional processing +10%",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Global cross-region",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, SG; no in-region endpoint",
+     "note": "GA on Bedrock 22 Sep 2026.",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-sol.html"
+    },
+    "azure_foundry": {
+     "in": 2.0,
+     "out": 10.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Global Standard · short context",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India, Indonesia Central, Malaysia West (no HK / SG)",
+     "variants": [
+      {
+       "label": "Data Zone +10% (higher in some regions)",
+       "in": 2.2,
+       "out": 11.0,
+       "cache_read": 0.22
+      },
+      {
+       "label": "Long context",
+       "in": 4.0,
+       "out": 15.0,
+       "cache_read": 0.4
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "No GPT on Vertex (gpt-oss only).",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-6-luna": {
+   "name": "GPT-6 Luna",
+   "short": "GPT-6 Luna",
+   "maker": "OpenAI",
+   "group": "openai",
+   "oss": false,
+   "ctx": "1.05M",
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.1,
+   "out": 0.5,
+   "cache_read": 0.01,
+   "cache_write": 0.125,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.1,
+     "out": 0.5,
+     "cache_read": 0.01,
+     "cache_write": 0.125,
+     "tier": "Standard · short context",
+     "regions": "US, Canada and EU only; not available in APAC",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 0.2,
+       "out": 0.75,
+       "cache_read": 0.02
+      },
+      {
+       "label": "Priority",
+       "in": 0.2,
+       "out": 1.0,
+       "cache_read": 0.02
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 0.11,
+       "out": 0.55,
+       "cache_read": 0.011
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 0.1,
+     "out": 0.5,
+     "cache_read": 0.01,
+     "cache_write": 0.125,
+     "tier": "Standard · short context",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 0.2,
+       "out": 0.75,
+       "cache_read": 0.02
+      },
+      {
+       "label": "Batch / Flex −50%",
+       "in": 0.05,
+       "out": 0.25
+      },
+      {
+       "label": "Fast mode (was Priority)",
+       "in": 0.2,
+       "out": 1.0,
+       "cache_read": 0.02
+      },
+      {
+       "label": "Regional processing +10%",
+       "in": 0.11,
+       "out": 0.55,
+       "cache_read": 0.011
+      }
+     ],
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 0.1,
+     "out": 0.5,
+     "cache_read": 0.01,
+     "cache_write": 0.125,
+     "tier": "Global cross-region",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, SG; no in-region endpoint",
+     "note": "GA on Bedrock 22 Sep 2026.",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 0.11,
+       "out": 0.55,
+       "cache_read": 0.011
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-luna.html"
+    },
+    "azure_foundry": {
+     "in": 0.1,
+     "out": 0.5,
+     "cache_read": 0.01,
+     "cache_write": 0.125,
+     "tier": "Global Standard · short context",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India, Indonesia Central, Malaysia West (no HK / SG)",
+     "variants": [
+      {
+       "label": "Data Zone +10% (higher in some regions)",
+       "in": 0.11,
+       "out": 0.55,
+       "cache_read": 0.011
+      },
+      {
+       "label": "Long context",
+       "in": 0.2,
+       "out": 0.75,
+       "cache_read": 0.02
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "No GPT on Vertex (gpt-oss only).",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-5.6-sol": {
+   "name": "GPT-5.6 Sol",
+   "short": "GPT-5.6 Sol",
+   "maker": "OpenAI",
+   "group": "openai",
+   "oss": false,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": "Promo through 21 Nov 2026, then $5 / $30",
+   "in": 4.0,
+   "out": 20.0,
+   "cache_read": 0.4,
+   "cache_write": 5.0,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.4,
+     "cache_write": 5.0,
+     "tier": "Standard · short context",
+     "regions": "US, Canada and EU only; not available in APAC",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 8.0,
+       "out": 30.0,
+       "cache_read": 0.8
+      },
+      {
+       "label": "Priority",
+       "in": 8.0,
+       "out": 40.0,
+       "cache_read": 0.8
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.44
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.4,
+     "cache_write": 5.0,
+     "tier": "Standard · short context",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 8.0,
+       "out": 30.0,
+       "cache_read": 0.8
+      },
+      {
+       "label": "Batch / Flex −50%",
+       "in": 2.0,
+       "out": 10.0
+      },
+      {
+       "label": "Fast mode (was Priority)",
+       "in": 8.0,
+       "out": 40.0,
+       "cache_read": 0.8
+      },
+      {
+       "label": "Regional processing +10%",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.44
+      }
+     ],
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.4,
+     "cache_write": 5.0,
+     "tier": "Global cross-region",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, Seoul, SG",
+     "note": "No Priority / Flex tier on Bedrock.",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.44
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html"
+    },
+    "azure_foundry": {
+     "in": 4.0,
+     "out": 20.0,
+     "cache_read": 0.4,
+     "cache_write": 5.0,
+     "tier": "Global Standard · short context",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
+     "variants": [
+      {
+       "label": "Data Zone +10% (higher in some regions)",
+       "in": 4.4,
+       "out": 22.0,
+       "cache_read": 0.44
+      },
+      {
+       "label": "Long context",
+       "in": 8.0,
+       "out": 30.0,
+       "cache_read": 0.8
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "No GPT on Vertex (gpt-oss only).",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-5.6-terra": {
+   "name": "GPT-5.6 Terra",
+   "short": "GPT-5.6 Terra",
+   "maker": "OpenAI",
+   "group": "openai",
+   "oss": false,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 2.0,
+   "out": 12.0,
+   "cache_read": 0.2,
+   "cache_write": 2.5,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Standard · short context",
+     "regions": "US, Canada and EU only; not available in APAC",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 4.0,
+       "out": 18.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Priority",
+       "in": 4.0,
+       "out": 24.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 2.2,
+       "out": 13.2,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Standard · short context",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 4.0,
+       "out": 18.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Batch / Flex −50%",
+       "in": 1.0,
+       "out": 6.0
+      },
+      {
+       "label": "Fast mode (was Priority)",
+       "in": 4.0,
+       "out": 24.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Regional processing +10%",
+       "in": 2.2,
+       "out": 13.2,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Global cross-region",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, Seoul, SG",
+     "note": "No Priority / Flex tier on Bedrock.",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 2.2,
+       "out": 13.2,
+       "cache_read": 0.22
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-terra.html"
+    },
+    "azure_foundry": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "cache_write": 2.5,
+     "tier": "Global Standard · short context",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
+     "variants": [
+      {
+       "label": "Data Zone +10% (higher in some regions)",
+       "in": 2.2,
+       "out": 13.2,
+       "cache_read": 0.22
+      },
+      {
+       "label": "Long context",
+       "in": 4.0,
+       "out": 18.0,
+       "cache_read": 0.4
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "No GPT on Vertex (gpt-oss only).",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-5.6-luna": {
+   "name": "GPT-5.6 Luna",
+   "short": "GPT-5.6 Luna",
+   "maker": "OpenAI",
+   "group": "openai",
+   "oss": false,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": null,
+   "in": 0.2,
+   "out": 1.2,
+   "cache_read": 0.02,
+   "cache_write": 0.25,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.2,
+     "out": 1.2,
+     "cache_read": 0.02,
+     "cache_write": 0.25,
+     "tier": "Standard · short context",
+     "regions": "US, Canada and EU only; not available in APAC",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 0.4,
+       "out": 1.8,
+       "cache_read": 0.04
+      },
+      {
+       "label": "Priority",
+       "in": 0.4,
+       "out": 2.4,
+       "cache_read": 0.04
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 0.22,
+       "out": 1.32,
+       "cache_read": 0.022
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 0.2,
+     "out": 1.2,
+     "cache_read": 0.02,
+     "cache_write": 0.25,
+     "tier": "Standard · short context",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 0.4,
+       "out": 1.8,
+       "cache_read": 0.04
+      },
+      {
+       "label": "Batch / Flex −50%",
+       "in": 0.1,
+       "out": 0.6
+      },
+      {
+       "label": "Fast mode (was Priority)",
+       "in": 0.4,
+       "out": 2.4,
+       "cache_read": 0.04
+      },
+      {
+       "label": "Regional processing +10%",
+       "in": 0.22,
+       "out": 1.32,
+       "cache_read": 0.022
+      }
+     ],
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 0.2,
+     "out": 1.2,
+     "cache_read": 0.02,
+     "cache_write": 0.25,
+     "tier": "Global cross-region",
+     "regions": "From US and 13 APAC regions incl. Taipei, Tokyo, Seoul, SG",
+     "note": "No Priority / Flex tier on Bedrock.",
+     "variants": [
+      {
+       "label": "In-region / US geo +10%",
+       "in": 0.22,
+       "out": 1.32,
+       "cache_read": 0.022
+      }
+     ],
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-luna.html"
+    },
+    "azure_foundry": {
+     "in": 0.2,
+     "out": 1.2,
+     "cache_read": 0.02,
+     "cache_write": 0.25,
+     "tier": "Global Standard · short context",
+     "regions": "APAC: Japan East, Korea Central, Australia East, South India (no HK / SG)",
+     "variants": [
+      {
+       "label": "Data Zone +10% (higher in some regions)",
+       "in": 0.22,
+       "out": 1.32,
+       "cache_read": 0.022
+      },
+      {
+       "label": "Long context",
+       "in": 0.4,
+       "out": 1.8,
+       "cache_read": 0.04
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "No GPT on Vertex (gpt-oss only).",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "openai/gpt-5.5": {
+   "name": "GPT-5.5",
+   "short": "GPT-5.5",
+   "maker": "OpenAI",
+   "group": "openai",
+   "oss": false,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": "Previous generation. No cache-write price.",
+   "warn": null,
+   "in": 5.0,
+   "out": 30.0,
+   "cache_read": 0.5,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 5.0,
+     "out": 30.0,
+     "cache_read": 0.5,
+     "tier": "Standard · short context",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 10.0,
+       "out": 45.0,
+       "cache_read": 1.0
+      },
+      {
+       "label": "Priority",
+       "in": 12.5,
+       "out": 75.0,
+       "cache_read": 1.25
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 5.5,
+       "out": 33.0,
+       "cache_read": 0.55
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 5.0,
+     "out": 30.0,
+     "cache_read": 0.5,
+     "tier": "Standard · short context",
+     "variants": [
+      {
+       "label": "Long context",
+       "in": 10.0,
+       "out": 45.0,
+       "cache_read": 1.0
+      },
+      {
+       "label": "Batch / Flex −50%",
+       "in": 2.5,
+       "out": 15.0
+      },
+      {
+       "label": "Fast mode (was Priority)",
+       "in": 12.5,
+       "out": 75.0,
+       "cache_read": 1.25
+      },
+      {
+       "label": "Regional processing +10%",
+       "in": 5.5,
+       "out": 33.0,
+       "cache_read": 0.55
+      }
+     ],
+     "src": "openai"
+    },
+    "bedrock": {
+     "in": 5.5,
+     "out": 33.0,
+     "cache_read": 0.55,
+     "tier": "In-region only (+10% over OpenAI list)",
+     "regions": "In-region only: US East (N. Virginia)",
+     "note": "No global cross-region and no Priority / Flex tier on Bedrock.",
+     "src": "aws_openai",
+     "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-55.html"
+    },
+    "azure_foundry": {
+     "in": 5.0,
+     "out": 30.0,
+     "cache_read": 0.5,
+     "tier": "Global Standard · short context",
+     "regions": "Incl. East Asia (HK), SE Asia, Japan, Korea",
+     "variants": [
+      {
+       "label": "Data Zone +10% (higher in some regions)",
+       "in": 5.5,
+       "out": 33.0,
+       "cache_read": 0.55
+      },
+      {
+       "label": "Long context",
+       "in": 10.0,
+       "out": 45.0,
+       "cache_read": 1.0
+      }
+     ],
+     "src": "azure"
+    },
+    "gcloud": {
+     "not_offered": true,
+     "note": "No GPT on Vertex (gpt-oss only).",
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "google/gemini-3.1-pro": {
+   "name": "Gemini 3.1 Pro",
+   "short": "Gemini 3.1 Pro",
+   "maker": "Google",
+   "group": "google",
+   "oss": false,
+   "ctx": "≤200K tier",
+   "about": null,
+   "badges": [
+    "Preview"
+   ],
+   "note": null,
+   "warn": "Databricks promo −20% ends 31 Jan 2027, then $2.50 / $15.00",
+   "in": 2.0,
+   "out": 12.0,
+   "cache_read": 0.2,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "tier": "Promo price (−20% until 31 Jan 2027)",
+     "regions": "APAC only via cross-geo routing (AWS & GCP)",
+     "note": "Databricks lists $2.50 / $15.00 excluding the 20% promo.",
+     "variants": [
+      {
+       "label": "List from 1 Feb 2027",
+       "in": 2.5,
+       "out": 15.0,
+       "cache_read": 0.25
+      },
+      {
+       "label": "Long context (promo)",
+       "in": 4.0,
+       "out": 18.0,
+       "cache_read": 0.4
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "tier": "Paid tier · ≤200K prompt",
+     "variants": [
+      {
+       "label": ">200K prompt",
+       "in": 4.0,
+       "out": 18.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Batch −50%",
+       "in": 1.0,
+       "out": 6.0
+      }
+     ],
+     "src": "google"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 2.0,
+     "out": 12.0,
+     "cache_read": 0.2,
+     "tier": "Global endpoint · ≤200K",
+     "variants": [
+      {
+       "label": ">200K",
+       "in": 4.0,
+       "out": 18.0,
+       "cache_read": 0.4
+      },
+      {
+       "label": "Priority",
+       "in": 3.6,
+       "out": 21.6,
+       "cache_read": 0.36
+      },
+      {
+       "label": "Flex / Batch −50%",
+       "in": 1.0,
+       "out": 6.0
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI (not Gemini) models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "google/gemini-3.8-flash": {
+   "name": "Gemini 3.8 Flash",
+   "short": "Gemini 3.8 Flash",
+   "maker": "Google",
+   "group": "google",
+   "oss": false,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
+   "in": 0.75,
+   "out": 3.75,
+   "cache_read": 0.075,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "tier": "Intro promo (−50%) until 31 Dec 2026",
+     "regions": "APAC in-region: AWS SG, Tokyo, Mumbai; GCP SG, Mumbai",
+     "variants": [
+      {
+       "label": "From 1 Jan 2027",
+       "in": 1.5,
+       "out": 7.5,
+       "cache_read": 0.15
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 0.825,
+       "out": 4.125,
+       "cache_read": 0.0825
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "tier": "Paid tier · intro until 31 Dec 2026",
+     "note": "Context cache storage billed per hour.",
+     "variants": [
+      {
+       "label": "From 1 Jan 2027",
+       "in": 1.5,
+       "out": 7.5,
+       "cache_read": 0.15
+      }
+     ],
+     "src": "google"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "tier": "Global endpoint · intro until 31 Dec 2026",
+     "variants": [
+      {
+       "label": "From 1 Jan 2027",
+       "in": 1.5,
+       "out": 7.5,
+       "cache_read": 0.15
+      },
+      {
+       "label": "Priority",
+       "in": 1.35,
+       "out": 6.75,
+       "cache_read": 0.135
+      },
+      {
+       "label": "Flex / Batch −50%",
+       "in": 0.375,
+       "out": 1.875,
+       "cache_read": 0.0375
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI (not Gemini) models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  },
+  "google/gemini-3.7-flash": {
+   "name": "Gemini 3.7 Flash",
+   "short": "Gemini 3.7 Flash",
+   "maker": "Google",
+   "group": "google",
+   "oss": false,
+   "ctx": null,
+   "about": null,
+   "badges": [],
+   "note": null,
+   "warn": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
+   "in": 0.75,
+   "out": 3.75,
+   "cache_read": 0.075,
+   "cache_write": null,
+   "unit": "USD/1M",
+   "verified": true,
+   "platforms": {
+    "databricks": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "tier": "Intro promo (−50%) until 31 Dec 2026",
+     "regions": "APAC in-region: AWS SG, Tokyo, Mumbai; GCP SG, Mumbai",
+     "variants": [
+      {
+       "label": "From 1 Jan 2027",
+       "in": 1.5,
+       "out": 7.5,
+       "cache_read": 0.15
+      },
+      {
+       "label": "Regional processing ⌖ +10%",
+       "in": 0.825,
+       "out": 4.125,
+       "cache_read": 0.0825
+      }
+     ],
+     "src": "dbx_prop"
+    },
+    "official": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "tier": "Paid tier · intro until 31 Dec 2026",
+     "note": "Context cache storage billed per hour.",
+     "variants": [
+      {
+       "label": "From 1 Jan 2027",
+       "in": 1.5,
+       "out": 7.5,
+       "cache_read": 0.15
+      }
+     ],
+     "src": "google"
+    },
+    "bedrock": {
+     "not_offered": true,
+     "src": "aws"
+    },
+    "azure_foundry": {
+     "not_offered": true,
+     "src": "azure"
+    },
+    "gcloud": {
+     "in": 0.75,
+     "out": 3.75,
+     "cache_read": 0.075,
+     "tier": "Global endpoint · intro until 31 Dec 2026",
+     "variants": [
+      {
+       "label": "From 1 Jan 2027",
+       "in": 1.5,
+       "out": 7.5,
+       "cache_read": 0.15
+      },
+      {
+       "label": "Priority",
+       "in": 1.35,
+       "out": 6.75,
+       "cache_read": 0.135
+      },
+      {
+       "label": "Flex / Batch −50%",
+       "in": 0.375,
+       "out": 1.875,
+       "cache_read": 0.0375
+      }
+     ],
+     "src": "vertex"
+    },
+    "fireworks": {
+     "not_offered": true,
+     "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI (not Gemini) models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+     "src": "fireworks_nexus"
+    },
+    "alicloud": {
+     "not_offered": true,
+     "src": "ali"
+    }
+   }
+  }
+ }
+}
