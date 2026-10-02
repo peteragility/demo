@@ -147,7 +147,7 @@ async function askModel(sd){
     return {...sd.live,lat:Math.round(sd.live.lat)};}
   try{
     const r=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({state:sd.state,instructions:sd.q,criteria:sd.criteria||{a:sd.opts[0],b:sd.opts[1],c:sd.opts[2]||'None of these'})});
+      body:JSON.stringify({state:sd.state,instructions:sd.q,criteria:sd.criteria||{a:sd.opts[0],b:sd.opts[1],c:sd.opts[2]||'None of these'}})});
     const j=await r.json();
     if(!j.ok) throw 0;
     const a=j.answers&&Object.values(j.answers)[0];
