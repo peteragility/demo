@@ -28,6 +28,7 @@ const server = http.createServer(async (request, response) => {
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = 'http://127.0.0.1:' + server.address().port;
 const pageURL = process.env.LLM_PRICING_PAGE_URL || origin + '/v2.html';
+const originalURL = process.env.LLM_PRICING_ORIGINAL_URL || (fs.existsSync(path.join(root, 'index.html')) ? origin + '/index.html#all' : null);
 const proc = spawn(chrome, ['--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check', '--disable-background-networking', '--remote-debugging-port=0', '--user-data-dir=' + profile, 'about:blank'], {stdio: ['ignore', 'ignore', 'pipe']});
 let chromeLog = '', startupError;
 proc.stderr.on('data', chunk => {chromeLog += chunk.toString();});
@@ -79,94 +80,132 @@ try {
     };
     await call('Page.enable'); await call('Runtime.enable');
     await call('Emulation.setDeviceMetricsOverride', {width: viewport.width, height: viewport.height, deviceScaleFactor: 1, mobile: viewport.mobile});
-    await call('Page.navigate', {url: pageURL});
-    await waitFor("document.body.dataset.ready === 'true'");
-    await evalJS("document.documentElement.dataset.theme='light';document.querySelector('#asOf').value='2026-10-02';document.querySelector('#asOf').dispatchEvent(new Event('input',{bubbles:true}));");
-    const initial = await evalJS(`({rows:document.querySelectorAll('#prices tr.row').length,columns:document.querySelectorAll('#prices thead th').length, width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth, priceFont:getComputedStyle(document.querySelector('.io')).fontSize,summary:document.querySelector('#summary').innerText})`);
-    assert.equal(initial.rows, 38, viewport.name + ': model count');
-    assert.equal(initial.columns, viewport.width <= 760 ? 4 : 8, viewport.name + ': provider columns');
+    await call('Emulation.setTouchEmulationEnabled', {enabled: viewport.mobile, maxTouchPoints: 1});
+    const clockSource = date => `(() => {const NativeDate=Date;const reference=NativeDate.parse(${JSON.stringify(date+'T12:00:00Z')});window.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[reference]));}static now(){return reference;}};})();`;
+    let clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource('2026-10-02')})).identifier;
+    const navigate = async date => {
+      if (date) {
+        await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: clockId});
+        clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource(date)})).identifier;
+      }
+      await call('Page.navigate', {url: pageURL});
+      await waitFor("document.body.dataset.ready === 'true'");
+      await evalJS("document.documentElement.dataset.theme='light'");
+      await evalJS('document.fonts.ready.then(()=>true)');
+    };
+    const saveScreenshot = async name => {
+      const shot = await call('Page.captureScreenshot', {format: 'png', captureBeyondViewport: false});
+      await fsp.writeFile(path.join(artifacts, name + '.png'), Buffer.from(shot.data, 'base64'));
+    };
+    const measure = `({rows:document.querySelectorAll('#mx tr.row').length,columns:document.querySelectorAll('#mx>thead th').length,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,priceFont:getComputedStyle(document.querySelector('td.c')).fontSize,fontFamily:getComputedStyle(document.body).fontFamily,headingSize:getComputedStyle(document.querySelector('h1')).fontSize,wrapWidth:document.querySelector('.wrap').getBoundingClientRect().width,rowHeight:document.querySelector('tr.row').getBoundingClientRect().height,visibleRows:[...document.querySelectorAll('#mx tr.row')].filter(r=>r.getBoundingClientRect().bottom<=innerHeight&&r.getBoundingClientRect().top>=0).length,summary:document.querySelector('#summary').innerText})`;
+    await navigate();
+    const initial = await evalJS(measure);
+    assert.equal(initial.rows, 16, viewport.name + ': original OSS default');
+    assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
-    if (viewport.width <= 760) assert.ok(parseFloat(initial.priceFont) >= 15);
-    const screenshot = await call('Page.captureScreenshot', {format: 'png', captureBeyondViewport: false});
-    await fsp.writeFile(path.join(artifacts, viewport.name + '.png'), Buffer.from(screenshot.data, 'base64'));
+    assert.ok(initial.visibleRows >= (viewport.width > 1060 ? 14 : 7), viewport.name + ': compact information density');
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','AWS Bedrock','Azure Foundry','Fireworks','Google Vertex','Alibaba']);
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','AWS','Azure','FW','GCP','Ali']);
+    assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Default','Cheapest','DBX edge']);
+    await saveScreenshot(viewport.name);
+    await evalJS("document.querySelector('[data-g=all]').click()");
+    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 38);
+    assert.equal(await evalJS("(()=>{const tab=document.querySelector('[data-g=all]').getBoundingClientRect(),tabs=document.querySelector('#tabs').getBoundingClientRect();return tab.left>=tabs.left-1&&tab.right<=tabs.right+1;})()"), true, 'Selected family tab is visible');
+    await saveScreenshot(viewport.name + '-all');
 
-    // Filters, latest-model additions, endpoint search and legacy family hashes.
-    await evalJS("document.querySelector('#newOnly').click();");
-    assert.equal(await evalJS("document.querySelectorAll('#prices tr.row').length"), 6);
-    await evalJS("document.querySelector('#newOnly').click();document.querySelector('#search').value='databricks-gpt-6-1-sol';document.querySelector('#search').dispatchEvent(new Event('input',{bubbles:true}));");
-    assert.equal(await evalJS("document.querySelectorAll('#prices tr.row').length"), 1);
-    assert.match(await evalJS("document.querySelector('#prices').innerText"), /GPT-6.1 Sol/);
-    await evalJS("document.querySelector('#search').value='';document.querySelector('#search').dispatchEvent(new Event('input',{bubbles:true}));location.hash='claude';");
-    await waitFor("document.querySelector('[data-group=anthropic]').getAttribute('aria-pressed')==='true'");
-    assert.equal(await evalJS("document.querySelectorAll('#prices tr.row').length"), 7);
-    await evalJS("document.querySelector('[data-group=all]').click();");
+    // Existing search and family tabs reveal the new models and preserve legacy hashes.
+    await evalJS("document.querySelector('#q').value='databricks-gpt-6-1-sol';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));");
+    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 1);
+    assert.match(await evalJS("document.querySelector('#mx').innerText"), /GPT-6.1 Sol/);
+    assert.equal(await evalJS("document.querySelector('tr.row td.c').innerText.trim()"), '?');
+    await evalJS("document.querySelector('#q').value='';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));location.hash='claude';");
+    await waitFor("document.querySelector('[data-g=anthropic]').getAttribute('aria-selected')==='true'");
+    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 7);
+    assert.match(await evalJS("document.querySelector('#mx').innerText"), /Sonnet 5.5/);
+    await evalJS("document.querySelector('[data-g=xai]').click()");
+    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 2);
+    await evalJS("document.querySelector('[data-g=google]').click()");
+    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 5);
+    assert.match(await evalJS("document.querySelector('#mx').innerText"), /3.5 Flash-Lite/);
+    await evalJS("document.querySelector('[data-g=all]').click()");
 
-    // Expand a row: version exceptions, source links and provider states fit the viewport.
-    await evalJS("document.querySelector('[data-model-button=\"deepseek/deepseek-v4-pro\"]').click();");
-    const detail = await evalJS(`({text:document.querySelector('#detail-deepseek-deepseek-v4-pro').innerText,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,offers:document.querySelectorAll('#detail-deepseek-deepseek-v4-pro [data-offer-platform]').length})`);
-    assert.equal(detail.offers, 7);
+    // Corrected offers remain in the original expandable detail table.
+    await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] .mb').click();");
+    const detail = await evalJS(`({text:document.querySelector('#d-deepseek-deepseek-v4-pro').innerText,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,headers:[...document.querySelectorAll('#d-deepseek-deepseek-v4-pro .dt th')].map(x=>x.textContent)})`);
     assert.match(detail.text, /Dedicated deployment only/);
+    assert.match(detail.text, /accounts\/fireworks\/models\/deepseek-v4-pro-0813/);
     assert.match(detail.text, /snapshot|checkpoint/);
-    assert.ok(detail.scrollWidth <= detail.width, viewport.name + ': expanded row overflow');
-    await evalJS("document.querySelector('[data-model-button=\"deepseek/deepseek-v4-pro\"]').click();");
+    assert.match(detail.text, /Price checked 2026-10-02/);
+    assert.match(detail.text, /Availability checked 2026-10-02/);
+    assert.deepEqual(detail.headers, ['Platform','In','Out','Cache read','Cache write','1h write','Δ vs DBX']);
+    assert.ok(detail.scrollWidth <= detail.width, viewport.name + ': expanded detail overflow');
+    assert.equal(await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] td.c:nth-of-type(4) .d')===null"), true);
+    await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] .mb').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
+    const kimi = await evalJS("document.querySelector('#d-moonshot-kimi-k3').innerText");
+    assert.match(kimi, /Global Priority/);
+    assert.match(kimi, /6\.5625/);
+    assert.match(kimi, /7\.21875/);
+    await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();document.querySelector('tr[data-k=\"google/gemini-3.5-flash-lite\"] .mb').click();");
+    assert.match(await evalJS("document.querySelector('#d-google-gemini-3-5-flash-lite').innerText"), /Cache storage \$1\.00 \/ million token-hours/);
+    await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.5-flash-lite\"] .mb').click();document.querySelector('tr[data-k=\"openai/gpt-6.1-sol\"] .mb').click();");
+    assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /Price pending verification/);
+    assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), />272K input/);
+    await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedSummary=text;}}});document.querySelector('[data-copy=\"openai/gpt-6.1-sol\"]').click();");
+    await waitFor("typeof window.copiedSummary==='string'");
+    assert.match(await evalJS('window.copiedSummary'), /price pending verification/);
+    assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
+    assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-02/);
+    await evalJS("document.querySelector('tr[data-k=\"openai/gpt-6.1-sol\"] .mb').click()");
 
-    if (viewport.width <= 760) {
-      await evalJS("const provider=document.querySelector('#mobileProvider');provider.value='azure_foundry';provider.dispatchEvent(new Event('change',{bubbles:true}));");
-      assert.match(await evalJS("document.querySelector('#prices thead').innerText"), /Azure Foundry/);
-    }
-
-    // Actual controls must use the same context, cache and date rules as the tested math.
-    await evalJS("document.querySelector('#calculator').open=true;");
-    const setField = async (selector, value, event = 'input') => evalJS(`document.querySelector(${JSON.stringify(selector)}).value=${JSON.stringify(String(value))};document.querySelector(${JSON.stringify(selector)}).dispatchEvent(new Event(${JSON.stringify(event)},{bubbles:true}));`);
-    await setField('#calcModel', 'moonshot/kimi-k3', 'change');
-    await setField('#cacheHit', 80); await setField('#writeM', 0.5);
-    assert.match(await evalJS("document.querySelector('[data-result-platform=bedrock]').innerText"), /17.895/);
-    assert.match(await evalJS("document.querySelector('[data-result-platform=databricks]').innerText"), /Estimate incomplete/);
-    await setField('#writeM', 0);
-    await evalJS("const s=document.querySelector('#tier-bedrock');s.value=[...s.options].find(o=>o.textContent==='Regional Priority').value;s.dispatchEvent(new Event('change',{bubbles:true}));");
-    assert.match(await evalJS("document.querySelector('[data-result-platform=bedrock]').innerText"), /33.726/);
-    assert.match(await evalJS("document.querySelector('[data-result-platform=bedrock]').innerText"), /Δ excluded/);
-    await setField('#cacheHit', 101);
-    assert.equal(await evalJS("document.querySelectorAll('#calcResults .result').length"), 0);
-    assert.equal(await evalJS("document.querySelector('#calcError').hidden"), false);
-    await setField('#cacheHit', 0);
-    await setField('#calcModel', 'google/gemini-3.5-flash-lite', 'change');
-    await setField('#asOf', '2027-02-01');
-    assert.match(await evalJS("document.querySelector('[data-result-platform=databricks]').innerText"), /4.25/);
-    await setField('#asOf', '2026-10-30');
-    await setField('#calcModel', 'tml/inkling', 'change');
-    assert.match(await evalJS("document.querySelector('[data-result-platform=databricks]').innerText"), /Retired/);
-    await setField('#asOf', '2026-10-02');
-    await setField('#calcModel', 'openai/gpt-6.1-sol', 'change');
-    assert.match(await evalJS("document.querySelector('[data-result-platform=databricks]').innerText"), /pending verification/);
-    await setField('#promptTokens', 272001);
-    assert.match(await evalJS("document.querySelector('[data-result-platform=official]').innerText"), /27.00/);
-    await setField('#promptTokens', 1000);
-
-    // Copy text without changing the user's system clipboard.
-    await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedEstimate=text;}}});document.querySelector('#copyEstimate').click();");
-    await waitFor("typeof window.copiedEstimate==='string'");
-    assert.match(await evalJS('window.copiedEstimate'), /Price pending verification/);
-    assert.match(await evalJS('window.copiedEstimate'), /Price checked 2026-10-02/);
-
-    // Isolated browser-only overrides must leave the original page's keys alone.
+    // Original sorting/blend controls still work; private edits leave published counts intact.
+    await evalJS("document.querySelector('#sort').value='price';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='edge';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='default';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));");
     if (viewport.name === 'desktop') {
-      await evalJS("localStorage.setItem('llm-pricing-edits-v3','ORIGINAL');localStorage.setItem('llm-pricing-prefs-v3','ORIGINAL');document.querySelector('#editPrices').click();document.querySelector('[data-model-button=\"moonshot/kimi-k3\"]').click();");
-      await evalJS("const form=document.querySelector('[data-override-model=\"moonshot/kimi-k3\"][data-override-platform=official]');form.elements.in.value='4';form.requestSubmit();");
+      const summaryBefore = await evalJS("document.querySelector('#summary').innerText");
+      await evalJS("localStorage.setItem('llm-pricing-edits-v3','ORIGINAL');localStorage.setItem('llm-pricing-prefs-v3','ORIGINAL');document.querySelector('#editBtn').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
+      await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='4';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
       assert.equal(await evalJS("localStorage.getItem('llm-pricing-edits-v3')"), 'ORIGINAL');
       assert.equal(await evalJS("localStorage.getItem('llm-pricing-prefs-v3')"), 'ORIGINAL');
-      assert.match(await evalJS("document.querySelector('[data-model=\"moonshot/kimi-k3\"] [data-platform=official]').innerText"), /Personal/);
-      assert.equal(await evalJS("document.querySelector('[data-model=\"moonshot/kimi-k3\"] [data-platform=official] .delta')===null"), true);
-      await evalJS("document.querySelector('#clearOverrides').click();document.querySelector('#clearOverrides').click();document.querySelector('#editPrices').click();document.querySelector('[data-model-button=\"moonshot/kimi-k3\"]').click();");
+      assert.match(await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2)').innerText"), /4\.00/);
+      assert.equal(await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2) .d')===null"), true);
+      assert.equal(await evalJS("document.querySelector('#summary').innerText"), summaryBefore);
+      await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='-1';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
+      assert.equal(await evalJS("document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]').value"), '4');
+      await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
+      assert.equal(await evalJS("document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]').value"), '');
+      await evalJS("document.querySelector('#resetBtn').click();document.querySelector('#resetBtn').click();document.querySelector('#editBtn').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
     }
-    await evalJS("document.querySelector('#calculator').open=false;document.querySelector('#theme').click();window.scrollTo(0,0);");
-    await pause(100);
-    const dark = await call('Page.captureScreenshot', {format: 'png', captureBeyondViewport: false});
-    if (viewport.name === 'desktop' || viewport.name === 'mobile') await fsp.writeFile(path.join(artifacts, viewport.name + '-dark.png'), Buffer.from(dark.data, 'base64'));
+    await evalJS("document.querySelector('#blend').value='1';document.querySelector('#blend').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#blend').value='3';document.querySelector('#blend').dispatchEvent(new Event('change',{bubbles:true}));document.documentElement.dataset.theme='dark';window.scrollTo(0,0);");
+    await saveScreenshot(viewport.name + '-dark');
     const finalWidth = await evalJS('({width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth})');
     assert.ok(finalWidth.scrollWidth <= finalWidth.width, viewport.name + ': final document overflow');
+
+    if (viewport.name === 'desktop') {
+      await navigate('2026-10-30');
+      await evalJS("document.querySelector('[data-g=all]').click()");
+      assert.equal(await evalJS("document.querySelector('tr[data-k=\"tml/inkling\"] td.c').innerText.trim()"), '✕');
+      await navigate('2027-02-01');
+      await evalJS("document.querySelector('[data-g=all]').click()");
+      assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.5-flash-lite\"] td.c').title"), /\$0\.375 \/ \$3\.125/);
+      assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.8-flash\"] td.c').innerText"), /1\.50/);
+      await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: clockId});
+      clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource('2026-10-02')})).identifier;
+    }
+    if (originalURL) {
+      await call('Page.navigate', {url: originalURL});
+      await waitFor("document.querySelectorAll('#mx tr.row').length>0");
+      await evalJS("document.documentElement.dataset.theme='light';document.querySelector('[data-g=all]').click()");
+      await evalJS('document.fonts.ready.then(()=>true)');
+      const original = await evalJS(measure);
+      assert.equal(original.priceFont, initial.priceFont, 'Original price typography: ' + viewport.name);
+      assert.equal(original.headingSize, initial.headingSize, 'Original heading size: ' + viewport.name);
+      assert.equal(original.fontFamily, initial.fontFamily, 'Original font family: ' + viewport.name);
+      assert.equal(original.wrapWidth, initial.wrapWidth, 'Original page width: ' + viewport.name);
+      assert.equal(original.columns, initial.columns, 'Original provider columns: ' + viewport.name);
+      await saveScreenshot('original-' + viewport.name);
+      initial.originalStyle = original;
+    }
     reports.push({viewport, initial, integration: 'passed'});
-    console.log(`${viewport.name}: ${initial.rows} models, ${initial.columns - 1} providers, no overflow; calculator, filters, date and tier checks passed.`);
+    console.log(`${viewport.name}: original layout, ${initial.columns - 1} providers, ${initial.visibleRows} visible rows, no document overflow; details, filters and pricing checks passed.`);
     await rpc('Target.disposeBrowserContext', {browserContextId});
   }
   assert.equal(exceptions.length, 0, 'Uncaught browser exceptions: ' + JSON.stringify(exceptions));

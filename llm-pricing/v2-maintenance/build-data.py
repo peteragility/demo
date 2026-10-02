@@ -402,7 +402,6 @@ def build():
     for sid, (url, label) in sources.items():
         data["source_meta"][sid] = dict(url=url, label=label)
     data["groups"]["xai"] = dict(label="xAI", title="xAI Grok")
-    data["platform_meta"]["official"].update(short="Direct", label="Maker direct API")
     normalize(data)
     add_models(data)
     corrections(data)
@@ -418,9 +417,9 @@ def build():
         "openai": ["GPT-6.1 Sol reduces cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
                    "Bedrock GPT-6 Sol / Luna have in-region Mantle access in us-east-1. Runtime global / US geographic access uses different endpoints.",
                    "Bedrock GPT-5.5 is regional only, so it is excluded from global-tier price parity counts.",
-                   "Long-context prices apply to the whole request above 272K input tokens. The calculator uses only confirmed tier rates."],
+                   "Long-context prices apply to the whole request above 272K input tokens. Confirmed context tiers appear in the row details."],
         "google": ["Gemini 3.5 Flash-Lite is $0.30 / $2.50 and 3.1 Flash-Lite text is $0.25 / $1.50 at current Databricks promotional rates.",
-                   "Databricks' 20% Pro / Lite promotion ends 31 Jan 2027. Flash introductory rates end 31 Dec 2026; changing the estimate date applies verified scheduled prices.",
+                   "Databricks' 20% Pro / Lite promotion ends 31 Jan 2027. Flash introductory rates end 31 Dec 2026; verified scheduled prices apply automatically by date.",
                    "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."],
         "xai": ["Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
                 "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.",

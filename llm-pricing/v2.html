@@ -1,102 +1,56 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light dark">
-  <title>LLM Token Pricing · v2</title>
-  <meta name="description" content="Compare LLM text-token prices across Databricks, direct APIs, Bedrock, Foundry, Vertex, Fireworks and Alibaba. Model versions, source dates, service tiers and a workload calculator.">
-  <link rel="stylesheet" href="v2.css">
-  <script src="v2-math.js" defer></script>
-  <script src="v2-app.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LLM Token Pricing · v2</title>
+<meta name="description" content="Databricks FMAPI vs AWS Bedrock, Azure Foundry, Google Vertex, Fireworks, Alibaba and direct APIs: verified USD per 1M tokens.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="v2.css?v=dd5237c1dbeb">
+<script src="v2-math.js?v=f4a032ef50ef" defer></script>
+<script src="v2-app.js?v=d86193630f64" defer></script>
 </head>
 <body>
-  <a class="skip" href="#matrix">Skip to pricing</a>
-  <main class="wrap">
-    <header class="top">
-      <div><p class="eyebrow">API pricing comparison <span class="version">v2</span></p>
-        <h1>LLM Token Pricing</h1>
-        <p class="lede">Databricks · Direct API · Bedrock · Foundry · Fireworks · Vertex · Alibaba</p>
-        <p class="review">USD per million <b>text</b> tokens · reviewed <b id="reviewDate">—</b> · dates and sources per offer</p>
-      </div>
-      <div class="header-actions"><a href="./" aria-label="Original pricing page">Original ↗</a><button type="button" id="theme" class="button" aria-label="Toggle color theme">Theme</button></div>
-    </header>
+<div class="wrap">
+  <header class="top">
+    <h1>LLM Token Pricing</h1>
+    <p>Databricks FMAPI vs AWS Bedrock · Azure Foundry · Fireworks · Google Vertex · Alibaba · 原廠 API — USD per 1M tokens · verified <b id="verified">—</b> · <a href="../">demo index</a></p>
+  </header>
 
-    <nav class="bar" id="bar" aria-label="Pricing filters">
-      <div class="family" id="tabs" role="group" aria-label="Model family"></div>
-      <div class="filters">
-        <label class="search"><span class="sr">Search models</span><input type="search" id="search" placeholder="Search models or endpoint IDs" autocomplete="off"></label>
-        <label class="control">Sort<select id="sort"><option value="default">Family</option><option value="price">DBX price</option><option value="latest">New additions</option></select></label>
-        <label class="control">Δ blend<select id="blend"><option value="1">1:1</option><option value="3" selected>3:1</option><option value="10">10:1</option></select></label>
-        <label class="new-only"><input type="checkbox" id="newOnly"> Added models</label>
-      </div>
-      <div class="comparison-controls">
-        <details id="quoteSettings" class="quote-settings"><summary>Date & DBU price <span id="quoteSummary"></span></summary><div class="quote-fields">
-          <label class="control">Estimate date<input id="asOf" type="date" required aria-describedby="dateHint"></label>
-          <label class="control">USD / DBU<input id="dbuRate" type="number" min="0.000001" step="any" value="0.07" required aria-describedby="dbuHint"></label>
-        </div></details>
-        <label class="control mobile-provider">Compare<select id="mobileProvider"><option value="bedrock">AWS Bedrock</option><option value="azure_foundry">Azure Foundry</option><option value="fireworks">Fireworks</option><option value="gcloud">Google Vertex</option><option value="alicloud">Alibaba</option></select></label>
-        <span class="basis" id="basis">Standard listed tiers · input / output</span>
-      </div>
-    </nav>
+  <nav class="bar" id="bar" aria-label="Filters">
+    <div class="tabs" id="tabs" role="tablist" aria-label="Model family"></div>
+    <div class="tools">
+      <label class="search"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input id="q" type="search" placeholder="Search models" autocomplete="off" aria-label="Search models"></label>
+      <label class="sel" title="Sort rows"><span>Sort</span><select id="sort" aria-label="Sort rows"><option value="default">Default</option><option value="price">Cheapest</option><option value="edge">DBX edge</option></select></label>
+      <label class="sel" title="Input:output token ratio used for the Δ vs Databricks"><span>Blend</span><select id="blend" aria-label="Delta blend ratio, input to output"><option value="1">Δ 1:1</option><option value="3">Δ 3:1</option><option value="10">Δ 10:1</option></select></label>
+    </div>
+  </nav>
 
-    <div id="validation" class="notice error" role="alert" hidden></div>
-    <section id="summary" class="summary" aria-label="Comparison summary"></section>
+  <section class="summary" id="summary" aria-live="polite"></section>
 
-    <details id="calculator" class="calculator">
-      <summary><span><b>Workload calculator</b><span class="muted">Monthly input, output and cache costs</span></span><span class="plus" aria-hidden="true">＋</span></summary>
-      <div class="calc-body">
-        <form id="workload" class="form-grid">
-          <label class="field model-field">Model<select id="calcModel" name="model" aria-label="Calculator model"></select></label>
-          <label class="field">Input · million tokens<input id="inputM" name="inputM" type="number" min="0" step="any" value="3" required></label>
-          <label class="field">Output · million tokens<input id="outputM" name="outputM" type="number" min="0" step="any" value="1" required></label>
-          <label class="field">Cache-hit rate · %<input id="cacheHit" name="cacheHit" type="number" min="0" max="100" step="any" value="0" required></label>
-          <label class="field">Input tokens per request<input id="promptTokens" name="promptTokens" type="number" min="0" step="1" value="1000" required></label>
-          <details class="advanced">
-            <summary>Cache writes and storage</summary>
-            <div class="form-grid advanced-fields">
-              <label class="field">Cache writes · million tokens<input id="writeM" name="writeM" type="number" min="0" step="any" value="0" required></label>
-              <label class="field">Cache write TTL<select id="writeTTL" name="writeTTL"><option value="base">Base TTL / automatic</option><option value="1h">1 hour</option></select></label>
-              <label class="field">Stored cache · million tokens<input id="storedM" name="storedM" type="number" min="0" step="any" value="0" required></label>
-              <label class="field">Total storage hours<input id="storageHours" name="storageHours" type="number" min="0" step="any" value="0" required></label>
-            </div>
-            <p class="help">Input includes cache hits and write misses. Write tokens come from the uncached portion and use the write rate in place of the regular input rate. Storage adds million tokens × hours × the hourly rate.</p>
-          </details>
-        </form>
-        <p class="help">Choose each provider’s tier below. The estimate date and DBU price above apply here too. A total requires every rate used by your workload to be verified.</p>
-        <div id="calcError" class="notice error" role="alert" hidden></div>
-        <div class="calc-toolbar"><p id="calcDescription" class="muted"></p><button type="button" id="copyEstimate" class="button">Copy estimate</button></div>
-        <div id="calcResults" class="result-grid" aria-label="Workload estimates"></div>
-      </div>
-    </details>
+  <div class="tblwrap"><table class="mx" id="mx"><caption class="sr" style="position:absolute;left:-9999px">LLM price per 1M tokens by platform</caption></table></div>
 
-    <section id="matrix" tabindex="-1" aria-label="Model price matrix">
-      <div class="matrix-heading"><p><b>Input / output</b> · USD per 1M tokens</p><p id="rowCount" class="muted"></p></div>
-      <div class="table-wrap"><table id="prices" class="matrix"><caption class="sr">Text-token prices by model and platform. Select a model to view exact offers and sources.</caption></table></div>
-      <p class="matrix-note" id="comparisonHint">Δ uses the selected input:output blend without cache. It appears only for comparable model versions, service tiers and processing scopes.</p>
-    </section>
+  <footer class="foot">
+    <div>
+      <h2>How to read it</h2>
+      <p class="lg"><span><b class="up">▲</b> competitor pricier than Databricks</span><span><b class="down">▼</b> cheaper</span><span><b>=</b> within 1%</span><span><b>✕</b> not offered (closest model shown)</span><span><b>?</b> not verified</span><span><b>GPU</b> dedicated only</span></p>
+      <p>Each cell is <b>input / output</b> USD per 1M text tokens for its listed tier. Databricks = published DBU rate × <span id="dbu">$0.07</span>. DeepSeek and Alibaba time-of-day prices use peak / busy-hour rates. Δ uses the blend above and appears only for comparable model versions, processing scopes and service tiers. Models with no comparable hyperscaler price are excluded from the parity count. Tap a row for cache pricing, regional / priority tiers, regions, verification dates and sources.</p>
+      <p>Databricks APAC availability is per model in each row (AWS / GCP region table). On Azure Databricks, pay-per-token runs in-region only in Japan East; East Asia (Hong Kong), Southeast Asia, Korea, Australia and India use cross-geo processing.</p>
+      <p>Prices move fast. Re-check the source before a customer quote. Verified promotion changes and retirements apply automatically by date; unverified prices remain labelled ?.</p>
+      <div class="editbar"><button type="button" id="editBtn" aria-pressed="false">Edit prices</button><button type="button" id="resetBtn" hidden>Reset edits</button><span id="editNote"></span></div>
+    </div>
+    <div>
+      <h2>Sources <span id="srcDate"></span></h2>
+      <ul class="srcs" id="srcs"></ul>
+      <p><a href="https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml" target="_blank" rel="noopener">Daily source-check runs ↗</a> · <a href="v2-data.json" target="_blank" rel="noopener">data ↗</a></p>
+    </div>
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
 
-    <footer class="footer">
-      <div>
-        <h2>Read the comparison</h2>
-        <p class="legend"><span><b class="higher">▲</b> competitor costs more</span><span><b class="lower">▼</b> competitor costs less</span><span><b>=</b> within 1%</span><span><b>—</b> unavailable</span><span><b>GPU</b> dedicated only</span><span><b>?</b> unverified price</span></p>
-        <p>Each offer states its tier. Regional and Data Zone offers, unconfirmed snapshots, and unverified prices are excluded from global price deltas. Availability gaps are counted separately from price parity.</p>
-        <p id="dbuHint">Databricks prices scale from the published DBU rates using your USD / DBU value (default $0.07). Input and output rates are rounded to the reviewed list prices.</p>
-        <p id="dateHint">The date applies verified scheduled promotion changes and Databricks retirements. It is an estimate using dated sources, not a prediction of unannounced price changes.</p>
-        <p>Text-token charges include billable reasoning output. Audio, generated images, tools, tax and dedicated GPU capacity need separate quotes. Cache eligibility and minimum cache sizes depend on the provider.</p>
-        <details class="footer-detail"><summary>What changed in v2</summary><ul id="changes"></ul></details>
-        <details class="footer-detail"><summary>Personal price overrides</summary><p>Override a verified offer in its row details. Values are saved in this browser and marked as personal prices.</p><div class="override-actions"><button type="button" id="editPrices" class="button" aria-pressed="false">Edit prices</button><button type="button" id="clearOverrides" class="button" hidden>Reset overrides</button><span id="overrideCount" class="muted"></span></div></details>
-      </div>
-      <div>
-        <h2>Verification and updates</h2>
-        <p>Prices and availability have separate verification dates. Exact endpoint IDs are shown when confirmed; an unconfirmed ID is labelled in the offer details.</p>
-        <p>Automated source checks generate a review report for model additions, pricing changes, promotions and retirements. Published prices change only after that report is reviewed.</p>
-        <p><a href="https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml" target="_blank" rel="noopener">Latest source-check runs ↗</a> · <a href="v2-data.json" target="_blank" rel="noopener">Download data ↗</a></p>
-        <details class="footer-detail"><summary>Official sources</summary><ul id="sources" class="sources"></ul></details>
-      </div>
-    </footer>
-  </main>
-  <noscript><p class="wrap">JavaScript is required to load the pricing table and calculator. <a href="v2-data.json">View the source data</a>.</p></noscript>
-  <div id="toast" class="toast" role="status" hidden></div>
+<noscript><p class="wrap">JavaScript is required to show prices. <a href="v2-data.json">View pricing data</a>.</p></noscript>
 </body>
 </html>
