@@ -1,6 +1,13 @@
 {
- "generated": "2026-10-02",
+ "generated": "2026-10-03",
  "pages": [
+  {
+   "path": "aidecide-game/",
+   "title": "ai_decide — Can You Out-Decide the Model?",
+   "desc": "Race an AI decision model in quick triage calls · Databricks ai_decide",
+   "tag": "AI",
+   "color": "#FF3621"
+  },
   {
    "path": "arsenal-champions/",
    "title": "Arsenal Champions",
