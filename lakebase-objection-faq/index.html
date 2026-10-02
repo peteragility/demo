@@ -178,7 +178,11 @@ pre{border-radius:var(--radius)}
   <span class="qnum">Objection 02</span>
   <h2>LFC vs a regular NVMe cache — and does scale-to-zero clear both?</h2>
   <p><strong>Why LFC exists:</strong> the disaggregated read path bypasses the filesystem entirely — pages arrive over the network from the pageserver — so <strong>the OS page cache never sees the data</strong>. Postgres needs a cache below shared buffers; nothing provides one; LFC was built. It's a plain file deliberately placed on the filesystem so the OS page cache backs it: DRAM-rich = fully in memory; DRAM-tight = spills to NVMe.</p>
-  <p><strong>Side benefits:</strong> no double buffering (1 GB of data costs 1 GB of RAM, not 2); eviction decisions know Postgres state; it resizes dynamically with autoscaling — shared buffers can't without a restart.</p>
+  <p><strong>Side benefits:</strong> no double buffering — 1 GB of data costs 1 GB of RAM, not 2.</p>
+  <ul>
+    <li><strong>Smarter eviction:</strong> the OS page cache evicts blind (generic kernel heuristics); LFC evicts based on which pages Postgres is actually re-reading, so the working set survives longer.</li>
+    <li><strong>Resizes with autoscaling, live:</strong> the autoscaler adjusts LFC size in step with CU changes while Postgres keeps running. Shared buffers are a static startup parameter — changing them requires a restart. (That's exactly why fixed computes skip LFC and put the whole cache in shared buffers: with a fixed size there's nothing to resize.)</li>
+  </ul>
   <p><strong>Scale-to-zero clears layers 1–2</strong> (shared buffers + LFC) — the compute is stateless. Layers 3–4 untouched. Resumption: &lt;500 ms median, first queries served from the pageserver warm tier.</p>
 </section>
 
