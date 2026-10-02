@@ -143,6 +143,7 @@ pre{border-radius:var(--radius)}
     <a href="#q1">Cache warmth</a>
     <a href="#q6">LFC vs NVMe</a>
     <a href="#q3">Network hop</a>
+    <a href="#q7">Write throughput</a>
     <a href="#q2">Isolation &amp; CMK</a>
     <a href="#q5">Connection pooling</a>
     <a href="#q4">Provisioned mode</a>
@@ -162,8 +163,8 @@ pre{border-radius:var(--radius)}
 
   <ul>
     <li>LFC is custom-built, not the OS page cache. It's a plain file deliberately placed so the OS page cache backs it: DRAM available → fully in memory; under pressure → spills to NVMe.</li>
-    <li><strong>In-place scaling does not restart Postgres and does not drop connections.</strong> The autoscaler tracks working-set size to protect cache hit rate.</li>
-    <li>On fixed computes ≥80 CU, LFC is disabled and shared buffers are set to <span class="mono">75% of DRAM</span> with huge pages. Production results: 2× throughput, storage reads 8K→1.5K/s (5× fewer), one customer's CPU 20→4 cores, cache hit ~100%. Dynamic shared buffers for autoscaling computes are on the roadmap.</li>
+    <li><strong>In-place scaling does not restart Postgres and does not drop connections.</strong> The autoscaler tracks working-set size to protect cache hit rate. Be precise about eviction: <strong>yes, both layers can evict during scale-down</strong> — DRAM shrinks, so shared buffers give up pages and LFC shrinks too. What scaling improves is <em>which</em> pages get evicted (working-set-aware, not blind) and where misses land afterwards (the NVMe tier absorbs them before the pageserver is touched).</li>
+    <li>On <strong>fixed computes ≥80 CU</strong> (≥18 on Neon), the old setup was replaced: previously <em>autoscaling</em> computes were capped at ~1 GB shared buffers with LFC taking the rest (up to 75% of DRAM). Now, on those fixed sizes, <strong>LFC is disabled entirely and shared buffers = 75% of DRAM</strong> with huge pages — an 80 CU compute shows <span class="mono">shared_buffers = 120GB</span>. Production results: 2× throughput, storage reads 8K→1.5K/s (5× fewer), one customer's CPU 20→4 cores, cache hit ~100%. Dynamic shared buffers for <em>autoscaling</em> computes are still on the roadmap.</li>
   </ul>
 
   <div class="rule">Sizing rule: each CU = 2 GB RAM. Set min CU so its RAM covers the working set — then steady-state reads never leave the machine, regardless of scaling.</div>
@@ -187,7 +188,8 @@ pre{border-radius:var(--radius)}
   <p>Be precise about where the hop actually is:</p>
   <ul>
     <li><strong>Working-set reads: no hop.</strong> Hits in shared buffers/LFC never touch the network.</li>
-    <li><strong>Commit path: one cross-AZ WAL hop — but every HA database pays this.</strong> Aurora's 4/6 quorum and RDS Multi-AZ sync standby are the same class of cost. The difference: Lakebase ships <strong>WAL only, never full pages</strong>.</li>
+    <li><strong>The separation itself is not exotic.</strong> Aurora pioneered the same shape: compute instances over a shared, regional, log-structured storage fleet — and it resolves the hop the same way we do, with a big local cache on the compute so hot reads never cross the network.</li>
+    <li><strong>Commit path: one cross-AZ WAL hop — but every HA database pays this.</strong> Aurora's 4/6 quorum and RDS Multi-AZ sync standby are the same class of cost. And yes — Aurora is log-is-the-database too: it also ships redo-log records only (never full pages) to its storage fleet. Lakebase is in the same school: WAL goes to a safekeeper quorum, and there is <em>no second hop</em> beyond the commit ack.</li>
   </ul>
 
   <p><strong>Published numbers (VLDB 2026 · TPROC-C · p95 ≤ 20 ms · equal durability and latency limits):</strong></p>
@@ -208,8 +210,34 @@ pre{border-radius:var(--radius)}
   <div class="rule">High-throughput guidance: for sustained high-transaction QPS, run fixed mode — full 75%-of-DRAM shared buffers, huge pages, zero scaling movement. That is the configuration the published numbers are measured on.</div>
 </section>
 
-<section id="q2">
+<section id="q7">
   <span class="qnum">Objection 04</span>
+  <h2>What about write throughput? Reads are cached — but what happens when my workload is write-heavy?</h2>
+  <p>The write path is where separated storage usually bleeds, so it gets its own engineering:</p>
+  <ul>
+    <li><strong>WAL-only commit path</strong> — the compute never ships full pages; safekeeper quorum acks the log, page materialization happens in the storage tier in the background.</li>
+    <li><strong>Full-page-image pushdown (May 2026)</strong> — the most expensive part of Postgres writing (full-page images into WAL after checkpoints) is moved out of the compute's critical path into storage. Published results: <strong>up to 5× write throughput, −94% WAL volume, 2× lower read tail latency</strong>.</li>
+    <li><strong>No I/O charges</strong> — write-heavy workloads on Aurora/RDS pay per request; Lakebase storage is flat-rate, so bursty write days don't become a bill surprise.</li>
+  </ul>
+
+  <p><strong>Published numbers (VLDB 2026 · TPROC-C · p95 ≤ 20 ms · equal durability and latency limits):</strong></p>
+  <div class="tblwrap"><table>
+    <tr><th>Size</th><th>vs 2nd-gen separated-storage DB</th><th>vs Postgres on multi-AZ replicated disk</th></tr>
+    <tr><td class="mono">4 vCPU</td><td>+41%</td><td>~parity</td></tr>
+    <tr><td class="mono">16 vCPU</td><td>+25%</td><td>2.8×</td></tr>
+    <tr><td class="mono">24 vCPU</td><td>+27%</td><td>5.3× <span class="dim">(vs 32 vCPU)</span></td></tr>
+  </table></div>
+
+  <p><strong>Honest limits on writes:</strong></p>
+  <ul>
+    <li><strong>One writer per branch.</strong> A single Postgres writer process scales to ~112 CU single-node; workloads needing multiple writers or horizontal write sharding belong on Aurora Limitless / DSQL — qualify out early.</li>
+    <li>Commit latency includes the cross-AZ safekeeper ack — bounded, but present. Sub-millisecond commit-ack workloads at extreme QPS should benchmark their own path (offer a POC on a branch of their data).</li>
+    <li>For sustained high write QPS: run <strong>fixed mode</strong> — that is the configuration these numbers are measured on.</li>
+  </ul>
+</section>
+
+<section id="q2">
+  <span class="qnum">Objection 05</span>
   <h2>Are pageservers shared? Is my data exposed? Do I need to set up CMK myself?</h2>
   <p><strong>Compute</strong>: each project's Postgres runs in its own microVM (NeonVM — QEMU/KVM). Not shared processes — the buffer cache in your VM is physically unreachable by other tenants.</p>
   <p><strong>Storage</strong> (safekeepers + pageservers): multi-tenant shared infrastructure, deployed regionally — like every cloud database's storage fleet, Aurora included. Tenancy is logical: one storage tenant per project, one compute per tenant/timeline, isolated timelines (VLDB §3.5). Encryption everywhere; pageserver access requires the tenant's timeline credentials.</p>
@@ -226,7 +254,7 @@ pre{border-radius:var(--radius)}
 </section>
 
 <section id="q5">
-  <span class="qnum">Objection 05</span>
+  <span class="qnum">Objection 06</span>
   <h2>Connection pooling — built-in or build it ourselves? When pooled vs not?</h2>
   <p><strong>Built-in: Lakebase runs PgBouncer for you.</strong> Clients connect to the <span class="mono">-pooler</span> endpoint hostname; up to <strong>10,000 concurrent client connections</strong> share a smaller server pool. Each server connection is held for one transaction, then returned.</p>
 
@@ -254,7 +282,7 @@ query_wait_timeout = 120</pre>
 </section>
 
 <section id="q4">
-  <span class="qnum">Objection 06</span>
+  <span class="qnum">Objection 07</span>
   <h2>My workload is stable — I want provisioned and dedicated. Is Lakebase only for test/bursty?</h2>
   <p>No. <strong>"Serverless is how Lakebase can run, not how it must run."</strong></p>
   <ul>
