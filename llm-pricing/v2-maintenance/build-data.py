@@ -439,27 +439,29 @@ def build():
     enrich_context_and_promotions(data)
     lifecycle_notices(data)
     # Talk-track lines: the original page's seller insights, re-checked against the v2 offers.
-    # Plain strings always apply; {"text", "from", "until"} lines apply within their dates.
+    # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
+    # with "models" only while one of those models is listed. The page computes the
+    # "priced below Databricks" line from the rows it shows.
     data["insights"] = {
-        "oss": ["Watch-outs priced below Databricks (Δ at 3:1): Llama 4 Maverick on Bedrock, Azure and Vertex (−27% to −44%), gpt-oss-120b on Vertex (−40%), Gemma 3 12B on Bedrock (−41%), and Alibaba Global-scope Qwen (−39% to −56%), GLM and Kimi.",
-                {"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retire on Databricks on 30 Oct 2026. Replacement models appear in the row details.", "until": "2026-10-29"},
+        "oss": [{"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retire on Databricks on 30 Oct 2026. Replacement models appear in the row details.", "until": "2026-10-29"},
                 {"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retired on Databricks on 30 Oct 2026. Their rows list the replacements.", "from": "2026-10-30"},
                 "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
                 "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither sells GLM 5.3 or DeepSeek V4, and Vertex has no Kimi K3.",
-                "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.",
-                "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models."],
+                {"text": "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.", "models": ["deepseek/deepseek-v4-flash"]},
+                {"text": "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models.", "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "google/gemma-3-12b", "qwen/qwen3-next-80b-instruct"]}],
         "anthropic": ["List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
                       "Regional / data-residency endpoints are +10% on Bedrock, Vertex and Databricks (⌖); Anthropic's US-only inference is ×1.1.",
                       "Microsoft Foundry deploys Claude only from US or Sweden Central resources, with no APAC region. Vertex offers asia-east1 (Taiwan) and asia-southeast1 regional endpoints.",
-                      "On Databricks, Sonnet 4.6 and Haiku 4.5 run in-region in Singapore and Tokyo. Opus 5.5, Fable 5.1 and Sonnet 5 use cross-geo routing in APAC; Opus 5 is in-region on AWS Sydney and GCP Singapore."],
+                      "On Databricks, Opus 5.5, Fable 5.1 and Sonnet 5 use cross-geo routing in APAC; Opus 5 is in-region on AWS Sydney and GCP Singapore. Sonnet 4.6 and Haiku 4.5 run in-region in Singapore and Tokyo."],
         "openai": ["List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
                    "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
                    "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
                    "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
                    {"text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.", "until": "2026-11-21"},
                    {"text": "GPT-5.6 Sol is $5 / $30 on every platform since its promotion ended 21 Nov 2026.", "from": "2026-11-22"}],
-        "google": [{"text": "Databricks matches Google today: a 20% promotion on Gemini 3.1 Pro and both Flash-Lite models runs to 31 Jan 2027, then Databricks lists +25% (3.1 Pro $2.50 / $15.00, 3.5 Flash-Lite $0.375 / $3.125).", "until": "2027-01-31"},
-                   {"text": "Since Databricks' promotion ended 31 Jan 2027, its Gemini 3.1 Pro and Flash-Lite list prices are 25% above the Gemini API and Vertex.", "from": "2027-02-01"},
+        "google": [{"text": "Databricks matches Google today: a 20% promotion on Gemini 3.1 Pro runs to 31 Jan 2027, then Databricks lists +25% ($2.50 / $15.00).", "until": "2027-01-31"},
+                   {"text": "Gemini 3.1 Pro on Databricks lists at $2.50 / $15.00 since its promotion ended 31 Jan 2027: 25% above the Gemini API and Vertex.", "from": "2027-02-01"},
+                   {"text": "The same 20% Databricks promotion covers Gemini 3.5 and 3.1 Flash-Lite to 31 Jan 2027, then $0.375 / $3.125 and $0.3125 / $1.875 (+25%).", "until": "2027-01-31", "models": ["google/gemini-3.5-flash-lite", "google/gemini-3.1-flash-lite"]},
                    {"text": "Flash intro pricing (50% off) ends 31 Dec 2026 everywhere, then $1.50 / $7.50.", "until": "2026-12-31"},
                    {"text": "Gemini 3.8 / 3.7 Flash list at $1.50 / $7.50 everywhere since intro pricing ended 31 Dec 2026.", "from": "2027-01-01"},
                    "Only Databricks, Vertex and the Gemini API sell Gemini; Bedrock, Azure and Alibaba do not.",

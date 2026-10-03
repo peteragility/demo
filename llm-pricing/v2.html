@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="v2.css?v=6de69b4c699b">
+<link rel="stylesheet" href="v2.css?v=4c86640a186b">
 <script src="v2-math.js?v=c66297fb81e2" defer></script>
-<script src="v2-app.js?v=b4f884fe9da7" defer></script>
+<script src="v2-app.js?v=e75f3557a3fb" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -23,7 +23,7 @@
   <div class="bar" id="bar"><div class="tabs" id="tabs" role="group" aria-label="Model family"></div></div>
   <div class="tools" id="tools">
     <label class="search"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input id="q" type="search" placeholder="Search models" autocomplete="off" aria-label="Search models"></label>
-    <label class="sel" title="Sort rows"><span>Sort</span><select id="sort" aria-label="Sort rows"><option value="default">Default</option><option value="price">Cheapest</option><option value="edge">DBX edge</option></select></label>
+    <label class="sel" title="Sort rows"><span>Sort</span><select id="sort" aria-label="Sort rows"><option value="default">Arena rank</option><option value="price">Cheapest</option><option value="edge">DBX edge</option></select></label>
     <label class="sel" title="Input:output token ratio used for the Δ vs Databricks"><span>Blend</span><select id="blend" aria-label="Delta blend ratio, input to output"><option value="1">Δ 1:1</option><option value="3">Δ 3:1</option><option value="10">Δ 10:1</option></select></label>
   </div>
 
@@ -36,6 +36,7 @@
       <h2>How to read it</h2>
       <p class="legend"><span><b class="up">▲</b> competitor pricier than Databricks</span><span><b class="down">▼</b> cheaper</span><span><b>=</b> within 1%</span><span><b>✕</b> not offered (closest model shown)</span><span><b>?</b> not verified</span><span><b>GPU</b> dedicated only</span></p>
       <p>Each cell is <b>input / output</b> USD per 1M text tokens: the platform's cheapest standard (real-time, on-demand) price for that model version, in any region or processing scope. Databricks = published DBU rate × <span id="dbu">$0.07</span>. Δ compares it with Databricks' cheapest standard price at the blend above. Batch, Flex, Priority and off-peak prices are in the row details and are not compared; DeepSeek and Alibaba time-of-day prices use peak / busy-hour rates. Models with no comparable hyperscaler price are left out of the parity count, as are models where a hyperscaler sells an unconfirmed checkpoint for less. Tap a row for cache pricing, other tiers, regions, verification dates and sources.</p>
+      <p id="rankNote"></p>
       <p>Databricks APAC availability is per model in each row (AWS / GCP region table). On Azure Databricks, pay-per-token runs in-region only in Japan East; East Asia (Hong Kong), Southeast Asia, Korea, Australia and India use cross-geo processing.</p>
       <p>Prices move fast. Re-check the source before a customer quote. Verified promotion changes and retirements apply automatically on your local date; unverified prices remain labelled ?.</p>
       <div class="editbar"><button type="button" id="editBtn" aria-pressed="false">Edit prices</button><button type="button" id="resetBtn" hidden>Reset edits</button><span id="editNote"></span></div>

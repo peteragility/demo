@@ -41,7 +41,9 @@ jobs:
         run: |
           python v2-maintenance/build-data.py --check
           python v2-maintenance/validate-data.py
+          python v2-maintenance/update-ranking.py --check
           python v2-maintenance/test-review-sources.py
+          python v2-maintenance/test-ranking.py
           node --test v2-maintenance/pricing.test.cjs
       - name: Compare official sources (review only)
         if: github.event_name != 'pull_request'
@@ -66,3 +68,43 @@ jobs:
           path: ${{ runner.temp }}/llm-pricing-v2-review/
           retention-days: 30
           if-no-files-found: warn
+
+  # Model list and default order follow the arena.ai Best Overall ranking. Only the order file is
+  # published automatically; prices still change only through a reviewed dataset update.
+  ranking:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pages: write
+    defaults:
+      run:
+        working-directory: llm-pricing
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Read the arena.ai Best Overall ranking
+        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY"
+      - name: Validate the new order
+        run: python v2-maintenance/update-ranking.py --check
+      - name: Publish the new order
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- v2-ranking.json; then echo "Model order unchanged."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add v2-ranking.json
+          git commit -m "LLM pricing v2: update model order from the arena.ai ranking"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null && echo "Requested a Pages build." ||
+                echo "::warning::Pages build request failed; the next push publishes the new order."
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1

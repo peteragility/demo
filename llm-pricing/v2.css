@@ -103,6 +103,7 @@ button,select,input{font:inherit;color:inherit}
 .mb{display:flex;align-items:baseline;gap:6px;width:100%;min-width:0;padding:0;border:0;background:none;text-align:left;white-space:nowrap;cursor:pointer}
 .nm{flex:none;font-weight:600;font-size:13px;line-height:18px}
 .nm .s{display:none}
+.rk{display:inline-block;min-width:20px;margin-right:6px;font-size:11px;font-weight:600;color:var(--ink-3);text-align:right}
 .mk{flex:1 1 auto;min-width:0;font-size:11px;line-height:18px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis}
 .bdg{display:inline-block;vertical-align:1px;margin-left:5px;padding:0 4px;border:1px solid var(--line-2);border-radius:4px;font-size:9.5px;font-weight:600;line-height:14px;color:var(--ink-3)}
 .bdg.warn{border-color:var(--down);color:var(--down)}
@@ -126,7 +127,6 @@ td.na .x{font-size:12px}
 td.unk{color:var(--na)}
 td.unk .q{border-bottom:1px dotted var(--na)}
 .edited{box-shadow:inset 0 -2px 0 var(--focus)}
-tr.grp th{text-align:left;background:var(--panel-2);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);padding:4px 8px}
 tfoot th,tfoot td{border-bottom:0;font-size:11.5px;color:var(--ink-3);background:var(--panel-2)}
 tfoot .nm{line-height:16px}
 tfoot th.m .mk{display:inline;margin-left:6px}
@@ -253,7 +253,7 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   .mx>tbody>tr>td.dbx{box-shadow:inset 1.5px 0 0 var(--dbx-line),inset -1.5px 0 0 var(--dbx-line)}
   .alt{font-size:9px;line-height:11px;white-space:nowrap}
   .alt .ap{display:none}
-  tr.grp th{padding:3px 6px;font-size:10px}
+  .rk{min-width:0;margin-right:3px;font-size:9.5px}
   tfoot th,tfoot td{font-size:10px}
   tfoot .nm{line-height:13px}
   tfoot .mk2{display:none}

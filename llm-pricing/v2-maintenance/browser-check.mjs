@@ -99,67 +99,91 @@ try {
     };
     const measure = `({rows:document.querySelectorAll('#mx tr.row').length,columns:document.querySelectorAll('#mx>thead th').length,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,priceFont:getComputedStyle(document.querySelector('td.c')).fontSize,fontFamily:getComputedStyle(document.body).fontFamily,headingSize:getComputedStyle(document.querySelector('h1')).fontSize,wrapWidth:document.querySelector('.wrap').getBoundingClientRect().width,rowHeight:document.querySelector('tr.row').getBoundingClientRect().height,visibleRows:[...document.querySelectorAll('#mx tr.row')].filter(r=>r.getBoundingClientRect().bottom<=innerHeight&&r.getBoundingClientRect().top>=0).length,summary:document.querySelector('#summary').innerText})`;
     await navigate();
+    // Expected rows come from the page's own ranking: the priced models arena ranks, in rank order.
+    const expected = await evalJS(`(async () => {
+      const [d, r] = await Promise.all([fetch('v2-data.json').then(x => x.json()), fetch('v2-ranking.json').then(x => x.json())]);
+      const keys = Object.keys(r.models).filter(k => d.models[k]).sort((a, b) => r.models[a].rank - r.models[b].rank);
+      const count = g => keys.filter(k => d.models[k].group === g).length;
+      return {keys, all: keys.length, oss: count('oss'), anthropic: count('anthropic'), openai: count('openai'), google: count('google'), xai: count('xai')};
+    })()`);
+    const listed = key => expected.keys.includes(key);
+    const toggle = key => evalJS(`document.querySelector('tr[data-k="${key}"] .mb').click()`);
+    const rowCount = () => evalJS("document.querySelectorAll('#mx tr.row').length");
     const initial = await evalJS(measure);
-    assert.equal(initial.rows, 16, viewport.name + ': original OSS default');
+    assert.equal(initial.rows, expected.all, viewport.name + ': All is the default view');
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx tr.row')].map(r=>r.dataset.k)"), expected.keys, viewport.name + ': arena rank order');
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*','oss','anthropic','openai','google','xai']);
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','AWS Bedrock','Azure Foundry','Fireworks','Google Vertex','Alibaba']);
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','AWS','Azure','FW','GCP','Ali']);
-    assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Default','Cheapest','DBX edge']);
-    await saveScreenshot(viewport.name);
-    await evalJS("document.querySelector('[data-g=all]').click()");
-    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 38);
+    assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','DBX edge']);
+    assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /arena\.ai Best Overall/);
     assert.equal(await evalJS("(()=>{const tab=document.querySelector('[data-g=all]').getBoundingClientRect(),tabs=document.querySelector('#tabs').getBoundingClientRect();return tab.left>=tabs.left-1&&tab.right<=tabs.right+1;})()"), true, 'Selected family tab is visible');
-    await saveScreenshot(viewport.name + '-all');
+    await saveScreenshot(viewport.name);
 
-    // Existing search and family tabs reveal the new models and preserve legacy hashes.
-    await evalJS("document.querySelector('#q').value='databricks-gpt-6-1-sol';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));");
-    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 1);
-    assert.match(await evalJS("document.querySelector('#mx').innerText"), /GPT-6.1 Sol/);
-    assert.equal(await evalJS("document.querySelector('tr.row td.c').innerText.trim()"), '?');
+    // Search and family tabs; legacy hashes still select a family.
+    if (listed('openai/gpt-6.1-sol')) {
+      await evalJS("document.querySelector('#q').value='databricks-gpt-6-1-sol';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));");
+      assert.equal(await rowCount(), 1);
+      assert.match(await evalJS("document.querySelector('#mx').innerText"), /GPT-6.1 Sol/);
+      assert.equal(await evalJS("document.querySelector('tr.row td.c').innerText.trim()"), '?');
+    }
     await evalJS("document.querySelector('#q').value='';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));location.hash='claude';");
     await waitFor("document.querySelector('[data-g=anthropic]').getAttribute('aria-pressed')==='true'");
-    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 7);
-    assert.match(await evalJS("document.querySelector('#mx').innerText"), /Sonnet 5.5/);
-    await evalJS("document.querySelector('[data-g=xai]').click()");
-    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 2);
-    await evalJS("document.querySelector('[data-g=google]').click()");
-    assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 5);
-    assert.match(await evalJS("document.querySelector('#mx').innerText"), /3.5 Flash-Lite/);
+    assert.equal(await rowCount(), expected.anthropic);
+    if (listed('anthropic/claude-sonnet-5.5')) assert.match(await evalJS("document.querySelector('#mx').innerText"), /Sonnet 5.5/);
+    for (const g of ['xai', 'google', 'oss', 'openai']) {
+      await evalJS(`document.querySelector('[data-g=${g}]').click()`);
+      assert.equal(await rowCount(), expected[g], viewport.name + ': ' + g + ' rows');
+    }
     await evalJS("document.querySelector('[data-g=all]').click()");
 
-    // Corrected offers remain in the original expandable detail table.
-    await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] .mb').click();");
-    const detail = await evalJS(`({text:document.querySelector('#d-deepseek-deepseek-v4-pro').innerText,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,headers:[...document.querySelectorAll('#d-deepseek-deepseek-v4-pro .dt th')].map(x=>x.textContent)})`);
-    assert.match(detail.text, /Dedicated deployment only/);
-    assert.match(detail.text, /accounts\/fireworks\/models\/deepseek-v4-pro-0813/);
-    assert.match(detail.text, /snapshot|checkpoint/);
-    assert.match(detail.text, /Price checked 2026-10-02/);
-    assert.match(detail.text, /Availability checked 2026-10-02/);
-    assert.deepEqual(detail.headers, ['Platform','In','Out','Cache read','Cache write','1h write','Δ vs DBX']);
-    assert.ok(detail.scrollWidth <= detail.width, viewport.name + ': expanded detail overflow');
-    assert.equal(await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] td.c:nth-of-type(4) .d')===null"), true);
-    await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] .mb').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
-    const kimi = await evalJS("document.querySelector('#d-moonshot-kimi-k3').innerText");
-    assert.match(kimi, /Global Priority/);
-    assert.match(kimi, /6\.5625/);
-    assert.match(kimi, /7\.21875/);
-    await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();document.querySelector('tr[data-k=\"google/gemini-3.5-flash-lite\"] .mb').click();");
-    assert.match(await evalJS("document.querySelector('#d-google-gemini-3-5-flash-lite').innerText"), /Cache storage \$1\.00 \/ million token-hours/);
-    await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.5-flash-lite\"] .mb').click();document.querySelector('tr[data-k=\"openai/gpt-6.1-sol\"] .mb').click();");
-    assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /Price pending verification/);
-    assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), />272K input/);
-    await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedSummary=text;}}});document.querySelector('[data-copy=\"openai/gpt-6.1-sol\"]').click();");
-    await waitFor("typeof window.copiedSummary==='string'");
-    assert.match(await evalJS('window.copiedSummary'), /price pending verification/);
-    assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
-    assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-02/);
-    await evalJS("document.querySelector('tr[data-k=\"openai/gpt-6.1-sol\"] .mb').click()");
+    // Corrected offers remain in the expandable detail table.
+    if (listed('deepseek/deepseek-v4-pro')) {
+      await toggle('deepseek/deepseek-v4-pro');
+      const detail = await evalJS(`({text:document.querySelector('#d-deepseek-deepseek-v4-pro').innerText,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,headers:[...document.querySelectorAll('#d-deepseek-deepseek-v4-pro .dt th')].map(x=>x.textContent)})`);
+      assert.match(detail.text, /Dedicated deployment only/);
+      assert.match(detail.text, /accounts\/fireworks\/models\/deepseek-v4-pro-0813/);
+      assert.match(detail.text, /snapshot|checkpoint/);
+      assert.match(detail.text, /Price checked 2026-10-02/);
+      assert.match(detail.text, /Availability checked 2026-10-02/);
+      assert.deepEqual(detail.headers, ['Platform','In','Out','Cache read','Cache write','1h write','Δ vs DBX']);
+      assert.ok(detail.scrollWidth <= detail.width, viewport.name + ': expanded detail overflow');
+      assert.equal(await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] td.c:nth-of-type(4) .d')===null"), true);
+      await toggle('deepseek/deepseek-v4-pro');
+    }
+    if (listed('moonshot/kimi-k3')) {
+      await toggle('moonshot/kimi-k3');
+      const kimi = await evalJS("document.querySelector('#d-moonshot-kimi-k3').innerText");
+      assert.match(kimi, /Global Priority/);
+      assert.match(kimi, /6\.5625/);
+      assert.match(kimi, /7\.21875/);
+      await toggle('moonshot/kimi-k3');
+    }
+    if (listed('google/gemini-3.1-pro')) {
+      await toggle('google/gemini-3.1-pro');
+      assert.match(await evalJS("document.querySelector('#d-google-gemini-3-1-pro').innerText"), /Cache storage \$4\.50 \/ million token-hours/);
+      await toggle('google/gemini-3.1-pro');
+    }
+    if (listed('openai/gpt-6.1-sol')) {
+      await toggle('openai/gpt-6.1-sol');
+      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /Price pending verification/);
+      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), />272K input/);
+      await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedSummary=text;}}});document.querySelector('[data-copy=\"openai/gpt-6.1-sol\"]').click();");
+      await waitFor("typeof window.copiedSummary==='string'");
+      assert.match(await evalJS('window.copiedSummary'), /price pending verification/);
+      assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
+      assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-02/);
+      assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best Overall #\d+/);
+      await toggle('openai/gpt-6.1-sol');
+    }
 
-    // Original sorting/blend controls still work; private edits leave published counts intact.
+    // Sorting / blend controls still work; private edits leave published counts intact.
     await evalJS("document.querySelector('#sort').value='price';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='edge';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='default';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));");
-    if (viewport.name === 'desktop') {
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx tr.row')].map(r=>r.dataset.k)"), expected.keys, viewport.name + ': arena rank order restored');
+    if (viewport.name === 'desktop' && listed('moonshot/kimi-k3')) {
       const summaryBefore = await evalJS("[...document.querySelectorAll('#summary .kpi')].map(k=>k.innerText).join('|')");
       await evalJS("localStorage.setItem('llm-pricing-edits-v3','ORIGINAL');localStorage.setItem('llm-pricing-prefs-v3','ORIGINAL');document.querySelector('#editBtn').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
       await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='4';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
@@ -184,12 +208,11 @@ try {
 
     if (viewport.name === 'desktop') {
       await navigate('2026-10-30');
-      await evalJS("document.querySelector('[data-g=all]').click()");
-      assert.equal(await evalJS("document.querySelector('tr[data-k=\"tml/inkling\"] td.c').innerText.trim()"), '✕');
+      if (listed('tml/inkling')) assert.equal(await evalJS("document.querySelector('tr[data-k=\"tml/inkling\"] td.c').innerText.trim()"), '✕');
       await navigate('2027-02-01');
-      await evalJS("document.querySelector('[data-g=all]').click()");
-      assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.5-flash-lite\"] td.c').title"), /\$0\.375 \/ \$3\.125/);
-      assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.8-flash\"] td.c').innerText"), /1\.50/);
+      if (listed('google/gemini-3.1-pro')) assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.1-pro\"] td.c').title"), /\$2\.50 \/ \$15\.00/);
+      if (listed('google/gemini-3.8-flash')) assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.8-flash\"] td.c').innerText"), /1\.50/);
+      if (listed('xai/grok-4.6')) assert.match(await evalJS("document.querySelector('tr[data-k=\"xai/grok-4.6\"] td.c').innerText"), /2\.50/);
       await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: clockId});
       clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource('2026-10-02')})).identifier;
     }
@@ -207,7 +230,7 @@ try {
       await saveScreenshot('original-' + viewport.name);
       initial.originalStyle = original;
     }
-    reports.push({viewport, initial, integration: 'passed'});
+    reports.push({viewport, initial, expected: expected.all, integration: 'passed'});
     console.log(`${viewport.name}: ${initial.columns - 1} providers, ${initial.visibleRows} visible rows${initial.originalStyle ? ` (original: ${initial.originalStyle.visibleRows})` : ''}, no document overflow; details, filters and pricing checks passed.`);
     await rpc('Target.disposeBrowserContext', {browserContextId});
   }

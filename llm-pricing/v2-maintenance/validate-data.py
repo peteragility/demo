@@ -44,6 +44,8 @@ def validate(data):
                     check(date(entry[bound]), at + ": invalid " + bound + " date.")
             if isinstance(entry, dict) and date(entry.get("from")) and date(entry.get("until")):
                 check(entry["from"] <= entry["until"], at + ": dated entry ends before it starts.")
+            if isinstance(entry, dict) and "models" in entry:
+                check(isinstance(entry["models"], list) and entry["models"] and all(k in data["models"] for k in entry["models"]), at + ": unknown models on a talk-track line.")
     check(data.get("schema") == 4, "Expected v2 schema 4.")
     check(date(data.get("reviewed_at")), "Invalid review date.")
     check(rate(data.get("usd_per_dbu")) and data.get("usd_per_dbu", 0) > 0, "Invalid DBU basis.")

@@ -6,7 +6,7 @@
   const SHORT = {databricks:'DBX',official:'原廠',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
   const ORDER = ['oss','anthropic','openai','google','xai'];
   // [hash id, label, phone label]
-  const TABS = [['oss','OSS','OSS'],['anthropic','Anthropic','Claude'],['openai','OpenAI','GPT'],['google','Google','Gemini'],['xai','xAI','Grok'],['all','All','All']];
+  const TABS = [['all','All','All'],['oss','OSS','OSS'],['anthropic','Anthropic','Claude'],['openai','OpenAI','GPT'],['google','Google','Gemini'],['xai','xAI','Grok']];
   const HASH_ALIAS = new Map([['claude','anthropic'],['gpt','openai'],['gemini','google'],['grok','xai']]);
   const FIELDS = ['in','out','cache_read','cache_write','cache_write_1h'];
   const EDIT_KEY = 'llm-pricing-v2-overrides', PREF_KEY = 'llm-pricing-v2-preferences';
@@ -25,9 +25,9 @@
 
   const saved = store.get(PREF_KEY, {});
   const prefs = isObject(saved) ? saved : {};
-  const S = { group: 'oss', q: '', sort: ['default','price','edge'].includes(prefs.sort) ? prefs.sort : 'default', blend: [1,3,10].includes(+prefs.blend) ? +prefs.blend : 3,
+  const S = { group: 'all', q: '', sort: ['default','price','edge'].includes(prefs.sort) ? prefs.sort : 'default', blend: [1,3,10].includes(+prefs.blend) ? +prefs.blend : 3,
     talk: typeof prefs.talk === 'boolean' ? prefs.talk : null, edit: false, open: new Set() };
-  let RAW = null, RESOLVED = null, DATA = null, PICK = null, APPLIED = 0, SUMMARY = null, SUMMARY_KEY = '';
+  let RAW = null, RESOLVED = null, DATA = null, PICK = null, APPLIED = 0, SUMMARY = null, SUMMARY_KEY = '', WATCH = null, RANKING = null;
   let EDITS = store.get(EDIT_KEY, {});
   if (!isObject(EDITS)) EDITS = {};
   if (prefs.theme === 'light' || prefs.theme === 'dark') document.documentElement.dataset.theme = prefs.theme;
@@ -56,9 +56,11 @@
   const precise = v => M.validRate(v) ? v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:6}) : '—';
   const srcUrl = (c, pl) => { if (c && c.url) return c.url; const id = (c && c.src) || (DATA.platform_meta && DATA.platform_meta[pl] && DATA.platform_meta[pl].src); return id && DATA.source_meta && DATA.source_meta[id] ? DATA.source_meta[id].url : null; };
   const shortAlt = a => a.short || String(a.name).replace(/^(DeepSeek|Kimi|Claude)\s+/i, '');
-  // Dated notices and talk-track lines: plain strings always apply; {text, from, until} apply within their dates.
+  // Dated notices and talk-track lines: plain strings always apply; {text, from, until} apply within their
+  // dates, and lines naming models only while one of them is listed.
   const active = list => (Array.isArray(list) ? list : list ? [list] : [])
-    .filter(n => typeof n === 'string' || (isObject(n) && n.text && (!n.from || AS_OF >= n.from) && (!n.until || AS_OF <= n.until)))
+    .filter(n => typeof n === 'string' || (isObject(n) && n.text && (!n.from || AS_OF >= n.from) && (!n.until || AS_OF <= n.until) &&
+      (!Array.isArray(n.models) || !RANKING || n.models.some(k => rankOf(k) != null))))
     .map(n => typeof n === 'string' ? n : n.text);
   const notices = m => active(m.notices || m.warn);
 
@@ -111,9 +113,12 @@
     }
   }
 
+  // The arena.ai Best Overall ranking decides which models appear and their default order.
+  const rankOf = k => RANKING && RANKING.models[k] ? RANKING.models[k].rank : null;
+  const listed = () => Object.entries(DATA.models).filter(([k]) => !RANKING || rankOf(k) != null);
   function rows() {
     const q = S.q.trim().toLowerCase();
-    let arr = Object.entries(DATA.models).map(([k, m], i) => ({ k, m, i, g: groupOf(k, m) }));
+    let arr = listed().map(([k, m], i) => ({ k, m, i: rankOf(k) ?? i, g: groupOf(k, m) }));
     if (S.group !== 'all') arr = arr.filter(r => r.g === S.group);
     if (q) arr = arr.filter(r => [r.k, r.m.name, r.m.short, r.m.maker, r.m.about, ...Object.values(r.m.platforms).map(c => c.model_id)].join(' ').toLowerCase().includes(q));
     if (S.sort === 'price') {
@@ -122,7 +127,7 @@
     } else if (S.sort === 'edge') {
       const score = new Map(arr.map(r => [r.k, edge(r)]));
       arr.sort((a, b) => score.get(b.k) - score.get(a.k) || a.i - b.i);
-    } else if (S.group === 'all') arr.sort((a, b) => ORDER.indexOf(a.g) - ORDER.indexOf(b.g) || a.i - b.i);
+    } else arr.sort((a, b) => a.i - b.i);
     return arr;
   }
   // +1 for each platform without the model or pricier than DBX, −1 for each cheaper one; summed Δ breaks ties.
@@ -173,7 +178,8 @@
     const m = r.m, open = S.open.has(r.k), warn = notices(m).join(' · ');
     const badges = (m.badges || []).map(b => `<span class="bdg">${esc(b)}</span>`).join('') + (warn ? `<span class="bdg warn" title="${esc(warn)}">!</span>` : '');
     const meta = [m.maker, m.ctx && (m.ctx + ' ctx')].filter(Boolean).join(' · ');
-    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm"><span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
+    const rank = rankOf(r.k);
+    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm">${rank != null ? `<span class="rk" title="arena.ai Best Overall rank">${rank}</span>` : ''}<span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
   }
 
   // Why a priced cell has no Δ, or which tier its Δ uses.
@@ -271,14 +277,32 @@
     return `<tfoot><tr><th scope="row" class="m"><span class="nm">Has model</span><span class="mk mk2">priced cells · ▲ ▼ vs DBX</span></th>${cells}</tr></tfoot>`;
   }
 
+  // The cheaper-than-Databricks cells among the shown models, from published prices.
+  function watchouts(list) {
+    const options = {asOf: AS_OF, inputRatio: S.blend}, found = [];
+    for (const r of list) {
+      const raw = RAW.models[r.k].platforms || {}, base = M.cheapest(raw.databricks, options);
+      if (!base) continue;
+      for (const pl of PL) {
+        if (pl === 'databricks') continue;
+        const pick = M.cheapest(raw[pl], options), d = pick ? M.delta(pick, base, S.blend).value : null;
+        if (d != null && d < -M.PARITY) found.push({d, text: (r.m.short || r.m.name) + ' on ' + LONG[pl] + ' (−' + pct(d) + ')'});
+      }
+    }
+    if (!found.length) return null;
+    found.sort((a, b) => a.d - b.d);
+    return 'Priced below Databricks at ' + S.blend + ':1: ' + found.slice(0, 6).map(x => x.text).join(', ') +
+      (found.length > 6 ? ' and ' + (found.length - 6) + ' more ▼ cells' : '') + '. Check these before quoting.';
+  }
+
   const kpi = (cls, value, long, short) => `<div class="kpi${cls ? ' ' + cls : ''}"><b>${value}</b><span class="kl">${long}</span><span class="ks">${short}</span></div>`;
   function renderSummary(list) {
     // Published figures always use published prices; personal edits only change the table.
     const key = [AS_OF, S.blend, list.map(r => r.k).join(',')].join('|');
-    if (key !== SUMMARY_KEY) { SUMMARY_KEY = key; SUMMARY = M.summarize(list.map(r => RAW.models[r.k]), {asOf: AS_OF, inputRatio: S.blend}); }
+    if (key !== SUMMARY_KEY) { SUMMARY_KEY = key; SUMMARY = M.summarize(list.map(r => RAW.models[r.k]), {asOf: AS_OF, inputRatio: S.blend}); WATCH = watchouts(list); }
     const p = SUMMARY, gaps = p.gaps;
     const g = S.group === 'all' ? null : S.group;
-    const tips = g ? active(DATA.insights && DATA.insights[g]) : ORDER.flatMap(x => active(DATA.insights && DATA.insights[x]).slice(0, 1));
+    const tips = [WATCH, ...(g ? active(DATA.insights && DATA.insights[g]) : ORDER.flatMap(x => active(DATA.insights && DATA.insights[x]).slice(0, 1)))].filter(Boolean);
     const open = S.talk ?? window.matchMedia('(min-width: 1061px) and (min-height: 700px)').matches;
     paint($('#summary'),
       kpi('good', `${p.noCheaperModels}<small>/${p.comparedModels}</small>`, 'models where no hyperscaler beats DBX (AWS · Azure · GCP)', 'no hyperscaler cheaper') +
@@ -303,7 +327,7 @@
     const focus = focusKey(document.activeElement);
     const list = rows();
     const counts = { all: 0 };
-    for (const [k, m] of Object.entries(DATA.models)) { const g = groupOf(k, m); counts[g] = (counts[g] || 0) + 1; counts.all++; }
+    for (const [k, m] of listed()) { const g = groupOf(k, m); counts[g] = (counts[g] || 0) + 1; counts.all++; }
     const tabs = $('#tabs');
     paint(tabs, TABS.map(([id, label, short]) => `<button type="button" class="tab" data-g="${id}" aria-pressed="${S.group === id}" aria-label="${esc(label + ', ' + (counts[id] || 0) + ' models')}"><span class="tl">${label}</span><span class="ts">${short}</span><span class="n">${counts[id] || 0}</span></button>`).join(''));
     const current = tabs.querySelector('[aria-pressed="true"]');
@@ -313,10 +337,9 @@
       else if (selected.left < bounds.left) tabs.scrollLeft -= bounds.left - selected.left;
     }
     renderSummary(list);
-    const head = `<colgroup><col class="cm">${PL.map(() => '<col>').join('')}</colgroup><thead><tr><th scope="col" class="m">Model<span class="u">$ / 1M · in / out</span></th>${PL.map(pl => `<th scope="col"${pl === 'databricks' ? ' class="dbx"' : ''} title="${esc(LONG[pl])}"><span class="lg">${esc(LONG[pl])}</span><span class="sh">${esc(SHORT[pl])}</span></th>`).join('')}</tr></thead>`;
-    let body = '', last = null;
+    const head = `<colgroup><col class="cm">${PL.map(() => '<col>').join('')}</colgroup><thead><tr><th scope="col" class="m">${RANKING ? '<span class="rk" title="arena.ai Best Overall rank">#</span>' : ''}Model<span class="u">$ / 1M · in / out</span></th>${PL.map(pl => `<th scope="col"${pl === 'databricks' ? ' class="dbx"' : ''} title="${esc(LONG[pl])}"><span class="lg">${esc(LONG[pl])}</span><span class="sh">${esc(SHORT[pl])}</span></th>`).join('')}</tr></thead>`;
+    let body = '';
     for (const r of list) {
-      if (S.group === 'all' && S.sort === 'default' && r.g !== last) { body += `<tr class="grp"><th colspan="8" scope="rowgroup">${esc((DATA.groups && DATA.groups[r.g] && DATA.groups[r.g].title) || r.g)}</th></tr>`; last = r.g; }
       body += rowHtml(r);
       if (S.open.has(r.k)) body += detailHtml(r);
     }
@@ -330,7 +353,8 @@
 
   function copySummary(mk) {
     const m = DATA.models[mk];
-    const lines = [`${m.name} (${m.maker}): USD per 1M text tokens, input / output, reviewed ${DATA.reviewed_at}; prices as of ${AS_OF}. Δ compares each platform's cheapest standard price with Databricks' at ${S.blend}:1 input:output.`];
+    const rank = rankOf(mk);
+    const lines = [`${m.name} (${m.maker})${rank != null ? `, arena.ai Best Overall #${rank}` : ''}: USD per 1M text tokens, input / output, reviewed ${DATA.reviewed_at}; prices as of ${AS_OF}. Δ compares each platform's cheapest standard price with Databricks' at ${S.blend}:1 input:output.`];
     for (const pl of PL) {
       const c = shown(mk, pl), k = kind(c);
       if (k === 'gpu') lines.push(`• ${LONG[pl]}: dedicated deployment only · ${c.note || 'No verified per-token price.'}`);
@@ -422,14 +446,21 @@
 
   async function load() {
     const inline = document.getElementById('inline-data');
-    if (inline) return JSON.parse(inline.textContent);
+    const ranking = fetch('v2-ranking.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null);
+    if (inline) return [JSON.parse(inline.textContent), await ranking];
     const r = await fetch('v2-data.json', { cache: 'no-cache' });
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
+    return [await r.json(), await ranking];
   }
 
-  load().then(d => {
-    RAW = d; applyEdits();
+  load().then(([d, ranking]) => {
+    RAW = d;
+    RANKING = isObject(ranking) && isObject(ranking.models) && Object.keys(ranking.models).some(k => d.models[k]) ? ranking : null;
+    applyEdits();
+    if (RANKING) {
+      const when = new Date(RANKING.ranked_at + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      $('#rankNote').innerHTML = `Models and default order follow the <a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(RANKING.board)}</a> ranking (# = arena rank), checked daily; order last changed ${esc(when)}. Models arena does not rank are hidden.`;
+    }
     const dt = d.reviewed_at;
     const pretty = dt ? new Date(dt + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
     $('#verified').textContent = pretty; $('#srcDate').textContent = '· checked ' + pretty;
@@ -437,7 +468,7 @@
     const srcList = d.source_meta ? Object.values(d.source_meta) : (d.sources || []).map(u => { const url = String(u).split(' ')[0]; let label = url; try { label = new URL(url).hostname; } catch (e) {} return { url, label }; });
     $('#srcs').innerHTML = srcList.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a></li>`).join('');
     $('#sort').value = S.sort; $('#blend').value = String(S.blend);
-    S.group = fromHash() || 'oss';
+    S.group = fromHash() || 'all';
     bind(); render();
     document.body.dataset.ready = 'true';
   }).catch(err => {

@@ -1,6 +1,6 @@
 # LLM pricing v2 maintenance
 
-The separate page at [`../v2.html`](../v2.html) compares a curated set of 38 models across seven providers. It keeps the original page's typeface, colours, column wording, filters and expandable details, with a denser layout: one line per model on laptops, two-line cells on phones, all seven provider columns on screen down to 320 px, and sticky column headers at every width. It has its own data, assets and browser-storage keys. The original `index.html` and `data.json` are unchanged.
+The separate page at [`../v2.html`](../v2.html) keeps reviewed prices for 38 models across seven providers and lists the ones arena.ai currently ranks (see *Model list and order*). It keeps the original page's typeface, colours, column wording, filters and expandable details, with a denser layout: one line per model on laptops, two-line cells on phones, all seven provider columns on screen down to 320 px, and sticky column headers at every width. It has its own data, assets and browser-storage keys. The original `index.html` and `data.json` are unchanged.
 
 The 2026-10-02 review adds GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 Flash-Lite, Gemini 3.1 Flash-Lite, Grok 4.7 and Grok 4.6. Databricks GPT-6.1 Sol and Grok 4.7 prices remain unverified because the reviewed price page still names their predecessors.
 
@@ -14,12 +14,26 @@ Prices are USD per million text tokens. Processing scope, service tier, model-ve
 
 The table applies verified promotion changes and retirements on the viewer's local date and re-checks the date while the tab stays open. Model notices and talk-track lines carry `from` / `until` dates, and every promotion carries the tier label that applies after it ends. Expanded rows show cache charges, other tiers, endpoint IDs, verification dates and context tiers without adding columns to the main matrix. Personal prices stay in the user's browser: the table shows their what-if Δ, while the summary figures always use published prices. Clearing a field, or typing the published value, removes the personal price.
 
+## Model list and order
+
+The page lists the priced models that arena.ai ranks on its **Best Overall** leaderboard (Agent | Overall, the default board on https://arena.ai/leaderboard/), in rank order, with the arena rank in the first column. **All** is the default view, followed by OSS, Anthropic, OpenAI, Google and xAI. Models arena does not rank are hidden but keep their reviewed prices, so they return if arena ranks them again. Talk-track lines that name specific models appear only while one of those models is listed, and the "priced below Databricks" line is computed from the rows shown.
+
+`ranking-config.json` maps each priced model to arena display names. `update-ranking.py` reads the leaderboard and rewrites `../v2-ranking.json` only when the ranked models or their ranks change; it refuses to reorder the page if the board is missing, too short or ambiguous. The scheduled workflow runs it daily and publishes the new order. That file is the only one the workflow commits; prices still change only through a reviewed dataset update. The job summary lists arena's top-30 models that have no pricing on the page. To list one, add verified pricing in `build-data.py`, then a pattern in `ranking-config.json`.
+
+```sh
+python3 v2-maintenance/update-ranking.py          # read arena.ai and update the order
+python3 v2-maintenance/update-ranking.py --check  # validate the published order
+python3 v2-maintenance/test-ranking.py
+```
+
 Run from the repository's `llm-pricing` directory with Python 3.12+ and Node 24+; no packages or API keys are required:
 
 ```sh
 python3 v2-maintenance/build-data.py --check
 python3 v2-maintenance/validate-data.py
+python3 v2-maintenance/update-ranking.py --check
 python3 v2-maintenance/test-review-sources.py
+python3 v2-maintenance/test-ranking.py
 node --test v2-maintenance/pricing.test.cjs
 ```
 
@@ -42,7 +56,7 @@ python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review
 
 Exit codes are `0` for nothing to review, `1` for a failed or incomplete source, and `2` for source changes or lifecycle events within 7 days that need review. In GitHub Actions, every listed lifecycle date also appears as a run annotation. JSON reports contain full diffs; Markdown reports provide a readable summary. Check every failure before relying on a report. An unchanged source document is not a guarantee of account-specific availability or unpublished prices.
 
-The installed [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs validation and daily source checks at **02:17 UTC / 10:17 HKT**, with manual dispatch and scoped push/PR checks. The [workflow template](workflow-template.yml) provides the same setup for another repository. The workflow has read-only repository permissions and stores review artifacts for 30 days; it never publishes prices or commits updates.
+The installed [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs validation and daily source checks at **02:17 UTC / 10:17 HKT**, with manual dispatch and scoped push/PR checks. The [workflow template](workflow-template.yml) provides the same setup for another repository. The review job has read-only repository permissions and stores review artifacts for 30 days; it never publishes prices. The daily ranking job may commit `v2-ranking.json` only, then requests a Pages build.
 
 View its [source-check runs](https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml).
 
