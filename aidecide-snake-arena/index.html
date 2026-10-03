@@ -261,22 +261,29 @@ function draw(){
     ctx.fillStyle='#FFD166';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
     ctx.fillText('👑',h.x*CELL+CELL/2,h.y*CELL-2);}
 }
-async function snakeLoop(s,other,model,panel,sc,al,mvv,avg){
-  while(running&&s.alive){
-    const t0=performance.now();
+// Each snake has its own independent DRIVER: a self-healing tick that issues the
+// next call only when the previous one finished. Fast model = more moves. No lockstep.
+const MOVE_GAP=80;
+const drivers={};
+function driveSnake(s,other,model,panel,sc,al,mvv,avg){
+  const key=s.color;
+  if(drivers[key]){clearInterval(drivers[key]);}
+  drivers[key]=setInterval(async()=>{
+    if(!running||!s.alive){clearInterval(drivers[key]);drivers[key]=null;return;}
+    if(s.__busy)return;               // previous call still in flight
+    s.__busy=true;
     try{
       await moveSnake(s,other,food,model,panel,sc,al,mvv,avg);
-    }catch(e){ console.error('move failed',e); }
-    try{ draw(); }catch(e){ console.error('draw failed',e); }
-    if(!running)break;
+    }catch(e){console.error('move failed',s.color,e);}
+    s.__busy=false;
+    try{draw();}catch(e){console.error('draw failed',e);}
+    if(!running){clearInterval(drivers[key]);drivers[key]=null;return;}
     if(!A.alive&&!B.alive){finish();return;}
-    const wait=Math.max(0,MOVE_GAP-(performance.now()-t0));
-    await new Promise(r=>setTimeout(r,wait));
-  }
+  },MOVE_GAP);
 }
 function loop(){
-  snakeLoop(A,B,'ai_decide','logA','scoreA','aliveA','mvA','avgA');
-  snakeLoop(B,A,'jev','logB','scoreB','aliveB','mvB','avgB');
+  driveSnake(A,B,'ai_decide','logA','scoreA','aliveA','mvA','avgA');
+  driveSnake(B,A,'jev','logB','scoreB','aliveB','mvB','avgB');
 }
 function finish(){
   running=false;gameOverShown=true;
