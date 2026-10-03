@@ -2,6 +2,13 @@
  "generated": "2026-10-03",
  "pages": [
   {
+   "path": "aidecide-ceo/",
+   "title": "Startup CEO — ai_decide vs Jev",
+   "desc": "24 quarters, 3 strategic calls each — the harder decision-model deathmatch",
+   "tag": "AI",
+   "color": "#3ECFB2"
+  },
+  {
    "path": "aidecide-game/",
    "title": "ai_decide — Can You Out-Decide the Model?",
    "desc": "Race an AI decision model in quick triage calls · Databricks ai_decide",

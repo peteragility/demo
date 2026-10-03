@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startup CEO — ai_decide vs Jev · Business Deathmatch</title>
+<style>
+  :root{--bg:#0E1E24;--card:#152930;--line:#24404A;--txt:#E8F0F2;--mut:#8FA8B0;
+        --orange:#FF3621;--teal:#3ECFB2;--gold:#FFD166;--bad:#FF5A5A;--ok:#7BD88F}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,sans-serif}
+  .wrap{max-width:880px;margin:0 auto;padding:18px 14px 60px}
+  header{text-align:center;padding:12px 0 4px}
+  .kicker{color:var(--orange);font-weight:700;letter-spacing:.12em;font-size:.7rem;text-transform:uppercase}
+  h1{font-size:1.4rem;margin:6px 0 4px}
+  .sub{color:var(--mut);font-size:.85rem}
+  .roundbar{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:12px}
+  .roundbar b{font-size:1.2rem;color:var(--gold)}
+  .duel{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:10px;margin-top:12px}
+  .co{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px}
+  .co.a{border-color:var(--orange)} .co.b{border-color:var(--teal)}
+  .co .name{font-weight:800;font-size:clamp(.75rem,3vw,1.05rem);white-space:nowrap}
+  .co.a .name{color:var(--orange)} .co.b .name{color:var(--teal)}
+  .co .metric{display:flex;justify-content:space-between;font-size:.8rem;margin-top:5px}
+  .co .metric span:last-child{font-weight:700}
+  .co .val{font-size:1.5rem;font-weight:800;color:var(--gold);margin:6px 0 2px}
+  .co .val small{font-size:.65rem;color:var(--mut);font-weight:400}
+  .bar{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:3px}
+  .bar>div{height:100%;border-radius:3px;transition:width .4s}
+  .dec{margin-top:9px;font-size:.72rem;line-height:1.6;background:var(--bg);border-radius:8px;padding:8px}
+  .dec b{color:var(--gold)}
+  .dec .q{color:var(--mut)}
+  .log{margin-top:8px;max-height:150px;overflow-y:auto;font-size:.66rem;line-height:1.7}
+  .log div{border-bottom:1px solid rgba(36,64,74,.5);padding:2px 0;animation:si .3s}
+  @keyframes si{from{opacity:0;transform:translateY(-5px)}to{opacity:1}}
+  .vs{font-weight:900;font-size:1.2rem;color:var(--gold);align-self:center}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px;font-size:.82rem;line-height:1.7;min-height:60px}
+  .stage .news{color:var(--gold)}
+  .overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,22,27,.95);text-align:center;padding:24px;z-index:5}
+  .overlay.hide{display:none}
+  .overlay h2{font-size:1.3rem;margin-bottom:10px}
+  .overlay p{color:var(--mut);font-size:.86rem;max-width:480px;line-height:1.7;margin-bottom:16px}
+  .btn{background:var(--orange);border:none;color:#fff;font-weight:700;font-size:1rem;padding:13px 28px;border-radius:10px;cursor:pointer}
+  .foot{text-align:center;color:var(--mut);font-size:.66rem;margin-top:18px;line-height:1.6}
+  .dead{opacity:.45;filter:grayscale(.6)}
+  @media(max-width:760px){h1{font-size:1.15rem}.duel{grid-template-columns:1fr}.vs{text-align:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Decision Model Deathmatch · Round 2</div>
+    <h1>🏢 Startup CEO: ai_decide vs Jev</h1>
+    <p class="sub">Two AIs run rival startups. Same market, same crises, 24 quarters. Multi-dimensional decisions every round — product, hiring, pricing. Highest valuation wins. Bankrupt = out.</p>
+  </header>
+
+  <div class="roundbar"><span>Quarter <b id="round">0</b> / 24</span><span id="phase">Press start</span></div>
+
+  <div class="duel">
+    <div class="co a" id="coA">
+      <div class="name">Databricks ai_decide</div>
+      <div class="val">$<span id="valA">10</span>M <small>valuation</small></div>
+      <div class="metric"><span>💰 Cash</span><span id="cashA">$8M</span></div><div class="bar"><div id="cashAb" style="background:var(--ok);width:80%"></div></div>
+      <div class="metric"><span>📈 Revenue/mo</span><span id="revA">$1.0M</span></div><div class="bar"><div id="revAb" style="background:var(--gold);width:10%"></div></div>
+      <div class="metric"><span>😤 Team morale</span><span id="morA">70</span></div><div class="bar"><div id="morAb" style="background:var(--teal);width:70%"></div></div>
+      <div class="metric"><span>👥 Users</span><span id="usrA">10k</span></div><div class="bar"><div id="usrAb" style="background:var(--orange);width:5%"></div></div>
+      <div class="metric"><span>🔥 Churn</span><span id="chA">5%</span></div>
+      <div class="dec" id="decA">—</div>
+      <div class="log" id="logA"></div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="co b" id="coB">
+      <div class="name">TypeSafe Jev</div>
+      <div class="val">$<span id="valB">10</span>M <small>valuation</small></div>
+      <div class="metric"><span>💰 Cash</span><span id="cashB">$8M</span></div><div class="bar"><div id="cashBb" style="background:var(--ok);width:80%"></div></div>
+      <div class="metric"><span>📈 Revenue/mo</span><span id="revB">$1.0M</span></div><div class="bar"><div id="revBb" style="background:var(--gold);width:10%"></div></div>
+      <div class="metric"><span>😤 Team morale</span><span id="morB">70</span></div><div class="bar"><div id="morBb" style="background:var(--teal);width:70%"></div></div>
+      <div class="metric"><span>👥 Users</span><span id="usrB">10k</span></div><div class="bar"><div id="usrBb" style="background:var(--orange);width:5%"></div></div>
+      <div class="metric"><span>🔥 Churn</span><span id="chB">5%</span></div>
+      <div class="dec" id="decB">—</div>
+      <div class="log" id="logB"></div>
+    </div>
+  </div>
+
+  <div class="stage" id="news">Market news will appear here each quarter…</div>
+
+  <p class="foot">Each quarter both CEOs answer the SAME three questions (build what / hire who / price how) in ONE model call · deterministic market events shared by both companies<br>Snake Arena: <a href="../aidecide-snake-arena/" style="color:var(--mut)">ai_decide vs Jev</a> · <a href="../aidecide-snake/" style="color:var(--mut)">Single snake</a></p>
+</div>
+
+<div class="overlay" id="overlay">
+  <h2>🏢 Ready to run the boardroom?</h2>
+  <p>Every quarter, both decision models receive identical company state and market news, then make <strong>three simultaneous strategic calls</strong>: product focus, hiring, and pricing. Outcomes compound — cash burn, churn, morale, growth. Survive 24 quarters; biggest valuation wins. Runway hits zero = bankruptcy 💀</p>
+  <button class="btn" id="startBtn">▶ Start the match</button>
+</div>
+
+<script>
+const API='https://u37zbl7apd.execute-api.us-east-1.amazonaws.com/prod/decide';
+const $=id=>document.getElementById(id);
+const TOTAL=24;
+
+function mkCo(){return{cash:8,rev:1.0,users:10,morale:70,churn:5,prod:'core',val:10,alive:true,burn:0.8,brand:0}}
+let A,B,round,running=false,seed=0;
+const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+
+const NEWS=[
+ {t:'🔥 Competitor launches aggressive clone of your core feature',eff:{churn:+2}},
+ {t:'📰 TechCrunch covers the AI startup wave (tailwind for AI products)',eff:{growth:+20}},
+ {t:'📉 Macro downturn: enterprise budgets frozen',eff:{growth:-20,churn:+1}},
+ {t:'🌟 A top engineer market rumor: talent is shopping around',eff:{morale:-10}},
+ {t:'🎉 Open-source community loves your category',eff:{growth:+10}},
+ {t:'💸 AWS raises prices 15% (infra cost up)',eff:{burn:+0.15}},
+ {t:'🦄 A whale enterprise account is evaluating vendors this quarter',eff:{whale:true}},
+ {t:'😴 Quiet quarter, nothing happens',eff:{}},
+];
+function newsFor(r){seed=r*777+13;return NEWS[Math.floor(rnd()*NEWS.length)];}
+
+function buildQuestions(co,news){
+  return {
+    product:{type:'choice',instructions:'Pick the product focus for this quarter given company state and market news.',criteria:{
+      core:'Double down on the core product (retention++, growth flat)',
+      growth:'Launch growth features & viral loops (growth++, churn+1%)',
+      enterprise:'Build enterprise/security features (big-deal chance+, growth slow)',
+      ai:'Ship AI capabilities fast (brand++, morale+5, risk of bugs churn+1%)'}},
+    hiring:{type:'choice',instructions:'Pick the hiring plan (affects burn, morale and velocity).',criteria:{
+      freeze:'Hiring freeze (burn-15%, morale-8)',
+      steady:'Steady hiring (no change)',
+      aggressive:'Aggressive hiring (burn+30%, morale+8, growth+10%)'}},
+    pricing:{type:'choice',instructions:'Pick the pricing move for this quarter.',criteria:{
+      cut:'Cut prices 20% (users +25%, revenue per user -20%)',
+      hold:'Hold pricing (no change)',
+      raise:'Raise prices 15% (revenue per user +15%, churn +2%)'}}
+  };
+}
+function stateFor(co,news,r){
+  return `You are the CEO of a SaaS startup. Quarter ${r}/${TOTAL}. State: cash $${co.cash.toFixed(1)}M, monthly revenue $${co.rev.toFixed(2)}M, monthly burn $${co.burn.toFixed(2)}M, users ${Math.round(co.users)}k, churn ${co.churn}%/qtr, team morale ${co.morale}/100, current product focus: ${co.prod}. Market news this quarter: ${news.t}.`;
+}
+async function callModel(model,state,questions){
+  const t0=performance.now();
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model,state,questions})});
+  const j=await r.json();
+  if(!j.ok)throw new Error((j.error||'api').slice(0,50));
+  return{ans:j.answers,ms:Math.round(performance.now()-t0)};
+}
+const pickOf=a=>a&&(a.choice||Object.keys(a.probabilities||{}).reduce((x,y)=>a.probabilities[x]>=a.probabilities[y]?x:y,'steady'))||'steady';
+
+function simulate(co,news,dec){
+  let g=0;
+  // product effects
+  if(dec.product==='core'){co.churn=Math.max(1,co.churn-1);}
+  if(dec.product==='growth'){g+=15;co.churn+=1;}
+  if(dec.product==='enterprise'){co.brand+=1;co.whaleBoost=true;}
+  if(dec.product==='ai'){co.morale+=5;co.brand+=2;co.churn+=1;g+=8;}
+  // hiring
+  if(dec.hiring==='freeze'){co.burn*=0.85;co.morale-=8;}
+  if(dec.hiring==='aggressive'){co.burn*=1.3;co.morale+=8;g+=10;}
+  if(dec.hiring==='steady'){co.burn*=1.05;}
+  // pricing
+  if(dec.pricing==='cut'){g+=25;co.rev*=0.8;}
+  if(dec.pricing==='raise'){co.churn+=2;co.rev*=1.15;}
+  // news
+  if(news.eff.churn)co.churn+=news.eff.churn;
+  if(news.eff.growth)g+=news.eff.growth/2;
+  if(news.eff.morale)co.morale+=news.eff.morale;
+  if(news.eff.burn)co.burn+=news.eff.burn;
+  if(news.eff.whale&&dec.product==='enterprise'&&rnd()>0.4){co.rev+=0.5;co.cash+=1;co.val+=6;}
+  // quarter passes
+  const grow=1+g/100;
+  co.users=Math.max(1,co.users*grow*(1-co.churn/100));
+  co.rev=co.rev*grow*(1-co.churn/200);
+  co.morale=Math.max(0,Math.min(100,co.morale+ (co.users>15?2:0)));
+  co.cash+=co.rev*3-co.burn*3;   // 3 months
+  co.churn=Math.max(1,Math.min(30,co.churn));
+  co.val=Math.max(1,co.rev*12+co.users*0.4+co.brand*2);
+  if(co.cash<=0)co.alive=false;
+}
+function render(co,S,pref,news){
+  $(S.val).textContent=co.val.toFixed(0);
+  $(S.cash).textContent='$'+co.cash.toFixed(1)+'M';
+  $(S.cashb).style.width=Math.max(0,Math.min(100,co.cash*4))+'%';
+  $(S.rev).textContent='$'+co.rev.toFixed(2)+'M';
+  $(S.revb).style.width=Math.max(0,Math.min(100,co.rev*6))+'%';
+  $(S.mor).textContent=Math.round(co.morale);
+  $(S.morb).style.width=co.morale+'%';
+  $(S.usr).textContent=Math.round(co.users)+'k';
+  $(S.usrb).style.width=Math.max(0,Math.min(100,co.users*1.2))+'%';
+  $(S.ch).textContent=co.churn.toFixed(0)+'%';
+  const box=$(S.box); co.alive?box.classList.remove('dead'):box.classList.add('dead');
+}
+const SA={val:'valA',cash:'cashA',cashb:'cashAb',rev:'revA',revb:'revAb',mor:'morA',morb:'morAb',usr:'usrA',usrb:'usrAb',ch:'chA',box:'coA'};
+const SB={val:'valB',cash:'cashB',cashb:'cashBb',rev:'revB',revb:'revBb',mor:'morB',morb:'morBb',usr:'usrB',usrb:'usrBb',ch:'chB',box:'coB'};
+
+function logLine(p,txt){const d=document.createElement('div');d.textContent=txt;const el=$(p);el.prepend(d);while(el.children.length>40)el.removeChild(el.lastChild);}
+
+async function playRound(co,other,model,S,news,pref){
+  if(!co.alive)return;
+  const t0=performance.now();
+  try{
+    const{ans,ms}=await callModel(model,stateFor(co,news,round),buildQuestions(co,news));
+    const dec={product:pickOf(ans.product),hiring:pickOf(ans.hiring),pricing:pickOf(ans.pricing)};
+    const before=co.val;
+    simulate(co,news,dec);
+    render(co,S,pref,news);
+    $(S.dec===undefined?'decA':(S.box==='coA'?'decA':'decB')).innerHTML=
+      `<span class="q">Q${round} calls</span> (${ms}ms): <b>${dec.product}</b> · <b>${dec.hiring}</b> · <b>${dec.pricing}</b>`;
+    logLine(S.box==='coA'?'logA':'logB',`Q${round} ${dec.product}/${dec.hiring}/${dec.pricing} (${ms}ms) → $${co.val.toFixed(0)}M${co.alive?'':' 💀 bankrupt'}`);
+  }catch(e){
+    // model failed: board makes a boring default decision
+    simulate(co,news,{product:'core',hiring:'steady',pricing:'hold'});
+    render(co,S,pref,news);
+    logLine(S.box==='coA'?'logA':'logB',`Q${round} ERR ${String(e.message).slice(0,30)} → default safe moves`);
+  }
+}
+async function loop(){
+  if(!running)return;
+  round++;
+  $('round').textContent=round;
+  const news=newsFor(round);
+  $('news').innerHTML=`<span class="news">Q${round}: ${news.t}</span> — both CEOs respond…`;
+  $('phase').textContent='Boards deciding…';
+  await Promise.all([
+    playRound(A,B,'ai_decide',SA,news,'A'),
+    playRound(B,A,'jev',SB,news,'B')
+  ]);
+  $('phase').textContent='Next quarter…';
+  if(!A.alive||!B.alive||round>=TOTAL){finish();return;}
+  setTimeout(loop,600);
+}
+function finish(){
+  running=false;
+  const win=(!A.alive&&B.alive)?'B':(!B.alive&&A.alive)?'A':A.val>B.val?'A':B.val>A.val?'B':'tie';
+  const name=win==='A'?'Databricks ai_decide':win==='B'?'TypeSafe Jev':'Nobody';
+  const crown=win==='tie'?'🤝':win==='A'?'🟠':'🩵';
+  const o=$('overlay');o.classList.remove('hide');
+  o.querySelector('h2').innerHTML=`${crown} Winner: ${name}`;
+  o.querySelector('p').innerHTML=
+    `Final after ${round} quarters — ai_decide: <strong>$${Math.max(0,A.val).toFixed(0)}M</strong>${A.alive?'':' (bankrupt 💀)'} · Jev: <strong>$${Math.max(0,B.val).toFixed(0)}M</strong>${B.alive?'':' (bankrupt 💀)'}.<br><br>Same news, same rules, same starting company — the difference is pure decision quality under pressure.`;
+  $('startBtn').textContent='▶ New match';
+}
+$('startBtn').onclick=()=>{
+  $('overlay').classList.add('hide');
+  A=mkCo();B=mkCo();round=0;running=true;seed=42;
+  $('logA').innerHTML='';$('logB').innerHTML='';
+  render(A,SA,'A');render(B,SB,'B');
+  loop();
+};
+</script>
+</body>
+</html>
