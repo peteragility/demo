@@ -135,12 +135,16 @@ const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}}[
 async function decide(){
   const QUESTIONS={dir:{type:'choice',instructions:'You are controlling a snake. Pick the safest move that heads toward the food. Moving into a wall or your own body = death. Danger flags show which moves kill you immediately.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
   const t0=performance.now();
-  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({state:stateJSON(),questions:QUESTIONS})});
-  const j=await r.json();
-  const ms=Math.round(performance.now()-t0);
-  if(!j.ok)throw new Error(j.error||'api');
-  return {answers:j.answers,ms};
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({state:stateJSON(),questions:QUESTIONS})});
+    const j=await r.json();
+    const ms=Math.round(performance.now()-t0);
+    if(!j.ok)throw new Error((j.error||'api')+' ['+r.status+']');
+    return {answers:j.answers,ms};
+  }catch(e){
+    return Promise.reject(new Error(e.message+' @'+Math.round(performance.now()-t0)+'ms'));
+  }
 }
 function showBars(probs,pick){
   document.querySelectorAll('.db').forEach(row=>{
@@ -213,7 +217,8 @@ async function step(){
     else snake.pop();
     dir=v;draw();
   }catch(e){
-    addLog(0,'ERR','⚠️',false);
+    addLog(0,'ERR',(e.message||'fail').slice(0,14),false);
+    $('lastms').textContent='ERR';
   }
   busy=false;$('decState').style.display='none';
   const wait=Math.max(MOVE_GAP-(performance.now()-lastMoveT),50);
