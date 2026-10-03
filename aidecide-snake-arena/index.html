@@ -129,7 +129,7 @@ function stateFor(s,other,food){
   return `h=(${h.x},${h.y}) d=${s.dir[0].toUpperCase()} f=(${food.x},${food.y}) `+
     `danger={U:${danger(h.x,h.y-1)},D:${danger(h.x,h.y+1)},L:${danger(h.x-1,h.y)},R:${danger(h.x+1,h.y)}} len=${s.body.length}`;
 }
-const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}})[n]||null;
+const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0},U:{x:0,y:-1},D:{x:0,y:1},L:{x:-1,y:0},R:{x:1,y:0}})[n]||null;
 
 function spawnFood(excl){
   while(true){const f={x:Math.floor(Math.random()*GRID),y:Math.floor(Math.random()*GRID)};
@@ -163,10 +163,10 @@ function pickDir(a){
 }
 function bars(panel,probs,pick){
   const el=$(panel);el.innerHTML='';
-  ['up','down','left','right'].forEach(d=>{
+  ['U','D','L','R'].forEach(d=>{
     const p=Math.round((probs[d]||0)*100);
     const row=document.createElement('div');row.className='db';
-    row.innerHTML=`<span class="arr">${{up:'⬆',down:'⬇',left:'⬅',right:'➡'}[d]}</span><div class="track"><div class="fill" data-w="${p}"></div></div><span class="pct">${p}%</span>`;
+    row.innerHTML=`<span class="arr">${{U:'⬆',D:'⬇',L:'⬅',R:'➡'}[d]}</span><div class="track"><div class="fill" data-w="${p}"></div></div><span class="pct">${p}%</span>`;
     if(d===pick)row.style.fontWeight='700';
     el.appendChild(row);
   });
