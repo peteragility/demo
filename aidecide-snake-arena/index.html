@@ -139,7 +139,7 @@ function spawnFood(excl){
     if(!excl.some(s=>s.body.some(b=>b.x===f.x&&b.y===f.y)))return f;}
 }
 function reset(){
-  A=mkSnake('orange',12,13,'right'); B=mkSnake('teal',13,13,'right'); // adjacent mirror start, overlap allowed
+  A=mkSnake('orange',13,13,'right'); B=mkSnake('teal',13,13,'right'); // SAME start position; overlap allowed
   food=spawnFood([A,B]); // single food both fight for
   tick=0;gameOverShown=false;
   $('logA').innerHTML='';$('logB').innerHTML='';
