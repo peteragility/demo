@@ -8,6 +8,7 @@ python3 - <<'PYEOF'
 import os, json, datetime
 
 META = {
+  'aidecide-snake-arena/':('Snake Arena — ai_decide vs Jev deathmatch','Two decision models race snakes on one board · live latency compare','AI','#FF3621'),
   'aidecide-snake/':   ('ai_decide Snake — the model plays live','Watch Databricks ai_decide make every snake move · live latency + probabilities','AI','#FF3621'),
   'aidecide-game/':    ('ai_decide — Can You Out-Decide the Model?','Race an AI decision model in quick triage calls · Databricks ai_decide','AI','#FF3621'),
   'tongjian/':         ('資治通鑑 · 294卷全文','司馬光 · 周威烈王至後周世宗 · 前403–959','📖 讀史','#8b2f1f'),

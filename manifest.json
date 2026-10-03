@@ -16,6 +16,13 @@
    "color": "#FF3621"
   },
   {
+   "path": "aidecide-snake-arena/",
+   "title": "Snake Arena — ai_decide vs Jev deathmatch",
+   "desc": "Two decision models race snakes on one board · live latency compare",
+   "tag": "AI",
+   "color": "#FF3621"
+  },
+  {
    "path": "arsenal-champions/",
    "title": "Arsenal Champions",
    "desc": "冠軍之路 ⚽",

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake Arena — ai_decide vs Jev · Model Deathmatch</title>
+<style>
+  :root{--bg:#0E1E24;--card:#152930;--line:#24404A;--txt:#E8F0F2;--mut:#8FA8B0;
+        --orange:#FF3621;--teal:#3ECFB2;--gold:#FFD166;--bad:#FF5A5A}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 14px 60px}
+  header{text-align:center;padding:16px 0 6px}
+  .kicker{color:var(--orange);font-weight:700;letter-spacing:.12em;font-size:.7rem;text-transform:uppercase}
+  h1{font-size:1.5rem;margin:8px 0 4px}
+  .sub{color:var(--mut);font-size:.88rem}
+  .duel{display:flex;align-items:center;justify-content:center;gap:14px;margin:14px 0 4px}
+  .fighter{flex:1;max-width:300px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .fighter.a{border-color:var(--orange)}
+  .fighter.b{border-color:var(--teal)}
+  .fighter .name{font-weight:800;font-size:.95rem}
+  .fighter.a .name{color:var(--orange)}
+  .fighter.b .name{color:var(--teal)}
+  .fighter .meta{font-size:.7rem;color:var(--mut);margin-top:2px}
+  .fighter .big{font-size:1.6rem;font-weight:800;margin-top:6px}
+  .fighter .row{display:flex;justify-content:space-around;margin-top:8px;font-size:.78rem}
+  .fighter .row div b{display:block;font-size:1.05rem}
+  .vs{font-weight:900;font-size:1.3rem;color:var(--gold)}
+  .stage{position:relative;background:#0A161B;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:14px}
+  canvas{display:block;width:100%;height:auto}
+  .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,22,27,.9);text-align:center;padding:24px}
+  .overlay.hide{display:none}
+  .overlay h2{font-size:1.35rem;margin-bottom:10px}
+  .overlay p{color:var(--mut);font-size:.88rem;max-width:460px;line-height:1.65;margin-bottom:18px}
+  .btn{background:var(--orange);border:none;color:#fff;font-weight:700;font-size:1rem;padding:14px 30px;border-radius:10px;cursor:pointer}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .panel h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+  .panel.a h3{color:var(--orange)}.panel.b h3{color:var(--teal)}
+  .db{display:flex;align-items:center;gap:6px;font-size:.78rem;margin-bottom:5px}
+  .db .arr{width:16px;text-align:center}
+  .db .track{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+  .db .fill{height:100%;border-radius:3px;width:0;transition:width .25s}
+  .panel.a .fill{background:var(--orange)}.panel.b .fill{background:var(--teal)}
+  .db .pct{width:38px;text-align:right;color:var(--mut);font-size:.7rem}
+  .log{margin-top:8px;max-height:130px;overflow-y:auto;font-size:.68rem;line-height:1.65}
+  .lr{display:flex;gap:6px;padding:2px 0;border-bottom:1px solid rgba(36,64,74,.5);animation:si .3s}
+  @keyframes si{from{opacity:0;transform:translateY(-5px)}to{opacity:1}}
+  .lr .ms{min-width:56px;text-align:right;color:var(--gold)}
+  .lr .pk{min-width:44px;font-weight:700}
+  .foot{text-align:center;color:var(--mut);font-size:.68rem;margin-top:20px;line-height:1.6}
+  .crown{font-size:1.4rem}
+  @media(max-width:760px){h1{font-size:1.2rem}.wrap{padding:12px 10px 40px}.panels{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Decision Model Deathmatch</div>
+    <h1>🐍 Snake Arena: ai_decide vs Jev</h1>
+    <p class="sub">Two snakes, one board, two decision models driving every move. Watch who decides faster — and who survives longer.</p>
+  </header>
+
+  <div class="duel">
+    <div class="fighter a" id="fa">
+      <div class="name">Databricks ai_decide</div>
+      <div class="meta">managed · workspace Beta</div>
+      <div class="big" id="scoreA">0</div>
+      <div class="row">
+        <div>Alive<b id="aliveA">—</b></div>
+        <div>Avg ms<b id="avgA">—</b></div>
+        <div>Moves<b id="mvA">0</b></div>
+      </div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="fighter b" id="fb">
+      <div class="name">TypeSafe Jev</div>
+      <div class="meta">jev-latest · System One</div>
+      <div class="big" id="scoreB">0</div>
+      <div class="row">
+        <div>Alive<b id="aliveB">—</b></div>
+        <div>Avg ms<b id="avgB">—</b></div>
+        <div>Moves<b id="mvB">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <canvas id="cv" width="640" height="640"></canvas>
+    <div class="overlay" id="overlay">
+      <h2>🥊 Ready for the deathmatch?</h2>
+      <p>Orange snake is driven by <strong>Databricks ai_decide</strong>, teal snake by <strong>TypeSafe Jev</strong> — the same state, the same question ("which way?"), every single move. Each model's latency, probabilities and decisions shown live below. Race ends when both crash. Most food wins.</p>
+      <button class="btn" id="startBtn">▶ Start the match</button>
+    </div>
+  </div>
+
+  <div class="panels">
+    <div class="panel a">
+      <h3>ai_decide — direction probs</h3>
+      <div id="barsA"></div>
+      <div class="log" id="logA"></div>
+    </div>
+    <div class="panel b">
+      <h3>Jev — direction probs</h3>
+      <div id="barsB"></div>
+      <div class="log" id="logB"></div>
+    </div>
+  </div>
+
+  <p class="foot">Each move = one POST per model → AWS edge API → Lambda → ai_decide (Databricks workspace) / Jev (api.typesafe.ai) · same question, same board, live latency<br>Original single-player demo: <a href="../aidecide-snake/" style="color:var(--mut)">ai_decide Snake</a></p>
+</div>
+
+<script>
+const API='https://u37zbl7apd.execute-api.us-east-1.amazonaws.com/prod/decide';
+const GRID=26, CELL=640/GRID;
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+const QUEST={dir:{type:'choice',instructions:'You are controlling a snake competing against another snake for food. Pick the safest move that heads toward the food. Avoid walls, your own body, and the other snake. Danger flags show which moves kill you.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
+
+function mkSnake(color,x,y,dir){return{color,body:[{x,y},{x:x-1,y}],dir,alive:true,score:0,moves:0,msSum:0,logN:0,lastPick:'—'}}
+let A,B,foodA,foodB,running=false,tick=0,gameOverShown=false;
+
+function stateFor(s,other,food){
+  const h=s.body[0];
+  const danger=(x,y)=>x<0||y<0||x>=GRID||y>=GRID
+    ||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y)
+    ||(other.alive&&other.body.some((b,i)=>i<other.body.length-1&&b.x===x&&b.y===y));
+  return JSON.stringify({snake_head:{x:h.x,y:h.y},
+    current_direction:s.dir,food:{x:food.x,y:food.y},
+    food_position_relative:food.x>h.x?'food is to the RIGHT':food.x<h.x?'food is to the LEFT':food.y>h.y?'food is BELOW':'food is ABOVE',
+    danger_if_move:{up:danger(h.x,h.y-1),down:danger(h.x,h.y+1),left:danger(h.x-1,h.y),right:danger(h.x+1,h.y)},
+    opponent:{head:{x:other.body[0].x,y:other.body[0].y},alive:other.alive},
+    snake_length:s.body.length,grid_size:GRID});
+}
+const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}})[n]||null;
+
+function spawnFood(excl){
+  while(true){const f={x:Math.floor(Math.random()*GRID),y:Math.floor(Math.random()*GRID)};
+    if(!excl.some(s=>s.body.some(b=>b.x===f.x&&b.y===f.y)))return f;}
+}
+function reset(){
+  A=mkSnake('orange',6,13,'right'); B=mkSnake('teal',19,12,'left');
+  foodA=spawnFood([A,B]); foodB=spawnFood([A,B]);
+  tick=0;gameOverShown=false;
+  $('logA').innerHTML='';$('logB').innerHTML='';
+  ['scoreA','scoreB'].forEach(i=>$(i).textContent='0');
+  ['mvA','mvB'].forEach(i=>$(i).textContent='0');
+  ['avgA','avgB'].forEach(i=>$(i).textContent='—');
+  ['aliveA','aliveB'].forEach(i=>$(i).textContent='—');
+  draw();
+}
+async function callModel(model,state){
+  const t0=performance.now();
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model,state,questions:QUEST})});
+    const j=await r.json();
+    if(!j.ok)throw new Error((j.error||'api').slice(0,40));
+    return{a:j.answers.dir||{},ms:Math.round(performance.now()-t0)};
+  }catch(e){return Promise.reject(new Error((e.message||'fail')+' @'+Math.round(performance.now()-t0)+'ms'));}
+}
+function pickDir(a){
+  if(a.choice)return a.choice;
+  const p=a.probabilities||{};
+  return Object.keys(p).reduce((x,y)=>p[x]>=p[y]?x:y,'right');
+}
+function bars(panel,probs,pick){
+  const el=$(panel);el.innerHTML='';
+  ['up','down','left','right'].forEach(d=>{
+    const p=Math.round((probs[d]||0)*100);
+    const row=document.createElement('div');row.className='db';
+    row.innerHTML=`<span class="arr">${{up:'⬆',down:'⬇',left:'⬅',right:'➡'}[d]}</span><div class="track"><div class="fill" data-w="${p}"></div></div><span class="pct">${p}%</span>`;
+    if(d===pick)row.style.fontWeight='700';
+    el.appendChild(row);
+  });
+  requestAnimationFrame(()=>setTimeout(()=>el.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%'),30));
+}
+function log(panel,s,n,pick,conf,ms,hit){
+  s.logN++;
+  const row=document.createElement('div');row.className='lr';
+  row.innerHTML=`<span class="ms">${ms}ms</span><span style="color:var(--mut)">#${n}</span><span class="pk" style="color:${hit?'var(--gold)':'var(--bad)'}">${pick}</span><span style="color:var(--mut)">${conf}</span>`;
+  const el=$(panel);el.prepend(row);
+  while(el.children.length>30)el.removeChild(el.lastChild);
+}
+async function moveSnake(s,other,food,model,panel,sc,al,mvv,avg){
+  if(!s.alive)return;
+  try{
+    const{a,ms}=await callModel(model,stateFor(s,other,food));
+    const pick=pickDir(a);const v=dirVec(pick)||s.dir;
+    const h=s.body[0];
+    const nh={x:h.x+v.x,y:h.y+v.y};
+    const dNow=Math.abs(food.x-h.x)+Math.abs(food.y-h.y);
+    const dNew=Math.abs(food.x-nh.x)+Math.abs(food.y-nh.y);
+    const conf=Math.round((a.confidence??0)*100)+'%';
+    bars(panel+'Wrap',a.probabilities||{},pick);
+    log(panel,s,s.body.length? s.moves+1:0,pick,conf,ms,dNew<dNow);
+    s.msSum+=ms;s.moves++;s.lastPick=pick;
+    $(mvv).textContent=s.moves;$(avg).textContent=Math.round(s.msSum/s.moves);
+    // collision
+    const hitWall=nh.x<0||nh.y<0||nh.x>=GRID||nh.y>=GRID;
+    const hitSelf=s.body.some((b,i)=>i<s.body.length-1&&b.x===nh.x&&b.y===nh.y);
+    const hitOther=other.alive&&other.body.some((b,i)=>i<other.body.length-1&&b.x===nh.x&&b.y===nh.y);
+    if(hitWall||hitSelf||hitOther){s.alive=false;$(al).textContent='💀';draw();return;}
+    s.body.unshift(nh);s.dir=v;
+    if(nh.x===food.x&&nh.y===food.y){s.score++;$(sc).textContent=s.score;Object.assign(food,spawnFood([A,B]));}
+    else s.body.pop();
+  }catch(e){
+    log(panel,s,s.moves+1,'ERR','⚠️',0,false);
+  }
+}
+function draw(){
+  ctx.fillStyle='#0A161B';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.strokeStyle='rgba(36,64,74,.3)';ctx.lineWidth=1;
+  for(let i=1;i<GRID;i++){ctx.beginPath();ctx.moveTo(i*CELL,0);ctx.lineTo(i*CELL,cv.height);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,i*CELL);ctx.lineTo(cv.width,i*CELL);ctx.stroke();}
+  const foods=[{f:foodA,c:'#FFD166'},{f:foodB,c:'#FFD166'}];
+  foods.forEach(({f,c})=>{const p=1+Math.sin(Date.now()/200)*.15;
+    ctx.fillStyle=c;ctx.beginPath();ctx.arc(f.x*CELL+CELL/2,f.y*CELL+CELL/2,(CELL/2-3)*p,0,7);ctx.fill();});
+  const cols={orange:'255,54,33',teal:'62,207,178'};
+  [[A],[B]].forEach(([s])=>{
+    s.body.forEach((b,i)=>{
+      const al=1-(i/s.body.length)*.55;
+      ctx.fillStyle=`rgba(${cols[s.color]},${s.alive?al:.25})`;
+      ctx.beginPath();ctx.roundRect(b.x*CELL+2,b.y*CELL+2,CELL-4,CELL-4,6);ctx.fill();
+    });
+    if(s.alive){const h=s.body[0];ctx.fillStyle='#fff';
+      ctx.beginPath();ctx.arc(h.x*CELL+CELL*.35,h.y*CELL+CELL*.35,2.5,0,7);ctx.fill();
+      ctx.beginPath();ctx.arc(h.x*CELL+CELL*.65,h.y*CELL+CELL*.35,2.5,0,7);ctx.fill();}
+  });
+}
+async function loop(){
+  if(!running)return;
+  tick++;
+  await Promise.all([
+    moveSnake(A,B,foodA,'ai_decide','logA','scoreA','aliveA','mvA','avgA'),
+    moveSnake(B,A,foodB,'jev','logB','scoreB','aliveB','mvB','avgB')
+  ]);
+  draw();
+  if(!A.alive&&!B.alive){finish();return;}
+  setTimeout(()=>loop(),120);
+}
+function finish(){
+  running=false;gameOverShown=true;
+  const win=A.score>B.score?'A':B.score>A.score?'B':'tie';
+  const name=win==='A'?'Databricks ai_decide':win==='B'?'TypeSafe Jev':'Nobody';
+  const crown=win==='tie'?'🤝':win==='A'?'🟠':'🩵';
+  const o=$('overlay');o.classList.remove('hide');
+  o.querySelector('h2').innerHTML=`${crown} Winner: ${name}`;
+  o.querySelector('p').innerHTML=`Final — ai_decide: <strong>${A.score} food</strong>, avg <strong>${A.moves?Math.round(A.msSum/A.moves):0}ms</strong>/move · Jev: <strong>${B.score} food</strong>, avg <strong>${B.moves?Math.round(B.msSum/B.moves):0}ms</strong>/move. ${win!=='tie'?'Both models answered the same questions on the same board — the gap you see is pure model + serving latency.':'Dead heat — race again!'}`;
+  $('startBtn').textContent='▶ Rematch';
+}
+// wrap panels for bars()
+$('barsA')?.remove();$('barsB')?.remove();
+const pa=document.createElement('div');pa.id='barsA';document.querySelector('.panel.a').insertBefore(pa,$('logA'));
+const pb=document.createElement('div');pb.id='barsB';document.querySelector('.panel.b').insertBefore(pb,$('logB'));
+$('startBtn').onclick=()=>{$('overlay').classList.add('hide');reset();running=true;loop();};
+reset();
+setInterval(()=>{if(!running)draw();},300);
+</script>
+</body>
+</html>
