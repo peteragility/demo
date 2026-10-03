@@ -174,8 +174,8 @@ async function callModel(model,payload){
 const GRID=26, CELL=640/GRID;
 const cv=$('cv'), ctx=cv.getContext('2d');
 if(!ctx.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;};}
-const BASE_INSTR='Snake steering. Pick the direction that best moves toward the food. All listed options are safe moves.';
-const CRIT_DESC={U:'move up — pick if food is above you',D:'move down — pick if food is below you',L:'move left — pick if food is to your left',R:'move right — pick if food is to your right'};
+const BASE_INSTR='You control a snake on a grid. Rules: eat the food dot to grow; hitting a wall or your own body is death; snakes may pass through each other. Choose your next move.';
+const CRIT_DESC={U:'move up',D:'move down',L:'move left',R:'move right'};
 const dirVec=n=>({U:{x:0,y:-1},D:{x:0,y:1},L:{x:-1,y:0},R:{x:1,y:0}})[n]||null;
 function mkSnake(color,x,y,dir){return{color,body:[{x,y},{x:x-1,y}],dir,dirName:dir,alive:true,score:0,moves:0,msSum:0}}
 let A,B,food,running=false;
@@ -184,11 +184,12 @@ function safeMoves(s){
   const dead=(x,y)=>x<0||y<0||x>=GRID||y>=GRID||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y);
   return ['U','D','L','R'].filter(p=>{const v=dirVec(p);return v&&!dead(h.x+v.x,h.y+v.y);});
 }
-function stateFor(s,food){
-  const h=s.body[0], dx=food.x-h.x, dy=food.y-h.y, dir=[];
-  if(dy<0)dir.push('NORTH (above you)'); if(dy>0)dir.push('SOUTH (below you)');
-  if(dx>0)dir.push('EAST (right of you)'); if(dx<0)dir.push('WEST (left of you)');
-  return `You are a snake. Food is ${dir.length?dir.join(' and '):'on your cell'}. Snake length ${s.body.length}.`;
+function stateFor(s,food,other){
+  const coords=s.body.map(b=>`(${b.x},${b.y})`).join(',');
+  const oc=other.body.map(b=>`(${b.x},${b.y})`).join(',');
+  return `Grid ${GRID}x${GRID}, origin (0,0) top-left, x increases right, y increases down. `+
+    `My snake body (head first): ${coords}. Food at (${food.x},${food.y}). `+
+    `Other snake (may overlap, harmless) body: ${oc}.`;
 }
 function spawnFood(excl){while(true){const f={x:Math.floor(Math.random()*GRID),y:Math.floor(Math.random()*GRID)};if(!excl.some(s=>s.body.some(b=>b.x===f.x&&b.y===f.y)))return f;}}
 function resetSnake(){
@@ -216,8 +217,9 @@ async function moveSnake(s,other,model,panel,barsId,sc,al,mvv,avg){
   try{
     const safe=safeMoves(s);
     if(!safe.length){s.alive=false;$(al).textContent='💀';return;}
-    const crit={};safe.forEach(p=>crit[p]=CRIT_DESC[p]);
-    const state=stateFor(s,food);
+    // all 4 directions offered — the MODEL must figure out which are lethal
+    const crit={U:'move up',D:'move down',L:'move left',R:'move right'};
+    const state=stateFor(s,food,other);
     const questions={d:{type:'choice',instructions:BASE_INSTR,criteria:crit}};
     const{ans,ms}=await callModel(model,{state,questions});
     const a=ans.answers.d||{};
@@ -307,18 +309,11 @@ const POS=['top-left','top-center','top-right','middle-left','center','middle-ri
 let tBoard,tTurn,tScores,tGameNo,tRun=false,tMs={A:0,B:0},tCalls={A:0,B:0},tWins;
 function winner(b){for(const L of LINES){const[a,c,d]=L;if(b[a]&&b[a]===b[c]&&b[a]===b[d])return{p:b[a],line:L};}return b.every(x=>x)?{p:'draw'}:null;}
 function tttState(b,me){
-  const opp=me==='X'?'O':'X';const mine=[],theirs=[];
-  for(const L of LINES){const vs=L.map(i=>b[i]);
-    if(vs.filter(v=>v===me).length===2&&vs.includes(undefined)){mine.push(POS[L[vs.indexOf(undefined)]]);}
-    if(vs.filter(v=>v===opp).length===2&&vs.includes(undefined)){theirs.push(POS[L[vs.indexOf(undefined)]]);}}
-  const rows=[0,1,2].map(r=>[0,1,2].map(c=>b[r*3+c]||'·').join(' ')).join(' | ');
-  return `Tic-tac-toe. You play ${me}. Board: ${rows}. `+
-    (mine.length?`You can WIN now at: ${mine.join(', ')}. `:'No immediate winning move. ')+
-    (theirs.length?`URGENT: opponent wins next turn at: ${theirs.join(', ')} — block unless you can win now. `:'No opponent threat. ')+
-    `Get three in a row.`;
+  const rows=[0,1,2].map(r=>[0,1,2].map(c=>b[r*3+c]||'.').join(' ')).join(' / ');
+  return `Tic-tac-toe. You play ${me}, opponent plays ${me==='X'?'O':'X'}. Board (3x3, empty cells are "."): ${rows}. Get three of your marks in a row, column or diagonal.`;
 }
 function tttQuestions(b){const crit={};b.forEach((v,i)=>{if(v==null)crit['c'+i]=POS[i];});
-  return{move:{type:'choice',instructions:'Best tic-tac-toe move: win if possible, block opponent threats, else take center/corners.',criteria:crit}};}
+  return{move:{type:'choice',instructions:'Choose your move.',criteria:crit}};}
 function tttRender(heat,pick){
   const bd=$('board');bd.innerHTML='';
   tBoard.forEach((v,i)=>{
