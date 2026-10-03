@@ -9,20 +9,6 @@
    "color": "#FF3621"
   },
   {
-   "path": "aidecide-game/",
-   "title": "ai_decide — Can You Out-Decide the Model?",
-   "desc": "Race an AI decision model in quick triage calls · Databricks ai_decide",
-   "tag": "AI",
-   "color": "#FF3621"
-  },
-  {
-   "path": "aidecide-snake-arena/",
-   "title": "aidecide-snake-arena/",
-   "desc": "",
-   "tag": "New",
-   "color": "#3fb950"
-  },
-  {
    "path": "atom-deep-dive.html",
    "title": "Atom Deep Dive — 原子結構深潛",
    "desc": "Atom → Nucleus → Quark → Gluon → String · 互動 3D",
