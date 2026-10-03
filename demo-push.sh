@@ -11,7 +11,6 @@ META = {
   'aidecide-arena/':('AI Arena — ai_decide vs Jev','Snake + Tic-Tac-Toe deathmatch, live model I/O inspection','AI','#FF3621'),
   'tongjian/':         ('資治通鑑 · 294卷全文','司馬光 · 周威烈王至後周世宗 · 前403–959','📖 讀史','#8b2f1f'),
   'llm-pricing/':      ('LLM Token Pricing 對比','Databricks FMAPI vs Bedrock / Azure / Fireworks / GCP / AliCloud · 原廠價 · regions','🔥 Hot','#ff6b35'),
-  'atom-deep-dive.html':('Atom Deep Dive — 原子結構深潛','Atom → Nucleus → Quark → Gluon → String · 互動 3D','Interactive','#c792ea'),
   'lakehouse-quest.html':('Lakehouse Quest','互動 Lakehouse 冒險','Interactive','#4ecdc4'),
   'neon-orbit.html':   ('Neon Orbit','Neon orbit demo','Interactive','#4ecdc4'),
   'lakebase-sales-play/':('Lakebase Sales Play','銷售 playbook','Work','#f7b731'),

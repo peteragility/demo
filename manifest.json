@@ -9,13 +9,6 @@
    "color": "#FF3621"
   },
   {
-   "path": "atom-deep-dive.html",
-   "title": "Atom Deep Dive — 原子結構深潛",
-   "desc": "Atom → Nucleus → Quark → Gluon → String · 互動 3D",
-   "tag": "Interactive",
-   "color": "#c792ea"
-  },
-  {
    "path": "lakebase-objection-faq/",
    "title": "lakebase-objection-faq/",
    "desc": "",
