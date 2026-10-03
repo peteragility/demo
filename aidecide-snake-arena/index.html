@@ -237,7 +237,7 @@ const MOVE_GAP=80;
 async function snakeLoop(s,other,model,panel,sc,al,mvv,avg){
   while(running&&s.alive){
     const t0=performance.now();
-    await moveSnake(s,other,model,panel,sc,al,mvv,avg);
+    await moveSnake(s,other,food,model,panel,sc,al,mvv,avg);
     draw();
     if(!running)break;
     if(!A.alive&&!B.alive){finish();return;}
