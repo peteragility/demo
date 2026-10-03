@@ -102,9 +102,10 @@ try {
     // Expected rows come from the page's own ranking: the priced models arena ranks, in rank order.
     const expected = await evalJS(`(async () => {
       const [d, r] = await Promise.all([fetch('v2-data.json').then(x => x.json()), fetch('v2-ranking.json').then(x => x.json())]);
-      const keys = Object.keys(r.models).filter(k => d.models[k]).sort((a, b) => r.models[a].rank - r.models[b].rank);
+      const hosted = k => Object.entries(d.models[k].platforms).some(([pl, c]) => pl !== 'official' && (c.status === 'priced' || c.status === 'dedicated' || (c.status === 'unverified' && c.available)));
+      const keys = Object.keys(r.models).filter(k => d.models[k] && hosted(k)).sort((a, b) => r.models[a].rank - r.models[b].rank);
       const count = g => keys.filter(k => d.models[k].group === g).length;
-      return {keys, all: keys.length, oss: count('oss'), anthropic: count('anthropic'), openai: count('openai'), google: count('google'), xai: count('xai')};
+      return {keys, all: keys.length, oss: count('oss'), anthropic: count('anthropic'), openai: count('openai'), google: count('google'), xai: count('xai'), other: count('other')};
     })()`);
     const listed = key => expected.keys.includes(key);
     const toggle = key => evalJS(`document.querySelector('tr[data-k="${key}"] .mb').click()`);
@@ -112,7 +113,8 @@ try {
     const initial = await evalJS(measure);
     assert.equal(initial.rows, expected.all, viewport.name + ': All is the default view');
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx tr.row')].map(r=>r.dataset.k)"), expected.keys, viewport.name + ': arena rank order');
-    assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*','oss','anthropic','openai','google','xai']);
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*', ...['oss','anthropic','openai','google','xai','other'].filter(g => expected[g])]);
+    assert.match(await evalJS("document.querySelector('#rankSrc').textContent"), /ranked by arena\.ai Best Overall/);
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
@@ -134,7 +136,7 @@ try {
     await waitFor("document.querySelector('[data-g=anthropic]').getAttribute('aria-pressed')==='true'");
     assert.equal(await rowCount(), expected.anthropic);
     if (listed('anthropic/claude-sonnet-5.5')) assert.match(await evalJS("document.querySelector('#mx').innerText"), /Sonnet 5.5/);
-    for (const g of ['xai', 'google', 'oss', 'openai']) {
+    for (const g of ['xai', 'google', 'oss', 'openai', 'other'].filter(g => expected[g])) {
       await evalJS(`document.querySelector('[data-g=${g}]').click()`);
       assert.equal(await rowCount(), expected[g], viewport.name + ': ' + g + ' rows');
     }

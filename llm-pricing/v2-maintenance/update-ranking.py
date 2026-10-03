@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Order the v2 page by the arena.ai Best Overall ranking; publishes order only, never prices.
 
-The page shows the priced models arena ranks, in rank order. A model leaves the page when
-arena stops ranking it and returns when it is ranked again. Writes ../v2-ranking.json only
-when the ranked models or their ranks change.
+The page shows the reviewed models in arena's top 50 that a compared platform hosts, in rank
+order. A model leaves the page when it drops out of the top 50 and returns when it is back.
+Writes ../v2-ranking.json only when the listed models or their ranks change.
 Exit 0 = ranking current (written or unchanged), 1 = source or parser failure (file untouched).
 """
 import argparse
@@ -60,11 +60,12 @@ def build(config, html, today, previous=None):
     entries = board_entries(html, config["board_id"])
     if len(entries) < config.get("minimum_entries", 1):
         raise ValueError(f"Only {len(entries)} leaderboard entries; refusing to reorder the page.")
+    entries = [e for e in entries if e["rank"] <= config.get("top", len(entries))]
     models, unmatched = rank_models(entries, config["models"])
     if not models:
         raise ValueError("No priced model is ranked; refusing to empty the page.")
     ranking = dict(schema=1, source=config["source"], board=config["board"], board_url=config["board_url"],
-                   ranked_at=today, entries=len(entries), models=dict(sorted(models.items(), key=lambda kv: kv[1]["rank"])))
+                   ranked_at=today, top=config.get("top"), entries=len(entries), models=dict(sorted(models.items(), key=lambda kv: kv[1]["rank"])))
     # Keep the previous date when nothing the page uses has changed.
     if previous and {k: v for k, v in previous.items() if k not in ("ranked_at", "entries")} == \
             {k: v for k, v in ranking.items() if k not in ("ranked_at", "entries")}:
@@ -85,11 +86,10 @@ def report(ranking, previous, unmatched, config):
             moves.append(f"- {m['arena']}: #{before} → #{m['rank']}")
     moves += [f"- {v['arena']}: no longer ranked (hidden)" for k, v in old.items() if k not in ranking["models"]]
     lines += ["## Changes", ""] + (moves or ["No change in the page order."]) + [""]
-    top = [e for e in unmatched if e["rank"] <= 30]
-    if top:
-        lines += ["## Ranked in the top 30 but not priced on the page", "",
-                  "Add verified pricing in build-data.py and a pattern in ranking-config.json to list them.", ""]
-        lines += [f"- #{e['rank']} {e['modelDisplayName']} ({e.get('modelOrganization', '')})" for e in top]
+    if unmatched:
+        lines += [f"## In the top {config.get('top')} but not reviewed for the page", "",
+                  "List one once a compared platform hosts it: add verified pricing in build-data.py and a pattern in ranking-config.json.", ""]
+        lines += [f"- #{e['rank']} {e['modelDisplayName']} ({e.get('modelOrganization', '')})" for e in unmatched]
         lines.append("")
     return "\n".join(lines)
 

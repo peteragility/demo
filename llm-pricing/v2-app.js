@@ -4,9 +4,9 @@
   const PL = ['databricks','official','bedrock','azure_foundry','fireworks','gcloud','alicloud'];
   const LONG = {databricks:'Databricks',official:'原廠 API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
   const SHORT = {databricks:'DBX',official:'原廠',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
-  const ORDER = ['oss','anthropic','openai','google','xai'];
+  const ORDER = ['oss','anthropic','openai','google','xai','other'];
   // [hash id, label, phone label]
-  const TABS = [['all','All','All'],['oss','OSS','OSS'],['anthropic','Anthropic','Claude'],['openai','OpenAI','GPT'],['google','Google','Gemini'],['xai','xAI','Grok']];
+  const TABS = [['all','All','All'],['oss','OSS','OSS'],['anthropic','Anthropic','Claude'],['openai','OpenAI','GPT'],['google','Google','Gemini'],['xai','xAI','Grok'],['other','Other','Other']];
   const HASH_ALIAS = new Map([['claude','anthropic'],['gpt','openai'],['gemini','google'],['grok','xai']]);
   const FIELDS = ['in','out','cache_read','cache_write','cache_write_1h'];
   const EDIT_KEY = 'llm-pricing-v2-overrides', PREF_KEY = 'llm-pricing-v2-preferences';
@@ -113,16 +113,20 @@
     }
   }
 
-  // The arena.ai Best Overall ranking decides which models appear and their default order.
+  // The arena.ai Best Overall ranking decides which models appear and their default order. A model is
+  // listed only while a compared platform hosts it; the maker's own API alone does not count.
   const rankOf = k => RANKING && RANKING.models[k] ? RANKING.models[k].rank : null;
-  const listed = () => Object.entries(DATA.models).filter(([k]) => !RANKING || rankOf(k) != null);
+  const offered = c => Boolean(c) && (c.status === 'priced' || c.status === 'dedicated' || (c.status === 'unverified' && c.available));
+  const hosted = k => PL.some(pl => pl !== 'official' && offered(RESOLVED.models[k][pl]));
+  const listed = () => Object.entries(DATA.models).filter(([k]) => (!RANKING || rankOf(k) != null) && hosted(k));
   function rows() {
     const q = S.q.trim().toLowerCase();
     let arr = listed().map(([k, m], i) => ({ k, m, i: rankOf(k) ?? i, g: groupOf(k, m) }));
     if (S.group !== 'all') arr = arr.filter(r => r.g === S.group);
     if (q) arr = arr.filter(r => [r.k, r.m.name, r.m.short, r.m.maker, r.m.about, ...Object.values(r.m.platforms).map(c => c.model_id)].join(' ').toLowerCase().includes(q));
     if (S.sort === 'price') {
-      const cost = new Map(arr.map(r => [r.k, blendOf(shown(r.k, 'databricks')) ?? Infinity]));
+      // Cheapest standard price on any platform, so models Databricks does not offer sort fairly too.
+      const cost = new Map(arr.map(r => [r.k, Math.min(...PL.map(pl => blendOf(shown(r.k, pl)) ?? Infinity))]));
       arr.sort((a, b) => cost.get(a.k) - cost.get(b.k) || a.i - b.i);
     } else if (S.sort === 'edge') {
       const score = new Map(arr.map(r => [r.k, edge(r)]));
@@ -304,7 +308,9 @@
     const g = S.group === 'all' ? null : S.group;
     const tips = [WATCH, ...(g ? active(DATA.insights && DATA.insights[g]) : ORDER.flatMap(x => active(DATA.insights && DATA.insights[x]).slice(0, 1)))].filter(Boolean);
     const open = S.talk ?? window.matchMedia('(min-width: 1061px) and (min-height: 700px)').matches;
+    const onDbx = list.filter(r => offered(RESOLVED.models[r.k].databricks)).length;
     paint($('#summary'),
+      kpi('', `${onDbx}<small>/${list.length}</small>`, 'listed models offered on Databricks', 'on Databricks') +
       kpi('good', `${p.noCheaperModels}<small>/${p.comparedModels}</small>`, 'models where no hyperscaler beats DBX (AWS · Azure · GCP)', 'no hyperscaler cheaper') +
       kpi('', `${gaps.bedrock}<small> · </small>${gaps.azure_foundry}<small> · </small>${gaps.gcloud}`, 'models not offered on AWS · Azure · GCP (✕)', 'not on AWS · Azure · GCP') +
       kpi('warn', String(p.cheaperCells), 'cells cheaper than DBX on any platform (▼): check first', 'cheaper cells ▼') +
@@ -329,7 +335,7 @@
     const counts = { all: 0 };
     for (const [k, m] of listed()) { const g = groupOf(k, m); counts[g] = (counts[g] || 0) + 1; counts.all++; }
     const tabs = $('#tabs');
-    paint(tabs, TABS.map(([id, label, short]) => `<button type="button" class="tab" data-g="${id}" aria-pressed="${S.group === id}" aria-label="${esc(label + ', ' + (counts[id] || 0) + ' models')}"><span class="tl">${label}</span><span class="ts">${short}</span><span class="n">${counts[id] || 0}</span></button>`).join(''));
+    paint(tabs, TABS.filter(([id]) => id === 'all' || counts[id]).map(([id, label, short]) => `<button type="button" class="tab" data-g="${id}" aria-pressed="${S.group === id}" aria-label="${esc(label + ', ' + (counts[id] || 0) + ' models')}"><span class="tl">${label}</span><span class="ts">${short}</span><span class="n">${counts[id] || 0}</span></button>`).join(''));
     const current = tabs.querySelector('[aria-pressed="true"]');
     if (current) {
       const bounds = tabs.getBoundingClientRect(), selected = current.getBoundingClientRect();
@@ -459,7 +465,10 @@
     applyEdits();
     if (RANKING) {
       const when = new Date(RANKING.ranked_at + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-      $('#rankNote').innerHTML = `Models and default order follow the <a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(RANKING.board)}</a> ranking (# = arena rank), checked daily; order last changed ${esc(when)}. Models arena does not rank are hidden.`;
+      const [title, sub] = String(RANKING.board).split(/ (?=\()/);
+      const board = `<a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(title)}<span class="bsub">${sub ? ' ' + esc(sub) : ''}</span></a>`;
+      $('#rankSrc').innerHTML = ` · ranked by ${board}, ${esc(when)}`;
+      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, AWS, Azure, Fireworks, Google or Alibaba hosts the model. Checked daily; order last changed ${esc(when)}.`;
     }
     const dt = d.reviewed_at;
     const pretty = dt ? new Date(dt + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';

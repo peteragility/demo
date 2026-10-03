@@ -162,8 +162,8 @@ test('a cheaper hyperscaler price in any processing scope counts against parity'
 test('OSS parity counts every hyperscaler that undercuts Databricks', () => {
   const oss = Object.values(data.models).filter(m => m.group === 'oss');
   const result = M.summarize(oss, date);
-  assert.equal(result.comparedModels, 14);
-  assert.equal(result.noCheaperModels, 7);
+  assert.equal(result.comparedModels, 15);
+  assert.equal(result.noCheaperModels, 8);
 });
 
 test('a cheaper price for an unconfirmed checkpoint keeps a model out of the parity claim', () => {
@@ -177,10 +177,11 @@ test('a cheaper price for an unconfirmed checkpoint keeps a model out of the par
 
 test('availability gaps count only models Databricks currently prices', () => {
   const openai = Object.values(data.models).filter(m => m.group === 'openai');
-  assert.equal(M.summarize(openai, date).gaps.gcloud, 7);
+  assert.equal(M.summarize(openai, date).gaps.gcloud, 8);
   const oss = Object.values(data.models).filter(m => m.group === 'oss');
-  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 8, azure_foundry: 5, gcloud: 11});
-  assert.deepEqual(M.summarize(oss, {asOf: '2026-10-30'}).gaps, {bedrock: 5, azure_foundry: 5, gcloud: 8});
+  // Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5 are not on Databricks, so they add no gaps.
+  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 9, azure_foundry: 5, gcloud: 11});
+  assert.deepEqual(M.summarize(oss, {asOf: '2026-10-30'}).gaps, {bedrock: 6, azure_foundry: 5, gcloud: 8});
 });
 
 test('expired promotions carry their published list-tier labels', () => {

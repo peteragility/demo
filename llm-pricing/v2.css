@@ -55,6 +55,7 @@ button,select,input{font:inherit;color:inherit}
 .top h1{margin:0;font-size:20px;line-height:1.25;font-weight:700;letter-spacing:-.01em}
 .top p{margin:0;color:var(--ink-3);font-size:12px;line-height:1.4}
 .top p b{color:var(--ink-2);font-weight:600}
+#rankSrc a{color:var(--ink-2)}
 
 /* sticky family tabs; the tools share their sticky row on wide screens */
 .bar,.tools{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;align-self:start;background:var(--bg);padding-block:8px}
@@ -75,7 +76,7 @@ button,select,input{font:inherit;color:inherit}
 .sel select{border:0;background:transparent;outline:none;font-size:13px;font-weight:600;color:var(--ink);padding:0 2px;max-width:128px}
 
 /* summary: one strip of figures; the talk track opens below it */
-.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:6px;margin-block:2px 8px}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:6px;margin-block:2px 8px}
 .kpi{min-width:0;display:flex;align-items:center;gap:8px;padding:4px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
 .kpi b{flex:none;font-size:18px;line-height:1.2;font-weight:700;letter-spacing:-.01em}
 .kpi b small{font-size:12px;font-weight:600;color:var(--ink-3)}
@@ -215,7 +216,7 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   .tab{height:28px;padding:0 8px;font-size:12.5px}
   .tab .tl{display:none}
   .tab .ts{display:inline}
-  .tab .n{font-size:11px;margin-left:2px}
+  .tab .n{display:none}
   .tools{gap:5px;padding-bottom:6px}
   .search,.sel{height:28px}
   .sel{padding-left:6px}
@@ -227,7 +228,9 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   .kpi span{display:block;font-size:10px;line-height:1.2}
   .kpi .kl{display:none}
   .kpi .ks{display:block}
-  .talkbtn{flex-direction:column;gap:0;padding:0 7px;border-radius:7px;font-size:11px;line-height:1.15;white-space:normal;text-align:center}
+  .summary{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .talkbtn{grid-column:1/-1;justify-self:start;height:22px;padding:0 2px;border:0;background:none;font-size:11.5px}
+  #rankSrc .bsub{display:none}
   .talk{padding:5px 8px 5px 22px}
   .talk li{font-size:11.5px}
   .mx{border-radius:8px}

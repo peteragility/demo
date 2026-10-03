@@ -4,7 +4,7 @@
   "board": "Best Overall (Agent | Overall)",
   "board_url": "https://arena.ai/leaderboard/agent",
   "minimum_entries": 20,
-  "note": "Each priced model matches arena display names (lowercase, - and _ as spaces). The page shows only ranked models, in rank order.",
+  "note": "Each priced model matches arena display names (lowercase, - and _ as spaces). The page lists the top-50 models that at least one compared platform hosts, in rank order.",
   "models": {
     "anthropic/claude-fable-5.1": "^claude fable 5\\.1(?![\\d.])",
     "anthropic/claude-opus-5.5": "^claude opus 5\\.5(?![\\d.])",
@@ -43,6 +43,18 @@
     "meta/llama-4-maverick": "^llama 4 maverick\\b",
     "meta/llama-3.3-70b": "^llama 3\\.3 70b\\b",
     "google/gemma-3-12b": "^gemma 3 12b\\b",
-    "meta/llama-3.1-8b": "^llama 3\\.1 8b\\b"
-  }
+    "meta/llama-3.1-8b": "^llama 3\\.1 8b\\b",
+    "anthropic/claude-fable-5": "^claude fable 5(?![\\d.])",
+    "anthropic/claude-opus-4.8": "^claude opus 4\\.8(?![\\d.])",
+    "openai/gpt-5.4": "^gpt 5\\.4(?![\\d.])(?! (mini|nano|pro|codex)\\b)",
+    "google/gemini-3.6-flash": "^gemini 3\\.6 flash\\b(?! lite)",
+    "zai/glm-5.2": "^glm 5\\.2(?![\\d.])(?! flash)",
+    "qwen/qwen3.8-max": "^qwen ?3\\.8 max\\b",
+    "qwen/qwen3.7-max": "^qwen ?3\\.7 max\\b",
+    "qwen/qwen3.7-plus": "^qwen ?3\\.7 plus\\b",
+    "qwen/qwen3.8-27b": "^qwen ?3\\.8 27b\\b",
+    "minimax/minimax-m3": "^minimax m3\\b",
+    "mistral/mistral-medium-3.5": "^mistral medium 3\\.5\\b"
+  },
+  "top": 50
 }

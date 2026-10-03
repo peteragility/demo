@@ -7,6 +7,7 @@
     "https://api-docs.deepseek.com/quick_start/pricing",
     "https://cloud.google.com/vertex-ai/generative-ai/pricing",
     "https://developers.openai.com/api/docs/pricing",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-xai-grok-4-6.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-xai-grok-4-7.html",
@@ -16,6 +17,7 @@
     "https://docs.databricks.com/aws/en/unity-gateway/model-region-availability",
     "https://docs.fireworks.ai/nexus/provider-keys",
     "https://docs.fireworks.ai/serverless/pricing",
+    "https://docs.mistral.ai/models/model-cards/mistral-medium-3-5-26-04",
     "https://docs.x.ai/developers/models/grok-4.6",
     "https://docs.x.ai/developers/models/grok-4.7",
     "https://docs.z.ai/guides/overview/pricing",
@@ -24,6 +26,7 @@
     "https://platform.claude.com/docs/en/about-claude/models/overview",
     "https://platform.claude.com/docs/en/about-claude/pricing",
     "https://platform.kimi.ai/docs/pricing/chat",
+    "https://platform.minimax.io/docs/pricing/overview",
     "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27",
     "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
     "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
@@ -149,6 +152,18 @@
     "xai_46": {
       "url": "https://docs.x.ai/developers/models/grok-4.6",
       "label": "xAI Grok 4.6 pricing"
+    },
+    "aws_gpt54": {
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html",
+      "label": "Bedrock GPT-5.4 pricing and regions"
+    },
+    "minimax": {
+      "url": "https://platform.minimax.io/docs/pricing/overview",
+      "label": "MiniMax API pricing"
+    },
+    "mistral": {
+      "url": "https://docs.mistral.ai/models/model-cards/mistral-medium-3-5-26-04",
+      "label": "Mistral Medium 3.5 model card"
     }
   },
   "platform_meta": {
@@ -208,6 +223,10 @@
     "xai": {
       "label": "xAI",
       "title": "xAI Grok"
+    },
+    "other": {
+      "label": "Other",
+      "title": "Other labs"
     }
   },
   "insights": {
@@ -236,6 +255,14 @@
           "google/gemma-3-12b",
           "qwen/qwen3-next-80b-instruct"
         ]
+      },
+      {
+        "text": "Not on Databricks: MiniMax M3 (Fireworks $0.30 / $1.20; Azure Data Zone), Mistral Medium 3.5 (Azure $1.50 / $7.50) and Qwen3.8 27B (Alibaba).",
+        "models": [
+          "minimax/minimax-m3",
+          "mistral/mistral-medium-3.5",
+          "qwen/qwen3.8-27b"
+        ]
       }
     ],
     "anthropic": [
@@ -248,6 +275,12 @@
       "List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
       "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
       "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
+      {
+        "text": "GPT-5.4 is $2.50 / $15 on Databricks and OpenAI; Bedrock sells it in-region only at $2.75 / $16.50 (+10%).",
+        "models": [
+          "openai/gpt-5.4"
+        ]
+      },
       "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
       {
         "text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.",
@@ -285,6 +318,10 @@
       },
       "Only Databricks, Vertex and the Gemini API sell Gemini; Bedrock, Azure and Alibaba do not.",
       "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."
+    ],
+    "other": [
+      "Qwen3.8 Max, Qwen3.7 Max and Qwen3.7 Plus are sold on Alibaba Model Studio (Qwen3.8 Max also on Fireworks); none is on Databricks, Bedrock, Azure or Vertex.",
+      "Model Studio's Global scope is below its International (Singapore) list; Qwen3.7 Plus also has limited-time daytime / night discounts."
     ],
     "xai": [
       "Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
@@ -8240,10 +8277,1751 @@
           "until": "2026-12-31"
         }
       ]
+    },
+    "anthropic/claude-fable-5": {
+      "name": "Claude Fable 5",
+      "short": "Fable 5",
+      "maker": "Anthropic",
+      "group": "anthropic",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "in": 10,
+          "out": 50,
+          "cache_read": 1,
+          "cache_write": 12.5,
+          "cache_write_1h": 20,
+          "src": "dbx_prop",
+          "tier": "Standard pay-per-token",
+          "model_id": "databricks-claude-fable-5",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "official": {
+          "in": 10,
+          "out": 50,
+          "cache_read": 1,
+          "cache_write": 12.5,
+          "cache_write_1h": 20,
+          "src": "anthropic",
+          "tier": "Claude API",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 5.0,
+              "out": 25.0,
+              "label": "Batch −50%",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://platform.claude.com/docs/en/about-claude/pricing"
+        },
+        "bedrock": {
+          "in": 10,
+          "out": 50,
+          "cache_read": 1,
+          "cache_write": 12.5,
+          "cache_write_1h": 20,
+          "src": "aws_fm",
+          "tier": "Global cross-region",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "billing_sku": "Claude Fable 5 (Amazon Bedrock Edition)",
+          "variants": [
+            {
+              "in": 11.0,
+              "out": 55.0,
+              "cache_read": 1.1,
+              "cache_write": 13.75,
+              "cache_write_1h": 22.0,
+              "label": "Regional +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+        },
+        "gcloud": {
+          "in": 10,
+          "out": 50,
+          "cache_read": 1,
+          "cache_write": 12.5,
+          "cache_write_1h": 20,
+          "src": "vertex",
+          "tier": "Global endpoint",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 11.0,
+              "out": 55.0,
+              "cache_read": 1.1,
+              "cache_write": 13.75,
+              "cache_write_1h": 22.0,
+              "label": "Regional endpoint +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "azure_foundry": {
+          "status": "unverified",
+          "note": "Not in the reviewed Microsoft Foundry list of current Claude models.",
+          "src": "azure_claude",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks_nexus",
+          "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "anthropic/claude-fable-5"
+    },
+    "anthropic/claude-opus-4.8": {
+      "name": "Claude Opus 4.8",
+      "short": "Opus 4.8",
+      "maker": "Anthropic",
+      "group": "anthropic",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "in": 5,
+          "out": 25,
+          "cache_read": 0.5,
+          "cache_write": 6.25,
+          "cache_write_1h": 10,
+          "src": "dbx_prop",
+          "tier": "Standard pay-per-token",
+          "model_id": "databricks-claude-opus-4-8",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "official": {
+          "in": 5,
+          "out": 25,
+          "cache_read": 0.5,
+          "cache_write": 6.25,
+          "cache_write_1h": 10,
+          "src": "anthropic",
+          "tier": "Claude API",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 2.5,
+              "out": 12.5,
+              "label": "Batch −50%",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 10,
+              "out": 50,
+              "label": "Fast mode",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://platform.claude.com/docs/en/about-claude/pricing"
+        },
+        "bedrock": {
+          "in": 5,
+          "out": 25,
+          "cache_read": 0.5,
+          "cache_write": 6.25,
+          "cache_write_1h": 10,
+          "src": "aws_fm",
+          "tier": "Global cross-region",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "billing_sku": "Claude Opus 4.8 (Amazon Bedrock Edition)",
+          "variants": [
+            {
+              "in": 5.5,
+              "out": 27.5,
+              "cache_read": 0.55,
+              "cache_write": 6.875,
+              "cache_write_1h": 11.0,
+              "label": "Regional +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+        },
+        "gcloud": {
+          "in": 5,
+          "out": 25,
+          "cache_read": 0.5,
+          "cache_write": 6.25,
+          "cache_write_1h": 10,
+          "src": "vertex",
+          "tier": "Global endpoint",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 5.5,
+              "out": 27.5,
+              "cache_read": 0.55,
+              "cache_write": 6.875,
+              "cache_write_1h": 11.0,
+              "label": "Regional endpoint +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "azure_foundry": {
+          "status": "unverified",
+          "note": "Not in the reviewed Microsoft Foundry list of current Claude models.",
+          "src": "azure_claude",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks_nexus",
+          "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "anthropic/claude-opus-4.8"
+    },
+    "openai/gpt-5.4": {
+      "name": "GPT-5.4",
+      "short": "GPT-5.4",
+      "maker": "OpenAI",
+      "group": "openai",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "in": 2.5,
+          "out": 15,
+          "cache_read": 0.25,
+          "src": "dbx_prop",
+          "tier": "Standard · short context",
+          "model_id": "databricks-gpt-5-4",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "context_threshold": 272000,
+          "long_context": {
+            "in": 5,
+            "out": 22.5,
+            "cache_read": 0.5
+          },
+          "variants": [
+            {
+              "in": 5,
+              "out": 30,
+              "cache_read": 0.5,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "official": {
+          "in": 2.5,
+          "out": 15,
+          "cache_read": 0.25,
+          "cache_storage": 0,
+          "src": "openai",
+          "tier": "Standard · short context",
+          "model_id": "gpt-5.4",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "context_threshold": 272000,
+          "long_context": {
+            "in": 5,
+            "out": 22.5,
+            "cache_read": 0.5
+          },
+          "variants": [
+            {
+              "in": 1.25,
+              "out": 7.5,
+              "cache_read": 0.13,
+              "label": "Batch / Flex −50%",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-03",
+              "long_context": {
+                "in": 2.5,
+                "out": 11.25,
+                "cache_read": 0.25
+              },
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 5,
+              "out": 30,
+              "cache_read": 0.5,
+              "label": "Fast mode",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://developers.openai.com/api/docs/pricing"
+        },
+        "bedrock": {
+          "in": 2.75,
+          "out": 16.5,
+          "cache_read": 0.275,
+          "src": "aws_gpt54",
+          "tier": "In-region only (+10% over OpenAI list)",
+          "model_id": "openai.gpt-5.4",
+          "regions": "Mantle in-region: us-east-1, us-east-2, us-west-2 and GovCloud (US-West, priced higher).",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "regional",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "context_threshold": 272000,
+          "long_context": {
+            "in": 5.5,
+            "out": 24.75,
+            "cache_read": 0.55
+          },
+          "model_id_checked_at": "2026-10-03",
+          "has_long_context": true,
+          "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html"
+        },
+        "azure_foundry": {
+          "status": "unverified",
+          "note": "Not in the reviewed Azure Foundry retail price list.",
+          "src": "azure",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "No GPT on Vertex (gpt-oss only).",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks_nexus",
+          "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "openai/gpt-5.4"
+    },
+    "google/gemini-3.6-flash": {
+      "name": "Gemini 3.6 Flash",
+      "short": "Gemini 3.6 Flash",
+      "maker": "Google",
+      "group": "google",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "in": 0.75,
+          "out": 3.75,
+          "cache_read": 0.075,
+          "src": "dbx_prop",
+          "tier": "Intro promo (−50%) until 31 Dec 2026",
+          "model_id": "databricks-gemini-3-6-flash",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "variants": [
+            {
+              "in": 1.5,
+              "out": 7.5,
+              "cache_read": 0.15,
+              "label": "From 1 Jan 2027",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "future_only": true,
+              "id": "variant-0",
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
+            },
+            {
+              "in": 1.35,
+              "out": 6.75,
+              "cache_read": 0.135,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "after": {
+                  "in": 2.7,
+                  "out": 13.5,
+                  "cache_read": 0.27,
+                  "tier": "Priority"
+                },
+                "label": "Flash introductory promotion"
+              },
+              "id": "variant-1",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "promotion": {
+            "ends_on": "2026-12-31",
+            "after": {
+              "in": 1.5,
+              "out": 7.5,
+              "cache_read": 0.15,
+              "tier": "Standard pay-per-token"
+            },
+            "label": "Flash introductory promotion"
+          },
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "official": {
+          "in": 0.75,
+          "out": 3.75,
+          "cache_read": 0.075,
+          "src": "google",
+          "tier": "Paid tier · intro until 31 Dec 2026",
+          "model_id": "gemini-3.6-flash",
+          "regions": null,
+          "note": "Cache storage $0.50 / million token-hours through 31 Dec 2026, then $1.00.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 1.5,
+              "out": 7.5,
+              "cache_read": 0.15,
+              "label": "From 1 Jan 2027",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "future_only": true,
+              "id": "variant-0",
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
+            },
+            {
+              "in": 0.375,
+              "out": 1.875,
+              "cache_read": 0.0375,
+              "label": "Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-03",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Batch"
+                },
+                "label": "Flash introductory promotion"
+              },
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.35,
+              "out": 6.75,
+              "cache_read": 0.135,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "after": {
+                  "in": 2.7,
+                  "out": 13.5,
+                  "cache_read": 0.27,
+                  "tier": "Priority"
+                },
+                "label": "Flash introductory promotion"
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "promotion": {
+            "ends_on": "2026-12-31",
+            "after": {
+              "in": 1.5,
+              "out": 7.5,
+              "cache_read": 0.15,
+              "tier": "Paid tier"
+            },
+            "label": "Flash introductory promotion"
+          },
+          "url": "https://ai.google.dev/gemini-api/docs/pricing"
+        },
+        "gcloud": {
+          "in": 0.75,
+          "out": 3.75,
+          "cache_read": 0.075,
+          "src": "vertex",
+          "tier": "Global endpoint · intro until 31 Dec 2026",
+          "model_id": "gemini-3.6-flash",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 1.5,
+              "out": 7.5,
+              "cache_read": 0.15,
+              "label": "From 1 Jan 2027",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "future_only": true,
+              "id": "variant-0",
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
+            },
+            {
+              "in": 1.35,
+              "out": 6.75,
+              "cache_read": 0.135,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "after": {
+                  "in": 2.7,
+                  "out": 13.5,
+                  "cache_read": 0.27,
+                  "tier": "Priority"
+                },
+                "label": "Flash introductory promotion"
+              },
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.375,
+              "out": 1.875,
+              "cache_read": 0.0375,
+              "label": "Flex / Batch −50%",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-03",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Flex / Batch −50%"
+                },
+                "label": "Flash introductory promotion"
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.825,
+              "out": 4.125,
+              "cache_read": 0.0825,
+              "label": "Non-global +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "after": {
+                  "in": 1.65,
+                  "out": 8.25,
+                  "cache_read": 0.165,
+                  "tier": "Non-global +10%"
+                },
+                "label": "Flash introductory promotion"
+              },
+              "id": "variant-3",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "promotion": {
+            "ends_on": "2026-12-31",
+            "after": {
+              "in": 1.5,
+              "out": 7.5,
+              "cache_read": 0.15,
+              "tier": "Global endpoint"
+            },
+            "label": "Flash introductory promotion"
+          },
+          "cache_storage": 1,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unavailable",
+          "src": "azure",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks_nexus",
+          "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI (not Gemini) models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "notices": [
+        {
+          "text": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
+          "until": "2026-12-31"
+        }
+      ],
+      "model_key": "google/gemini-3.6-flash"
+    },
+    "zai/glm-5.2": {
+      "name": "GLM 5.2",
+      "short": "GLM 5.2",
+      "maker": "Z.ai",
+      "group": "oss",
+      "oss": true,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "in": 1.4,
+          "out": 4.4,
+          "cache_read": 0.26,
+          "src": "dbx_oss",
+          "tier": "Standard pay-per-token",
+          "model_id": "databricks-glm-5-2",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "variants": [
+            {
+              "in": 2.45,
+              "out": 7.7,
+              "cache_read": 0.455,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.databricks.com/product/pricing/foundation-model-serving"
+        },
+        "official": {
+          "in": 1.4,
+          "out": 4.4,
+          "cache_read": 0.26,
+          "src": "zai",
+          "tier": "Z.ai API",
+          "model_id": "glm-5.2",
+          "regions": null,
+          "note": "Cache storage free for a limited time.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://docs.z.ai/guides/overview/pricing"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Bedrock tops out at GLM 5.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "alt": {
+            "name": "GLM 5",
+            "in": 1.0,
+            "out": 3.2
+          },
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "in": 1.54,
+          "out": 4.84,
+          "cache_read": 0.15,
+          "src": "azure",
+          "tier": "Data Zone · FW GLM 5.2 (Fireworks-hosted)",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "data-zone",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "billing_sku": "FW GLM 5.2 Inp / Outp / Cache Inp DZ",
+          "variants": [
+            {
+              "in": 2.31,
+              "out": 7.26,
+              "cache_read": 0.231,
+              "label": "Fast · Data Zone",
+              "comparison_scope": "data-zone",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "in": 1.4,
+          "out": 4.4,
+          "cache_read": 0.14,
+          "src": "vertex",
+          "tier": "Vertex MaaS",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "unverified",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Fireworks serverless lists GLM 5.3 and 5.3 Flash, not 5.2.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        },
+        "alicloud": {
+          "in": 1.1,
+          "out": 3.851,
+          "src": "ali",
+          "tier": "Global scope",
+          "model_id": "glm-5.2",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 1.4,
+              "out": 4.4,
+              "label": "International (Singapore)",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.4,
+              "out": 4.4,
+              "label": "US (Virginia)",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "zai/glm-5.2"
+    },
+    "qwen/qwen3.8-max": {
+      "name": "Qwen3.8 Max",
+      "short": "Qwen3.8 Max",
+      "maker": "Alibaba Qwen",
+      "group": "other",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 1.65,
+          "out": 4.951,
+          "src": "ali",
+          "tier": "Alibaba Model Studio · Global scope",
+          "model_id": "qwen3.8-max",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 2,
+              "out": 6,
+              "label": "International (Singapore)",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "alicloud": {
+          "in": 1.65,
+          "out": 4.951,
+          "src": "ali",
+          "tier": "Global scope",
+          "model_id": "qwen3.8-max",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 2,
+              "out": 6,
+              "label": "International (Singapore)",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Not in the reviewed Bedrock price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unavailable",
+          "src": "azure",
+          "note": "Not in the reviewed Azure Foundry price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Not in the reviewed Vertex price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "fireworks": {
+          "in": 2,
+          "out": 6,
+          "cache_read": 0.25,
+          "src": "fireworks",
+          "tier": "Serverless Standard",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 3,
+              "out": 9,
+              "cache_read": 0.375,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        }
+      },
+      "model_key": "qwen/qwen3.8-max"
+    },
+    "qwen/qwen3.7-max": {
+      "name": "Qwen3.7 Max",
+      "short": "Qwen3.7 Max",
+      "maker": "Alibaba Qwen",
+      "group": "other",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 1.65,
+          "out": 4.951,
+          "src": "ali",
+          "tier": "Alibaba Model Studio · Global scope",
+          "model_id": "qwen3.7-max",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 2.5,
+              "out": 7.5,
+              "label": "International (Singapore)",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.5,
+              "out": 7.5,
+              "label": "US (Virginia)",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "alicloud": {
+          "in": 1.65,
+          "out": 4.951,
+          "src": "ali",
+          "tier": "Global scope",
+          "model_id": "qwen3.7-max",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 2.5,
+              "out": 7.5,
+              "label": "International (Singapore)",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.5,
+              "out": 7.5,
+              "label": "US (Virginia)",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Not in the reviewed Bedrock price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unavailable",
+          "src": "azure",
+          "note": "Not in the reviewed Azure Foundry price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Not in the reviewed Vertex price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Not in the reviewed Fireworks serverless price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        }
+      },
+      "model_key": "qwen/qwen3.7-max"
+    },
+    "qwen/qwen3.7-plus": {
+      "name": "Qwen3.7 Plus",
+      "short": "Qwen3.7 Plus",
+      "maker": "Alibaba Qwen",
+      "group": "other",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 0.276,
+          "out": 1.101,
+          "src": "ali",
+          "tier": "Alibaba Model Studio · Global scope ≤256K",
+          "model_id": "qwen3.7-plus",
+          "regions": null,
+          "note": "List price shown; Model Studio lists limited-time discounts (Global: daytime 20% off, night 60% off) with no end date.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 0.4,
+              "out": 1.6,
+              "label": "International (Singapore) ≤256K",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "alicloud": {
+          "in": 0.276,
+          "out": 1.101,
+          "src": "ali",
+          "tier": "Global scope ≤256K",
+          "model_id": "qwen3.7-plus",
+          "regions": null,
+          "note": "List price shown; Model Studio lists limited-time discounts (Global: daytime 20% off, night 60% off) with no end date.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 0.4,
+              "out": 1.6,
+              "label": "International (Singapore) ≤256K",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Not in the reviewed Bedrock price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unavailable",
+          "src": "azure",
+          "note": "Not in the reviewed Azure Foundry price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Not in the reviewed Vertex price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Not in the reviewed Fireworks serverless price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        }
+      },
+      "model_key": "qwen/qwen3.7-plus"
+    },
+    "qwen/qwen3.8-27b": {
+      "name": "Qwen3.8 27B",
+      "short": "Qwen3.8 27B",
+      "maker": "Alibaba Qwen",
+      "group": "oss",
+      "oss": true,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 0.5,
+          "out": 3,
+          "src": "ali",
+          "tier": "Alibaba Model Studio · International (Singapore)",
+          "model_id": "qwen3.8-27b",
+          "regions": null,
+          "note": "Open weights (Apache 2.0). China (Beijing) lists $0.424 / $1.696.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "alicloud": {
+          "in": 0.5,
+          "out": 3,
+          "src": "ali",
+          "tier": "International (Singapore)",
+          "model_id": "qwen3.8-27b",
+          "regions": null,
+          "note": "Open weights (Apache 2.0). China (Beijing) lists $0.424 / $1.696.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Not in the reviewed Bedrock price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unavailable",
+          "src": "azure",
+          "note": "Not in the reviewed Azure Foundry price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Not in the reviewed Vertex price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Not in the reviewed Fireworks serverless price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        }
+      },
+      "model_key": "qwen/qwen3.8-27b"
+    },
+    "minimax/minimax-m3": {
+      "name": "MiniMax M3",
+      "short": "MiniMax M3",
+      "maker": "MiniMax",
+      "group": "oss",
+      "oss": true,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 0.3,
+          "out": 1.2,
+          "cache_read": 0.06,
+          "src": "minimax",
+          "tier": "Standard · ≤512K input",
+          "model_id": "MiniMax-M3",
+          "regions": null,
+          "note": "Permanent 50% off list ($0.60 / $2.40).",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "context_threshold": 512000,
+          "long_context": {
+            "in": 0.6,
+            "out": 2.4,
+            "cache_read": 0.12
+          },
+          "variants": [
+            {
+              "in": 0.45,
+              "out": 1.8,
+              "cache_read": 0.09,
+              "label": "Priority (1.5×)",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "long_context": {
+                "in": 0.9,
+                "out": 3.6,
+                "cache_read": 0.18
+              },
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://platform.minimax.io/docs/pricing/overview"
+        },
+        "fireworks": {
+          "in": 0.3,
+          "out": 1.2,
+          "cache_read": 0.06,
+          "src": "fireworks",
+          "tier": "Serverless Standard",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 0.45,
+              "out": 1.8,
+              "cache_read": 0.09,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        },
+        "azure_foundry": {
+          "in": 0.33,
+          "out": 1.32,
+          "cache_read": 0.066,
+          "src": "azure",
+          "tier": "Data Zone · FW MiniMax 3 (Fireworks-hosted)",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "data-zone",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Bedrock lists MiniMax M2, M2.1 and M2.5, not M3.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Vertex MaaS lists MiniMax-M2.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "alt": {
+            "name": "MiniMax-M2",
+            "short": "M2",
+            "in": 0.3,
+            "out": 1.2
+          },
+          "model_id": null,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": "Model Studio lists MiniMax-M2.5 (China only).",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "minimax/minimax-m3"
+    },
+    "mistral/mistral-medium-3.5": {
+      "name": "Mistral Medium 3.5",
+      "short": "Mistral Med 3.5",
+      "maker": "Mistral",
+      "group": "oss",
+      "oss": true,
+      "badges": [
+        "Added"
+      ],
+      "ctx": "256K",
+      "about": "Open weights (Modified MIT)",
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 1.5,
+          "out": 7.5,
+          "src": "mistral",
+          "tier": "Mistral API",
+          "model_id": "mistral-medium-3-5",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_checked_at": "2026-10-03",
+          "url": "https://docs.mistral.ai/models/model-cards/mistral-medium-3-5-26-04"
+        },
+        "azure_foundry": {
+          "in": 1.5,
+          "out": 7.5,
+          "src": "azure",
+          "tier": "Global Standard",
+          "model_id": null,
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-10-03",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "billing_sku": "Azure Mistral Models · MM3.5 Inp / Outp glbl",
+          "variants": [
+            {
+              "in": 1.65,
+              "out": 8.25,
+              "label": "Data Zone",
+              "comparison_scope": "data-zone",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-03",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Not in the reviewed Bedrock price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Not in the reviewed Fireworks serverless price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Vertex MaaS lists Mistral Medium 3.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-03",
+          "alt": {
+            "name": "Mistral Medium 3",
+            "short": "Medium 3",
+            "in": 0.4,
+            "out": 2.0
+          },
+          "model_id": null,
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+        }
+      },
+      "model_key": "mistral/mistral-medium-3.5"
     }
   },
-  "reviewed_at": "2026-10-02",
+  "reviewed_at": "2026-10-03",
   "changes": [
+    "2026-10-03: Added the arena.ai Best Overall top-50 models that a compared platform hosts: Claude Fable 5, Claude Opus 4.8, GPT-5.4, Gemini 3.6 Flash, GLM 5.2, Qwen3.8 Max, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5.",
     "Added GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 / 3.1 Flash-Lite, Grok 4.7 and Grok 4.6.",
     "Removed three discontinued Fireworks serverless quotes; dedicated deployments are a separate state.",
     "Corrected Bedrock Kimi K3 Global / Regional Priority and cache-read / write tiers.",

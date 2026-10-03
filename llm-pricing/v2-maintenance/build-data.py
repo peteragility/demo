@@ -279,6 +279,157 @@ def add_models(data):
                            alicloud=unavailable("ali")))
 
 
+TOP50_CHECKED = "2026-10-03"
+
+
+def checked(cell, day=TOP50_CHECKED):
+    """Offers added from the 2026-10-03 top-50 review carry that verification date."""
+    if cell["status"] == "priced":
+        cell["pricing_checked_at"] = day
+        for v in cell.get("variants", []):
+            v["pricing_checked_at"] = day
+    if cell.get("model_id"):
+        cell["model_id_checked_at"] = day
+    cell["availability_checked_at"] = day
+    return cell
+
+
+def off_dbx(note="Not in the Databricks supported-models catalog."):
+    return unavailable("dbx_models", note)
+
+
+def add_top50_models(data):
+    """arena.ai Best Overall top-50 models that at least one compared platform hosts (reviewed 2026-10-03).
+
+    Models sold only through their maker's API (Muse Spark, Grok 4.5, Step 5, Hy3 / Hy4, MiMo,
+    Gemini 4 Argon, Inkling Small, Qwen3.8 Flash Next) are not listed.
+    """
+    m = data["models"]
+    data["source_meta"].update({
+        "aws_gpt54": dict(url="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html", label="Bedrock GPT-5.4 pricing and regions"),
+        "minimax": dict(url="https://platform.minimax.io/docs/pricing/overview", label="MiniMax API pricing"),
+        "mistral": dict(url="https://docs.mistral.ai/models/model-cards/mistral-medium-3-5-26-04", label="Mistral Medium 3.5 model card"),
+    })
+    data["groups"]["other"] = dict(label="Other", title="Other labs")
+    nexus = m["anthropic/claude-opus-5"]["platforms"]["fireworks"]["note"]
+    no_cloud = {pl: unavailable(src, "Not in the reviewed " + name + " price list.") for pl, src, name in
+                [("bedrock", "aws", "Bedrock"), ("azure_foundry", "azure", "Azure Foundry"), ("gcloud", "vertex", "Vertex"),
+                 ("fireworks", "fireworks", "Fireworks serverless")]}
+    for key, name, short, i, o, cr, cw, cw1h, dbx_id, extra in [
+            ("anthropic/claude-fable-5", "Claude Fable 5", "Fable 5", 10, 50, 1, 12.5, 20, "databricks-claude-fable-5", []),
+            ("anthropic/claude-opus-4.8", "Claude Opus 4.8", "Opus 4.8", 5, 25, 0.5, 6.25, 10, "databricks-claude-opus-4-8",
+             [variant("Fast mode", 10, 50, service="priority")])]:
+        regional = [round(x * 1.1, 6) for x in (i, o, cr, cw, cw1h)]
+        official = offer(i, o, cr, cw, cw1h, src="anthropic", tier="Claude API")
+        official["variants"] = [variant("Batch −50%", i / 2, o / 2, service="batch"), *extra]
+        bedrock = offer(i, o, cr, cw, cw1h, src="aws_fm", tier="Global cross-region", billing_sku=name + " (Amazon Bedrock Edition)")
+        bedrock["variants"] = [variant("Regional +10%", *regional, scope="regional")]
+        vertex = offer(i, o, cr, cw, cw1h, src="vertex", tier="Global endpoint")
+        vertex["variants"] = [variant("Regional endpoint +10%", *regional, scope="regional")]
+        m[key] = dict(name=name, short=short, maker="Anthropic", group="anthropic", oss=False, badges=["Added"], ctx=None,
+            platforms=dict(databricks=offer(i, o, cr, cw, cw1h, src="dbx_prop", tier="Standard pay-per-token", model_id=dbx_id,
+                                            model_id_source="dbx_models", dbu_rate_basis=0.07),
+                           official=official, bedrock=bedrock, gcloud=vertex,
+                           azure_foundry=pending("Not in the reviewed Microsoft Foundry list of current Claude models.", "azure_claude"),
+                           fireworks=unavailable("fireworks_nexus", nexus), alicloud=unavailable("ali")))
+
+    dbx54 = offer(2.5, 15, 0.25, src="dbx_prop", tier="Standard · short context", model_id="databricks-gpt-5-4", model_id_source="dbx_models",
+                  dbu_rate_basis=0.07, context_threshold=272000, long_context=rates(5, 22.5, 0.5))
+    dbx54["variants"] = [variant("Priority", 5, 30, 0.5, service="priority")]
+    api54 = offer(2.5, 15, 0.25, src="openai", tier="Standard · short context", model_id="gpt-5.4", context_threshold=272000,
+                  long_context=rates(5, 22.5, 0.5), storage=0)
+    api54["variants"] = [variant("Batch / Flex −50%", 1.25, 7.5, 0.13, service="flex", long_context=rates(2.5, 11.25, 0.25)),
+                         variant("Fast mode", 5, 30, 0.5, service="priority")]
+    m["openai/gpt-5.4"] = dict(name="GPT-5.4", short="GPT-5.4", maker="OpenAI", group="openai", oss=False, badges=["Added"], ctx=None,
+        platforms=dict(databricks=dbx54, official=api54,
+            bedrock=offer(2.75, 16.5, 0.275, src="aws_gpt54", tier="In-region only (+10% over OpenAI list)", model_id="openai.gpt-5.4",
+                          context_threshold=272000, long_context=rates(5.5, 24.75, 0.55), scope="regional",
+                          regions="Mantle in-region: us-east-1, us-east-2, us-west-2 and GovCloud (US-West, priced higher)."),
+            azure_foundry=pending("Not in the reviewed Azure Foundry retail price list.", "azure"),
+            gcloud=unavailable("vertex", "No GPT on Vertex (gpt-oss only)."), fireworks=unavailable("fireworks_nexus", nexus),
+            alicloud=unavailable("ali")))
+
+    dbx36 = offer(0.75, 3.75, 0.075, src="dbx_prop", tier="Intro promo (−50%) until 31 Dec 2026", model_id="databricks-gemini-3-6-flash",
+                  model_id_source="dbx_models", dbu_rate_basis=0.07)
+    dbx36["variants"] = [variant("From 1 Jan 2027", 1.5, 7.5, 0.15), variant("Priority", 1.35, 6.75, 0.135, service="priority")]
+    api36 = offer(0.75, 3.75, 0.075, src="google", tier="Paid tier · intro until 31 Dec 2026", model_id="gemini-3.6-flash",
+                  note="Cache storage $0.50 / million token-hours through 31 Dec 2026, then $1.00.")
+    api36["variants"] = [variant("From 1 Jan 2027", 1.5, 7.5, 0.15), variant("Batch", 0.375, 1.875, 0.0375, service="batch"),
+                         variant("Priority", 1.35, 6.75, 0.135, service="priority")]
+    vx36 = offer(0.75, 3.75, 0.075, src="vertex", tier="Global endpoint · intro until 31 Dec 2026", model_id="gemini-3.6-flash")
+    vx36["variants"] = [variant("From 1 Jan 2027", 1.5, 7.5, 0.15), variant("Priority", 1.35, 6.75, 0.135, service="priority"),
+                        variant("Flex / Batch −50%", 0.375, 1.875, 0.0375, service="flex"),
+                        variant("Non-global +10%", 0.825, 4.125, 0.0825, scope="regional")]
+    m["google/gemini-3.6-flash"] = dict(name="Gemini 3.6 Flash", short="Gemini 3.6 Flash", maker="Google", group="google", oss=False,
+        badges=["Added"], ctx=None, warn="Intro price ends 31 Dec 2026, then $1.50 / $7.50",
+        platforms=dict(databricks=dbx36, official=api36, gcloud=vx36,
+                       bedrock=unavailable("aws"), azure_foundry=unavailable("azure"),
+                       fireworks=unavailable("fireworks_nexus", m["google/gemini-3.7-flash"]["platforms"]["fireworks"]["note"]),
+                       alicloud=unavailable("ali")))
+
+    dbx52 = offer(1.4, 4.4, 0.26, src="dbx_oss", tier="Standard pay-per-token", model_id="databricks-glm-5-2", model_id_source="dbx_models",
+                  dbu_rate_basis=0.07)
+    dbx52["variants"] = [variant("Priority", 2.45, 7.7, 0.455, service="priority")]
+    az52 = offer(1.54, 4.84, 0.15, src="azure", tier="Data Zone · FW GLM 5.2 (Fireworks-hosted)", scope="data-zone",
+                 billing_sku="FW GLM 5.2 Inp / Outp / Cache Inp DZ")
+    az52["variants"] = [variant("Fast · Data Zone", 2.31, 7.26, 0.231, scope="data-zone", service="priority")]
+    ali52 = offer(1.1, 3.851, src="ali", tier="Global scope", model_id="glm-5.2")
+    ali52["variants"] = [variant("International (Singapore)", 1.4, 4.4), variant("US (Virginia)", 1.4, 4.4, scope="regional")]
+    m["zai/glm-5.2"] = dict(name="GLM 5.2", short="GLM 5.2", maker="Z.ai", group="oss", oss=True, badges=["Added"], ctx=None,
+        platforms=dict(databricks=dbx52, official=offer(1.4, 4.4, 0.26, src="zai", tier="Z.ai API", model_id="glm-5.2",
+                                                        note="Cache storage free for a limited time."),
+            bedrock=unavailable("aws", "Bedrock tops out at GLM 5."), azure_foundry=az52,
+            gcloud=offer(1.4, 4.4, 0.14, src="vertex", tier="Vertex MaaS", scope="unverified"),
+            fireworks=unavailable("fireworks", "Fireworks serverless lists GLM 5.3 and 5.3 Flash, not 5.2."), alicloud=ali52))
+    m["zai/glm-5.2"]["platforms"]["bedrock"]["alt"] = dict(m["zai/glm-5.3"]["platforms"]["bedrock"]["alt"])
+
+    def qwen(key, name, short, group, global_rates, variants, tier="Global scope", fireworks=None, note=None):
+        cells = {}
+        for pl, label in [("official", "Alibaba Model Studio · " + tier), ("alicloud", tier)]:
+            cells[pl] = offer(*global_rates, src="ali", tier=label, model_id=key.split("/", 1)[1], note=note)
+            cells[pl]["variants"] = [variant(*v[:3], **v[3]) for v in variants]
+        m[key] = dict(name=name, short=short, maker="Alibaba Qwen", group=group, oss=group == "oss", badges=["Added"], ctx=None,
+            platforms=dict(databricks=off_dbx(), **cells, bedrock=no_cloud["bedrock"], azure_foundry=no_cloud["azure_foundry"],
+                           gcloud=no_cloud["gcloud"], fireworks=fireworks or no_cloud["fireworks"]))
+
+    fw38 = offer(2, 6, 0.25, src="fireworks", tier="Serverless Standard")
+    fw38["variants"] = [variant("Priority", 3, 9, 0.375, service="priority")]
+    qwen("qwen/qwen3.8-max", "Qwen3.8 Max", "Qwen3.8 Max", "other", (1.65, 4.951), [("International (Singapore)", 2, 6, {})], fireworks=fw38)
+    qwen("qwen/qwen3.7-max", "Qwen3.7 Max", "Qwen3.7 Max", "other", (1.65, 4.951),
+         [("International (Singapore)", 2.5, 7.5, {}), ("US (Virginia)", 2.5, 7.5, dict(scope="regional"))])
+    qwen("qwen/qwen3.7-plus", "Qwen3.7 Plus", "Qwen3.7 Plus", "other", (0.276, 1.101), [("International (Singapore) ≤256K", 0.4, 1.6, {})],
+         tier="Global scope ≤256K", note="List price shown; Model Studio lists limited-time discounts (Global: daytime 20% off, night 60% off) with no end date.")
+    qwen("qwen/qwen3.8-27b", "Qwen3.8 27B", "Qwen3.8 27B", "oss", (0.5, 3), [], tier="International (Singapore)",
+         note="Open weights (Apache 2.0). China (Beijing) lists $0.424 / $1.696.")
+
+    mm = offer(0.3, 1.2, 0.06, src="minimax", tier="Standard · ≤512K input", model_id="MiniMax-M3", context_threshold=512000,
+               long_context=rates(0.6, 2.4, 0.12), note="Permanent 50% off list ($0.60 / $2.40).")
+    mm["variants"] = [variant("Priority (1.5×)", 0.45, 1.8, 0.09, service="priority", long_context=rates(0.9, 3.6, 0.18))]
+    fwm = offer(0.3, 1.2, 0.06, src="fireworks", tier="Serverless Standard")
+    fwm["variants"] = [variant("Priority", 0.45, 1.8, 0.09, service="priority")]
+    m["minimax/minimax-m3"] = dict(name="MiniMax M3", short="MiniMax M3", maker="MiniMax", group="oss", oss=True, badges=["Added"], ctx=None,
+        platforms=dict(databricks=off_dbx(), official=mm, fireworks=fwm,
+            azure_foundry=offer(0.33, 1.32, 0.066, src="azure", tier="Data Zone · FW MiniMax 3 (Fireworks-hosted)", scope="data-zone"),
+            bedrock=unavailable("aws", "Bedrock lists MiniMax M2, M2.1 and M2.5, not M3."),
+            gcloud=unavailable("vertex", "Vertex MaaS lists MiniMax-M2."),
+            alicloud=unavailable("ali", "Model Studio lists MiniMax-M2.5 (China only).")))
+    m["minimax/minimax-m3"]["platforms"]["gcloud"]["alt"] = dict(name="MiniMax-M2", short="M2", **{"in": 0.3, "out": 1.2})
+
+    az35 = offer(1.5, 7.5, src="azure", tier="Global Standard", billing_sku="Azure Mistral Models · MM3.5 Inp / Outp glbl")
+    az35["variants"] = [variant("Data Zone", 1.65, 8.25, scope="data-zone")]
+    m["mistral/mistral-medium-3.5"] = dict(name="Mistral Medium 3.5", short="Mistral Med 3.5", maker="Mistral", group="oss", oss=True,
+        badges=["Added"], ctx="256K", about="Open weights (Modified MIT)",
+        platforms=dict(databricks=off_dbx(), official=offer(1.5, 7.5, src="mistral", tier="Mistral API", model_id="mistral-medium-3-5"),
+            azure_foundry=az35, bedrock=no_cloud["bedrock"], fireworks=no_cloud["fireworks"], alicloud=unavailable("ali"),
+            gcloud=unavailable("vertex", "Vertex MaaS lists Mistral Medium 3.")))
+    m["mistral/mistral-medium-3.5"]["platforms"]["gcloud"]["alt"] = dict(name="Mistral Medium 3", short="Medium 3", **{"in": 0.4, "out": 2.0})
+
+    for key in ("anthropic/claude-fable-5", "anthropic/claude-opus-4.8", "openai/gpt-5.4", "google/gemini-3.6-flash", "zai/glm-5.2",
+                "qwen/qwen3.8-max", "qwen/qwen3.7-max", "qwen/qwen3.7-plus", "qwen/qwen3.8-27b", "minimax/minimax-m3", "mistral/mistral-medium-3.5"):
+        for pl, c in m[key]["platforms"].items():
+            m[key]["platforms"][pl] = checked(copy.deepcopy(c))
+
+
 def corrections(data):
     m = data["models"]
     fireworks = {
@@ -359,7 +510,7 @@ def enrich_context_and_promotions(data):
                     after = rates(2.5, 15, 0.25)
                     after["long_context"] = rates(5, 22.5, 0.5)
                     promo(c, "2027-01-31", after, "Databricks 20% promotion", "Standard pay-per-token")
-                if key in ("google/gemini-3.8-flash", "google/gemini-3.7-flash"):
+                if key in ("google/gemini-3.8-flash", "google/gemini-3.7-flash", "google/gemini-3.6-flash"):
                     list_tier = "Standard pay-per-token" if pl == "databricks" else c["tier"].split(" · intro")[0]
                     promo(c, "2026-12-31", rates(1.5, 7.5, 0.15), "Flash introductory promotion", list_tier)
                     for v in variants:
@@ -417,7 +568,7 @@ def lifecycle_notices(data):
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
-    data.update(schema=4, reviewed_at=REVIEWED,
+    data.update(schema=4, reviewed_at=TOP50_CHECKED,
                 basis="Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, "
                       "in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and "
                       "off-peak prices are listed in the row details and are not compared.")
@@ -435,6 +586,7 @@ def build():
     data["groups"]["xai"] = dict(label="xAI", title="xAI Grok")
     normalize(data)
     add_models(data)
+    add_top50_models(data)
     corrections(data)
     enrich_context_and_promotions(data)
     lifecycle_notices(data)
@@ -448,7 +600,8 @@ def build():
                 "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
                 "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither sells GLM 5.3 or DeepSeek V4, and Vertex has no Kimi K3.",
                 {"text": "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.", "models": ["deepseek/deepseek-v4-flash"]},
-                {"text": "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models.", "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "google/gemma-3-12b", "qwen/qwen3-next-80b-instruct"]}],
+                {"text": "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models.", "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "google/gemma-3-12b", "qwen/qwen3-next-80b-instruct"]},
+                {"text": "Not on Databricks: MiniMax M3 (Fireworks $0.30 / $1.20; Azure Data Zone), Mistral Medium 3.5 (Azure $1.50 / $7.50) and Qwen3.8 27B (Alibaba).", "models": ["minimax/minimax-m3", "mistral/mistral-medium-3.5", "qwen/qwen3.8-27b"]}],
         "anthropic": ["List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
                       "Regional / data-residency endpoints are +10% on Bedrock, Vertex and Databricks (⌖); Anthropic's US-only inference is ×1.1.",
                       "Microsoft Foundry deploys Claude only from US or Sweden Central resources, with no APAC region. Vertex offers asia-east1 (Taiwan) and asia-southeast1 regional endpoints.",
@@ -456,6 +609,7 @@ def build():
         "openai": ["List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
                    "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
                    "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
+                   {"text": "GPT-5.4 is $2.50 / $15 on Databricks and OpenAI; Bedrock sells it in-region only at $2.75 / $16.50 (+10%).", "models": ["openai/gpt-5.4"]},
                    "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
                    {"text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.", "until": "2026-11-21"},
                    {"text": "GPT-5.6 Sol is $5 / $30 on every platform since its promotion ended 21 Nov 2026.", "from": "2026-11-22"}],
@@ -466,12 +620,15 @@ def build():
                    {"text": "Gemini 3.8 / 3.7 Flash list at $1.50 / $7.50 everywhere since intro pricing ended 31 Dec 2026.", "from": "2027-01-01"},
                    "Only Databricks, Vertex and the Gemini API sell Gemini; Bedrock, Azure and Alibaba do not.",
                    "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."],
+        "other": ["Qwen3.8 Max, Qwen3.7 Max and Qwen3.7 Plus are sold on Alibaba Model Studio (Qwen3.8 Max also on Fireworks); none is on Databricks, Bedrock, Azure or Vertex.",
+                  "Model Studio's Global scope is below its International (Singapore) list; Qwen3.7 Plus also has limited-time daytime / night discounts."],
         "xai": ["Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
                 {"text": "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.", "until": "2027-01-31"},
                 {"text": "Grok 4.6 on Databricks is $2.50 / $7.50 since its promotion ended 31 Jan 2027; xAI, Bedrock and Azure stay at $2 / $6.", "from": "2027-02-01"},
                 "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; Azure Data Zone is +10%."],
     }
     data["changes"] = [
+        "2026-10-03: Added the arena.ai Best Overall top-50 models that a compared platform hosts: Claude Fable 5, Claude Opus 4.8, GPT-5.4, Gemini 3.6 Flash, GLM 5.2, Qwen3.8 Max, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5.",
         "Added GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 / 3.1 Flash-Lite, Grok 4.7 and Grok 4.6.",
         "Removed three discontinued Fireworks serverless quotes; dedicated deployments are a separate state.",
         "Corrected Bedrock Kimi K3 Global / Regional Priority and cache-read / write tiers.",
