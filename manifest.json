@@ -2,11 +2,11 @@
  "generated": "2026-10-03",
  "pages": [
   {
-   "path": "aidecide-ceo/",
-   "title": "Startup CEO — ai_decide vs Jev",
-   "desc": "24 quarters, 3 strategic calls each — the harder decision-model deathmatch",
+   "path": "aidecide-arena/",
+   "title": "AI Arena — ai_decide vs Jev",
+   "desc": "Snake + Tic-Tac-Toe deathmatch, live model I/O inspection",
    "tag": "AI",
-   "color": "#3ECFB2"
+   "color": "#FF3621"
   },
   {
    "path": "aidecide-game/",
@@ -16,32 +16,11 @@
    "color": "#FF3621"
   },
   {
-   "path": "aidecide-snake/",
-   "title": "ai_decide Snake — the model plays live",
-   "desc": "Watch Databricks ai_decide make every snake move · live latency + probabilities",
-   "tag": "AI",
-   "color": "#FF3621"
-  },
-  {
    "path": "aidecide-snake-arena/",
    "title": "Snake Arena — ai_decide vs Jev deathmatch",
    "desc": "Two decision models race snakes on one board · live latency compare",
    "tag": "AI",
    "color": "#FF3621"
-  },
-  {
-   "path": "aidecide-tower/",
-   "title": "Tower Wars — ai_decide vs Jev",
-   "desc": "Visual tower defense: 3 simultaneous strategic decisions per wave",
-   "tag": "AI",
-   "color": "#B07CFF"
-  },
-  {
-   "path": "aidecide-ttt/",
-   "title": "Tic-Tac-Toe — ai_decide vs Jev",
-   "desc": "Classic tournament with live probability heatmap per cell",
-   "tag": "AI",
-   "color": "#FFD166"
   },
   {
    "path": "arsenal-champions/",

@@ -8,9 +8,7 @@ python3 - <<'PYEOF'
 import os, json, datetime
 
 META = {
-  'aidecide-ttt/':('Tic-Tac-Toe — ai_decide vs Jev','Classic tournament with live probability heatmap per cell','AI','#FFD166'),
-  'aidecide-tower/':('Tower Wars — ai_decide vs Jev','Visual tower defense: 3 simultaneous strategic decisions per wave','AI','#B07CFF'),
-  'aidecide-ceo/':('Startup CEO — ai_decide vs Jev','24 quarters, 3 strategic calls each — the harder decision-model deathmatch','AI','#3ECFB2'),
+  'aidecide-arena/':('AI Arena — ai_decide vs Jev','Snake + Tic-Tac-Toe deathmatch, live model I/O inspection','AI','#FF3621'),
   'aidecide-snake-arena/':('Snake Arena — ai_decide vs Jev deathmatch','Two decision models race snakes on one board · live latency compare','AI','#FF3621'),
   'aidecide-snake/':   ('ai_decide Snake — the model plays live','Watch Databricks ai_decide make every snake move · live latency + probabilities','AI','#FF3621'),
   'aidecide-game/':    ('ai_decide — Can You Out-Decide the Model?','Race an AI decision model in quick triage calls · Databricks ai_decide','AI','#FF3621'),

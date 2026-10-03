@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Arena — ai_decide vs Jev · Deathmatch</title>
+<style>
+  :root{--bg:#0E1E24;--card:#152930;--line:#24404A;--txt:#E8F0F2;--mut:#8FA8B0;
+        --orange:#FF3621;--teal:#3ECFB2;--gold:#FFD166;--bad:#FF5A5A;--ok:#7BD88F}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,sans-serif}
+  .wrap{max-width:880px;margin:0 auto;padding:16px 12px 70px}
+  header{text-align:center;padding:10px 0 2px}
+  .kicker{color:var(--orange);font-weight:700;letter-spacing:.12em;font-size:.7rem;text-transform:uppercase}
+  h1{font-size:1.4rem;margin:6px 0 4px}
+  .sub{color:var(--mut);font-size:.84rem}
+  .tabs{display:flex;gap:8px;justify-content:center;margin-top:14px}
+  .tab{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 22px;font-weight:700;font-size:.9rem;cursor:pointer;color:var(--mut)}
+  .tab.on{color:var(--txt);border-color:var(--gold)}
+  .tab.on.snek{border-color:var(--orange)}
+  .tab.on.ttt{border-color:var(--gold)}
+  .game{display:none}.game.on{display:block}
+  /* shared fighter cards */
+  .duel{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:10px;margin-top:12px}
+  .fighter{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:center;display:flex;flex-direction:column}
+  .fighter.a{border-color:var(--orange)} .fighter.b{border-color:var(--teal)}
+  .fighter .name{font-weight:800;font-size:clamp(.72rem,3vw,1.05rem);white-space:nowrap;overflow:hidden;height:1.3em;line-height:1.3}
+  .fighter.a .name{color:var(--orange)} .fighter.b .name{color:var(--teal)}
+  .fighter .meta{font-size:clamp(.58rem,2.6vw,.8rem);color:var(--mut);margin-top:2px;white-space:nowrap;overflow:hidden;height:1.2em;line-height:1.2}
+  .fighter .big{font-size:1.6rem;font-weight:800;margin-top:4px;color:var(--gold)}
+  .fighter .row{display:flex;justify-content:space-around;margin-top:8px;font-size:.78rem}
+  .fighter .row div b{display:block;font-size:1.05rem}
+  .vs{font-weight:900;font-size:1.2rem;color:var(--gold);align-self:center}
+  .stage{position:relative;background:#0A161B;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:14px}
+  canvas{display:block;width:100%;height:auto}
+  .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,22,27,.92);text-align:center;padding:24px;z-index:4}
+  .overlay.hide{display:none}
+  .overlay h2{font-size:1.25rem;margin-bottom:10px}
+  .overlay p{color:var(--mut);font-size:.84rem;max-width:480px;line-height:1.7;margin-bottom:16px}
+  .btn{background:var(--orange);border:none;color:#fff;font-weight:700;font-size:1rem;padding:13px 28px;border-radius:10px;cursor:pointer}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .panel h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+  .panel.a h3{color:var(--orange)}.panel.b h3{color:var(--teal)}
+  .db{display:flex;align-items:center;gap:6px;font-size:.78rem;margin-bottom:5px}
+  .db .arr{width:16px;text-align:center}
+  .db .track{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+  .db .fill{height:100%;border-radius:3px;width:0;transition:width .25s}
+  .panel.a .fill{background:var(--orange)}.panel.b .fill{background:var(--teal)}
+  .db .pct{width:38px;text-align:right;color:var(--mut);font-size:.7rem}
+  .log{margin-top:8px;max-height:170px;overflow-y:auto;font-size:.68rem;line-height:1.7}
+  .lr{padding:3px 2px;border-bottom:1px solid rgba(36,64,74,.5);animation:si .3s;cursor:pointer}
+  .lr:hover{background:rgba(36,64,74,.35)}
+  .lr .line1{display:flex;gap:6px}
+  .lr .ms{min-width:52px;text-align:right;color:var(--gold)}
+  .lr .pk{min-width:40px;font-weight:700}
+  .lr .hint{color:var(--mut);font-size:.6rem;margin-left:auto}
+  .io{display:none;background:var(--bg);border:1px solid var(--line);border-radius:8px;margin:4px 0;padding:6px;font-size:.6rem;white-space:pre-wrap;word-break:break-all;max-height:180px;overflow-y:auto;font-family:ui-monospace,Menlo,monospace;color:#9FC8D2}
+  .lr.open .io{display:block}
+  @keyframes si{from{opacity:0;transform:translateY(-5px)}to{opacity:1}}
+  .foot{text-align:center;color:var(--mut);font-size:.66rem;margin-top:20px;line-height:1.7}
+  .dead{opacity:.45}
+  /* ttt */
+  .game-area{display:flex;gap:14px;margin-top:14px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+  .boardbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .status{text-align:center;font-size:.8rem;margin-bottom:8px;color:var(--mut)}
+  .status b{color:var(--gold)}
+  .ttt{display:grid;grid-template-columns:repeat(3,80px);grid-template-rows:repeat(3,80px);gap:6px;margin:0 auto}
+  .cell{position:relative;background:var(--bg);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2.3rem;font-weight:800}
+  .cell.x{color:var(--orange)} .cell.o{color:var(--teal)}
+  .cell.win{background:rgba(255,209,102,.18);outline:2px solid var(--gold)}
+  .cell .heat{position:absolute;bottom:3px;left:3px;right:3px;height:4px;border-radius:2px;background:rgba(143,168,176,.15);overflow:hidden}
+  .cell .heat>div{height:100%;background:var(--gold)}
+  .games{font-size:.72rem;color:var(--mut);text-align:center;margin-top:8px}
+  .games span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+  .games .wA{color:var(--orange);border-color:var(--orange)}
+  .games .wB{color:var(--teal);border-color:var(--teal)}
+  @media(max-width:760px){.wrap{padding:12px 8px 50px}.panels{grid-template-columns:1fr}.duel{grid-template-columns:1fr}.vs{text-align:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Decision Model Deathmatch</div>
+    <h1>🏟️ AI Arena: ai_decide vs Jev</h1>
+    <p class="sub">Two decision models, head-to-head. Every move is a live model call — tap any log row to see the exact input &amp; output.</p>
+  </header>
+
+  <div class="tabs">
+    <div class="tab snek on" id="tabSnake">🐍 Snake Arena</div>
+    <div class="tab ttt" id="tabTTT">⭕ Tic-Tac-Toe</div>
+  </div>
+
+  <!-- ================= SNAKE ================= -->
+  <section class="game on" id="gSnake">
+    <div class="duel">
+      <div class="fighter a"><div class="name">Databricks ai_decide</div><div class="meta">managed model · Databricks</div><div class="big" id="scoreA">0</div>
+        <div class="row"><div>Alive<b id="aliveA">—</b></div><div>Avg ms<b id="avgA">—</b></div><div>Moves<b id="mvA">0</b></div></div></div>
+      <div class="vs">VS</div>
+      <div class="fighter b"><div class="name">TypeSafe Jev</div><div class="meta">jev-latest · System One</div><div class="big" id="scoreB">0</div>
+        <div class="row"><div>Alive<b id="aliveB">—</b></div><div>Avg ms<b id="avgB">—</b></div><div>Moves<b id="mvB">0</b></div></div></div>
+    </div>
+    <div class="stage">
+      <canvas id="cv" width="640" height="640"></canvas>
+      <div class="overlay" id="ovSnake">
+        <h2>🐍 Snake Arena</h2>
+        <p>Same start, one shared food, overlap allowed. Each snake moves the moment <em>its own</em> model responds — fast model, more moves. Tap a log row below to inspect the raw model call.</p>
+        <button class="btn" id="startSnake">▶ Start match</button>
+      </div>
+    </div>
+    <div class="panels">
+      <div class="panel a"><h3>ai_decide — tap rows for I/O</h3><div id="barsA"></div><div class="log" id="logA"></div></div>
+      <div class="panel b"><h3>Jev — tap rows for I/O</h3><div id="barsB"></div><div class="log" id="logB"></div></div>
+    </div>
+  </section>
+
+  <!-- ================= TTT ================= -->
+  <section class="game" id="gTTT">
+    <div class="duel">
+      <div class="fighter a"><div class="name">Databricks ai_decide</div><div class="meta">plays ❌</div><div class="big" id="scA">0</div>
+        <div class="row"><div>Avg ms<b id="msA">—</b></div><div>Wins<b id="wA">0</b></div></div></div>
+      <div class="vs">VS</div>
+      <div class="fighter b"><div class="name">TypeSafe Jev</div><div class="meta">plays ⭕</div><div class="big" id="scB">0</div>
+        <div class="row"><div>Avg ms<b id="msB">—</b></div><div>Wins<b id="wB">0</b></div></div></div>
+    </div>
+    <div class="game-area">
+      <div class="boardbox">
+        <div class="status" id="tstat">Press start</div>
+        <div class="ttt" id="board"></div>
+        <div class="games" id="games"></div>
+        <div style="text-align:center;margin-top:12px"><button class="btn" id="startTTT">▶ Start tournament</button></div>
+      </div>
+      <div class="panels" style="grid-template-columns:1fr;width:230px;margin-top:0">
+        <div class="panel a"><h3>❌ ai_decide</h3><div class="log" id="tlogA"></div></div>
+        <div class="panel b"><h3>⭕ Jev</h3><div class="log" id="tlogB"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">Every row in the logs is a real model call — click to expand the exact request &amp; response JSON<br>ai_decide: Databricks workspace · Jev: api.typesafe.ai · both via AWS edge → Lambda</p>
+</div>
+
+<script>
+const API='https://u37zbl7apd.execute-api.us-east-1.amazonaws.com/prod/decide';
+const $=id=>document.getElementById(id);
+
+/* ---------- tabs ---------- */
+$('tabSnake').onclick=()=>{$('tabSnake').classList.add('on');$('tabTTT').classList.remove('on');$('gSnake').classList.add('on');$('gTTT').classList.remove('on');};
+$('tabTTT').onclick=()=>{$('tabTTT').classList.add('on');$('tabSnake').classList.remove('on');$('gTTT').classList.add('on');$('gSnake').classList.remove('on');};
+
+/* ---------- expandable log rows (shared) ---------- */
+function logRow(panelEl, line1, reqObj, resObj){
+  const row=document.createElement('div');row.className='lr';
+  const io=document.createElement('div');io.className='io';
+  io.textContent='INPUT  '+JSON.stringify(reqObj)+'\nOUTPUT '+JSON.stringify(resObj);
+  const l1=document.createElement('div');l1.className='line1';
+  l1.innerHTML=line1+'<span class="hint">▾ I/O</span>';
+  row.appendChild(l1);row.appendChild(io);
+  row.onclick=(e)=>{e.stopPropagation();row.classList.toggle('open');};
+  panelEl.prepend(row);
+  while(panelEl.children.length>40)panelEl.removeChild(panelEl.lastChild);
+}
+async function callModel(model,payload){
+  const t0=performance.now();
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model,...payload})});
+  const j=await r.json();
+  const ms=Math.round(performance.now()-t0);
+  if(!j.ok)throw Object.assign(new Error(j.error||'api'),{j,ms});
+  return{ans:j,ms};
+}
+
+/* ================= SNAKE ================= */
+const GRID=26, CELL=640/GRID;
+const cv=$('cv'), ctx=cv.getContext('2d');
+if(!ctx.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;};}
+const BASE_INSTR='Snake steering. Pick the direction that best moves toward the food. All listed options are safe moves.';
+const CRIT_DESC={U:'move up — pick if food is above you',D:'move down — pick if food is below you',L:'move left — pick if food is to your left',R:'move right — pick if food is to your right'};
+const dirVec=n=>({U:{x:0,y:-1},D:{x:0,y:1},L:{x:-1,y:0},R:{x:1,y:0}})[n]||null;
+function mkSnake(color,x,y,dir){return{color,body:[{x,y},{x:x-1,y}],dir,dirName:dir,alive:true,score:0,moves:0,msSum:0}}
+let A,B,food,running=false;
+function safeMoves(s){
+  const h=s.body[0];
+  const dead=(x,y)=>x<0||y<0||x>=GRID||y>=GRID||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y);
+  return ['U','D','L','R'].filter(p=>{const v=dirVec(p);return v&&!dead(h.x+v.x,h.y+v.y);});
+}
+function stateFor(s,food){
+  const h=s.body[0], dx=food.x-h.x, dy=food.y-h.y, dir=[];
+  if(dy<0)dir.push('NORTH (above you)'); if(dy>0)dir.push('SOUTH (below you)');
+  if(dx>0)dir.push('EAST (right of you)'); if(dx<0)dir.push('WEST (left of you)');
+  return `You are a snake. Food is ${dir.length?dir.join(' and '):'on your cell'}. Snake length ${s.body.length}.`;
+}
+function spawnFood(excl){while(true){const f={x:Math.floor(Math.random()*GRID),y:Math.floor(Math.random()*GRID)};if(!excl.some(s=>s.body.some(b=>b.x===f.x&&b.y===f.y)))return f;}}
+function resetSnake(){
+  A=mkSnake('orange',13,13,'R'); B=mkSnake('teal',13,13,'R');
+  food=spawnFood([A,B]);
+  $('logA').innerHTML='';$('logB').innerHTML='';
+  ['scoreA','scoreB'].forEach(i=>$(i).textContent='0');
+  ['mvA','mvB'].forEach(i=>$(i).textContent='0');
+  ['avgA','avgB'].forEach(i=>$(i).textContent='—');
+  ['aliveA','aliveB'].forEach(i=>$(i).textContent='—');
+  draw();
+}
+const pickOf=a=>a&&(a.choice||Object.keys(a.probabilities||{}).reduce((x,y)=>(a.probabilities[x]||0)>=(a.probabilities[y]||0)?x:y))||null;
+function bars(panel,probs,pick){
+  const el=$(panel);el.innerHTML='';
+  ['U','D','L','R'].forEach(d=>{
+    const p=Math.round((probs[d]||0)*100);
+    const row=document.createElement('div');row.className='db';
+    row.innerHTML=`<span class="arr">${{U:'⬆',D:'⬇',L:'⬅',R:'➡'}[d]}</span><div class="track"><div class="fill" style="width:${p}%"></div></div><span class="pct">${p}%</span>`;
+    if(d===pick)row.style.fontWeight='700';
+    el.appendChild(row);});
+}
+async function moveSnake(s,other,model,panel,barsId,sc,al,mvv,avg){
+  if(!s.alive)return;
+  try{
+    const safe=safeMoves(s);
+    if(!safe.length){s.alive=false;$(al).textContent='💀';return;}
+    const crit={};safe.forEach(p=>crit[p]=CRIT_DESC[p]);
+    const state=stateFor(s,food);
+    const questions={d:{type:'choice',instructions:BASE_INSTR,criteria:crit}};
+    const{ans,ms}=await callModel(model,{state,questions});
+    const a=ans.answers.d||{};
+    let pick=pickOf(a);
+    if(!safe.includes(pick)){const probs=a.probabilities||{};pick=safe.reduce((x,y)=>(probs[x]||0)>=(probs[y]||0)?x:y);}
+    const v=dirVec(pick)||s.dir;
+    const h=s.body[0];
+    const nh={x:h.x+v.x,y:h.y+v.y};
+    const conf=Math.round((a.confidence||0)*100)+'%';
+    bars(barsId,a.probabilities||{},pick);
+    logRow($(panel),`<span class="ms">${ms}ms</span><span class="pk">${pick}</span><span style="color:var(--mut)">${conf}</span>`,
+      {model,state,questions},{choice:a.choice,confidence:a.confidence,probabilities:a.probabilities});
+    s.msSum+=ms;s.moves++;
+    $(mvv).textContent=s.moves;$(avg).textContent=Math.round(s.msSum/s.moves);
+    const hitWall=nh.x<0||nh.y<0||nh.x>=GRID||nh.y>=GRID;
+    const hitSelf=s.body.some((b,i)=>i<s.body.length-1&&b.x===nh.x&&b.y===nh.y);
+    if(hitWall||hitSelf){s.alive=false;$(al).textContent='💀';draw();return;}
+    s.body.unshift(nh);s.dir=v;s.dirName=pick;
+    if(nh.x===food.x&&nh.y===food.y){s.score++;$(sc).textContent=s.score;Object.assign(food,spawnFood([A,B]));}
+    else s.body.pop();
+  }catch(e){
+    logRow($(panel),`<span class="ms">ERR</span><span class="pk">⚠️</span><span style="color:var(--bad)">${String(e.message).slice(0,40)}</span>`,{model},{error:e.message});
+  }
+}
+const drivers={};
+function driveSnake(s,other,model,panel,barsId,sc,al,mvv,avg){
+  const key=s.color;
+  if(drivers[key])clearInterval(drivers[key]);
+  drivers[key]=setInterval(async()=>{
+    if(!running||!s.alive){clearInterval(drivers[key]);drivers[key]=null;return;}
+    if(s.__busy)return;s.__busy=true;
+    try{await moveSnake(s,other,model,panel,barsId,sc,al,mvv,avg);}catch(e){}
+    s.__busy=false;
+    try{draw();}catch(e){}
+    if(!running){clearInterval(drivers[key]);drivers[key]=null;return;}
+    if(!A.alive&&!B.alive)finishSnake();
+  },80);
+}
+function draw(){
+  ctx.fillStyle='#0A161B';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.strokeStyle='rgba(36,64,74,.3)';ctx.lineWidth=1;
+  for(let i=1;i<GRID;i++){ctx.beginPath();ctx.moveTo(i*CELL,0);ctx.lineTo(i*CELL,cv.height);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,i*CELL);ctx.lineTo(cv.width,i*CELL);ctx.stroke();}
+  if(!food)return;
+  const p=1+Math.sin(Date.now()/200)*.15;
+  ctx.fillStyle='#FFD166';ctx.beginPath();ctx.arc(food.x*CELL+CELL/2,food.y*CELL+CELL/2,(CELL/2-3)*p,0,7);ctx.fill();
+  const cols={orange:'255,54,33',teal:'62,207,178'};
+  const occ={};
+  [A,B].forEach(sn=>{if(!sn.alive)return;sn.body.forEach((b,i)=>{const k=b.x+','+b.y;occ[k]=occ[k]||[];occ[k].push({c:sn.color,i});});});
+  Object.entries(occ).forEach(([k,parts])=>{
+    const [x,y]=k.split(',').map(Number);
+    const over=parts.length>1;
+    const src=over?null:(parts[0].c==='orange'?A:B);
+    const al=over?1:Math.max(.25,1-(parts[0].i/Math.max(src.body.length,1))*.7);
+    ctx.fillStyle=over?'#C9921C':`rgba(${cols[parts[0].c]},${al})`;
+    ctx.beginPath();ctx.roundRect(x*CELL+1.5,y*CELL+1.5,CELL-3,CELL-3,7);ctx.fill();
+    if(over){ctx.strokeStyle='rgba(255,209,102,.9)';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x*CELL+1.5,y*CELL+1.5,CELL-3,CELL-3,7);ctx.stroke();}
+  });
+  [[A,'#FF6A54'],[B,'#5FE6C8']].forEach(([sn,cc])=>{
+    if(!sn.alive)return;const h=sn.body[0],d=sn.dir;
+    ctx.fillStyle=cc;ctx.beginPath();ctx.roundRect(h.x*CELL+.5,h.y*CELL+.5,CELL-1,CELL-1,8);ctx.fill();
+    ctx.fillStyle='#0A161B';
+    let e1,e2;
+    if(d.x!==0){e1={x:h.x*CELL+CELL*(d.x>0?.68:.32),y:h.y*CELL+CELL*.3};e2={x:e1.x,y:h.y*CELL+CELL*.7};}
+    else{e1={x:h.x*CELL+CELL*.3,y:h.y*CELL+CELL*(d.y>0?.68:.32)};e2={x:h.x*CELL+CELL*.7,y:e1.y};}
+    [e1,e2].forEach(e=>{ctx.beginPath();ctx.arc(e.x,e.y,2.4,0,7);ctx.fill();});
+  });
+  const lead=A.score>B.score?A:B.score>A.score?B:null;
+  if(lead&&lead.alive){const h=lead.body[0];ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.fillText('👑',h.x*CELL+CELL/2,h.y*CELL-2);}
+}
+function finishSnake(){
+  running=false;
+  const win=A.score>B.score?'A':B.score>A.score?'B':'tie';
+  const o=$('ovSnake');o.classList.remove('hide');
+  o.querySelector('h2').innerHTML=(win==='tie'?'🤝':win==='A'?'🟠':'🩵')+' Winner: '+(win==='A'?'ai_decide':win==='B'?'Jev':'nobody');
+  o.querySelector('p').innerHTML=`ai_decide <strong>${A.score} food</strong> · ${A.moves?Math.round(A.msSum/A.moves):0}ms avg — Jev <strong>${B.score} food</strong> · ${B.moves?Math.round(B.msSum/B.moves):0}ms avg. Tap log rows to see each call's input & output.`;
+}
+$('startSnake').onclick=()=>{$('ovSnake').classList.add('hide');resetSnake();running=true;
+  driveSnake(A,B,'ai_decide','logA','barsA','scoreA','aliveA','mvA','avgA');
+  driveSnake(B,A,'jev','logB','barsB','scoreB','aliveB','mvB','avgB');};
+resetSnake();
+setInterval(()=>{if(!running&&food)draw();},400);
+
+/* ================= TIC-TAC-TOE ================= */
+const LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+const POS=['top-left','top-center','top-right','middle-left','center','middle-right','bottom-left','bottom-center','bottom-right'];
+let tBoard,tTurn,tScores,tGameNo,tRun=false,tMs={A:0,B:0},tCalls={A:0,B:0},tWins;
+function winner(b){for(const L of LINES){const[a,c,d]=L;if(b[a]&&b[a]===b[c]&&b[a]===b[d])return{p:b[a],line:L};}return b.every(x=>x)?{p:'draw'}:null;}
+function tttState(b,me){
+  const opp=me==='X'?'O':'X';const mine=[],theirs=[];
+  for(const L of LINES){const vs=L.map(i=>b[i]);
+    if(vs.filter(v=>v===me).length===2&&vs.includes(undefined)){mine.push(POS[L[vs.indexOf(undefined)]]);}
+    if(vs.filter(v=>v===opp).length===2&&vs.includes(undefined)){theirs.push(POS[L[vs.indexOf(undefined)]]);}}
+  const rows=[0,1,2].map(r=>[0,1,2].map(c=>b[r*3+c]||'·').join(' ')).join(' | ');
+  return `Tic-tac-toe. You play ${me}. Board: ${rows}. `+
+    (mine.length?`You can WIN now at: ${mine.join(', ')}. `:'No immediate winning move. ')+
+    (theirs.length?`URGENT: opponent wins next turn at: ${theirs.join(', ')} — block unless you can win now. `:'No opponent threat. ')+
+    `Get three in a row.`;
+}
+function tttQuestions(b){const crit={};b.forEach((v,i)=>{if(v==null)crit['c'+i]=POS[i];});
+  return{move:{type:'choice',instructions:'Best tic-tac-toe move: win if possible, block opponent threats, else take center/corners.',criteria:crit}};}
+function tttRender(heat,pick){
+  const bd=$('board');bd.innerHTML='';
+  tBoard.forEach((v,i)=>{
+    const c=document.createElement('div');
+    c.className='cell'+(v==='X'?' x':'')+(v==='O'?' o':'');
+    if(v==null&&heat){const h=document.createElement('div');h.className='heat';const f=document.createElement('div');f.style.width=Math.round((heat[i]||0)*100)+'%';if(pick==='c'+i)f.style.boxShadow='0 0 8px var(--gold)';h.appendChild(f);c.appendChild(h);}
+    else c.textContent=v||'';
+    bd.appendChild(c);});
+  $('games').innerHTML=tWins.map(w=>`<span class="${w==='A'?'wA':w==='B'?'wB':''}">${w==='A'?'❌':w==='B'?'⭕':'='}</span>`).join('');
+}
+function tttReset(){tBoard=Array(9).fill(null);tTurn=tGameNo%2===0?'X':'O';tttRender();}
+async function tttMove(side){
+  const model=side==='A'?'ai_decide':'jev',mark=side==='A'?'X':'O';
+  try{
+    const state=tttState(tBoard,mark),questions=tttQuestions(tBoard);
+    const{ans,ms}=await callModel(model,{state,questions});
+    const a=ans.answers.move||{};
+    tMs[side]+=ms;tCalls[side]++;
+    $(side==='A'?'msA':'msB').textContent=Math.round(tMs[side]/tCalls[side]);
+    const pick=pickOf(a);
+    const probs=a.probabilities||{};
+    const heat=tBoard.map((v,i)=>v==null?(probs['c'+i]||0):null);
+    tttRender(heat,pick);
+    const idx=pick&&pick.startsWith('c')?+pick.slice(1):null;
+    if(idx==null||tBoard[idx]!=null)throw new Error('bad cell');
+    tBoard[idx]=mark;
+    logRow($(side==='A'?'tlogA':'tlogB'),`<span class="ms">${ms}ms</span><span class="pk">${mark}</span><span style="color:var(--mut)">${POS[idx]}</span>`,
+      {model,state,questions},{choice:a.choice,confidence:a.confidence,probabilities:a.probabilities});
+  }catch(e){
+    const fb=tBoard.findIndex(v=>v==null);if(fb<0)return;tBoard[fb]=mark;
+    logRow($(side==='A'?'tlogA':'tlogB'),`<span class="ms">ERR</span><span class="pk">⚠️</span>`,{model},{error:String(e.message).slice(0,40)});
+  }
+  tttRender();
+}
+async function tttLoop(){
+  if(!tRun)return;
+  const w=winner(tBoard);
+  if(w){
+    if(w.p==='X'){tScores.A++;tWins.push('A');}
+    else if(w.p==='O'){tScores.B++;tWins.push('B');}
+    else tWins.push('D');
+    $('scA').textContent=tScores.A;$('scB').textContent=tScores.B;$('wA').textContent=tScores.A;$('wB').textContent=tScores.B;
+    tttRender();
+    if(w.line)w.line.forEach(i=>$('board').children[i].classList.add('win'));
+    $('tstat').innerHTML=w.p==='draw'?'🤝 Draw!':`<b>${w.p==='X'?'❌ ai_decide':'⭕ Jev'}</b> wins game ${tGameNo}`;
+    if(tScores.A>=3||tScores.B>=3||tWins.length>=7){
+      tRun=false;
+      const win=tScores.A>tScores.B?'A':tScores.B>tScores.A?'B':'tie';
+      $('tstat').innerHTML=`🏆 Champion: <b>${win==='A'?'ai_decide':win==='B'?'Jev':'nobody'}</b> (${tScores.A}–${tScores.B})`;
+      $('startTTT').textContent='▶ Rematch';return;}
+    await new Promise(r=>setTimeout(r,1300));
+    tGameNo++;tttReset();
+  }
+  const side=tTurn==='X'?'A':'B';
+  $('tstat').innerHTML=`Game ${tGameNo} · <b>${tTurn==='X'?'❌ ai_decide':'⭕ Jev'}</b> thinking…`;
+  await tttMove(side);
+  tTurn=tTurn==='X'?'O':'X';
+  setTimeout(tttLoop,220);
+}
+$('startTTT').onclick=()=>{
+  tScores={A:0,B:0};tWins=[];tGameNo=1;tMs={A:0,B:0};tCalls={A:0,B:0};
+  $('scA').textContent=0;$('scB').textContent=0;$('wA').textContent=0;$('wB').textContent=0;
+  $('tlogA').innerHTML='';$('tlogB').innerHTML='';
+  $('msA').textContent='—';$('msB').textContent='—';
+  tttReset();tRun=true;$('startTTT').textContent='⏳ Playing…';
+  tttLoop();
+};
+tBoard=Array(9).fill(null);tWins=[];tScores={A:0,B:0};tttRender();
+</script>
+</body>
+</html>
