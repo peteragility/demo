@@ -98,7 +98,8 @@ const GRID=24, CELL=25;
 const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
 const $=id=>document.getElementById(id);
 let snake, dir, food, score, moves, msSum, logN, alive, busy, started=false;
-let lastMoveT=0, MOVE_GAP=120;
+let lastMoveT=0, MOVE_GAP=80;
+let preflight=null, preflightKey='';
 
 function reset(){
   snake=[{x:8,y:12},{x:7,y:12},{x:6,y:12}];
@@ -132,15 +133,26 @@ function stateJSON(){
 const dirName=d=>d.x===1?'right':d.x===-1?'left':d.y===1?'down':'up';
 const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}}[n]);
 
+function questObj(){
+  return {dir:{type:'choice',instructions:'You are controlling a snake. Pick the safest move that heads toward the food. Moving into a wall or your own body = death. Danger flags show which moves kill you immediately.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
+}
+function firePrefetch(){
+  // fire the request for the CURRENT state immediately; step() consumes it
+  const key=stateJSON();
+  preflightKey=key;
+  preflight=fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({state:key,questions:questObj()})}).then(r=>r.json()).catch(()=>null);
+}
 async function decide(){
-  const QUESTIONS={dir:{type:'choice',instructions:'You are controlling a snake. Pick the safest move that heads toward the food. Moving into a wall or your own body = death. Danger flags show which moves kill you immediately.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
+  const QUESTIONS=questObj();
   const t0=performance.now();
   try{
-    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({state:stateJSON(),questions:QUESTIONS})});
-    const j=await r.json();
+    let j;
+    if(preflight&&preflightKey===stateJSON()){j=await preflight;preflight=null;}
+    else{j=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({state:stateJSON(),questions:QUESTIONS})}).then(r=>r.json());}
     const ms=Math.round(performance.now()-t0);
-    if(!j.ok)throw new Error((j.error||'api')+' ['+r.status+']');
+    if(!j||!j.ok)throw new Error(((j&&j.error)||'api'));
     return {answers:j.answers,ms};
   }catch(e){
     return Promise.reject(new Error(e.message+' @'+Math.round(performance.now()-t0)+'ms'));
@@ -221,8 +233,8 @@ async function step(){
     $('lastms').textContent='ERR';
   }
   busy=false;$('decState').style.display='none';
-  const wait=Math.max(MOVE_GAP-(performance.now()-lastMoveT),50);
-  setTimeout(()=>{lastMoveT=performance.now();step();},wait);
+  firePrefetch();
+  setTimeout(()=>{lastMoveT=performance.now();step();},MOVE_GAP);
 }
 $('startBtn').onclick=()=>{
   $('overlay').classList.add('hide');
