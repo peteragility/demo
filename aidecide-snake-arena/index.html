@@ -218,22 +218,61 @@ function draw(){
   foods.forEach(({f,c})=>{const p=1+Math.sin(Date.now()/200)*.15;
     ctx.fillStyle=c;ctx.beginPath();ctx.arc(f.x*CELL+CELL/2,f.y*CELL+CELL/2,(CELL/2-3)*p,0,7);ctx.fill();});
   const cols={orange:'255,54,33',teal:'62,207,178'};
-  [[A],[B]].forEach(([s],si)=>{
-    s.body.forEach((b,i)=>{
-      const al=1-(i/s.body.length)*.55;
-      ctx.fillStyle=`rgba(${cols[s.color]},${s.alive?al:.25})`;
-      // offset each snake slightly so overlaps show BOTH colors
-      const off=si===0?0:3;
-      ctx.beginPath();ctx.roundRect(b.x*CELL+2+off,b.y*CELL+2+off,CELL-4-off*2+ (si===0?0:-2),CELL-4-off*2+(si===0?0:-2),5);ctx.fill();
-    });
-    if(s.alive){const h=s.body[0];ctx.fillStyle='#fff';
-      ctx.beginPath();ctx.arc(h.x*CELL+CELL*.35,h.y*CELL+CELL*.35,2.5,0,7);ctx.fill();
-      ctx.beginPath();ctx.arc(h.x*CELL+CELL*.65,h.y*CELL+CELL*.35,2.5,0,7);ctx.fill();}
+  // build occupancy map for overlap coloring
+  const occ = {};
+  [A,B].forEach(sn=>{ if(!sn.alive) return;
+    sn.body.forEach((b,i)=>{ const k=b.x+','+b.y;
+      occ[k]=occ[k]||[]; occ[k].push({c:sn.color,head:i===0}); });});
+  // draw cells: single color or blend when overlapping
+  Object.entries(occ).forEach(([k,parts])=>{
+    const [x,y]=k.split(',').map(Number);
+    let fill;
+    if(parts.length===1){
+      fill=`rgba(${cols[parts[0].c]},1)`;
+    }else{
+      // blend orange+teal => gold-ish collision color
+      fill='#B8860B';
+    }
+    // fade by body index of the topmost part
+    const sn=(parts[0].c==='orange'?A:B);
+    // find index for alpha fade
+    let idx=0; const src=parts[0].c==='orange'?A:B;
+    src.body.forEach((b,i)=>{if(b.x===x&&b.y===y)idx=i;});
+    const al=Math.max(.25,1-(idx/Math.max(src.body.length,1))*.7);
+    ctx.fillStyle=parts.length>1?fill:`rgba(${cols[parts[0].c]},${al})`;
+    ctx.beginPath();ctx.roundRect(x*CELL+1.5,y*CELL+1.5,CELL-3,CELL-3,7);ctx.fill();
+    if(parts.length>1){ // sparkle ring on overlap cell
+      ctx.strokeStyle='rgba(255,209,102,.9)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.roundRect(x*CELL+1.5,y*CELL+1.5,CELL-3,CELL-3,7);ctx.stroke();}
   });
+  // heads: eyes for both, crown marker for current leader
+  [[A,'#FF6A54'],[B,'#5FE6C8']].forEach(([sn,cc])=>{
+    if(!sn.alive)return;const h=sn.body[0];
+    ctx.fillStyle=cc;
+    ctx.beginPath();ctx.roundRect(h.x*CELL+.5,h.y*CELL+.5,CELL-1,CELL-1,8);ctx.fill();
+    ctx.fillStyle='#0A161B';
+    const d=sn.dir;
+    const ex=d.y===0?[.32,.68]:[.5,.5], ey=d.x===0?[.32,.68]:[.38,.62];
+    // eyes perpendicular to movement
+    let e1,e2;
+    if(d.x!==0){e1={x:h.x*CELL+CELL*(d.x>0?.68:.32),y:h.y*CELL+CELL*.3};
+                e2={x:h.x*CELL+CELL*(d.x>0?.68:.32),y:h.y*CELL+CELL*.7};}
+    else{e1={x:h.x*CELL+CELL*.3,y:h.y*CELL+CELL*(d.y>0?.68:.32)};
+         e2={x:h.x*CELL+CELL*.7,y:h.y*CELL+CELL*(d.y>0?.68:.32)};}
+    [e1,e2].forEach(e=>{ctx.beginPath();ctx.arc(e.x,e.y,2.4,0,7);ctx.fill();});
+    // tongue when close to food
+    if(Math.abs(h.x-food.x)+Math.abs(h.y-food.y)<=2){
+      ctx.strokeStyle=cc;ctx.lineWidth=2;ctx.beginPath();
+      const tx=h.x*CELL+CELL/2+d.x*CELL*.55, ty=h.y*CELL+CELL/2+d.y*CELL*.55;
+      ctx.moveTo(h.x*CELL+CELL/2+d.x*CELL*.3,h.y*CELL+CELL/2+d.y*CELL*.3);
+      ctx.lineTo(tx,ty);ctx.stroke();}
+  });
+  // leader crown
+  const lead=A.score>B.score?A:B.score>A.score?B:null;
+  if(lead&&lead.alive){const h=lead.body[0];
+    ctx.fillStyle='#FFD166';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+    ctx.fillText('👑',h.x*CELL+CELL/2,h.y*CELL-2);}
 }
-// Each snake runs its OWN independent loop: it moves the moment ITS api call
-// returns + MOVE_GAP. A fast model visibly moves more often — no lockstep waiting.
-const MOVE_GAP=80;
 async function snakeLoop(s,other,model,panel,sc,al,mvv,avg){
   while(running&&s.alive){
     const t0=performance.now();
