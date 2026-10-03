@@ -139,9 +139,16 @@ function questObj(){
 function firePrefetch(){
   // fire the request for the CURRENT state immediately; step() consumes it
   const key=stateJSON();
+  if(preflightKey===key&&preflight)return; // same state already in flight
   preflightKey=key;
   preflight=fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({state:key,questions:questObj()})}).then(r=>r.json()).catch(()=>null);
+}
+// double-buffer: fire TWO prefetches one cell apart to cover direction uncertainty
+function firePrefetch2(){
+  const key=stateJSON();
+  if(preflightKey===key)return;
+  setTimeout(()=>firePrefetch(),120);
 }
 async function decide(){
   const QUESTIONS=questObj();
