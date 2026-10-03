@@ -222,28 +222,16 @@ function draw(){
   const occ = {};
   [A,B].forEach(sn=>{ if(!sn.alive) return;
     sn.body.forEach((b,i)=>{ const k=b.x+','+b.y;
-      occ[k]=occ[k]||[]; occ[k].push({c:sn.color,head:i===0}); });});
-  // draw cells: single color or blend when overlapping
+      occ[k]=occ[k]||[]; occ[k].push({c:sn.color,i}); });});
   Object.entries(occ).forEach(([k,parts])=>{
     const [x,y]=k.split(',').map(Number);
-    let fill;
-    if(parts.length===1){
-      fill=`rgba(${cols[parts[0].c]},1)`;
-    }else{
-      // blend orange+teal => gold-ish collision color
-      fill='#B8860B';
-    }
-    // fade by body index of the topmost part
-    const sn=(parts[0].c==='orange'?A:B);
-    // find index for alpha fade
-    let idx=0; const src=parts[0].c==='orange'?A:B;
-    src.body.forEach((b,i)=>{if(b.x===x&&b.y===y)idx=i;});
-    const al=Math.max(.25,1-(idx/Math.max(src.body.length,1))*.7);
-    ctx.fillStyle=parts.length>1?fill:`rgba(${cols[parts[0].c]},${al})`;
+    const over = parts.length>1;
+    const src = over ? null : (parts[0].c==='orange'?A:B);
+    const al = over ? 1 : Math.max(.25,1-(parts[0].i/Math.max(src.body.length,1))*.7);
+    ctx.fillStyle = over ? '#C9921C' : `rgba(${cols[parts[0].c]},${al})`;
     ctx.beginPath();ctx.roundRect(x*CELL+1.5,y*CELL+1.5,CELL-3,CELL-3,7);ctx.fill();
-    if(parts.length>1){ // sparkle ring on overlap cell
-      ctx.strokeStyle='rgba(255,209,102,.9)';ctx.lineWidth=2;
-      ctx.beginPath();ctx.roundRect(x*CELL+1.5,y*CELL+1.5,CELL-3,CELL-3,7);ctx.stroke();}
+    if(over){ ctx.strokeStyle='rgba(255,209,102,.9)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.roundRect(x*CELL+1.5,y*CELL+1.5,CELL-3,CELL-3,7);ctx.stroke(); }
   });
   // heads: eyes for both, crown marker for current leader
   [[A,'#FF6A54'],[B,'#5FE6C8']].forEach(([sn,cc])=>{
@@ -276,8 +264,10 @@ function draw(){
 async function snakeLoop(s,other,model,panel,sc,al,mvv,avg){
   while(running&&s.alive){
     const t0=performance.now();
-    await moveSnake(s,other,food,model,panel,sc,al,mvv,avg);
-    draw();
+    try{
+      await moveSnake(s,other,food,model,panel,sc,al,mvv,avg);
+    }catch(e){ console.error('move failed',e); }
+    try{ draw(); }catch(e){ console.error('draw failed',e); }
     if(!running)break;
     if(!A.alive&&!B.alive){finish();return;}
     const wait=Math.max(0,MOVE_GAP-(performance.now()-t0));
