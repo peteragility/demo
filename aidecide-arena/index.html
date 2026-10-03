@@ -19,7 +19,7 @@
   .tab{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 16px;font-weight:700;font-size:.8rem;cursor:pointer;color:var(--mut);transition:all .2s;white-space:nowrap;flex:0 0 auto;align-self:center}
   .tab.on{color:var(--txt);border-color:var(--gold);background:rgba(255,209,102,.08)}
   .tab.on.snek{border-color:var(--orange);background:rgba(255,54,33,.08)}
-  .tab.on.ttt{border-color:var(--gold)}
+  .tab.on.tttb{border-color:var(--gold)}
   .game{display:none}.game.on{display:block}
   /* shared fighter cards */
   .duel{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:8px;margin-top:10px}
@@ -66,7 +66,7 @@
   .boardbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
   .status{text-align:center;font-size:.8rem;margin-bottom:8px;color:var(--mut)}
   .status b{color:var(--gold)}
-  .ttt{display:grid;grid-template-columns:repeat(3,min(80px,24vw));grid-template-rows:repeat(3,min(80px,24vw));gap:6px;margin:0 auto}
+  .tttboard{display:grid;grid-template-columns:repeat(3,min(80px,24vw));grid-template-rows:repeat(3,min(80px,24vw));gap:6px;margin:0 auto}
   .cell{position:relative;background:var(--bg);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:clamp(1.6rem,6vw,2.3rem);font-weight:800}
   .cell.x{color:var(--orange)} .cell.o{color:var(--teal)}
   .cell.win{background:rgba(255,209,102,.18);outline:2px solid var(--gold)}
@@ -104,7 +104,7 @@
 
   <div class="tabs">
     <div class="tab snek on" id="tabSnake">🐍 Snake Arena</div>
-    <div class="tab ttt" id="tabTTT">⭕ Tic-Tac-Toe</div>
+    <div class="tab tttb" id="tabTTT">⭕ Tic-Tac-Toe</div>
   </div>
 
   <!-- ================= SNAKE ================= -->
@@ -142,7 +142,7 @@
     <div class="game-area">
       <div class="boardbox">
         <div class="status" id="tstat">Press start</div>
-        <div class="ttt" id="board"></div>
+        <div class="tttboard" id="board"></div>
         <div class="games" id="games"></div>
         <div style="text-align:center;margin-top:12px"><button class="btn" id="startTTT">▶ Start tournament</button></div>
       </div>
