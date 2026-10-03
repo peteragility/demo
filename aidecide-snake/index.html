@@ -240,12 +240,15 @@ async function step(){
     $('lastms').textContent='ERR';
   }
   busy=false;$('decState').style.display='none';
+  // fire prefetch for the new state BEFORE waiting out the move gap — the RTT
+  // overlaps with MOVE_GAP + next decide() animation, so felt latency ≈ 0
   firePrefetch();
   setTimeout(()=>{lastMoveT=performance.now();step();},MOVE_GAP);
 }
 $('startBtn').onclick=()=>{
   $('overlay').classList.add('hide');
-  reset();started=true;lastMoveT=performance.now();step();
+  reset();started=true;firePrefetch();  // warm up even move 1
+  lastMoveT=performance.now();step();
 };
 // idle animation before start
 reset();
