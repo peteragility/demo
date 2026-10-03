@@ -8,6 +8,7 @@ python3 - <<'PYEOF'
 import os, json, datetime
 
 META = {
+  'aidecide-ttt/':('Tic-Tac-Toe — ai_decide vs Jev','Classic tournament with live probability heatmap per cell','AI','#FFD166'),
   'aidecide-tower/':('Tower Wars — ai_decide vs Jev','Visual tower defense: 3 simultaneous strategic decisions per wave','AI','#B07CFF'),
   'aidecide-ceo/':('Startup CEO — ai_decide vs Jev','24 quarters, 3 strategic calls each — the harder decision-model deathmatch','AI','#3ECFB2'),
   'aidecide-snake-arena/':('Snake Arena — ai_decide vs Jev deathmatch','Two decision models race snakes on one board · live latency compare','AI','#FF3621'),

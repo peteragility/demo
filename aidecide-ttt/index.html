@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic-Tac-Toe — ai_decide vs Jev · Tournament</title>
+<style>
+  :root{--bg:#0E1E24;--card:#152930;--line:#24404A;--txt:#E8F0F2;--mut:#8FA8B0;
+        --orange:#FF3621;--teal:#3ECFB2;--gold:#FFD166;--bad:#FF5A5A}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,sans-serif}
+  .wrap{max-width:760px;margin:0 auto;padding:16px 12px 60px}
+  header{text-align:center;padding:10px 0 2px}
+  .kicker{color:var(--orange);font-weight:700;letter-spacing:.12em;font-size:.7rem;text-transform:uppercase}
+  h1{font-size:1.35rem;margin:6px 0 4px}
+  .sub{color:var(--mut);font-size:.84rem}
+  .score{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin-top:12px;align-items:stretch}
+  .sc{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+  .sc.a{border-color:var(--orange)} .sc.b{border-color:var(--teal)}
+  .sc .nm{font-weight:800;font-size:clamp(.72rem,2.8vw,1rem);white-space:nowrap}
+  .sc.a .nm{color:var(--orange)} .sc.b .nm{color:var(--teal)}
+  .sc .big{font-size:2rem;font-weight:800;color:var(--gold);margin:2px 0}
+  .sc .meta{font-size:.68rem;color:var(--mut)}
+  .vs{font-weight:900;font-size:1.2rem;color:var(--gold);align-self:center}
+  .game-area{display:flex;gap:14px;margin-top:14px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+  .boardbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .status{text-align:center;font-size:.8rem;margin-bottom:8px;color:var(--mut)}
+  .status b{color:var(--gold)}
+  .board{display:grid;grid-template-columns:repeat(3,84px);grid-template-rows:repeat(3,84px);gap:6px}
+  .cell{position:relative;background:var(--bg);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;font-weight:800;cursor:default;transition:transform .15s, background .3s}
+  .cell.x{color:var(--orange)} .cell.o{color:var(--teal)}
+  .cell.win{background:rgba(255,209,102,.18);outline:2px solid var(--gold)}
+  .cell .heat{position:absolute;bottom:3px;left:3px;right:3px;height:4px;border-radius:2px;background:rgba(143,168,176,.15);overflow:hidden;display:none}
+  .cell .heat>div{height:100%;background:var(--gold)}
+  .cell.empty .heat{display:block}
+  .games{font-size:.72rem;color:var(--mut);text-align:center;margin-top:8px}
+  .games span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+  .games .wA{color:var(--orange);border-color:var(--orange)}
+  .games .wB{color:var(--teal);border-color:var(--teal)}
+  .games .dr{color:var(--mut)}
+  .side{width:210px;display:flex;flex-direction:column;gap:10px}
+  .think{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:.72rem;line-height:1.7}
+  .think h3{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+  .think.a h3{color:var(--orange)} .think.b h3{color:var(--teal)}
+  .think .mv{color:var(--gold);font-weight:700}
+  .log{max-height:180px;overflow-y:auto}
+  .log div{border-bottom:1px solid rgba(36,64,74,.5);padding:2px 0;animation:si .3s}
+  @keyframes si{from{opacity:0;transform:translateY(-5px)}to{opacity:1}}
+  .overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,22,27,.95);text-align:center;padding:24px;z-index:5}
+  .overlay.hide{display:none}
+  .overlay h2{font-size:1.3rem;margin-bottom:10px}
+  .overlay p{color:var(--mut);font-size:.85rem;max-width:460px;line-height:1.7;margin-bottom:16px}
+  .btn{background:var(--orange);border:none;color:#fff;font-weight:700;font-size:1rem;padding:13px 28px;border-radius:10px;cursor:pointer}
+  .foot{text-align:center;color:var(--mut);font-size:.66rem;margin-top:16px;line-height:1.7}
+  @media(max-width:720px){.game-area{flex-direction:column;align-items:center}.side{width:100%;flex-direction:row}.think{flex:1}.board{grid-template-columns:repeat(3,72px);grid-template-rows:repeat(3,72px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Decision Model Deathmatch · Classic</div>
+    <h1>⭕ Tic-Tac-Toe: ai_decide vs Jev</h1>
+    <p class="sub">First to win 3 games takes the trophy. Every move = one model call. Watch the probability heatmap — each model's "gut feeling" for all open cells, live.</p>
+  </header>
+
+  <div class="score">
+    <div class="sc a"><div class="nm">Databricks ai_decide</div><div class="big" id="scA">0</div><div class="meta">plays ❌ · avg <span id="msA">—</span>ms</div></div>
+    <div class="vs">VS</div>
+    <div class="sc b"><div class="nm">TypeSafe Jev</div><div class="big" id="scB">0</div><div class="meta">plays ⭕ · avg <span id="msB">—</span>ms</div></div>
+  </div>
+
+  <div class="game-area">
+    <div class="boardbox">
+      <div class="status" id="status">Press start</div>
+      <div class="board" id="board"></div>
+      <div class="games" id="games"></div>
+    </div>
+    <div class="side">
+      <div class="think a"><h3>ai_decide (❌)</h3><div id="thinkA">—</div><div class="log" id="logA"></div></div>
+      <div class="think b"><h3>Jev (⭕)</h3><div id="thinkB">—</div><div class="log" id="logB"></div></div>
+    </div>
+  </div>
+
+  <p class="foot">One call per move · state includes both players' threats · same rules both sides · gold cells = model's probability per open cell<br>
+  <a href="../aidecide-snake-arena/" style="color:var(--mut)">Snake Arena</a> · <a href="../aidecide-tower/" style="color:var(--mut)">Tower Wars</a></p>
+</div>
+
+<div class="overlay" id="overlay">
+  <h2>⭕ Ready for the classic?</h2>
+  <p>First to <strong>3 wins</strong>. ai_decide plays ❌ (moves first), Jev plays ⭕. Each turn the model sees the board and rates every open cell — the heatmap shows its confidence. Draw counts for nobody. Alternating first-move keeps it fair.</p>
+  <button class="btn" id="startBtn">▶ Start tournament</button>
+</div>
+
+<script>
+const API='https://u37zbl7apd.execute-api.us-east-1.amazonaws.com/prod/decide';
+const $=id=>document.getElementById(id);
+const LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+const POS=['top-left','top-center','top-right','middle-left','center','middle-right','bottom-left','bottom-center','bottom-right'];
+
+let board, turn, scores, gameNo, running=false, msSums, calls, gameOver, wins;
+scores={A:0,B:0}; wins=[];
+function resetGame(){
+  board=Array(9).fill(null); turn = (gameNo%2===0)?'X':'O'; gameOver=false;
+  render();
+}
+function winner(b){
+  for(const L of LINES){const [a,c,d]=L;if(b[a]&&b[a]===b[c]&&b[a]===b[d])return{p:b[a],line:L};}
+  return b.every(x=>x)?{p:'draw',line:null}:null;
+}
+function threats(b,me,opp){ // describe immediate threats in words
+  const myLines=[],oppLines=[];
+  for(const L of LINES){
+    const vals=L.map(i=>b[i]);
+    const mc=vals.filter(v=>v===me).length, oc=vals.filter(v=>v===opp).length, ec=vals.filter(v=>!v).length;
+    if(mc===2&&ec===1)myLines.push(L.map(i=>POS[i]).find((_,j)=>!b[L[j]]));
+    if(oc===2&&ec===1)oppLines.push(L.map(i=>POS[i]).find((_,j)=>!b[L[j]]));
+  }
+  return{mine:myLines,opp:oppLines};
+}
+function stateFor(b,me){
+  const opp=me==='X'?'O':'X';
+  const t=threats(b,me,opp);
+  const rows=[0,1,2].map(r=>[0,1,2].map(c=>b[r*3+c]||'·').join(' ')).join(' | ');
+  return `Tic-tac-toe. You play ${me==='X'?'X (first player)':'O (second player)'}. Board (rows top to bottom): ${rows}. `+
+    (t.mine.length?`You can WIN now by playing: ${t.mine.join(', ')}. `:`You have no immediate winning move. `)+
+    (t.opp.length?`WARNING: opponent can win next turn at: ${t.opp.join(', ')} — block it unless you can win now. `:`Opponent has no immediate winning threat. `)+
+    `Goal: three in a row.`;
+}
+function questionsFor(b){
+  const crit={};
+  b.forEach((v,i)=>{if(!v)crit['c'+i]=POS[i];});
+  return {move:{type:'choice',instructions:'Pick the best cell for tic-tac-toe: win if you can, block opponent threats, else build your line (prefer center, then corners).',criteria:crit}};
+}
+async function callModel(model,state,questions){
+  const t0=performance.now();
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model,state,questions})});
+  const j=await r.json();
+  if(!j.ok)throw new Error((j.error||'api').slice(0,40));
+  return{ans:j.answers.move||{},ms:Math.round(performance.now()-t0)};
+}
+const pickOf=a=>{
+  if(a.choice)return a.choice;
+  const p=a.probabilities||{};
+  const ks=Object.keys(p); if(!ks.length)return null;
+  return ks.reduce((x,y)=>p[x]>=p[y]?x:y);
+};
+function render(heat,heatPick){
+  const bd=$('board'); bd.innerHTML='';
+  board.forEach((v,i)=>{
+    const c=document.createElement('div');
+    c.className='cell'+(v==='X'?' x':'')+(v==='O'?' o':'')+(!v?' empty':'');
+    c.textContent=v||( (heat&&heat[i]!=null)?'':'');
+    if(!v&&heat&&heat[i]!=null){
+      const h=document.createElement('div');h.className='heat';
+      const f=document.createElement('div');f.style.width=Math.round(heat[i]*100)+'%';
+      if(heatPick==='c'+i)f.style.boxShadow='0 0 8px var(--gold)';
+      h.appendChild(f);c.appendChild(h);
+      c.title=Math.round(heat[i]*100)+'%';
+    }
+    bd.appendChild(c);
+  });
+  $('games').innerHTML=wins.map(w=>`<span class="${w==='A'?'wA':w==='B'?'wB':'dr'}">${w==='A'?'❌':w==='B'?'⭕':'='}</span>`).join('');
+}
+function logLine(p,txt){const d=document.createElement('div');d.textContent=txt;const el=$(p);el.prepend(d);while(el.children.length>30)el.removeChild(el.lastChild);}
+
+async function playMove(side){
+  const model=side==='A'?'ai_decide':'jev', mark=side==='A'?'X':'O';
+  try{
+    const{ans,ms}=await callModel(model,stateFor(board,mark),questionsFor(board));
+    msSums[side]+=ms;calls[side]++;
+    $(side==='A'?'msA':'msB').textContent=Math.round(msSums[side]/calls[side]);
+    const pick=pickOf(ans);
+    const probs=ans.probabilities||{};
+    // heatmap: probabilities keyed by open cell
+    const heat=board.map((v,i)=>v?null:(probs['c'+i]??0));
+    render(heat,pick);
+    const idx=pick&&pick.startsWith('c')?+pick.slice(1):null;
+    if(idx==null||board[idx]){throw new Error('invalid cell');}
+    board[idx]=mark;
+    // highlight decision
+    $(side==='A'?'thinkA':'thinkB').innerHTML=`Played <span class="mv">${POS[idx]}</span> (${ms}ms, conf ${Math.round((ans.confidence||0)*100)}%)`;
+    logLine(side==='A'?'logA':'logB',`G${gameNo} ${mark} ${POS[idx]} (${ms}ms)`);
+  }catch(e){
+    // fallback: first open cell (or best-effort: win/block/center)
+    const fb=board.findIndex(v=>!v);
+    if(fb<0)return;
+    board[fb]=mark;
+    logLine(side==='A'?'logA':'logB',`G${gameNo} ${mark} ERR→fallback ${POS[fb]}`);
+  }
+  render();
+}
+async function gameLoop(){
+  if(!running)return;
+  const w=winner(board);
+  if(w){
+    gameOver=true;
+    if(w.p==='X'){scores.A++;wins.push('A');}
+    else if(w.p==='O'){scores.B++;wins.push('B');}
+    else wins.push('D');
+    $('scA').textContent=scores.A;$('scB').textContent=scores.B;
+    render();
+    // highlight win line
+    if(w.line){const cells=$('board').children;w.line.forEach(i=>cells[i].classList.add('win'));}
+    $('status').innerHTML=w.p==='draw'?'🤝 Draw!':(w.p==='X'?'❌ ai_decide wins game '+gameNo:'⭕ Jev wins game '+gameNo);
+    if(scores.A>=3||scores.B>=3||wins.length>=7){finish();return;}
+    await new Promise(r=>setTimeout(r,1400));
+    gameNo++;resetGame();
+    $('status').innerHTML=`Game ${gameNo} — ${turn==='X'?'ai_decide (❌)':'Jev (⭕)'} moves first`;
+  }
+  const side=turn==='X'?'A':'B';
+  $('status').innerHTML=`Game ${gameNo} · ${turn==='X'?'❌ ai_decide':'⭕ Jev'} thinking…`;
+  await playMove(side);
+  turn=turn==='X'?'O':'X';
+  setTimeout(gameLoop,250);
+}
+function finish(){
+  running=false;
+  const win=scores.A>scores.B?'A':scores.B>scores.A?'B':'tie';
+  const name=win==='A'?'Databricks ai_decide':win==='B'?'TypeSafe Jev':'Nobody';
+  const crown=win==='tie'?'🤝':win==='A'?'❌':'⭕';
+  const o=$('overlay');o.classList.remove('hide');
+  o.querySelector('h2').innerHTML=`${crown} Champion: ${name}`;
+  o.querySelector('p').innerHTML=`Final score ${scores.A}–${scores.B} over ${wins.length} games (${wins.filter(w=>w==='D').length} draws). `+
+    `ai_decide avg ${calls.A?Math.round(msSums.A/calls.A):0}ms/move · Jev avg ${calls.B?Math.round(msSums.B/calls.B):0}ms/move.<br><br>`+
+    `Tic-tac-toe is the perfect size for decision models: 9 options, one-move threats, no deep search needed. When the choice space grows (chess, go), you need a search engine instead.`;
+  $('startBtn').textContent='▶ Rematch';
+}
+$('startBtn').onclick=()=>{
+  $('overlay').classList.add('hide');
+  scores={A:0,B:0};wins=[];gameNo=1;msSums={A:0,B:0};calls={A:0,B:0};
+  $('scA').textContent=0;$('scB').textContent=0;$('logA').innerHTML='';$('logB').innerHTML='';
+  $('msA').textContent='—';$('msB').textContent='—';
+  resetGame();running=true;
+  $('status').innerHTML=`Game 1 — ai_decide (❌) moves first`;
+  gameLoop();
+};
+// idle board
+board=Array(9).fill(null);render();
+</script>
+</body>
+</html>

@@ -37,6 +37,13 @@
    "color": "#B07CFF"
   },
   {
+   "path": "aidecide-ttt/",
+   "title": "Tic-Tac-Toe — ai_decide vs Jev",
+   "desc": "Classic tournament with live probability heatmap per cell",
+   "tag": "AI",
+   "color": "#FFD166"
+  },
+  {
    "path": "arsenal-champions/",
    "title": "Arsenal Champions",
    "desc": "冠軍之路 ⚽",
