@@ -23,32 +23,11 @@
    "color": "#FF3621"
   },
   {
-   "path": "arsenal-champions/",
-   "title": "Arsenal Champions",
-   "desc": "冠軍之路 ⚽",
-   "tag": "Football",
-   "color": "#ef0107"
-  },
-  {
-   "path": "arsenal-transfers.html",
-   "title": "Arsenal Transfers",
-   "desc": "兵工廠轉會分析 ⚽",
-   "tag": "Football",
-   "color": "#ef0107"
-  },
-  {
    "path": "atom-deep-dive.html",
    "title": "Atom Deep Dive — 原子結構深潛",
    "desc": "Atom → Nucleus → Quark → Gluon → String · 互動 3D",
    "tag": "Interactive",
    "color": "#c792ea"
-  },
-  {
-   "path": "aurora-vs-lakebase.html",
-   "title": "Aurora vs Lakebase",
-   "desc": "兩代 DB 之爭",
-   "tag": "Reference",
-   "color": "#58a6ff"
   },
   {
    "path": "lakebase-objection-faq/",
@@ -86,13 +65,6 @@
    "color": "#ff6b35"
   },
   {
-   "path": "ltap-blog.html",
-   "title": "The End of the 40-Year Database Divide",
-   "desc": "Why LTAP Changes Everything · 8 min read",
-   "tag": "Latest Post",
-   "color": "#ff6b35"
-  },
-  {
    "path": "neon-orbit.html",
    "title": "Neon Orbit",
    "desc": "Neon orbit demo",
@@ -100,32 +72,11 @@
    "color": "#4ecdc4"
   },
   {
-   "path": "oss-models-comparison.html",
-   "title": "OSS Models Comparison",
-   "desc": "開源模型比較表",
-   "tag": "Reference",
-   "color": "#58a6ff"
-  },
-  {
    "path": "penang-trip/",
    "title": "Penang Trip",
    "desc": "檳城之旅 🌴",
    "tag": "Travel",
    "color": "#2ecc71"
-  },
-  {
-   "path": "quantum.html",
-   "title": "Quantum 互動頁",
-   "desc": "量子運算入門",
-   "tag": "Interactive",
-   "color": "#4ecdc4"
-  },
-  {
-   "path": "string-theory-trial/",
-   "title": "String Theory Trial",
-   "desc": "弦理論試驗場",
-   "tag": "Interactive",
-   "color": "#4ecdc4"
   },
   {
    "path": "tongjian/",
