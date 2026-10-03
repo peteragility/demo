@@ -23,13 +23,6 @@
    "color": "#f7b731"
   },
   {
-   "path": "lakebase-vs-aurora/",
-   "title": "Lakebase vs Aurora",
-   "desc": "深入對比",
-   "tag": "Work",
-   "color": "#f7b731"
-  },
-  {
    "path": "lakehouse-quest.html",
    "title": "Lakehouse Quest",
    "desc": "互動 Lakehouse 冒險",

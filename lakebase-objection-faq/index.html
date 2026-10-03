@@ -133,7 +133,7 @@ pre{border-radius:var(--radius)}
   <div class="inner">
     <div class="kicker">Lakebase Postgres · Field Enablement</div>
     <h1>Objections, answered honestly.</h1>
-    <p>Eight technical objections we hear most — each answered with the architecture, the published numbers, and the limits we won't pretend don't exist.</p>
+    <p>Nine technical objections we hear most — each answered with the architecture, the published numbers, and the limits we won't pretend don't exist.</p>
     <div class="sources">Sources: Lakebase docs · VLDB 2026 paper · May &amp; Sep 2026 engineering blogs</div>
   </div>
 </header>
@@ -148,6 +148,7 @@ pre{border-radius:var(--radius)}
     <a href="#q5">Connection pooling</a>
     <a href="#q4">Provisioned mode</a>
     <a href="#ha">HA &amp; DR</a>
+    <a href="#aurora">Aurora comparison</a>
     <a href="#nogo">No-go list</a>
   </div>
 </nav>
@@ -333,6 +334,44 @@ query_wait_timeout = 120</pre>
   <p><strong>Talk track:</strong> HA for compute/AZ failure — automatic, RPO=0, GA today. Regional DR exists but is Private Preview with periodic replication and manual failover; hard DR requirements today → qualify or design around (e.g. app-level dual-write or storage-layer export). HA config replicates to the secondary project, so posture survives a DR failover.</p>
 </section>
 
+<section id="aurora">
+  <span class="qnum">Objection 09</span>
+  <h2>Head-to-head with Aurora Serverless — where does each one actually win?</h2>
+  <p><strong>The one architectural sentence that explains everything:</strong> both believe "log is the database" — they differ on where the page of truth lives. Aurora: private quorum storage, single cloud, readable only by that engine. Lakebase (Neon lineage, Gen 3): open-format object storage (S3/ADLS/GCS + Delta) that <em>any</em> engine can read. Everything below follows from that choice.</p>
+
+  <p><strong>Where Lakebase wins:</strong></p>
+  <ul>
+    <li><strong>Cold start / scale-to-zero:</strong> median &lt;500ms to boot a fresh compute (VLDB §5.3) vs Aurora's ~15s instance resume (30s+ after &gt;24h "deep sleep") — a ~30x gap. Lakebase's 4-tier cache waterfall (RAM → local NVMe → warm pageserver → object store) means lower tiers stay warm across compute swaps; Aurora's 2-tier cache dies with the instance.</li>
+    <li><strong>Branching:</strong> O(1) metadata operation — fork the storage history at any point, no data copy. Aurora has nothing: copy-then-wait (dump/restore). This is the agent-workload primitive: agents create databases 4× more often than humans, the ecosystem sees &gt;10M new databases daily, production telemetry shows branches &gt;500 deep.</li>
+    <li><strong>OLTP + OLAP in one place:</strong> Spark/BI engines read Lakebase pages directly — zero ETL, Unity Catalog governance. Aurora needs DMS/Glue pipelines to feed analytics.</li>
+    <li><strong>True open Postgres:</strong> the open-source engine (not a fork) — versions 16/17/18, minor versions tracked to upstream. Aurora is a PG fork with feature gaps.</li>
+    <li><strong>Zero I/O charges:</strong> compute + storage only. Aurora Standard bills per I/O request; I/O-Optimized drops that but raises instance/storage rates.</li>
+    <li><strong>Lock-in:</strong> open format on any cloud's object storage vs proprietary single-cloud format.</li>
+  </ul>
+
+  <p><strong>Where Aurora wins — say it before they find it:</strong></p>
+  <ul>
+    <li><strong>Track record:</strong> 10+ years battle-tested, 99.99% SLA. Lakebase GA'd Jan 2026 (AWS)/Mar 2026 (Azure): 99.9% single-compute, 99.99% with zone-redundant HA. May 2026 us-east-1 AZ incident: 7/8 cells failed over correctly, ~13% of DBs affected; Jan–Apr attainment 99.75–99.85% of DBs met 99.99%. The maturity gap is closing — but it exists.</li>
+    <li><strong>Cross-region DR:</strong> Global Database with &lt;1s lag, managed failover, RPO=0 planned switchover. Lakebase DR is Private Preview: periodic replication, minutes-range RPO, manual failover (details in Objection 08).</li>
+    <li><strong>Read replicas:</strong> up to 15 independently autoscaling vs Lakebase's 1–3 HA secondaries + up to 6 per branch.</li>
+    <li><strong>Beyond ~112 CU single-node or horizontal write sharding:</strong> Aurora Limitless / DSQL territory — qualify out early.</li>
+  </ul>
+
+  <p><strong>The throughput story, honestly told:</strong></p>
+  <div class="tblwrap"><table>
+    <tr><th>Claim</th><th>The real number</th></tr>
+    <tr><td>"5× faster writes"</td><td>vs <strong>Neon's own previous version</strong> (image pushdown, May 2026) — <em>not</em> vs Aurora</td></tr>
+    <tr><td>VLDB paper vs Gen-2 archetype</td><td>Lakebase 22–43% ahead at 4–16 vCPU, +27% at 24 vCPU (TPROC-C, p95 ≤ 20ms)</td></tr>
+    <tr><td>Partner pgbench head-to-head vs Aurora</td><td>1,731–1,737 vs 1,508–1,509 TPS → <strong>~15% Lakebase edge</strong>; 104ms vs 119ms per txn (single partner benchmark, default config both sides)</td></tr>
+    <tr><td>Verdict</td><td>Nobody buys or loses this on raw TPS — the decision is architecture (branching/cold-start/open format) vs maturity (track record/DR/replicas)</td></tr>
+  </table></div>
+
+  <p><strong>Pricing (list, us-east-1, Sep 2026):</strong> Lakebase ~$0.111/CU-hr vs Aurora $0.12/ACU-hr Standard ($0.156 I/O-Opt). Storage: Aurora $0.10 vs Lakebase ~$0.345/GB-month — but Lakebase charges no I/O meter, and branches are copy-on-write (only divergent data bills). All-in scenarios with I/O included: <strong>Lakebase cheaper in every one</strong> — dev/idle ~$74 vs ~$113 (−34%), production API ~$497 vs ~$600–709 (−17%), heavy 24/7 ~$1,986 vs ~$2,272–2,602. Lakebase Always-On discounts the baseline −25% after 24h continuous (promo to Jan 2027).</p>
+  <div class="honest"><b>Honest pricing caveats:</b> Aurora wins on Reserved/Savings commitments (Lakebase has none), AWS-native billing consolidation, and I/O-Optimized at very high storage-to-I/O ratios. Watch Lakebase's extra meters: synced-table pipelines and read replicas bill their own compute.</div>
+
+  <div class="rule">Talk track: "Aurora is the safer pair of hands today; Lakebase is the architecture the next ten years are built on. If your workload needs branching, agent-scale database churn, or zero-ETL analytics, the gap that matters isn't TPS."</div>
+</section>
+
 <section id="nogo">
   <span class="qnum">Qualify out early</span>
   <h2>No-go checklist</h2>
@@ -353,7 +392,7 @@ query_wait_timeout = 120</pre>
 </main>
 
 <footer>
-  Fact-checked 2026-10-02 against: docs.databricks.com (autoscaling, manage-computes, manage-projects, connection-pooling, high-availability, disaster-recovery, scale-to-zero, data-protection, CMK, PITR) · Lakebase release notes · eng blogs (compute cache Part 1, 9 Sep 2026; FPW, 7 May 2026) · PVLDB 19(12):4385 (Lakebase paper, Table 1) · AWS Aurora and RDS pricing pages.
+  Fact-checked 2026-10-02 against: docs.databricks.com (autoscaling, manage-computes, manage-projects, connection-pooling, high-availability, disaster-recovery, scale-to-zero, data-protection, CMK, PITR) · Lakebase release notes · eng blogs (compute cache Part 1, 9 Sep 2026; FPW, 7 May 2026) · PVLDB 19(12):4385 (Lakebase paper, Table 1) · AWS Aurora and RDS pricing pages · vs-aurora deep-dive (partner pgbench, Gen2/Gen3 architecture, May–Sep 2026 release notes)
 </footer>
 
 <script>

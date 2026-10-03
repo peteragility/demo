@@ -14,7 +14,6 @@ META = {
   'lakehouse-quest.html':('Lakehouse Quest','互動 Lakehouse 冒險','Interactive','#4ecdc4'),
   'neon-orbit.html':   ('Neon Orbit','Neon orbit demo','Interactive','#4ecdc4'),
   'lakebase-sales-play/':('Lakebase Sales Play','銷售 playbook','Work','#f7b731'),
-  'lakebase-vs-aurora/':('Lakebase vs Aurora','深入對比','Work','#f7b731'),
   'penang-trip/':      ('Penang Trip','檳城之旅 🌴','Travel','#2ecc71'),
 }
 
