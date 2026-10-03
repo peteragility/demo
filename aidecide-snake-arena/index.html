@@ -115,6 +115,7 @@
 const API='https://u37zbl7apd.execute-api.us-east-1.amazonaws.com/prod/decide';
 const GRID=26, CELL=640/GRID;
 const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+if(!ctx.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;};}
 const $=id=>document.getElementById(id);
 const QUEST={dir:{type:'choice',instructions:'You are controlling a snake racing another snake to ONE shared food. Pick the safest move that heads toward the food. Avoid walls and your own body; overlapping the other snake is allowed. Danger flags show which moves kill you.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
 
@@ -205,7 +206,7 @@ async function moveSnake(s,other,food,model,panel,sc,al,mvv,avg){
     if(nh.x===food.x&&nh.y===food.y){s.score++;$(sc).textContent=s.score;Object.assign(food,spawnFood([A,B]));} // food respawns elsewhere
     else s.body.pop();
   }catch(e){
-    log(panel,s,s.moves+1,'ERR','⚠️',0,false);
+    log(panel,s,s.moves+1,'ERR',(e&&e.message?e.message:'?').slice(0,60),0,false);
   }
 }
 function draw(){
