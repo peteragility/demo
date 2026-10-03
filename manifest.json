@@ -30,6 +30,13 @@
    "color": "#FF3621"
   },
   {
+   "path": "aidecide-tower/",
+   "title": "Tower Wars — ai_decide vs Jev",
+   "desc": "Visual tower defense: 3 simultaneous strategic decisions per wave",
+   "tag": "AI",
+   "color": "#B07CFF"
+  },
+  {
    "path": "arsenal-champions/",
    "title": "Arsenal Champions",
    "desc": "冠軍之路 ⚽",
