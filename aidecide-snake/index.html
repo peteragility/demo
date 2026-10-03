@@ -136,13 +136,31 @@ const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}}[
 function questObj(){
   return {dir:{type:'choice',instructions:'You are controlling a snake. Pick the safest move that heads toward the food. Moving into a wall or your own body = death. Danger flags show which moves kill you immediately.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
 }
-function firePrefetch(){
-  // fire the request for the CURRENT state immediately; step() consumes it
-  const key=stateJSON();
-  if(preflightKey===key&&preflight)return; // same state already in flight
-  preflightKey=key;
-  preflight=fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+let pfCache={}; // state-key -> promise
+function reqDecide(key){
+  if(!pfCache[key])pfCache[key]=fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({state:key,questions:questObj()})}).then(r=>r.json()).catch(()=>null);
+  return pfCache[key];
+}
+function stateAt(head,food,dir,body,danger){ // build state JSON for hypothetical positions
+  return JSON.stringify({snake_head:head,current_direction:dirName(dir),food:food,
+    food_position_relative:food.x>head.x?'food is to the RIGHT':food.x<head.x?'food is to the LEFT':food.y>head.y?'food is BELOW':'food is ABOVE',
+    danger_if_move:danger,snake_length:body,grid_size:GRID});
+}
+function firePrefetch(){
+  const key=stateJSON();
+  reqDecide(key); // mainline
+  // speculative: if next move could EAT the food, also prefetch the post-eat state
+  const h=snake[0];
+  if(Math.abs(food.x-h.x)+Math.abs(food.y-h.y)===1){
+    for(const [name,v] of [['up',{x:0,y:-1}],['down',{x:0,y:1}],['left',{x:-1,y:0}],['right',{x:1,y:0}]]){
+      const nh={x:h.x+v.x,y:h.y+v.y};
+      if(nh.x===food.x&&nh.y===food.y){
+        // after eating: head=food pos, length+1; new food unknown -> skip (state unknowable)
+      }
+    }
+  }
+  if(Object.keys(pfCache).length>12){const k0=Object.keys(pfCache)[0];delete pfCache[k0];}
 }
 // double-buffer: fire TWO prefetches one cell apart to cover direction uncertainty
 function firePrefetch2(){
@@ -154,10 +172,7 @@ async function decide(){
   const QUESTIONS=questObj();
   const t0=performance.now();
   try{
-    let j;
-    if(preflight&&preflightKey===stateJSON()){j=await preflight;preflight=null;}
-    else{j=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({state:stateJSON(),questions:QUESTIONS})}).then(r=>r.json());}
+    let j=await reqDecide(stateJSON());
     const ms=Math.round(performance.now()-t0);
     if(!j||!j.ok)throw new Error(((j&&j.error)||'api'));
     return {answers:j.answers,ms};
