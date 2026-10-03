@@ -6,10 +6,13 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
   const RATE_FIELDS = ['in', 'out', 'cache_read', 'cache_write', 'cache_write_1h', 'cache_storage'];
+  const HYPERSCALERS = ['bedrock', 'azure_foundry', 'gcloud'];
+  const PARITY = 0.01; // within 1% counts as the same price
   const validRate = v => typeof v === 'number' && Number.isFinite(v) && v >= 0;
   const clone = value => JSON.parse(JSON.stringify(value));
   const validDate = s => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s) &&
     !Number.isNaN(Date.parse(s + 'T00:00:00Z')) && new Date(s + 'T00:00:00Z').toISOString().slice(0, 10) === s;
+  const today = () => new Date().toISOString().slice(0, 10);
 
   function status(cell, asOf) {
     if (!cell) return 'unverified';
@@ -21,7 +24,7 @@
     if (!cell) return { status: 'unverified', problems: ['Offer not verified.'] };
     let result = clone(cell);
     result.problems = [];
-    const asOf = options.asOf || new Date().toISOString().slice(0, 10);
+    const asOf = options.asOf || today();
     const variantId = options.variantId || 'base';
     if (!validDate(asOf)) result.problems.push('Choose a valid estimate date.');
     result.status = status(cell, asOf);
@@ -38,6 +41,7 @@
       for (const field of RATE_FIELDS) delete result[field];
       delete result.long_context;
       delete result.promotion;
+      delete result.variants;
       result = Object.assign(result, clone(variant));
       result.tier = variant.label;
       result.variant_id = variant.id;
@@ -53,6 +57,8 @@
         result.problems.push('Post-promotion rates are not verified.');
         return result;
       }
+      // Promotional long-context rates never outlive the promotion.
+      if (!result.promotion.after.long_context) delete result.long_context;
       Object.assign(result, clone(result.promotion.after));
       result.promotion_expired = true;
     }
@@ -86,12 +92,42 @@
     return result;
   }
 
+  // Every selectable price on one platform: the listed tier plus its verified variants.
+  function offers(cell, options = {}) {
+    if (!cell) return [];
+    const list = [resolveOffer(cell, options)];
+    if (list[0].status !== 'priced') return list;
+    for (const v of cell.variants || []) {
+      if (!v.context_only && !v.future_only) list.push(resolveOffer(cell, { ...options, variantId: v.id }));
+    }
+    return list;
+  }
+
+  const blended = (offer, ratio) => ratio * offer.in + offer.out;
+
+  // Standard real-time prices for the confirmed model version, in any region or processing scope.
+  // Batch, Flex, Priority and off-peak prices are different services or conditions.
+  function comparable(offer) {
+    return Boolean(offer) && offer.status === 'priced' && !(offer.problems || []).length &&
+      offer.model_match === 'confirmed' && offer.service_tier === 'standard' && validRate(offer.in) && validRate(offer.out);
+  }
+
+  // Like for like = the cheapest comparable price on each platform, chosen at the selected blend.
+  function cheapest(cell, options = {}) {
+    const ratio = Number(options.inputRatio ?? 3);
+    let best = null, cost = Infinity;
+    for (const offer of offers(cell, options)) {
+      if (!comparable(offer)) continue;
+      const c = blended(offer, ratio);
+      if (c < cost - 1e-12) { best = offer; cost = c; }
+    }
+    return best;
+  }
+
   function comparisonReason(offer, baseline) {
-    if (!offer || !baseline || offer.status !== 'priced' || baseline.status !== 'priced') return 'A verified Databricks baseline and competitor price are required.';
+    if (!offer || !baseline || offer.status !== 'priced' || baseline.status !== 'priced') return 'A verified Databricks price and competitor price are required.';
     if ((offer.problems || []).length || (baseline.problems || []).length) return 'The requested context or tier is not fully verified.';
-    if (offer.user_modified || baseline.user_modified) return 'Personal price overrides are excluded from published price comparisons.';
     if (offer.model_match !== 'confirmed' || baseline.model_match !== 'confirmed') return offer.comparison_note || 'Exact model version is not confirmed.';
-    if (!offer.comparison_scope || offer.comparison_scope === 'unverified' || offer.comparison_scope !== baseline.comparison_scope) return offer.comparison_note || 'Processing scopes differ; compare the same global, regional or data-zone configuration.';
     if (offer.service_tier !== baseline.service_tier) return 'Service tiers differ; compare Standard with Standard or Priority with Priority.';
     if (offer.context_band && baseline.context_band && offer.context_band !== baseline.context_band && offer.context_band !== 'flat' && baseline.context_band !== 'flat') return 'Context pricing bands differ.';
     return null;
@@ -102,8 +138,8 @@
     if (reason) return { value: null, reason };
     const ratio = Number(inputRatio);
     if (!Number.isFinite(ratio) || ratio < 0) return { value: null, reason: 'Invalid input/output blend.' };
-    const a = ratio * offer.in + offer.out;
-    const b = ratio * baseline.in + baseline.out;
+    const a = blended(offer, ratio);
+    const b = blended(baseline, ratio);
     if (!Number.isFinite(a) || !Number.isFinite(b) || b <= 0) return { value: null, reason: 'The baseline cost is zero or unverified.' };
     return { value: a / b - 1, reason: null };
   }
@@ -154,36 +190,52 @@
     return { offer, total: complete ? subtotal : null, subtotal: Number.isFinite(subtotal) ? subtotal : null, complete, parts, errors, unknown };
   }
 
+  // Published parity figures. Models without a verified Databricks price are excluded from
+  // every count, including availability gaps.
   function summarize(models, options = {}) {
-    const hyperscalers = ['bedrock', 'azure_foundry', 'gcloud'];
-    const result = { models: models.length, comparedModels: 0, noCheaperModels: 0, cheaperCells: 0,
-      comparableCells: 0, withoutComparison: 0, gaps: Object.fromEntries(hyperscalers.map(p => [p, 0])), dedicated: 0, unverified: 0 };
+    const asOf = options.asOf || today();
+    const ratio = Number(options.inputRatio ?? 3);
+    const result = { models: models.length, pricedModels: 0, comparedModels: 0, noCheaperModels: 0, cheaperCells: 0,
+      comparableCells: 0, withoutComparison: 0, gaps: Object.fromEntries(HYPERSCALERS.map(p => [p, 0])), dedicated: 0, unverified: 0 };
     for (const model of models) {
-      const baseline = resolveOffer(model.platforms.databricks, options);
-      let comparable = 0, beaten = false;
-      for (const [platform, cell] of Object.entries(model.platforms)) {
-        const resolved = resolveOffer(cell, options);
-        if (resolved.status === 'dedicated') result.dedicated++;
-        if (resolved.status === 'unverified') result.unverified++;
-        if (hyperscalers.includes(platform) && (resolved.status === 'unavailable' || resolved.status === 'retired')) result.gaps[platform]++;
+      const platforms = model.platforms || {};
+      for (const cell of Object.values(platforms)) {
+        const state = status(cell, asOf);
+        if (state === 'dedicated') result.dedicated++;
+        if (state === 'unverified') result.unverified++;
+      }
+      const baseline = cheapest(platforms.databricks, { ...options, asOf, inputRatio: ratio });
+      if (!baseline) continue;
+      result.pricedModels++;
+      const baseCost = blended(baseline, ratio);
+      let compared = 0, beaten = false, doubtful = false;
+      for (const [platform, cell] of Object.entries(platforms)) {
         if (platform === 'databricks') continue;
-        const d = delta(resolved, baseline, options.inputRatio ?? 3);
-        if (d.value != null) {
+        const hyperscaler = HYPERSCALERS.includes(platform);
+        const state = status(cell, asOf);
+        if (hyperscaler && (state === 'unavailable' || state === 'retired')) result.gaps[platform]++;
+        const pick = cheapest(cell, { ...options, asOf, inputRatio: ratio });
+        const d = pick ? delta(pick, baseline, ratio).value : null;
+        if (d != null) {
           result.comparableCells++;
-          if (d.value < -0.01) result.cheaperCells++;
-          if (hyperscalers.includes(platform)) {
-            comparable++;
-            if (d.value < -0.01) beaten = true;
+          if (d < -PARITY) result.cheaperCells++;
+          if (hyperscaler) {
+            compared++;
+            if (d < -PARITY) beaten = true;
           }
+        } else if (hyperscaler) {
+          // A cheaper verified price for an unconfirmed checkpoint cannot support a "no cheaper" claim.
+          doubtful = doubtful || offers(cell, { ...options, asOf }).some(o => o.status === 'priced' && !o.problems.length &&
+            o.service_tier === 'standard' && validRate(o.in) && validRate(o.out) && blended(o, ratio) < baseCost * (1 - PARITY));
         }
       }
-      if (comparable) {
+      if (compared) {
         result.comparedModels++;
-        if (!beaten) result.noCheaperModels++;
+        if (!beaten && !doubtful) result.noCheaperModels++;
       } else result.withoutComparison++;
     }
     return result;
   }
 
-  return { RATE_FIELDS, validRate, validDate, status, resolveOffer, comparisonReason, delta, calculate, summarize };
+  return { RATE_FIELDS, HYPERSCALERS, PARITY, validRate, validDate, status, resolveOffer, offers, comparable, cheapest, comparisonReason, delta, calculate, summarize };
 });

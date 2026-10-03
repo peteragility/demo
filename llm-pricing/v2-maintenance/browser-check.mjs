@@ -103,7 +103,7 @@ try {
     assert.equal(initial.rows, 16, viewport.name + ': original OSS default');
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
-    assert.ok(initial.visibleRows >= (viewport.width > 1060 ? 14 : 7), viewport.name + ': compact information density');
+    assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','AWS Bedrock','Azure Foundry','Fireworks','Google Vertex','Alibaba']);
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','AWS','Azure','FW','GCP','Ali']);
     assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Default','Cheapest','DBX edge']);
@@ -119,7 +119,7 @@ try {
     assert.match(await evalJS("document.querySelector('#mx').innerText"), /GPT-6.1 Sol/);
     assert.equal(await evalJS("document.querySelector('tr.row td.c').innerText.trim()"), '?');
     await evalJS("document.querySelector('#q').value='';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));location.hash='claude';");
-    await waitFor("document.querySelector('[data-g=anthropic]').getAttribute('aria-selected')==='true'");
+    await waitFor("document.querySelector('[data-g=anthropic]').getAttribute('aria-pressed')==='true'");
     assert.equal(await evalJS("document.querySelectorAll('#mx tr.row').length"), 7);
     assert.match(await evalJS("document.querySelector('#mx').innerText"), /Sonnet 5.5/);
     await evalJS("document.querySelector('[data-g=xai]').click()");
@@ -160,18 +160,21 @@ try {
     // Original sorting/blend controls still work; private edits leave published counts intact.
     await evalJS("document.querySelector('#sort').value='price';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='edge';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='default';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));");
     if (viewport.name === 'desktop') {
-      const summaryBefore = await evalJS("document.querySelector('#summary').innerText");
+      const summaryBefore = await evalJS("[...document.querySelectorAll('#summary .kpi')].map(k=>k.innerText).join('|')");
       await evalJS("localStorage.setItem('llm-pricing-edits-v3','ORIGINAL');localStorage.setItem('llm-pricing-prefs-v3','ORIGINAL');document.querySelector('#editBtn').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
       await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='4';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
       assert.equal(await evalJS("localStorage.getItem('llm-pricing-edits-v3')"), 'ORIGINAL');
       assert.equal(await evalJS("localStorage.getItem('llm-pricing-prefs-v3')"), 'ORIGINAL');
-      assert.match(await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2)').innerText"), /4\.00/);
-      assert.equal(await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2) .d')===null"), true);
-      assert.equal(await evalJS("document.querySelector('#summary').innerText"), summaryBefore);
+      await waitFor("/4\\.00/.test(document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2)').innerText)");
+      // A personal price is a what-if: its Δ appears in the table while the published figures stay put.
+      assert.equal(await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2) .d').textContent"), '▲13%');
+      assert.equal(await evalJS("[...document.querySelectorAll('#summary .kpi')].map(k=>k.innerText).join('|')"), summaryBefore);
+      assert.match(await evalJS("document.querySelector('#summary .enote').textContent"), /published prices/);
       await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='-1';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
       assert.equal(await evalJS("document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]').value"), '4');
       await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
-      assert.equal(await evalJS("document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]').value"), '');
+      // Clearing a personal price restores the published one and removes the edit.
+      await waitFor("document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]').value==='3' && !document.querySelector('#editNote').textContent");
       await evalJS("document.querySelector('#resetBtn').click();document.querySelector('#resetBtn').click();document.querySelector('#editBtn').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
     }
     await evalJS("document.querySelector('#blend').value='1';document.querySelector('#blend').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#blend').value='3';document.querySelector('#blend').dispatchEvent(new Event('change',{bubbles:true}));document.documentElement.dataset.theme='dark';window.scrollTo(0,0);");
@@ -195,17 +198,17 @@ try {
       await waitFor("document.querySelectorAll('#mx tr.row').length>0");
       await evalJS("document.documentElement.dataset.theme='light';document.querySelector('[data-g=all]').click()");
       await evalJS('document.fonts.ready.then(()=>true)');
+      await evalJS("document.querySelector('[data-g=oss]').click()");
       const original = await evalJS(measure);
-      assert.equal(original.priceFont, initial.priceFont, 'Original price typography: ' + viewport.name);
-      assert.equal(original.headingSize, initial.headingSize, 'Original heading size: ' + viewport.name);
+      // Same typeface and provider columns as the original, with at least as many rows on screen.
       assert.equal(original.fontFamily, initial.fontFamily, 'Original font family: ' + viewport.name);
-      assert.equal(original.wrapWidth, initial.wrapWidth, 'Original page width: ' + viewport.name);
       assert.equal(original.columns, initial.columns, 'Original provider columns: ' + viewport.name);
+      assert.ok(initial.visibleRows >= original.visibleRows, `v2 shows fewer rows than the original at ${viewport.name}: ${initial.visibleRows} < ${original.visibleRows}`);
       await saveScreenshot('original-' + viewport.name);
       initial.originalStyle = original;
     }
     reports.push({viewport, initial, integration: 'passed'});
-    console.log(`${viewport.name}: original layout, ${initial.columns - 1} providers, ${initial.visibleRows} visible rows, no document overflow; details, filters and pricing checks passed.`);
+    console.log(`${viewport.name}: ${initial.columns - 1} providers, ${initial.visibleRows} visible rows${initial.originalStyle ? ` (original: ${initial.originalStyle.visibleRows})` : ''}, no document overflow; details, filters and pricing checks passed.`);
     await rpc('Target.disposeBrowserContext', {browserContextId});
   }
   assert.equal(exceptions.length, 0, 'Uncaught browser exceptions: ' + JSON.stringify(exceptions));

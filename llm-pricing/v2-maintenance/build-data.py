@@ -7,6 +7,7 @@ unverified prices and endpoint IDs stay empty. All rates are USD / million token
 """
 import argparse
 import copy
+import datetime as dt
 import json
 from pathlib import Path
 
@@ -43,8 +44,18 @@ def variant(label, i, o, cr=None, cw=None, cw1h=None, *, scope="global", service
                 service_tier=service, pricing_checked_at=REVIEWED, **extra)
 
 
-def promo(cell, ends, after, label):
-    cell["promotion"] = dict(ends_on=ends, after=after, label=label)
+def promo(cell, ends, after, label, tier):
+    # The tier label the offer carries once the promotion has ended.
+    cell["promotion"] = dict(ends_on=ends, after=dict(after, tier=tier), label=label)
+
+
+def shift(day, days):
+    return (dt.date.fromisoformat(day) + dt.timedelta(days=days)).isoformat()
+
+
+def pretty(day):
+    d = dt.date.fromisoformat(day)
+    return f"{d.day} {d:%b %Y}"
 
 
 def normalize(data):
@@ -82,6 +93,10 @@ def normalize(data):
                 if c["status"] == "priced":
                     c["pricing_checked_at"] = REVIEWED
                     c["dbu_rate_basis"] = data["usd_per_dbu"]
+                # Processing scope is descriptive only; price comparisons use each platform's cheapest
+                # standard price in any region. US-hosted endpoints are regional, like Bedrock us-east-1.
+                if (c.get("regions") or "").startswith("US only"):
+                    c["comparison_scope"] = "regional"
             if pl == "official" and model["group"] == "openai":
                 c["model_id"] = key.split("/", 1)[1]
                 c["model_id_source"] = "openai"
@@ -135,6 +150,9 @@ def normalize(data):
                     v["service_tier"] = "flex"
                 elif "Batch" in label:
                     v["service_tier"] = "batch"
+                elif "off-peak" in label.lower() or "idle hours" in label.lower():
+                    # Time-of-day discounts are listed but not compared: the listed peak rate always applies.
+                    v["service_tier"] = "off-peak"
                 # Historical alternate snapshots are not substitutes for the row's model.
                 if any(s in label for s in ("“V4 Flash” SKU", "deepseek-v4-flash SKU")):
                     v["model_match"] = "unverified"
@@ -194,11 +212,11 @@ def add_models(data):
         api_id = key.split("/", 1)[1]
         dbx = offer(i, o, cr, src="dbx_prop", tier="Standard · 20% promotion", model_id="databricks-" + api_id.replace(".", "-"),
                     regions="Global endpoint; cross-geography routing is required.", dbu_rate_basis=0.07)
-        promo(dbx, "2027-01-31", rates(round(i / 0.8, 6), round(o / 0.8, 6), round(cr / 0.8, 6)), "Databricks 20% promotion")
+        promo(dbx, "2027-01-31", rates(round(i / 0.8, 6), round(o / 0.8, 6), round(cr / 0.8, 6)), "Databricks 20% promotion", "Standard pay-per-token")
         pr = variant("Priority (promotion)", round(i * 1.8, 6), round(o * 1.8, 6), round(cr * 1.8, 6), service="priority")
-        promo(pr, "2027-01-31", rates(round(i * 1.8 / 0.8, 6), round(o * 1.8 / 0.8, 6), round(cr * 1.8 / 0.8, 6)), "Databricks 20% promotion")
+        promo(pr, "2027-01-31", rates(round(i * 1.8 / 0.8, 6), round(o * 1.8 / 0.8, 6), round(cr * 1.8 / 0.8, 6)), "Databricks 20% promotion", "Priority")
         regional = variant("Regional processing +10%", round(i * 1.1, 6), round(o * 1.1, 6), round(cr * 1.1, 6), scope="regional")
-        promo(regional, "2027-01-31", rates(round(i * 1.1 / 0.8, 6), round(o * 1.1 / 0.8, 6), round(cr * 1.1 / 0.8, 6)), "Databricks 20% promotion")
+        promo(regional, "2027-01-31", rates(round(i * 1.1 / 0.8, 6), round(o * 1.1 / 0.8, 6), round(cr * 1.1 / 0.8, 6)), "Databricks 20% promotion", "Regional processing +10%")
         dbx["variants"] = [pr, regional]
         off = offer(i, o, cr, src="google", tier="Gemini API paid tier · text", model_id=api_id, storage=1,
                     note="Cache storage: $1 / million token-hours. Audio input has a different price on 3.1 Flash-Lite.")
@@ -224,9 +242,9 @@ def add_models(data):
         if version == "4.6":
             dbx = offer(2, 6, 0.5, src="dbx_prop", tier="Standard · 20% promotion", model_id="databricks-grok-4-6", dbu_rate_basis=0.07,
                         regions="Consult the current model-region catalog.")
-            promo(dbx, "2027-01-31", rates(2.5, 7.5, 0.625), "Databricks 20% promotion")
+            promo(dbx, "2027-01-31", rates(2.5, 7.5, 0.625), "Databricks 20% promotion", "Standard pay-per-token")
             regional = variant("Regional processing +10%", 2.2, 6.6, 0.55, scope="regional")
-            promo(regional, "2027-01-31", rates(2.75, 8.25, 0.6875), "Databricks 20% promotion")
+            promo(regional, "2027-01-31", rates(2.75, 8.25, 0.6875), "Databricks 20% promotion", "Regional processing +10%")
             dbx["variants"] = [regional]
         off = offer(2, 6, 0.5, src="xai_" + version.replace(".", ""), tier="xAI API · <200K input", model_id="grok-" + version,
                     context_threshold=200000, context_threshold_inclusive=True, long_context=rates(4, 12, 1),
@@ -321,27 +339,16 @@ def enrich_context_and_promotions(data):
                 c.setdefault("context_threshold", 272000)
                 for v in variants:
                     if "Long context" in v["label"]:
+                        # Only the long-context rates the source lists; no derived cache-write rate.
                         c["long_context"] = {k: v[k] for k in RATE_FIELDS if k in v}
-                        if c.get("cache_write") is not None:
-                            c["long_context"]["cache_write"] = round(c["cache_write"] * 2, 6)
                         v["context_only"] = True
                 if pl == "bedrock" and key != "openai/gpt-6.1-sol":
                     c["has_long_context"] = True
                     # No inherited competitor context multiplier without an exact rate check.
                 if pl == "official":
                     c.setdefault("cache_storage", 0)
-                    for v in variants:
-                        if v.get("context_only"):
-                            continue
-                        if v["service_tier"] in ("batch", "flex"):
-                            v.setdefault("cache_read", round(c["cache_read"] / 2, 6))
-                            if c.get("cache_write") is not None:
-                                v.setdefault("cache_write", round(c["cache_write"] / 2, 6))
-                        if c.get("long_context") and key != "openai/gpt-5.5":
-                            factor = v["in"] / c["in"]
-                            v.setdefault("long_context", {k: round(val * factor, 6) for k, val in c["long_context"].items()})
-                # Variant cache writes were omitted from the legacy JSON. Leave them
-                # unverified unless checked explicitly above; never inherit a base rate.
+                # Batch / Flex cache charges and per-tier long-context rates were omitted from the
+                # legacy JSON. They stay unverified; never derive them from the Standard tier.
             if group == "google":
                 for v in variants:
                     if "Long context" in v["label"] or v["label"].startswith(">200K"):
@@ -351,14 +358,15 @@ def enrich_context_and_promotions(data):
                 if key == "google/gemini-3.1-pro" and pl == "databricks":
                     after = rates(2.5, 15, 0.25)
                     after["long_context"] = rates(5, 22.5, 0.5)
-                    promo(c, "2027-01-31", after, "Databricks 20% promotion")
+                    promo(c, "2027-01-31", after, "Databricks 20% promotion", "Standard pay-per-token")
                 if key in ("google/gemini-3.8-flash", "google/gemini-3.7-flash"):
-                    promo(c, "2026-12-31", rates(1.5, 7.5, 0.15), "Flash introductory promotion")
+                    list_tier = "Standard pay-per-token" if pl == "databricks" else c["tier"].split(" · intro")[0]
+                    promo(c, "2026-12-31", rates(1.5, 7.5, 0.15), "Flash introductory promotion", list_tier)
                     for v in variants:
                         if "From 1 Jan" in v["label"]:
                             v["future_only"] = True
                         elif not v.get("promotion"):
-                            promo(v, "2026-12-31", {k: round(v[k] * 2, 6) for k in RATE_FIELDS if k in v}, "Flash introductory promotion")
+                            promo(v, "2026-12-31", {k: round(v[k] * 2, 6) for k in RATE_FIELDS if k in v}, "Flash introductory promotion", v["label"])
                 if pl == "official" and key == "google/gemini-3.1-pro":
                     c["cache_storage"] = 4.5
                 if pl == "gcloud":
@@ -366,7 +374,7 @@ def enrich_context_and_promotions(data):
             if key == "openai/gpt-5.6-sol":
                 after = rates(5, 30, 0.5, 6.25)
                 after["long_context"] = rates(10, 45, 1, 12.5)
-                promo(c, "2026-11-21", after, "GPT-5.6 Sol promotion")
+                promo(c, "2026-11-21", after, "GPT-5.6 Sol promotion", c["tier"])
                 # Future nonstandard tiers are not extrapolated from Standard.
                 for v in variants:
                     if not v.get("context_only"):
@@ -379,17 +387,40 @@ def enrich_context_and_promotions(data):
                 v.setdefault("service_tier", c.get("service_tier", "standard"))
                 if "List from" in v["label"]:
                     v["future_only"] = True
+                # A scheduled list price takes effect the day after the promotion it follows.
+                if v.get("future_only") and c.get("promotion"):
+                    v["effective_from"] = shift(c["promotion"]["ends_on"], 1)
             c["url"] = c.get("url") or data["source_meta"].get(c.get("src"), {}).get("url")
             if not c["url"]:
                 # A dated source is mandatory for any priced offer.
                 raise ValueError("Missing source for " + key + " / " + pl)
 
 
+def lifecycle_notices(data):
+    """Model warnings expire with the date they describe; retirement warnings switch to past tense."""
+    for key, m in data["models"].items():
+        warn = m.pop("warn", None)
+        if not warn:
+            continue
+        dbx = m["platforms"]["databricks"]
+        if dbx.get("retires_on"):
+            day = dbx["retires_on"]
+            m["notices"] = [dict(text=warn, until=shift(day, -1)),
+                            {"text": "Retired on Databricks " + pretty(day) + " · use " + " or ".join(dbx["replacement"]), "from": day}]
+            continue
+        ends = [o["promotion"]["ends_on"] for c in m["platforms"].values() for o in [c, *c.get("variants", [])] if o.get("promotion")]
+        if not ends:
+            raise ValueError("Warning without a dated event for " + key)
+        m["notices"] = [dict(text=warn, until=min(ends))]
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
     data.update(schema=4, reviewed_at=REVIEWED,
-                basis="Standard on-demand text-token offers; each cell states its tier. Percent comparisons require matching model, service tier and processing scope.")
+                basis="Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, "
+                      "in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and "
+                      "off-peak prices are listed in the row details and are not compared.")
     sources = {
         "dbx_retirement": ("https://docs.databricks.com/aws/en/machine-learning/retired-models-policy", "Databricks retirement dates and replacements"),
         "anthropic_models": ("https://platform.claude.com/docs/en/about-claude/models/overview", "Anthropic model IDs by platform"),
@@ -406,31 +437,46 @@ def build():
     add_models(data)
     corrections(data)
     enrich_context_and_promotions(data)
+    lifecycle_notices(data)
+    # Talk-track lines: the original page's seller insights, re-checked against the v2 offers.
+    # Plain strings always apply; {"text", "from", "until"} lines apply within their dates.
     data["insights"] = {
-        "oss": ["Fireworks V4 Pro (0813), V4 Flash (0731) and Kimi K2.7 Code require dedicated GPU deployment. Historical serverless quotes have been removed.",
-                "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retire on Databricks on 30 Oct 2026. Replacement models appear in the row details.",
-                "Azure Inkling is a Data Zone offer. Azure V4 Pro's exact checkpoint is unconfirmed; neither is included in global same-model price deltas.",
-                "An unavailable model is counted as an availability gap, separately from price wins and parity."],
-        "anthropic": ["Sonnet 5.5: $2 input / $10 output, $0.20 cached input. The verified five-platform standard rates match.",
-                      "Residency endpoints can cost more. Compare the same processing scope and cache-write TTL.",
-                      "Model IDs and dates are shown per offer; region catalogs must be checked for the exact endpoint."],
-        "openai": ["GPT-6.1 Sol reduces cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
-                   "Bedrock GPT-6 Sol / Luna have in-region Mantle access in us-east-1. Runtime global / US geographic access uses different endpoints.",
-                   "Bedrock GPT-5.5 is regional only, so it is excluded from global-tier price parity counts.",
-                   "Long-context prices apply to the whole request above 272K input tokens. Confirmed context tiers appear in the row details."],
-        "google": ["Gemini 3.5 Flash-Lite is $0.30 / $2.50 and 3.1 Flash-Lite text is $0.25 / $1.50 at current Databricks promotional rates.",
-                   "Databricks' 20% Pro / Lite promotion ends 31 Jan 2027. Flash introductory rates end 31 Dec 2026; verified scheduled prices apply automatically by date.",
+        "oss": ["Watch-outs priced below Databricks (Δ at 3:1): Llama 4 Maverick on Bedrock, Azure and Vertex (−27% to −44%), gpt-oss-120b on Vertex (−40%), Gemma 3 12B on Bedrock (−41%), and Alibaba Global-scope Qwen (−39% to −56%), GLM and Kimi.",
+                {"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retire on Databricks on 30 Oct 2026. Replacement models appear in the row details.", "until": "2026-10-29"},
+                {"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retired on Databricks on 30 Oct 2026. Their rows list the replacements.", "from": "2026-10-30"},
+                "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
+                "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither sells GLM 5.3 or DeepSeek V4, and Vertex has no Kimi K3.",
+                "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.",
+                "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models."],
+        "anthropic": ["List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
+                      "Regional / data-residency endpoints are +10% on Bedrock, Vertex and Databricks (⌖); Anthropic's US-only inference is ×1.1.",
+                      "Microsoft Foundry deploys Claude only from US or Sweden Central resources, with no APAC region. Vertex offers asia-east1 (Taiwan) and asia-southeast1 regional endpoints.",
+                      "On Databricks, Sonnet 4.6 and Haiku 4.5 run in-region in Singapore and Tokyo. Opus 5.5, Fable 5.1 and Sonnet 5 use cross-geo routing in APAC; Opus 5 is in-region on AWS Sydney and GCP Singapore."],
+        "openai": ["List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
+                   "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
+                   "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
+                   "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
+                   {"text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.", "until": "2026-11-21"},
+                   {"text": "GPT-5.6 Sol is $5 / $30 on every platform since its promotion ended 21 Nov 2026.", "from": "2026-11-22"}],
+        "google": [{"text": "Databricks matches Google today: a 20% promotion on Gemini 3.1 Pro and both Flash-Lite models runs to 31 Jan 2027, then Databricks lists +25% (3.1 Pro $2.50 / $15.00, 3.5 Flash-Lite $0.375 / $3.125).", "until": "2027-01-31"},
+                   {"text": "Since Databricks' promotion ended 31 Jan 2027, its Gemini 3.1 Pro and Flash-Lite list prices are 25% above the Gemini API and Vertex.", "from": "2027-02-01"},
+                   {"text": "Flash intro pricing (50% off) ends 31 Dec 2026 everywhere, then $1.50 / $7.50.", "until": "2026-12-31"},
+                   {"text": "Gemini 3.8 / 3.7 Flash list at $1.50 / $7.50 everywhere since intro pricing ended 31 Dec 2026.", "from": "2027-01-01"},
+                   "Only Databricks, Vertex and the Gemini API sell Gemini; Bedrock, Azure and Alibaba do not.",
                    "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."],
         "xai": ["Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
-                "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.",
-                "Higher-context and regional offers are separate configurations; unconfirmed scope or tier rates are excluded from price deltas."],
+                {"text": "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.", "until": "2027-01-31"},
+                {"text": "Grok 4.6 on Databricks is $2.50 / $7.50 since its promotion ended 31 Jan 2027; xAI, Bedrock and Azure stay at $2 / $6.", "from": "2027-02-01"},
+                "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; Azure Data Zone is +10%."],
     }
     data["changes"] = [
         "Added GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 / 3.1 Flash-Lite, Grok 4.7 and Grok 4.6.",
         "Removed three discontinued Fireworks serverless quotes; dedicated deployments are a separate state.",
         "Corrected Bedrock Kimi K3 Global / Regional Priority and cache-read / write tiers.",
         "Added Inkling retirement and replacement guidance; corrected GPT-6 Sol / Luna Mantle availability.",
-        "Excluded mismatched versions and processing scopes from price deltas and parity counts.",
+        "2026-10-03: Δ compares each platform's cheapest standard price in any region (previously only matching processing scopes).",
+        "2026-10-03: Promotion and retirement notices, talk-track lines and post-promotion tier labels follow their dates.",
+        "2026-10-03: Removed derived Batch / Flex cache rates and per-tier long-context rates that no source lists.",
     ]
     for key, m in data["models"].items():
         m["model_key"] = key

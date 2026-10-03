@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "usd_per_dbu": 0.07,
-  "basis": "Standard on-demand text-token offers; each cell states its tier. Percent comparisons require matching model, service tier and processing scope.",
+  "basis": "Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and off-peak prices are listed in the row details and are not compared.",
   "sources": [
     "https://ai.google.dev/gemini-api/docs/pricing",
     "https://api-docs.deepseek.com/quick_start/pricing",
@@ -212,31 +212,71 @@
   },
   "insights": {
     "oss": [
-      "Fireworks V4 Pro (0813), V4 Flash (0731) and Kimi K2.7 Code require dedicated GPU deployment. Historical serverless quotes have been removed.",
-      "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retire on Databricks on 30 Oct 2026. Replacement models appear in the row details.",
-      "Azure Inkling is a Data Zone offer. Azure V4 Pro's exact checkpoint is unconfirmed; neither is included in global same-model price deltas.",
-      "An unavailable model is counted as an availability gap, separately from price wins and parity."
+      "Watch-outs priced below Databricks (Δ at 3:1): Llama 4 Maverick on Bedrock, Azure and Vertex (−27% to −44%), gpt-oss-120b on Vertex (−40%), Gemma 3 12B on Bedrock (−41%), and Alibaba Global-scope Qwen (−39% to −56%), GLM and Kimi.",
+      {
+        "text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retire on Databricks on 30 Oct 2026. Replacement models appear in the row details.",
+        "until": "2026-10-29"
+      },
+      {
+        "text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retired on Databricks on 30 Oct 2026. Their rows list the replacements.",
+        "from": "2026-10-30"
+      },
+      "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
+      "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither sells GLM 5.3 or DeepSeek V4, and Vertex has no Kimi K3.",
+      "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.",
+      "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models."
     ],
     "anthropic": [
-      "Sonnet 5.5: $2 input / $10 output, $0.20 cached input. The verified five-platform standard rates match.",
-      "Residency endpoints can cost more. Compare the same processing scope and cache-write TTL.",
-      "Model IDs and dates are shown per offer; region catalogs must be checked for the exact endpoint."
+      "List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
+      "Regional / data-residency endpoints are +10% on Bedrock, Vertex and Databricks (⌖); Anthropic's US-only inference is ×1.1.",
+      "Microsoft Foundry deploys Claude only from US or Sweden Central resources, with no APAC region. Vertex offers asia-east1 (Taiwan) and asia-southeast1 regional endpoints.",
+      "On Databricks, Sonnet 4.6 and Haiku 4.5 run in-region in Singapore and Tokyo. Opus 5.5, Fable 5.1 and Sonnet 5 use cross-geo routing in APAC; Opus 5 is in-region on AWS Sydney and GCP Singapore."
     ],
     "openai": [
-      "GPT-6.1 Sol reduces cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
-      "Bedrock GPT-6 Sol / Luna have in-region Mantle access in us-east-1. Runtime global / US geographic access uses different endpoints.",
-      "Bedrock GPT-5.5 is regional only, so it is excluded from global-tier price parity counts.",
-      "Long-context prices apply to the whole request above 272K input tokens. Confirmed context tiers appear in the row details."
+      "List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
+      "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
+      "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
+      "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
+      {
+        "text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.",
+        "until": "2026-11-21"
+      },
+      {
+        "text": "GPT-5.6 Sol is $5 / $30 on every platform since its promotion ended 21 Nov 2026.",
+        "from": "2026-11-22"
+      }
     ],
     "google": [
-      "Gemini 3.5 Flash-Lite is $0.30 / $2.50 and 3.1 Flash-Lite text is $0.25 / $1.50 at current Databricks promotional rates.",
-      "Databricks' 20% Pro / Lite promotion ends 31 Jan 2027. Flash introductory rates end 31 Dec 2026; verified scheduled prices apply automatically by date.",
+      {
+        "text": "Databricks matches Google today: a 20% promotion on Gemini 3.1 Pro and both Flash-Lite models runs to 31 Jan 2027, then Databricks lists +25% (3.1 Pro $2.50 / $15.00, 3.5 Flash-Lite $0.375 / $3.125).",
+        "until": "2027-01-31"
+      },
+      {
+        "text": "Since Databricks' promotion ended 31 Jan 2027, its Gemini 3.1 Pro and Flash-Lite list prices are 25% above the Gemini API and Vertex.",
+        "from": "2027-02-01"
+      },
+      {
+        "text": "Flash intro pricing (50% off) ends 31 Dec 2026 everywhere, then $1.50 / $7.50.",
+        "until": "2026-12-31"
+      },
+      {
+        "text": "Gemini 3.8 / 3.7 Flash list at $1.50 / $7.50 everywhere since intro pricing ended 31 Dec 2026.",
+        "from": "2027-01-01"
+      },
+      "Only Databricks, Vertex and the Gemini API sell Gemini; Bedrock, Azure and Alibaba do not.",
       "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."
     ],
     "xai": [
       "Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
-      "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.",
-      "Higher-context and regional offers are separate configurations; unconfirmed scope or tier rates are excluded from price deltas."
+      {
+        "text": "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.",
+        "until": "2027-01-31"
+      },
+      {
+        "text": "Grok 4.6 on Databricks is $2.50 / $7.50 since its promotion ended 31 Jan 2027; xAI, Bedrock and Azure stay at $2 / $6.",
+        "from": "2027-02-01"
+      },
+      "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; Azure Data Zone is +10%."
     ]
   },
   "models": {
@@ -252,7 +292,6 @@
         "Added"
       ],
       "note": "Current Sonnet generation; verified on all five priced platforms.",
-      "warn": null,
       "in": 2.0,
       "out": 10.0,
       "cache_read": 0.2,
@@ -707,7 +746,6 @@
       ],
       "ctx": null,
       "about": "Text-token comparison; audio / generated images excluded",
-      "warn": "Databricks 20% promotion through 31 Jan 2027",
       "platforms": {
         "databricks": {
           "in": 0.3,
@@ -730,7 +768,8 @@
             "after": {
               "in": 0.375,
               "out": 3.125,
-              "cache_read": 0.0375
+              "cache_read": 0.0375,
+              "tier": "Standard pay-per-token"
             },
             "label": "Databricks 20% promotion"
           },
@@ -748,7 +787,8 @@
                 "after": {
                   "in": 0.675,
                   "out": 5.625,
-                  "cache_read": 0.0675
+                  "cache_read": 0.0675,
+                  "tier": "Priority"
                 },
                 "label": "Databricks 20% promotion"
               },
@@ -768,7 +808,8 @@
                 "after": {
                   "in": 0.4125,
                   "out": 3.4375,
-                  "cache_read": 0.04125
+                  "cache_read": 0.04125,
+                  "tier": "Regional processing +10%"
                 },
                 "label": "Databricks 20% promotion"
               },
@@ -927,6 +968,12 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
+      "notices": [
+        {
+          "text": "Databricks 20% promotion through 31 Jan 2027",
+          "until": "2027-01-31"
+        }
+      ],
       "model_key": "google/gemini-3.5-flash-lite"
     },
     "google/gemini-3.1-flash-lite": {
@@ -940,7 +987,6 @@
       ],
       "ctx": null,
       "about": "Text-token comparison; audio / generated images excluded",
-      "warn": "Databricks 20% promotion through 31 Jan 2027",
       "platforms": {
         "databricks": {
           "in": 0.25,
@@ -963,7 +1009,8 @@
             "after": {
               "in": 0.3125,
               "out": 1.875,
-              "cache_read": 0.03125
+              "cache_read": 0.03125,
+              "tier": "Standard pay-per-token"
             },
             "label": "Databricks 20% promotion"
           },
@@ -981,7 +1028,8 @@
                 "after": {
                   "in": 0.5625,
                   "out": 3.375,
-                  "cache_read": 0.05625
+                  "cache_read": 0.05625,
+                  "tier": "Priority"
                 },
                 "label": "Databricks 20% promotion"
               },
@@ -1001,7 +1049,8 @@
                 "after": {
                   "in": 0.34375,
                   "out": 2.0625,
-                  "cache_read": 0.034375
+                  "cache_read": 0.034375,
+                  "tier": "Regional processing +10%"
                 },
                 "label": "Databricks 20% promotion"
               },
@@ -1160,6 +1209,12 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
+      "notices": [
+        {
+          "text": "Databricks 20% promotion through 31 Jan 2027",
+          "until": "2027-01-31"
+        }
+      ],
       "model_key": "google/gemini-3.1-flash-lite"
     },
     "xai/grok-4.7": {
@@ -1172,7 +1227,6 @@
       "badges": [
         "Added"
       ],
-      "warn": null,
       "platforms": {
         "databricks": {
           "status": "unverified",
@@ -1330,7 +1384,6 @@
       "badges": [
         "Added"
       ],
-      "warn": "Databricks 4.6 promotion through 31 Jan 2027",
       "platforms": {
         "databricks": {
           "in": 2,
@@ -1353,7 +1406,8 @@
             "after": {
               "in": 2.5,
               "out": 7.5,
-              "cache_read": 0.625
+              "cache_read": 0.625,
+              "tier": "Standard pay-per-token"
             },
             "label": "Databricks 20% promotion"
           },
@@ -1371,7 +1425,8 @@
                 "after": {
                   "in": 2.75,
                   "out": 8.25,
-                  "cache_read": 0.6875
+                  "cache_read": 0.6875,
+                  "tier": "Regional processing +10%"
                 },
                 "label": "Databricks 20% promotion"
               },
@@ -1558,6 +1613,12 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
+      "notices": [
+        {
+          "text": "Databricks 4.6 promotion through 31 Jan 2027",
+          "until": "2027-01-31"
+        }
+      ],
       "model_key": "xai/grok-4.6"
     },
     "moonshot/kimi-k3": {
@@ -1570,7 +1631,6 @@
       "about": "2.8T params · vision",
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 3.0,
       "out": 15.0,
       "cache_read": 0.3,
@@ -1847,7 +1907,6 @@
       "about": "text · reasoning always on",
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 1.4,
       "out": 4.4,
       "cache_read": 0.26,
@@ -2046,7 +2105,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": "Retires on Databricks 30 Oct 2026 · use DeepSeek V4.1 Flash",
       "in": 1.32,
       "out": 3.96,
       "cache_read": 0.044,
@@ -2064,7 +2122,7 @@
           "status": "priced",
           "model_id": "databricks-deepseek-v4-pro-0813",
           "model_match": "confirmed",
-          "comparison_scope": "global",
+          "comparison_scope": "regional",
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-02",
           "availability_checked_at": "2026-10-02",
@@ -2092,7 +2150,7 @@
               "id": "variant-0",
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
-              "service_tier": "standard",
+              "service_tier": "off-peak",
               "model_match": "confirmed"
             }
           ],
@@ -2212,7 +2270,7 @@
               "id": "variant-0",
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
-              "service_tier": "standard",
+              "service_tier": "off-peak",
               "model_match": "confirmed"
             },
             {
@@ -2237,7 +2295,17 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "deepseek/deepseek-v4-pro"
+      "model_key": "deepseek/deepseek-v4-pro",
+      "notices": [
+        {
+          "text": "Retires on Databricks 30 Oct 2026 · use DeepSeek V4.1 Flash",
+          "until": "2026-10-29"
+        },
+        {
+          "text": "Retired on Databricks 30 Oct 2026 · use DeepSeek V4.1 Flash",
+          "from": "2026-10-30"
+        }
+      ]
     },
     "deepseek/deepseek-v4.1-flash": {
       "name": "DeepSeek V4.1 Flash",
@@ -2249,7 +2317,6 @@
       "about": "552B · multimodal",
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.3,
       "out": 1.2,
       "cache_read": 0.006,
@@ -2289,7 +2356,7 @@
               "id": "variant-0",
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
-              "service_tier": "standard",
+              "service_tier": "off-peak",
               "model_match": "confirmed"
             }
           ],
@@ -2408,7 +2475,7 @@
               "id": "variant-0",
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
-              "service_tier": "standard",
+              "service_tier": "off-peak",
               "model_match": "confirmed"
             },
             {
@@ -2445,7 +2512,6 @@
       "about": "284B · 13B active",
       "badges": [],
       "note": "Two V4 Flash SKUs exist in the market: “0731” (the Databricks endpoint) and an earlier “v4-flash” (~$0.14 / $0.28 on Alibaba Global).",
-      "warn": null,
       "in": 0.14,
       "out": 0.28,
       "cache_read": 0.028,
@@ -2462,7 +2528,7 @@
           "status": "priced",
           "model_id": "databricks-deepseek-v4-flash-0731",
           "model_match": "confirmed",
-          "comparison_scope": "global",
+          "comparison_scope": "regional",
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-02",
           "availability_checked_at": "2026-09-28",
@@ -2587,7 +2653,7 @@
               "id": "variant-0",
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
-              "service_tier": "standard",
+              "service_tier": "off-peak",
               "model_match": "confirmed"
             },
             {
@@ -2635,7 +2701,6 @@
       "about": "320B · 18B active · multimodal",
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.15,
       "out": 0.5,
       "cache_read": 0.03,
@@ -2800,7 +2865,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": "Retires on Databricks 30 Oct 2026 · use Kimi K3",
       "in": 0.95,
       "out": 4.0,
       "cache_read": 0.19,
@@ -2948,7 +3012,17 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "moonshot/kimi-k2.7"
+      "model_key": "moonshot/kimi-k2.7",
+      "notices": [
+        {
+          "text": "Retires on Databricks 30 Oct 2026 · use Kimi K3",
+          "until": "2026-10-29"
+        },
+        {
+          "text": "Retired on Databricks 30 Oct 2026 · use Kimi K3",
+          "from": "2026-10-30"
+        }
+      ]
     },
     "tml/inkling": {
       "name": "Inkling",
@@ -2962,7 +3036,6 @@
         "Preview"
       ],
       "note": null,
-      "warn": "Retires on Databricks 30 Oct 2026 · use GLM 5.3 or Kimi K3",
       "in": 1.0,
       "out": 4.05,
       "cache_read": 0.17,
@@ -2979,7 +3052,7 @@
           "status": "priced",
           "model_id": "databricks-inkling",
           "model_match": "confirmed",
-          "comparison_scope": "global",
+          "comparison_scope": "regional",
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-02",
           "availability_checked_at": "2026-10-02",
@@ -3074,7 +3147,17 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "tml/inkling"
+      "model_key": "tml/inkling",
+      "notices": [
+        {
+          "text": "Retires on Databricks 30 Oct 2026 · use GLM 5.3 or Kimi K3",
+          "until": "2026-10-29"
+        },
+        {
+          "text": "Retired on Databricks 30 Oct 2026 · use GLM 5.3 or Kimi K3",
+          "from": "2026-10-30"
+        }
+      ]
     },
     "qwen/qwen3.5-122b": {
       "name": "Qwen3.5 122B A10B",
@@ -3088,7 +3171,6 @@
         "Preview"
       ],
       "note": null,
-      "warn": null,
       "in": 0.115,
       "out": 0.917,
       "cache_read": null,
@@ -3271,7 +3353,6 @@
       "about": "Instruct · 3B active",
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.144,
       "out": 0.574,
       "cache_read": null,
@@ -3437,7 +3518,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.15,
       "out": 0.6,
       "cache_read": null,
@@ -3615,7 +3695,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.07,
       "out": 0.3,
       "cache_read": null,
@@ -3752,7 +3831,6 @@
       "about": "MoE · text + image",
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.5,
       "out": 1.5,
       "cache_read": null,
@@ -3881,7 +3959,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.5,
       "out": 1.5,
       "cache_read": null,
@@ -4009,7 +4086,6 @@
       "about": "text + image",
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.15,
       "out": 0.5,
       "cache_read": null,
@@ -4148,7 +4224,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.15,
       "out": 0.45,
       "cache_read": null,
@@ -4258,7 +4333,6 @@
       "about": null,
       "badges": [],
       "note": "Highest tier. Cache reads $0.25 (Fable 5 was $1.00).",
-      "warn": null,
       "in": 10.0,
       "out": 50.0,
       "cache_read": 0.25,
@@ -4456,7 +4530,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 4.0,
       "out": 20.0,
       "cache_read": 0.2,
@@ -4654,7 +4727,6 @@
       "about": null,
       "badges": [],
       "note": "Opus 4.5 to 4.8 are the same price.",
-      "warn": null,
       "in": 5.0,
       "out": 25.0,
       "cache_read": 0.5,
@@ -4852,7 +4924,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 2.0,
       "out": 10.0,
       "cache_read": 0.2,
@@ -5050,7 +5121,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 3.0,
       "out": 15.0,
       "cache_read": 0.3,
@@ -5248,7 +5318,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 1.0,
       "out": 5.0,
       "cache_read": 0.1,
@@ -5435,7 +5504,6 @@
       "about": null,
       "badges": [],
       "note": "Flagship.",
-      "warn": null,
       "in": 10.0,
       "out": 50.0,
       "cache_read": 1.0,
@@ -5500,8 +5568,7 @@
           "long_context": {
             "in": 20.0,
             "out": 75.0,
-            "cache_read": 2.0,
-            "cache_write": 25.0
+            "cache_read": 2.0
           },
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
         },
@@ -5532,14 +5599,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "cache_read": 0.5,
-              "cache_write": 6.25,
-              "long_context": {
-                "in": 10.0,
-                "out": 37.5,
-                "cache_read": 1.0,
-                "cache_write": 12.5
-              },
               "model_match": "confirmed"
             },
             {
@@ -5551,12 +5610,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "long_context": {
-                "in": 40.0,
-                "out": 150.0,
-                "cache_read": 4.0,
-                "cache_write": 50.0
-              },
               "model_match": "confirmed"
             },
             {
@@ -5568,12 +5621,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "long_context": {
-                "in": 22.0,
-                "out": 82.5,
-                "cache_read": 2.2,
-                "cache_write": 27.5
-              },
               "model_match": "confirmed"
             }
           ],
@@ -5591,8 +5638,7 @@
           "long_context": {
             "in": 20.0,
             "out": 75.0,
-            "cache_read": 2.0,
-            "cache_write": 25.0
+            "cache_read": 2.0
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing"
@@ -5676,8 +5722,7 @@
           "long_context": {
             "in": 20.0,
             "out": 75.0,
-            "cache_read": 2.0,
-            "cache_write": 25.0
+            "cache_read": 2.0
           },
           "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
         },
@@ -5729,7 +5774,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 2.0,
       "out": 10.0,
       "cache_read": 0.2,
@@ -5794,8 +5838,7 @@
           "long_context": {
             "in": 4.0,
             "out": 15.0,
-            "cache_read": 0.4,
-            "cache_write": 5.0
+            "cache_read": 0.4
           },
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
         },
@@ -5826,14 +5869,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "cache_read": 0.1,
-              "cache_write": 1.25,
-              "long_context": {
-                "in": 2.0,
-                "out": 7.5,
-                "cache_read": 0.2,
-                "cache_write": 2.5
-              },
               "model_match": "confirmed"
             },
             {
@@ -5845,12 +5880,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "long_context": {
-                "in": 8.0,
-                "out": 30.0,
-                "cache_read": 0.8,
-                "cache_write": 10.0
-              },
               "model_match": "confirmed"
             },
             {
@@ -5862,12 +5891,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "long_context": {
-                "in": 4.4,
-                "out": 16.5,
-                "cache_read": 0.44,
-                "cache_write": 5.5
-              },
               "model_match": "confirmed"
             }
           ],
@@ -5885,8 +5908,7 @@
           "long_context": {
             "in": 4.0,
             "out": 15.0,
-            "cache_read": 0.4,
-            "cache_write": 5.0
+            "cache_read": 0.4
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing"
@@ -5970,8 +5992,7 @@
           "long_context": {
             "in": 4.0,
             "out": 15.0,
-            "cache_read": 0.4,
-            "cache_write": 5.0
+            "cache_read": 0.4
           },
           "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
         },
@@ -6023,7 +6044,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.1,
       "out": 0.5,
       "cache_read": 0.01,
@@ -6088,8 +6108,7 @@
           "long_context": {
             "in": 0.2,
             "out": 0.75,
-            "cache_read": 0.02,
-            "cache_write": 0.25
+            "cache_read": 0.02
           },
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
         },
@@ -6120,14 +6139,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "cache_read": 0.005,
-              "cache_write": 0.0625,
-              "long_context": {
-                "in": 0.1,
-                "out": 0.375,
-                "cache_read": 0.01,
-                "cache_write": 0.125
-              },
               "model_match": "confirmed"
             },
             {
@@ -6139,12 +6150,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "long_context": {
-                "in": 0.4,
-                "out": 1.5,
-                "cache_read": 0.04,
-                "cache_write": 0.5
-              },
               "model_match": "confirmed"
             },
             {
@@ -6156,12 +6161,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "long_context": {
-                "in": 0.22,
-                "out": 0.825,
-                "cache_read": 0.022,
-                "cache_write": 0.275
-              },
               "model_match": "confirmed"
             }
           ],
@@ -6179,8 +6178,7 @@
           "long_context": {
             "in": 0.2,
             "out": 0.75,
-            "cache_read": 0.02,
-            "cache_write": 0.25
+            "cache_read": 0.02
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing"
@@ -6264,8 +6262,7 @@
           "long_context": {
             "in": 0.2,
             "out": 0.75,
-            "cache_read": 0.02,
-            "cache_write": 0.25
+            "cache_read": 0.02
           },
           "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
         },
@@ -6317,7 +6314,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": "Promo through 21 Nov 2026, then $5 / $30",
       "in": 4.0,
       "out": 20.0,
       "cache_read": 0.4,
@@ -6384,8 +6380,7 @@
           "long_context": {
             "in": 8.0,
             "out": 30.0,
-            "cache_read": 0.8,
-            "cache_write": 10.0
+            "cache_read": 0.8
           },
           "promotion": {
             "ends_on": "2026-11-21",
@@ -6399,7 +6394,8 @@
                 "out": 45,
                 "cache_read": 1,
                 "cache_write": 12.5
-              }
+              },
+              "tier": "Standard · short context"
             },
             "label": "GPT-5.6 Sol promotion"
           },
@@ -6432,14 +6428,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "cache_read": 0.2,
-              "cache_write": 2.5,
-              "long_context": {
-                "in": 4.0,
-                "out": 15.0,
-                "cache_read": 0.4,
-                "cache_write": 5.0
-              },
               "valid_through": "2026-11-21",
               "model_match": "confirmed"
             },
@@ -6452,12 +6440,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "long_context": {
-                "in": 16.0,
-                "out": 60.0,
-                "cache_read": 1.6,
-                "cache_write": 20.0
-              },
               "valid_through": "2026-11-21",
               "model_match": "confirmed"
             },
@@ -6470,12 +6452,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "long_context": {
-                "in": 8.8,
-                "out": 33.0,
-                "cache_read": 0.88,
-                "cache_write": 11.0
-              },
               "valid_through": "2026-11-21",
               "model_match": "confirmed"
             }
@@ -6494,8 +6470,7 @@
           "long_context": {
             "in": 8.0,
             "out": 30.0,
-            "cache_read": 0.8,
-            "cache_write": 10.0
+            "cache_read": 0.8
           },
           "cache_storage": 0,
           "promotion": {
@@ -6510,7 +6485,8 @@
                 "out": 45,
                 "cache_read": 1,
                 "cache_write": 12.5
-              }
+              },
+              "tier": "Standard · short context"
             },
             "label": "GPT-5.6 Sol promotion"
           },
@@ -6563,7 +6539,8 @@
                 "out": 45,
                 "cache_read": 1,
                 "cache_write": 12.5
-              }
+              },
+              "tier": "Global cross-region"
             },
             "label": "GPT-5.6 Sol promotion"
           }
@@ -6613,8 +6590,7 @@
           "long_context": {
             "in": 8.0,
             "out": 30.0,
-            "cache_read": 0.8,
-            "cache_write": 10.0
+            "cache_read": 0.8
           },
           "promotion": {
             "ends_on": "2026-11-21",
@@ -6628,7 +6604,8 @@
                 "out": 45,
                 "cache_read": 1,
                 "cache_write": 12.5
-              }
+              },
+              "tier": "Global Standard · short context"
             },
             "label": "GPT-5.6 Sol promotion"
           },
@@ -6670,7 +6647,13 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "openai/gpt-5.6-sol"
+      "model_key": "openai/gpt-5.6-sol",
+      "notices": [
+        {
+          "text": "Promo through 21 Nov 2026, then $5 / $30",
+          "until": "2026-11-21"
+        }
+      ]
     },
     "openai/gpt-5.6-terra": {
       "name": "GPT-5.6 Terra",
@@ -6682,7 +6665,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 2.0,
       "out": 12.0,
       "cache_read": 0.2,
@@ -6747,8 +6729,7 @@
           "long_context": {
             "in": 4.0,
             "out": 18.0,
-            "cache_read": 0.4,
-            "cache_write": 5.0
+            "cache_read": 0.4
           },
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
         },
@@ -6779,14 +6760,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "cache_read": 0.1,
-              "cache_write": 1.25,
-              "long_context": {
-                "in": 2.0,
-                "out": 9.0,
-                "cache_read": 0.2,
-                "cache_write": 2.5
-              },
               "model_match": "confirmed"
             },
             {
@@ -6798,12 +6771,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "long_context": {
-                "in": 8.0,
-                "out": 36.0,
-                "cache_read": 0.8,
-                "cache_write": 10.0
-              },
               "model_match": "confirmed"
             },
             {
@@ -6815,12 +6782,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "long_context": {
-                "in": 4.4,
-                "out": 19.8,
-                "cache_read": 0.44,
-                "cache_write": 5.5
-              },
               "model_match": "confirmed"
             }
           ],
@@ -6838,8 +6799,7 @@
           "long_context": {
             "in": 4.0,
             "out": 18.0,
-            "cache_read": 0.4,
-            "cache_write": 5.0
+            "cache_read": 0.4
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing"
@@ -6923,8 +6883,7 @@
           "long_context": {
             "in": 4.0,
             "out": 18.0,
-            "cache_read": 0.4,
-            "cache_write": 5.0
+            "cache_read": 0.4
           },
           "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
         },
@@ -6976,7 +6935,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": null,
       "in": 0.2,
       "out": 1.2,
       "cache_read": 0.02,
@@ -7041,8 +6999,7 @@
           "long_context": {
             "in": 0.4,
             "out": 1.8,
-            "cache_read": 0.04,
-            "cache_write": 0.5
+            "cache_read": 0.04
           },
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
         },
@@ -7073,14 +7030,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "cache_read": 0.01,
-              "cache_write": 0.125,
-              "long_context": {
-                "in": 0.2,
-                "out": 0.9,
-                "cache_read": 0.02,
-                "cache_write": 0.25
-              },
               "model_match": "confirmed"
             },
             {
@@ -7092,12 +7041,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "long_context": {
-                "in": 0.8,
-                "out": 3.6,
-                "cache_read": 0.08,
-                "cache_write": 1.0
-              },
               "model_match": "confirmed"
             },
             {
@@ -7109,12 +7052,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "long_context": {
-                "in": 0.44,
-                "out": 1.98,
-                "cache_read": 0.044,
-                "cache_write": 0.55
-              },
               "model_match": "confirmed"
             }
           ],
@@ -7132,8 +7069,7 @@
           "long_context": {
             "in": 0.4,
             "out": 1.8,
-            "cache_read": 0.04,
-            "cache_write": 0.5
+            "cache_read": 0.04
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing"
@@ -7217,8 +7153,7 @@
           "long_context": {
             "in": 0.4,
             "out": 1.8,
-            "cache_read": 0.04,
-            "cache_write": 0.5
+            "cache_read": 0.04
           },
           "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
         },
@@ -7270,7 +7205,6 @@
       "about": null,
       "badges": [],
       "note": "Previous generation. No cache-write price.",
-      "warn": null,
       "in": 5.0,
       "out": 30.0,
       "cache_read": 0.5,
@@ -7364,7 +7298,6 @@
               "pricing_checked_at": "2026-09-28",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "cache_read": 0.25,
               "model_match": "confirmed"
             },
             {
@@ -7527,7 +7460,6 @@
         "Preview"
       ],
       "note": null,
-      "warn": "Databricks promo −20% ends 31 Jan 2027, then $2.50 / $15.00",
       "in": 2.0,
       "out": 12.0,
       "cache_read": 0.2,
@@ -7552,7 +7484,8 @@
               "comparison_scope": "global",
               "service_tier": "standard",
               "model_match": "confirmed",
-              "future_only": true
+              "future_only": true,
+              "effective_from": "2027-02-01"
             },
             {
               "label": "Long context (promo)",
@@ -7594,7 +7527,8 @@
                 "in": 5,
                 "out": 22.5,
                 "cache_read": 0.5
-              }
+              },
+              "tier": "Standard pay-per-token"
             },
             "label": "Databricks 20% promotion"
           },
@@ -7753,7 +7687,13 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "google/gemini-3.1-pro"
+      "model_key": "google/gemini-3.1-pro",
+      "notices": [
+        {
+          "text": "Databricks promo −20% ends 31 Jan 2027, then $2.50 / $15.00",
+          "until": "2027-01-31"
+        }
+      ]
     },
     "google/gemini-3.8-flash": {
       "name": "Gemini 3.8 Flash",
@@ -7765,7 +7705,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
       "in": 0.75,
       "out": 3.75,
       "cache_read": 0.075,
@@ -7789,7 +7728,8 @@
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
             },
             {
               "label": "Regional processing ⌖ +10%",
@@ -7805,7 +7745,8 @@
                 "after": {
                   "in": 1.65,
                   "out": 8.25,
-                  "cache_read": 0.165
+                  "cache_read": 0.165,
+                  "tier": "Regional processing ⌖ +10%"
                 },
                 "label": "Flash introductory promotion"
               },
@@ -7828,7 +7769,8 @@
             "after": {
               "in": 1.5,
               "out": 7.5,
-              "cache_read": 0.15
+              "cache_read": 0.15,
+              "tier": "Standard pay-per-token"
             },
             "label": "Flash introductory promotion"
           },
@@ -7851,7 +7793,8 @@
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
             }
           ],
           "src": "google",
@@ -7869,7 +7812,8 @@
             "after": {
               "in": 1.5,
               "out": 7.5,
-              "cache_read": 0.15
+              "cache_read": 0.15,
+              "tier": "Paid tier"
             },
             "label": "Flash introductory promotion"
           },
@@ -7913,7 +7857,8 @@
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
             },
             {
               "label": "Priority",
@@ -7929,7 +7874,8 @@
                 "after": {
                   "in": 2.7,
                   "out": 13.5,
-                  "cache_read": 0.27
+                  "cache_read": 0.27,
+                  "tier": "Priority"
                 },
                 "label": "Flash introductory promotion"
               },
@@ -7949,7 +7895,8 @@
                 "after": {
                   "in": 0.75,
                   "out": 3.75,
-                  "cache_read": 0.075
+                  "cache_read": 0.075,
+                  "tier": "Flex / Batch −50%"
                 },
                 "label": "Flash introductory promotion"
               },
@@ -7971,7 +7918,8 @@
             "after": {
               "in": 1.5,
               "out": 7.5,
-              "cache_read": 0.15
+              "cache_read": 0.15,
+              "tier": "Global endpoint"
             },
             "label": "Flash introductory promotion"
           },
@@ -8002,7 +7950,13 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "google/gemini-3.8-flash"
+      "model_key": "google/gemini-3.8-flash",
+      "notices": [
+        {
+          "text": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
+          "until": "2026-12-31"
+        }
+      ]
     },
     "google/gemini-3.7-flash": {
       "name": "Gemini 3.7 Flash",
@@ -8014,7 +7968,6 @@
       "about": null,
       "badges": [],
       "note": null,
-      "warn": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
       "in": 0.75,
       "out": 3.75,
       "cache_read": 0.075,
@@ -8038,7 +7991,8 @@
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
             },
             {
               "label": "Regional processing ⌖ +10%",
@@ -8054,7 +8008,8 @@
                 "after": {
                   "in": 1.65,
                   "out": 8.25,
-                  "cache_read": 0.165
+                  "cache_read": 0.165,
+                  "tier": "Regional processing ⌖ +10%"
                 },
                 "label": "Flash introductory promotion"
               },
@@ -8077,7 +8032,8 @@
             "after": {
               "in": 1.5,
               "out": 7.5,
-              "cache_read": 0.15
+              "cache_read": 0.15,
+              "tier": "Standard pay-per-token"
             },
             "label": "Flash introductory promotion"
           },
@@ -8100,7 +8056,8 @@
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
             }
           ],
           "src": "google",
@@ -8118,7 +8075,8 @@
             "after": {
               "in": 1.5,
               "out": 7.5,
-              "cache_read": 0.15
+              "cache_read": 0.15,
+              "tier": "Paid tier"
             },
             "label": "Flash introductory promotion"
           },
@@ -8162,7 +8120,8 @@
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "effective_from": "2027-01-01"
             },
             {
               "label": "Priority",
@@ -8178,7 +8137,8 @@
                 "after": {
                   "in": 2.7,
                   "out": 13.5,
-                  "cache_read": 0.27
+                  "cache_read": 0.27,
+                  "tier": "Priority"
                 },
                 "label": "Flash introductory promotion"
               },
@@ -8198,7 +8158,8 @@
                 "after": {
                   "in": 0.75,
                   "out": 3.75,
-                  "cache_read": 0.075
+                  "cache_read": 0.075,
+                  "tier": "Flex / Batch −50%"
                 },
                 "label": "Flash introductory promotion"
               },
@@ -8220,7 +8181,8 @@
             "after": {
               "in": 1.5,
               "out": 7.5,
-              "cache_read": 0.15
+              "cache_read": 0.15,
+              "tier": "Global endpoint"
             },
             "label": "Flash introductory promotion"
           },
@@ -8251,7 +8213,13 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "google/gemini-3.7-flash"
+      "model_key": "google/gemini-3.7-flash",
+      "notices": [
+        {
+          "text": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
+          "until": "2026-12-31"
+        }
+      ]
     }
   },
   "reviewed_at": "2026-10-02",
@@ -8260,6 +8228,8 @@
     "Removed three discontinued Fireworks serverless quotes; dedicated deployments are a separate state.",
     "Corrected Bedrock Kimi K3 Global / Regional Priority and cache-read / write tiers.",
     "Added Inkling retirement and replacement guidance; corrected GPT-6 Sol / Luna Mantle availability.",
-    "Excluded mismatched versions and processing scopes from price deltas and parity counts."
+    "2026-10-03: Δ compares each platform's cheapest standard price in any region (previously only matching processing scopes).",
+    "2026-10-03: Promotion and retirement notices, talk-track lines and post-promotion tier labels follow their dates.",
+    "2026-10-03: Removed derived Batch / Flex cache rates and per-tier long-context rates that no source lists."
   ]
 }

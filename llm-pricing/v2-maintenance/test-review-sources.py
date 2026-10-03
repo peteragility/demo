@@ -60,6 +60,25 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(alerts[0]["days"], 28)
         self.assertEqual(alerts[0]["state"], "upcoming")
 
+    def test_service_tier_promotions_and_verified_through_dates_are_reminders(self):
+        data = {"models": {"x": {"name": "GPT", "platforms": {"official": {"variants": [
+            {"promotion": {"ends_on": "2026-11-21"}}, {"valid_through": "2026-11-21"}]}}}}}
+        events = {a["event"] for a in review.time_alerts(data, dt.date(2026, 11, 1))}
+        self.assertEqual(events, {"tier promotion end", "tier rates verified through"})
+
+    def test_events_older_than_the_window_are_not_reported(self):
+        data = {"models": {"x": {"name": "Inkling", "platforms": {"databricks": {"retires_on": "2026-10-30"}}}}}
+        self.assertEqual(review.time_alerts(data, dt.date(2027, 3, 1)), [])
+
+    def test_imminent_events_need_review_until_a_baseline_acknowledges_them(self):
+        data = {"models": {"x": {"name": "Inkling", "platforms": {"databricks": {"retires_on": "2026-10-30"}}}}}
+        baseline = {"sources": {}}
+        self.assertEqual(review.make_report(baseline, {}, {}, data, dt.date(2026, 10, 20))["lifecycle_due"], [])
+        due = review.make_report(baseline, {}, {}, data, dt.date(2026, 10, 24))["lifecycle_due"]
+        self.assertEqual([a["event"] for a in due], ["retirement"])
+        baseline["acknowledged_lifecycle"] = [review.alert_key(due[0])]
+        self.assertEqual(review.make_report(baseline, {}, {}, data, dt.date(2026, 10, 31))["lifecycle_due"], [])
+
 
 if __name__ == "__main__":
     unittest.main()

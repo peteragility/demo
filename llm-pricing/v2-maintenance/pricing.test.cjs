@@ -26,7 +26,8 @@ test('Kimi K3 Priority stays consistently global or regional, including cache hi
   close(global.total, 30.66);
   close(regional.total, 33.726);
   close(regional.offer.cache_read, 0.5775);
-  assert.equal(M.delta(regional.offer, global.offer).value, null);
+  // Same service tier in a different region is still like for like: regional costs 10% more.
+  close(M.delta(regional.offer, global.offer).value, 0.1);
 });
 
 test('1-hour Anthropic cache writes use their own charge', () => {
@@ -108,15 +109,35 @@ test('customer DBU price scales Databricks and leaves other providers at their o
   close(M.calculate(offer('moonshot/kimi-k3', 'bedrock'), {...date, dbuRate: 0.056}).total, 24);
 });
 
-test('regional offers and unconfirmed snapshots have no global same-model delta', () => {
-  const pro = M.resolveOffer(offer('deepseek/deepseek-v4-pro'), date);
+test('the cheapest price in any region is compared like for like; unconfirmed snapshots are not', () => {
+  const pro = M.cheapest(offer('deepseek/deepseek-v4-pro'), date);
+  assert.equal(M.cheapest(offer('deepseek/deepseek-v4-pro', 'azure_foundry'), date), null);
   const azure = M.resolveOffer(offer('deepseek/deepseek-v4-pro', 'azure_foundry'), date);
-  assert.equal(M.delta(azure, pro).value, null);
   assert.match(M.delta(azure, pro).reason, /snapshot|checkpoint/);
-  const dbxInkling = M.resolveOffer(offer('tml/inkling'), date);
-  assert.equal(M.delta(M.resolveOffer(offer('tml/inkling', 'azure_foundry'), date), dbxInkling).value, null);
-  const dbx55 = M.resolveOffer(offer('openai/gpt-5.5'), date);
-  assert.equal(M.delta(M.resolveOffer(offer('openai/gpt-5.5', 'bedrock'), date), dbx55).value, null);
+  // Azure's only Inkling offer is Data Zone; Bedrock sells GPT-5.5 in-region only.
+  const inkling = M.cheapest(offer('tml/inkling', 'azure_foundry'), date);
+  close(M.delta(inkling, M.cheapest(offer('tml/inkling'), date)).value, (3 * 1.1 + 4.46) / (3 * 1 + 4.05) - 1);
+  close(M.delta(M.cheapest(offer('openai/gpt-5.5', 'bedrock'), date), M.cheapest(offer('openai/gpt-5.5'), date)).value, 0.1);
+  const maverick = M.cheapest(offer('meta/llama-4-maverick', 'bedrock'), date);
+  close(M.delta(maverick, M.cheapest(offer('meta/llama-4-maverick'), date)).value, (3 * 0.24 + 0.97) / (3 * 0.5 + 1.5) - 1);
+});
+
+test('cheapest uses standard real-time prices only: not Batch, Flex, Priority or off-peak', () => {
+  const peak = M.cheapest(offer('deepseek/deepseek-v4-pro', 'official'), date);
+  assert.equal(peak.variant_id, undefined);
+  close(peak.in, 1.32);
+  const idle = offer('deepseek/deepseek-v4-pro', 'alicloud').variants.find(v => /idle/.test(v.label));
+  assert.equal(idle.service_tier, 'off-peak');
+  const kimi = M.cheapest(offer('moonshot/kimi-k3', 'bedrock'), date);
+  close(kimi.in, 3);
+  assert.equal(M.cheapest(offer('openai/gpt-6-sol', 'official'), date).service_tier, 'standard');
+});
+
+test('a cheaper standard variant becomes the platform price, at the selected blend', () => {
+  const cell = {status: 'priced', in: 1, out: 4, model_match: 'confirmed', service_tier: 'standard', tier: 'Global',
+    variants: [{id: 'v0', label: 'Input-heavy region', in: 0.5, out: 6, model_match: 'confirmed', service_tier: 'standard'}]};
+  assert.equal(M.cheapest(cell, {...date, inputRatio: 10}).tier, 'Input-heavy region');
+  assert.equal(M.cheapest(cell, {...date, inputRatio: 1}).tier, 'Global');
 });
 
 test('models with no comparable hyperscaler are excluded from parity claims', () => {
@@ -129,12 +150,63 @@ test('models with no comparable hyperscaler are excluded from parity claims', ()
   assert.deepEqual(result.gaps, {bedrock: 1, azure_foundry: 1, gcloud: 1});
 });
 
-test('Vertex MaaS prices with unverified scope can be estimated but do not imply global parity', () => {
+test('a cheaper hyperscaler price in any processing scope counts against parity', () => {
   const model = data.models['openai/gpt-oss-120b'];
-  const vertex = M.calculate(model.platforms.gcloud, date);
-  assert.equal(vertex.complete, true);
-  assert.equal(M.delta(vertex.offer, M.resolveOffer(model.platforms.databricks, date)).value, null);
-  assert.match(M.delta(vertex.offer, M.resolveOffer(model.platforms.databricks, date)).reason, /processing scope/);
+  const vertex = M.cheapest(model.platforms.gcloud, date);
+  close(M.delta(vertex, M.cheapest(model.platforms.databricks, date)).value, (3 * 0.09 + 0.36) / (3 * 0.15 + 0.6) - 1);
+  const result = M.summarize([model], date);
+  assert.equal(result.comparedModels, 1);
+  assert.equal(result.noCheaperModels, 0);
+});
+
+test('OSS parity counts every hyperscaler that undercuts Databricks', () => {
+  const oss = Object.values(data.models).filter(m => m.group === 'oss');
+  const result = M.summarize(oss, date);
+  assert.equal(result.comparedModels, 14);
+  assert.equal(result.noCheaperModels, 7);
+});
+
+test('a cheaper price for an unconfirmed checkpoint keeps a model out of the parity claim', () => {
+  const model = JSON.parse(JSON.stringify(data.models['deepseek/deepseek-v4-pro']));
+  model.platforms.bedrock = {...model.platforms.azure_foundry, in: 0.5, out: 1, variants: []};
+  model.platforms.gcloud = {...model.platforms.databricks, retires_on: undefined, in: 1.32, out: 3.96, dbu_rate_basis: undefined};
+  const result = M.summarize([model], date);
+  assert.equal(result.comparedModels, 1);
+  assert.equal(result.noCheaperModels, 0);
+});
+
+test('availability gaps count only models Databricks currently prices', () => {
+  const openai = Object.values(data.models).filter(m => m.group === 'openai');
+  assert.equal(M.summarize(openai, date).gaps.gcloud, 7);
+  const oss = Object.values(data.models).filter(m => m.group === 'oss');
+  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 8, azure_foundry: 5, gcloud: 11});
+  assert.deepEqual(M.summarize(oss, {asOf: '2026-10-30'}).gaps, {bedrock: 5, azure_foundry: 5, gcloud: 8});
+});
+
+test('expired promotions carry their published list-tier labels', () => {
+  assert.equal(M.resolveOffer(offer('google/gemini-3.8-flash'), {asOf: '2026-12-31'}).tier, 'Intro promo (−50%) until 31 Dec 2026');
+  assert.equal(M.resolveOffer(offer('google/gemini-3.8-flash'), {asOf: '2027-01-01'}).tier, 'Standard pay-per-token');
+  assert.equal(M.resolveOffer(offer('google/gemini-3.8-flash', 'gcloud'), {asOf: '2027-01-01'}).tier, 'Global endpoint');
+  assert.equal(M.resolveOffer(offer('google/gemini-3.1-pro'), {asOf: '2027-02-01'}).tier, 'Standard pay-per-token');
+  const lite = offer('google/gemini-3.5-flash-lite');
+  assert.equal(M.resolveOffer(lite, {asOf: '2027-02-01', variantId: selected(lite, 'Priority (promotion)')}).tier, 'Priority');
+});
+
+test('promotional long-context rates do not outlive the promotion', () => {
+  const cell = {status: 'priced', in: 1, out: 2, context_threshold: 100, long_context: {in: 2, out: 4},
+    promotion: {ends_on: '2026-10-31', after: {in: 1.5, out: 3, tier: 'List'}}};
+  assert.equal(M.calculate(cell, {asOf: '2026-11-01', promptTokens: 200}).complete, false);
+  close(M.calculate(cell, {asOf: '2026-10-31', promptTokens: 200}).total, 3 * 2 + 4);
+});
+
+test('no Batch / Flex cache rate or per-tier long-context rate is derived from Standard', () => {
+  for (const key of ['openai/gpt-5.5', 'openai/gpt-5.6-sol', 'openai/gpt-6-sol']) {
+    for (const v of offer(key, 'official').variants.filter(x => !x.context_only)) {
+      assert.equal(v.long_context, undefined, key + ' ' + v.label);
+      if (v.service_tier === 'batch' || v.service_tier === 'flex') assert.equal(v.cache_read, undefined, key + ' ' + v.label);
+    }
+    assert.equal(offer(key, 'official').long_context.cache_write, undefined);
+  }
 });
 
 test('Grok 4.6 Bedrock geographic and service tiers use their published cache charges', () => {
@@ -169,8 +241,10 @@ test('invalid volumes, cache percentages, dates and DBU rates are rejected', () 
   }
 });
 
-test('personal overrides are excluded from published parity comparisons', () => {
-  const base = M.resolveOffer(offer('moonshot/kimi-k3'), date);
-  const custom = {...M.resolveOffer(offer('moonshot/kimi-k3', 'bedrock'), date), user_modified: true};
-  assert.equal(M.delta(custom, base).value, null);
+test('personal prices produce what-if deltas without changing published figures', () => {
+  const published = M.summarize([data.models['moonshot/kimi-k3']], date);
+  const base = {...M.resolveOffer(offer('moonshot/kimi-k3'), date), in: 2.4, user_modified: true};
+  const bedrock = M.cheapest(offer('moonshot/kimi-k3', 'bedrock'), date);
+  close(M.delta(bedrock, base).value, (3 * 3 + 15) / (3 * 2.4 + 15) - 1);
+  assert.deepEqual(M.summarize([data.models['moonshot/kimi-k3']], date), published);
 });

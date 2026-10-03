@@ -30,11 +30,11 @@ jobs:
       run:
         working-directory: llm-pricing
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '24'
       - name: Validate reviewed data and calculations
@@ -60,7 +60,7 @@ jobs:
                   summary.write(reports[-1].read_text())
       - name: Save review artifacts
         if: always() && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: llm-pricing-v2-source-review
           path: ${{ runner.temp }}/llm-pricing-v2-review/

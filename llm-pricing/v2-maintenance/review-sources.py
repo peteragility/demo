@@ -3,7 +3,8 @@
 
 No dependencies, tokens, or provider API keys are needed. A changed document is a
 review signal, not an instruction to copy a predecessor price into a new model.
-Exit 0 = no source changes, 1 = a source failed, 2 = source changes need review.
+Exit 0 = nothing to review, 1 = a source failed, 2 = source changes or lifecycle
+events within 7 days need review.
 """
 import argparse
 import concurrent.futures
@@ -12,6 +13,7 @@ import difflib
 import hashlib
 from html.parser import HTMLParser
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -19,6 +21,8 @@ import urllib.parse
 import urllib.request
 
 HERE = Path(__file__).resolve().parent
+ALERT_WINDOW = 30  # days before or after a dated event that it is listed in the report
+DUE_WINDOW = 7     # days before or after a dated event that it needs an acknowledged review
 NOTICE = re.compile(r"promot|discount|expir|retir|deprecat|through\s+(?:\w+\s+)?\d|until\s+(?:\w+\s+)?\d|long.context|not.supported|cache.writ|cache.storage|higher.context", re.I)
 
 
@@ -258,17 +262,34 @@ def collect_one(source, cache_dir=None):
     return dict(url=source["url"], kind=kind, digest=hashlib.sha256(packed(records).encode()).hexdigest(), records=records)
 
 
+def alert_key(alert):
+    return "|".join((alert["key"], alert["platform"], alert["event"], alert["date"]))
+
+
 def time_alerts(data, today):
-    alerts = []
-    for model in data["models"].values():
+    """Dated events within ALERT_WINDOW days, including service-tier promotions and verified-through dates."""
+    found = {}
+    for key, model in data["models"].items():
         for platform, cell in model["platforms"].items():
-            for name, date in [("retirement", cell.get("retires_on")), ("promotion end", cell.get("promotion", {}).get("ends_on"))]:
-                if date:
-                    days = (dt.date.fromisoformat(date) - today).days
-                    if days <= 30:
-                        alerts.append({"model": model["name"], "platform": platform, "event": name,
-                                       "date": date, "days": days, "state": "past" if days < 0 else "upcoming"})
-    return sorted(alerts, key=lambda x: (x["date"], x["model"], x["platform"]))
+            events = [("retirement", cell.get("retires_on")), ("promotion end", (cell.get("promotion") or {}).get("ends_on"))]
+            for variant in cell.get("variants", []):
+                events += [("tier promotion end", (variant.get("promotion") or {}).get("ends_on")),
+                           ("tier rates verified through", variant.get("valid_through"))]
+            for name, date in events:
+                if not date:
+                    continue
+                days = (dt.date.fromisoformat(date) - today).days
+                if -ALERT_WINDOW <= days <= ALERT_WINDOW:
+                    alert = {"key": key, "model": model.get("name", key), "platform": platform, "event": name,
+                             "date": date, "days": days, "state": "past" if days < 0 else "upcoming"}
+                    found[alert_key(alert)] = alert
+    return sorted(found.values(), key=lambda x: (x["date"], x["model"], x["platform"], x["event"]))
+
+
+def due_alerts(alerts, acknowledged):
+    """Events within DUE_WINDOW days that no reviewed baseline has acknowledged yet."""
+    seen = set(acknowledged or [])
+    return [a for a in alerts if abs(a["days"]) <= DUE_WINDOW and alert_key(a) not in seen]
 
 
 def make_report(baseline, current, errors, data, today):
@@ -288,6 +309,7 @@ def make_report(baseline, current, errors, data, today):
     alerts = time_alerts(data, today)
     return dict(checked_at=today.isoformat(), baseline_checked_at=baseline.get("checked_at"),
                 sources_checked=len(current), sources_failed=errors, changes=changes, lifecycle_alerts=alerts,
+                lifecycle_due=due_alerts(alerts, baseline.get("acknowledged_lifecycle")),
                 publication="Review only. No pricing dataset or original page was modified.")
 
 
@@ -300,8 +322,14 @@ def markdown_report(report):
         for sid, error in report["sources_failed"].items():
             lines.append(f"- {sid}: {error}")
         lines.append("")
+    if report.get("lifecycle_due"):
+        lines.extend([f"## Lifecycle events within {DUE_WINDOW} days: review needed", "",
+                      "Confirm each provider made the announced change (or extended it), update the data if not, then record the reviewed baseline.", ""])
+        for alert in report["lifecycle_due"]:
+            lines.append(f"- {alert['model']} · {alert['platform']} · {alert['event']} {alert['date']} ({alert['state']})")
+        lines.append("")
     if report["lifecycle_alerts"]:
-        lines.extend(["## Promotions and retirements within 30 days or already past", "", "| Model | Platform | Event | Date | State |", "|---|---|---|---|---|"])
+        lines.extend([f"## Promotions and retirements within {ALERT_WINDOW} days", "", "| Model | Platform | Event | Date | State |", "|---|---|---|---|---|"])
         for alert in report["lifecycle_alerts"]:
             lines.append("| " + " | ".join(str(alert[k]) for k in ("model", "platform", "event", "date", "state")) + " |")
         lines.append("")
@@ -312,7 +340,7 @@ def markdown_report(report):
         if len(diff) > 150:
             lines.append("... Full diff is included in the JSON artifact.")
         lines.extend(["```", ""])
-    if not report["changes"] and not report["sources_failed"]:
+    if not report["changes"] and not report["sources_failed"] and not report.get("lifecycle_due"):
         lines.extend(["No pricing, model-catalog or lifecycle source-record changes against the reviewed baseline.", ""])
     return "\n".join(lines)
 
@@ -339,25 +367,34 @@ def main():
                 print(sid + ": source failed — " + errors[sid], flush=True)
     current = dict(sorted(current.items()))
     baseline_file = HERE / "source-baseline.json"
+    data = json.loads((HERE.parent / "v2-data.json").read_text())
     if args.record_baseline:
         if errors:
             raise SystemExit("Baseline was not written because one or more sources failed.")
-        baseline_file.write_text(json.dumps(dict(schema=1, checked_at=today.isoformat(), sources=current), ensure_ascii=False, indent=1) + "\n")
+        previous = json.loads(baseline_file.read_text()) if baseline_file.exists() else {}
+        # Recording the baseline also acknowledges the lifecycle events reviewed with it.
+        alerts = time_alerts(data, today)
+        acknowledged = sorted(set(previous.get("acknowledged_lifecycle", [])) | {alert_key(a) for a in alerts if abs(a["days"]) <= DUE_WINDOW})
+        baseline_file.write_text(json.dumps(dict(schema=1, checked_at=today.isoformat(), acknowledged_lifecycle=acknowledged, sources=current), ensure_ascii=False, indent=1) + "\n")
         print("Reviewed source baseline recorded; pricing data unchanged.")
         return
     if not baseline_file.exists():
         raise SystemExit("No reviewed baseline; collect and review one with --record-baseline first.")
     baseline = json.loads(baseline_file.read_text())
-    data = json.loads((HERE.parent / "v2-data.json").read_text())
     report = make_report(baseline, current, errors, data, today)
     args.report_dir.mkdir(parents=True, exist_ok=True)
     stem = "source-review-" + today.isoformat()
     (args.report_dir / (stem + ".json")).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     (args.report_dir / (stem + ".md")).write_text(markdown_report(report))
-    print(f"Review report: {len(report['changes'])} changed sources; {len(errors)} failed sources.")
+    print(f"Review report: {len(report['changes'])} changed sources; {len(errors)} failed sources; "
+          f"{len(report['lifecycle_due'])} lifecycle events due for review.")
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        # Upcoming dates show as run annotations even while they are not yet due.
+        for alert in report["lifecycle_alerts"]:
+            print(f"::warning title=Lifecycle {alert['date']}::{alert['model']} · {alert['platform']} · {alert['event']} ({alert['days']} days)")
     if errors:
         sys.exit(1)
-    if report["changes"]:
+    if report["changes"] or report["lifecycle_due"]:
         sys.exit(2)
 
 

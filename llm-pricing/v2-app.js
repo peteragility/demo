@@ -1,14 +1,13 @@
 (() => {
   'use strict';
   const M = window.LLMPricingMath;
-  const AS_OF = new Date().toISOString().slice(0, 10);
   const PL = ['databricks','official','bedrock','azure_foundry','fireworks','gcloud','alicloud'];
   const LONG = {databricks:'Databricks',official:'原廠 API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
   const SHORT = {databricks:'DBX',official:'原廠',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
   const ORDER = ['oss','anthropic','openai','google','xai'];
-  const TABS = [['oss','OSS'],['anthropic','Anthropic'],['openai','OpenAI'],['google','Google'],['xai','xAI'],['all','All']];
-  const HASH = {oss:'oss',anthropic:'anthropic',openai:'openai',google:'google',xai:'xai',all:'all'};
-  const HASH_ALIAS = {claude:'anthropic',gpt:'openai',gemini:'google',grok:'xai'};
+  // [hash id, label, phone label]
+  const TABS = [['oss','OSS','OSS'],['anthropic','Anthropic','Claude'],['openai','OpenAI','GPT'],['google','Google','Gemini'],['xai','xAI','Grok'],['all','All','All']];
+  const HASH_ALIAS = new Map([['claude','anthropic'],['gpt','openai'],['gemini','google'],['grok','xai']]);
   const FIELDS = ['in','out','cache_read','cache_write','cache_write_1h'];
   const EDIT_KEY = 'llm-pricing-v2-overrides', PREF_KEY = 'llm-pricing-v2-preferences';
   const store = {
@@ -19,19 +18,32 @@
   const $ = s => document.querySelector(s);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const slug = k => k.replace(/[^a-z0-9]+/gi, '-');
+  const isObject = v => Boolean(v) && typeof v === 'object' && !Array.isArray(v);
+  // Promotions and retirements switch on the viewer's local calendar date, rechecked while the tab stays open.
+  const localDate = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  let AS_OF = localDate();
 
-  const prefs = store.get(PREF_KEY, {});
-  const S = { group: 'oss', q: '', sort: ['default','price','edge'].includes(prefs.sort) ? prefs.sort : 'default', blend: [1,3,10].includes(+prefs.blend) ? +prefs.blend : 3, edit: false, open: new Set() };
-  let RAW = null, DATA = null, EDITS = store.get(EDIT_KEY, {});
-  if (!EDITS || typeof EDITS !== 'object' || Array.isArray(EDITS)) EDITS = {};
+  const saved = store.get(PREF_KEY, {});
+  const prefs = isObject(saved) ? saved : {};
+  const S = { group: 'oss', q: '', sort: ['default','price','edge'].includes(prefs.sort) ? prefs.sort : 'default', blend: [1,3,10].includes(+prefs.blend) ? +prefs.blend : 3,
+    talk: typeof prefs.talk === 'boolean' ? prefs.talk : null, edit: false, open: new Set() };
+  let RAW = null, RESOLVED = null, DATA = null, PICK = null, APPLIED = 0, SUMMARY = null, SUMMARY_KEY = '';
+  let EDITS = store.get(EDIT_KEY, {});
+  if (!isObject(EDITS)) EDITS = {};
   if (prefs.theme === 'light' || prefs.theme === 'dark') document.documentElement.dataset.theme = prefs.theme;
+  const savePrefs = () => { prefs.sort = S.sort; prefs.blend = S.blend; if (S.talk != null) prefs.talk = S.talk; store.set(PREF_KEY, prefs); };
+  const saveEdits = () => { if (Object.keys(EDITS).length) store.set(EDIT_KEY, EDITS); else store.del(EDIT_KEY); };
+  // Assign markup only when it changed, so unchanged regions keep focus and screen readers stay quiet.
+  const paint = (el, html) => { if (el._html !== html) { el.innerHTML = html; el._html = html; } };
 
   const groupOf = (k, m) => m.group || (m.oss ? 'oss' : ({anthropic:'anthropic',openai:'openai',google:'google'}[k.split('/')[0]] || 'oss'));
   const kind = c => !c ? 'unk' : c.status === 'dedicated' ? 'gpu' : ['unavailable','retired'].includes(c.status) ? 'na' : c.status === 'priced' && M.validRate(c.in) && M.validRate(c.out) && !(c.problems || []).length ? 'ok' : 'unk';
+  // The offer a cell shows and compares: the platform's cheapest standard price, or the personal price typed for it.
+  const shown = (mk, pl) => PICK[mk][pl] || DATA.models[mk].platforms[pl];
   const blendOf = c => kind(c) !== 'ok' ? null : (S.blend * c.in + c.out) / (S.blend + 1);
-  const deltaOf = (c, base) => M.delta(c, base, S.blend).value;
-  const dirOf = d => d == null ? null : d > 0.01 ? 'up' : d < -0.01 ? 'down' : 'par';
-  const pct = d => { const n = Math.round(Math.abs(d) * 100); return n + '%'; };
+  const deltaOf = (mk, pl) => { const a = PICK[mk][pl], b = PICK[mk].databricks; return pl === 'databricks' || !a || !b ? null : M.delta(a, b, S.blend).value; };
+  const dirOf = d => d == null ? null : d > M.PARITY ? 'up' : d < -M.PARITY ? 'down' : 'par';
+  const pct = d => Math.round(Math.abs(d) * 100) + '%';
   const dLabel = (d, dir) => dir === 'par' ? '=' : (dir === 'up' ? '▲' : '▼') + pct(d);
   function fmt(v) {
     if (v == null || v === '' || !isFinite(+v)) return '—';
@@ -44,49 +56,84 @@
   const precise = v => M.validRate(v) ? v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:6}) : '—';
   const srcUrl = (c, pl) => { if (c && c.url) return c.url; const id = (c && c.src) || (DATA.platform_meta && DATA.platform_meta[pl] && DATA.platform_meta[pl].src); return id && DATA.source_meta && DATA.source_meta[id] ? DATA.source_meta[id].url : null; };
   const shortAlt = a => a.short || String(a.name).replace(/^(DeepSeek|Kimi|Claude)\s+/i, '');
+  // Dated notices and talk-track lines: plain strings always apply; {text, from, until} apply within their dates.
+  const active = list => (Array.isArray(list) ? list : list ? [list] : [])
+    .filter(n => typeof n === 'string' || (isObject(n) && n.text && (!n.from || AS_OF >= n.from) && (!n.until || AS_OF <= n.until)))
+    .map(n => typeof n === 'string' ? n : n.text);
+  const notices = m => active(m.notices || m.warn);
 
-  function applyEdits() {
-    DATA = JSON.parse(JSON.stringify(RAW));
-    // older data.json files have no display fields: derive them from the model key
-    for (const [k, m] of Object.entries(DATA.models || {})) {
-      if (!m.name) m.name = k.split('/').pop();
-      if (!m.maker) m.maker = k.split('/')[0];
-      if (!m.platforms) m.platforms = {};
-      for (const pl of PL) {
-        const resolved = M.resolveOffer(m.platforms[pl], {asOf: AS_OF});
-        if (resolved.promotion_expired && resolved.tier) resolved.tier = resolved.tier.replace(/20% promotion|Promo price|Intro promo|intro until[^·]*/gi, 'list price');
-        m.platforms[pl] = resolved;
-      }
+  function resolveAll() {
+    const models = {};
+    for (const [k, m] of Object.entries(RAW.models || {})) {
+      models[k] = {};
+      for (const pl of PL) models[k][pl] = M.resolveOffer((m.platforms || {})[pl], {asOf: AS_OF});
     }
+    return {asOf: AS_OF, models};
+  }
+  // Drop stored edits that can no longer apply, so the count and Reset match what the table shows.
+  function pruneEdits() {
+    let changed = false;
     for (const [key, val] of Object.entries(EDITS)) {
       const [mk, pl, f] = key.split('|');
-      const c = DATA.models[mk] && DATA.models[mk].platforms[pl];
-      const published = RAW.models[mk] && RAW.models[mk].platforms[pl];
-      if (c && published && published.status === 'priced' && FIELDS.includes(f) && (val === null || val === '' || M.validRate(+val))) {
-        c[f] = val === null || val === '' ? null : +val;
-        c.user_modified = true;
+      const c = RESOLVED.models[mk] && RESOLVED.models[mk][pl];
+      if (!c || c.status !== 'priced' || !FIELDS.includes(f) || !M.validRate(val) || val === c[f]) { delete EDITS[key]; changed = true; }
+    }
+    if (changed) saveEdits();
+  }
+  function applyEdits() {
+    if (!RESOLVED || RESOLVED.asOf !== AS_OF) { RESOLVED = resolveAll(); pruneEdits(); }
+    DATA = {...RAW, models: {}};
+    for (const [k, m] of Object.entries(RAW.models || {})) {
+      // older data.json files have no display fields: derive them from the model key
+      DATA.models[k] = {...m, name: m.name || k.split('/').pop(), maker: m.maker || k.split('/')[0], platforms: {...RESOLVED.models[k]}};
+    }
+    // A personal price replaces the listed tier on a copy of that one offer.
+    APPLIED = 0;
+    for (const [key, val] of Object.entries(EDITS)) {
+      const [mk, pl, f] = key.split('|');
+      const m = DATA.models[mk], c = m && m.platforms[pl];
+      if (!c || c.status !== 'priced' || !FIELDS.includes(f) || !M.validRate(val)) continue;
+      if (!c.user_modified) m.platforms[pl] = {...c, user_modified: true};
+      m.platforms[pl][f] = val;
+      APPLIED++;
+    }
+    pickAll();
+  }
+  function pickAll() {
+    PICK = {};
+    const options = {asOf: AS_OF, inputRatio: S.blend};
+    for (const [k, m] of Object.entries(DATA.models)) {
+      PICK[k] = {};
+      for (const pl of PL) {
+        const c = m.platforms[pl];
+        PICK[k][pl] = c.user_modified ? (M.comparable(c) ? c : null) : M.cheapest((RAW.models[k].platforms || {})[pl], options);
       }
     }
   }
-  const isEdited = (mk, pl) => Boolean(DATA.models[mk] && DATA.models[mk].platforms[pl] && DATA.models[mk].platforms[pl].user_modified);
 
   function rows() {
     const q = S.q.trim().toLowerCase();
     let arr = Object.entries(DATA.models).map(([k, m], i) => ({ k, m, i, g: groupOf(k, m) }));
     if (S.group !== 'all') arr = arr.filter(r => r.g === S.group);
     if (q) arr = arr.filter(r => [r.k, r.m.name, r.m.short, r.m.maker, r.m.about, ...Object.values(r.m.platforms).map(c => c.model_id)].join(' ').toLowerCase().includes(q));
-    const dbx = r => r.m.platforms.databricks;
-    if (S.sort === 'price') arr.sort((a, b) => (blendOf(dbx(a)) ?? 9e9) - (blendOf(dbx(b)) ?? 9e9));
-    else if (S.sort === 'edge') arr.sort((a, b) => edge(b) - edge(a) || a.i - b.i);
-    else if (S.group === 'all') arr.sort((a, b) => ORDER.indexOf(a.g) - ORDER.indexOf(b.g) || a.i - b.i);
+    if (S.sort === 'price') {
+      const cost = new Map(arr.map(r => [r.k, blendOf(shown(r.k, 'databricks')) ?? Infinity]));
+      arr.sort((a, b) => cost.get(a.k) - cost.get(b.k) || a.i - b.i);
+    } else if (S.sort === 'edge') {
+      const score = new Map(arr.map(r => [r.k, edge(r)]));
+      arr.sort((a, b) => score.get(b.k) - score.get(a.k) || a.i - b.i);
+    } else if (S.group === 'all') arr.sort((a, b) => ORDER.indexOf(a.g) - ORDER.indexOf(b.g) || a.i - b.i);
     return arr;
   }
+  // +1 for each platform without the model or pricier than DBX, −1 for each cheaper one; summed Δ breaks ties.
   function edge(r) {
-    let s = 0, sum = 0; const base = r.m.platforms.databricks;
+    if (!PICK[r.k].databricks) return -Infinity;
+    let s = 0, sum = 0;
     for (const pl of PL) {
       if (pl === 'databricks') continue;
-      const c = r.m.platforms[pl], k = kind(c);
-      if (k === 'ok') { const d = deltaOf(c, base); if (d != null) { sum += d; s += d > 0.01 ? 1 : d < -0.01 ? -1 : 0; } }
+      if (kind(r.m.platforms[pl]) === 'na') { s += 1; continue; }
+      const d = deltaOf(r.k, pl);
+      if (d != null) { sum += d; s += d > M.PARITY ? 1 : d < -M.PARITY ? -1 : 0; }
     }
     return s + sum / 100;
   }
@@ -95,7 +142,7 @@
     const bits = [LONG[pl] + ': $' + precise(c.in) + ' / $' + precise(c.out)];
     if (c.cache_read != null) bits.push('cache read $' + precise(c.cache_read));
     if (c.cache_write != null) bits.push('cache write $' + precise(c.cache_write));
-    if (c.tier) bits.push(c.tier);
+    if (c.tier) bits.push(c.tier + (c.variant_id ? ' (cheapest standard tier)' : ''));
     if (c.pricing_checked_at) bits.push('price checked ' + c.pricing_checked_at);
     if (c.model_id) bits.push(c.model_id);
     if (c.user_modified) bits.push('personal price');
@@ -103,9 +150,10 @@
     return bits.join(' · ');
   }
 
+  const io = c => `<span class="io"><span class="i">${fmt(c.in)}</span><span class="sl">/</span><span class="o">${fmt(c.out)}</span></span>`;
   function cellHtml(r, pl) {
-    const m = r.m, c = m.platforms[pl], k = kind(c), base = m.platforms.databricks;
-    const ed = isEdited(r.k, pl) ? ' edited' : '';
+    const base = r.m.platforms[pl], c = shown(r.k, pl), k = kind(c);
+    const ed = base.user_modified ? ' edited' : '';
     const shade = pl === 'databricks' ? ' dbx' : '';
     if (k === 'gpu') return `<td class="c na${shade}" title="${esc(LONG[pl] + ': dedicated deployment only · ' + (c.note || 'No verified per-token offer'))}"><span class="x" aria-label="dedicated deployment only">GPU</span></td>`;
     if (k === 'na') {
@@ -115,20 +163,32 @@
       return `<td class="c na${shade}" title="${esc(t)}"><span class="x" aria-label="${esc(state)}">✕</span>${a ? `<span class="alt"><span class="an">${esc(shortAlt(a))}</span><span class="ap"> ${fmt(a.in)} / ${fmt(a.out)}</span></span>` : ''}</td>`;
     }
     if (k === 'unk') return `<td class="c unk${shade}${ed}" title="${esc(LONG[pl] + ': ' + ((c && c.note) || 'not verified'))}"><span class="q" aria-label="not verified">?</span></td>`;
-    if (pl === 'databricks') return `<td class="c dbx${ed}" title="${esc(tip(pl, c))}"><span class="io"><span class="i">${fmt(c.in)}</span><span class="sl">/</span><span class="o">${fmt(c.out)}</span></span></td>`;
-    const d = deltaOf(c, base), dir = dirOf(d);
+    if (pl === 'databricks') return `<td class="c dbx${ed}" title="${esc(tip(pl, c))}">${io(c)}</td>`;
+    const d = deltaOf(r.k, pl), dir = dirOf(d);
     const ar = dir && dir !== 'par' ? `<span class="ar ${dir}" aria-hidden="true">${dir === 'up' ? '▲' : '▼'}</span>` : '';
     return `<td class="c ${dir || ''}${ed}" title="${esc(tip(pl, c, d, dir))}"><span class="io"><span class="i">${fmt(c.in)}</span><span class="sl">/</span><span class="o">${fmt(c.out)}${ar}</span></span>${d != null ? `<span class="d ${dir}">${dLabel(d, dir)}</span>` : ''}</td>`;
   }
 
   function rowHtml(r) {
-    const m = r.m, open = S.open.has(r.k);
-    const badges = (m.badges || []).map(b => `<span class="bdg">${esc(b)}</span>`).join('') + (m.warn ? `<span class="bdg warn" title="${esc(m.warn)}">!</span>` : '');
+    const m = r.m, open = S.open.has(r.k), warn = notices(m).join(' · ');
+    const badges = (m.badges || []).map(b => `<span class="bdg">${esc(b)}</span>`).join('') + (warn ? `<span class="bdg warn" title="${esc(warn)}">!</span>` : '');
     const meta = [m.maker, m.ctx && (m.ctx + ' ctx')].filter(Boolean).join(' · ');
-    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}" aria-controls="d-${slug(r.k)}"><span class="nm"><span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
+    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm"><span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
   }
 
-  function offerInfo(c, pl, base) {
+  // Why a priced cell has no Δ, or which tier its Δ uses.
+  function comparisonNote(mk, pl, c) {
+    if (kind(c) !== 'ok') return null;
+    const pick = PICK[mk][pl], base = PICK[mk].databricks;
+    if (pl === 'databricks') return pick && pick.variant_id ? 'Δ baseline is the cheapest standard tier: ' + esc(pick.tier) + ' $' + precise(pick.in) + ' / $' + precise(pick.out) : null;
+    if (!base) return 'Δ excluded: no verified Databricks price.';
+    if (!pick) return 'Δ excluded: ' + esc(M.comparisonReason(c, base) || 'no standard price for the confirmed model version.');
+    const why = M.delta(pick, base, S.blend).reason;
+    if (why) return 'Δ excluded: ' + esc(why);
+    return pick.variant_id ? 'Δ uses the cheapest standard tier: ' + esc(pick.tier) + ' $' + precise(pick.in) + ' / $' + precise(pick.out) : null;
+  }
+
+  function offerInfo(c, pl, mk) {
     const info = [c.tier, c.regions, c.note].filter(Boolean).map(esc);
     if (c.user_modified) info.push('Personal price');
     if (c.pricing_checked_at) info.push((c.user_modified ? 'Published price checked ' : 'Price checked ') + esc(c.pricing_checked_at));
@@ -140,37 +200,35 @@
     if (c.cache_storage != null) info.push('Cache storage $' + precise(c.cache_storage) + ' / million token-hours');
     if (c.retires_on) {
       const source = DATA.source_meta[c.retirement_src];
-      info.push('Retires ' + esc(c.retires_on) + ' · replacement: ' + esc((c.replacement || []).join(' / ')) + (source ? ` <a href="${esc(source.url)}" target="_blank" rel="noopener">retirement source ↗</a>` : ''));
+      info.push((AS_OF >= c.retires_on ? 'Retired ' : 'Retires ') + esc(c.retires_on) + ' · replacement: ' + esc((c.replacement || []).join(' / ')) + (source ? ` <a href="${esc(source.url)}" target="_blank" rel="noopener">retirement source ↗</a>` : ''));
     }
     if (c.promotion_expired) info.push('Promotion ended ' + esc(c.promotion.ends_on) + '; published post-promotion rates shown.');
-    if (pl !== 'databricks' && kind(c) === 'ok') {
-      const reason = M.comparisonReason(c, base);
-      if (reason) info.push('Δ excluded: ' + esc(reason));
-    }
+    const note = comparisonNote(mk, pl, c);
+    if (note) info.push(note);
     return info.join(' · ');
   }
 
-  function rateChip(label, c) {
+  function rateChip(label, c, cls) {
     const cache = [['cache_read','cr'],['cache_write','cw'],['cache_write_1h','1h write']].filter(([field]) => M.validRate(c[field])).map(([field, name]) => ' · ' + name + ' ' + precise(c[field])).join('');
-    return `<span>${esc(label)} <b>${precise(c.in)} / ${precise(c.out)}</b>${cache}</span>`;
+    return `<span${cls ? ` class="${cls}"` : ''}>${esc(label)} <b>${precise(c.in)} / ${precise(c.out)}</b>${cache}</span>`;
   }
 
   function detailHtml(r) {
-    const m = r.m, base = m.platforms.databricks;
+    const m = r.m, warn = notices(m).join(' · ');
     const meta = [m.maker, m.about, m.ctx && ('context ' + m.ctx)].filter(Boolean).join(' · ');
     let body = '';
     for (const pl of PL) {
-      const c = m.platforms[pl], k = kind(c), src = srcUrl(c, pl);
+      const c = m.platforms[pl], k = kind(c), src = srcUrl(c, pl), pick = PICK[r.k][pl];
       const link = src ? ` <a href="${esc(src)}" target="_blank" rel="noopener">source ↗</a>` : '';
-      const editable = S.edit && RAW.models[r.k].platforms[pl].status === 'priced' && c.status !== 'retired';
+      const editable = S.edit && c.status === 'priced';
       if (k !== 'ok' && !editable) {
         const st = k === 'gpu' ? 'Dedicated deployment only' : c.status === 'retired' ? 'Retired on Databricks' : k === 'na' ? 'Not offered' : c.available ? 'Price pending verification' : 'Not verified';
         const alt = c && c.alt ? ` · closest <b>${esc(c.alt.name)}</b> ${fmt(c.alt.in)} / ${fmt(c.alt.out)}` : '';
         body += `<tr><td class="pl">${esc(LONG[pl])}</td><td class="st" colspan="6">${st}${alt}</td></tr>`;
-        body += `<tr class="info"><td colspan="7">${offerInfo(c, pl, base)}${link}</td></tr>`;
+        body += `<tr class="info"><td colspan="7">${offerInfo(c, pl, r.k)}${link}</td></tr>`;
         continue;
       }
-      const d = pl === 'databricks' ? null : deltaOf(c, base), dir = dirOf(d);
+      const d = deltaOf(r.k, pl), dir = dirOf(d);
       const nums = FIELDS.map(f => {
         const cls = f === 'cache_write_1h' ? ' class="w1h"' : '';
         if (S.edit) return `<td${cls}><input inputmode="decimal" name="${esc(r.k + '|' + pl + '|' + f)}" id="e-${slug(r.k + '-' + pl + '-' + f)}" data-e="${esc(r.k + '|' + pl + '|' + f)}" value="${c[f] == null ? '' : c[f]}" aria-label="${esc(LONG[pl] + ' ' + f)}"></td>`;
@@ -178,21 +236,23 @@
       }).join('');
       const dd = pl === 'databricks' ? 'base' : d == null ? '' : dLabel(d, dir);
       body += `<tr><td class="pl${pl === 'databricks' ? ' is-dbx' : ''}">${esc(LONG[pl])}</td>${nums}<td class="dd ${dir || ''}">${dd}</td></tr>`;
-      const bits = offerInfo(c, pl, base);
-      let vars = (c.variants || []).filter(v => !v.context_only).map(v => {
+      const bits = offerInfo(c, pl, r.k);
+      // A promotion's scheduled rates replace the duplicate "from <date>" variant.
+      let vars = (c.variants || []).filter(v => !v.context_only && !(v.future_only && (c.promotion || (v.effective_from && AS_OF >= v.effective_from)))).map(v => {
         if (v.future_only) return rateChip(v.label, v);
         const resolved = M.resolveOffer(RAW.models[r.k].platforms[pl], {asOf: AS_OF, variantId: v.id});
-        return resolved.status === 'priced' ? rateChip(v.label, resolved) : `<span>${esc(v.label)} · ${esc((resolved.problems || []).join(' ') || 'Rates not verified')}</span>`;
+        const isPick = pick && pick.variant_id === v.id && !c.user_modified;
+        return resolved.status === 'priced' ? rateChip((resolved.tier || v.label) + (isPick ? ' · Δ basis' : ''), resolved, isPick ? 'pick' : '') : `<span>${esc(v.label)} · ${esc((resolved.problems || []).join(' ') || 'Rates not verified')}</span>`;
       }).join('');
       if (c.long_context) vars += rateChip((c.context_threshold_inclusive ? '≥' : '>') + (c.context_threshold / 1000) + 'K input', c.long_context);
       else if (c.context_threshold) vars += `<span>${c.context_threshold_inclusive ? '≥' : '&gt;'}${c.context_threshold / 1000}K input: rates for this tier not verified</span>`;
-      if (c.promotion && !c.promotion_expired && !(c.variants || []).some(v => v.future_only)) {
+      if (c.promotion && !c.promotion_expired) {
         vars += rateChip('After ' + c.promotion.ends_on, c.promotion.after);
-        if (c.promotion.after.long_context) vars += rateChip('After ' + c.promotion.ends_on + ' · >' + (c.context_threshold / 1000) + 'K input', c.promotion.after.long_context);
+        if (c.promotion.after.long_context) vars += rateChip('After ' + c.promotion.ends_on + ' · ' + (c.context_threshold_inclusive ? '≥' : '>') + (c.context_threshold / 1000) + 'K input', c.promotion.after.long_context);
       }
       body += `<tr class="info"><td colspan="7">${bits}${link}${vars ? `<div class="chips">${vars}</div>` : ''}</td></tr>`;
     }
-    return `<tr class="detail" id="d-${slug(r.k)}"><td colspan="8"><div class="dw"><div class="dh"><b>${esc(m.name)}</b><span class="meta">${esc(meta)}</span>${m.warn ? `<span class="warn">${esc(m.warn)}</span>` : ''}<button type="button" class="copy" data-copy="${esc(r.k)}">Copy summary</button>${m.note ? `<span class="note">${esc(m.note)}</span>` : ''}</div><div class="dtwrap"><table class="dt"><thead><tr><th class="pl">Platform</th><th>In</th><th>Out</th><th>Cache read</th><th>Cache write</th><th class="w1h">1h write</th><th>Δ vs DBX</th></tr></thead><tbody>${body}</tbody></table></div></div></td></tr>`;
+    return `<tr class="detail" id="d-${slug(r.k)}"><td colspan="8"><div class="dw"><div class="dh"><b>${esc(m.name)}</b><span class="meta">${esc(meta)}</span>${warn ? `<span class="warn">${esc(warn)}</span>` : ''}<button type="button" class="copy" data-copy="${esc(r.k)}">Copy summary</button>${m.note ? `<span class="note">${esc(m.note)}</span>` : ''}</div><div class="dtwrap"><table class="dt"><thead><tr><th class="pl">Platform</th><th>In</th><th>Out</th><th>Cache read</th><th>Cache write</th><th class="w1h">1h write</th><th>Δ vs DBX</th></tr></thead><tbody>${body}</tbody></table></div></div></td></tr>`;
   }
 
   function footHtml(list) {
@@ -200,12 +260,10 @@
     const cells = PL.map(pl => {
       let off = 0, up = 0, dn = 0;
       for (const r of list) {
-        const c = r.m.platforms[pl];
-        if (kind(c) !== 'ok') continue;
+        if (kind(shown(r.k, pl)) !== 'ok') continue;
         off++;
-        if (pl === 'databricks') continue;
-        const d = deltaOf(c, r.m.platforms.databricks);
-        if (d != null) { if (d > 0.01) up++; else if (d < -0.01) dn++; }
+        const d = deltaOf(r.k, pl);
+        if (d != null) { if (d > M.PARITY) up++; else if (d < -M.PARITY) dn++; }
       }
       const cd = pl === 'databricks' ? '' : `<span class="cd">${up ? `<i class="up">▲${up}</i>` : ''}${dn ? `<i class="down">▼${dn}</i>` : ''}</span>`;
       return `<td><span class="cv">${off}/${n}</span>${cd}</td>`;
@@ -213,27 +271,44 @@
     return `<tfoot><tr><th scope="row" class="m"><span class="nm">Has model</span><span class="mk mk2">priced cells · ▲ ▼ vs DBX</span></th>${cells}</tr></tfoot>`;
   }
 
+  const kpi = (cls, value, long, short) => `<div class="kpi${cls ? ' ' + cls : ''}"><b>${value}</b><span class="kl">${long}</span><span class="ks">${short}</span></div>`;
   function renderSummary(list) {
-    const published = M.summarize(list.map(r => RAW.models[r.k]), {asOf: AS_OF, inputRatio: S.blend});
-    const total = published.comparedModels, tied = published.noCheaperModels, cheaper = published.cheaperCells, gaps = published.gaps;
+    // Published figures always use published prices; personal edits only change the table.
+    const key = [AS_OF, S.blend, list.map(r => r.k).join(',')].join('|');
+    if (key !== SUMMARY_KEY) { SUMMARY_KEY = key; SUMMARY = M.summarize(list.map(r => RAW.models[r.k]), {asOf: AS_OF, inputRatio: S.blend}); }
+    const p = SUMMARY, gaps = p.gaps;
     const g = S.group === 'all' ? null : S.group;
-    const tips = g ? (DATA.insights && DATA.insights[g]) || [] : ORDER.flatMap(x => ((DATA.insights && DATA.insights[x]) || []).slice(0, 1));
-    const wide = window.matchMedia('(min-width: 721px)').matches;
-    $('#summary').innerHTML =
-      `<div class="kpis"><div class="kpi good"><b>${tied}<small>/${total}</small></b><span>models where no hyperscaler beats DBX (AWS · Azure · GCP)</span></div>` +
-      `<div class="kpi"><b>${gaps.bedrock}<small> · </small>${gaps.azure_foundry}<small> · </small>${gaps.gcloud}</b><span>models not offered on AWS · Azure · GCP (✕)</span></div>` +
-      `<div class="kpi warn"><b>${cheaper}</b><span>cells cheaper than DBX on any platform (▼): check first</span></div></div>` +
-      (tips.length ? `<details class="talk"${wide ? ' open' : ''}><summary>Talk track</summary><ul>${tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>` : '');
+    const tips = g ? active(DATA.insights && DATA.insights[g]) : ORDER.flatMap(x => active(DATA.insights && DATA.insights[x]).slice(0, 1));
+    const open = S.talk ?? window.matchMedia('(min-width: 1061px) and (min-height: 700px)').matches;
+    paint($('#summary'),
+      kpi('good', `${p.noCheaperModels}<small>/${p.comparedModels}</small>`, 'models where no hyperscaler beats DBX (AWS · Azure · GCP)', 'no hyperscaler cheaper') +
+      kpi('', `${gaps.bedrock}<small> · </small>${gaps.azure_foundry}<small> · </small>${gaps.gcloud}`, 'models not offered on AWS · Azure · GCP (✕)', 'not on AWS · Azure · GCP') +
+      kpi('warn', String(p.cheaperCells), 'cells cheaper than DBX on any platform (▼): check first', 'cheaper cells ▼') +
+      (tips.length ? `<button type="button" class="talkbtn" id="talkBtn" aria-expanded="${open}" aria-controls="talk">Talk track</button><ul class="talk" id="talk"${open ? '' : ' hidden'}>${tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '') +
+      (APPLIED ? `<p class="enote">Figures use published prices. The table includes your ${APPLIED} personal price${APPLIED === 1 ? '' : 's'}.</p>` : ''));
+  }
+
+  function focusKey(el) {
+    if (!el || el === document.body || !el.closest) return null;
+    const q = v => CSS.escape(v), row = el.closest('tr.row');
+    if (el.dataset.e) return `[data-e="${q(el.dataset.e)}"]`;
+    if (el.dataset.copy) return `[data-copy="${q(el.dataset.copy)}"]`;
+    if (el.classList.contains('mb') && row) return `tr.row[data-k="${q(row.dataset.k)}"] .mb`;
+    if (el.classList.contains('tab')) return `.tab[data-g="${q(el.dataset.g)}"]`;
+    if (el.id === 'talkBtn') return '#talkBtn';
+    return null;
   }
 
   function render() {
+    const focus = focusKey(document.activeElement);
     const list = rows();
     const counts = { all: 0 };
     for (const [k, m] of Object.entries(DATA.models)) { const g = groupOf(k, m); counts[g] = (counts[g] || 0) + 1; counts.all++; }
-    $('#tabs').innerHTML = TABS.map(([id, label]) => `<button type="button" role="tab" class="tab" data-g="${id}" aria-selected="${S.group === id}">${label}<span class="n">${counts[id] || 0}</span></button>`).join('');
-    const tabs = $('#tabs'), active = tabs.querySelector('[aria-selected="true"]');
-    if (active) {
-      const bounds = tabs.getBoundingClientRect(), selected = active.getBoundingClientRect();
+    const tabs = $('#tabs');
+    paint(tabs, TABS.map(([id, label, short]) => `<button type="button" class="tab" data-g="${id}" aria-pressed="${S.group === id}" aria-label="${esc(label + ', ' + (counts[id] || 0) + ' models')}"><span class="tl">${label}</span><span class="ts">${short}</span><span class="n">${counts[id] || 0}</span></button>`).join(''));
+    const current = tabs.querySelector('[aria-pressed="true"]');
+    if (current) {
+      const bounds = tabs.getBoundingClientRect(), selected = current.getBoundingClientRect();
       if (selected.right > bounds.right) tabs.scrollLeft += selected.right - bounds.right;
       else if (selected.left < bounds.left) tabs.scrollLeft -= bounds.left - selected.left;
     }
@@ -246,24 +321,25 @@
       if (S.open.has(r.k)) body += detailHtml(r);
     }
     if (!list.length) body = `<tr class="empty"><td colspan="8">No models match “${esc(S.q)}”.</td></tr>`;
-    const cap = $('#mx caption').outerHTML;
-    $('#mx').innerHTML = cap + head + `<tbody>${body}</tbody>` + (list.length ? footHtml(list) : '');
-    $('#resetBtn').hidden = !Object.keys(EDITS).length;
-    $('#editNote').textContent = Object.keys(EDITS).length ? Object.keys(EDITS).length + ' edited value(s), saved in this browser only' : '';
+    const cap = '<caption class="sr">LLM price per 1M tokens by platform</caption>';
+    paint($('#mx'), cap + head + `<tbody>${body}</tbody>` + (list.length ? footHtml(list) : ''));
+    $('#resetBtn').hidden = !APPLIED;
+    $('#editNote').textContent = APPLIED ? APPLIED + ' edited value' + (APPLIED === 1 ? '' : 's') + ', saved in this browser only' : '';
+    if (focus) { const el = document.querySelector(focus); if (el && el !== document.activeElement) el.focus({ preventScroll: true }); }
   }
 
   function copySummary(mk) {
-    const m = DATA.models[mk], base = m.platforms.databricks;
-    const lines = [`${m.name} (${m.maker}): USD per 1M text tokens, input / output, reviewed ${DATA.reviewed_at}; prices as of ${AS_OF}`];
+    const m = DATA.models[mk];
+    const lines = [`${m.name} (${m.maker}): USD per 1M text tokens, input / output, reviewed ${DATA.reviewed_at}; prices as of ${AS_OF}. Δ compares each platform's cheapest standard price with Databricks' at ${S.blend}:1 input:output.`];
     for (const pl of PL) {
-      const c = m.platforms[pl], k = kind(c);
+      const c = shown(mk, pl), k = kind(c);
       if (k === 'gpu') lines.push(`• ${LONG[pl]}: dedicated deployment only · ${c.note || 'No verified per-token price.'}`);
       else if (k === 'na') lines.push(`• ${LONG[pl]}: ${c.status === 'retired' ? 'retired on ' + c.retires_on : 'not offered'}${c.alt ? ` (closest ${c.alt.name} ${fmt(c.alt.in)} / ${fmt(c.alt.out)})` : ''}`);
       else if (k === 'unk') lines.push(`• ${LONG[pl]}: ${c.available ? 'price pending verification' : 'not verified'}${c.note ? ' · ' + c.note : ''}`);
       else {
-        const d = pl === 'databricks' ? null : deltaOf(c, base), dir = dirOf(d);
-        const reason = pl === 'databricks' ? null : M.comparisonReason(c, base);
-        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : ''}${c.tier ? ' · ' + c.tier : ''}${c.user_modified ? ' · personal price' : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : reason ? ' · Δ excluded: ' + reason : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
+        const d = deltaOf(mk, pl), dir = dirOf(d);
+        const note = d == null ? comparisonNote(mk, pl, m.platforms[pl]) : null;
+        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : ''}${c.tier ? ' · ' + c.tier : ''}${c.user_modified ? ' · personal price' : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note.replace(/<[^>]+>/g, '') : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
       }
     }
     const text = lines.join('\n');
@@ -282,16 +358,25 @@
 
   function setGroup(g, push) {
     S.group = g;
-    if (push) { try { history.replaceState(null, '', '#' + HASH[g]); } catch (e) {} }
+    if (push) { try { history.replaceState(null, '', '#' + g); } catch (e) {} }
     render();
   }
-  function fromHash() { const h = (location.hash || '').slice(1).toLowerCase(); return HASH_ALIAS[h] || Object.keys(HASH).find(k => HASH[k] === h); }
+  function fromHash() {
+    const h = (location.hash || '').slice(1).toLowerCase();
+    return HASH_ALIAS.get(h) || (TABS.some(([id]) => id === h) ? h : null);
+  }
 
   function bind() {
     $('#tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) setGroup(b.dataset.g, true); });
     $('#q').addEventListener('input', e => { S.q = e.target.value; if (S.q && S.group !== 'all') S.group = 'all'; render(); });
-    $('#sort').addEventListener('change', e => { S.sort = e.target.value; store.set(PREF_KEY, { ...prefs, sort: S.sort, blend: S.blend }); render(); });
-    $('#blend').addEventListener('change', e => { S.blend = +e.target.value; store.set(PREF_KEY, { ...prefs, sort: S.sort, blend: S.blend }); render(); });
+    $('#sort').addEventListener('change', e => { S.sort = e.target.value; savePrefs(); render(); });
+    $('#blend').addEventListener('change', e => { S.blend = +e.target.value; savePrefs(); pickAll(); render(); });
+    $('#summary').addEventListener('click', e => {
+      const b = e.target.closest('#talkBtn'); if (!b) return;
+      S.talk = b.getAttribute('aria-expanded') !== 'true'; savePrefs();
+      b.setAttribute('aria-expanded', String(S.talk)); $('#talk').hidden = !S.talk;
+      $('#summary')._html = null;
+    });
     $('#mx').addEventListener('click', e => {
       const cp = e.target.closest('.copy'); if (cp) { copySummary(cp.dataset.copy); return; }
       if (e.target.closest('tr.detail') || e.target.closest('a,input')) return;
@@ -301,8 +386,12 @@
     $('#mx').addEventListener('change', e => {
       const el = e.target.closest('input[data-e]'); if (!el) return;
       const value = el.value.trim();
-      if (value !== '' && !M.validRate(Number(value))) { toast('Enter a nonnegative finite price'); render(); return; }
-      EDITS[el.dataset.e] = value === '' ? null : Number(value); store.set(EDIT_KEY, EDITS); applyEdits(); render();
+      if (value !== '' && !M.validRate(Number(value))) { toast('Enter a nonnegative finite price'); el.value = el.defaultValue; return; }
+      // Clearing a field, or typing the published price, removes the personal price.
+      if (value === '') delete EDITS[el.dataset.e]; else EDITS[el.dataset.e] = Number(value);
+      pruneEdits(); saveEdits();
+      // Re-render after the browser moves focus (Tab), then return focus to the same field.
+      setTimeout(() => { applyEdits(); render(); }, 0);
     });
     $('#editBtn').addEventListener('click', () => {
       S.edit = !S.edit; $('#editBtn').setAttribute('aria-pressed', S.edit);
@@ -316,10 +405,19 @@
       armed = false; EDITS = {}; store.del(EDIT_KEY); applyEdits(); $('#resetBtn').textContent = 'Reset edits'; render(); toast('Edits cleared');
     });
     window.addEventListener('hashchange', () => { const g = fromHash(); if (g && g !== S.group) setGroup(g, false); });
-    const bar = $('#bar');
-    const setH = () => document.documentElement.style.setProperty('--bar-h', (bar.offsetHeight + (parseFloat(getComputedStyle(bar).top) || 0)) + 'px');
+    const refreshDate = () => { const d = localDate(); if (d !== AS_OF) { AS_OF = d; applyEdits(); render(); } };
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshDate(); });
+    setInterval(refreshDate, 60000);
+    // Column headers stick under the family tabs (and the tools, on wide screens where they share the row).
+    const bar = $('#bar'), tools = $('#tools');
+    const setH = () => {
+      const stuck = getComputedStyle(tools).position === 'sticky';
+      const h = Math.max(bar.offsetHeight, stuck ? tools.offsetHeight : 0) + (parseFloat(getComputedStyle(bar).top) || 0);
+      document.documentElement.style.setProperty('--bar-h', h + 'px');
+    };
     setH();
-    if (window.ResizeObserver) new ResizeObserver(setH).observe(bar); else window.addEventListener('resize', setH);
+    window.addEventListener('resize', setH);
+    if (window.ResizeObserver) { const ro = new ResizeObserver(setH); ro.observe(bar); ro.observe(tools); }
   }
 
   async function load() {
