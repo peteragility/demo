@@ -117,7 +117,7 @@ const GRID=26, CELL=640/GRID;
 const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
 if(!ctx.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;};}
 const $=id=>document.getElementById(id);
-const QUEST={dir:{type:'choice',instructions:'You are controlling a snake racing another snake to ONE shared food. Pick the safest move that heads toward the food. Avoid walls and your own body; overlapping the other snake is allowed. Danger flags show which moves kill you.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
+const QUEST={d:{type:'choice',instructions:'Snake game. Go toward the food, never into danger=1 cells.',criteria:{U:'move up',D:'move down',L:'move left',R:'move right'}}};
 
 function mkSnake(color,x,y,dir){return{color,body:[{x,y},{x:x-1,y}],dir,alive:true,score:0,moves:0,msSum:0,logN:0,lastPick:'—'}}
 let A,B,food,running=false,tick=0,gameOverShown=false;
@@ -125,14 +125,9 @@ let A,B,food,running=false,tick=0,gameOverShown=false;
 function stateFor(s,other,food){
   const h=s.body[0];
   const danger=(x,y)=>x<0||y<0||x>=GRID||y>=GRID
-    ||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y)
-    ; // snakes may overlap each other — only walls & own body kill
-  return JSON.stringify({snake_head:{x:h.x,y:h.y},
-    current_direction:s.dir,food:{x:food.x,y:food.y},
-    food_position_relative:food.x>h.x?'food is to the RIGHT':food.x<h.x?'food is to the LEFT':food.y>h.y?'food is BELOW':'food is ABOVE',
-    danger_if_move:{up:danger(h.x,h.y-1),down:danger(h.x,h.y+1),left:danger(h.x-1,h.y),right:danger(h.x+1,h.y)},
-    opponent:{head:{x:other.body[0].x,y:other.body[0].y},alive:other.alive},
-    snake_length:s.body.length,grid_size:GRID});
+    ||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y)?1:0;
+  return `h=(${h.x},${h.y}) d=${s.dir[0].toUpperCase()} f=(${food.x},${food.y}) `+
+    `danger={U:${danger(h.x,h.y-1)},D:${danger(h.x,h.y+1)},L:${danger(h.x-1,h.y)},R:${danger(h.x+1,h.y)}} len=${s.body.length}`;
 }
 const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}})[n]||null;
 
@@ -158,7 +153,7 @@ async function callModel(model,state){
       body:JSON.stringify({model,state,questions:QUEST})});
     const j=await r.json();
     if(!j.ok)throw new Error((j.error||'api').slice(0,40));
-    return{a:j.answers.dir||{},ms:Math.round(performance.now()-t0)};
+    return{a:j.answers.d||{},ms:Math.round(performance.now()-t0)};
   }catch(e){return Promise.reject(new Error((e.message||'fail')+' @'+Math.round(performance.now()-t0)+'ms'));}
 }
 function pickDir(a){
