@@ -9,6 +9,13 @@
    "color": "#FF3621"
   },
   {
+   "path": "aidecide-snake/",
+   "title": "ai_decide Snake — the model plays live",
+   "desc": "Watch Databricks ai_decide make every snake move · live latency + probabilities",
+   "tag": "AI",
+   "color": "#FF3621"
+  },
+  {
    "path": "arsenal-champions/",
    "title": "Arsenal Champions",
    "desc": "冠軍之路 ⚽",
