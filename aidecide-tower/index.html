@@ -267,7 +267,8 @@ function draw(){
     ctx.fillStyle='#0A161B';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
     ctx.fillText(t.type[0].toUpperCase()+(t.up?'+':''),t.x,t.y+4);
     // range ring subtle
-    ctx.strokeStyle=T.color.replace(')',',')?.0; // noop
+    ctx.strokeStyle='rgba(143,168,176,.15)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(t.x,t.y,TOWER_TYPES[t.type].range,0,7);ctx.stroke();
   }
   // creeps
   for(const c of creeps){
