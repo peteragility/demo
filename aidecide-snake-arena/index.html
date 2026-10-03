@@ -229,16 +229,23 @@ function draw(){
       ctx.beginPath();ctx.arc(h.x*CELL+CELL*.65,h.y*CELL+CELL*.35,2.5,0,7);ctx.fill();}
   });
 }
-async function loop(){
-  if(!running)return;
-  tick++;
-  await Promise.all([
-    moveSnake(A,B,food,'ai_decide','logA','scoreA','aliveA','mvA','avgA'),
-    moveSnake(B,A,food,'jev','logB','scoreB','aliveB','mvB','avgB')
-  ]);
-  draw();
-  if(!A.alive&&!B.alive){finish();return;}
-  setTimeout(()=>loop(),120);
+// Each snake runs its OWN independent loop: it moves the moment ITS api call
+// returns + MOVE_GAP. A fast model visibly moves more often — no lockstep waiting.
+const MOVE_GAP=80;
+async function snakeLoop(s,other,model,panel,sc,al,mvv,avg){
+  while(running&&s.alive){
+    const t0=performance.now();
+    await moveSnake(s,other,model,panel,sc,al,mvv,avg);
+    draw();
+    if(!running)break;
+    if(!A.alive&&!B.alive){finish();return;}
+    const wait=Math.max(0,MOVE_GAP-(performance.now()-t0));
+    await new Promise(r=>setTimeout(r,wait));
+  }
+}
+function loop(){
+  snakeLoop(A,B,'ai_decide','logA','scoreA','aliveA','mvA','avgA');
+  snakeLoop(B,A,'jev','logB','scoreB','aliveB','mvB','avgB');
 }
 function finish(){
   running=false;gameOverShown=true;
