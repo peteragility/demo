@@ -192,7 +192,7 @@ async function moveSnake(s,other,food,model,panel,sc,al,mvv,avg){
     const dNow=Math.abs(food.x-h.x)+Math.abs(food.y-h.y);
     const dNew=Math.abs(food.x-nh.x)+Math.abs(food.y-nh.y);
     const conf=Math.round((a.confidence??0)*100)+'%';
-    bars(panel+'Wrap',a.probabilities||{},pick);
+    bars(panel==='logA'?'barsA':'barsB',a.probabilities||{},pick);
     log(panel,s,s.body.length? s.moves+1:0,pick,conf,ms,dNew<dNow);
     s.msSum+=ms;s.moves++;s.lastPick=pick;
     $(mvv).textContent=s.moves;$(avg).textContent=Math.round(s.msSum/s.moves);
