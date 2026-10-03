@@ -119,7 +119,7 @@ if(!ctx.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h
 const $=id=>document.getElementById(id);
 const QUEST={d:{type:'choice',instructions:'Snake game. Go toward the food, never into danger=1 cells.',criteria:{U:'move up',D:'move down',L:'move left',R:'move right'}}};
 
-function mkSnake(color,x,y,dir){return{color,body:[{x,y},{x:x-1,y}],dir,alive:true,score:0,moves:0,msSum:0,logN:0,lastPick:'—'}}
+function mkSnake(color,x,y,dir){return{color,body:[{x,y},{x:x-1,y}],dir,dirName:dir,alive:true,score:0,moves:0,msSum:0,logN:0,lastPick:'—'}}
 let A,B,food,running=false,tick=0,gameOverShown=false;
 
 function stateFor(s,other,food){
@@ -127,7 +127,7 @@ function stateFor(s,other,food){
   const danger=(x,y)=>x<0||y<0||x>=GRID||y>=GRID
     ||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y)?1:0;
   const dm={up:'U',down:'D',left:'L',right:'R'};
-  return `h=(${h.x},${h.y}) d=${dm[s.dir]||'R'} f=(${food.x},${food.y}) `+
+  return `h=(${h.x},${h.y}) d=${dm[s.dirName]||'R'} f=(${food.x},${food.y}) `+
     `danger={U:${danger(h.x,h.y-1)},D:${danger(h.x,h.y+1)},L:${danger(h.x-1,h.y)},R:${danger(h.x+1,h.y)}} len=${s.body.length}`;
 }
 const dirVec=n=>({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0},U:{x:0,y:-1},D:{x:0,y:1},L:{x:-1,y:0},R:{x:1,y:0}})[n]||null;
@@ -184,7 +184,17 @@ async function moveSnake(s,other,food,model,panel,sc,al,mvv,avg){
   if(!s.alive)return;
   try{
     const{a,ms}=await callModel(model,stateFor(s,other,food));
-    const pick=pickDir(a);const v=dirVec(pick)||s.dir;
+    let pick=pickDir(a);
+    // safety: if chosen move is lethal and a safe alternative exists, take the safe one
+    const dg=(x,y)=>x<0||y<0||x>=GRID||y>=GRID||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y);
+    const h2=s.body[0];
+    const lethal=(p)=>{const vv=dirVec(p);return !vv||dg(h2.x+vv.x,h2.y+vv.y);};
+    if(lethal(pick)){
+      const probs=a.probabilities||{};
+      const safe=['U','D','L','R'].filter(p2=>!lethal(p2));
+      if(safe.length){pick=safe.reduce((x2,y2)=>(probs[x2]||0)>=(probs[y2]||0)?x2:y2);}
+    }
+    const v=dirVec(pick)||s.dir;
     const h=s.body[0];
     const nh={x:h.x+v.x,y:h.y+v.y};
     const dNow=Math.abs(food.x-h.x)+Math.abs(food.y-h.y);
@@ -198,7 +208,7 @@ async function moveSnake(s,other,food,model,panel,sc,al,mvv,avg){
     const hitWall=nh.x<0||nh.y<0||nh.x>=GRID||nh.y>=GRID;
     const hitSelf=s.body.some((b,i)=>i<s.body.length-1&&b.x===nh.x&&b.y===nh.y);
     if(hitWall||hitSelf){s.alive=false;$(al).textContent='💀';draw();return;}
-    s.body.unshift(nh);s.dir=v;
+    s.body.unshift(nh);s.dir=v;s.dirName=pick;
     if(nh.x===food.x&&nh.y===food.y){s.score++;$(sc).textContent=s.score;Object.assign(food,spawnFood([A,B]));} // food respawns elsewhere
     else s.body.pop();
   }catch(e){
