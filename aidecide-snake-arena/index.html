@@ -18,10 +18,10 @@
   .fighter{flex:1 1 0;min-width:0;display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:center}
   .fighter.a{border-color:var(--orange)}
   .fighter.b{border-color:var(--teal)}
-  .fighter .name{font-weight:800;font-size:.95rem}
+  .fighter .name{font-weight:800;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:1.3em}
   .fighter.a .name{color:var(--orange)}
   .fighter.b .name{color:var(--teal)}
-  .fighter .meta{font-size:.7rem;color:var(--mut);margin-top:2px}
+  .fighter .meta{font-size:.7rem;color:var(--mut);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:1.2em}
   .fighter .big{font-size:1.6rem;font-weight:800;margin-top:6px}
   .fighter .name{height:1.3em}.fighter .meta{height:1.2em}
   .fighter .row{display:flex;justify-content:space-around;margin-top:8px;font-size:.78rem}
