@@ -89,7 +89,7 @@
     <canvas id="cv" width="640" height="640"></canvas>
     <div class="overlay" id="overlay">
       <h2>🥊 Ready for the deathmatch?</h2>
-      <p>Orange snake is driven by <strong>Databricks ai_decide</strong>, teal snake by <strong>TypeSafe Jev</strong> — the same state, the same question ("which way?"), every single move. Each model's latency, probabilities and decisions shown live below. Race ends when both crash. Most food wins.</p>
+      <p>Orange snake is driven by <strong>Databricks ai_decide</strong>, teal by <strong>TypeSafe Jev</strong> — same start position, one shared food to fight over, respawn on every catch. Snakes may overlap each other; walls and self-bites kill. Each model's latency, probabilities and decisions shown live below. Race ends when both crash. Most food wins.</p>
       <button class="btn" id="startBtn">▶ Start the match</button>
     </div>
   </div>
@@ -115,16 +115,16 @@ const API='https://u37zbl7apd.execute-api.us-east-1.amazonaws.com/prod/decide';
 const GRID=26, CELL=640/GRID;
 const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
 const $=id=>document.getElementById(id);
-const QUEST={dir:{type:'choice',instructions:'You are controlling a snake competing against another snake for food. Pick the safest move that heads toward the food. Avoid walls, your own body, and the other snake. Danger flags show which moves kill you.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
+const QUEST={dir:{type:'choice',instructions:'You are controlling a snake racing another snake to ONE shared food. Pick the safest move that heads toward the food. Avoid walls and your own body; overlapping the other snake is allowed. Danger flags show which moves kill you.',criteria:{up:'Move up (y-1)',down:'Move down (y+1)',left:'Move left (x-1)',right:'Move right (x+1)'}}};
 
 function mkSnake(color,x,y,dir){return{color,body:[{x,y},{x:x-1,y}],dir,alive:true,score:0,moves:0,msSum:0,logN:0,lastPick:'—'}}
-let A,B,foodA,foodB,running=false,tick=0,gameOverShown=false;
+let A,B,food,running=false,tick=0,gameOverShown=false;
 
 function stateFor(s,other,food){
   const h=s.body[0];
   const danger=(x,y)=>x<0||y<0||x>=GRID||y>=GRID
     ||s.body.some((b,i)=>i<s.body.length-1&&b.x===x&&b.y===y)
-    ||(other.alive&&other.body.some((b,i)=>i<other.body.length-1&&b.x===x&&b.y===y));
+    ; // snakes may overlap each other — only walls & own body kill
   return JSON.stringify({snake_head:{x:h.x,y:h.y},
     current_direction:s.dir,food:{x:food.x,y:food.y},
     food_position_relative:food.x>h.x?'food is to the RIGHT':food.x<h.x?'food is to the LEFT':food.y>h.y?'food is BELOW':'food is ABOVE',
@@ -139,8 +139,8 @@ function spawnFood(excl){
     if(!excl.some(s=>s.body.some(b=>b.x===f.x&&b.y===f.y)))return f;}
 }
 function reset(){
-  A=mkSnake('orange',6,13,'right'); B=mkSnake('teal',19,12,'left');
-  foodA=spawnFood([A,B]); foodB=spawnFood([A,B]);
+  A=mkSnake('orange',13,13,'right'); B=mkSnake('teal',13,13,'right'); // same start position, overlapping is fine
+  food=spawnFood([A,B]); // single food both fight for
   tick=0;gameOverShown=false;
   $('logA').innerHTML='';$('logB').innerHTML='';
   ['scoreA','scoreB'].forEach(i=>$(i).textContent='0');
@@ -199,10 +199,9 @@ async function moveSnake(s,other,food,model,panel,sc,al,mvv,avg){
     // collision
     const hitWall=nh.x<0||nh.y<0||nh.x>=GRID||nh.y>=GRID;
     const hitSelf=s.body.some((b,i)=>i<s.body.length-1&&b.x===nh.x&&b.y===nh.y);
-    const hitOther=other.alive&&other.body.some((b,i)=>i<other.body.length-1&&b.x===nh.x&&b.y===nh.y);
-    if(hitWall||hitSelf||hitOther){s.alive=false;$(al).textContent='💀';draw();return;}
+    if(hitWall||hitSelf){s.alive=false;$(al).textContent='💀';draw();return;}
     s.body.unshift(nh);s.dir=v;
-    if(nh.x===food.x&&nh.y===food.y){s.score++;$(sc).textContent=s.score;Object.assign(food,spawnFood([A,B]));}
+    if(nh.x===food.x&&nh.y===food.y){s.score++;$(sc).textContent=s.score;Object.assign(food,spawnFood([A,B]));} // food respawns elsewhere
     else s.body.pop();
   }catch(e){
     log(panel,s,s.moves+1,'ERR','⚠️',0,false);
@@ -213,7 +212,7 @@ function draw(){
   ctx.strokeStyle='rgba(36,64,74,.3)';ctx.lineWidth=1;
   for(let i=1;i<GRID;i++){ctx.beginPath();ctx.moveTo(i*CELL,0);ctx.lineTo(i*CELL,cv.height);ctx.stroke();
     ctx.beginPath();ctx.moveTo(0,i*CELL);ctx.lineTo(cv.width,i*CELL);ctx.stroke();}
-  const foods=[{f:foodA,c:'#FFD166'},{f:foodB,c:'#FFD166'}];
+  const foods=[{f:food,c:'#FFD166'}];
   foods.forEach(({f,c})=>{const p=1+Math.sin(Date.now()/200)*.15;
     ctx.fillStyle=c;ctx.beginPath();ctx.arc(f.x*CELL+CELL/2,f.y*CELL+CELL/2,(CELL/2-3)*p,0,7);ctx.fill();});
   const cols={orange:'255,54,33',teal:'62,207,178'};
@@ -232,8 +231,8 @@ async function loop(){
   if(!running)return;
   tick++;
   await Promise.all([
-    moveSnake(A,B,foodA,'ai_decide','logA','scoreA','aliveA','mvA','avgA'),
-    moveSnake(B,A,foodB,'jev','logB','scoreB','aliveB','mvB','avgB')
+    moveSnake(A,B,food,'ai_decide','logA','scoreA','aliveA','mvA','avgA'),
+    moveSnake(B,A,food,'jev','logB','scoreB','aliveB','mvB','avgB')
   ]);
   draw();
   if(!A.alive&&!B.alive){finish();return;}
