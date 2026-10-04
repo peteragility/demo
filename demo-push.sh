@@ -11,7 +11,7 @@ META = {
   'lakebase-objection-faq/':('Lakebase Objections FAQ','Nine technical objections answered honestly · incl. Aurora head-to-head','Work','#f7b731'),
   'aidecide-arena/':('AI Arena — ai_decide vs Jev','Snake + Tic-Tac-Toe deathmatch, live model I/O inspection','AI','#FF3621'),
   'tongjian/':         ('資治通鑑 · 294卷全文','司馬光 · 周威烈王至後周世宗 · 前403–959','📖 讀史','#8b2f1f'),
-  'llm-pricing/':      ('LLM Token Pricing 對比','Databricks FMAPI vs Bedrock / Azure / Fireworks / GCP / AliCloud · 原廠價 · regions','🔥 Hot','#ff6b35'),
+  'llm-pricing/':      ('LLM Token Pricing 對比','Databricks FMAPI vs Fireworks / Azure / Bedrock / Vertex / Alibaba · 原廠價 · cache · regions · checked daily','🔥 Hot','#ff6b35'),
   'lakehouse-quest.html':('Lakehouse Quest','互動 Lakehouse 冒險','Interactive','#4ecdc4'),
   'neon-orbit.html':   ('Neon Orbit','Neon orbit demo','Interactive','#4ecdc4'),
   'lakebase-sales-play/':('Lakebase Sales Play','銷售 playbook','Work','#f7b731'),

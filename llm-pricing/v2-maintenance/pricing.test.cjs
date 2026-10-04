@@ -251,10 +251,3 @@ test('invalid volumes, cache percentages, dates and DBU rates are rejected', () 
   }
 });
 
-test('personal prices produce what-if deltas without changing published figures', () => {
-  const published = M.summarize([data.models['moonshot/kimi-k3']], date);
-  const base = {...M.resolveOffer(offer('moonshot/kimi-k3'), date), in: 2.4, user_modified: true};
-  const bedrock = M.cheapest(offer('moonshot/kimi-k3', 'bedrock'), date);
-  close(M.delta(bedrock, base).value, (3 * 3 + 15) / (3 * 2.4 + 15) - 1);
-  assert.deepEqual(M.summarize([data.models['moonshot/kimi-k3']], date), published);
-});

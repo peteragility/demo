@@ -19,7 +19,7 @@ const mime = {'.html': 'text/html; charset=utf-8', '.json': 'application/json', 
 const server = http.createServer(async (request, response) => {
   try {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    const file = path.resolve(root, '.' + (pathname === '/' ? '/v2.html' : pathname));
+    const file = path.resolve(root, '.' + (pathname.endsWith('/') ? pathname + 'index.html' : pathname));
     if (!file.startsWith(root + path.sep)) throw new Error('Invalid path');
     response.setHeader('Content-Type', mime[path.extname(file)] || 'text/plain');
     response.end(await fsp.readFile(file));
@@ -27,8 +27,7 @@ const server = http.createServer(async (request, response) => {
 });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = 'http://127.0.0.1:' + server.address().port;
-const pageURL = process.env.LLM_PRICING_PAGE_URL || origin + '/v2.html';
-const originalURL = process.env.LLM_PRICING_ORIGINAL_URL || (fs.existsSync(path.join(root, 'index.html')) ? origin + '/index.html#all' : null);
+const pageURL = process.env.LLM_PRICING_PAGE_URL || origin + '/';
 const proc = spawn(chrome, ['--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check', '--disable-background-networking', '--remote-debugging-port=0', '--user-data-dir=' + profile, 'about:blank'], {stdio: ['ignore', 'ignore', 'pipe']});
 let chromeLog = '', startupError;
 proc.stderr.on('data', chunk => {chromeLog += chunk.toString();});
@@ -190,24 +189,9 @@ try {
     // Sorting / blend controls still work; private edits leave published counts intact.
     await evalJS("document.querySelector('#sort').value='price';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='edge';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#sort').value='default';document.querySelector('#sort').dispatchEvent(new Event('change',{bubbles:true}));");
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx tr.row')].map(r=>r.dataset.k)"), expected.keys, viewport.name + ': arena rank order restored');
-    if (viewport.name === 'desktop' && listed('moonshot/kimi-k3')) {
-      const summaryBefore = await evalJS("[...document.querySelectorAll('#summary .kpi')].map(k=>k.innerText).join('|')");
-      await evalJS("localStorage.setItem('llm-pricing-edits-v3','ORIGINAL');localStorage.setItem('llm-pricing-prefs-v3','ORIGINAL');document.querySelector('#editBtn').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
-      await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='4';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
-      assert.equal(await evalJS("localStorage.getItem('llm-pricing-edits-v3')"), 'ORIGINAL');
-      assert.equal(await evalJS("localStorage.getItem('llm-pricing-prefs-v3')"), 'ORIGINAL');
-      await waitFor("/4\\.00/.test(document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2)').innerText)");
-      // A personal price is a what-if: its Δ appears in the table while the published figures stay put.
-      assert.equal(await evalJS("document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] td.c:nth-of-type(2) .d').textContent"), '▲13%');
-      assert.equal(await evalJS("[...document.querySelectorAll('#summary .kpi')].map(k=>k.innerText).join('|')"), summaryBefore);
-      assert.match(await evalJS("document.querySelector('#summary .enote').textContent"), /published prices/);
-      await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='-1';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
-      assert.equal(await evalJS("document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]').value"), '4');
-      await evalJS("(()=>{const e=document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]');e.value='';e.dispatchEvent(new Event('change',{bubbles:true}));})();");
-      // Clearing a personal price restores the published one and removes the edit.
-      await waitFor("document.querySelector('[data-e=\"moonshot/kimi-k3|official|in\"]').value==='3' && !document.querySelector('#editNote').textContent");
-      await evalJS("document.querySelector('#resetBtn').click();document.querySelector('#resetBtn').click();document.querySelector('#editBtn').click();document.querySelector('tr[data-k=\"moonshot/kimi-k3\"] .mb').click();");
-    }
+    // The page is read-only: no price inputs or edit controls, and old personal prices are cleared.
+    assert.equal(await evalJS("document.querySelectorAll('input:not(#q), #editBtn, #resetBtn, [data-e]').length"), 0, viewport.name + ': read-only');
+    assert.equal(await evalJS("localStorage.getItem('llm-pricing-v2-overrides')"), null);
     await evalJS("document.querySelector('#blend').value='1';document.querySelector('#blend').dispatchEvent(new Event('change',{bubbles:true}));document.querySelector('#blend').value='3';document.querySelector('#blend').dispatchEvent(new Event('change',{bubbles:true}));document.documentElement.dataset.theme='dark';window.scrollTo(0,0);");
     await saveScreenshot(viewport.name + '-dark');
     const finalWidth = await evalJS('({width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth})');
@@ -223,22 +207,15 @@ try {
       await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: clockId});
       clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource('2026-10-02')})).identifier;
     }
-    if (originalURL) {
-      await call('Page.navigate', {url: originalURL});
-      await waitFor("document.querySelectorAll('#mx tr.row').length>0");
-      await evalJS("document.documentElement.dataset.theme='light';document.querySelector('[data-g=all]').click()");
-      await evalJS('document.fonts.ready.then(()=>true)');
-      await evalJS("document.querySelector('[data-g=oss]').click()");
-      const original = await evalJS(measure);
-      // Same typeface and provider columns as the original, with at least as many rows on screen.
-      assert.equal(original.fontFamily, initial.fontFamily, 'Original font family: ' + viewport.name);
-      assert.equal(original.columns, initial.columns, 'Original provider columns: ' + viewport.name);
-      assert.ok(initial.visibleRows >= original.visibleRows, `v2 shows fewer rows than the original at ${viewport.name}: ${initial.visibleRows} < ${original.visibleRows}`);
-      await saveScreenshot('original-' + viewport.name);
-      initial.originalStyle = original;
+    if (viewport.name === 'desktop') {
+      // Links to the earlier v2.html address land on the default page, keeping the family tab.
+      await call('Page.navigate', {url: new URL('v2.html#oss', pageURL).href});
+      await waitFor("document.body && document.body.dataset.ready === 'true' && !location.pathname.endsWith('v2.html')");
+      assert.match(await evalJS('location.pathname + location.hash'), /\/#oss$/);
+      assert.equal(await evalJS("document.querySelector('[data-g=oss]').getAttribute('aria-pressed')"), 'true');
     }
     reports.push({viewport, initial, expected: expected.all, integration: 'passed'});
-    console.log(`${viewport.name}: ${initial.columns - 1} providers, ${initial.visibleRows} visible rows${initial.originalStyle ? ` (original: ${initial.originalStyle.visibleRows})` : ''}, no document overflow; details, filters and pricing checks passed.`);
+    console.log(`${viewport.name}: ${initial.columns - 1} providers, ${initial.visibleRows} visible rows, no document overflow; details, filters and pricing checks passed.`);
     await rpc('Target.disposeBrowserContext', {browserContextId});
   }
   assert.equal(exceptions.length, 0, 'Uncaught browser exceptions: ' + JSON.stringify(exceptions));

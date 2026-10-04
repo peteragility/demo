@@ -14,11 +14,13 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - 'llm-pricing/index.html'
       - 'llm-pricing/v2*'
       - 'llm-pricing/v2-maintenance/**'
       - '.github/workflows/llm-pricing-v2-review.yml'
   pull_request:
     paths:
+      - 'llm-pricing/index.html'
       - 'llm-pricing/v2*'
       - 'llm-pricing/v2-maintenance/**'
       - '.github/workflows/llm-pricing-v2-review.yml'

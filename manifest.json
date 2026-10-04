@@ -32,7 +32,7 @@
   {
    "path": "llm-pricing/",
    "title": "LLM Token Pricing 對比",
-   "desc": "Databricks FMAPI vs Bedrock / Azure / Fireworks / GCP / AliCloud · 原廠價 · regions",
+   "desc": "Databricks FMAPI vs Fireworks / Azure / Bedrock / Vertex / Alibaba · 原廠價 · cache · regions · checked daily",
    "tag": "🔥 Hot",
    "color": "#ff6b35"
   },

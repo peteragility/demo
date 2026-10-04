@@ -91,7 +91,6 @@ button,select,input{font:inherit;color:inherit}
 .talkbtn[aria-expanded="true"]::after{content:"▴"}
 .talk{grid-column:1/-1;margin:0;padding:6px 12px 6px 28px;background:var(--panel);border:1px solid var(--line);border-radius:8px;columns:2;column-gap:28px}
 .talk li{break-inside:avoid;margin:1px 0;font-size:12px;line-height:1.4;color:var(--ink-2)}
-.enote{grid-column:1/-1;margin:0;font-size:11.5px;color:var(--focus)}
 
 /* matrix: one line per model on wide screens */
 .mx{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;background:var(--panel);border:1px solid var(--line);border-radius:10px}
@@ -130,7 +129,6 @@ td.na .x{font-size:12px}
 .alt{display:inline;margin-left:5px;font-size:10.5px;color:var(--ink-3)}
 td.unk{color:var(--na)}
 td.unk .q{border-bottom:1px dotted var(--na)}
-.edited{box-shadow:inset 0 -2px 0 var(--focus)}
 tfoot th,tfoot td{border-bottom:0;font-size:11.5px;color:var(--ink-3);background:var(--panel-2)}
 tfoot .nm{line-height:16px}
 tfoot th.m .mk{display:inline;margin-left:6px}
@@ -150,23 +148,6 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
 .dh .warn{color:var(--down);font-size:12px;font-weight:600}
 .dh .note{color:var(--ink-2);font-size:12px;flex-basis:100%}
 .copy{margin-left:auto;appearance:none;border:1px solid var(--line-2);background:var(--panel);border-radius:6px;padding:3px 9px;font-size:12px;font-weight:600;cursor:pointer}
-.dtwrap{overflow-x:auto}
-.dt{width:100%;max-width:1000px;border-collapse:collapse;margin-top:8px;font-size:12.5px}
-.dt th{font-size:10.5px;font-weight:600;color:var(--ink-3);text-align:right;padding:3px 6px;border-bottom:1px solid var(--line-2);white-space:nowrap}
-.dt td{padding:5px 6px 1px;text-align:right;white-space:nowrap}
-.dt th.pl,.dt td.pl{text-align:left}
-.dt td.pl{font-weight:600}
-.dt td.pl.is-dbx{color:var(--dbx)}
-.dt td.st{text-align:left;color:var(--ink-3)}
-.dt td.st b{color:var(--ink-2);font-weight:600}
-.dt .dd{font-weight:600}
-.dt .dd.up{color:var(--up)} .dt .dd.down{color:var(--down)} .dt .dd.par{color:var(--par)}
-.dt tr.info td{text-align:left;white-space:normal;overflow-wrap:anywhere;color:var(--ink-3);font-size:11.5px;padding:0 6px 6px;border-bottom:1px solid var(--line)}
-.dt tr.info a{color:var(--ink-2)}
-.chips{margin-top:3px}
-.chips span{display:inline-block;max-width:100%;margin:2px 4px 0 0;padding:1px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel);font-size:11px;color:var(--ink-2);white-space:normal;overflow-wrap:anywhere}
-.chips span.pick{border-color:var(--ink-3)}
-.dt input{width:62px;padding:1px 3px;border:1px solid var(--line-2);border-radius:4px;background:var(--panel);text-align:right;font-size:12.5px}
 
 /* detail cards: one per platform */
 .clegend{margin:6px 0 0;font-size:11px;line-height:1.7;color:var(--ink-3)}
@@ -225,9 +206,6 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
 .srcs{margin:0;padding-left:16px}
 .srcs li{margin:1px 0}
 .srcs a{color:var(--ink-2)}
-.editbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
-.editbar button{appearance:none;border:1px solid var(--line-2);background:var(--panel);border-radius:6px;padding:3px 9px;font-size:12px;cursor:pointer}
-.editbar button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:6px 12px;border-radius:8px;font-size:12.5px;z-index:50}
 
 /* tablet: tabs stick alone; input over output with Δ beside it */
@@ -321,9 +299,6 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   .pt .sh{display:inline}
   .wh{grid-template-columns:max-content fit-content(112px) minmax(0,1fr);column-gap:6px;font-size:11px}
   .wh .lv{white-space:normal}
-  .dt{font-size:12px}
-  .dt .w1h{display:none}
-  .dt td,.dt th{padding-inline:3px}
   .foot{grid-template-columns:minmax(0,1fr)}
 }
 /* small phones (320 px): tighter columns instead of a scroll container, so headers stay sticky */

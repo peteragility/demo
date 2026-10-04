@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the independent v2 dataset. Never writes index.html or data.json.
+"""Build the page dataset; writes only ../v2-data.json.
 
 The seed preserves the 2026-09-28 reviewed offers. Corrections below reference
 the official documents reviewed on 2026-10-02. Dates belong to individual offers;

@@ -1,6 +1,6 @@
 # LLM pricing v2 maintenance
 
-The separate page at [`../v2.html`](../v2.html) keeps reviewed prices for 49 models across seven providers and lists those in arena.ai's top 50 that a compared platform hosts (see *Model list and order*). It keeps the original page's typeface, colours, column wording, filters and expandable details, with a denser layout: one line per model on laptops, two-line cells on phones, all seven provider columns on screen down to 320 px, and sticky column headers at every width. It has its own data, assets and browser-storage keys. The original `index.html` and `data.json` are unchanged.
+The LLM Token Pricing page at [`../index.html`](../index.html) (https://peteragility.github.io/demo/llm-pricing/) keeps reviewed prices for 49 models across seven providers and lists those in arena.ai's top 50 that a compared platform hosts (see *Model list and order*). It is read-only for its audience. The layout is dense: one line per model on laptops, two-line cells on phones, all seven provider columns on screen down to 320 px, and sticky column headers at every width. It replaced the original page on 2026-10-04; `../v2.html` redirects to it, keeping any family tab in the link. Its files keep their `v2-` names (`v2-app.js`, `v2-data.json` and so on).
 
 The 2026-10-02 review adds GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 Flash-Lite, Gemini 3.1 Flash-Lite, Grok 4.7 and Grok 4.6. Databricks GPT-6.1 Sol and Grok 4.7 prices remain unverified because the reviewed price page still names their predecessors.
 
@@ -12,7 +12,7 @@ Prices are USD per million text tokens. Processing scope, service tier, model-ve
 
 **Like for like.** Each cell shows the platform's cheapest standard (real-time, on-demand) price for the confirmed model version, in any region or processing scope, chosen at the selected input:output blend. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and off-peak / idle-hour prices are listed in the row details and are not compared. A price for an unconfirmed checkpoint gets no Δ; if it is cheaper than Databricks on a hyperscaler, that model is left out of the "no hyperscaler beats DBX" figure. Models without a verified Databricks price are left out of every summary figure, including availability gaps.
 
-The table applies verified promotion changes and retirements on the viewer's local date and re-checks the date while the tab stays open. Model notices and talk-track lines carry `from` / `until` dates, and every promotion carries the tier label that applies after it ends. Each expanded row has one card per platform: a price table (endpoint × tier rows; input, output, cache read, cache write and 1-hour write columns, with long-context rows), where the platform runs the model by geography and processing level, Hong Kong and Taiwan, notes and IDs. Platforms appear in the order Databricks, the maker's API, Fireworks, Azure, AWS, Google, Alibaba. Personal prices stay in the user's browser: the table shows their what-if Δ, while the summary figures always use published prices. Clearing a field, or typing the published value, removes the personal price.
+The table applies verified promotion changes and retirements on the viewer's local date and re-checks the date while the tab stays open. Model notices and talk-track lines carry `from` / `until` dates, and every promotion carries the tier label that applies after it ends. Each expanded row has one card per platform: a price table (endpoint × tier rows; input, output, cache read, cache write and 1-hour write columns, with long-context rows), where the platform runs the model by geography and processing level, Hong Kong and Taiwan, notes and IDs. Platforms appear in the order Databricks, the maker's API, Fireworks, Azure, AWS, Google, Alibaba. Visitors can filter, sort, change the Δ blend and copy a model summary; prices cannot be edited on the page.
 
 ## Model list and order
 
@@ -37,11 +37,11 @@ python3 v2-maintenance/test-ranking.py
 node --test v2-maintenance/pricing.test.cjs
 ```
 
-Chrome integration checks cover desktop, tablet, 390 px and 320 px viewports, all seven provider columns, corrected row details, filters, copy text, personal prices, date changes and isolation from the original page's storage. If `index.html` is present beside v2, the check also confirms v2 uses the original typeface and columns and shows at least as many rows as the original at each viewport. Chrome uses a temporary profile; screenshots and reports go to a temporary directory.
+Chrome integration checks cover desktop, tablet, 390 px and 320 px viewports: all seven provider columns, rows per screen, the platform cards, filters, copy text, date changes, the read-only page and the `v2.html` redirect. Chrome uses a temporary profile; screenshots and reports go to a temporary directory.
 
 ```sh
 node v2-maintenance/browser-check.mjs
-LLM_PRICING_PAGE_URL=https://peteragility.github.io/demo/llm-pricing/v2.html node v2-maintenance/browser-check.mjs
+LLM_PRICING_PAGE_URL=https://peteragility.github.io/demo/llm-pricing/ node v2-maintenance/browser-check.mjs
 ```
 
 Set `CHROME_PATH` if Chrome is installed at a different path. Set `LLM_PRICING_BROWSER_ARTIFACTS` to choose an output directory.
@@ -70,7 +70,7 @@ Prices, tiers and new models never change automatically. A run fails (and GitHub
    python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --record-baseline
    ```
 
-5. Commit and push only the v2 files. Keep the original `index.html` and `data.json` out of the commit. The next run verifies the new data and closes the issue.
+5. Commit and push the changed `llm-pricing` files. The next run verifies the new data and closes the issue.
 
 With Claude Code, "apply the open llm-pricing-review issue" covers steps 1–5.
 
