@@ -70,9 +70,6 @@ jobs:
     defaults:
       run:
         working-directory: llm-pricing
-    env:
-      REPORT_DIR: ${{ runner.temp }}/llm-pricing-v2-review
-      ISSUE_FILE: ${{ runner.temp }}/llm-pricing-v2-issue.md
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -94,11 +91,12 @@ jobs:
           python v2-maintenance/test-ranking.py
           node --test v2-maintenance/pricing.test.cjs
       - name: Check every official source
-        run: python v2-maintenance/review-sources.py --report-dir "$REPORT_DIR" --checks v2-checks.json --issue "$ISSUE_FILE"
+        run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md"
       - name: Add the review to the run summary
         if: always()
         run: |
-          if [ -s "$ISSUE_FILE" ]; then cat "$ISSUE_FILE" >> "$GITHUB_STEP_SUMMARY"; else echo "Nothing to review today." >> "$GITHUB_STEP_SUMMARY"; fi
+          issue="$RUNNER_TEMP/llm-pricing-v2-issue.md"
+          if [ -s "$issue" ]; then cat "$issue" >> "$GITHUB_STEP_SUMMARY"; else echo "Nothing to review today." >> "$GITHUB_STEP_SUMMARY"; fi
       - name: Publish order, regions and verified dates
         env:
           GH_TOKEN: ${{ github.token }}
@@ -121,6 +119,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          ISSUE_FILE="$RUNNER_TEMP/llm-pricing-v2-issue.md"
           label=llm-pricing-review
           gh label create "$label" --color FBCA04 --description "The daily LLM pricing check found something to review" 2>/dev/null || true
           number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
