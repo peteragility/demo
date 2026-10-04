@@ -8,6 +8,8 @@ const offer = (key, platform = 'databricks') => data.models[key].platforms[platf
 const date = {asOf: '2026-10-02'};
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `Expected ${b}, got ${a}`);
 const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
+// A tier by endpoint and service tier, independent of its display label.
+const tier = (cell, endpoint, service) => cell.variants.find(v => v.endpoint === endpoint && v.service_tier === service).id;
 
 test('monthly cache writes replace uncached input instead of being double-counted', () => {
   const c = offer('moonshot/kimi-k3', 'bedrock');
@@ -19,14 +21,14 @@ test('monthly cache writes replace uncached input instead of being double-counte
   assert.equal(cached.complete, true);
 });
 
-test('Kimi K3 Priority stays consistently global or regional, including cache hits', () => {
+test('Kimi K3 Priority stays consistently global or US geo, including cache hits', () => {
   const c = offer('moonshot/kimi-k3', 'bedrock');
-  const global = M.calculate(c, {...date, cacheHit: 80, variantId: selected(c, 'Global Priority')});
-  const regional = M.calculate(c, {...date, cacheHit: 80, variantId: selected(c, 'Regional Priority')});
+  const global = M.calculate(c, {...date, cacheHit: 80, variantId: tier(c, 'Global CRIS', 'priority')});
+  const regional = M.calculate(c, {...date, cacheHit: 80, variantId: tier(c, 'US CRIS', 'priority')});
   close(global.total, 30.66);
   close(regional.total, 33.726);
   close(regional.offer.cache_read, 0.5775);
-  // Same service tier in a different region is still like for like: regional costs 10% more.
+  // Same service tier in a different scope is still like for like: US geo costs 10% more.
   close(M.delta(regional.offer, global.offer).value, 0.1);
 });
 
@@ -52,8 +54,10 @@ test('unverified cache-write prices produce an incomplete estimate, never a free
 });
 
 test('a variant does not inherit a Standard cache-write rate', () => {
-  const c = offer('openai/gpt-6-sol');
-  const result = M.calculate(c, {...date, inputM: 1, outputM: 1, writeM: 0.5, variantId: selected(c, 'Priority')});
+  // A synthetic offer: published data now lists the Databricks Priority cache-write rate.
+  const c = {status: 'priced', in: 1, out: 2, cache_write: 0.5, model_match: 'confirmed', service_tier: 'standard', comparison_scope: 'global',
+    variants: [{id: 'v', label: 'Priority', in: 2, out: 4, service_tier: 'priority', comparison_scope: 'global', model_match: 'confirmed'}]};
+  const result = M.calculate(c, {...date, inputM: 1, outputM: 1, writeM: 0.5, variantId: 'v'});
   assert.equal(result.complete, false);
   assert.equal(result.offer.cache_write, undefined);
 });
@@ -63,7 +67,7 @@ test('context threshold applies to the entire GPT request, including cached inpu
   close(M.calculate(c, {...date, promptTokens: 272000}).total, 16);
   close(M.calculate(c, {...date, promptTokens: 272001}).total, 27);
   close(M.calculate(c, {...date, promptTokens: 272001, cacheHit: 80, writeM: 0.5}).total, 18.38);
-  close(M.calculate(c, {...date, promptTokens: 272001, variantId: selected(c, 'Fast mode')}).total, 54);
+  close(M.calculate(c, {...date, promptTokens: 272001, variantId: tier(c, 'Global (api.openai.com)', 'priority')}).total, 54);
 });
 
 test('Gemini Pro uses the strict greater-than-200K context threshold', () => {
@@ -92,7 +96,7 @@ test('future promotion changes apply after the last promotional day', () => {
 
 test('a promotion with no verified future variant never extrapolates that tier', () => {
   const c = offer('openai/gpt-5.6-sol', 'official');
-  const result = M.calculate(c, {asOf: '2026-11-22', variantId: selected(c, 'Fast mode (was Priority)')});
+  const result = M.calculate(c, {asOf: '2026-11-22', variantId: tier(c, 'Global (api.openai.com)', 'priority')});
   assert.equal(result.complete, false);
   assert.equal(result.offer.status, 'unverified');
 });
@@ -114,9 +118,9 @@ test('the cheapest price in any region is compared like for like; unconfirmed sn
   assert.equal(M.cheapest(offer('deepseek/deepseek-v4-pro', 'azure_foundry'), date), null);
   const azure = M.resolveOffer(offer('deepseek/deepseek-v4-pro', 'azure_foundry'), date);
   assert.match(M.delta(azure, pro).reason, /snapshot|checkpoint/);
-  // Azure's only Inkling offer is Data Zone; Bedrock sells GPT-5.5 in-region only.
-  const inkling = M.cheapest(offer('tml/inkling', 'azure_foundry'), date);
-  close(M.delta(inkling, M.cheapest(offer('tml/inkling'), date)).value, (3 * 1.1 + 4.46) / (3 * 1 + 4.05) - 1);
+  // Azure's only GLM 5.2 offer is Data Zone (Fireworks-hosted); Bedrock sells GPT-5.5 in-region only.
+  const glm = M.cheapest(offer('zai/glm-5.2', 'azure_foundry'), date);
+  close(M.delta(glm, M.cheapest(offer('zai/glm-5.2'), date)).value, (3 * 1.54 + 4.84) / (3 * 1.4 + 4.4) - 1);
   close(M.delta(M.cheapest(offer('openai/gpt-5.5', 'bedrock'), date), M.cheapest(offer('openai/gpt-5.5'), date)).value, 0.1);
   const maverick = M.cheapest(offer('meta/llama-4-maverick', 'bedrock'), date);
   close(M.delta(maverick, M.cheapest(offer('meta/llama-4-maverick'), date)).value, (3 * 0.24 + 0.97) / (3 * 0.5 + 1.5) - 1);
@@ -126,8 +130,10 @@ test('cheapest uses standard real-time prices only: not Batch, Flex, Priority or
   const peak = M.cheapest(offer('deepseek/deepseek-v4-pro', 'official'), date);
   assert.equal(peak.variant_id, undefined);
   close(peak.in, 1.32);
-  const idle = offer('deepseek/deepseek-v4-pro', 'alicloud').variants.find(v => /idle/.test(v.label));
-  assert.equal(idle.service_tier, 'off-peak');
+  const cell = offer('deepseek/deepseek-v4-pro', 'alicloud');
+  const idle = cell.variants.find(v => v.service_tier === 'off-peak');
+  assert.ok(idle.in < cell.in, 'idle-hour rates are listed');
+  assert.notEqual(M.cheapest(cell, date).service_tier, 'off-peak');
   const kimi = M.cheapest(offer('moonshot/kimi-k3', 'bedrock'), date);
   close(kimi.in, 3);
   assert.equal(M.cheapest(offer('openai/gpt-6-sol', 'official'), date).service_tier, 'standard');
@@ -162,8 +168,9 @@ test('a cheaper hyperscaler price in any processing scope counts against parity'
 test('OSS parity counts every hyperscaler that undercuts Databricks', () => {
   const oss = Object.values(data.models).filter(m => m.group === 'oss');
   const result = M.summarize(oss, date);
-  assert.equal(result.comparedModels, 15);
-  assert.equal(result.noCheaperModels, 8);
+  // Inkling left Azure pay-per-token on 25 Sep 2026, so it has no hyperscaler price to compare.
+  assert.equal(result.comparedModels, 14);
+  assert.equal(result.noCheaperModels, 7);
 });
 
 test('a cheaper price for an unconfirmed checkpoint keeps a model out of the parity claim', () => {
@@ -180,7 +187,8 @@ test('availability gaps count only models Databricks currently prices', () => {
   assert.equal(M.summarize(openai, date).gaps.gcloud, 8);
   const oss = Object.values(data.models).filter(m => m.group === 'oss');
   // Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5 are not on Databricks, so they add no gaps.
-  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 9, azure_foundry: 5, gcloud: 11});
+  // Inkling is an Azure gap until it retires on Databricks.
+  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 9, azure_foundry: 6, gcloud: 11});
   assert.deepEqual(M.summarize(oss, {asOf: '2026-10-30'}).gaps, {bedrock: 6, azure_foundry: 5, gcloud: 8});
 });
 
@@ -200,21 +208,22 @@ test('promotional long-context rates do not outlive the promotion', () => {
   close(M.calculate(cell, {asOf: '2026-10-31', promptTokens: 200}).total, 3 * 2 + 4);
 });
 
-test('no Batch / Flex cache rate or per-tier long-context rate is derived from Standard', () => {
-  for (const key of ['openai/gpt-5.5', 'openai/gpt-5.6-sol', 'openai/gpt-6-sol']) {
-    for (const v of offer(key, 'official').variants.filter(x => !x.context_only)) {
-      assert.equal(v.long_context, undefined, key + ' ' + v.label);
-      if (v.service_tier === 'batch' || v.service_tier === 'flex') assert.equal(v.cache_read, undefined, key + ' ' + v.label);
-    }
-    assert.equal(offer(key, 'official').long_context.cache_write, undefined);
-  }
+test('tier cache and long-context rates are the published ones, never inherited from Standard', () => {
+  // OpenAI publishes GPT-6 Sol Batch / Flex cache and long-context rates; each tier carries its own.
+  const c = offer('openai/gpt-6-sol', 'official');
+  const batch = M.resolveOffer(c, {...date, variantId: tier(c, 'Global (api.openai.com)', 'batch')});
+  close(batch.cache_read, 0.1);
+  close(batch.long_context.in, 2);
+  // A derived rate names the rule it follows.
+  for (const [key, m] of Object.entries(data.models)) for (const [pl, cell] of Object.entries(m.platforms))
+    for (const v of cell.variants || []) if (v.derived) assert.ok(typeof v.derived === 'string' && v.derived.length > 10, key + ' ' + pl + ' ' + v.label);
 });
 
 test('Grok 4.6 Bedrock geographic and service tiers use their published cache charges', () => {
   const c = offer('xai/grok-4.6', 'bedrock');
-  close(M.calculate(c, {...date, cacheHit: 80, variantId: selected(c, 'Global Priority')}).total, 14.7);
-  close(M.calculate(c, {...date, cacheHit: 80, variantId: selected(c, 'Global Flex')}).total, 4.2);
-  close(M.calculate(c, {...date, cacheHit: 80, variantId: selected(c, 'US geographic cross-region')}).total, 9.24);
+  close(M.calculate(c, {...date, cacheHit: 80, variantId: tier(c, 'Global CRIS', 'priority')}).total, 14.7);
+  close(M.calculate(c, {...date, cacheHit: 80, variantId: tier(c, 'Global CRIS', 'flex')}).total, 4.2);
+  close(M.calculate(c, {...date, cacheHit: 80, variantId: tier(c, 'US CRIS', 'standard')}).total, 9.24);
 });
 
 test('newer Databricks prices remain unverified rather than copying predecessor rates', () => {

@@ -118,8 +118,8 @@ try {
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
-    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','AWS Bedrock','Azure Foundry','Fireworks','Google Vertex','Alibaba']);
-    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','AWS','Azure','FW','GCP','Ali']);
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','Fireworks','Azure Foundry','AWS Bedrock','Google Vertex','Alibaba']);
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','FW','Azure','AWS','GCP','Ali']);
     assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','DBX edge']);
     assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /arena\.ai Best Overall/);
     assert.equal(await evalJS("(()=>{const tab=document.querySelector('[data-g=all]').getBoundingClientRect(),tabs=document.querySelector('#tabs').getBoundingClientRect();return tab.left>=tabs.left-1&&tab.right<=tabs.right+1;})()"), true, 'Selected family tab is visible');
@@ -142,16 +142,17 @@ try {
     }
     await evalJS("document.querySelector('[data-g=all]').click()");
 
-    // Corrected offers remain in the expandable detail table.
+    // Row details: one card per platform, in column order, each with a price table and where it runs.
     if (listed('deepseek/deepseek-v4-pro')) {
       await toggle('deepseek/deepseek-v4-pro');
-      const detail = await evalJS(`({text:document.querySelector('#d-deepseek-deepseek-v4-pro').innerText,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,headers:[...document.querySelectorAll('#d-deepseek-deepseek-v4-pro .dt th')].map(x=>x.textContent)})`);
-      assert.match(detail.text, /Dedicated deployment only/);
-      assert.match(detail.text, /accounts\/fireworks\/models\/deepseek-v4-pro-0813/);
+      const detail = await evalJS(`({text:document.querySelector('#d-deepseek-deepseek-v4-pro').innerText,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,cards:[...document.querySelectorAll('#d-deepseek-deepseek-v4-pro .pcard h3>b')].map(x=>x.textContent),headers:[...document.querySelectorAll('#d-deepseek-deepseek-v4-pro .pcard:first-child .pt thead th')].map(x=>x.innerText.trim())})`);
+      assert.match(detail.text, /Fireworks dedicated GPU deployment only/);
       assert.match(detail.text, /snapshot|checkpoint/);
-      assert.match(detail.text, /Price checked 2026-10-02/);
-      assert.match(detail.text, /Availability checked 2026-10-02/);
-      assert.deepEqual(detail.headers, ['Platform','In','Out','Cache read','Cache write','1h write','Δ vs DBX']);
+      assert.match(detail.text, /verified 20\d\d-\d\d-\d\d/);
+      assert.deepEqual(detail.cards, ['Databricks', '原廠 API', 'Azure Foundry', 'Alibaba'].filter(name => detail.text.includes(name)));
+      assert.deepEqual(detail.headers.slice(1), viewport.width <= 720 ? ['Input','Output','Cache rd','Cache wr'] : ['Input','Output','Cache read','Cache write']);
+      assert.match(detail.text, /HK/);
+      assert.match(detail.text, /Taiwan/);
       assert.ok(detail.scrollWidth <= detail.width, viewport.name + ': expanded detail overflow');
       assert.equal(await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] td.c:nth-of-type(4) .d')===null"), true);
       await toggle('deepseek/deepseek-v4-pro');
@@ -159,25 +160,29 @@ try {
     if (listed('moonshot/kimi-k3')) {
       await toggle('moonshot/kimi-k3');
       const kimi = await evalJS("document.querySelector('#d-moonshot-kimi-k3').innerText");
-      assert.match(kimi, /Global Priority/);
+      assert.match(kimi, /Global CRIS/);
       assert.match(kimi, /6\.5625/);
       assert.match(kimi, /7\.21875/);
+      assert.match(kimi, /Cross-geo/);
+      assert.match(kimi, /Routed/);
+      // The shaded row is the price the table compares: one per platform card.
+      assert.equal(await evalJS("[...document.querySelectorAll('#d-moonshot-kimi-k3 .pcard')].every(c => c.querySelectorAll('tr.pick').length === 1)"), true);
       await toggle('moonshot/kimi-k3');
     }
     if (listed('google/gemini-3.1-pro')) {
       await toggle('google/gemini-3.1-pro');
-      assert.match(await evalJS("document.querySelector('#d-google-gemini-3-1-pro').innerText"), /Cache storage \$4\.50 \/ million token-hours/);
+      assert.match(await evalJS("document.querySelector('#d-google-gemini-3-1-pro').innerText"), /Cache storage \$4\.50 per 1M tokens per hour/);
       await toggle('google/gemini-3.1-pro');
     }
     if (listed('openai/gpt-6.1-sol')) {
       await toggle('openai/gpt-6.1-sol');
-      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /Price pending verification/);
-      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), />272K input/);
+      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /price pending verification/);
+      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /↳ >272K/);
       await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedSummary=text;}}});document.querySelector('[data-copy=\"openai/gpt-6.1-sol\"]').click();");
       await waitFor("typeof window.copiedSummary==='string'");
       assert.match(await evalJS('window.copiedSummary'), /price pending verification/);
       assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
-      assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-02/);
+      assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-0\d/);
       assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best Overall #\d+/);
       await toggle('openai/gpt-6.1-sol');
     }

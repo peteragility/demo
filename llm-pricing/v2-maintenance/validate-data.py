@@ -11,6 +11,18 @@ FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_sto
 PLATFORMS = {"databricks", "official", "bedrock", "azure_foundry", "fireworks", "gcloud", "alicloud"}
 SCOPES = {"global", "regional", "data-zone", "geographic", "unverified"}
 SERVICE_TIERS = {"standard", "priority", "batch", "flex", "off-peak"}
+GEOGRAPHIES = {"Global", "Americas", "Europe", "APAC"}
+LEVELS = {"in-region", "geo", "global", "unknown", "none"}
+CACHE_WRITE = {"priced", "input-rate", "not-listed", "no-caching"}
+
+
+def region_entry(r):
+    """[geography, level, label, text]; level and label may be equal-length lists (one line, several endpoint types)."""
+    if not (isinstance(r, list) and len(r) == 4 and r[0] in GEOGRAPHIES and isinstance(r[3], str) and r[3]):
+        return False
+    levels, labels = r[1] if isinstance(r[1], list) else [r[1]], r[2] if isinstance(r[2], list) else [r[2]]
+    return all(x in LEVELS for x in levels) and all(isinstance(x, str) and x for x in labels) and \
+        (len(levels) == 1 or len(levels) == len(labels))
 
 
 def validate(data):
@@ -98,6 +110,17 @@ def validate(data):
             else:
                 check(not any(field in cell for field in FIELDS), at + ": an unpriced state contains token rates.")
                 check(cell.get("pricing_checked_at") is None, at + ": an unpriced offer has a price verification date.")
+            if "endpoints" in cell:
+                e = cell["endpoints"]
+                check(date(e.get("checked_at")) and all(sid in data["source_meta"] for sid in e.get("src", [])) and e.get("src"), at + ": endpoint details need a date and known sources.")
+                for key in ("hk", "tw"):
+                    check(isinstance(e.get(key), list) and len(e[key]) == 2 and e[key][0] in {"in-region", "routed", "none", "unknown"}, at + ": invalid " + key + " availability.")
+                check(all(region_entry(r) for r in e.get("regions", [])), at + ": invalid region entry.")
+                check(all(isinstance(n, list) and len(n) == 2 and all(isinstance(x, str) and x for x in n) for n in e.get("notes", [])), at + ": invalid note entry.")
+                check(isinstance(e.get("ids"), list) and all(isinstance(x, str) and x for x in e["ids"]), at + ": invalid ID list.")
+                check(e.get("cache_write") in CACHE_WRITE, at + ": cache-write policy missing.")
+                check(all(isinstance(v.get("endpoint"), str) for v in cell.get("variants", [])) or not cell.get("endpoint"),
+                      at + ": a labelled offer needs endpoint labels on every variant.")
             if cell.get("retires_on"):
                 check(date(cell["retires_on"]) and cell.get("replacement") and cell.get("retirement_src") in data["source_meta"], at + ": retirement metadata incomplete.")
     return failures

@@ -280,6 +280,7 @@ def add_models(data):
 
 
 TOP50_CHECKED = "2026-10-03"
+ENDPOINTS_CHECKED = "2026-10-04"
 
 
 def checked(cell, day=TOP50_CHECKED):
@@ -430,6 +431,179 @@ def add_top50_models(data):
             m[key]["platforms"][pl] = checked(copy.deepcopy(c))
 
 
+REGION_LEVELS = ("in-region", "geo", "global", "unknown", "none")
+
+
+def apply_endpoints(data):
+    """Endpoints, regions, Hong Kong / Taiwan, notes, IDs and extra tiers for the detail cards.
+
+    endpoints.json holds the reviewed details per model and platform; endpoints-auto.json holds the
+    region lists that update-endpoints.py reads from Databricks' official region tables.
+    A spec may price a new offer ("offer"), set fields on the listed offer ("base"), replace its variants ("variants"), patch
+    variants by label ("patch"), add variants ("add") and describe where it runs:
+    regions = [[geography, level, label, text]] (level / label may be lists for one line with
+    several endpoint types), hk / tw = [state, text], notes = [[kind, text]], ids = [text].
+    """
+    curated = json.loads((HERE / "endpoints.json").read_text())
+    auto = json.loads((HERE / "endpoints-auto.json").read_text())
+    for sid, meta in curated.get("_sources", {}).items():
+        data["source_meta"][sid] = dict(meta)
+    for key, model in data["models"].items():
+        for pl, cell in model["platforms"].items():
+            spec = curated.get(key, {}).get(pl)
+            if spec:
+                apply_spec(cell, spec, data["source_meta"])
+            if pl == "databricks" and cell["status"] in ("priced", "unverified"):
+                dbx_endpoints(cell, auto["databricks"].get(key), spec)
+
+
+def apply_spec(cell, spec, source_meta):
+    day = spec["checked_at"]
+    if "unavailable" in spec:
+        # The platform stopped selling the model, or never did (with the source that shows it).
+        alt = cell.get("alt")
+        cell.clear()
+        cell.update(unavailable(spec["unavailable"]["src"], spec["unavailable"].get("note")), availability_checked_at=day,
+                    url=source_meta[spec["unavailable"]["src"]]["url"])
+        if alt:
+            cell["alt"] = alt
+        return
+    if "offer" in spec:
+        # A newly priced offer (the platform did not sell the model before).
+        o = dict(spec["offer"])
+        new = offer(o.pop("in"), o.pop("out"), o.pop("cache_read", None), o.pop("cache_write", None), o.pop("cache_write_1h", None), **o)
+        new.update(pricing_checked_at=day, availability_checked_at=day, url=source_meta[new["src"]]["url"])
+        cell.clear()
+        cell.update(new)
+    for field, value in spec.get("base", {}).items():
+        cell[field] = value
+    if spec.get("base") and any(f in spec["base"] for f in RATE_FIELDS):
+        cell["pricing_checked_at"] = day
+    if "variants" in spec:
+        cell["variants"] = [make_variant(v, day) for v in spec["variants"]]
+    for label, fields in spec.get("patch", {}).items():
+        match = [v for v in cell.get("variants", []) if v["label"] == label]
+        if len(match) != 1:
+            raise ValueError("No single variant labelled " + label)
+        match[0].update(fields)
+        if any(f in fields for f in RATE_FIELDS):
+            match[0]["pricing_checked_at"] = day
+    cell.setdefault("variants", []).extend(make_variant(v, day) for v in spec.get("add", []))
+    if not cell["variants"]:
+        del cell["variants"]
+    if spec.get("reverified"):
+        # Every price in this cell was re-checked against its source on that day.
+        for each in [cell, *cell.get("variants", [])]:
+            if cell["status"] == "priced":
+                each["pricing_checked_at"] = day
+        cell["availability_checked_at"] = day
+    if "regions" in spec:
+        cell.pop("regions", None)
+        cell["endpoints"] = dict(checked_at=day, src=spec.get("src", []), regions=spec["regions"], hk=spec["hk"], tw=spec["tw"],
+                                 notes=spec.get("notes", []), ids=spec.get("ids", []), cache_write=spec.get("cache_write", "not-listed"))
+        if spec.get("card"):
+            cell["endpoints"]["card"] = spec["card"]
+
+
+def finish_variants(data):
+    """IDs and defaults for variants added or replaced from endpoints.json."""
+    for m in data["models"].values():
+        for c in m["platforms"].values():
+            used = {v["id"] for v in c.get("variants", []) if v.get("id")}
+            for n, v in enumerate(c.get("variants", [])):
+                if not v.get("id"):
+                    k = n
+                    while "variant-" + str(k) in used:
+                        k += 1
+                    v["id"] = "variant-" + str(k)
+                    used.add(v["id"])
+                v.setdefault("model_match", c.get("model_match", "confirmed"))
+                v.setdefault("pricing_checked_at", c.get("pricing_checked_at"))
+                if c.get("promotion") and not (v.get("promotion") or v.get("valid_through") or v.get("future_only") or v.get("context_only")):
+                    v["valid_through"] = c["promotion"]["ends_on"]
+                v.setdefault("comparison_scope", c.get("comparison_scope", "global"))
+                v.setdefault("service_tier", "standard")
+
+
+def make_variant(v, day):
+    v = dict(v)
+    out = variant(v.pop("label"), v.pop("in"), v.pop("out"), v.pop("cache_read", None), v.pop("cache_write", None), v.pop("cache_write_1h", None),
+                  scope=v.pop("scope", "global"), service=v.pop("service", "standard"), **v)
+    out["pricing_checked_at"] = day
+    return out
+
+
+def dbx_endpoints(cell, found, spec):
+    """Databricks regions come from its region tables; notes follow from the regions and DBU table.
+
+    Offers group as the default endpoint and regional processing (⌖). With regional processing on,
+    every DBU rate of a ⌖ model is 10% higher, Priority included (the price page's stated rule).
+    """
+    if cell["status"] == "priced":
+        variants = cell.setdefault("variants", [])
+        cell["endpoint"] = "Default"
+        regional = [v for v in variants if v.get("comparison_scope") == "regional"]
+        priority = [v for v in variants if v.get("service_tier") == "priority" and v.get("comparison_scope") != "regional"]
+        uplift = lambda offer: {f: round(offer[f] * 1.1, 6) for f in RATE_FIELDS if f in offer}
+        for v in regional:
+            if v.get("service_tier") != "standard":
+                continue
+            for field, value in uplift(cell).items():
+                if field not in v:
+                    v[field] = value
+                elif abs(v[field] - value) > 1e-6 and not v.get("promotion"):
+                    raise ValueError(f"{cell.get('model_id')}: regional {field} {v[field]} is not +10% of {cell[field]}")
+            if cell.get("long_context") and not v.get("long_context"):
+                v["long_context"] = uplift(cell["long_context"])
+        if regional and priority and not any(v.get("service_tier") == "priority" for v in regional):
+            p = priority[0]
+            up = uplift(p)
+            if p.get("long_context"):
+                up["long_context"] = uplift(p["long_context"])
+            extra = {}
+            if p.get("promotion"):
+                after = uplift(p["promotion"]["after"])
+                if p["promotion"]["after"].get("long_context"):
+                    after["long_context"] = uplift(p["promotion"]["after"]["long_context"])
+                extra["promotion"] = dict(p["promotion"], after=dict(after, tier="Regional processing ⌖ Priority"))
+            if p.get("valid_through"):
+                extra["valid_through"] = p["valid_through"]
+            variants.append(dict(up, label="Regional processing ⌖ Priority", comparison_scope="regional", service_tier="priority",
+                                 pricing_checked_at=p["pricing_checked_at"], derived="Priority × 1.1 (Databricks regional-processing uplift)", **extra))
+        for v in variants:
+            v["endpoint"] = "Regional processing ⌖" if v.get("comparison_scope") == "regional" else "Default"
+        if not variants:
+            del cell["variants"]
+    regions = (found or {}).get("regions", [])
+    notes = []
+    if any(r[1] == "global" for r in regions):
+        notes.append(["Residency", "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."])
+    if any(v.get("comparison_scope") == "regional" for v in cell.get("variants", [])):
+        notes.append(["Regional processing", "With regional processing (data residency) enabled, ⌖ models are charged 10% more."])
+    if found and found.get("adi"):
+        notes.append(["Azure", "Azure Databricks provides access through ADI Services, provided by Databricks (†)."])
+    if not found:
+        notes.append(["Regions", "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."])
+    notes.append(["Billing", "DBU list rate $0.07 per DBU; committed-use discounts lower it."])
+    if cell["status"] == "priced":
+        policy = "priced" if M_valid(cell.get("cache_write")) else "input-rate" if M_valid(cell.get("cache_read")) else "no-caching"
+    else:
+        policy = "not-listed"
+    extra = spec or {}
+    cell.pop("regions", None)
+    cell["endpoints"] = dict(checked_at=(found or {}).get("changed_at") or REVIEWED,
+                             src=["dbx_region", "dbx_region_azure", "dbx_region_gcp"],
+                             regions=regions or [],
+                             hk=(found or {}).get("hk") or ["unknown", "Not in Databricks' region tables yet"],
+                             tw=(found or {}).get("tw") or ["unknown", "Not in Databricks' region tables yet"],
+                             notes=extra.get("notes", []) + notes, ids=[cell["model_id"]] if cell.get("model_id") else [],
+                             cache_write=extra.get("cache_write", policy))
+
+
+def M_valid(v):
+    return isinstance(v, (int, float)) and v >= 0
+
+
 def corrections(data):
     m = data["models"]
     fireworks = {
@@ -441,14 +615,6 @@ def corrections(data):
         m[key]["platforms"]["fireworks"] = dict(status="dedicated", model_id=model_id, url=url, src="fireworks_models",
             model_id_source="fireworks_models", model_id_checked_at=REVIEWED, availability_checked_at=REVIEWED, pricing_checked_at=None,
             note="Serverless is not supported. Serverless deprecation began 25 Sep 2026; dedicated GPU deployment remains available.")
-    kimi_aws = m["moonshot/kimi-k3"]["platforms"]["bedrock"]
-    kimi_aws["variants"] = [
-        variant("Regional Standard", 3.3, 16.5, 0.33, 4.125, scope="regional"),
-        variant("Global Priority", 5.25, 26.25, 0.525, 6.5625, service="priority"),
-        variant("Regional Priority", 5.775, 28.875, 0.5775, 7.21875, scope="regional", service="priority"),
-        variant("Global Flex", 1.5, 7.5, 0.15, 1.875, service="flex"),
-    ]
-    kimi_aws["pricing_checked_at"] = REVIEWED
     retirement = {
         "tml/inkling": ["GLM 5.3", "Kimi K3"],
         "deepseek/deepseek-v4-pro": ["DeepSeek V4.1 Flash"],
@@ -522,7 +688,7 @@ def enrich_context_and_promotions(data):
                     c["cache_storage"] = 4.5
                 if pl == "gcloud":
                     c["cache_storage"] = 4.5 if key == "google/gemini-3.1-pro" else 1
-            if key == "openai/gpt-5.6-sol":
+            if key == "openai/gpt-5.6-sol" and pl in ("databricks", "official"):
                 after = rates(5, 30, 0.5, 6.25)
                 after["long_context"] = rates(10, 45, 1, 12.5)
                 promo(c, "2026-11-21", after, "GPT-5.6 Sol promotion", c["tier"])
@@ -568,7 +734,7 @@ def lifecycle_notices(data):
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
-    data.update(schema=4, reviewed_at=TOP50_CHECKED,
+    data.update(schema=4, reviewed_at=ENDPOINTS_CHECKED,
                 basis="Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, "
                       "in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and "
                       "off-peak prices are listed in the row details and are not compared.")
@@ -589,6 +755,8 @@ def build():
     add_top50_models(data)
     corrections(data)
     enrich_context_and_promotions(data)
+    apply_endpoints(data)
+    finish_variants(data)
     lifecycle_notices(data)
     # Talk-track lines: the original page's seller insights, re-checked against the v2 offers.
     # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
@@ -601,13 +769,16 @@ def build():
                 "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither sells GLM 5.3 or DeepSeek V4, and Vertex has no Kimi K3.",
                 {"text": "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.", "models": ["deepseek/deepseek-v4-flash"]},
                 {"text": "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models.", "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "google/gemma-3-12b", "qwen/qwen3-next-80b-instruct"]},
+                "Hong Kong: Databricks serves Kimi K3, DeepSeek V4.1 Flash and GLM 5.x from Azure East Asia (cross-geo); Alibaba has a Hong Kong endpoint with Global scope (data stays in Hong Kong, inference may run elsewhere). Bedrock, Azure, Vertex and Fireworks have none.",
                 {"text": "Not on Databricks: MiniMax M3 (Fireworks $0.30 / $1.20; Azure Data Zone), Mistral Medium 3.5 (Azure $1.50 / $7.50) and Qwen3.8 27B (Alibaba).", "models": ["minimax/minimax-m3", "mistral/mistral-medium-3.5", "qwen/qwen3.8-27b"]}],
         "anthropic": ["List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
-                      "Regional / data-residency endpoints are +10% on Bedrock, Vertex and Databricks (⌖); Anthropic's US-only inference is ×1.1.",
-                      "Microsoft Foundry deploys Claude only from US or Sweden Central resources, with no APAC region. Vertex offers asia-east1 (Taiwan) and asia-southeast1 regional endpoints.",
-                      "On Databricks, Opus 5.5, Fable 5.1 and Sonnet 5 use cross-geo routing in APAC; Opus 5 is in-region on AWS Sydney and GCP Singapore. Sonnet 4.6 and Haiku 4.5 run in-region in Singapore and Tokyo."],
-        "openai": ["List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region; in-region / Data Zone tiers are +10% on Azure and Bedrock.",
-                   "APAC gap: GPT-6 and GPT-5.6 on Databricks run in US, Canada and EU regions only. Bedrock serves them to Tokyo and Singapore (GPT-6 Sol / Luna and GPT-5.6 also Taipei) via global cross-region. Azure has no Hong Kong or Singapore region for them.",
+                      "Hong Kong: only Databricks serves the 2026 Claude models there (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
+                      "Data residency costs +10% everywhere: Bedrock US / EU CRIS and in-region, Vertex US / EU multi-region, Azure US Data Zone, Databricks regional processing (⌖) and Anthropic's US-only inference.",
+                      {"text": "APAC in-region Claude on Databricks: Opus 4.8 in AWS Tokyo, Singapore and Sydney; Opus 5 in AWS Sydney and GCP Singapore; both in Azure Japan East and Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.", "models": ["anthropic/claude-opus-4.8", "anthropic/claude-opus-5", "anthropic/claude-sonnet-5"]},
+                      "Vertex has no Taiwan or Hong Kong endpoint for the 2026 Claude models: only global and US / EU multi-region (Opus 5, Sonnet 5 and Fable 5 also list Singapore, unpriced). Azure deploys Claude from US regions and Sweden Central."],
+        "openai": ["List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region. Azure Data Zone is +10% in the US and +20% in the EU / APAC zones for GPT-6; Bedrock in-region / US CRIS is +10%.",
+                   "APAC: GPT-6 and GPT-5.6 on Databricks reach APAC (including Azure Hong Kong) through cross-geo routing. Azure serves them from Singapore, Japan, Korea, Australia and India (Global Standard); Bedrock from Tokyo, Seoul and Singapore via global CRIS (GPT-6 Sol / Luna and GPT-5.6 also Taipei).",
+                   "OpenAI's API does not serve Hong Kong (not a supported region); Taiwan is supported, through the global endpoint.",
                    "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
                    {"text": "GPT-5.4 is $2.50 / $15 on Databricks and OpenAI; Bedrock sells it in-region only at $2.75 / $16.50 (+10%).", "models": ["openai/gpt-5.4"]},
                    "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
@@ -625,9 +796,12 @@ def build():
         "xai": ["Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
                 {"text": "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.", "until": "2027-01-31"},
                 {"text": "Grok 4.6 on Databricks is $2.50 / $7.50 since its promotion ended 31 Jan 2027; xAI, Bedrock and Azure stay at $2 / $6.", "from": "2027-02-01"},
-                "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; Azure Data Zone is +10%."],
+                "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; xAI's own US endpoint and Bedrock US CRIS are +10%. Azure sells Grok 4.6 as Global Standard only."],
     }
     data["changes"] = [
+        "2026-10-04: Row details became one card per platform: every endpoint and tier with input, output, cache read and cache write prices; regions by geography and processing level; Hong Kong and Taiwan; notes and IDs, reviewed for all 35 listed models.",
+        "2026-10-04: Added missing tiers (Databricks Priority and ⌖ tiers, OpenAI Flex / Ultrafast, Anthropic fast mode and US-only inference, Bedrock / Vertex batch, xAI US endpoint, Alibaba Chinese mainland and off-peak). Azure now prices GPT-6.1 Sol, GPT-5.4, Claude Fable 5 and Opus 4.8; Inkling left Azure pay-per-token and gained a Thinking Machines API (beta).",
+        "2026-10-04: Platforms appear in the order Databricks, maker API, Fireworks, Azure, AWS, Google, Alibaba. The daily check now verifies every offer and opens a review issue when a source changes.",
         "2026-10-03: Added the arena.ai Best Overall top-50 models that a compared platform hosts: Claude Fable 5, Claude Opus 4.8, GPT-5.4, Gemini 3.6 Flash, GLM 5.2, Qwen3.8 Max, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5.",
         "Added GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 / 3.1 Flash-Lite, Grok 4.7 and Grok 4.6.",
         "Removed three discontinued Fireworks serverless quotes; dedicated deployments are a separate state.",

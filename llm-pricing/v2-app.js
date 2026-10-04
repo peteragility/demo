@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const M = window.LLMPricingMath;
-  const PL = ['databricks','official','bedrock','azure_foundry','fireworks','gcloud','alicloud'];
+  const PL = ['databricks','official','fireworks','azure_foundry','bedrock','gcloud','alicloud'];
   const LONG = {databricks:'Databricks',official:'原廠 API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
   const SHORT = {databricks:'DBX',official:'原廠',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
   const ORDER = ['oss','anthropic','openai','google','xai','other'];
@@ -20,6 +20,7 @@
   const slug = k => k.replace(/[^a-z0-9]+/gi, '-');
   const isObject = v => Boolean(v) && typeof v === 'object' && !Array.isArray(v);
   // Promotions and retirements switch on the viewer's local calendar date, rechecked while the tab stays open.
+  const shift = (day, n) => { const d = new Date(day + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
   const localDate = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
   let AS_OF = localDate();
 
@@ -27,7 +28,7 @@
   const prefs = isObject(saved) ? saved : {};
   const S = { group: 'all', q: '', sort: ['default','price','edge'].includes(prefs.sort) ? prefs.sort : 'default', blend: [1,3,10].includes(+prefs.blend) ? +prefs.blend : 3,
     talk: typeof prefs.talk === 'boolean' ? prefs.talk : null, edit: false, open: new Set() };
-  let RAW = null, RESOLVED = null, DATA = null, PICK = null, APPLIED = 0, SUMMARY = null, SUMMARY_KEY = '', WATCH = null, RANKING = null;
+  let RAW = null, RESOLVED = null, DATA = null, PICK = null, APPLIED = 0, SUMMARY = null, SUMMARY_KEY = '', WATCH = null, RANKING = null, CHECKS = null;
   let EDITS = store.get(EDIT_KEY, {});
   if (!isObject(EDITS)) EDITS = {};
   if (prefs.theme === 'light' || prefs.theme === 'dark') document.documentElement.dataset.theme = prefs.theme;
@@ -223,7 +224,150 @@
     return `<span${cls ? ` class="${cls}"` : ''}>${esc(label)} <b>${precise(c.in)} / ${precise(c.out)}</b>${cache}</span>`;
   }
 
+  // Detail cards: one per platform. A price table (endpoint × tier rows; input, output and cache
+  // columns), then where the platform runs the model, Hong Kong / Taiwan, notes and IDs.
+  const SCOPE_LABEL = {global: 'Global', geographic: 'Geo', 'data-zone': 'Data Zone', regional: 'In-region', unverified: 'Endpoint'};
+  const SCOPE_RANK = {global: 0, geographic: 1, 'data-zone': 2, regional: 3, unverified: 4};
+  const TIERS = ['Standard', 'Priority', 'Fast', 'Flex', 'Batch', 'Off-peak', 'Contributor'];
+  const TIER_OF = {standard: 'Standard', priority: 'Priority', flex: 'Flex', batch: 'Batch', 'off-peak': 'Off-peak', contributor: 'Contributor'};
+  // Where requests are processed: [badge class, default label].
+  const LEVEL = {'in-region': ['in', 'In-region'], geo: ['geo', 'Geo'], global: ['gl', 'Global'], unknown: ['no', '? Not published'], none: ['no', 'None']};
+  const STATE = {'in-region': ['in', '● In-region'], routed: ['gl', '◐ Routed'], none: ['no', '✕ None'], unknown: ['no', '? Not published']};
+  const badge = (cls, text) => `<span class="lv ${cls}">${esc(text)}</span>`;
+  // Cards show exact published rates: at least two decimals, never rounded.
+  const fx = v => { if (!M.validRate(v)) return '—'; const [a, b = ''] = String(Math.round(v * 1e6) / 1e6).split('.'); return a + '.' + (b + '00').slice(0, Math.max(2, b.length)); };
+
+  function offersOf(mk, pl) {
+    const raw = RAW.models[mk].platforms[pl], base = DATA.models[mk].platforms[pl];
+    if (!raw || base.status !== 'priced') return [];
+    const out = [{offer: base, label: base.tier || 'Listed tier'}];
+    for (const v of raw.variants || []) {
+      if (v.context_only || v.future_only) continue;
+      out.push({offer: M.resolveOffer(raw, {asOf: AS_OF, variantId: v.id}), label: v.label});
+    }
+    return out;
+  }
+
+  // Input, output, cache read, cache write (and 1-hour write) cells for one offer.
+  function rateCells(o, policy, has1h) {
+    const read = M.validRate(o.cache_read) ? fx(o.cache_read) : '—';
+    const write = M.validRate(o.cache_write) ? fx(o.cache_write)
+      : policy === 'input-rate' && M.validRate(o.cache_read) ? '<span class="ci" title="Cache writes cost the normal input rate: no write premium">= input</span>' : '—';
+    return `<td>${fx(o.in)}</td><td>${fx(o.out)}</td><td>${read}</td><td>${write}</td>${has1h ? `<td>${M.validRate(o.cache_write_1h) ? fx(o.cache_write_1h) : '—'}</td>` : ''}`;
+  }
+
+  function priceTable(mk, pl) {
+    const c = DATA.models[mk].platforms[pl], pick = PICK[mk][pl], groups = new Map();
+    for (const {offer, label} of offersOf(mk, pl)) {
+      const name = offer.endpoint || SCOPE_LABEL[offer.comparison_scope] || 'Global', rank = SCOPE_RANK[offer.comparison_scope] ?? 5;
+      if (!groups.has(name)) groups.set(name, {rank, rows: []});
+      const g = groups.get(name);
+      g.rank = Math.min(g.rank, rank);
+      g.rows.push({offer, label, tier: offer.tier_label || TIER_OF[offer.service_tier] || 'Standard'});
+    }
+    if (!groups.size) return '';
+    const offers = [...groups.values()].flatMap(g => g.rows.map(r => r.offer));
+    const has1h = offers.some(o => M.validRate(o.cache_write_1h));
+    const policy = c.endpoints && c.endpoints.cache_write, cols = has1h ? 6 : 5;
+    const isPick = o => pick && !o.problems.length && (pick.variant_id || 'base') === (o.variant_id || 'base');
+    const lc = c.context_threshold ? (c.context_threshold_inclusive ? '≥' : '>') + c.context_threshold / 1000 + 'K' : '';
+    const body = [...groups].sort((a, b) => a[1].rank - b[1].rank).map(([name, g]) =>
+      `<tr class="eg"><th scope="rowgroup" colspan="${cols}">${esc(name)}</th></tr>` +
+      g.rows.sort((a, b) => TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map(({offer: o, label, tier}) => {
+        if (o.status !== 'priced' || o.problems.length) return `<tr title="${esc(label)}"><th scope="row">${esc(tier)}</th><td class="none" colspan="${cols - 1}">not verified</td></tr>`;
+        const p = isPick(o);
+        const row = `<tr${p ? ' class="pick"' : ''} title="${esc(label + (p ? ' · the price the table compares' : ''))}"><th scope="row">${esc(tier)}</th>${rateCells(o, policy, has1h)}</tr>`;
+        const long = o.long_context && M.validRate(o.long_context.in) ? `<tr class="lc" title="${esc('Rates for the whole request when its input is ' + lc + ' tokens')}"><th scope="row">↳ ${esc(lc)}</th>${rateCells(o.long_context, policy, has1h)}</tr>` : '';
+        return row + long;
+      }).join('')).join('');
+    return `<div class="ptw"><table class="pt"><thead><tr><th scope="col"><span class="sr">Endpoint and tier</span></th><th scope="col">Input</th><th scope="col">Output</th><th scope="col"><span class="lg">Cache read</span><span class="sh">Cache rd</span></th><th scope="col"><span class="lg">Cache write</span><span class="sh">Cache wr</span></th>${has1h ? '<th scope="col"><span class="lg">1h write</span><span class="sh">1h wr</span></th>' : ''}</tr></thead><tbody>${body}</tbody></table></div>`;
+  }
+
+  // Where the platform runs the model: one line per geography and processing level, then HK and Taiwan.
+  function whereHtml(c) {
+    const e = c.endpoints;
+    if (!e) return `<div class="wh"><span class="gk">Regions</span><span class="lvs">${badge('no', '?')}</span><span class="gw">${esc(c.regions || 'Not yet reviewed')}</span></div>`;
+    const rows = [];
+    let last = null;
+    for (const [geo, level, label, text] of e.regions) {
+      // One line may name several endpoint types that share the same regions.
+      const levels = [].concat(level), labels = [].concat(label == null ? [] : label);
+      const badges = Array.from({length: Math.max(levels.length, labels.length)}, (_, i) => {
+        const [cls, word] = LEVEL[levels[Math.min(i, levels.length - 1)]] || LEVEL.none;
+        return badge(cls, labels[i] || word);
+      }).join(' ');
+      rows.push(`<span class="gk">${geo === last ? '' : esc(geo)}</span><span class="lvs">${badges}</span><span class="gw">${esc(text)}</span>`);
+      last = geo;
+    }
+    const [hs, ht] = e.hk, [ts, tt] = e.tw;
+    if (!e.regions.length && hs === 'unknown' && ts === 'unknown') {
+      rows.push(`<span class="gk">Regions</span><span class="lvs">${badge('no', '? Not published')}</span><span class="gw">${esc(ht === tt ? ht : ht + '; ' + tt)}, including Hong Kong and Taiwan</span>`);
+    } else {
+      if (!e.regions.length) rows.push(`<span class="gk">Regions</span><span class="lvs">${badge('no', '? Not published')}</span><span class="gw"></span>`);
+      for (const [key, [state, text]] of [['HK', e.hk], ['Taiwan', e.tw]]) {
+        const [cls, word] = STATE[state];
+        rows.push(`<span class="gk hk">${key}</span><span class="lvs">${badge(cls, word)}</span><span class="gw">${esc(text)}</span>`);
+      }
+    }
+    return `<div class="wh">${rows.join('')}</div>`;
+  }
+
+  const idHtml = s => { const m = /^(\S+)(?: \((.+)\))?$/.exec(s); return `<span class="id">${m ? `<code>${esc(m[1])}</code>${m[2] ? ' ' + esc(m[2]) : ''}` : esc(s)}</span>`; };
+
+  // The newest of the reviewed dates and the daily source check; a changed source says so instead.
+  function checkedText(mk, pl, c) {
+    const chk = CHECKS && CHECKS.cells && CHECKS.cells[mk + '|' + pl];
+    if (chk && chk.changed_at) return `<span class="chg" title="${esc('Official source changed: ' + (chk.sources || []).join(', ') + '. Prices shown are the last reviewed ones.')}">source changed ${esc(chk.changed_at)} · re-check</span>`;
+    const day = [c.pricing_checked_at, c.endpoints && c.endpoints.checked_at, chk && chk.verified].filter(Boolean).sort().pop();
+    return day ? 'verified ' + esc(day) : '';
+  }
+
+  function cardHtml(mk, pl) {
+    const c = DATA.models[mk].platforms[pl], e = c.endpoints, d = deltaOf(mk, pl), dir = dirOf(d);
+    const src = srcUrl(c, pl), when = checkedText(mk, pl, c);
+    const chip = pl === 'databricks' ? '<span class="cdv base">baseline</span>' : d == null ? '' : `<span class="cdv ${dir}">${dir === 'par' ? '= DBX' : dLabel(d, dir) + ' vs DBX'}</span>`;
+    // One link per label: the offer's price source first, then the other sources the card cites.
+    const seen = new Set(['prices']), links = [src && `<a href="${esc(src)}" target="_blank" rel="noopener">prices ↗</a>`];
+    for (const id of (e && e.src) || []) {
+      const sm = DATA.source_meta[id], text = sm && (sm.short || sm.label);
+      if (!sm || sm.url === src || seen.has(text)) continue;
+      seen.add(text);
+      links.push(`<a href="${esc(sm.url)}" target="_blank" rel="noopener" title="${esc(sm.label)}">${esc(text)} ↗</a>`);
+    }
+    links.splice(0, links.length, ...links.filter(Boolean));
+    const extra = [];
+    if (c.promotion && !c.promotion_expired) extra.push(`From ${esc(shift(c.promotion.ends_on, 1))}: <b>${fx(c.promotion.after.in)} / ${fx(c.promotion.after.out)}</b>${M.validRate(c.promotion.after.cache_read) ? ' · cache read ' + fx(c.promotion.after.cache_read) : ''}`);
+    if (M.validRate(c.cache_storage) && c.cache_storage > 0) extra.push(`Cache storage $${fx(c.cache_storage)} per 1M tokens per hour`);
+    if (c.retires_on) extra.push(`${AS_OF >= c.retires_on ? 'Retired' : 'Retires'} ${esc(c.retires_on)} · use ${esc((c.replacement || []).join(' / '))}`);
+    const note = comparisonNote(mk, pl, c);
+    if (note && note.startsWith('Δ excluded')) extra.push(note);
+    const notes = e && e.notes.length ? `<ul class="cnotes">${e.notes.map(([kind, t]) => `<li><b>${esc(kind)}</b> ${esc(t)}</li>`).join('')}</ul>` : (c.note ? `<ul class="cnotes"><li>${esc(c.note)}</li></ul>` : '');
+    const ids = e && e.ids.length ? e.ids : c.model_id ? [c.model_id] : [];
+    return `<section class="pcard${pl === 'databricks' ? ' dbx' : ''}"><h3><b>${esc(LONG[pl])}</b>${chip}<span class="chk">${when}${links.length ? (when ? ' · ' : '') + links.join(' · ') : ''}</span></h3>` +
+      priceTable(mk, pl) + (extra.length ? `<div class="cextra">${extra.join('<br>')}</div>` : '') + whereHtml(c) + notes +
+      (ids.length ? `<div class="cids">${ids.map(idHtml).join('')}</div>` : '') + '</section>';
+  }
+
+  function cardsHtml(r) {
+    const m = r.m, warn = notices(m).join(' · ');
+    const meta = [m.maker, m.about, m.ctx && ('context ' + m.ctx)].filter(Boolean).join(' · ');
+    const live = PL.filter(pl => kind(m.platforms[pl]) === 'ok');
+    const rest = PL.filter(pl => !live.includes(pl)).map(pl => {
+      const c = m.platforms[pl], k = kind(c);
+      const st = k === 'gpu' ? 'dedicated GPU deployment only' : c.status === 'retired' ? 'retired' : k === 'na' ? 'not offered' : c.available ? 'price pending verification' : 'not verified';
+      const alt = c.alt ? ` · closest ${esc(c.alt.name)} ${fmt(c.alt.in)} / ${fmt(c.alt.out)}${M.validRate(c.alt.cache_read) ? ' · cache read ' + fmt(c.alt.cache_read) : ''}` : '';
+      return `<span><b>${esc(LONG[pl])}</b> ${st}${alt}</span>`;
+    });
+    return `<tr class="detail" id="d-${slug(r.k)}"><td colspan="8"><div class="dw"><div class="dh"><b>${esc(m.name)}</b><span class="meta">${esc(meta)}</span>${warn ? `<span class="warn">${esc(warn)}</span>` : ''}<button type="button" class="copy" data-copy="${esc(r.k)}">Copy summary</button>${m.note ? `<span class="note">${esc(m.note)}</span>` : ''}</div>` +
+      `<p class="clegend">USD per 1M tokens · <span class="sw">shaded</span> = the price the table compares (cheapest standard) · <b>= input</b>: no cache-write premium · ${badge('in', 'In-region')} processed in the region you call ${badge('geo', 'Geo')} stays in one geography (e.g. US, EU) ${badge('gl', 'Global')} may run anywhere</p>` +
+      `<div class="pcards">${live.map(pl => cardHtml(r.k, pl)).join('')}</div>${rest.length ? `<div class="coff">${rest.join('')}</div>` : ''}</div></td></tr>`;
+  }
+
   function detailHtml(r) {
+    return S.edit ? editDetailHtml(r) : cardsHtml(r);
+  }
+
+  function editDetailHtml(r) {
     const m = r.m, warn = notices(m).join(' · ');
     const meta = [m.maker, m.about, m.ctx && ('context ' + m.ctx)].filter(Boolean).join(' · ');
     let body = '';
@@ -311,8 +455,8 @@
     const onDbx = list.filter(r => offered(RESOLVED.models[r.k].databricks)).length;
     paint($('#summary'),
       kpi('', `${onDbx}<small>/${list.length}</small>`, 'listed models offered on Databricks', 'on Databricks') +
-      kpi('good', `${p.noCheaperModels}<small>/${p.comparedModels}</small>`, 'models where no hyperscaler beats DBX (AWS · Azure · GCP)', 'no hyperscaler cheaper') +
-      kpi('', `${gaps.bedrock}<small> · </small>${gaps.azure_foundry}<small> · </small>${gaps.gcloud}`, 'models not offered on AWS · Azure · GCP (✕)', 'not on AWS · Azure · GCP') +
+      kpi('good', `${p.noCheaperModels}<small>/${p.comparedModels}</small>`, 'models where no hyperscaler beats DBX (Azure · AWS · GCP)', 'no hyperscaler cheaper') +
+      kpi('', `${gaps.azure_foundry}<small> · </small>${gaps.bedrock}<small> · </small>${gaps.gcloud}`, 'models not offered on Azure · AWS · GCP (✕)', 'not on Azure · AWS · GCP') +
       kpi('warn', String(p.cheaperCells), 'cells cheaper than DBX on any platform (▼): check first', 'cheaper cells ▼') +
       (tips.length ? `<button type="button" class="talkbtn" id="talkBtn" aria-expanded="${open}" aria-controls="talk">Talk track</button><ul class="talk" id="talk"${open ? '' : ' hidden'}>${tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '') +
       (APPLIED ? `<p class="enote">Figures use published prices. The table includes your ${APPLIED} personal price${APPLIED === 1 ? '' : 's'}.</p>` : ''));
@@ -452,15 +596,17 @@
 
   async function load() {
     const inline = document.getElementById('inline-data');
-    const ranking = fetch('v2-ranking.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null);
-    if (inline) return [JSON.parse(inline.textContent), await ranking];
+    const optional = name => fetch(name, { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null);
+    const ranking = optional('v2-ranking.json'), checks = optional('v2-checks.json');
+    if (inline) return [JSON.parse(inline.textContent), await ranking, await checks];
     const r = await fetch('v2-data.json', { cache: 'no-cache' });
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    return [await r.json(), await ranking];
+    return [await r.json(), await ranking, await checks];
   }
 
-  load().then(([d, ranking]) => {
+  load().then(([d, ranking, checks]) => {
     RAW = d;
+    CHECKS = isObject(checks) && isObject(checks.cells) ? checks : null;
     RANKING = isObject(ranking) && isObject(ranking.models) && Object.keys(ranking.models).some(k => d.models[k]) ? ranking : null;
     applyEdits();
     if (RANKING) {
@@ -468,11 +614,16 @@
       const [title, sub] = String(RANKING.board).split(/ (?=\()/);
       const board = `<a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(title)}<span class="bsub">${sub ? ' ' + esc(sub) : ''}</span></a>`;
       $('#rankSrc').innerHTML = ` · ranked by ${board}, ${esc(when)}`;
-      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, AWS, Azure, Fireworks, Google or Alibaba hosts the model. Checked daily; order last changed ${esc(when)}.`;
+      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba hosts the model. Checked daily; order last changed ${esc(when)}.`;
     }
-    const dt = d.reviewed_at;
-    const pretty = dt ? new Date(dt + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
-    $('#verified').textContent = pretty; $('#srcDate').textContent = '· checked ' + pretty;
+    const long = day => day ? new Date(day + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+    // The daily source check moves the verified date forward while the official sources are unchanged.
+    const day = [d.reviewed_at, CHECKS && CHECKS.checked_at].filter(Boolean).sort().pop();
+    $('#verified').textContent = long(day); $('#srcDate').textContent = '· checked ' + long(day);
+    if (CHECKS && Array.isArray(CHECKS.review) && CHECKS.review.length) {
+      const n = CHECKS.review.length, link = CHECKS.issue_url ? ` href="${esc(CHECKS.issue_url)}" target="_blank" rel="noopener"` : '';
+      $('#verified').insertAdjacentHTML('afterend', ` · <a class="rev"${link} title="${esc(CHECKS.review.join(' · '))}">${n} under review</a>`);
+    }
     if (d.usd_per_dbu) $('#dbu').textContent = '$' + d.usd_per_dbu;
     const srcList = d.source_meta ? Object.values(d.source_meta) : (d.sources || []).map(u => { const url = String(u).split(' ')[0]; let label = url; try { label = new URL(url).hostname; } catch (e) {} return { url, label }; });
     $('#srcs').innerHTML = srcList.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a></li>`).join('');

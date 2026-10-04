@@ -80,5 +80,57 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(review.make_report(baseline, {}, {}, data, dt.date(2026, 10, 31))["lifecycle_due"], [])
 
 
+    def test_model_lines_match_names_ids_and_short_names_but_not_siblings(self):
+        rx = review.model_regex({"name": "Claude Opus 5.5"})
+        for line in ["Claude Opus 5.5 | $4", "claude-opus-5-5", "Opus 5.5 (global)"]:
+            self.assertTrue(rx.search(review.official.norm(line)), line)
+        for line in ["Claude Opus 5 | $5", "Claude Opus 5.5 Pro", "Claude Opus 4.5, 4.6, 5"]:
+            self.assertFalse(rx.search(review.official.norm(line)), line)
+        glm = review.model_regex({"name": "GLM 5.3"})
+        self.assertTrue(glm.search(review.official.norm("glm-5.3 | $1.40")))
+        self.assertFalse(glm.search(review.official.norm("GLM 5.3 Flash | $0.15")))
+
+    def test_an_unchanged_model_line_is_verified_today_and_a_changed_one_needs_review(self):
+        config = [{"id": "prices", "url": "https://example.com", "meta": ["src"]}]
+        data = {"models": {"a/kimi-k3": {"name": "Kimi K3", "platforms": {"x": {"status": "priced", "src": "src"}}},
+                           "a/glm-5.3": {"name": "GLM 5.3", "platforms": {"x": {"status": "priced", "src": "src"}}}}}
+        before = ["table: Kimi K3 | $3 | $15", "table: GLM 5.3 | $1.40 | $4.40"]
+        after = ["table: Kimi K3 | $3 | $15", "table: GLM 5.3 | $1.50 | $4.40"]
+        baseline = {"sources": {"prices": {"records": before}}}
+        current = {"prices": {"url": "https://example.com", "records": after}}
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, dt.date(2026, 10, 5))
+        self.assertEqual(cells["a/kimi-k3|x"], {"verified": "2026-10-05"})
+        self.assertEqual(cells["a/glm-5.3|x"]["changed_at"], "2026-10-05")
+        self.assertEqual(changes[0]["added"], ["table: GLM 5.3 | $1.50 | $4.40"])
+        # A source that could not be read keeps the last verified date.
+        cells, _ = review.cell_checks(data, config, baseline, {}, {"prices": "HTTP 503"}, {}, {"cells": {"a/kimi-k3|x": {"verified": "2026-10-04"}}}, dt.date(2026, 10, 5))
+        self.assertEqual(cells["a/kimi-k3|x"]["verified"], "2026-10-04")
+
+    def test_databricks_prices_are_checked_against_its_dbu_table(self):
+        html = """<table><tr><th>Model</th><th>Standard Pay Per Token (DBU Per 1M Tokens)</th></tr>
+        <tr><td>Input</td><td>Output</td><td>Cache read</td></tr>
+        <tr><td>Kimi K3 ⌖</td><td>42.857</td><td>214.286</td><td>4.286</td></tr>
+        <tr><td>GLM-5.2, 5.3</td><td>20.000</td><td>62.857</td><td>3.714</td></tr>""" + "".join(
+            f"<tr><td>Model {n}</td><td>1</td><td>2</td><td>-</td></tr>" for n in range(10)) + "</table>"
+        rows = review.official.dbx_price_rows(html, 0.07)
+        self.assertAlmostEqual(rows["kimi k3"]["standard"][""]["in"], 3.0, places=3)
+        self.assertIn("glm 5.3", rows)
+        cell = {"status": "priced", "in": 3.0, "out": 15.0, "cache_read": 0.3, "variants": [{"comparison_scope": "regional", "service_tier": "standard"}]}
+        data = {"models": {"m/kimi-k3": {"name": "Kimi K3", "platforms": {"databricks": cell}}}}
+        self.assertEqual(review.dbx_fact_issues(data, rows, dt.date(2026, 10, 5)), {})
+        cell["in"] = 3.3
+        self.assertIn("standard in", review.dbx_fact_issues(data, rows, dt.date(2026, 10, 5))["m/kimi-k3"][0])
+
+    def test_databricks_region_tables_give_in_region_and_cross_geo_lists(self):
+        html = """<table><tr><th>Region</th><th>Foundation Model APIs pay-per-token</th><th>x</th><th>y</th></tr>""" + "".join(
+            f"<tr><td>{r}</td><td>The following models are supported: databricks-kimi-k3{m} " + " ".join(f"databricks-m{n}" for n in range(12)) + "</td><td></td><td></td></tr>"
+            for r, m in [("us-east-1", ""), ("ap-northeast-1", " ⥂"), ("eastasia", " ⥂")]) + "</table>"
+        regions = review.official.dbx_regions(html)
+        out = review.official.dbx_endpoint_regions("databricks-kimi-k3", {"aws": regions, "azure": regions})
+        self.assertIn(["Americas", "in-region", "In-region", "AWS N. Virginia"], out["regions"])
+        self.assertIn(["APAC", "global", "Cross-geo", "AWS Tokyo · Azure East Asia (Hong Kong)"], out["regions"])
+        self.assertEqual(out["hk"][0], "routed")
+
+
 if __name__ == "__main__":
     unittest.main()

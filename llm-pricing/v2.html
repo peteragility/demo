@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LLM Token Pricing · v2</title>
-<meta name="description" content="Databricks FMAPI vs AWS Bedrock, Azure Foundry, Google Vertex, Fireworks, Alibaba and direct APIs: verified USD per 1M tokens.">
+<meta name="description" content="Databricks FMAPI vs Fireworks, Azure Foundry, AWS Bedrock, Google Vertex, Alibaba and direct APIs: verified USD per 1M tokens, every endpoint, tier, cache price and region.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="v2.css?v=dba5a661a5e0">
-<script src="v2-math.js?v=c66297fb81e2" defer></script>
-<script src="v2-app.js?v=18468b203f11" defer></script>
+<link rel="stylesheet" href="v2.css?v=025041dae98e">
+<script src="v2-math.js?v=7205ad5becb0" defer></script>
+<script src="v2-app.js?v=9d762f864c62" defer></script>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <h1>LLM Token Pricing</h1>
-    <p><span class="pl">Databricks FMAPI vs AWS Bedrock · Azure Foundry · Fireworks · Google Vertex · Alibaba · 原廠 API — </span>USD per 1M tokens · verified <b id="verified">—</b><span id="rankSrc"></span> · <a href="../">demo index</a></p>
+    <p><span class="pl">Databricks FMAPI vs 原廠 API · Fireworks · Azure Foundry · AWS Bedrock · Google Vertex · Alibaba — </span>USD per 1M tokens · verified <b id="verified">—</b><span id="rankSrc"></span> · <a href="../">demo index</a></p>
   </header>
 
   <div class="bar" id="bar"><div class="tabs" id="tabs" role="group" aria-label="Model family"></div></div>
@@ -35,16 +35,16 @@
     <div>
       <h2>How to read it</h2>
       <p class="legend"><span><b class="up">▲</b> competitor pricier than Databricks</span><span><b class="down">▼</b> cheaper</span><span><b>=</b> within 1%</span><span><b>✕</b> not offered (closest model shown)</span><span><b>?</b> not verified</span><span><b>GPU</b> dedicated only</span></p>
-      <p>Each cell is <b>input / output</b> USD per 1M text tokens: the platform's cheapest standard (real-time, on-demand) price for that model version, in any region or processing scope. Databricks = published DBU rate × <span id="dbu">$0.07</span>. Δ compares it with Databricks' cheapest standard price at the blend above. Batch, Flex, Priority and off-peak prices are in the row details and are not compared; DeepSeek and Alibaba time-of-day prices use peak / busy-hour rates. Models with no comparable hyperscaler price are left out of the parity count, as are models where a hyperscaler sells an unconfirmed checkpoint for less. Tap a row for cache pricing, other tiers, regions, verification dates and sources.</p>
+      <p>Each cell is <b>input / output</b> USD per 1M text tokens: the platform's cheapest standard (real-time, on-demand) price for that model version, in any region or processing scope. Databricks = published DBU rate × <span id="dbu">$0.07</span>. Δ compares it with Databricks' cheapest standard price at the blend above. Batch, Flex, Priority and off-peak prices are in the row details and are not compared; DeepSeek and Alibaba time-of-day prices use peak / busy-hour rates. Models with no comparable hyperscaler price are left out of the parity count, as are models where a hyperscaler sells an unconfirmed checkpoint for less. Tap a row for one card per platform: every endpoint and tier with input, output and cache prices, where it runs (in-region, geo or global; Hong Kong and Taiwan), notes, IDs and sources.</p>
       <p id="rankNote"></p>
-      <p>Databricks APAC availability is per model in each row (AWS / GCP region table). On Azure Databricks, pay-per-token runs in-region only in Japan East; East Asia (Hong Kong), Southeast Asia, Korea, Australia and India use cross-geo processing.</p>
-      <p>Prices move fast. Re-check the source before a customer quote. Verified promotion changes and retirements apply automatically on your local date; unverified prices remain labelled ?.</p>
+      <p>Regions come from each platform's official region tables; Databricks regions refresh daily. <b>In-region</b> = processed in the region you call; <b>Geo</b> = stays in one geography (US, EU, a data zone); <b>Global / Cross-geo</b> = may be processed anywhere.</p>
+      <p>Prices move fast. Every official source is re-checked daily: unchanged offers show today's verified date, and a changed source marks its card “source changed · re-check” until it is reviewed. Re-check the source before a customer quote. Promotion changes and retirements apply on your local date; unverified prices remain labelled ?.</p>
       <div class="editbar"><button type="button" id="editBtn" aria-pressed="false">Edit prices</button><button type="button" id="resetBtn" hidden>Reset edits</button><span id="editNote"></span></div>
     </div>
     <div>
       <h2>Sources <span id="srcDate"></span></h2>
       <ul class="srcs" id="srcs"></ul>
-      <p><a href="https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml" target="_blank" rel="noopener">Daily source-check runs ↗</a> · <a href="v2-data.json" target="_blank" rel="noopener">data ↗</a></p>
+      <p><a href="https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml" target="_blank" rel="noopener">Daily refresh runs ↗</a> · <a href="https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review" target="_blank" rel="noopener">open reviews ↗</a> · <a href="v2-data.json" target="_blank" rel="noopener">data ↗</a></p>
     </div>
   </footer>
 </div>

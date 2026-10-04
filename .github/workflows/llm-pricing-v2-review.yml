@@ -1,8 +1,16 @@
-name: LLM pricing v2 review
+name: LLM pricing v2 daily refresh
 
+# Daily at 06:17 Hong Kong time (22:17 UTC):
+#   1. model order from the arena.ai Best Overall ranking        (published automatically)
+#   2. Databricks model regions from its official region tables   (published automatically)
+#   3. every official price / region source re-read: offers whose source lines are unchanged get
+#      today's "verified" date; Databricks prices are checked number by number against its DBU
+#      tables                                                     (published automatically)
+#   4. anything that changed opens or updates one GitHub issue labelled llm-pricing-review.
+# Prices are never changed automatically: a person reviews the issue and updates the data.
 on:
   schedule:
-    - cron: '17 2 * * *'
+    - cron: '17 22 * * *'
   workflow_dispatch:
   push:
     paths:
@@ -18,14 +26,15 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: llm-pricing-v2-review-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  review:
+  # Pushes and pull requests: the reviewed data must rebuild exactly and pass every check. No network.
+  validate:
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
+    concurrency:
+      group: llm-pricing-v2-validate-${{ github.ref }}
+      cancel-in-progress: true
     defaults:
       run:
         working-directory: llm-pricing
@@ -45,66 +54,92 @@ jobs:
           python v2-maintenance/test-review-sources.py
           python v2-maintenance/test-ranking.py
           node --test v2-maintenance/pricing.test.cjs
-      - name: Compare official sources (review only)
-        if: github.event_name != 'pull_request'
-        run: python v2-maintenance/review-sources.py --report-dir "${{ runner.temp }}/llm-pricing-v2-review"
-      - name: Add review report to job summary
-        if: always() && github.event_name != 'pull_request'
-        shell: python
-        env:
-          REVIEW_DIRECTORY: ${{ runner.temp }}/llm-pricing-v2-review
+
+  refresh:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # One refresh at a time: a manual run waits for the scheduled one.
+    concurrency:
+      group: llm-pricing-v2-refresh
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pages: write
+      issues: write
+    defaults:
+      run:
+        working-directory: llm-pricing
+    env:
+      REPORT_DIR: ${{ runner.temp }}/llm-pricing-v2-review
+      ISSUE_FILE: ${{ runner.temp }}/llm-pricing-v2-issue.md
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Model order (arena.ai Best Overall)
+        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
+      - name: Databricks regions (official region tables)
+        run: python v2-maintenance/update-endpoints.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Regions::A Databricks region table could not be read; regions are unchanged today."
+      - name: Rebuild and validate
         run: |
-          import os
-          from pathlib import Path
-          reports = sorted(Path(os.environ['REVIEW_DIRECTORY']).glob('*.md'))
-          if reports:
-              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
-                  summary.write(reports[-1].read_text())
-      - name: Save review artifacts
-        if: always() && github.event_name != 'pull_request'
+          python v2-maintenance/build-data.py
+          python v2-maintenance/validate-data.py
+          python v2-maintenance/update-ranking.py --check
+          python v2-maintenance/test-review-sources.py
+          python v2-maintenance/test-ranking.py
+          node --test v2-maintenance/pricing.test.cjs
+      - name: Check every official source
+        run: python v2-maintenance/review-sources.py --report-dir "$REPORT_DIR" --checks v2-checks.json --issue "$ISSUE_FILE"
+      - name: Add the review to the run summary
+        if: always()
+        run: |
+          if [ -s "$ISSUE_FILE" ]; then cat "$ISSUE_FILE" >> "$GITHUB_STEP_SUMMARY"; else echo "Nothing to review today." >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Publish order, regions and verified dates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/endpoints-auto.json
+          if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "LLM pricing v2: daily refresh $(date -u +%F)"
+          for attempt in 1 2 3; do
+            if git pull -q --rebase origin main && git push -q origin HEAD:main; then
+              gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null && echo "Requested a Pages build." ||
+                echo "::warning::Pages build request failed; the next push publishes today's refresh."
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
+      - name: Open, update or close the review issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          label=llm-pricing-review
+          gh label create "$label" --color FBCA04 --description "The daily LLM pricing check found something to review" 2>/dev/null || true
+          number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
+          if [ -s "$ISSUE_FILE" ]; then
+            if [ -z "$number" ]; then
+              gh issue create --title "LLM pricing: the daily check needs a review" --label "$label" --body-file "$ISSUE_FILE"
+            # The first line carries the date; comment only when the findings themselves change.
+            elif [ "$(gh issue view "$number" --json body --jq .body | tail -n +2)" != "$(tail -n +2 "$ISSUE_FILE")" ]; then
+              gh issue edit "$number" --body-file "$ISSUE_FILE"
+              gh issue comment "$number" --body "Updated by the daily check on $(date -u +%F). See the list above."
+            fi
+          elif [ -n "$number" ]; then
+            gh issue close "$number" --comment "Daily check $(date -u +%F): nothing left to review."
+          fi
+      - name: Save the full report
+        if: always()
         uses: actions/upload-artifact@v6
         with:
           name: llm-pricing-v2-source-review
           path: ${{ runner.temp }}/llm-pricing-v2-review/
           retention-days: 30
           if-no-files-found: warn
-
-  # Model list and default order follow the arena.ai Best Overall ranking. Only the order file is
-  # published automatically; prices still change only through a reviewed dataset update.
-  ranking:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-      pages: write
-    defaults:
-      run:
-        working-directory: llm-pricing
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-      - name: Read the arena.ai Best Overall ranking
-        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY"
-      - name: Validate the new order
-        run: python v2-maintenance/update-ranking.py --check
-      - name: Publish the new order
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if git diff --quiet -- v2-ranking.json; then echo "Model order unchanged."; exit 0; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add v2-ranking.json
-          git commit -m "LLM pricing v2: update model order from the arena.ai ranking"
-          for attempt in 1 2 3; do
-            if git pull --rebase origin main && git push origin HEAD:main; then
-              gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null && echo "Requested a Pages build." ||
-                echo "::warning::Pages build request failed; the next push publishes the new order."
-              exit 0
-            fi
-            sleep 10
-          done
-          exit 1

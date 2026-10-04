@@ -42,6 +42,9 @@
       delete result.long_context;
       delete result.promotion;
       delete result.variants;
+      // Endpoint and tier labels describe one offer; a variant without them falls back to its scope.
+      delete result.endpoint;
+      delete result.tier_label;
       result = Object.assign(result, clone(variant));
       result.tier = variant.label;
       result.variant_id = variant.id;
