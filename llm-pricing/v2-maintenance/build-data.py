@@ -197,7 +197,7 @@ def add_models(data):
     aws = offer(2, 10, 0.1, 2.5, src="aws_gpt61", tier="Global cross-region · runtime",
                 model_id="openai.gpt-6.1-sol", context_threshold=272000, long_context=rates(4, 15, 0.2, 5),
                 regions="Mantle in us-east-1; runtime US geographic / global cross-region profiles.",
-                note="Explicit prompt-cache controls are not supported; use actual billed cache-token volumes.", cache_storage=0)
+                note="Implicit and explicit prompt caching supported (explicit: Responses, Chat Completions and InvokeModel; not Converse). Cache write billed at 1.25x, cache read at 0.05x of the input rate.", cache_storage=0)
     aws["variants"] = [variant("Mantle in-region (us-east-1)", 2.2, 11, 0.11, 2.75, scope="regional",
                                long_context=rates(4.4, 16.5, 0.22, 5.5), cache_storage=0),
                        variant("US geographic cross-region", 2.2, 11, 0.11, 2.75, scope="regional",
