@@ -2560,7 +2560,7 @@
           "src": "aws_gpt61",
           "tier": "Global cross-region · runtime",
           "model_id": "openai.gpt-6.1-sol",
-          "note": "Explicit prompt-cache controls are not supported; use actual billed cache-token volumes.",
+          "note": "Implicit and explicit prompt caching supported (explicit: Responses, Chat Completions and InvokeModel; not Converse). Cache write billed at 1.25x, cache read at 0.05x of the input rate.",
           "status": "priced",
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
