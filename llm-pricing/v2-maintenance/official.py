@@ -1,4 +1,4 @@
-"""Parsers for the official tables the refresh reads directly; dependency-free.
+"""Parsers for the official tables the daily refresh reads directly; dependency-free.
 
 Databricks publishes model-serving regions (per cloud) and DBU rates as HTML tables, and Bedrock
 model cards mark each region's in-region / geographic / global support with icons. These parsers
