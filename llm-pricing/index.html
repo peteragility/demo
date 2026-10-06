@@ -9,14 +9,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="v2.css?v=69bdce0faf82">
+<link rel="stylesheet" href="v2.css?v=394404588a48">
 <script src="v2-math.js?v=7205ad5becb0" defer></script>
-<script src="v2-app.js?v=eb6ebc10d952" defer></script>
+<script src="v2-app.js?v=3c630b0360f8" defer></script>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <h1>LLM Token Pricing</h1>
+    <span class="intref" title="Built by Peter Chan for internal reference, from public list prices on official sources only">Internal reference only</span>
     <p><span class="pl">Databricks FMAPI vs 原廠 API · Fireworks · Azure Foundry · AWS Bedrock · Google Vertex · Alibaba — </span>USD per 1M tokens · verified <b id="verified">—</b><span id="rankSrc"></span> · <a href="../">demo index</a></p>
   </header>
 
@@ -41,10 +42,10 @@
       <p>Prices move fast. Every official source is re-checked daily: unchanged offers show today's verified date, and a changed source marks its card “source changed · re-check” until it is reviewed. Re-check the source before a customer quote. Promotion changes and retirements apply on your local date; unverified prices remain labelled ?.</p>
     </div>
     <div>
-      <h2>Sources <span id="srcDate"></span></h2>
-      <ul class="srcs" id="srcs"></ul>
+      <details class="srcbox"><summary><h2>Sources <span id="srcDate"></span></h2> <span id="srcCount"></span></summary><ul class="srcs" id="srcs"></ul></details>
       <p><a href="https://github.com/peteragility/demo/actions/workflows/llm-pricing-v2-review.yml" target="_blank" rel="noopener">Daily refresh runs ↗</a> · <a href="https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review" target="_blank" rel="noopener">open reviews ↗</a> · <a href="v2-data.json" target="_blank" rel="noopener">data ↗</a></p>
     </div>
+    <p class="disclaimer" id="disclaimer"><b>Disclaimer.</b> Built by Peter Chan for internal reference only. Prices are public list prices taken only from providers' official websites, documentation and price APIs (see Sources); they exclude private, committed-use and negotiated pricing. This is not an official Databricks price list or quote: check the source before quoting a customer.</p>
   </footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>

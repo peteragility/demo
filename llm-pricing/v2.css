@@ -58,6 +58,7 @@ button,select,input{font:inherit;color:inherit}
 .top h1{margin:0;font-size:20px;line-height:1.25;font-weight:700;letter-spacing:-.01em}
 .top p{margin:0;color:var(--ink-3);font-size:12px;line-height:1.4}
 .top p b{color:var(--ink-2);font-weight:600}
+.intref{align-self:center;padding:1px 7px;border:1px solid var(--line-2);border-radius:10px;font-size:11px;font-weight:600;line-height:16px;color:var(--ink-3);white-space:nowrap}
 #rankSrc a{color:var(--ink-2)}
 
 /* sticky family tabs; the tools share their sticky row on wide screens */
@@ -200,9 +201,15 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
 .foot{margin-block:12px 36px;color:var(--ink-3);font-size:12px;line-height:1.5;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:10px 24px}
 .foot h2{margin:0 0 3px;font-size:12px;font-weight:600;color:var(--ink-2)}
 .foot p{margin:0 0 6px}
+.foot .disclaimer{grid-column:1/-1;margin:2px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-3)}
+.foot .disclaimer b{color:var(--ink-2)}
 .legend{display:flex;flex-wrap:wrap;gap:2px 12px}
 .legend span{white-space:nowrap}
 .legend .up{color:var(--up);font-weight:600} .legend .down{color:var(--down);font-weight:600}
+.srcbox{margin:0 0 6px}
+.srcbox summary{cursor:pointer;color:var(--ink-3)}
+.srcbox summary h2{display:inline;margin:0}
+.srcbox[open] summary{margin-bottom:4px}
 .srcs{margin:0;padding-left:16px}
 .srcs li{margin:1px 0}
 .srcs a{color:var(--ink-2)}

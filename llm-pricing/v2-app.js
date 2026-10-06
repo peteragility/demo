@@ -414,6 +414,7 @@
         lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : (m.platforms[pl].endpoints || {}).cache_write === 'input-rate' && c.cache_read != null ? ' · no cache-write charge' : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note.replace(/<[^>]+>/g, '') : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
       }
     }
+    lines.push('Internal reference only: public list prices from official sources, compiled by Peter Chan. Not an official Databricks price list or quote.');
     const text = lines.join('\n');
     const done = () => toast('Copied summary');
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text));
@@ -504,6 +505,8 @@
     if (d.usd_per_dbu) $('#dbu').textContent = '$' + d.usd_per_dbu;
     const srcList = d.source_meta ? Object.values(d.source_meta) : (d.sources || []).map(u => { const url = String(u).split(' ')[0]; let label = url; try { label = new URL(url).hostname; } catch (e) {} return { url, label }; });
     $('#srcs').innerHTML = srcList.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a></li>`).join('');
+    // Each card links its own sources; the full list stays folded so the footer (and disclaimer) stay close.
+    $('#srcCount').textContent = '· ' + srcList.length + ' official pages, tap to list';
     $('#sort').value = S.sort; $('#blend').value = String(S.blend);
     S.group = fromHash() || 'all';
     bind(); render();

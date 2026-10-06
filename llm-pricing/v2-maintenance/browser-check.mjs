@@ -114,6 +114,9 @@ try {
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx tr.row')].map(r=>r.dataset.k)"), expected.keys, viewport.name + ': arena rank order');
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*', ...['oss','anthropic','openai','google','xai','other'].filter(g => expected[g])]);
     assert.match(await evalJS("document.querySelector('#rankSrc').textContent"), /ranked by arena\.ai Best Overall/);
+    // The disclaimer shows at the top on every screen size, and in full in the footer.
+    assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), 'Internal reference only');
+    assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /Built by Peter Chan for internal reference only/);
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
@@ -183,6 +186,7 @@ try {
       assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
       assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-0\d/);
       assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best Overall #\d+/);
+      assert.match(await evalJS('window.copiedSummary'), /Internal reference only/);
       await toggle('openai/gpt-6.1-sol');
     }
 
