@@ -308,7 +308,7 @@
       return `<span><b>${esc(LONG[pl])}</b> ${st}${alt}</span>`;
     });
     return `<tr class="detail" id="d-${slug(r.k)}"><td colspan="8"><div class="dw"><div class="dh"><b>${esc(m.name)}</b><span class="meta">${esc(meta)}</span>${warn ? `<span class="warn">${esc(warn)}</span>` : ''}<button type="button" class="copy" data-copy="${esc(r.k)}">Copy summary</button>${m.note ? `<span class="note">${esc(m.note)}</span>` : ''}</div>` +
-      `<p class="clegend">USD per 1M tokens · <span class="sw">shaded</span> = the price the table compares (cheapest standard) · cache write <b>0.00</b> = no charge to write the cache, <b>—</b> = not published · ${badge('in', 'In-region')} processed in the region you call ${badge('geo', 'Geo')} stays in one geography (e.g. US, EU) ${badge('gl', 'Global')} may run anywhere</p>` +
+      `<p class="clegend">USD per 1M tokens · <span class="sw">shaded</span> = the price the table compares (cheapest standard) · <b>—</b> = not published · ${badge('in', 'In-region')} processed in the region you call ${badge('geo', 'Geo')} stays in one geography (e.g. US, EU) ${badge('gl', 'Global')} may run anywhere</p>` +
       `<div class="pcards">${live.map(pl => cardHtml(r.k, pl)).join('')}</div>${rest.length ? `<div class="coff">${rest.join('')}</div>` : ''}</div></td></tr>`;
   }
 
