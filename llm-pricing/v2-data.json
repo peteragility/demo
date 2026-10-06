@@ -18,6 +18,7 @@
     "https://api-docs.deepseek.com/quick_start/pricing",
     "https://api-docs.deepseek.com/quick_start/rate_limit",
     "https://aws.amazon.com/bedrock/pricing/",
+    "https://aws.amazon.com/blogs/machine-learning/introducing-glm-5-3-on-amazon-bedrock/",
     "https://azure.microsoft.com/en-us/pricing/details/ai-foundry-models/deepseek/",
     "https://azure.microsoft.com/en-us/pricing/details/ai-foundry-models/fireworks/",
     "https://azure.microsoft.com/en-us/pricing/details/ai-foundry-models/grok/",
@@ -65,6 +66,7 @@
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-sol.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-xai-grok-4-6.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-xai-grok-4-7.html",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-zai-glm-5-3.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards-openai.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/models-region-compatibility.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
@@ -1295,8 +1297,8 @@
     },
     "aws_pricing_page": {
       "url": "https://aws.amazon.com/bedrock/pricing/",
-      "label": "Amazon Bedrock pricing page",
-      "short": "pricing page"
+      "label": "Amazon Bedrock pricing (model tables)",
+      "short": "prices"
     },
     "aws_region_page": {
       "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-region-compatibility.html",
@@ -1462,6 +1464,16 @@
       "url": "https://docs.x.ai/developers/models/grok-4.6.md",
       "label": "xAI Grok 4.6 model page (model maker; long-context threshold)",
       "short": "xai grok46"
+    },
+    "aws_card_glm_5_3": {
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-zai-glm-5-3.html",
+      "label": "Bedrock GLM 5.3 model card",
+      "short": "model page"
+    },
+    "aws_glm53_blog": {
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-glm-5-3-on-amazon-bedrock/",
+      "label": "AWS: Introducing GLM 5.3 on Amazon Bedrock (5 Oct 2026)",
+      "short": "launch post"
     }
   },
   "platform_meta": {
@@ -1538,7 +1550,13 @@
         "from": "2026-10-30"
       },
       "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
-      "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither sells GLM 5.3 or DeepSeek V4, and Vertex has no Kimi K3.",
+      {
+        "text": "GLM 5.3 reached Bedrock on 5 Oct 2026 at $1.68 / $5.28 (Global CRIS), 20% above Databricks and Z.ai ($1.40 / $4.40); access is for eligible enterprise customers.",
+        "models": [
+          "zai/glm-5.3"
+        ]
+      },
+      "Vertex trails a generation: GLM 5.2, DeepSeek V3.2, Kimi K2.x; no GLM 5.3, DeepSeek V4 or Kimi K3. Bedrock has no DeepSeek V4.",
       {
         "text": "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.",
         "models": [
@@ -1576,7 +1594,7 @@
           "anthropic/claude-sonnet-5"
         ]
       },
-      "Vertex has no Taiwan or Hong Kong endpoint for the 2026 Claude models: only global and US / EU multi-region (Opus 5, Sonnet 5 and Fable 5 also list Singapore, unpriced). Azure deploys Claude from US regions and Sweden Central."
+      "Vertex has no Taiwan or Hong Kong endpoint for the 2026 Claude models: only global and US / EU multi-region. Azure deploys Claude from US regions and Sweden Central."
     ],
     "openai": [
       "List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region. Azure Data Zone is +10% in the US and +20% in the EU / APAC zones for GPT-6; Bedrock in-region / US CRIS is +10%.",
@@ -1589,7 +1607,7 @@
           "openai/gpt-5.4"
         ]
       },
-      "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
+      "GPT-6.1 Sol: $2 / $10 with $0.10 cached input on Databricks, OpenAI, Bedrock Global and Azure Global Standard; long context (>272K) is $4 / $15.",
       {
         "text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.",
         "until": "2026-11-21"
@@ -1632,13 +1650,13 @@
       "Model Studio's Global scope is below its International (Singapore) list; Qwen3.7 Plus also has limited-time daytime / night discounts."
     ],
     "xai": [
-      "Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
+      "Grok 4.7: xAI, Bedrock Global, Vertex and Databricks list $2 / $6, with $0.50 cached input.",
       {
-        "text": "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.",
+        "text": "Grok 4.7 and 4.6 have Databricks promotional parity at $2 / $6 through 31 Jan 2027, then $2.50 / $7.50.",
         "until": "2027-01-31"
       },
       {
-        "text": "Grok 4.6 on Databricks is $2.50 / $7.50 since its promotion ended 31 Jan 2027; xAI, Bedrock and Azure stay at $2 / $6.",
+        "text": "Grok 4.7 and 4.6 on Databricks are $2.50 / $7.50 since the promotion ended 31 Jan 2027; xAI, Bedrock and Vertex stay at $2 / $6.",
         "from": "2027-02-01"
       },
       "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; xAI's own US endpoint and Bedrock US CRIS are +10%. Azure sells Grok 4.6 as Global Standard only."
@@ -1910,13 +1928,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -2253,13 +2271,92 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         },
         "databricks": {
-          "status": "unverified",
-          "note": "Supported pay-per-token endpoint; exact GPT-6.1 pricing is pending verification.",
-          "src": "dbx_models",
+          "in": 2,
+          "out": 10,
+          "cache_read": 0.1,
+          "cache_write": 2.5,
+          "src": "dbx_prop",
+          "tier": "Standard · short context",
           "model_id": "databricks-gpt-6-1-sol",
-          "available": true,
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-02",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "context_threshold": 272000,
+          "long_context": {
+            "in": 4,
+            "out": 15,
+            "cache_read": 0.2,
+            "cache_write": 5
+          },
+          "variants": [
+            {
+              "in": 4,
+              "out": 20,
+              "cache_read": 0.2,
+              "cache_write": 5,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-06",
+              "long_context": {
+                "in": 8,
+                "out": 30,
+                "cache_read": 0.4,
+                "cache_write": 10
+              },
+              "id": "variant-0",
+              "model_match": "confirmed",
+              "endpoint": "Default"
+            },
+            {
+              "in": 2.2,
+              "out": 11,
+              "cache_read": 0.11,
+              "cache_write": 2.75,
+              "label": "Regional processing ⌖ +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-06",
+              "id": "variant-1",
+              "model_match": "confirmed",
+              "long_context": {
+                "in": 4.4,
+                "out": 16.5,
+                "cache_read": 0.22,
+                "cache_write": 5.5
+              },
+              "endpoint": "Regional processing ⌖"
+            },
+            {
+              "in": 4.4,
+              "out": 22.0,
+              "cache_read": 0.22,
+              "cache_write": 5.5,
+              "long_context": {
+                "in": 8.8,
+                "out": 33.0,
+                "cache_read": 0.44,
+                "cache_write": 11.0
+              },
+              "label": "Regional processing ⌖ Priority",
+              "comparison_scope": "regional",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-06",
+              "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
+              "endpoint": "Regional processing ⌖",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-06",
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
+          "endpoint": "Default",
           "endpoints": {
             "checked_at": "2026-10-04",
             "src": [
@@ -2313,6 +2410,10 @@
                 "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
               ],
               [
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
+              ],
+              [
                 "Azure",
                 "Azure Databricks provides access through ADI Services, provided by Databricks (†)."
               ],
@@ -2324,10 +2425,8 @@
             "ids": [
               "databricks-gpt-6-1-sol"
             ],
-            "cache_write": "not-listed"
-          },
-          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models",
-          "model_id_checked_at": "2026-10-02"
+            "cache_write": "priced"
+          }
         },
         "official": {
           "in": 2,
@@ -2562,8 +2661,8 @@
           "model_id": "openai.gpt-6.1-sol",
           "note": "Implicit and explicit prompt caching supported (explicit: Responses, Chat Completions and InvokeModel; not Converse). Cache write billed at 1.25x, cache read at 0.05x of the input rate.",
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -2584,7 +2683,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "long_context": {
                 "in": 4.4,
@@ -2603,7 +2702,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "long_context": {
                 "in": 4.4,
@@ -2618,7 +2717,7 @@
           "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_card_gpt_6_1_sol",
               "aws_endpoint_regions"
@@ -2648,7 +2747,7 @@
             "notes": [
               [
                 "Caching",
-                "Card: explicit prompt caching not supported, yet cache-write ($2.50) and cache-read ($0.10) rates are published."
+                "Implicit and explicit caching (explicit on Responses, Chat Completions and InvokeModel; not Converse); writes 1.25×, reads 0.05× input."
               ],
               [
                 "Regions",
@@ -3475,13 +3574,57 @@
       ],
       "platforms": {
         "databricks": {
-          "status": "unverified",
-          "note": "Catalog lists Grok 4.7, but the price page still lists 4.6. Exact 4.7 rates are pending verification.",
-          "src": "dbx_models",
+          "in": 2,
+          "out": 6,
+          "cache_read": 0.5,
+          "src": "dbx_prop",
+          "tier": "Standard · 20% promotion",
           "model_id": "databricks-grok-4-7",
-          "available": true,
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-02",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "dbu_rate_basis": 0.07,
+          "promotion": {
+            "ends_on": "2027-01-31",
+            "after": {
+              "in": 2.5,
+              "out": 7.5,
+              "cache_read": 0.625,
+              "tier": "Standard pay-per-token"
+            },
+            "label": "Databricks 20% promotion"
+          },
+          "variants": [
+            {
+              "in": 2.2,
+              "out": 6.6,
+              "cache_read": 0.55,
+              "label": "Regional processing +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-06",
+              "promotion": {
+                "ends_on": "2027-01-31",
+                "after": {
+                  "in": 2.75,
+                  "out": 8.25,
+                  "cache_read": 0.6875,
+                  "tier": "Regional processing +10%"
+                },
+                "label": "Databricks 20% promotion"
+              },
+              "id": "variant-0",
+              "model_match": "confirmed",
+              "endpoint": "Regional processing ⌖"
+            }
+          ],
+          "model_id_checked_at": "2026-10-06",
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
+          "endpoint": "Default",
           "endpoints": {
             "checked_at": "2026-10-04",
             "src": [
@@ -3523,6 +3666,10 @@
                 "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
               ],
               [
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
+              ],
+              [
                 "Billing",
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
               ]
@@ -3530,10 +3677,8 @@
             "ids": [
               "databricks-grok-4-7"
             ],
-            "cache_write": "not-listed"
-          },
-          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models",
-          "model_id_checked_at": "2026-10-02"
+            "cache_write": "input-rate"
+          }
         },
         "official": {
           "in": 2,
@@ -3664,8 +3809,8 @@
           "model_id": "xai.grok-4.7",
           "note": "Billing SKU names contain mantle; the current model card documents bedrock-runtime programmatic access.",
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -3679,7 +3824,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -3691,7 +3836,7 @@
               "label": "US CRIS · Priority",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-1",
               "model_match": "confirmed"
@@ -3703,7 +3848,7 @@
               "label": "Global CRIS · Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
               "id": "variant-2",
               "model_match": "confirmed"
@@ -3715,7 +3860,7 @@
               "label": "US CRIS · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-3",
               "model_match": "confirmed"
@@ -3727,7 +3872,7 @@
               "label": "Global CRIS · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
               "id": "variant-4",
               "model_match": "confirmed"
@@ -3736,7 +3881,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_br_use1",
               "aws_card_grok_4_7",
@@ -3747,13 +3892,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
               ],
               [
                 "Europe",
@@ -3925,6 +4070,12 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
+      "notices": [
+        {
+          "text": "Databricks 4.7 promotion through 31 Jan 2027",
+          "until": "2027-01-31"
+        }
+      ],
       "model_key": "xai/grok-4.7"
     },
     "xai/grok-4.6": {
@@ -4170,8 +4321,8 @@
           "model_id": "xai.grok-4.6",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -4185,7 +4336,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -4197,7 +4348,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-1",
               "model_match": "confirmed"
@@ -4209,7 +4360,7 @@
               "label": "In-region · Priority",
               "comparison_scope": "regional",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "id": "variant-2",
               "model_match": "confirmed"
@@ -4221,7 +4372,7 @@
               "label": "US CRIS · Priority",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-3",
               "model_match": "confirmed"
@@ -4233,7 +4384,7 @@
               "label": "Global CRIS · Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
               "id": "variant-4",
               "model_match": "confirmed"
@@ -4245,7 +4396,7 @@
               "label": "In-region · Flex",
               "comparison_scope": "regional",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "id": "variant-5",
               "model_match": "confirmed"
@@ -4257,7 +4408,7 @@
               "label": "US CRIS · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-6",
               "model_match": "confirmed"
@@ -4269,7 +4420,7 @@
               "label": "Global CRIS · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
               "id": "variant-7",
               "model_match": "confirmed"
@@ -4278,7 +4429,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_br_use1",
               "aws_card_grok_4_6",
@@ -4295,13 +4446,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
               ],
               [
                 "Europe",
@@ -4762,7 +4913,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -4775,7 +4926,7 @@
               "label": "Global CRIS · Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
               "id": "variant-1",
               "model_match": "confirmed"
@@ -4788,7 +4939,7 @@
               "label": "US CRIS · Priority",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-2",
               "model_match": "confirmed"
@@ -4801,7 +4952,7 @@
               "label": "Global CRIS · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
               "id": "variant-3",
               "model_match": "confirmed"
@@ -4814,7 +4965,7 @@
               "label": "US CRIS · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "id": "variant-4",
               "model_match": "confirmed"
@@ -4826,12 +4977,12 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_br_use1",
               "aws_card_kimi_k3",
@@ -4842,13 +4993,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
               ],
               [
                 "Europe",
@@ -5412,21 +5563,159 @@
           }
         },
         "bedrock": {
-          "alt": {
-            "name": "GLM 5",
-            "in": 1.0,
-            "out": 3.2
-          },
-          "note": "Bedrock tops out at GLM 5. Tokyo in-region is +20% ($1.20 / $3.84).",
-          "src": "aws",
-          "status": "unavailable",
-          "model_id": null,
-          "model_match": "unverified",
+          "in": 1.68,
+          "out": 5.28,
+          "cache_read": 0.312,
+          "cache_write": 2.1,
+          "src": "aws_pricing_page",
+          "tier": "Global CRIS",
+          "model_id": "zai.glm-5.3",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-09-28",
-          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+          "model_match": "confirmed",
+          "url": "https://aws.amazon.com/bedrock/pricing/",
+          "endpoint": "Global CRIS",
+          "variants": [
+            {
+              "in": 1.848,
+              "out": 5.808,
+              "cache_read": 0.3432,
+              "cache_write": 2.31,
+              "label": "US CRIS · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-06",
+              "endpoint": "US CRIS",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.94,
+              "out": 9.24,
+              "cache_read": 0.546,
+              "cache_write": 3.675,
+              "label": "Global CRIS · Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-06",
+              "endpoint": "Global CRIS",
+              "derived": "AWS pricing page rule: Priority is 75% above the Standard tier",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 3.234,
+              "out": 10.164,
+              "cache_read": 0.6006,
+              "cache_write": 4.0425,
+              "label": "US CRIS · Priority",
+              "comparison_scope": "geographic",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-06",
+              "endpoint": "US CRIS",
+              "derived": "AWS pricing page rule: Priority is 75% above the Standard tier",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.84,
+              "out": 2.64,
+              "cache_read": 0.156,
+              "cache_write": 1.05,
+              "label": "Global CRIS · Flex",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-06",
+              "endpoint": "Global CRIS",
+              "derived": "AWS pricing page rule: Flex is 50% below the Standard tier",
+              "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.924,
+              "out": 2.904,
+              "cache_read": 0.1716,
+              "cache_write": 1.155,
+              "label": "US CRIS · Flex",
+              "comparison_scope": "geographic",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-06",
+              "endpoint": "US CRIS",
+              "derived": "AWS pricing page rule: Flex is 50% below the Standard tier",
+              "id": "variant-4",
+              "model_match": "confirmed"
+            }
+          ],
+          "endpoints": {
+            "checked_at": "2026-10-06",
+            "src": [
+              "aws_card_glm_5_3",
+              "aws_glm53_blog"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "geo",
+                "US CRIS",
+                "N. Virginia, Ohio, N. California, Oregon"
+              ],
+              [
+                "Americas",
+                "global",
+                "Global CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global CRIS",
+                "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global CRIS",
+                "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No Bedrock endpoint in Hong Kong (ap-east-1)"
+            ],
+            "tw": [
+              "routed",
+              "Taipei (ap-east-2) through global cross-region inference only"
+            ],
+            "notes": [
+              [
+                "Access",
+                "Launched 5 Oct 2026; AWS says access is for eligible enterprise customers."
+              ],
+              [
+                "Residency",
+                "Cross-region inference only: US CRIS keeps processing in the US; no in-region processing."
+              ],
+              [
+                "Caching",
+                "Implicit and explicit caching; cache writes last at least 30 minutes; 1,024-token minimum per checkpoint."
+              ],
+              [
+                "Tiers",
+                "Priority and Flex prices follow AWS's stated rules (+75% / −50%); no published Batch support."
+              ]
+            ],
+            "ids": [
+              "global.zai.glm-5.3 (global)",
+              "us.zai.glm-5.3 (US geo)",
+              "zai.glm-5.3 (model)"
+            ],
+            "cache_write": "priced"
+          },
+          "model_id_checked_at": "2026-10-02"
         },
         "azure_foundry": {
           "in": 1.75,
@@ -5761,7 +6050,7 @@
               ],
               [
                 "Caching",
-                "Implicit cache supported in all six regions; the Context Cache page's GLM rate sentence gives no rate for glm-5.3."
+                "Implicit cache supported in all six regions; no published cache-hit rate for this model."
               ]
             ],
             "ids": [
@@ -9893,13 +10182,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -10509,13 +10798,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -11209,13 +11498,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -11405,7 +11694,7 @@
               "label": "US multi-region · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US multi-region",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -11419,7 +11708,7 @@
               "label": "EU multi-region · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "EU multi-region",
               "id": "variant-1",
               "model_match": "confirmed"
@@ -11433,7 +11722,7 @@
               "label": "US multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US multi-region",
               "id": "variant-2",
               "model_match": "confirmed"
@@ -11447,7 +11736,7 @@
               "label": "EU multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "EU multi-region",
               "id": "variant-3",
               "model_match": "confirmed"
@@ -11459,12 +11748,12 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
           "endpoint": "Global",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "gcp_claude_opus_5",
               "gcp_locations",
@@ -11488,12 +11777,6 @@
                 "geo",
                 "EU multi-region",
                 "EU member states (not the UK or Switzerland); processing stays in the EU"
-              ],
-              [
-                "APAC",
-                "in-region",
-                "Regional endpoint (asia-southeast1)",
-                "Singapore (no published price)"
               ]
             ],
             "hk": [
@@ -11840,13 +12123,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -12032,7 +12315,7 @@
               "label": "US multi-region · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US multi-region",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -12046,7 +12329,7 @@
               "label": "EU multi-region · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "EU multi-region",
               "id": "variant-1",
               "model_match": "confirmed"
@@ -12057,7 +12340,7 @@
               "label": "US multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US multi-region",
               "id": "variant-2",
               "model_match": "confirmed"
@@ -12068,7 +12351,7 @@
               "label": "EU multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "EU multi-region",
               "id": "variant-3",
               "model_match": "confirmed"
@@ -12080,12 +12363,12 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
           "endpoint": "Global",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "gcp_claude_sonnet_5",
               "gcp_locations",
@@ -12109,12 +12392,6 @@
                 "geo",
                 "EU multi-region",
                 "EU member states (not the UK or Switzerland); processing stays in the EU"
-              ],
-              [
-                "APAC",
-                "in-region",
-                "Regional endpoint (asia-southeast1)",
-                "Singapore (no published price)"
               ]
             ],
             "hk": [
@@ -13180,7 +13457,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "long_context": {
                 "in": 22.0,
@@ -13199,7 +13476,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "long_context": {
                 "in": 22.0,
@@ -13218,7 +13495,7 @@
               "label": "In-region · Fast",
               "comparison_scope": "regional",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "tier_label": "Fast",
               "long_context": {
@@ -13238,7 +13515,7 @@
               "label": "US CRIS · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "tier_label": "Fast",
               "long_context": {
@@ -13258,7 +13535,7 @@
               "label": "Global CRIS · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
               "tier_label": "Fast",
               "long_context": {
@@ -13278,15 +13555,15 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
           "model_id_checked_at": "2026-10-02",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_card_gpt_6_astra",
               "aws_endpoint_regions"
@@ -13302,13 +13579,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
               ],
               [
                 "Europe",
@@ -13989,7 +14266,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "long_context": {
                 "in": 4.4,
@@ -14008,7 +14285,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "long_context": {
                 "in": 4.4,
@@ -14027,15 +14304,15 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
           "model_id_checked_at": "2026-10-02",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_card_gpt_6_sol",
               "aws_endpoint_regions"
@@ -14051,13 +14328,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -14091,7 +14368,7 @@
               ],
               [
                 "Caching",
-                "Implicit and explicit caching on the Responses API only; card gives one cache-write rate with no TTL."
+                "Implicit and explicit caching on the Responses, Chat Completions and InvokeModel APIs (not Converse); 1,024-token minimum prefix."
               ],
               [
                 "Quota",
@@ -14771,7 +15048,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "long_context": {
                 "in": 0.22,
@@ -14790,7 +15067,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "long_context": {
                 "in": 0.22,
@@ -14809,15 +15086,15 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
           "model_id_checked_at": "2026-10-02",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_card_gpt_6_luna",
               "aws_endpoint_regions"
@@ -14833,13 +15110,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -14873,7 +15150,7 @@
               ],
               [
                 "Caching",
-                "Implicit and explicit caching on the Responses API only; card gives one cache-write rate with no TTL."
+                "Implicit and explicit caching on the Responses, Chat Completions and InvokeModel APIs (not Converse); 1,024-token minimum prefix."
               ],
               [
                 "Quota",
@@ -15544,7 +15821,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "long_context": {
                 "in": 8.8,
@@ -15563,7 +15840,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
               "long_context": {
                 "in": 8.8,
@@ -15582,15 +15859,15 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
           "model_id_checked_at": "2026-10-02",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_card_gpt_5_6_sol",
               "aws_endpoint_regions"
@@ -15606,13 +15883,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
               ],
               [
                 "Europe",
@@ -16299,7 +16576,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "long_context": {
                 "in": 4.4,
@@ -16318,7 +16595,7 @@
               "label": "Geo CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Geo CRIS",
               "long_context": {
                 "in": 4.4,
@@ -16337,15 +16614,15 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
           "model_id_checked_at": "2026-10-02",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_card_gpt_5_6_terra",
               "aws_endpoint_regions"
@@ -16361,13 +16638,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
               ],
               [
                 "Europe",
@@ -17049,7 +17326,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
               "long_context": {
                 "in": 0.44,
@@ -17068,7 +17345,7 @@
               "label": "Geo CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Geo CRIS",
               "long_context": {
                 "in": 0.44,
@@ -17087,15 +17364,15 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
           "model_id_checked_at": "2026-10-02",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "aws_card_gpt_5_6_luna",
               "aws_endpoint_regions"
@@ -17111,13 +17388,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
               ],
               [
                 "Europe",
@@ -19492,7 +19769,7 @@
               "label": "US / EU multi-region · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US / EU multi-region",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -19514,7 +19791,7 @@
               "label": "Global · Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -19536,7 +19813,7 @@
               "label": "US / EU multi-region · Priority",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US / EU multi-region",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -19558,7 +19835,7 @@
               "label": "Global · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -19580,7 +19857,7 @@
               "label": "Global · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -19602,7 +19879,7 @@
               "label": "US / EU multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US / EU multi-region",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -19624,8 +19901,8 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "model_id_source": "vertex",
           "model_id_checked_at": "2026-10-02",
           "promotion": {
@@ -19641,8 +19918,13 @@
           "cache_storage": 1.0,
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
           "endpoint": "Global",
+          "retires_on": "2027-01-28",
+          "replacement": [
+            "Gemini 3.8 Flash"
+          ],
+          "retirement_src": "gcp_gemini_3_7_flash",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "gcp_gemini_3_7_flash",
               "gcp_locations",
@@ -19678,6 +19960,10 @@
             ],
             "notes": [
               [
+                "Lifecycle",
+                "Vertex retires it on 28 Jan 2027; upgrade to Gemini 3.8 Flash. The Gemini API may keep serving it."
+              ],
+              [
                 "Promotion",
                 "$0.75/$3.75 introductory rate runs through 31 Dec 2026 as 50% credits back on net spend; $1.50/$7.50 applies from 1 Jan 2027."
               ],
@@ -19688,10 +19974,6 @@
               [
                 "Caching",
                 "Implicit caching needs at least 6,144 tokens."
-              ],
-              [
-                "Residency",
-                "US/EU multi-region endpoints keep ML processing in-jurisdiction at +10%; no single-region or APAC endpoint exists."
               ]
             ],
             "ids": [
@@ -20029,13 +20311,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -20096,8 +20378,8 @@
           "model_id": null,
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -20111,7 +20393,7 @@
               "label": "EU multi-region · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "EU multi-region",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -20125,7 +20407,7 @@
               "label": "US multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US multi-region",
               "id": "variant-1",
               "model_match": "confirmed"
@@ -20139,7 +20421,7 @@
               "label": "EU multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "EU multi-region",
               "id": "variant-2",
               "model_match": "confirmed"
@@ -20148,7 +20430,7 @@
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
           "endpoint": "Global",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "gcp_claude_fable_5",
               "gcp_locations",
@@ -20172,12 +20454,6 @@
                 "geo",
                 "EU multi-region",
                 "EU member states (not the UK or Switzerland); processing stays in the EU"
-              ],
-              [
-                "APAC",
-                "in-region",
-                "Regional endpoint (asia-southeast1)",
-                "Singapore (no published price)"
               ]
             ],
             "hk": [
@@ -20640,13 +20916,13 @@
                 "Americas",
                 "geo",
                 "US CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
               ],
               [
                 "Americas",
                 "global",
                 "Global CRIS",
-                "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
               ],
               [
                 "Europe",
@@ -21978,8 +22254,8 @@
           "model_id": "gemini-3.6-flash",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-06",
+          "availability_checked_at": "2026-10-06",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -21991,7 +22267,7 @@
               "label": "US / EU multi-region · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US / EU multi-region",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -22013,7 +22289,7 @@
               "label": "Global · Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -22035,7 +22311,7 @@
               "label": "US / EU multi-region · Priority",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US / EU multi-region",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -22057,7 +22333,7 @@
               "label": "Global · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -22079,7 +22355,7 @@
               "label": "Global · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "Global",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -22101,7 +22377,7 @@
               "label": "US / EU multi-region · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-06",
               "endpoint": "US / EU multi-region",
               "promotion": {
                 "ends_on": "2026-12-31",
@@ -22131,8 +22407,13 @@
           "cache_storage": 1.0,
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
           "endpoint": "Global",
+          "retires_on": "2026-11-19",
+          "replacement": [
+            "Gemini 3.8 Flash"
+          ],
+          "retirement_src": "gcp_gemini_3_6_flash",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-06",
             "src": [
               "gcp_gemini_3_6_flash",
               "gcp_locations",
@@ -22168,6 +22449,10 @@
             ],
             "notes": [
               [
+                "Lifecycle",
+                "Vertex retires it on 19 Nov 2026; upgrade to Gemini 3.8 Flash. The Gemini API may keep serving it."
+              ],
+              [
                 "Promotion",
                 "$0.75/$3.75 introductory rate runs through 31 Dec 2026 as 50% credits back on net spend; $1.50/$7.50 applies from 1 Jan 2027."
               ],
@@ -22178,10 +22463,6 @@
               [
                 "Caching",
                 "Implicit caching needs at least 4,096 tokens."
-              ],
-              [
-                "Residency",
-                "US/EU multi-region endpoints keep ML processing in-jurisdiction at +10%; no single-region or APAC endpoint exists."
               ]
             ],
             "ids": [
@@ -22403,13 +22684,15 @@
         "bedrock": {
           "status": "unavailable",
           "src": "aws",
-          "note": "Bedrock tops out at GLM 5.",
+          "note": "Bedrock sells GLM 5 and GLM 5.3, not GLM 5.2.",
           "pricing_checked_at": null,
           "availability_checked_at": "2026-10-03",
           "alt": {
-            "name": "GLM 5",
-            "in": 1.0,
-            "out": 3.2
+            "name": "GLM 5.3",
+            "short": "GLM 5.3",
+            "in": 1.68,
+            "out": 5.28,
+            "cache_read": 0.312
           },
           "model_id": null,
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
@@ -24668,8 +24951,9 @@
       "model_key": "mistral/mistral-medium-3.5"
     }
   },
-  "reviewed_at": "2026-10-04",
+  "reviewed_at": "2026-10-06",
   "changes": [
+    "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",
     "2026-10-04: Row details became one card per platform: every endpoint and tier with input, output, cache read and cache write prices; regions by geography and processing level; Hong Kong and Taiwan; notes and IDs, reviewed for all 35 listed models.",
     "2026-10-04: Added missing tiers (Databricks Priority and ⌖ tiers, OpenAI Flex / Ultrafast, Anthropic fast mode and US-only inference, Bedrock / Vertex batch, xAI US endpoint, Alibaba Chinese mainland and off-peak). Azure now prices GPT-6.1 Sol, GPT-5.4, Claude Fable 5 and Opus 4.8; Inkling left Azure pay-per-token and gained a Thinking Machines API (beta).",
     "2026-10-04: Platforms appear in the order Databricks, maker API, Fireworks, Azure, AWS, Google, Alibaba. The daily check now verifies every offer and opens a review issue when a source changes.",

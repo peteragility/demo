@@ -948,8 +948,8 @@
   },
   "aws_pricing_page": {
    "url": "https://aws.amazon.com/bedrock/pricing/",
-   "label": "Amazon Bedrock pricing page",
-   "short": "pricing page"
+   "label": "Amazon Bedrock pricing (model tables)",
+   "short": "prices"
   },
   "aws_region_page": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-region-compatibility.html",
@@ -1115,6 +1115,16 @@
    "url": "https://docs.x.ai/developers/models/grok-4.6.md",
    "label": "xAI Grok 4.6 model page (model maker; long-context threshold)",
    "short": "xai grok46"
+  },
+  "aws_card_glm_5_3": {
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-zai-glm-5-3.html",
+   "label": "Bedrock GLM 5.3 model card",
+   "short": "model page"
+  },
+  "aws_glm53_blog": {
+   "url": "https://aws.amazon.com/blogs/machine-learning/introducing-glm-5-3-on-amazon-bedrock/",
+   "label": "AWS: Introducing GLM 5.3 on Amazon Bedrock (5 Oct 2026)",
+   "short": "launch post"
   }
  },
  "moonshot/kimi-k3": {
@@ -1171,7 +1181,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -1238,13 +1248,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
     ],
     [
      "Europe",
@@ -1823,7 +1833,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -1928,13 +1938,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
     ],
     [
      "Europe",
@@ -2338,7 +2348,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -2392,13 +2402,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -2433,7 +2443,7 @@
     ],
     [
      "Caching",
-     "Implicit and explicit caching on the Responses API only; card gives one cache-write rate with no TTL."
+     "Implicit and explicit caching on the Responses, Chat Completions and InvokeModel APIs (not Converse); 1,024-token minimum prefix."
     ],
     [
      "Quota",
@@ -2829,7 +2839,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -2883,13 +2893,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -2924,7 +2934,7 @@
     ],
     [
      "Caching",
-     "Implicit and explicit caching on the Responses API only; card gives one cache-write rate with no TTL."
+     "Implicit and explicit caching on the Responses, Chat Completions and InvokeModel APIs (not Converse); 1,024-token minimum prefix."
     ],
     [
      "Quota",
@@ -3276,7 +3286,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -3330,13 +3340,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
     ],
     [
      "Europe",
@@ -3737,7 +3747,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -3791,13 +3801,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
     ],
     [
      "Europe",
@@ -4199,7 +4209,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -4253,13 +4263,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
     ],
     [
      "Europe",
@@ -4760,11 +4770,16 @@
    ]
   },
   "gcloud": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global",
-    "cache_storage": 1.0
+    "cache_storage": 1.0,
+    "retires_on": "2027-01-28",
+    "replacement": [
+     "Gemini 3.8 Flash"
+    ],
+    "retirement_src": "gcp_gemini_3_7_flash"
    },
    "variants": [
     {
@@ -4918,6 +4933,10 @@
    "cache_write": "input-rate",
    "notes": [
     [
+     "Lifecycle",
+     "Vertex retires it on 28 Jan 2027; upgrade to Gemini 3.8 Flash. The Gemini API may keep serving it."
+    ],
+    [
      "Promotion",
      "$0.75/$3.75 introductory rate runs through 31 Dec 2026 as 50% credits back on net spend; $1.50/$7.50 applies from 1 Jan 2027."
     ],
@@ -4928,10 +4947,6 @@
     [
      "Caching",
      "Implicit caching needs at least 6,144 tokens."
-    ],
-    [
-     "Residency",
-     "US/EU multi-region endpoints keep ML processing in-jurisdiction at +10%; no single-region or APAC endpoint exists."
     ]
    ],
    "ids": [
@@ -5277,7 +5292,7 @@
    ]
   },
   "gcloud": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global"
@@ -5340,12 +5355,6 @@
      "geo",
      "EU multi-region",
      "EU member states (not the UK or Switzerland); processing stays in the EU"
-    ],
-    [
-     "APAC",
-     "in-region",
-     "Regional endpoint (asia-southeast1)",
-     "Singapore (no published price)"
     ]
    ],
    "hk": [
@@ -5520,13 +5529,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -5934,13 +5943,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -6773,13 +6782,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -7163,13 +7172,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -7557,13 +7566,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -7687,7 +7696,7 @@
  },
  "anthropic/claude-opus-5": {
   "gcloud": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global"
@@ -7761,12 +7770,6 @@
      "geo",
      "EU multi-region",
      "EU member states (not the UK or Switzerland); processing stays in the EU"
-    ],
-    [
-     "APAC",
-     "in-region",
-     "Regional endpoint (asia-southeast1)",
-     "Singapore (no published price)"
     ]
    ],
    "hk": [
@@ -7982,13 +7985,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -8145,7 +8148,7 @@
  },
  "anthropic/claude-sonnet-5": {
   "gcloud": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global"
@@ -8213,12 +8216,6 @@
      "geo",
      "EU multi-region",
      "EU member states (not the UK or Switzerland); processing stays in the EU"
-    ],
-    [
-     "APAC",
-     "in-region",
-     "Regional endpoint (asia-southeast1)",
-     "Singapore (no published price)"
     ]
    ],
    "hk": [
@@ -8393,13 +8390,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, Mexico, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
     ],
     [
      "Europe",
@@ -8716,7 +8713,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -8778,13 +8775,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
     ],
     [
      "Europe",
@@ -9136,6 +9133,19 @@
     "FW-GLM-5.2-Fast (fast variant model ID)",
     "Meters: 'FW GLM 5.2 [Fast] Inp|Cache Inp|Outp DZ' (Azure Fireworks Models)"
    ]
+  },
+  "bedrock": {
+   "checked_at": "2026-10-06",
+   "base": {
+    "note": "Bedrock sells GLM 5 and GLM 5.3, not GLM 5.2.",
+    "alt": {
+     "name": "GLM 5.3",
+     "short": "GLM 5.3",
+     "in": 1.68,
+     "out": 5.28,
+     "cache_read": 0.312
+    }
+   }
   }
  },
  "xai/grok-4.6": {
@@ -9300,7 +9310,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -9395,13 +9405,13 @@
      "Americas",
      "geo",
      "US CRIS",
-     "N. Virginia, Ohio, N. California, Oregon"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
     ],
     [
      "Americas",
      "global",
      "Global CRIS",
-     "N. Virginia, Ohio, N. California, Oregon, Canada Central, Calgary, São Paulo"
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
     ],
     [
      "Europe",
@@ -9500,11 +9510,16 @@
  },
  "google/gemini-3.6-flash": {
   "gcloud": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global",
-    "cache_storage": 1.0
+    "cache_storage": 1.0,
+    "retires_on": "2026-11-19",
+    "replacement": [
+     "Gemini 3.8 Flash"
+    ],
+    "retirement_src": "gcp_gemini_3_6_flash"
    },
    "variants": [
     {
@@ -9658,6 +9673,10 @@
    "cache_write": "input-rate",
    "notes": [
     [
+     "Lifecycle",
+     "Vertex retires it on 19 Nov 2026; upgrade to Gemini 3.8 Flash. The Gemini API may keep serving it."
+    ],
+    [
      "Promotion",
      "$0.75/$3.75 introductory rate runs through 31 Dec 2026 as 50% credits back on net spend; $1.50/$7.50 applies from 1 Jan 2027."
     ],
@@ -9668,10 +9687,6 @@
     [
      "Caching",
      "Implicit caching needs at least 4,096 tokens."
-    ],
-    [
-     "Residency",
-     "US/EU multi-region endpoints keep ML processing in-jurisdiction at +10%; no single-region or APAC endpoint exists."
     ]
    ],
    "ids": [
@@ -10474,7 +10489,7 @@
     ],
     [
      "Caching",
-     "Implicit cache supported in all six regions; the Context Cache page's GLM rate sentence gives no rate for glm-5.3."
+     "Implicit cache supported in all six regions; no published cache-hit rate for this model."
     ]
    ],
    "ids": [
@@ -10707,6 +10722,138 @@
    "ids": [
     "FW-GLM-5.3 (Fireworks on Foundry model ID)",
     "Meters: 'FW GLM 5.3 Inp|Cd Inp|Opt' and 'FW GLM 5.3 DZ Inp|Cd Inp|Opt' (Azure Fireworks Models)"
+   ]
+  },
+  "bedrock": {
+   "checked_at": "2026-10-06",
+   "reverified": true,
+   "offer": {
+    "in": 1.68,
+    "out": 5.28,
+    "cache_read": 0.312,
+    "cache_write": 2.1,
+    "src": "aws_pricing_page",
+    "tier": "Global CRIS",
+    "model_id": "zai.glm-5.3",
+    "scope": "global"
+   },
+   "base": {
+    "endpoint": "Global CRIS"
+   },
+   "variants": [
+    {
+     "label": "US CRIS · Standard",
+     "in": 1.848,
+     "out": 5.808,
+     "cache_read": 0.3432,
+     "cache_write": 2.31,
+     "scope": "geographic",
+     "endpoint": "US CRIS"
+    },
+    {
+     "label": "Global CRIS · Priority",
+     "in": 2.94,
+     "out": 9.24,
+     "cache_read": 0.546,
+     "cache_write": 3.675,
+     "service": "priority",
+     "endpoint": "Global CRIS",
+     "derived": "AWS pricing page rule: Priority is 75% above the Standard tier"
+    },
+    {
+     "label": "US CRIS · Priority",
+     "in": 3.234,
+     "out": 10.164,
+     "cache_read": 0.6006,
+     "cache_write": 4.0425,
+     "scope": "geographic",
+     "service": "priority",
+     "endpoint": "US CRIS",
+     "derived": "AWS pricing page rule: Priority is 75% above the Standard tier"
+    },
+    {
+     "label": "Global CRIS · Flex",
+     "in": 0.84,
+     "out": 2.64,
+     "cache_read": 0.156,
+     "cache_write": 1.05,
+     "service": "flex",
+     "endpoint": "Global CRIS",
+     "derived": "AWS pricing page rule: Flex is 50% below the Standard tier"
+    },
+    {
+     "label": "US CRIS · Flex",
+     "in": 0.924,
+     "out": 2.904,
+     "cache_read": 0.1716,
+     "cache_write": 1.155,
+     "scope": "geographic",
+     "service": "flex",
+     "endpoint": "US CRIS",
+     "derived": "AWS pricing page rule: Flex is 50% below the Standard tier"
+    }
+   ],
+   "src": [
+    "aws_card_glm_5_3",
+    "aws_glm53_blog"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Access",
+     "Launched 5 Oct 2026; AWS says access is for eligible enterprise customers."
+    ],
+    [
+     "Residency",
+     "Cross-region inference only: US CRIS keeps processing in the US; no in-region processing."
+    ],
+    [
+     "Caching",
+     "Implicit and explicit caching; cache writes last at least 30 minutes; 1,024-token minimum per checkpoint."
+    ],
+    [
+     "Tiers",
+     "Priority and Flex prices follow AWS's stated rules (+75% / −50%); no published Batch support."
+    ]
+   ],
+   "ids": [
+    "global.zai.glm-5.3 (global)",
+    "us.zai.glm-5.3 (US geo)",
+    "zai.glm-5.3 (model)"
    ]
   }
  },
@@ -12347,7 +12494,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-06",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -12416,7 +12563,7 @@
    "notes": [
     [
      "Caching",
-     "Card: explicit prompt caching not supported, yet cache-write ($2.50) and cache-read ($0.10) rates are published."
+     "Implicit and explicit caching (explicit on Responses, Chat Completions and InvokeModel; not Converse); writes 1.25×, reads 0.05× input."
     ],
     [
      "Regions",

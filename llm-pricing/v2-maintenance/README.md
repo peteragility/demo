@@ -54,7 +54,7 @@ The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/
 |---|---|---|
 | Model order | `update-ranking.py` reads the arena.ai Best Overall board | Yes (`../v2-ranking.json`) |
 | Databricks regions | `update-endpoints.py` reads Databricks' AWS, Azure and Google Cloud model-region tables | Yes (`endpoints-auto.json`, then `../v2-data.json`) |
-| Source check | `review-sources.py` re-reads every official price and region source in `source-config.json`. Offers whose lines are unchanged get today's *verified* date; Databricks prices are compared number by number with its DBU tables | Yes (`../v2-checks.json`) |
+| Source check | `review-sources.py` re-reads every official price and region source in `source-config.json`. Offers whose lines are unchanged get today's *verified* date; Databricks prices are compared number by number with its DBU tables, and a price published for a pending Databricks offer is reported. Bedrock's model-card index flags a new card for a tracked model | Yes (`../v2-checks.json`) |
 | Review issue | Anything that changed opens or updates one issue labelled **llm-pricing-review**, with the exact added and removed lines per model and links. Affected cards show "source changed · re-check" until it is resolved. The issue closes itself once nothing is left | Issue only |
 
 Prices, tiers and new models never change automatically. A run fails (and GitHub emails you) only when the pipeline itself is broken: the rebuilt data fails validation or a test, or more than half the sources cannot be read. A single unreadable source is listed in the issue and its offers keep their last verified date.
@@ -64,13 +64,8 @@ Prices, tiers and new models never change automatically. A run fails (and GitHub
 1. Open each linked source and confirm the change: exact model version, rates, endpoint, processing scope, service tier, context threshold and dates.
 2. Update `build-data.py` (prices and models) or `endpoints.json` (endpoints, tiers, regions, Hong Kong / Taiwan, notes, IDs). Leave unverified prices absent; never copy a predecessor's price into a newer model.
 3. Run `python3 v2-maintenance/build-data.py` and the checks above, and inspect the data diff.
-4. Record the reviewed baseline. This also acknowledges promotions or retirements due within 7 days:
-
-   ```sh
-   python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --record-baseline
-   ```
-
-5. Commit and push the changed `llm-pricing` files. The next run verifies the new data and closes the issue.
+4. Commit and push the changed `llm-pricing` files.
+5. Record the reviewed baseline from GitHub: Actions → **LLM pricing v2 daily refresh** → Run workflow, tick **Record the reviewed baseline**. The run reads every source, records them as reviewed (this also acknowledges promotions or retirements due within 7 days), re-checks, publishes and closes the issue. Locally, `python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --record-baseline` does the same, but it refuses when any source cannot be read, and some providers block home networks.
 
 With Claude Code, "apply the open llm-pricing-review issue" covers steps 1–5.
 

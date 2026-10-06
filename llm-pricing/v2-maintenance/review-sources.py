@@ -33,7 +33,8 @@ official = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(official)
 Page, clean, NOTICE = official.Page, official.clean, official.NOTICE
 ALERT_WINDOW = 30  # days before or after a dated event that it is listed in the report
-DUE_WINDOW = 7     # days before or after a dated event that it needs an acknowledged review
+DUE_WINDOW = 7
+STAMP = re.compile(r"^(?:text|notice): Last updated \d{4}-\d{2}-\d{2}(?: UTC)?\.?$")     # days before or after a dated event that it needs an acknowledged review
 
 
 def packed(value):
@@ -67,6 +68,7 @@ def html_records(text, kind):
         for term in re.findall(r"(?:grok-\d[\w.-]*|deepseek-v[\w.-]+|kimi-k2p7-code)", visible, re.I):
             records.append("model-id: " + term)
     records.extend("notice: " + n for n in page.notices)
+    records = [r for r in records if not STAMP.search(r)]
     if not records or (kind == "tables" and not page.tables):
         raise ValueError("No meaningful records found; the source may need a parser update.")
     return sorted(set(records))
@@ -94,6 +96,25 @@ def markdown_records(text):
     if not records:
         raise ValueError("No pricing records in the markdown response.")
     return sorted(set(records))
+
+
+def toc_records(data):
+    """Bedrock model cards listed in the user guide's table of contents."""
+    found = set()
+    def walk(node):
+        if isinstance(node, dict):
+            href = node.get("href") or ""
+            if isinstance(href, str) and href.startswith("model-card-"):
+                found.add("card: " + clean(str(node.get("title") or "")) + " | " + href)
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value)
+    walk(data)
+    if len(found) < 20:
+        raise ValueError("Too few model cards in the Bedrock table of contents.")
+    return sorted(found)
 
 
 def json_records(data):
@@ -181,6 +202,8 @@ def collect_one(source, cache_dir=None):
     kind = source["kind"]
     if kind == "json":
         records = json_records(json.loads(text))
+    elif kind == "aws-toc":
+        records = toc_records(json.loads(text))
     elif kind == "aws":
         records = aws_records(json.loads(text))
     elif kind == "azure":
@@ -261,7 +284,8 @@ def model_regex(model):
         parts = [re.escape(t).replace(r"\.", "[._ -]") for t in tokens]
         own = {t for t in tokens if re.fullmatch(SIBLINGS, t)}
         tail = "|".join(x for x in SIBLINGS.split("|") if x not in own)
-        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?![\d.]*\d)(?!" + sep + "(?:" + tail + r")\b)"
+        # A digit right after the version, directly or after one separator, is another version ("5.3", "5-3").
+        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?![._ -]?\d)(?!" + sep + "(?:" + tail + r")\b)"
     tokens = official.norm(model.get("name") or "").split()
     options = [phrase(tokens)] if tokens else []
     if len(tokens) > 2 and tokens[0] in ("claude", "gemini", "grok", "gpt", "kimi"):
@@ -292,10 +316,16 @@ def dbx_fact_issues(data, facts, today):
     resolve = lambda o: {k: v for k, v in o.items() if k in ("in", "out", "cache_read", "cache_write", "cache_write_1h")}
     for key, model in data["models"].items():
         cell = model["platforms"]["databricks"]
-        if cell.get("status") != "priced" or (cell.get("retires_on") and today.isoformat() >= cell["retires_on"]):
-            continue
         names = {official.compact(n) for n in (model.get("name"), model.get("short"), DBX_TABLE_NAMES.get(key)) if n}
         row = next((r for name, r in facts.items() if official.compact(name) in names), None)
+        if cell.get("status") == "unverified" and cell.get("available") and row:
+            std = row.get("standard", {})
+            short = std.get("") or std.get("short context") or std.get("text tokens") or {}
+            if "in" in short and "out" in short:
+                issues[key] = [f"now priced in the DBU table: ${short['in']:g} / ${short['out']:g} (list, before any promotion)"]
+            continue
+        if cell.get("status") != "priced" or (cell.get("retires_on") and today.isoformat() >= cell["retires_on"]):
+            continue
         found = []
         if not row:
             issues[key] = ["not found in the Databricks DBU tables"]
@@ -356,8 +386,11 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     for key, model in data["models"].items():
         rx = model_regex(model)
         for pl, cell in model["platforms"].items():
-            # A source scoped to some models (a model card, say) checks only those models.
+            # A source scoped to some models (a model card, say) checks only those models. Databricks offers
+            # always depend on its DBU tables, so a price published for a pending offer is noticed.
             deps = [sid for sid in cell_sources(cell, meta_index) if key in by_id[sid].get("models", [key])]
+            if pl == "databricks":
+                deps = sorted(set(deps) | {s["id"] for s in config if s.get("facts") == "dbx-prices"})
             if not deps:
                 continue
             offered = cell.get("status") in ("priced", "dedicated") or cell.get("available")
@@ -426,8 +459,8 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed):
         lines += [f"- {a['model']} · {a['platform']} · {a['event']} {a['date']} ({a['state']})" for a in report["lifecycle_due"]] + [""]
     lines += ["## How to resolve", "",
               "1. Open each source, confirm the change, and update `llm-pricing/v2-maintenance/build-data.py` or `endpoints.json`.",
-              "2. Run `python v2-maintenance/build-data.py`, the tests, then `python v2-maintenance/review-sources.py --record-baseline --report-dir /tmp/review`.",
-              "3. Push. The next daily run closes this issue when nothing is left to review.", ""]
+              "2. Run `python v2-maintenance/build-data.py` and the tests, then push.",
+              "3. Record the reviewed baseline: Actions → *LLM pricing v2 daily refresh* → Run workflow, tick **Record the reviewed baseline**. That run re-checks every source and closes this issue when nothing is left. (Locally: `review-sources.py --record-baseline`; it refuses if any source cannot be read.)", ""]
     return "\n".join(lines), review
 
 

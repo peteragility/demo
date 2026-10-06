@@ -132,5 +132,29 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(out["hk"][0], "routed")
 
 
+    def test_a_new_bedrock_model_card_flags_a_model_bedrock_did_not_sell(self):
+        toc = {"contents": [{"title": "GLM 5", "href": "model-card-zai-glm-5.html"}] + [{"title": f"M{n}", "href": f"model-card-m{n}.html"} for n in range(20)]}
+        before = review.toc_records(toc)
+        toc["contents"].append({"title": "GLM 5.3", "href": "model-card-zai-glm-5-3.html"})
+        after = review.toc_records(toc)
+        config = [{"id": "cards", "url": "https://example.com/toc.json", "meta": ["aws"]}]
+        data = {"models": {"z/glm-5.3": {"name": "GLM 5.3", "platforms": {"bedrock": {"status": "unavailable", "src": "aws"}}},
+                           "z/glm-5": {"name": "GLM 5", "platforms": {"bedrock": {"status": "priced", "src": "aws"}}}}}
+        cells, changes = review.cell_checks(data, config, {"sources": {"cards": {"records": before}}}, {"cards": {"url": "u", "records": after}}, {}, {}, None, dt.date(2026, 10, 6))
+        self.assertEqual(cells["z/glm-5.3|bedrock"]["changed_at"], "2026-10-06")
+        self.assertEqual(cells["z/glm-5|bedrock"], {"verified": "2026-10-06"})
+        self.assertEqual(changes[0]["added"], ["card: GLM 5.3 | model-card-zai-glm-5-3.html"])
+
+    def test_page_date_stamps_are_not_source_changes(self):
+        page = "<main><p>GLM 5.3 costs $1.40 per million input tokens.</p><p>Last updated 2026-10-05 UTC.</p></main>"
+        self.assertEqual(review.html_records(page, "text"), ["text: GLM 5.3 costs $1.40 per million input tokens."])
+
+    def test_a_price_published_for_a_pending_databricks_offer_is_reported(self):
+        rows = {"gpt 6.1 sol": {"label": "GPT-6.1 Sol ⌖", "regional": True, "standard": {"short context": {"in": 2.0, "out": 10.0}}}}
+        data = {"models": {"o/gpt-6.1-sol": {"name": "GPT-6.1 Sol", "platforms": {"databricks": {"status": "unverified", "available": True}}}}}
+        issues = review.dbx_fact_issues(data, rows, dt.date(2026, 10, 6))
+        self.assertIn("now priced in the DBU table: $2 / $10", issues["o/gpt-6.1-sol"][0])
+
+
 if __name__ == "__main__":
     unittest.main()

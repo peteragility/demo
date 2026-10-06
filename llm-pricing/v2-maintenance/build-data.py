@@ -206,6 +206,11 @@ def add_models(data):
         ctx="1.05M", badges=["Added"], about="Agentic coding and reasoning", note="Databricks lists the endpoint; its price page still names GPT-6 Sol. No predecessor price is assumed.",
         platforms=dict(common_closed, databricks=pending("Supported pay-per-token endpoint; exact GPT-6.1 pricing is pending verification.", "dbx_models", "databricks-gpt-6-1-sol", True),
             official=direct, bedrock=aws, azure_foundry=pending("No exact GPT-6.1 Sol offer verified in the reviewed Azure retail catalog.", "azure")))
+    dbx61 = offer(2, 10, 0.1, 2.5, src="dbx_prop", tier="Standard · short context", model_id="databricks-gpt-6-1-sol", model_id_source="dbx_models",
+                  dbu_rate_basis=0.07, context_threshold=272000, long_context=rates(4, 15, 0.2, 5))
+    dbx61["variants"] = [variant("Priority", 4, 20, 0.2, 5, service="priority", long_context=rates(8, 30, 0.4, 10)),
+                         variant("Regional processing ⌖ +10%", 2.2, 11, 0.11, 2.75, scope="regional")]
+    models["openai/gpt-6.1-sol"]["platforms"]["databricks"] = checked(dbx61, DBX_PRICED)
 
     for version, i, o, cr in [("3.5", 0.3, 2.5, 0.03), ("3.1", 0.25, 1.5, 0.025)]:
         key = "google/gemini-" + version + "-flash-lite"
@@ -238,14 +243,14 @@ def add_models(data):
 
     for version in ("4.7", "4.6"):
         key = "xai/grok-" + version
-        dbx = pending("Catalog lists Grok 4.7, but the price page still lists 4.6. Exact 4.7 rates are pending verification.", "dbx_models", "databricks-grok-4-7", True)
-        if version == "4.6":
-            dbx = offer(2, 6, 0.5, src="dbx_prop", tier="Standard · 20% promotion", model_id="databricks-grok-4-6", dbu_rate_basis=0.07,
-                        regions="Consult the current model-region catalog.")
-            promo(dbx, "2027-01-31", rates(2.5, 7.5, 0.625), "Databricks 20% promotion", "Standard pay-per-token")
-            regional = variant("Regional processing +10%", 2.2, 6.6, 0.55, scope="regional")
-            promo(regional, "2027-01-31", rates(2.75, 8.25, 0.6875), "Databricks 20% promotion", "Regional processing +10%")
-            dbx["variants"] = [regional]
+        dbx = offer(2, 6, 0.5, src="dbx_prop", tier="Standard · 20% promotion", model_id="databricks-grok-" + version.replace(".", "-"), dbu_rate_basis=0.07,
+                    regions="Consult the current model-region catalog.")
+        promo(dbx, "2027-01-31", rates(2.5, 7.5, 0.625), "Databricks 20% promotion", "Standard pay-per-token")
+        regional = variant("Regional processing +10%", 2.2, 6.6, 0.55, scope="regional")
+        promo(regional, "2027-01-31", rates(2.75, 8.25, 0.6875), "Databricks 20% promotion", "Regional processing +10%")
+        dbx["variants"] = [regional]
+        if version == "4.7":
+            dbx = checked(dbx, DBX_PRICED)
         off = offer(2, 6, 0.5, src="xai_" + version.replace(".", ""), tier="xAI API · <200K input", model_id="grok-" + version,
                     context_threshold=200000, context_threshold_inclusive=True, long_context=rates(4, 12, 1),
                     note="At 200K input tokens or above, higher-context rates apply to every token in the request.")
@@ -273,13 +278,14 @@ def add_models(data):
                           context_threshold=200000, long_context=rates(4, 12, 1))
             azure["variants"] = [variant("Data Zone", 2.2, 6.6, 0.55, scope="data-zone", long_context=rates(4.4, 13.2, 1.1))]
         models[key] = dict(name="Grok " + version, short="Grok " + version, maker="xAI", group="xai", oss=False, ctx="500K", badges=["Added"],
-            warn="Databricks 4.6 promotion through 31 Jan 2027" if version == "4.6" else None,
+            warn="Databricks " + version + " promotion through 31 Jan 2027",
             platforms=dict(databricks=dbx, official=off, bedrock=aws, azure_foundry=azure, gcloud=vertex,
                            fireworks=unavailable("fireworks_models", "No Fireworks per-token offer verified."),
                            alicloud=unavailable("ali")))
 
 
 TOP50_CHECKED = "2026-10-03"
+DBX_PRICED = "2026-10-06"  # Databricks published GPT-6.1 Sol and Grok 4.7 DBU rates
 ENDPOINTS_CHECKED = "2026-10-04"
 
 
@@ -734,7 +740,7 @@ def lifecycle_notices(data):
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
-    data.update(schema=4, reviewed_at=ENDPOINTS_CHECKED,
+    data.update(schema=4, reviewed_at=DBX_PRICED,
                 basis="Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, "
                       "in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and "
                       "off-peak prices are listed in the row details and are not compared.")
@@ -766,7 +772,8 @@ def build():
         "oss": [{"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retire on Databricks on 30 Oct 2026. Replacement models appear in the row details.", "until": "2026-10-29"},
                 {"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retired on Databricks on 30 Oct 2026. Their rows list the replacements.", "from": "2026-10-30"},
                 "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
-                "Bedrock and Vertex trail a generation: GLM 5 / 5.2, DeepSeek V3.2, Kimi K2.x. Neither sells GLM 5.3 or DeepSeek V4, and Vertex has no Kimi K3.",
+                {"text": "GLM 5.3 reached Bedrock on 5 Oct 2026 at $1.68 / $5.28 (Global CRIS), 20% above Databricks and Z.ai ($1.40 / $4.40); access is for eligible enterprise customers.", "models": ["zai/glm-5.3"]},
+                "Vertex trails a generation: GLM 5.2, DeepSeek V3.2, Kimi K2.x; no GLM 5.3, DeepSeek V4 or Kimi K3. Bedrock has no DeepSeek V4.",
                 {"text": "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.", "models": ["deepseek/deepseek-v4-flash"]},
                 {"text": "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models.", "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "google/gemma-3-12b", "qwen/qwen3-next-80b-instruct"]},
                 "Hong Kong: Databricks serves Kimi K3, DeepSeek V4.1 Flash and GLM 5.x from Azure East Asia (cross-geo); Alibaba has a Hong Kong endpoint with Global scope (data stays in Hong Kong, inference may run elsewhere). Bedrock, Azure, Vertex and Fireworks have none.",
@@ -775,13 +782,13 @@ def build():
                       "Hong Kong: only Databricks serves the 2026 Claude models there (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
                       "Data residency costs +10% everywhere: Bedrock US / EU CRIS and in-region, Vertex US / EU multi-region, Azure US Data Zone, Databricks regional processing (⌖) and Anthropic's US-only inference.",
                       {"text": "APAC in-region Claude on Databricks: Opus 4.8 in AWS Tokyo, Singapore and Sydney; Opus 5 in AWS Sydney and GCP Singapore; both in Azure Japan East and Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.", "models": ["anthropic/claude-opus-4.8", "anthropic/claude-opus-5", "anthropic/claude-sonnet-5"]},
-                      "Vertex has no Taiwan or Hong Kong endpoint for the 2026 Claude models: only global and US / EU multi-region (Opus 5, Sonnet 5 and Fable 5 also list Singapore, unpriced). Azure deploys Claude from US regions and Sweden Central."],
+                      "Vertex has no Taiwan or Hong Kong endpoint for the 2026 Claude models: only global and US / EU multi-region. Azure deploys Claude from US regions and Sweden Central."],
         "openai": ["List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region. Azure Data Zone is +10% in the US and +20% in the EU / APAC zones for GPT-6; Bedrock in-region / US CRIS is +10%.",
                    "APAC: GPT-6 and GPT-5.6 on Databricks reach APAC (including Azure Hong Kong) through cross-geo routing. Azure serves them from Singapore, Japan, Korea, Australia and India (Global Standard); Bedrock from Tokyo, Seoul and Singapore via global CRIS (GPT-6 Sol / Luna and GPT-5.6 also Taipei).",
                    "OpenAI's API does not serve Hong Kong (not a supported region); Taiwan is supported, through the global endpoint.",
                    "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
                    {"text": "GPT-5.4 is $2.50 / $15 on Databricks and OpenAI; Bedrock sells it in-region only at $2.75 / $16.50 (+10%).", "models": ["openai/gpt-5.4"]},
-                   "GPT-6.1 Sol cuts cached input to $0.10. Its Databricks endpoint is supported; exact Databricks prices are still pending verification.",
+                   "GPT-6.1 Sol: $2 / $10 with $0.10 cached input on Databricks, OpenAI, Bedrock Global and Azure Global Standard; long context (>272K) is $4 / $15.",
                    {"text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.", "until": "2026-11-21"},
                    {"text": "GPT-5.6 Sol is $5 / $30 on every platform since its promotion ended 21 Nov 2026.", "from": "2026-11-22"}],
         "google": [{"text": "Databricks matches Google today: a 20% promotion on Gemini 3.1 Pro runs to 31 Jan 2027, then Databricks lists +25% ($2.50 / $15.00).", "until": "2027-01-31"},
@@ -793,12 +800,13 @@ def build():
                    "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."],
         "other": ["Qwen3.8 Max, Qwen3.7 Max and Qwen3.7 Plus are sold on Alibaba Model Studio (Qwen3.8 Max also on Fireworks); none is on Databricks, Bedrock, Azure or Vertex.",
                   "Model Studio's Global scope is below its International (Singapore) list; Qwen3.7 Plus also has limited-time daytime / night discounts."],
-        "xai": ["Grok 4.7: xAI, Bedrock Global and Vertex list $2 / $6, with $0.50 cached input. Databricks 4.7 prices remain pending verification.",
-                {"text": "Grok 4.6 has Databricks promotional parity at $2 / $6 through 31 Jan 2027.", "until": "2027-01-31"},
-                {"text": "Grok 4.6 on Databricks is $2.50 / $7.50 since its promotion ended 31 Jan 2027; xAI, Bedrock and Azure stay at $2 / $6.", "from": "2027-02-01"},
+        "xai": ["Grok 4.7: xAI, Bedrock Global, Vertex and Databricks list $2 / $6, with $0.50 cached input.",
+                {"text": "Grok 4.7 and 4.6 have Databricks promotional parity at $2 / $6 through 31 Jan 2027, then $2.50 / $7.50.", "until": "2027-01-31"},
+                {"text": "Grok 4.7 and 4.6 on Databricks are $2.50 / $7.50 since the promotion ended 31 Jan 2027; xAI, Bedrock and Vertex stay at $2 / $6.", "from": "2027-02-01"},
                 "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; xAI's own US endpoint and Bedrock US CRIS are +10%. Azure sells Grok 4.6 as Global Standard only."],
     }
     data["changes"] = [
+        "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",
         "2026-10-04: Row details became one card per platform: every endpoint and tier with input, output, cache read and cache write prices; regions by geography and processing level; Hong Kong and Taiwan; notes and IDs, reviewed for all 35 listed models.",
         "2026-10-04: Added missing tiers (Databricks Priority and ⌖ tiers, OpenAI Flex / Ultrafast, Anthropic fast mode and US-only inference, Bedrock / Vertex batch, xAI US endpoint, Alibaba Chinese mainland and off-peak). Azure now prices GPT-6.1 Sol, GPT-5.4, Claude Fable 5 and Opus 4.8; Inkling left Azure pay-per-token and gained a Thinking Machines API (beta).",
         "2026-10-04: Platforms appear in the order Databricks, maker API, Fireworks, Azure, AWS, Google, Alibaba. The daily check now verifies every offer and opens a review issue when a source changes.",

@@ -12,6 +12,11 @@ on:
   schedule:
     - cron: '17 22 * * *'
   workflow_dispatch:
+    inputs:
+      record_baseline:
+        description: Record the reviewed baseline (after resolving the review issue)
+        type: boolean
+        default: false
   push:
     paths:
       - 'llm-pricing/index.html'
@@ -92,6 +97,10 @@ jobs:
           python v2-maintenance/test-review-sources.py
           python v2-maintenance/test-ranking.py
           node --test v2-maintenance/pricing.test.cjs
+      # A person who resolved the review issue accepts today's sources as the reviewed baseline.
+      - name: Record the reviewed baseline
+        if: inputs.record_baseline
+        run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-baseline" --record-baseline
       - name: Check every official source
         run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md"
       - name: Add the review to the run summary
@@ -103,7 +112,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/endpoints-auto.json
+          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/endpoints-auto.json v2-maintenance/source-baseline.json
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -102,5 +102,8 @@
   {"id": "gcp-glm-5-2", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/maas/zaiorg/glm-52", "kind": "text", "cache_file": "gcp_glm_5_2.html", "meta": ["gcp_glm_5_2"], "models": ["zai/glm-5.2"]},
   {"id": "gcp-grok-4-6", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/grok/grok-4-6", "kind": "text", "cache_file": "gcp_grok_4_6.html", "meta": ["gcp_grok_4_6"], "models": ["xai/grok-4.6"]},
   {"id": "gcp-grok-4-7", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/grok/grok-4-7", "kind": "text", "cache_file": "gcp_grok_4_7.html", "meta": ["gcp_grok_4_7"], "models": ["xai/grok-4.7"]},
-  {"id": "gcp-locations", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations", "kind": "text", "cache_file": "gcp_locations.html", "meta": ["gcp_locations"]}
+  {"id": "gcp-locations", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations", "kind": "text", "cache_file": "gcp_locations.html", "meta": ["gcp_locations"]},
+  {"id": "aws-model-cards", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/toc-contents.json", "kind": "aws-toc", "cache_file": "aws-toc.json", "meta": ["aws", "aws_fm", "aws_openai"]},
+  {"id": "aws-card-glm-5-3", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-zai-glm-5-3.html", "kind": "text", "cache_file": "aws-card-glm-5-3.html", "meta": ["aws_card_glm_5_3"], "models": ["zai/glm-5.3"]},
+  {"id": "aws-pricing-page", "url": "https://aws.amazon.com/bedrock/pricing/", "kind": "tables", "cache_file": "aws-pricing-page.html", "meta": ["aws_pricing_page"]}
 ]

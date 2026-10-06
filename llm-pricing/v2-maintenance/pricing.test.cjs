@@ -184,12 +184,13 @@ test('a cheaper price for an unconfirmed checkpoint keeps a model out of the par
 
 test('availability gaps count only models Databricks currently prices', () => {
   const openai = Object.values(data.models).filter(m => m.group === 'openai');
-  assert.equal(M.summarize(openai, date).gaps.gcloud, 8);
+  // GPT-6.1 Sol has a Databricks price (2026-10-06), so its missing Vertex offer now counts.
+  assert.equal(M.summarize(openai, date).gaps.gcloud, 9);
   const oss = Object.values(data.models).filter(m => m.group === 'oss');
   // Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5 are not on Databricks, so they add no gaps.
-  // Inkling is an Azure gap until it retires on Databricks.
-  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 9, azure_foundry: 6, gcloud: 11});
-  assert.deepEqual(M.summarize(oss, {asOf: '2026-10-30'}).gaps, {bedrock: 6, azure_foundry: 5, gcloud: 8});
+  // Inkling is an Azure gap until it retires on Databricks; GLM 5.3 reached Bedrock on 5 Oct 2026.
+  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 8, azure_foundry: 6, gcloud: 11});
+  assert.deepEqual(M.summarize(oss, {asOf: '2026-10-30'}).gaps, {bedrock: 5, azure_foundry: 5, gcloud: 8});
 });
 
 test('expired promotions carry their published list-tier labels', () => {
@@ -226,13 +227,14 @@ test('Grok 4.6 Bedrock geographic and service tiers use their published cache ch
   close(M.calculate(c, {...date, cacheHit: 80, variantId: tier(c, 'US CRIS', 'standard')}).total, 9.24);
 });
 
-test('newer Databricks prices remain unverified rather than copying predecessor rates', () => {
-  for (const key of ['openai/gpt-6.1-sol', 'xai/grok-4.7']) {
-    const result = M.calculate(offer(key), date);
-    assert.equal(result.total, null);
-    assert.equal(result.offer.status, 'unverified');
-    assert.equal(offer(key).in, undefined);
-  }
+test('Databricks GPT-6.1 Sol and Grok 4.7 use their own published DBU rates', () => {
+  // Published 2026-10-06; until then both stayed unverified rather than copying a predecessor's price.
+  const sol = M.resolveOffer(offer('openai/gpt-6.1-sol'), date);
+  close(sol.in, 2); close(sol.out, 10); close(sol.cache_write, 2.5);
+  close(M.resolveOffer(offer('openai/gpt-6.1-sol'), {...date, promptTokens: 272001}).in, 4);
+  close(M.resolveOffer(offer('xai/grok-4.7'), date).in, 2);
+  close(M.resolveOffer(offer('xai/grok-4.7'), {asOf: '2027-02-01'}).in, 2.5);
+  assert.equal(offer('xai/grok-4.7').pricing_checked_at, '2026-10-06');
 });
 
 test('discontinued Fireworks serverless offers carry no per-token price', () => {

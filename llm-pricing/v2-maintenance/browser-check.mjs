@@ -129,7 +129,7 @@ try {
       await evalJS("document.querySelector('#q').value='databricks-gpt-6-1-sol';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));");
       assert.equal(await rowCount(), 1);
       assert.match(await evalJS("document.querySelector('#mx').innerText"), /GPT-6.1 Sol/);
-      assert.equal(await evalJS("document.querySelector('tr.row td.c').innerText.trim()"), '?');
+      assert.match(await evalJS("document.querySelector('tr.row td.c').innerText"), /2\.00\s*\/?\s*10\.00/);
     }
     await evalJS("document.querySelector('#q').value='';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));location.hash='claude';");
     await waitFor("document.querySelector('[data-g=anthropic]').getAttribute('aria-pressed')==='true'");
@@ -175,11 +175,11 @@ try {
     }
     if (listed('openai/gpt-6.1-sol')) {
       await toggle('openai/gpt-6.1-sol');
-      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /price pending verification/);
+      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol .pcard.dbx').innerText"), /2\.00\s+10\.00\s+0\.10\s+2\.50/);
       assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /↳ >272K/);
       await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedSummary=text;}}});document.querySelector('[data-copy=\"openai/gpt-6.1-sol\"]').click();");
       await waitFor("typeof window.copiedSummary==='string'");
-      assert.match(await evalJS('window.copiedSummary'), /price pending verification/);
+      assert.match(await evalJS('window.copiedSummary'), /Databricks: 2\.00 \/ 10\.00/);
       assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
       assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-0\d/);
       assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best Overall #\d+/);
