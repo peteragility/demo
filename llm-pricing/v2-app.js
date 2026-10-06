@@ -454,7 +454,13 @@
       const cp = e.target.closest('.copy'); if (cp) { copySummary(cp.dataset.copy); return; }
       if (e.target.closest('tr.detail') || e.target.closest('a')) return;
       const tr = e.target.closest('tr.row'); if (!tr) return;
-      const k = tr.dataset.k; S.open.has(k) ? S.open.delete(k) : S.open.add(k); render();
+      // One row open at a time: opening a row closes the one before it.
+      const k = tr.dataset.k, top = tr.getBoundingClientRect().top;
+      S.open = S.open.has(k) ? new Set() : new Set([k]);
+      render();
+      // Keep the tapped row where it was on screen, even when a panel above it just closed.
+      const row = document.querySelector(`tr.row[data-k="${CSS.escape(k)}"]`);
+      if (row) window.scrollBy(0, row.getBoundingClientRect().top - top);
     });
     window.addEventListener('hashchange', () => { const g = fromHash(); if (g && g !== S.group) setGroup(g, false); });
     const refreshDate = () => { const d = localDate(); if (d !== AS_OF) { AS_OF = d; prepare(); render(); } };

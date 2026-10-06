@@ -144,6 +144,15 @@ try {
     }
     await evalJS("document.querySelector('[data-g=all]').click()");
 
+    // One row is open at a time: opening a second row closes the first.
+    {
+      const [first, second] = expected.keys.slice(0, 2);
+      await toggle(first);
+      await evalJS(`document.querySelector('tr[data-k="${second}"] .mb').click()`);
+      assert.deepEqual(await evalJS("[...document.querySelectorAll('tr.detail')].map(d => d.previousElementSibling.dataset.k)"), [second], viewport.name + ': one row open');
+      await toggle(second);
+      assert.equal(await evalJS("document.querySelectorAll('tr.detail').length"), 0);
+    }
     // Row details: one card per platform, in column order, each with a price table and where it runs.
     if (listed('deepseek/deepseek-v4-pro')) {
       await toggle('deepseek/deepseek-v4-pro');
