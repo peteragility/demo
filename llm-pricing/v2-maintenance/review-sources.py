@@ -436,7 +436,7 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed):
     name = lambda key: data["models"].get(key, {}).get("name", key)
     review = sorted({ref for ref, c in cells.items() if c.get("changed_at") and ref.split("|")[0] in listed})
     verified = sum(1 for ref, c in cells.items() if c.get("verified") == report["checked_at"] and ref.split("|")[0] in listed)
-    lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified unchanged today; "
+    lines = [f"Check {report['checked_at']}: {verified} listed offers verified unchanged; "
              f"{len(review)} need review; {len(report['sources_failed'])} sources could not be read.", ""]
     fact_issues = {k: v for k, v in fact_issues.items() if k in listed}
     if fact_issues:
@@ -460,7 +460,7 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed):
     lines += ["## How to resolve", "",
               "1. Open each source, confirm the change, and update `llm-pricing/v2-maintenance/build-data.py` or `endpoints.json`.",
               "2. Run `python v2-maintenance/build-data.py` and the tests, then push.",
-              "3. Record the reviewed baseline: Actions → *LLM pricing v2 daily refresh* → Run workflow, tick **Record the reviewed baseline**. That run re-checks every source and closes this issue when nothing is left. (Locally: `review-sources.py --record-baseline`; it refuses if any source cannot be read.)", ""]
+              "3. Record the reviewed baseline: Actions → *LLM pricing refresh* → Run workflow, tick **Record the reviewed baseline**. That run re-checks every source and closes this issue when nothing is left. (Locally: `review-sources.py --record-baseline`; it refuses if any source cannot be read.)", ""]
     return "\n".join(lines), review
 
 
@@ -500,7 +500,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cache-dir", type=Path, help="Use previously downloaded official source files (offline).")
     parser.add_argument("--report-dir", type=Path, required=True)
-    parser.add_argument("--record-baseline", action="store_true", help="Explicitly record a reviewed baseline. Never used by scheduled runs.")
+    parser.add_argument("--record-baseline", action="store_true", help="Explicitly record a reviewed baseline after a review.")
     parser.add_argument("--checks", type=Path, help="Write per-offer verification dates (the page's v2-checks.json).")
     parser.add_argument("--issue", type=Path, help="Write the review-issue Markdown here (empty file when nothing needs review).")
     parser.add_argument("--fail-on-change", action="store_true", help="Exit 2 when changes or lifecycle events need review.")

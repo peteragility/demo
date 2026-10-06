@@ -262,7 +262,7 @@
 
   const idHtml = s => { const m = /^(\S+)(?: \((.+)\))?$/.exec(s); return `<span class="id">${m ? `<code>${esc(m[1])}</code>${m[2] ? ' ' + esc(m[2]) : ''}` : esc(s)}</span>`; };
 
-  // The newest of the reviewed dates and the daily source check; a changed source says so instead.
+  // The newest of the reviewed dates and the latest source check; a changed source says so instead.
   function checkedText(mk, pl, c) {
     const chk = CHECKS && CHECKS.cells && CHECKS.cells[mk + '|' + pl];
     if (chk && chk.changed_at) return `<span class="chg" title="${esc('Official source changed: ' + (chk.sources || []).join(', ') + '. Prices shown are the last reviewed ones.')}">source changed ${esc(chk.changed_at)} · re-check</span>`;
@@ -490,10 +490,10 @@
       const [title, sub] = String(RANKING.board).split(/ (?=\()/);
       const board = `<a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(title)}<span class="bsub">${sub ? ' ' + esc(sub) : ''}</span></a>`;
       $('#rankSrc').innerHTML = ` · ranked by ${board}, ${esc(when)}`;
-      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba hosts the model. Checked daily; order last changed ${esc(when)}.`;
+      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba hosts the model. Order last changed ${esc(when)}.`;
     }
     const long = day => day ? new Date(day + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
-    // The daily source check moves the verified date forward while the official sources are unchanged.
+    // Each source check moves the verified date forward while the official sources are unchanged.
     const day = [d.reviewed_at, CHECKS && CHECKS.checked_at].filter(Boolean).sort().pop();
     $('#verified').textContent = long(day); $('#srcDate').textContent = '· checked ' + long(day);
     if (CHECKS && Array.isArray(CHECKS.review) && CHECKS.review.length) {

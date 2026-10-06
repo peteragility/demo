@@ -18,7 +18,7 @@ The table applies verified promotion changes and retirements on the viewer's loc
 
 The page lists the models in arena.ai's **Best Overall** top 50 (Agent | Overall, the default board on https://arena.ai/leaderboard/) that at least one compared platform hosts: Databricks, Fireworks, Azure Foundry, AWS Bedrock, Google Vertex or Alibaba. A maker's own API alone does not qualify. Rows follow the arena rank, which is shown in the first column; reasoning-effort variants of one model (for example Opus 5 High and Max) share a row at the better rank. **All** is the default view, followed by OSS, Anthropic, OpenAI, Google, xAI and Other. The header names the ranking and the date the order last changed. Models outside the top 50 are hidden but keep their reviewed prices, so they return if they re-enter it. Talk-track lines that name specific models appear only while one of those models is listed, and the "priced below Databricks" line is computed from the rows shown.
 
-`ranking-config.json` maps each reviewed model to arena display names. `update-ranking.py` reads the leaderboard and rewrites `../v2-ranking.json` only when the listed models or their ranks change; it refuses to reorder the page if the board is missing, too short or ambiguous. The daily workflow runs it and publishes the new order (see *How the data stays current*); prices still change only through a reviewed dataset update. The job summary lists top-50 models not yet reviewed for the page. To list one once a compared platform hosts it, add verified pricing in `build-data.py`, then a pattern in `ranking-config.json`.
+`ranking-config.json` maps each reviewed model to arena display names. `update-ranking.py` reads the leaderboard and rewrites `../v2-ranking.json` only when the listed models or their ranks change; it refuses to reorder the page if the board is missing, too short or ambiguous. Each refresh runs it and publishes the new order (see *How the data stays current*); prices still change only through a reviewed dataset update. The job summary lists top-50 models not yet reviewed for the page. To list one once a compared platform hosts it, add verified pricing in `build-data.py`, then a pattern in `ranking-config.json`.
 
 ```sh
 python3 v2-maintenance/update-ranking.py          # read arena.ai and update the order
@@ -48,7 +48,7 @@ Set `CHROME_PATH` if Chrome is installed at a different path. Set `LLM_PRICING_B
 
 ## How the data stays current
 
-The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs every day at **22:17 UTC (06:17 HKT)**, and on demand from the Actions tab:
+The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs only when you start it: Actions → **LLM pricing refresh** → Run workflow. Nothing is scheduled, and pushes do not start it (to save Actions minutes), so run the local checks above before pushing. Each run:
 
 | Step | What it does | Published automatically? |
 |---|---|---|
@@ -57,7 +57,7 @@ The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/
 | Source check | `review-sources.py` re-reads every official price and region source in `source-config.json`. Offers whose lines are unchanged get today's *verified* date; Databricks prices are compared number by number with its DBU tables, and a price published for a pending Databricks offer is reported. Bedrock's model-card index flags a new card for a tracked model | Yes (`../v2-checks.json`) |
 | Review issue | Anything that changed opens or updates one issue labelled **llm-pricing-review**, with the exact added and removed lines per model and links. Affected cards show "source changed · re-check" until it is resolved. The issue closes itself once nothing is left | Issue only |
 
-Prices, tiers and new models never change automatically. A run fails (and GitHub emails you) only when the pipeline itself is broken: the rebuilt data fails validation or a test, or more than half the sources cannot be read. A single unreadable source is listed in the issue and its offers keep their last verified date.
+Prices, tiers and new models never change automatically. A run fails only when the pipeline itself is broken: the rebuilt data fails validation or a test, or more than half the sources cannot be read. A single unreadable source is listed in the issue and its offers keep their last verified date.
 
 ### Resolving a review issue
 
@@ -65,7 +65,7 @@ Prices, tiers and new models never change automatically. A run fails (and GitHub
 2. Update `build-data.py` (prices and models) or `endpoints.json` (endpoints, tiers, regions, Hong Kong / Taiwan, notes, IDs). Leave unverified prices absent; never copy a predecessor's price into a newer model.
 3. Run `python3 v2-maintenance/build-data.py` and the checks above, and inspect the data diff.
 4. Commit and push the changed `llm-pricing` files.
-5. Record the reviewed baseline from GitHub: Actions → **LLM pricing v2 daily refresh** → Run workflow, tick **Record the reviewed baseline**. The run reads every source, records them as reviewed (this also acknowledges promotions or retirements due within 7 days), re-checks, publishes and closes the issue. Locally, `python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --record-baseline` does the same, but it refuses when any source cannot be read, and some providers block home networks.
+5. Record the reviewed baseline from GitHub: Actions → **LLM pricing refresh** → Run workflow, tick **Record the reviewed baseline**. The run reads every source, records them as reviewed (this also acknowledges promotions or retirements due within 7 days), re-checks, publishes and closes the issue. Locally, `python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --record-baseline` does the same, but it refuses when any source cannot be read, and some providers block home networks.
 
 With Claude Code, "apply the open llm-pricing-review issue" covers steps 1–5.
 
@@ -77,10 +77,10 @@ With Claude Code, "apply the open llm-pricing-review issue" covers steps 1–5.
   - `notes`: `[kind, text]`.
   - `ids`: a list of model and endpoint IDs.
   - `cache_write`: `priced`, `input-rate` (no write premium), `not-listed` or `no-caching`.
-- `endpoints-auto.json`: Databricks regions, generated daily; do not edit.
+- `endpoints-auto.json`: Databricks regions, regenerated by each refresh; do not edit.
 - `official.py`: parsers for the official tables (Databricks DBU rates and region tables) and the shared HTML parser.
 - `source-config.json`: monitored sources. `meta` names the data sources each one covers; `models` scopes a page to the models it describes; `facts` marks tables checked number by number; `auto` marks sources regenerated by `update-endpoints.py`.
-- `source-baseline.json`: the reviewed records each daily check compares with.
+- `source-baseline.json`: the reviewed records each check compares with.
 - `../v2-checks.json`: per-offer verified dates and open review items, read by the page.
 
 ```sh

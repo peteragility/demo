@@ -1,72 +1,29 @@
-name: LLM pricing v2 daily refresh
+name: LLM pricing refresh
 
-# Daily at 06:17 Hong Kong time (22:17 UTC):
+# Runs only when started from the Actions tab (Run workflow); nothing is scheduled.
 #   1. model order from the arena.ai Best Overall ranking        (published automatically)
 #   2. Databricks model regions from its official region tables   (published automatically)
 #   3. every official price / region source re-read: offers whose source lines are unchanged get
-#      today's "verified" date; Databricks prices are checked number by number against its DBU
-#      tables                                                     (published automatically)
+#      that day's "verified" date; Databricks prices are checked number by number against its
+#      DBU tables                                                 (published automatically)
 #   4. anything that changed opens or updates one GitHub issue labelled llm-pricing-review.
 # Prices are never changed automatically: a person reviews the issue and updates the data.
 on:
-  schedule:
-    - cron: '17 22 * * *'
   workflow_dispatch:
     inputs:
       record_baseline:
         description: Record the reviewed baseline (after resolving the review issue)
         type: boolean
         default: false
-  push:
-    paths:
-      - 'llm-pricing/index.html'
-      - 'llm-pricing/v2*'
-      - 'llm-pricing/v2-maintenance/**'
-      - '.github/workflows/llm-pricing-v2-review.yml'
-  pull_request:
-    paths:
-      - 'llm-pricing/index.html'
-      - 'llm-pricing/v2*'
-      - 'llm-pricing/v2-maintenance/**'
-      - '.github/workflows/llm-pricing-v2-review.yml'
 
 permissions:
   contents: read
 
 jobs:
-  # Pushes and pull requests: the reviewed data must rebuild exactly and pass every check. No network.
-  validate:
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    concurrency:
-      group: llm-pricing-v2-validate-${{ github.ref }}
-      cancel-in-progress: true
-    defaults:
-      run:
-        working-directory: llm-pricing
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-      - name: Validate reviewed data and calculations
-        run: |
-          python v2-maintenance/build-data.py --check
-          python v2-maintenance/validate-data.py
-          python v2-maintenance/update-ranking.py --check
-          python v2-maintenance/test-review-sources.py
-          python v2-maintenance/test-ranking.py
-          node --test v2-maintenance/pricing.test.cjs
-
   refresh:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    # One refresh at a time: a manual run waits for the scheduled one.
+    # One refresh at a time: a second run waits for the first.
     concurrency:
       group: llm-pricing-v2-refresh
       cancel-in-progress: false
@@ -116,7 +73,7 @@ jobs:
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -q -m "LLM pricing v2: daily refresh $(date -u +%F)"
+          git commit -q -m "LLM pricing: refresh $(date -u +%F)"
           for attempt in 1 2 3; do
             if git pull -q --rebase origin main && git push -q origin HEAD:main; then
               gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null && echo "Requested a Pages build." ||
@@ -132,18 +89,18 @@ jobs:
         run: |
           ISSUE_FILE="$RUNNER_TEMP/llm-pricing-v2-issue.md"
           label=llm-pricing-review
-          gh label create "$label" --color FBCA04 --description "The daily LLM pricing check found something to review" 2>/dev/null || true
+          gh label create "$label" --color FBCA04 --description "The LLM pricing check found something to review" 2>/dev/null || true
           number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
           if [ -s "$ISSUE_FILE" ]; then
             if [ -z "$number" ]; then
-              gh issue create --title "LLM pricing: the daily check needs a review" --label "$label" --body-file "$ISSUE_FILE"
+              gh issue create --title "LLM pricing: the check needs a review" --label "$label" --body-file "$ISSUE_FILE"
             # The first line carries the date; comment only when the findings themselves change.
             elif [ "$(gh issue view "$number" --json body --jq .body | tail -n +2)" != "$(tail -n +2 "$ISSUE_FILE")" ]; then
               gh issue edit "$number" --body-file "$ISSUE_FILE"
-              gh issue comment "$number" --body "Updated by the daily check on $(date -u +%F). See the list above."
+              gh issue comment "$number" --body "Updated by the check on $(date -u +%F). See the list above."
             fi
           elif [ -n "$number" ]; then
-            gh issue close "$number" --comment "Daily check $(date -u +%F): nothing left to review."
+            gh issue close "$number" --comment "Check $(date -u +%F): nothing left to review."
           fi
       - name: Save the full report
         if: always()
