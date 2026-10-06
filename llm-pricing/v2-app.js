@@ -127,6 +127,7 @@
     const bits = [LONG[pl] + ': $' + precise(c.in) + ' / $' + precise(c.out)];
     if (c.cache_read != null) bits.push('cache read $' + precise(c.cache_read));
     if (c.cache_write != null) bits.push('cache write $' + precise(c.cache_write));
+    else if ((c.endpoints || {}).cache_write === 'input-rate' && c.cache_read != null) bits.push('no cache-write charge');
     if (c.tier) bits.push(c.tier + (c.variant_id ? ' (cheapest standard tier)' : ''));
     if (c.pricing_checked_at) bits.push('price checked ' + c.pricing_checked_at);
     if (c.model_id) bits.push(c.model_id);
@@ -200,7 +201,7 @@
   function rateCells(o, policy, has1h) {
     const read = M.validRate(o.cache_read) ? fx(o.cache_read) : '—';
     const write = M.validRate(o.cache_write) ? fx(o.cache_write)
-      : policy === 'input-rate' && M.validRate(o.cache_read) ? '<span class="ci" title="Cache writes cost the normal input rate: no write premium">= input</span>' : '—';
+      : policy === 'input-rate' && M.validRate(o.cache_read) ? '<span class="ci" title="No cache-write charge: tokens written to the cache cost only the normal input price">0.00</span>' : '—';
     return `<td>${fx(o.in)}</td><td>${fx(o.out)}</td><td>${read}</td><td>${write}</td>${has1h ? `<td>${M.validRate(o.cache_write_1h) ? fx(o.cache_write_1h) : '—'}</td>` : ''}`;
   }
 
@@ -307,7 +308,7 @@
       return `<span><b>${esc(LONG[pl])}</b> ${st}${alt}</span>`;
     });
     return `<tr class="detail" id="d-${slug(r.k)}"><td colspan="8"><div class="dw"><div class="dh"><b>${esc(m.name)}</b><span class="meta">${esc(meta)}</span>${warn ? `<span class="warn">${esc(warn)}</span>` : ''}<button type="button" class="copy" data-copy="${esc(r.k)}">Copy summary</button>${m.note ? `<span class="note">${esc(m.note)}</span>` : ''}</div>` +
-      `<p class="clegend">USD per 1M tokens · <span class="sw">shaded</span> = the price the table compares (cheapest standard) · <b>= input</b>: no cache-write premium · ${badge('in', 'In-region')} processed in the region you call ${badge('geo', 'Geo')} stays in one geography (e.g. US, EU) ${badge('gl', 'Global')} may run anywhere</p>` +
+      `<p class="clegend">USD per 1M tokens · <span class="sw">shaded</span> = the price the table compares (cheapest standard) · cache write <b>0.00</b> = no charge to write the cache, <b>—</b> = not published · ${badge('in', 'In-region')} processed in the region you call ${badge('geo', 'Geo')} stays in one geography (e.g. US, EU) ${badge('gl', 'Global')} may run anywhere</p>` +
       `<div class="pcards">${live.map(pl => cardHtml(r.k, pl)).join('')}</div>${rest.length ? `<div class="coff">${rest.join('')}</div>` : ''}</div></td></tr>`;
   }
 
@@ -410,7 +411,7 @@
       else {
         const d = deltaOf(mk, pl), dir = dirOf(d);
         const note = d == null ? comparisonNote(mk, pl, m.platforms[pl]) : null;
-        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note.replace(/<[^>]+>/g, '') : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
+        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : (m.platforms[pl].endpoints || {}).cache_write === 'input-rate' && c.cache_read != null ? ' · no cache-write charge' : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note.replace(/<[^>]+>/g, '') : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
       }
     }
     const text = lines.join('\n');

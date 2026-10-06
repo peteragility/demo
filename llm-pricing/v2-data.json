@@ -5115,10 +5115,6 @@
             ],
             "notes": [
               [
-                "Tiers",
-                "."
-              ],
-              [
                 "Access",
                 "Admin must register the 'Fireworks.EnableDeploy' preview feature; pay-per-token models get 15 days' retirement notice."
               ],
