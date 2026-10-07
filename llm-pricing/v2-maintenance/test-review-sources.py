@@ -156,5 +156,29 @@ class SourceReviewTests(unittest.TestCase):
         self.assertIn("now priced in the DBU table: $2 / $10", issues["o/gpt-6.1-sol"][0])
 
 
+    def test_dbu_tables_titled_pay_per_token_are_standard_rates(self):
+        rows = "".join(f"<tr><td>Model {n}</td><td>1</td><td>2</td><td>-</td></tr>" for n in range(10))
+        html = ("<table><tr><th>Model</th><th>Pay Per Token (DBU Per 1M Tokens)</th></tr><tr><td>Input</td><td>Output</td><td>Cache read</td></tr>"
+                "<tr><td>Kimi K3 ⌖</td><td>42.857</td><td>214.286</td><td>4.286</td></tr>" + rows + "</table>")
+        self.assertAlmostEqual(review.official.dbx_price_rows(html, 0.07)["kimi k3"]["standard"][""]["in"], 3.0, places=3)
+
+    def test_an_unreadable_dbu_table_does_not_report_models_as_missing(self):
+        data = {"models": {"m/kimi-k3": {"name": "Kimi K3", "platforms": {"databricks": {"status": "priced", "in": 3, "out": 15}}}}}
+        self.assertEqual(review.dbx_fact_issues(data, {"other": {"label": "Other", "regional": False}}, dt.date(2026, 10, 7), complete=False), {})
+        self.assertIn("not found", review.dbx_fact_issues(data, {"other": {"label": "Other", "regional": False}}, dt.date(2026, 10, 7))["m/kimi-k3"][0])
+
+    def test_spacing_around_brackets_is_not_a_change(self):
+        self.assertEqual(review.official.clean("0.05x on Claude Opus 5.5 )"), review.official.clean("0.05x on Claude Opus 5.5)"))
+        self.assertEqual(review.official.clean("( global.anthropic.claude-opus-5 ) : routes"), "(global.anthropic.claude-opus-5): routes")
+
+    def test_a_page_scoped_to_one_model_ignores_other_models_lines(self):
+        config = [{"id": "mistral", "url": "https://example.com", "meta": ["src"], "models": ["m/medium-3.5"]}]
+        data = {"models": {"m/medium-3.5": {"name": "Mistral Medium 3.5", "platforms": {"official": {"status": "priced", "src": "src"}}}}}
+        before = ["table: Mistral Medium 3.5 | $1.50 | $7.50"]
+        after = before + ["table: Mistral Large 4 Sale price | $0.68"]
+        cells, _ = review.cell_checks(data, config, {"sources": {"mistral": {"records": before}}}, {"mistral": {"url": "u", "records": after}}, {}, {}, None, dt.date(2026, 10, 7))
+        self.assertEqual(cells["m/medium-3.5|official"], {"verified": "2026-10-07"})
+
+
 if __name__ == "__main__":
     unittest.main()

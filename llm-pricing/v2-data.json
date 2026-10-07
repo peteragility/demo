@@ -1587,8 +1587,9 @@
       "Hong Kong: only Databricks serves the 2026 Claude models there (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
       "Data residency costs +10% everywhere: Bedrock US / EU CRIS and in-region, Vertex US / EU multi-region, Azure US Data Zone, Databricks regional processing (⌖) and Anthropic's US-only inference.",
       {
-        "text": "APAC in-region Claude on Databricks: Opus 4.8 in AWS Tokyo, Singapore and Sydney; Opus 5 in AWS Sydney and GCP Singapore; both in Azure Japan East and Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.",
+        "text": "APAC in-region Claude on Databricks: Opus 5.5 and Opus 4.8 in AWS Tokyo, Singapore and Sydney, Azure Japan East and Australia East, and GCP Singapore; Opus 5 in AWS Sydney and Azure Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.",
         "models": [
+          "anthropic/claude-opus-5.5",
           "anthropic/claude-opus-4.8",
           "anthropic/claude-opus-5",
           "anthropic/claude-sonnet-5"
@@ -4913,7 +4914,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-06",
+              "pricing_checked_at": "2026-10-07",
               "endpoint": "US CRIS",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -4926,7 +4927,7 @@
               "label": "Global CRIS · Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-06",
+              "pricing_checked_at": "2026-10-07",
               "endpoint": "Global CRIS",
               "id": "variant-1",
               "model_match": "confirmed"
@@ -4939,7 +4940,7 @@
               "label": "US CRIS · Priority",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-06",
+              "pricing_checked_at": "2026-10-07",
               "endpoint": "US CRIS",
               "id": "variant-2",
               "model_match": "confirmed"
@@ -4952,7 +4953,7 @@
               "label": "Global CRIS · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-06",
+              "pricing_checked_at": "2026-10-07",
               "endpoint": "Global CRIS",
               "id": "variant-3",
               "model_match": "confirmed"
@@ -4965,9 +4966,22 @@
               "label": "US CRIS · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-06",
+              "pricing_checked_at": "2026-10-07",
               "endpoint": "US CRIS",
               "id": "variant-4",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 3.3,
+              "out": 16.5,
+              "cache_read": 0.33,
+              "cache_write": 4.125,
+              "label": "IN CRIS · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-07",
+              "endpoint": "IN CRIS",
+              "id": "variant-5",
               "model_match": "confirmed"
             }
           ],
@@ -4977,12 +4991,12 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-06",
-          "availability_checked_at": "2026-10-06",
+          "pricing_checked_at": "2026-10-07",
+          "availability_checked_at": "2026-10-07",
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-06",
+            "checked_at": "2026-10-07",
             "src": [
               "aws_br_use1",
               "aws_card_kimi_k3",
@@ -5006,6 +5020,12 @@
                 "global",
                 "Global CRIS",
                 "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "geo",
+                "IN CRIS",
+                "Mumbai, Hyderabad"
               ],
               [
                 "APAC",
@@ -5033,7 +5053,7 @@
               ],
               [
                 "Endpoints",
-                "bedrock-runtime only, no in-region; US geo from N. Virginia, Ohio, N. California, Oregon, Canada Central."
+                "bedrock-runtime only, no in-region; US geo from N. Virginia, Ohio, N. California, Oregon, Canada Central; India geo (in.) from Mumbai and Hyderabad."
               ],
               [
                 "Hong Kong",
@@ -5043,7 +5063,8 @@
             "ids": [
               "moonshotai.kimi-k3 (model ID; bedrock-runtime)",
               "us.moonshotai.kimi-k3 (US geo inference profile)",
-              "global.moonshotai.kimi-k3 (global inference profile)"
+              "global.moonshotai.kimi-k3 (global inference profile)",
+              "in.moonshotai.kimi-k3 (India geo)"
             ],
             "cache_write": "priced"
           }
@@ -7092,10 +7113,15 @@
           "comparison_scope": "regional",
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-02",
-          "availability_checked_at": "2026-09-28",
+          "availability_checked_at": "2026-10-07",
           "model_id_source": "dbx_models",
           "model_id_checked_at": "2026-10-02",
           "dbu_rate_basis": 0.07,
+          "retires_on": "2026-11-05",
+          "replacement": [
+            "DeepSeek V4.1 Flash"
+          ],
+          "retirement_src": "dbx_retirement",
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
@@ -7311,7 +7337,17 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
-      "model_key": "deepseek/deepseek-v4-flash"
+      "model_key": "deepseek/deepseek-v4-flash",
+      "notices": [
+        {
+          "text": "Retires on Databricks 5 Nov 2026 · use DeepSeek V4.1 Flash",
+          "until": "2026-11-04"
+        },
+        {
+          "text": "Retired on Databricks 5 Nov 2026 · use DeepSeek V4.1 Flash",
+          "from": "2026-11-05"
+        }
+      ]
     },
     "zai/glm-5.3-flash": {
       "name": "GLM 5.3 Flash",
@@ -24961,6 +24997,7 @@
   },
   "reviewed_at": "2026-10-06",
   "changes": [
+    "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
     "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",
     "2026-10-04: Row details became one card per platform: every endpoint and tier with input, output, cache read and cache write prices; regions by geography and processing level; Hong Kong and Taiwan; notes and IDs, reviewed for all 35 listed models.",
     "2026-10-04: Added missing tiers (Databricks Priority and ⌖ tiers, OpenAI Flex / Ultrafast, Anthropic fast mode and US-only inference, Bedrock / Vertex batch, xAI US endpoint, Alibaba Chinese mainland and off-peak). Azure now prices GPT-6.1 Sol, GPT-5.4, Claude Fable 5 and Opus 4.8; Inkling left Azure pay-per-token and gained a Thinking Machines API (beta).",

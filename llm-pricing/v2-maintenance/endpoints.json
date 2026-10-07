@@ -1181,7 +1181,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-06",
+   "checked_at": "2026-10-07",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -1236,6 +1236,16 @@
      "scope": "geographic",
      "service": "flex",
      "endpoint": "US CRIS"
+    },
+    {
+     "label": "IN CRIS · Standard",
+     "in": 3.3,
+     "out": 16.5,
+     "cache_read": 0.33,
+     "cache_write": 4.125,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "IN CRIS"
     }
    ],
    "src": [
@@ -1264,6 +1274,12 @@
     ],
     [
      "APAC",
+     "geo",
+     "IN CRIS",
+     "Mumbai, Hyderabad"
+    ],
+    [
+     "APAC",
      "global",
      "Global CRIS",
      "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
@@ -1289,7 +1305,7 @@
     ],
     [
      "Endpoints",
-     "bedrock-runtime only, no in-region; US geo from N. Virginia, Ohio, N. California, Oregon, Canada Central."
+     "bedrock-runtime only, no in-region; US geo from N. Virginia, Ohio, N. California, Oregon, Canada Central; India geo (in.) from Mumbai and Hyderabad."
     ],
     [
      "Hong Kong",
@@ -1299,7 +1315,8 @@
    "ids": [
     "moonshotai.kimi-k3 (model ID; bedrock-runtime)",
     "us.moonshotai.kimi-k3 (US geo inference profile)",
-    "global.moonshotai.kimi-k3 (global inference profile)"
+    "global.moonshotai.kimi-k3 (global inference profile)",
+    "in.moonshotai.kimi-k3 (India geo)"
    ]
   },
   "azure_foundry": {

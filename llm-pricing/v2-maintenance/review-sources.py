@@ -307,7 +307,7 @@ def close(a, b):
 DBX_TABLE_NAMES = {"qwen/qwen3-next-80b-instruct": "Qwen 3 80B Instruct"}
 
 
-def dbx_fact_issues(data, facts, today):
+def dbx_fact_issues(data, facts, today, complete=True):
     """Databricks prices that no longer match its DBU tables (USD at $0.07 / DBU).
 
     A table value matches the price shown today or the published post-promotion price.
@@ -328,7 +328,8 @@ def dbx_fact_issues(data, facts, today):
             continue
         found = []
         if not row:
-            issues[key] = ["not found in the Databricks DBU tables"]
+            if complete:  # only when every DBU table was read
+                issues[key] = ["not found in the Databricks DBU tables"]
             continue
         promo = cell.get("promotion") or {}
         shown = resolve(cell) if not (promo and today.isoformat() > promo["ends_on"]) else resolve(promo.get("after", {}))
@@ -407,7 +408,9 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                     unchecked.append(sid)
                     continue
                 after = current[sid]["records"]
-                rb, ra = (before, after) if by_id[sid].get("models") else (relevant(before, rx), relevant(after, rx))
+                rb, ra = relevant(before, rx), relevant(after, rx)
+                if not rb and not ra and by_id[sid].get("models"):
+                    rb, ra = before, after  # a model-specific page that never names the model
                 if not rb and not ra:
                     # No line names the model: still not offered, or (for an offered model) only a
                     # whole-source match can confirm nothing changed.
@@ -539,7 +542,8 @@ def main():
     facts = {}
     for snapshot in current.values():
         facts.update(snapshot.pop("facts", None) or {})
-    fact_issues = dbx_fact_issues(data, facts, today) if facts else {}
+    complete = not any(s.get("facts") == "dbx-prices" and s["id"] in errors for s in sources)
+    fact_issues = dbx_fact_issues(data, facts, today, complete) if facts else {}
     previous = json.loads(args.checks.read_text()) if args.checks and args.checks.exists() else None
     cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today)
     ranking_file = HERE.parent / "v2-ranking.json"

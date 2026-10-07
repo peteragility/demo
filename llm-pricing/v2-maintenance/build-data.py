@@ -622,17 +622,18 @@ def corrections(data):
             model_id_source="fireworks_models", model_id_checked_at=REVIEWED, availability_checked_at=REVIEWED, pricing_checked_at=None,
             note="Serverless is not supported. Serverless deprecation began 25 Sep 2026; dedicated GPU deployment remains available.")
     retirement = {
-        "tml/inkling": ["GLM 5.3", "Kimi K3"],
-        "deepseek/deepseek-v4-pro": ["DeepSeek V4.1 Flash"],
-        "moonshot/kimi-k2.7": ["Kimi K3"],
+        "tml/inkling": ("2026-10-30", ["GLM 5.3", "Kimi K3"], REVIEWED),
+        "deepseek/deepseek-v4-pro": ("2026-10-30", ["DeepSeek V4.1 Flash"], REVIEWED),
+        "moonshot/kimi-k2.7": ("2026-10-30", ["Kimi K3"], REVIEWED),
+        "deepseek/deepseek-v4-flash": ("2026-11-05", ["DeepSeek V4.1 Flash"], "2026-10-07"),
     }
-    for key, replacements in retirement.items():
+    for key, (day, replacements, seen) in retirement.items():
         c = m[key]["platforms"]["databricks"]
-        c["retires_on"] = "2026-10-30"
+        c["retires_on"] = day
         c["replacement"] = replacements
         c["retirement_src"] = "dbx_retirement"
-        c["availability_checked_at"] = REVIEWED
-        m[key]["warn"] = "Retires on Databricks 30 Oct 2026 · use " + " or ".join(replacements)
+        c["availability_checked_at"] = seen
+        m[key]["warn"] = "Retires on Databricks " + pretty(day) + " · use " + " or ".join(replacements)
     for key in ("openai/gpt-6-sol", "openai/gpt-6-luna"):
         c = m[key]["platforms"]["bedrock"]
         c["regions"] = "Runtime global cross-region from US / APAC; Mantle in-region in us-east-1 (N. Virginia). Runtime has no direct in-region invocation."
@@ -781,7 +782,7 @@ def build():
         "anthropic": ["List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
                       "Hong Kong: only Databricks serves the 2026 Claude models there (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
                       "Data residency costs +10% everywhere: Bedrock US / EU CRIS and in-region, Vertex US / EU multi-region, Azure US Data Zone, Databricks regional processing (⌖) and Anthropic's US-only inference.",
-                      {"text": "APAC in-region Claude on Databricks: Opus 4.8 in AWS Tokyo, Singapore and Sydney; Opus 5 in AWS Sydney and GCP Singapore; both in Azure Japan East and Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.", "models": ["anthropic/claude-opus-4.8", "anthropic/claude-opus-5", "anthropic/claude-sonnet-5"]},
+                      {"text": "APAC in-region Claude on Databricks: Opus 5.5 and Opus 4.8 in AWS Tokyo, Singapore and Sydney, Azure Japan East and Australia East, and GCP Singapore; Opus 5 in AWS Sydney and Azure Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.", "models": ["anthropic/claude-opus-5.5", "anthropic/claude-opus-4.8", "anthropic/claude-opus-5", "anthropic/claude-sonnet-5"]},
                       "Vertex has no Taiwan or Hong Kong endpoint for the 2026 Claude models: only global and US / EU multi-region. Azure deploys Claude from US regions and Sweden Central."],
         "openai": ["List-price parity on Databricks, Azure Global Standard and Bedrock Global cross-region. Azure Data Zone is +10% in the US and +20% in the EU / APAC zones for GPT-6; Bedrock in-region / US CRIS is +10%.",
                    "APAC: GPT-6 and GPT-5.6 on Databricks reach APAC (including Azure Hong Kong) through cross-geo routing. Azure serves them from Singapore, Japan, Korea, Australia and India (Global Standard); Bedrock from Tokyo, Seoul and Singapore via global CRIS (GPT-6 Sol / Luna and GPT-5.6 also Taipei).",
@@ -806,6 +807,7 @@ def build():
                 "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; xAI's own US endpoint and Bedrock US CRIS are +10%. Azure sells Grok 4.6 as Global Standard only."],
     }
     data["changes"] = [
+        "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
         "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",
         "2026-10-04: Row details became one card per platform: every endpoint and tier with input, output, cache read and cache write prices; regions by geography and processing level; Hong Kong and Taiwan; notes and IDs, reviewed for all 35 listed models.",
         "2026-10-04: Added missing tiers (Databricks Priority and ⌖ tiers, OpenAI Flex / Ultrafast, Anthropic fast mode and US-only inference, Bedrock / Vertex batch, xAI US endpoint, Alibaba Chinese mainland and off-peak). Azure now prices GPT-6.1 Sol, GPT-5.4, Claude Fable 5 and Opus 4.8; Inkling left Azure pay-per-token and gained a Thinking Machines API (beta).",

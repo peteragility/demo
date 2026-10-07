@@ -14,7 +14,8 @@ NOTICE = re.compile(r"promot|discount|expir|retir|deprecat|through\s+(?:\w+\s+)?
 
 
 def clean(text):
-    return re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"\s+", " ", text).strip()
+    return re.sub(r"([(\[{]) | (?=[)\]},.;:!?])", r"\1", text)
 
 
 class Page(HTMLParser):
@@ -294,7 +295,8 @@ def dbx_price_rows(html, usd_per_dbu):
         if len(rows) < 3:
             continue
         title = " ".join(rows[0])
-        tier = "standard" if "Standard Pay Per Token" in title else "priority" if "Priority Pay Per Token" in title else None
+        # "Priority Pay Per Token" tables; the standard ones are titled "Pay Per Token" or "Standard Pay Per Token".
+        tier = "priority" if "Priority Pay Per Token" in title else "standard" if "Pay Per Token" in title else None
         if not tier:
             continue
         names = {"Input": "in", "Output": "out", "Cache read": "cache_read", "Cache write": "cache_write", "Cache write (1hr)": "cache_write_1h"}
