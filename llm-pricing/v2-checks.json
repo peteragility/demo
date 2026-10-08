@@ -4,14 +4,9 @@
  "sources_checked": 107,
  "sources_failed": [],
  "review": [
-  "Claude Fable 5.1 · azure_foundry",
-  "Claude Fable 5.1 · official",
-  "Claude Opus 5.5 · azure_foundry",
-  "Claude Opus 5.5 · official",
-  "Claude Sonnet 5.5 · azure_foundry",
-  "Claude Sonnet 5.5 · bedrock",
-  "Claude Sonnet 5.5 · gcloud",
-  "Claude Sonnet 5.5 · official"
+  "Claude Fable 5.1 · databricks",
+  "Claude Opus 5.5 · databricks",
+  "Claude Sonnet 5.5 · databricks"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
@@ -19,34 +14,26 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5.1|bedrock": {
    "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5.1|databricks": {
-   "verified": "2026-10-08"
+   "verified": "2026-10-08",
+   "changed_at": "2026-10-08",
+   "sources": [
+    "dbx-prices"
+   ]
   },
   "anthropic/claude-fable-5.1|fireworks": {
    "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5|alicloud": {
    "verified": "2026-10-08"
@@ -64,16 +51,10 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
    "verified": "2026-10-08"
@@ -91,17 +72,31 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-08"
+  },
+  "anthropic/claude-haiku-5.5|alicloud": {
+   "verified": "2026-10-08"
+  },
+  "anthropic/claude-haiku-5.5|azure_foundry": {
+   "verified": "2026-10-08"
+  },
+  "anthropic/claude-haiku-5.5|bedrock": {
+   "verified": "2026-10-08"
+  },
+  "anthropic/claude-haiku-5.5|databricks": {
+   "verified": "2026-10-08"
+  },
+  "anthropic/claude-haiku-5.5|fireworks": {
+   "verified": "2026-10-08"
+  },
+  "anthropic/claude-haiku-5.5|gcloud": {
+   "verified": "2026-10-08"
+  },
+  "anthropic/claude-haiku-5.5|official": {
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-4.8|alicloud": {
    "verified": "2026-10-08"
@@ -119,49 +114,35 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|bedrock": {
    "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|databricks": {
-   "verified": "2026-10-08"
+   "verified": "2026-10-08",
+   "changed_at": "2026-10-08",
+   "sources": [
+    "dbx-prices"
+   ]
   },
   "anthropic/claude-opus-5.5|fireworks": {
    "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-10-08"
@@ -179,16 +160,10 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-10-08"
@@ -206,10 +181,7 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-4.6|official": {
    "verified": "2026-10-08"
@@ -218,42 +190,26 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-models",
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-models",
-    "aws-marketplace"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-10-08"
+   "verified": "2026-10-08",
+   "changed_at": "2026-10-08",
+   "sources": [
+    "dbx-prices"
+   ]
   },
   "anthropic/claude-sonnet-5.5|fireworks": {
    "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-models"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-10-07",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "anthropic-models",
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5|alicloud": {
    "verified": "2026-10-08"
@@ -271,16 +227,10 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-10-08"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
    "verified": "2026-10-08"
@@ -382,10 +332,7 @@
    "verified": "2026-10-08"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "gcp-locations"
-   ]
+   "verified": "2026-10-08"
   },
   "google/gemini-3.1-pro|official": {
    "verified": "2026-10-08"
@@ -526,10 +473,7 @@
    "verified": "2026-10-08"
   },
   "meta/llama-4-maverick|bedrock": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "aws-model-cards"
-   ]
+   "verified": "2026-10-08"
   },
   "meta/llama-4-maverick|databricks": {
    "verified": "2026-10-08"
@@ -577,10 +521,7 @@
    "verified": "2026-10-08"
   },
   "mistral/mistral-medium-3.5|official": {
-   "verified": "2026-10-08",
-   "accepted": [
-    "api-other-mistral-pricing"
-   ]
+   "verified": "2026-10-08"
   },
   "moonshot/kimi-k2.7|alicloud": {
    "verified": "2026-10-08"
@@ -643,10 +584,7 @@
    "verified": "2026-10-08"
   },
   "openai/gpt-5.4|official": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-10-08"
   },
   "openai/gpt-5.5|alicloud": {
    "verified": "2026-10-08"
@@ -883,10 +821,7 @@
    "verified": "2026-10-08"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "dbx-models"
-   ]
+   "verified": "2026-10-08"
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-08"
@@ -1084,10 +1019,7 @@
    "verified": "2026-10-08"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-10-07",
-   "unchecked": [
-    "aws-pricing-page"
-   ]
+   "verified": "2026-10-08"
   },
   "zai/glm-5.3|databricks": {
    "verified": "2026-10-08"
