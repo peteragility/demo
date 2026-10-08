@@ -1678,7 +1678,7 @@
      }
     },
     {
-     "label": "Global (api.openai.com) · Fast",
+     "label": "Global (api.openai.com) · Ultrafast",
      "in": 60.0,
      "out": 300.0,
      "cache_read": 6.0,
@@ -1686,7 +1686,7 @@
      "scope": "global",
      "service": "priority",
      "endpoint": "Global (api.openai.com)",
-     "tier_label": "Fast",
+     "tier_label": "Ultrafast",
      "long_context": {
       "in": 120.0,
       "out": 450.0,
@@ -1744,7 +1744,7 @@
      }
     },
     {
-     "label": "Regional processing (US) · Fast",
+     "label": "Regional processing (US) · Ultrafast",
      "in": 66.0,
      "out": 330.0,
      "cache_read": 6.6,
@@ -1752,7 +1752,7 @@
      "scope": "geographic",
      "service": "priority",
      "endpoint": "Regional processing (US)",
-     "tier_label": "Fast",
+     "tier_label": "Ultrafast",
      "long_context": {
       "in": 132.0,
       "out": 495.0,
@@ -1885,7 +1885,7 @@
      }
     },
     {
-     "label": "In-region · Fast",
+     "label": "In-region · Ultrafast",
      "in": 66.0,
      "out": 330.0,
      "cache_read": 6.6,
@@ -1893,7 +1893,7 @@
      "scope": "regional",
      "service": "priority",
      "endpoint": "In-region",
-     "tier_label": "Fast",
+     "tier_label": "Ultrafast",
      "long_context": {
       "in": 132.0,
       "out": 495.0,
@@ -1902,7 +1902,7 @@
      }
     },
     {
-     "label": "US CRIS · Fast",
+     "label": "US CRIS · Ultrafast",
      "in": 66.0,
      "out": 330.0,
      "cache_read": 6.6,
@@ -1910,7 +1910,7 @@
      "scope": "geographic",
      "service": "priority",
      "endpoint": "US CRIS",
-     "tier_label": "Fast",
+     "tier_label": "Ultrafast",
      "long_context": {
       "in": 132.0,
       "out": 495.0,
@@ -1919,7 +1919,7 @@
      }
     },
     {
-     "label": "Global CRIS · Fast",
+     "label": "Global CRIS · Ultrafast",
      "in": 60.0,
      "out": 300.0,
      "cache_read": 6.0,
@@ -1927,7 +1927,7 @@
      "scope": "global",
      "service": "priority",
      "endpoint": "Global CRIS",
-     "tier_label": "Fast",
+     "tier_label": "Ultrafast",
      "long_context": {
       "in": 120.0,
       "out": 450.0,
@@ -4659,31 +4659,23 @@
    },
    "variants": [
     {
-     "label": "Gemini API · Standard",
-     "in": 1.5,
-     "out": 7.5,
-     "cache_read": 0.15,
-     "scope": "unverified",
-     "service": "standard",
-     "endpoint": "Gemini API"
-    },
-    {
      "label": "Gemini API · Batch",
      "in": 0.375,
      "out": 1.875,
      "cache_read": 0.0375,
      "scope": "unverified",
      "service": "batch",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Batch",
-     "in": 0.75,
-     "out": 3.75,
-     "cache_read": 0.075,
-     "scope": "unverified",
-     "service": "batch",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 0.75,
+       "out": 3.75,
+       "cache_read": 0.075,
+       "tier": "Gemini API · Batch"
+      }
+     }
     },
     {
      "label": "Gemini API · Flex",
@@ -4692,16 +4684,17 @@
      "cache_read": 0.0375,
      "scope": "unverified",
      "service": "flex",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Flex",
-     "in": 0.75,
-     "out": 3.75,
-     "cache_read": 0.075,
-     "scope": "unverified",
-     "service": "flex",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 0.75,
+       "out": 3.75,
+       "cache_read": 0.075,
+       "tier": "Gemini API · Flex"
+      }
+     }
     },
     {
      "label": "Gemini API · Priority",
@@ -4710,16 +4703,17 @@
      "cache_read": 0.135,
      "scope": "unverified",
      "service": "priority",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Priority",
-     "in": 2.7,
-     "out": 13.5,
-     "cache_read": 0.27,
-     "scope": "unverified",
-     "service": "priority",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 2.7,
+       "out": 13.5,
+       "cache_read": 0.27,
+       "tier": "Gemini API · Priority"
+      }
+     }
     }
    ],
    "src": [
@@ -4975,31 +4969,23 @@
    },
    "variants": [
     {
-     "label": "Gemini API · Standard",
-     "in": 1.5,
-     "out": 7.5,
-     "cache_read": 0.15,
-     "scope": "unverified",
-     "service": "standard",
-     "endpoint": "Gemini API"
-    },
-    {
      "label": "Gemini API · Batch",
      "in": 0.375,
      "out": 1.875,
      "cache_read": 0.0375,
      "scope": "unverified",
      "service": "batch",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Batch",
-     "in": 0.75,
-     "out": 3.75,
-     "cache_read": 0.075,
-     "scope": "unverified",
-     "service": "batch",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 0.75,
+       "out": 3.75,
+       "cache_read": 0.075,
+       "tier": "Gemini API · Batch"
+      }
+     }
     },
     {
      "label": "Gemini API · Flex",
@@ -5008,16 +4994,17 @@
      "cache_read": 0.0375,
      "scope": "unverified",
      "service": "flex",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Flex",
-     "in": 0.75,
-     "out": 3.75,
-     "cache_read": 0.075,
-     "scope": "unverified",
-     "service": "flex",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 0.75,
+       "out": 3.75,
+       "cache_read": 0.075,
+       "tier": "Gemini API · Flex"
+      }
+     }
     },
     {
      "label": "Gemini API · Priority",
@@ -5026,16 +5013,17 @@
      "cache_read": 0.135,
      "scope": "unverified",
      "service": "priority",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Priority",
-     "in": 2.7,
-     "out": 13.5,
-     "cache_read": 0.27,
-     "scope": "unverified",
-     "service": "priority",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 2.7,
+       "out": 13.5,
+       "cache_read": 0.27,
+       "tier": "Gemini API · Priority"
+      }
+     }
     }
    ],
    "src": [
@@ -6574,7 +6562,7 @@
      "label": "US multi-region · Standard",
      "in": 11.0,
      "out": 55.0,
-     "cache_read": 0.1375,
+     "cache_read": 0.275,
      "cache_write": 13.75,
      "cache_write_1h": 22.0,
      "scope": "geographic",
@@ -6585,7 +6573,7 @@
      "label": "EU multi-region · Standard",
      "in": 11.0,
      "out": 55.0,
-     "cache_read": 0.1375,
+     "cache_read": 0.275,
      "cache_write": 13.75,
      "cache_write_1h": 22.0,
      "scope": "geographic",
@@ -6596,7 +6584,7 @@
      "label": "US multi-region · Batch",
      "in": 5.5,
      "out": 27.5,
-     "cache_read": 0.06875,
+     "cache_read": 0.1375,
      "cache_write": 6.875,
      "cache_write_1h": 11.0,
      "scope": "geographic",
@@ -6607,7 +6595,7 @@
      "label": "EU multi-region · Batch",
      "in": 5.5,
      "out": 27.5,
-     "cache_read": 0.06875,
+     "cache_read": 0.1375,
      "cache_write": 6.875,
      "cache_write_1h": 11.0,
      "scope": "geographic",
@@ -6674,7 +6662,7 @@
      "label": "Claude API · global · Batch",
      "in": 5.0,
      "out": 25.0,
-     "cache_read": 0.0625,
+     "cache_read": 0.125,
      "cache_write": 6.25,
      "cache_write_1h": 10.0,
      "scope": "global",
@@ -6685,7 +6673,7 @@
      "label": "US-only inference · Standard",
      "in": 11.0,
      "out": 55.0,
-     "cache_read": 0.1375,
+     "cache_read": 0.275,
      "cache_write": 13.75,
      "cache_write_1h": 22.0,
      "scope": "geographic",
@@ -6696,7 +6684,7 @@
      "label": "US-only inference · Batch",
      "in": 5.5,
      "out": 27.5,
-     "cache_read": 0.06875,
+     "cache_read": 0.1375,
      "cache_write": 6.875,
      "cache_write_1h": 11.0,
      "scope": "geographic",
@@ -6777,7 +6765,7 @@
      "label": "US CRIS · Standard",
      "in": 11.0,
      "out": 55.0,
-     "cache_read": 0.1375,
+     "cache_read": 0.275,
      "cache_write": 13.75,
      "cache_write_1h": 22.0,
      "scope": "geographic",
@@ -6922,7 +6910,7 @@
      "label": "US multi-region · Standard",
      "in": 4.4,
      "out": 22.0,
-     "cache_read": 0.11,
+     "cache_read": 0.22,
      "cache_write": 5.5,
      "cache_write_1h": 8.8,
      "scope": "geographic",
@@ -6933,7 +6921,7 @@
      "label": "EU multi-region · Standard",
      "in": 4.4,
      "out": 22.0,
-     "cache_read": 0.11,
+     "cache_read": 0.22,
      "cache_write": 5.5,
      "cache_write_1h": 8.8,
      "scope": "geographic",
@@ -6944,7 +6932,7 @@
      "label": "US multi-region · Batch",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -6955,7 +6943,7 @@
      "label": "EU multi-region · Batch",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -7022,7 +7010,7 @@
      "label": "Claude API · global · Batch",
      "in": 2.0,
      "out": 10.0,
-     "cache_read": 0.05,
+     "cache_read": 0.1,
      "cache_write": 2.5,
      "cache_write_1h": 4.0,
      "scope": "global",
@@ -7033,7 +7021,7 @@
      "label": "Claude API · global · Fast",
      "in": 8.0,
      "out": 40.0,
-     "cache_read": 0.2,
+     "cache_read": 0.4,
      "cache_write": 10.0,
      "cache_write_1h": 16.0,
      "scope": "global",
@@ -7045,7 +7033,7 @@
      "label": "US-only inference · Standard",
      "in": 4.4,
      "out": 22.0,
-     "cache_read": 0.11,
+     "cache_read": 0.22,
      "cache_write": 5.5,
      "cache_write_1h": 8.8,
      "scope": "geographic",
@@ -7056,7 +7044,7 @@
      "label": "US-only inference · Batch",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -7067,7 +7055,7 @@
      "label": "US-only inference · Fast",
      "in": 8.8,
      "out": 44.0,
-     "cache_read": 0.22,
+     "cache_read": 0.44,
      "cache_write": 11.0,
      "cache_write_1h": 17.6,
      "scope": "geographic",
@@ -7150,7 +7138,7 @@
      "label": "Geo CRIS · Standard",
      "in": 4.4,
      "out": 22.0,
-     "cache_read": 0.11,
+     "cache_read": 0.22,
      "cache_write": 5.5,
      "cache_write_1h": 8.8,
      "scope": "geographic",
@@ -7161,7 +7149,7 @@
      "label": "In-region · Standard",
      "in": 4.4,
      "out": 22.0,
-     "cache_read": 0.11,
+     "cache_read": 0.22,
      "cache_write": 5.5,
      "cache_write_1h": 8.8,
      "scope": "regional",
@@ -7279,7 +7267,7 @@
      "label": "Data Zone US · Standard",
      "in": 4.4,
      "out": 22.0,
-     "cache_read": 0.11,
+     "cache_read": 0.22,
      "cache_write": 5.5,
      "cache_write_1h": 8.8,
      "scope": "geographic",
@@ -7358,7 +7346,7 @@
      "label": "US multi-region · Standard",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -7369,7 +7357,7 @@
      "label": "EU multi-region · Standard",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -7469,7 +7457,7 @@
      "label": "US-only inference · Standard",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -7561,7 +7549,7 @@
      "label": "Geo CRIS · Standard",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -7644,7 +7632,7 @@
      "label": "Data Zone US · Standard",
      "in": 2.2,
      "out": 11.0,
-     "cache_read": 0.055,
+     "cache_read": 0.11,
      "cache_write": 2.75,
      "cache_write_1h": 4.4,
      "scope": "geographic",
@@ -9715,31 +9703,23 @@
    },
    "variants": [
     {
-     "label": "Gemini API · Standard",
-     "in": 1.5,
-     "out": 7.5,
-     "cache_read": 0.15,
-     "scope": "unverified",
-     "service": "standard",
-     "endpoint": "Gemini API"
-    },
-    {
      "label": "Gemini API · Batch",
      "in": 0.375,
      "out": 1.875,
      "cache_read": 0.0375,
      "scope": "unverified",
      "service": "batch",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Batch",
-     "in": 0.75,
-     "out": 3.75,
-     "cache_read": 0.075,
-     "scope": "unverified",
-     "service": "batch",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 0.75,
+       "out": 3.75,
+       "cache_read": 0.075,
+       "tier": "Gemini API · Batch"
+      }
+     }
     },
     {
      "label": "Gemini API · Flex",
@@ -9748,16 +9728,17 @@
      "cache_read": 0.0375,
      "scope": "unverified",
      "service": "flex",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Flex",
-     "in": 0.75,
-     "out": 3.75,
-     "cache_read": 0.075,
-     "scope": "unverified",
-     "service": "flex",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 0.75,
+       "out": 3.75,
+       "cache_read": 0.075,
+       "tier": "Gemini API · Flex"
+      }
+     }
     },
     {
      "label": "Gemini API · Priority",
@@ -9766,16 +9747,17 @@
      "cache_read": 0.135,
      "scope": "unverified",
      "service": "priority",
-     "endpoint": "Gemini API"
-    },
-    {
-     "label": "Gemini API · Priority",
-     "in": 2.7,
-     "out": 13.5,
-     "cache_read": 0.27,
-     "scope": "unverified",
-     "service": "priority",
-     "endpoint": "Gemini API"
+     "endpoint": "Gemini API",
+     "promotion": {
+      "ends_on": "2026-12-31",
+      "label": "Flash introductory promotion",
+      "after": {
+       "in": 2.7,
+       "out": 13.5,
+       "cache_read": 0.27,
+       "tier": "Gemini API · Priority"
+      }
+     }
     }
    ],
    "src": [
@@ -11059,13 +11041,13 @@
      "endpoint": "Data Zone US"
     },
     {
-     "label": "Data Zone US · Standard",
+     "label": "FW-DeepSeek-V4-Pro · Data Zone US · Standard",
      "in": 1.925,
      "out": 3.828,
      "cache_read": 0.165,
      "scope": "geographic",
      "service": "standard",
-     "endpoint": "Data Zone US"
+     "endpoint": "FW-DeepSeek-V4-Pro · Data Zone US"
     }
    ],
    "src": [

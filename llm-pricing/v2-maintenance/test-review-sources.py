@@ -190,34 +190,124 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(review.classify([limits[0]], [limits[1]], rx)[0], "low")
         repeated = ("table: Opus 5.5 | Input | $4.00 | $4.00", "table: Opus 5.5 | Input | $4.00 |  | ")
         self.assertEqual(review.classify([repeated[0]], [repeated[1]], rx)[0], "low")
-        heading = ["table: Claude Opus 5.5 / Pricing | $4.00"]
-        self.assertEqual(review.classify(heading, heading + ["table: Claude Opus 5.5 / Regional Availability | us-east-1 (N. Virginia)"], rx)[0], "low")
+        region = ('table: {"cells":["us-east-1 (N. Virginia)","no","yes","yes"],"heading":"Regional Availability"}',
+                  'table: {"cells":["us-east-1  (N. Virginia)","no","yes","yes"],"heading":"Regional  Availability"}')
+        self.assertEqual(review.classify([region[0]], [region[1]], rx)[0], "low")
 
     def test_price_date_and_availability_changes_need_review(self):
         rx = review.model_regex({"name": "Kimi K3"})
         base = ["table: Kimi K3 | Global CRIS | $3.00 | $15.00"]
-        self.assertEqual(review.classify(base, base + ["table: Kimi K3 | IN CRIS | $3.30 | $16.50"], rx), ("high", "a price, rate or multiplier changed"))
+        self.assertEqual(review.classify(base, base + ["table: Kimi K3 | IN CRIS | $3.30 | $16.50"], rx), ("high", "a price, rate, multiplier or context limit changed"))
         self.assertEqual(review.classify(base, ["table: Kimi K3 | Global CRIS | $2.50 | $15.00"], rx)[0], "high")
         self.assertEqual(review.classify(base, base + ["notice: Kimi K3 retires on November 5, 2026."], rx), ("high", "a date changed"))
         self.assertEqual(review.classify([], base, rx)[0], "high")
         self.assertEqual(review.classify(base, [], rx)[0], "high")
+        # Context thresholds, numeric dates, and regions with their support marks count too.
+        limit = ("text: Kimi K3 short context (272K input tokens or fewer) | $3.00", "text: Kimi K3 short context (128K input tokens or fewer) | $3.00")
+        self.assertEqual(review.classify([limit[0]], [limit[1]], rx)[0], "high")
+        self.assertEqual(review.classify(["notice: Kimi K3 retires on 10/31/2026"], ["notice: Kimi K3 retires on 11/30/2026"], rx), ("high", "a date changed"))
+        support = ('table: {"cells":["ap-east-2 (Taipei)","no","no","yes"],"heading":"Regional Availability"}',
+                   'table: {"cells":["ap-east-2 (Taipei)","yes","no","yes"],"heading":"Regional Availability"}')
+        self.assertEqual(review.classify(base + [support[0]], base + [support[1]], rx), ("high", "a region or its availability changed"))
+        self.assertEqual(review.classify(base, base + [support[0]], rx)[0], "high")
 
     def test_accepting_low_risk_changes_keeps_high_risk_lines_for_review(self):
         baseline = {"sources": {"p": {"records": ["a old wording", "b $1.00"]}}, "acknowledged_lifecycle": []}
         current = {"p": {"url": "u", "kind": "tables", "digest": "x", "records": ["a new wording", "b $2.00"]}}
         changes = [{"source": "p", "risk": "low", "added_all": ["a new wording"], "removed_all": ["a old wording"]},
                    {"source": "p", "risk": "high", "added_all": ["b $2.00"], "removed_all": ["b $1.00"]}]
-        out = review.accept_low_risk(baseline, current, changes, {}, [], dt.date(2026, 10, 8))
+        out = review.accept_low_risk(baseline, current, changes, {}, [])
         self.assertEqual(out["sources"]["p"]["records"], ["a new wording", "b $1.00"])
-        out = review.accept_low_risk(baseline, current, changes[:1], {}, [], dt.date(2026, 10, 8))
+        out = review.accept_low_risk(baseline, current, changes[:1], {}, [])
         self.assertEqual(out["sources"]["p"]["records"], current["p"]["records"])
 
-    def test_one_failed_read_does_not_open_the_issue(self):
-        report = {"checked_at": "2026-10-08", "sources_failed": {"p": "HTTP 503"}, "lifecycle_due": []}
-        text, review_list = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=[])
-        self.assertNotIn("could not be read two days", text)
-        text, _ = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=["p"])
-        self.assertIn("could not be read two days running", text)
+    def test_a_changed_line_that_names_no_model_is_held_for_review(self):
+        config = [{"id": "p", "url": "u", "kind": "tables", "meta": ["src"]}]
+        data = {"models": {"anthropic/claude-opus-5.5": {"name": "Claude Opus 5.5", "platforms": {"official": {"status": "priced", "src": "src"}}}}}
+        before = ["table: Claude Opus 5.5 | $4.00 | $20.00", "notice: US-only inference is priced at 1.1x", "table: Llama 3.3 70B | $0.90"]
+        after = ["table: Claude Opus 5.5 | $4.00 | $20.00", "notice: US-only inference is priced at 1.2x", "table: Llama 3.3 70B | $0.80"]
+        baseline = {"sources": {"p": {"records": before}}, "acknowledged_lifecycle": []}
+        current = {"p": {"url": "u", "kind": "tables", "digest": "x", "records": after}}
+        general = review.general_changes(data, config, baseline, current, {})
+        # The Llama line is about a model the page does not track; the multiplier applies to every Claude model here.
+        self.assertEqual([(g["risk"], g["added_all"], g["removed_all"]) for g in general],
+                         [("high", ["notice: US-only inference is priced at 1.2x"], ["notice: US-only inference is priced at 1.1x"])])
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, dt.date(2026, 10, 8), general)
+        self.assertEqual(cells["anthropic/claude-opus-5.5|official"], {"verified": None, "unchecked": ["p"]})
+        out = review.accept_low_risk(baseline, current, changes, {}, [], general)
+        self.assertEqual(out["sources"]["p"]["records"], sorted(before[:2] + ["table: Llama 3.3 70B | $0.80"]))
+        text, _ = review.issue_markdown({"checked_at": "2026-10-08", "sources_failed": {}, "lifecycle_due": []}, cells, changes, {}, data, set(data["models"]), [], general)
+        self.assertIn("name no model", text)
+        self.assertIn("1.2x", text)
+
+    def test_model_names_the_page_does_not_track_are_recognised(self):
+        for name in ("Llama 3.3 70B", "Claude Opus 4.7", "Mistral Large 4", "o3-mini", "Qwen3-235B", "DeepSeek-V3.2"):
+            self.assertTrue(review.OTHER_MODEL.search(review.official.norm(name)), name)
+        for text in ("US-only inference is priced at 1.1x", "Batch API: 50% discount", "Claude models support prompt caching"):
+            self.assertFalse(review.OTHER_MODEL.search(review.official.norm(text)), text)
+
+    def test_a_region_row_on_a_model_card_is_the_models_line(self):
+        config = [{"id": "card", "url": "u", "meta": ["src"], "models": ["m/k3"]}]
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"bedrock": {"status": "priced", "src": "src"}}}}}
+        before = ['table: {"cells":["Model ID","moonshot.kimi-k3"]}', 'table: {"cells":["ap-east-2 (Taipei)","no","no","yes"],"heading":"Regional Availability"}']
+        after = [before[0], 'table: {"cells":["ap-east-2 (Taipei)","yes","no","yes"],"heading":"Regional Availability"}']
+        cells, changes = review.cell_checks(data, config, {"sources": {"card": {"records": before}}}, {"card": {"url": "u", "records": after}}, {}, {}, None, dt.date(2026, 10, 8))
+        self.assertEqual(cells["m/k3|bedrock"]["sources"], ["card"])
+        self.assertEqual(changes[0]["reason"], "a region or its availability changed")
+
+    def test_table_rows_name_their_model_and_region_icons_become_marks(self):
+        text = ('<h2>Claude models</h2><table><tr><td>Sonnet 5.5</td><td>Input</td><td>$2.00</td></tr>'
+                '<tr><td></td><td>Cache Hit</td><td>$0.10</td></tr></table>'
+                '<table><tr><th>Region</th><th>In-Region</th></tr><tr><td>ap-east-2 (Taipei)</td>'
+                '<td><img src="/images/icons/icon-no.png" alt="not-supported"></td></tr></table>')
+        records = review.html_records(text, "tables")
+        self.assertTrue(any('"Sonnet 5.5","Cache Hit","$0.10"' in r for r in records), records)
+        self.assertTrue(any('"ap-east-2 (Taipei)","no"' in r for r in records), records)
+
+    def test_a_new_source_waits_for_a_recorded_baseline(self):
+        current = {"new": {"url": "u", "kind": "tables", "digest": "x", "records": ["table: x | $1.00"]}}
+        self.assertNotIn("new", review.accept_low_risk({"sources": {}, "acknowledged_lifecycle": []}, current, [], {}, [])["sources"])
+        text, _ = review.issue_markdown({"checked_at": "2026-10-08", "sources_failed": {}, "lifecycle_due": []}, {}, [], {}, {"models": {}}, set(), [], unrecorded=["new"])
+        self.assertIn("without a reviewed baseline", text)
+
+    def test_scheduled_dates_are_acknowledged_but_tier_rates_need_a_recheck(self):
+        alerts = [{"key": "m", "platform": "databricks", "event": "retirement", "date": "2026-10-10", "days": 2},
+                  {"key": "m", "platform": "official", "event": "tier rates verified through", "date": "2026-10-10", "days": 2}]
+        out = review.accept_low_risk({"sources": {}, "acknowledged_lifecycle": []}, {}, [], {}, alerts)
+        self.assertEqual(out["acknowledged_lifecycle"], ["m|databricks|retirement|2026-10-10"])
+        self.assertTrue(review.needs_action(alerts[1]))
+        self.assertFalse(review.needs_action(alerts[0]))
+
+    def test_a_source_is_listed_once_it_has_not_been_read_for_two_days(self):
+        sources = [{"id": "p"}, {"id": "q"}]
+        previous = {"checked_at": "2026-10-07", "sources_failed": [], "sources_read": {"p": "2026-10-07", "q": "2026-10-07"}}
+        self.assertEqual(review.sources_read(previous, sources, {"q": {}}, dt.date(2026, 10, 8)), {"p": "2026-10-07", "q": "2026-10-08"})
+        # A checks file from before read dates were kept: sources it could read were read that day.
+        self.assertEqual(review.sources_read({"checked_at": "2026-10-07", "sources_failed": ["p"]}, sources, {}, dt.date(2026, 10, 8)), {"q": "2026-10-07"})
+        read = {"p": "2026-10-08"}
+        self.assertEqual(review.stale({"p": "HTTP 503"}, read, dt.date(2026, 10, 8)), [])  # a same-day re-run
+        self.assertEqual(review.stale({"p": "HTTP 503"}, read, dt.date(2026, 10, 9)), [])
+        self.assertEqual(review.stale({"p": "HTTP 503"}, read, dt.date(2026, 10, 10)), ["p"])
+        report = {"checked_at": "2026-10-10", "sources_failed": {"p": "HTTP 503"}, "lifecycle_due": []}
+        text, _ = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=[])
+        self.assertNotIn("Sources not read", text)
+        text, _ = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=["p"], last_read=read)
+        self.assertIn("Sources not read for 2 days or more", text)
+        self.assertIn("last read 2026-10-08", text)
+
+    def test_an_endpoint_missing_from_the_region_tables_keeps_its_date_and_is_flagged(self):
+        spec = importlib.util.spec_from_file_location("update_endpoints", HERE / "update-endpoints.py")
+        regions = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(regions)
+        entry = {"regions": [["APAC", "in-region", "Tokyo", "AWS"]], "hk": ["none", ""], "tw": ["none", ""], "changed_at": "2026-10-01"}
+        previous = {"databricks": {"m/a": dict(entry), "m/b": dict(entry)}}
+        current = {"databricks": {"m/a": {k: v for k, v in entry.items() if k != "changed_at"}}}
+        lines = regions.changes(previous, current)
+        out = regions.carry(previous, current, {"m/a": {}, "m/b": {}}, "2026-10-08")
+        self.assertTrue(any("m/b" in line and "no longer" in line for line in lines), lines)
+        self.assertEqual((out["databricks"]["m/a"]["changed_at"], out["databricks"]["m/b"]["changed_at"]), ("2026-10-01", "2026-10-01"))
+        self.assertEqual(out["databricks"]["m/b"]["missing_since"], "2026-10-08")
+        self.assertNotIn("missing_since", out["databricks"]["m/a"])
 
 
 if __name__ == "__main__":

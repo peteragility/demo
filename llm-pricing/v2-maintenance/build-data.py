@@ -15,6 +15,10 @@ HERE = Path(__file__).resolve().parent
 REVIEWED = "2026-10-08"
 RATE_FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_storage")
 PLATFORMS = ("databricks", "official", "bedrock", "azure_foundry", "fireworks", "gcloud", "alicloud")
+# Share of the same tier's input price that Anthropic charges for a cache hit (pricing page, 2026-10-08):
+# 2.5% on Fable 5.1, 5% on Opus 5.5 and Sonnet 5.5, 10% on every other Claude model. Databricks bills
+# Claude from its own DBU tables (still 10% for Sonnet 5.5), which review-sources.py checks number by number.
+CACHE_HIT = {"anthropic/claude-fable-5.1": 0.025, "anthropic/claude-opus-5.5": 0.05, "anthropic/claude-sonnet-5.5": 0.05}
 
 
 def rates(i, o, cr=None, cw=None, cw1h=None, storage=None):
@@ -162,7 +166,7 @@ def normalize(data):
 def add_models(data):
     models = data["models"]
     sonnet = copy.deepcopy(models["anthropic/claude-sonnet-5"])
-    sonnet.update(name="Claude Sonnet 5.5", short="Sonnet 5.5", model_key="anthropic/claude-sonnet-5.5",
+    sonnet.update(name="Claude Sonnet 5.5", short="Sonnet 5.5", model_key="anthropic/claude-sonnet-5.5", cache_read=0.1,
                   badges=["Added"], ctx="1M", note="Current Sonnet generation; verified on all five priced platforms.")
     for pl in PLATFORMS:
         c = sonnet["platforms"][pl]
@@ -178,18 +182,15 @@ def add_models(data):
                 # Residency premiums include both cache-write TTLs.
                 if v["comparison_scope"] == "regional":
                     v.update(cache_write=2.75, cache_write_1h=4.4)
-                # 2026-10-08: Anthropic cut the Sonnet 5.5 cache-hit rate to 5% of the input
-                # price (was 10%); every cache_read below is 0.05x of this row's input rate.
-                # Databricks is excluded: its DBU tables still publish the 0.1x rate.
-                if pl != "databricks" and "cache_read" in v:
-                    v["cache_read"] = round(c["in"] * 0.05, 6)
-    sonnet["platforms"]["official"]["variants"][0].update(cache_read=0.05, cache_write=1.25, cache_write_1h=2.0)
-    # Databricks keeps its own published DBU-table rates (still 0.1x); only Anthropic's
-    # first-party API passes the new 0.05x cache-hit rate through.
+    sonnet["platforms"]["official"]["variants"][0].update(cache_write=1.25, cache_write_1h=2.0)
+    # 2026-10-08: Anthropic cut the Sonnet 5.5 cache hit to 5% of input (was 10%). Each tier's cache
+    # read follows its own input rate; Databricks' DBU tables still publish 10%.
     for pl in PLATFORMS:
         c = sonnet["platforms"][pl]
-        if pl != "databricks" and c["status"] == "priced" and "cache_read" in c:
-            c["cache_read"] = round(c["in"] * 0.05, 6)
+        if pl != "databricks" and c["status"] == "priced":
+            for o in [c, *c.get("variants", [])]:
+                if o.get("cache_read") is not None:
+                    o["cache_read"] = round(o["in"] * CACHE_HIT["anthropic/claude-sonnet-5.5"], 6)
     models["anthropic/claude-sonnet-5.5"] = sonnet
 
     # Claude Haiku 5.5 (reviewed 2026-10-08): Anthropic pricing page and the Bedrock
@@ -572,6 +573,25 @@ def finish_variants(data):
                 v.setdefault("service_tier", "standard")
 
 
+def check_cache_reads(data):
+    """Every Claude tier outside Databricks that lists a cache read charges the model's CACHE_HIT share
+    of its own input rate, so a tier edited by hand cannot drift from its model's rule."""
+    for key, m in data["models"].items():
+        if not key.startswith("anthropic/"):
+            continue
+        share = CACHE_HIT.get(key, 0.1)
+        for pl, c in m["platforms"].items():
+            if pl == "databricks" or c.get("status") != "priced":
+                continue
+            for o in [c, *c.get("variants", []), c.get("long_context") or {}, (c.get("promotion") or {}).get("after") or {}]:
+                if o.get("in") is None or o.get("cache_read") is None:
+                    continue
+                want = o["in"] * share
+                if abs(o["cache_read"] - want) > max(1e-6, want * 0.01):
+                    raise ValueError(f"{m['name']} · {pl} · {o.get('label') or c.get('tier')}: cache read {o['cache_read']} "
+                                     f"is not {share:g} x its input {o['in']} ({round(want, 6)}).")
+
+
 def make_variant(v, day):
     v = dict(v)
     out = variant(v.pop("label"), v.pop("in"), v.pop("out"), v.pop("cache_read", None), v.pop("cache_write", None), v.pop("cache_write_1h", None),
@@ -782,7 +802,7 @@ def lifecycle_notices(data):
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
-    data.update(schema=4, reviewed_at=DBX_PRICED,
+    data.update(schema=4, reviewed_at=max(REVIEWED, DBX_PRICED),
                 basis="Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, "
                       "in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and "
                       "off-peak prices are listed in the row details and are not compared.")
@@ -805,6 +825,7 @@ def build():
     enrich_context_and_promotions(data)
     apply_endpoints(data)
     finish_variants(data)
+    check_cache_reads(data)
     lifecycle_notices(data)
     # Talk-track lines: the original page's seller insights, re-checked against the v2 offers.
     # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
@@ -820,7 +841,7 @@ def build():
                 {"text": "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models.", "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "google/gemma-3-12b", "qwen/qwen3-next-80b-instruct"]},
                 "Hong Kong: Databricks serves Kimi K3, DeepSeek V4.1 Flash and GLM 5.x from Azure East Asia (cross-geo); Alibaba has a Hong Kong endpoint with Global scope (data stays in Hong Kong, inference may run elsewhere). Bedrock, Azure, Vertex and Fireworks have none.",
                 {"text": "Not on Databricks: MiniMax M3 (Fireworks $0.30 / $1.20; Azure Data Zone), Mistral Medium 3.5 (Azure $1.50 / $7.50) and Qwen3.8 27B (Alibaba).", "models": ["minimax/minimax-m3", "mistral/mistral-medium-3.5", "qwen/qwen3.8-27b"]}],
-        "anthropic": ["List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
+        "anthropic": ["List-price parity on input and output: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10). One gap: since 8 Oct 2026 Sonnet 5.5 cached input is $0.10 everywhere else but still $0.20 on Databricks.",
                       "Hong Kong: only Databricks serves the 2026 Claude models there (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
                       "Data residency costs +10% everywhere: Bedrock US / EU CRIS and in-region, Vertex US / EU multi-region, Azure US Data Zone, Databricks regional processing (⌖) and Anthropic's US-only inference.",
                       {"text": "APAC in-region Claude on Databricks: Opus 5.5 and Opus 4.8 in AWS Tokyo, Singapore and Sydney, Azure Japan East and Australia East, and GCP Singapore; Opus 5 in AWS Sydney and Azure Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.", "models": ["anthropic/claude-opus-5.5", "anthropic/claude-opus-4.8", "anthropic/claude-opus-5", "anthropic/claude-sonnet-5"]},

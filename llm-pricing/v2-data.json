@@ -1583,7 +1583,7 @@
       }
     ],
     "anthropic": [
-      "List-price parity everywhere: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10, $0.20 cached input).",
+      "List-price parity on input and output: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10). One gap: since 8 Oct 2026 Sonnet 5.5 cached input is $0.10 everywhere else but still $0.20 on Databricks.",
       "Hong Kong: only Databricks serves the 2026 Claude models there (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
       "Data residency costs +10% everywhere: Bedrock US / EU CRIS and in-region, Vertex US / EU multi-region, Azure US Data Zone, Databricks regional processing (⌖) and Anthropic's US-only inference.",
       {
@@ -1678,7 +1678,7 @@
       "note": "Current Sonnet generation; verified on all five priced platforms.",
       "in": 2.0,
       "out": 10.0,
-      "cache_read": 0.2,
+      "cache_read": 0.1,
       "cache_write": 2.5,
       "unit": "USD/1M",
       "platforms": {
@@ -1810,7 +1810,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "US-only inference · Standard",
@@ -1924,7 +1924,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "Geo CRIS · Standard",
@@ -2039,7 +2039,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "Data Zone US · Standard",
@@ -2119,7 +2119,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "US multi-region · Standard",
@@ -2133,7 +2133,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "EU multi-region · Standard",
@@ -6494,11 +6494,11 @@
               "in": 1.925,
               "out": 3.828,
               "cache_read": 0.165,
-              "label": "Data Zone US · Standard",
+              "label": "FW-DeepSeek-V4-Pro · Data Zone US · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
               "pricing_checked_at": "2026-10-04",
-              "endpoint": "Data Zone US",
+              "endpoint": "FW-DeepSeek-V4-Pro · Data Zone US",
               "id": "variant-1",
               "model_match": "unverified"
             }
@@ -10276,7 +10276,7 @@
             {
               "in": 5.0,
               "out": 25.0,
-              "cache_read": 0.0625,
+              "cache_read": 0.125,
               "cache_write": 6.25,
               "cache_write_1h": 10.0,
               "label": "Claude API · global · Batch",
@@ -10290,7 +10290,7 @@
             {
               "in": 11.0,
               "out": 55.0,
-              "cache_read": 0.1375,
+              "cache_read": 0.275,
               "cache_write": 13.75,
               "cache_write_1h": 22.0,
               "label": "US-only inference · Standard",
@@ -10304,7 +10304,7 @@
             {
               "in": 5.5,
               "out": 27.5,
-              "cache_read": 0.06875,
+              "cache_read": 0.1375,
               "cache_write": 6.875,
               "cache_write_1h": 11.0,
               "label": "US-only inference · Batch",
@@ -10402,7 +10402,7 @@
             {
               "in": 11.0,
               "out": 55.0,
-              "cache_read": 0.1375,
+              "cache_read": 0.275,
               "cache_write": 13.75,
               "cache_write_1h": 22.0,
               "label": "US CRIS · Standard",
@@ -10576,7 +10576,7 @@
             {
               "in": 11.0,
               "out": 55.0,
-              "cache_read": 0.1375,
+              "cache_read": 0.275,
               "cache_write": 13.75,
               "cache_write_1h": 22.0,
               "label": "US multi-region · Standard",
@@ -10590,7 +10590,7 @@
             {
               "in": 11.0,
               "out": 55.0,
-              "cache_read": 0.1375,
+              "cache_read": 0.275,
               "cache_write": 13.75,
               "cache_write_1h": 22.0,
               "label": "EU multi-region · Standard",
@@ -10604,7 +10604,7 @@
             {
               "in": 5.5,
               "out": 27.5,
-              "cache_read": 0.06875,
+              "cache_read": 0.1375,
               "cache_write": 6.875,
               "cache_write_1h": 11.0,
               "label": "US multi-region · Batch",
@@ -10618,7 +10618,7 @@
             {
               "in": 5.5,
               "out": 27.5,
-              "cache_read": 0.06875,
+              "cache_read": 0.1375,
               "cache_write": 6.875,
               "cache_write_1h": 11.0,
               "label": "EU multi-region · Batch",
@@ -10853,7 +10853,7 @@
             {
               "in": 2.0,
               "out": 10.0,
-              "cache_read": 0.05,
+              "cache_read": 0.1,
               "cache_write": 2.5,
               "cache_write_1h": 4.0,
               "label": "Claude API · global · Batch",
@@ -10867,7 +10867,7 @@
             {
               "in": 8.0,
               "out": 40.0,
-              "cache_read": 0.2,
+              "cache_read": 0.4,
               "cache_write": 10.0,
               "cache_write_1h": 16.0,
               "label": "Claude API · global · Fast",
@@ -10882,7 +10882,7 @@
             {
               "in": 4.4,
               "out": 22.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "cache_write": 5.5,
               "cache_write_1h": 8.8,
               "label": "US-only inference · Standard",
@@ -10896,7 +10896,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "US-only inference · Batch",
@@ -10910,7 +10910,7 @@
             {
               "in": 8.8,
               "out": 44.0,
-              "cache_read": 0.22,
+              "cache_read": 0.44,
               "cache_write": 11.0,
               "cache_write_1h": 17.6,
               "label": "US-only inference · Fast",
@@ -11010,7 +11010,7 @@
             {
               "in": 4.4,
               "out": 22.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "cache_write": 5.5,
               "cache_write_1h": 8.8,
               "label": "Geo CRIS · Standard",
@@ -11024,7 +11024,7 @@
             {
               "in": 4.4,
               "out": 22.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "cache_write": 5.5,
               "cache_write_1h": 8.8,
               "label": "In-region · Standard",
@@ -11170,7 +11170,7 @@
             {
               "in": 4.4,
               "out": 22.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "cache_write": 5.5,
               "cache_write_1h": 8.8,
               "label": "Data Zone US · Standard",
@@ -11254,7 +11254,7 @@
             {
               "in": 4.4,
               "out": 22.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "cache_write": 5.5,
               "cache_write_1h": 8.8,
               "label": "US multi-region · Standard",
@@ -11268,7 +11268,7 @@
             {
               "in": 4.4,
               "out": 22.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "cache_write": 5.5,
               "cache_write_1h": 8.8,
               "label": "EU multi-region · Standard",
@@ -11282,7 +11282,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "US multi-region · Batch",
@@ -11296,7 +11296,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.055,
+              "cache_read": 0.11,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "EU multi-region · Batch",
@@ -13505,12 +13505,12 @@
               "out": 300.0,
               "cache_read": 6.0,
               "cache_write": 75.0,
-              "label": "Global (api.openai.com) · Fast",
+              "label": "Global (api.openai.com) · Ultrafast",
               "comparison_scope": "global",
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Global (api.openai.com)",
-              "tier_label": "Fast",
+              "tier_label": "Ultrafast",
               "long_context": {
                 "in": 120.0,
                 "out": 450.0,
@@ -13583,12 +13583,12 @@
               "out": 330.0,
               "cache_read": 6.6,
               "cache_write": 82.5,
-              "label": "Regional processing (US) · Fast",
+              "label": "Regional processing (US) · Ultrafast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Regional processing (US)",
-              "tier_label": "Fast",
+              "tier_label": "Ultrafast",
               "long_context": {
                 "in": 132.0,
                 "out": 495.0,
@@ -13760,12 +13760,12 @@
               "out": 330.0,
               "cache_read": 6.6,
               "cache_write": 82.5,
-              "label": "In-region · Fast",
+              "label": "In-region · Ultrafast",
               "comparison_scope": "regional",
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-06",
               "endpoint": "In-region",
-              "tier_label": "Fast",
+              "tier_label": "Ultrafast",
               "long_context": {
                 "in": 132.0,
                 "out": 495.0,
@@ -13780,12 +13780,12 @@
               "out": 330.0,
               "cache_read": 6.6,
               "cache_write": 82.5,
-              "label": "US CRIS · Fast",
+              "label": "US CRIS · Ultrafast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-06",
               "endpoint": "US CRIS",
-              "tier_label": "Fast",
+              "tier_label": "Ultrafast",
               "long_context": {
                 "in": 132.0,
                 "out": 495.0,
@@ -13800,12 +13800,12 @@
               "out": 300.0,
               "cache_read": 6.0,
               "cache_write": 75.0,
-              "label": "Global CRIS · Fast",
+              "label": "Global CRIS · Ultrafast",
               "comparison_scope": "global",
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-06",
               "endpoint": "Global CRIS",
-              "tier_label": "Fast",
+              "tier_label": "Ultrafast",
               "long_context": {
                 "in": 120.0,
                 "out": 450.0,
@@ -19219,69 +19219,48 @@
           "note": "Context cache storage billed per hour.",
           "variants": [
             {
-              "in": 1.5,
-              "out": 7.5,
-              "cache_read": 0.15,
-              "label": "Gemini API · Standard",
+              "in": 0.375,
+              "out": 1.875,
+              "cache_read": 0.0375,
+              "label": "Gemini API · Batch",
               "comparison_scope": "unverified",
-              "service_tier": "standard",
+              "service_tier": "batch",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Gemini API · Batch"
+                }
+              },
               "id": "variant-0",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "model_match": "confirmed"
             },
             {
               "in": 0.375,
               "out": 1.875,
               "cache_read": 0.0375,
-              "label": "Gemini API · Batch",
+              "label": "Gemini API · Flex",
               "comparison_scope": "unverified",
-              "service_tier": "batch",
+              "service_tier": "flex",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Gemini API · Flex"
+                }
+              },
               "id": "variant-1",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.75,
-              "out": 3.75,
-              "cache_read": 0.075,
-              "label": "Gemini API · Batch",
-              "comparison_scope": "unverified",
-              "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-2",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.375,
-              "out": 1.875,
-              "cache_read": 0.0375,
-              "label": "Gemini API · Flex",
-              "comparison_scope": "unverified",
-              "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-3",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.75,
-              "out": 3.75,
-              "cache_read": 0.075,
-              "label": "Gemini API · Flex",
-              "comparison_scope": "unverified",
-              "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-4",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "model_match": "confirmed"
             },
             {
               "in": 1.35,
@@ -19292,22 +19271,18 @@
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
-              "id": "variant-5",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 2.7,
-              "out": 13.5,
-              "cache_read": 0.27,
-              "label": "Gemini API · Priority",
-              "comparison_scope": "unverified",
-              "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-6",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 2.7,
+                  "out": 13.5,
+                  "cache_read": 0.27,
+                  "tier": "Gemini API · Priority"
+                }
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
             }
           ],
           "src": "google",
@@ -19849,69 +19824,48 @@
           "note": "Context cache storage billed per hour.",
           "variants": [
             {
-              "in": 1.5,
-              "out": 7.5,
-              "cache_read": 0.15,
-              "label": "Gemini API · Standard",
+              "in": 0.375,
+              "out": 1.875,
+              "cache_read": 0.0375,
+              "label": "Gemini API · Batch",
               "comparison_scope": "unverified",
-              "service_tier": "standard",
+              "service_tier": "batch",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Gemini API · Batch"
+                }
+              },
               "id": "variant-0",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "model_match": "confirmed"
             },
             {
               "in": 0.375,
               "out": 1.875,
               "cache_read": 0.0375,
-              "label": "Gemini API · Batch",
+              "label": "Gemini API · Flex",
               "comparison_scope": "unverified",
-              "service_tier": "batch",
+              "service_tier": "flex",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Gemini API · Flex"
+                }
+              },
               "id": "variant-1",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.75,
-              "out": 3.75,
-              "cache_read": 0.075,
-              "label": "Gemini API · Batch",
-              "comparison_scope": "unverified",
-              "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-2",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.375,
-              "out": 1.875,
-              "cache_read": 0.0375,
-              "label": "Gemini API · Flex",
-              "comparison_scope": "unverified",
-              "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-3",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.75,
-              "out": 3.75,
-              "cache_read": 0.075,
-              "label": "Gemini API · Flex",
-              "comparison_scope": "unverified",
-              "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-4",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "model_match": "confirmed"
             },
             {
               "in": 1.35,
@@ -19922,22 +19876,18 @@
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
-              "id": "variant-5",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 2.7,
-              "out": 13.5,
-              "cache_read": 0.27,
-              "label": "Gemini API · Priority",
-              "comparison_scope": "unverified",
-              "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-6",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 2.7,
+                  "out": 13.5,
+                  "cache_read": 0.27,
+                  "tier": "Gemini API · Priority"
+                }
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
             }
           ],
           "src": "google",
@@ -22369,69 +22319,48 @@
           "model_match": "confirmed",
           "variants": [
             {
-              "in": 1.5,
-              "out": 7.5,
-              "cache_read": 0.15,
-              "label": "Gemini API · Standard",
+              "in": 0.375,
+              "out": 1.875,
+              "cache_read": 0.0375,
+              "label": "Gemini API · Batch",
               "comparison_scope": "unverified",
-              "service_tier": "standard",
+              "service_tier": "batch",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Gemini API · Batch"
+                }
+              },
               "id": "variant-0",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "model_match": "confirmed"
             },
             {
               "in": 0.375,
               "out": 1.875,
               "cache_read": 0.0375,
-              "label": "Gemini API · Batch",
+              "label": "Gemini API · Flex",
               "comparison_scope": "unverified",
-              "service_tier": "batch",
+              "service_tier": "flex",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 0.75,
+                  "out": 3.75,
+                  "cache_read": 0.075,
+                  "tier": "Gemini API · Flex"
+                }
+              },
               "id": "variant-1",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.75,
-              "out": 3.75,
-              "cache_read": 0.075,
-              "label": "Gemini API · Batch",
-              "comparison_scope": "unverified",
-              "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-2",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.375,
-              "out": 1.875,
-              "cache_read": 0.0375,
-              "label": "Gemini API · Flex",
-              "comparison_scope": "unverified",
-              "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-3",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 0.75,
-              "out": 3.75,
-              "cache_read": 0.075,
-              "label": "Gemini API · Flex",
-              "comparison_scope": "unverified",
-              "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-4",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "model_match": "confirmed"
             },
             {
               "in": 1.35,
@@ -22442,22 +22371,18 @@
               "service_tier": "priority",
               "pricing_checked_at": "2026-10-04",
               "endpoint": "Gemini API",
-              "id": "variant-5",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
-            },
-            {
-              "in": 2.7,
-              "out": 13.5,
-              "cache_read": 0.27,
-              "label": "Gemini API · Priority",
-              "comparison_scope": "unverified",
-              "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Gemini API",
-              "id": "variant-6",
-              "model_match": "confirmed",
-              "valid_through": "2026-12-31"
+              "promotion": {
+                "ends_on": "2026-12-31",
+                "label": "Flash introductory promotion",
+                "after": {
+                  "in": 2.7,
+                  "out": 13.5,
+                  "cache_read": 0.27,
+                  "tier": "Gemini API · Priority"
+                }
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
             }
           ],
           "model_id_checked_at": "2026-10-03",
@@ -25219,7 +25144,7 @@
       "model_key": "mistral/mistral-medium-3.5"
     }
   },
-  "reviewed_at": "2026-10-06",
+  "reviewed_at": "2026-10-08",
   "changes": [
     "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
     "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",

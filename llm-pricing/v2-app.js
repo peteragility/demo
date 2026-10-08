@@ -59,7 +59,7 @@
   // dates, and lines naming models only while one of them is listed.
   const active = list => (Array.isArray(list) ? list : list ? [list] : [])
     .filter(n => typeof n === 'string' || (isObject(n) && n.text && (!n.from || AS_OF >= n.from) && (!n.until || AS_OF <= n.until) &&
-      (!Array.isArray(n.models) || !RANKING || n.models.some(k => rankOf(k) != null))))
+      (!Array.isArray(n.models) || n.models.some(isListed))))
     .map(n => typeof n === 'string' ? n : n.text);
   const notices = m => active(m.notices || m.warn);
 
@@ -94,7 +94,8 @@
   const rankOf = k => RANKING && RANKING.models[k] ? RANKING.models[k].rank : null;
   const offered = c => Boolean(c) && (c.status === 'priced' || c.status === 'dedicated' || (c.status === 'unverified' && c.available));
   const hosted = k => PL.some(pl => pl !== 'official' && offered(RESOLVED.models[k][pl]));
-  const listed = () => Object.entries(DATA.models).filter(([k]) => (!RANKING || rankOf(k) != null) && hosted(k));
+  const isListed = k => (!RANKING || rankOf(k) != null) && hosted(k);
+  const listed = () => Object.entries(DATA.models).filter(([k]) => isListed(k));
   function rows() {
     const q = S.q.trim().toLowerCase();
     let arr = listed().map(([k, m], i) => ({ k, m, i: rankOf(k) ?? i, g: groupOf(k, m) }));
@@ -142,7 +143,7 @@
     if (k === 'gpu') return `<td class="c na${shade}" title="${esc(LONG[pl] + ': dedicated deployment only · ' + (c.note || 'No verified per-token offer'))}"><span class="x" aria-label="dedicated deployment only">GPU</span></td>`;
     if (k === 'na') {
       const a = c.alt;
-      const state = c.status === 'retired' ? 'retired on Databricks ' + c.retires_on : 'not offered';
+      const state = c.status === 'retired' ? 'retired on ' + c.retires_on : 'not offered';
       const t = LONG[pl] + ': ' + state + (a ? ' · closest ' + a.name + ' $' + fmt(a.in) + ' / $' + fmt(a.out) : '') + (c.note ? ' · ' + c.note : '');
       return `<td class="c na${shade}" title="${esc(t)}"><span class="x" aria-label="${esc(state)}">✕</span>${a ? `<span class="alt"><span class="an">${esc(shortAlt(a))}</span><span class="ap"> ${fmt(a.in)} / ${fmt(a.out)}</span></span>` : ''}</td>`;
     }
@@ -161,23 +162,23 @@
     return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm">${rank != null ? `<span class="rk" title="arena.ai Best Overall rank">${rank}</span>` : ''}<span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
   }
 
-  // Why a priced cell has no Δ, or which tier its Δ uses.
+  // Why a priced cell has no Δ, or which tier its Δ uses. Plain text: the card escapes it, the copied summary uses it as is.
   function comparisonNote(mk, pl, c) {
     if (kind(c) !== 'ok') return null;
     const pick = PICK[mk][pl], base = PICK[mk].databricks;
-    if (pl === 'databricks') return pick && pick.variant_id ? 'Δ baseline is the cheapest standard tier: ' + esc(pick.tier) + ' $' + precise(pick.in) + ' / $' + precise(pick.out) : null;
+    if (pl === 'databricks') return pick && pick.variant_id ? 'Δ baseline is the cheapest standard tier: ' + pick.tier + ' $' + precise(pick.in) + ' / $' + precise(pick.out) : null;
     if (!base) return 'Δ excluded: no verified Databricks price.';
-    if (!pick) return 'Δ excluded: ' + esc(M.comparisonReason(c, base) || 'no standard price for the confirmed model version.');
+    if (!pick) return 'Δ excluded: ' + (M.comparisonReason(c, base) || 'no standard price for the confirmed model version.');
     const why = M.delta(pick, base, S.blend).reason;
-    if (why) return 'Δ excluded: ' + esc(why);
-    return pick.variant_id ? 'Δ uses the cheapest standard tier: ' + esc(pick.tier) + ' $' + precise(pick.in) + ' / $' + precise(pick.out) : null;
+    if (why) return 'Δ excluded: ' + why;
+    return pick.variant_id ? 'Δ uses the cheapest standard tier: ' + pick.tier + ' $' + precise(pick.in) + ' / $' + precise(pick.out) : null;
   }
 
   // Detail cards: one per platform. A price table (endpoint × tier rows; input, output and cache
   // columns), then where the platform runs the model, Hong Kong / Taiwan, notes and IDs.
   const SCOPE_LABEL = {global: 'Global', geographic: 'Geo', 'data-zone': 'Data Zone', regional: 'In-region', unverified: 'Endpoint'};
   const SCOPE_RANK = {global: 0, geographic: 1, 'data-zone': 2, regional: 3, unverified: 4};
-  const TIERS = ['Standard', 'Priority', 'Fast', 'Flex', 'Batch', 'Off-peak', 'Contributor'];
+  const TIERS = ['Standard', 'Priority', 'Fast', 'Ultrafast', 'Flex', 'Batch', 'Off-peak', 'Contributor'];
   const TIER_OF = {standard: 'Standard', priority: 'Priority', flex: 'Flex', batch: 'Batch', 'off-peak': 'Off-peak', contributor: 'Contributor'};
   // Where requests are processed: [badge class, default label].
   const LEVEL = {'in-region': ['in', 'In-region'], geo: ['geo', 'Geo'], global: ['gl', 'Global'], unknown: ['no', '? Not published'], none: ['no', 'None']};
@@ -214,6 +215,13 @@
       g.rank = Math.min(g.rank, rank);
       g.rows.push({offer, label, tier: offer.tier_label || TIER_OF[offer.service_tier] || 'Standard'});
     }
+    // Rows that share a tier within one endpoint are told apart by their own label.
+    for (const [name, g] of groups) {
+      for (const r of g.rows) {
+        const twin = g.rows.filter(x => x.tier === r.tier).length > 1;
+        r.head = twin ? (r.label.startsWith(name + ' · ') ? r.label.slice(name.length + 3) : r.label) : r.tier;
+      }
+    }
     if (!groups.size) return '';
     const offers = [...groups.values()].flatMap(g => g.rows.map(r => r.offer));
     const has1h = offers.some(o => M.validRate(o.cache_write_1h));
@@ -222,10 +230,10 @@
     const lc = c.context_threshold ? (c.context_threshold_inclusive ? '≥' : '>') + c.context_threshold / 1000 + 'K' : '';
     const body = [...groups].sort((a, b) => a[1].rank - b[1].rank).map(([name, g]) =>
       `<tr class="eg"><th scope="rowgroup" colspan="${cols}">${esc(name)}</th></tr>` +
-      g.rows.sort((a, b) => TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map(({offer: o, label, tier}) => {
-        if (o.status !== 'priced' || o.problems.length) return `<tr title="${esc(label)}"><th scope="row">${esc(tier)}</th><td class="none" colspan="${cols - 1}">not verified</td></tr>`;
+      g.rows.sort((a, b) => TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map(({offer: o, label, head}) => {
+        if (o.status !== 'priced' || o.problems.length) return `<tr title="${esc(label)}"><th scope="row">${esc(head)}</th><td class="none" colspan="${cols - 1}">not verified</td></tr>`;
         const p = isPick(o);
-        const row = `<tr${p ? ' class="pick"' : ''} title="${esc(label + (p ? ' · the price the table compares' : ''))}"><th scope="row">${esc(tier)}</th>${rateCells(o, policy, has1h)}</tr>`;
+        const row = `<tr${p ? ' class="pick"' : ''} title="${esc(label + (p ? ' · the price the table compares' : ''))}"><th scope="row">${esc(head)}</th>${rateCells(o, policy, has1h)}</tr>`;
         const long = o.long_context && M.validRate(o.long_context.in) ? `<tr class="lc" title="${esc('Rates for the whole request when its input is ' + lc + ' tokens')}"><th scope="row">↳ ${esc(lc)}</th>${rateCells(o.long_context, policy, has1h)}</tr>` : '';
         return row + long;
       }).join('')).join('');
@@ -289,7 +297,7 @@
     if (M.validRate(c.cache_storage) && c.cache_storage > 0) extra.push(`Cache storage $${fx(c.cache_storage)} per 1M tokens per hour`);
     if (c.retires_on) extra.push(`${AS_OF >= c.retires_on ? 'Retired' : 'Retires'} ${esc(c.retires_on)} · use ${esc((c.replacement || []).join(' / '))}`);
     const note = comparisonNote(mk, pl, c);
-    if (note && note.startsWith('Δ excluded')) extra.push(note);
+    if (note && note.startsWith('Δ excluded')) extra.push(esc(note));
     const notes = e && e.notes.length ? `<ul class="cnotes">${e.notes.map(([kind, t]) => `<li><b>${esc(kind)}</b> ${esc(t)}</li>`).join('')}</ul>` : (c.note ? `<ul class="cnotes"><li>${esc(c.note)}</li></ul>` : '');
     const ids = e && e.ids.length ? e.ids : c.model_id ? [c.model_id] : [];
     return `<section class="pcard${pl === 'databricks' ? ' dbx' : ''}"><h3><b>${esc(LONG[pl])}</b>${chip}<span class="chk">${when}${links.length ? (when ? ' · ' : '') + links.join(' · ') : ''}</span></h3>` +
@@ -330,13 +338,10 @@
 
   // The cheaper-than-Databricks cells among the shown models, from published prices.
   function watchouts(list) {
-    const options = {asOf: AS_OF, inputRatio: S.blend}, found = [];
+    const found = [];
     for (const r of list) {
-      const raw = RAW.models[r.k].platforms || {}, base = M.cheapest(raw.databricks, options);
-      if (!base) continue;
       for (const pl of PL) {
-        if (pl === 'databricks') continue;
-        const pick = M.cheapest(raw[pl], options), d = pick ? M.delta(pick, base, S.blend).value : null;
+        const d = deltaOf(r.k, pl);
         if (d != null && d < -M.PARITY) found.push({d, text: (r.m.short || r.m.name) + ' on ' + LONG[pl] + ' (−' + pct(d) + ')'});
       }
     }
@@ -411,7 +416,7 @@
       else {
         const d = deltaOf(mk, pl), dir = dirOf(d);
         const note = d == null ? comparisonNote(mk, pl, m.platforms[pl]) : null;
-        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : (m.platforms[pl].endpoints || {}).cache_write === 'input-rate' && c.cache_read != null ? ' · no cache-write charge' : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note.replace(/<[^>]+>/g, '') : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
+        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : (m.platforms[pl].endpoints || {}).cache_write === 'input-rate' && c.cache_read != null ? ' · no cache-write charge' : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
       }
     }
     lines.push('Internal reference only: public list prices from official sources, compiled by Peter Chan. Not an official Databricks price list or quote.');

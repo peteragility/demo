@@ -184,7 +184,9 @@
     append('Regular input', Math.max(0, uncachedM - numeric.writeM), offer.in, 'M tokens');
     append('Cached input', cachedM, offer.cache_read, 'M tokens');
     const writeField = workload.writeTTL === '1h' ? 'cache_write_1h' : 'cache_write';
-    const writeRate = offer.cache_write_policy === 'included' ? offer.in : offer[writeField];
+    // Where the platform has no cache-write charge, written tokens cost the ordinary input rate.
+    const policy = offer.cache_write_policy || (offer.endpoints || {}).cache_write;
+    const writeRate = policy === 'input-rate' && !validRate(offer[writeField]) ? offer.in : offer[writeField];
     append('Cache writes (' + (workload.writeTTL === '1h' ? '1h' : 'base TTL') + ')', numeric.writeM, writeRate, 'M tokens');
     append('Output', numeric.outputM, offer.out, 'M tokens');
     append('Cache storage', numeric.storedM * numeric.storageHours, offer.cache_storage, 'M token-hours');

@@ -70,6 +70,11 @@ class Page(HTMLParser):
             self.finish_block()
         if self.block_tags and self.block_tags[-1] == "li" and tag == "li":
             self.finish_block()
+        if tag == "img" and self.cell is not None:
+            # Bedrock model cards mark each region's support with tick and cross images.
+            mark = re.search(r"icon-(yes|no)\.\w+$", dict(attrs).get("src") or "")
+            if mark:
+                self.cell.append(mark.group(1))
         if re.fullmatch(r"h[1-6]", tag):
             self.heading_tag = tag
             self.heading_text = []

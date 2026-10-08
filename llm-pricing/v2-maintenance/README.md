@@ -1,6 +1,6 @@
 # LLM pricing v2 maintenance
 
-The LLM Token Pricing page at [`../index.html`](../index.html) (https://peteragility.github.io/demo/llm-pricing/) keeps reviewed prices for 49 models across seven providers and lists those in arena.ai's top 50 that a compared platform hosts (see *Model list and order*). It is read-only for its audience. The layout is dense: one line per model on laptops, two-line cells on phones, all seven provider columns on screen down to 320 px, and sticky column headers at every width. It replaced the original page on 2026-10-04; `../v2.html` redirects to it, keeping any family tab in the link. Its files keep their `v2-` names (`v2-app.js`, `v2-data.json` and so on).
+The LLM Token Pricing page at [`../index.html`](../index.html) (https://peteragility.github.io/demo/llm-pricing/) keeps reviewed prices for 50 models across seven providers and lists those in arena.ai's top 50 that a compared platform hosts (see *Model list and order*). It is read-only for its audience. The layout is dense: one line per model on laptops, two-line cells on phones, all seven provider columns on screen down to 320 px, and sticky column headers at every width. It replaced the original page on 2026-10-04; `../v2.html` redirects to it, keeping any family tab in the link. Its files keep their `v2-` names (`v2-app.js`, `v2-data.json` and so on).
 
 The 2026-10-02 review adds GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 Flash-Lite, Gemini 3.1 Flash-Lite, Grok 4.7 and Grok 4.6. Databricks GPT-6.1 Sol and Grok 4.7 prices remain unverified because the reviewed price page still names their predecessors.
 
@@ -9,6 +9,8 @@ The 2026-10-02 review adds GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 Flash-Lite
 `seed-data.json` preserves the original reviewed offers. `build-data.py` applies the reviewed additions and corrections and writes only `../v2-data.json`. `verified-ids.json` records confirmed Databricks endpoint IDs. Update verification dates only for offers whose sources you have rechecked.
 
 Prices are USD per million text tokens. Processing scope, service tier, model-version match, price date and availability date belong to each offer. Dedicated deployments and unverified offers carry no per-token prices.
+
+Claude cache reads are a fixed share of each tier's own input price (`CACHE_HIT` in `build-data.py`: 2.5% for Fable 5.1, 5% for Opus 5.5 and Sonnet 5.5, 10% for other Claude models; Databricks follows its own DBU tables). The build stops on any tier that breaks the rule, and the validator rejects two card rows that read alike (same endpoint and tier, or the same label) with different prices.
 
 **Like for like.** Each cell shows the platform's cheapest standard (real-time, on-demand) price for the confirmed model version, in any region or processing scope, chosen at the selected input:output blend. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and off-peak / idle-hour prices are listed in the row details and are not compared. A price for an unconfirmed checkpoint gets no Δ; if it is cheaper than Databricks on a hyperscaler, that model is left out of the "no hyperscaler beats DBX" figure. Models without a verified Databricks price are left out of every summary figure, including availability gaps.
 
@@ -48,17 +50,17 @@ Set `CHROME_PATH` if Chrome is installed at a different path. Set `LLM_PRICING_B
 
 ## How the data stays current
 
-The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs every day, scheduled for **18:17 UTC (02:17 HKT)**, and on demand from the Actions tab. GitHub often starts scheduled runs a few hours late when busy (2.7–4.1 h in early October 2026), so the early slot usually lands the refresh around 6am HKT:
+The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs every day, scheduled for **18:17 UTC (02:17 HKT)**, and on demand from the Actions tab. GitHub often starts scheduled runs a few hours late when busy (2.7–4.1 h in early October 2026), so the early slot usually lands the refresh around 6am HKT. Run dates (verified, checked) follow Hong Kong time:
 
 | Step | What it does | Published automatically? |
 |---|---|---|
 | Model order | `update-ranking.py` reads the arena.ai Best Overall board | Yes (`../v2-ranking.json`) |
 | Databricks regions | `update-endpoints.py` reads Databricks' AWS, Azure and Google Cloud model-region tables | Yes (`endpoints-auto.json`, then `../v2-data.json`) |
 | Source check | `review-sources.py` re-reads every official price and region source in `source-config.json`. Offers whose lines are unchanged get today's *verified* date; Databricks prices are compared number by number with its DBU tables, and a price published for a pending Databricks offer is reported. Bedrock's model-card index flags a new card for a tracked model | Yes (`../v2-checks.json`) |
-| Low-risk changes | A change that leaves every price, rate, multiplier and date for the model untouched (wording, layout, renamed rows, rate limits) is accepted into the reviewed baseline automatically and listed only in the run summary | Yes (`source-baseline.json`) |
-| Review issue | Anything else (a changed price, rate or date; a model appearing on or vanishing from a page; a Databricks price mismatch; a source unreadable two days running) opens or updates one issue labelled **llm-pricing-review**, with the exact added and removed lines per model and links. Affected cards show "source changed · re-check" until it is resolved. The issue closes itself once nothing is left | Issue only |
+| Low-risk changes | A change that leaves every price, rate, multiplier, context limit, date and region (with its yes / no marks) untouched (wording, layout, renamed rows, rate limits) is accepted into the reviewed baseline automatically and listed only in the run summary. Lines about models the page does not track are ignored. Retirements and promotions already in the data switch on their dates and are acknowledged automatically | Yes (`source-baseline.json`) |
+| Review issue | Anything else opens or updates one issue labelled **llm-pricing-review**, with the exact added and removed lines and links: a changed price, rate, limit, date or region for a model; a model appearing on or vanishing from a page; a changed line that names no model but carries a price, date or region (a residency multiplier, a batch discount, a region list), which can apply to every model on the page; a Databricks price that differs from its DBU table, or an endpoint gone from its region tables; a tier whose rates are verified only through a date within 7 days; a new source without a reviewed baseline; a source not read for two days. Cards whose own lines changed show "source changed · re-check" until it is resolved. The issue closes itself once nothing is left | Issue only |
 
-Prices, tiers and new models never change automatically. A run fails (and GitHub emails you) only when the pipeline itself is broken: the rebuilt data fails validation or a test, or more than half the sources cannot be read. A single unreadable source is listed in the issue and its offers keep their last verified date.
+Prices, tiers and new models never change automatically. A run fails (and GitHub emails you) only when the pipeline itself is broken: the rebuilt data fails validation or a test, or more than half the sources cannot be read. An unreadable source keeps its offers' last verified date; it is listed in the issue once it has not been read for two days (a one-off failure or a same-day re-run is not).
 
 ### Resolving a review issue
 
@@ -66,7 +68,7 @@ Prices, tiers and new models never change automatically. A run fails (and GitHub
 2. Update `build-data.py` (prices and models) or `endpoints.json` (endpoints, tiers, regions, Hong Kong / Taiwan, notes, IDs). Leave unverified prices absent; never copy a predecessor's price into a newer model.
 3. Run `python3 v2-maintenance/build-data.py` and the checks above, and inspect the data diff.
 4. Commit and push the changed `llm-pricing` files.
-5. Record the reviewed baseline from GitHub: Actions → **LLM pricing v2 daily refresh** → Run workflow, tick **Record the reviewed baseline**. The run reads every source, records them as reviewed (this also acknowledges promotions or retirements due within 7 days), re-checks, publishes and closes the issue. Locally, `python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --record-baseline` does the same, but it refuses when any source cannot be read, and some providers block home networks.
+5. Record the reviewed baseline from GitHub: Actions → **LLM pricing v2 daily refresh** → Run workflow, tick **Record the reviewed baseline**. The run reads every source, records them as reviewed (this also acknowledges tier dates due within 7 days), re-checks, publishes and closes the issue. Record a baseline the same way after changing a parser, so its new records become the reference. Locally, `python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --record-baseline` does the same, but it refuses when any source cannot be read, and some providers block home networks.
 
 With Claude Code, "apply the open llm-pricing-review issue" covers steps 1–5.
 
@@ -78,7 +80,7 @@ With Claude Code, "apply the open llm-pricing-review issue" covers steps 1–5.
   - `notes`: `[kind, text]`.
   - `ids`: a list of model and endpoint IDs.
   - `cache_write`: `priced`, `input-rate` (no cache-write charge; the card shows 0.00), `not-listed` (the card shows —) or `no-caching`.
-- `endpoints-auto.json`: Databricks regions, generated daily; do not edit.
+- `endpoints-auto.json`: Databricks regions, generated daily; do not edit. An endpoint that drops out of Databricks' region tables keeps its last regions and date, gains `missing_since` and is listed in the issue.
 - `official.py`: parsers for the official tables (Databricks DBU rates and region tables) and the shared HTML parser.
 - `source-config.json`: monitored sources. `meta` names the data sources each one covers; `models` scopes a page to the models it describes; `facts` marks tables checked number by number; `auto` marks sources regenerated by `update-endpoints.py`.
 - `source-baseline.json`: the reviewed records each daily check compares with.
@@ -89,4 +91,4 @@ python3 v2-maintenance/update-endpoints.py
 python3 v2-maintenance/review-sources.py --report-dir /tmp/llm-pricing-v2-review --checks v2-checks.json --issue /tmp/issue.md
 ```
 
-`--cache-dir` runs either script offline from saved pages named by the configuration. `--fail-on-change` makes `review-sources.py` exit 2 when anything needs review. Never record a baseline just to make a failed source check pass. An unchanged source does not guarantee account-specific availability or unpublished prices. The [workflow template](workflow-template.yml) sets up the same jobs in another repository.
+`--cache-dir` runs either script offline from saved pages named by the configuration. `--fail-on-change` makes `review-sources.py` exit 2 when anything needs review. Never record a baseline just to make a failed source check pass. An unchanged source does not guarantee account-specific availability or unpublished prices. To run the same jobs in another repository, copy the [workflow](../../.github/workflows/llm-pricing-v2-review.yml).

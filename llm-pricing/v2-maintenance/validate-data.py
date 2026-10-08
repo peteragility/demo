@@ -88,6 +88,14 @@ def validate(data):
                     check(isinstance(cell["context_threshold"], int) and cell["context_threshold"] > 0, at + ": invalid context threshold.")
                 variants = cell.get("variants", [])
                 check(len({v.get("id") for v in variants}) == len(variants), at + ": duplicate variant IDs.")
+                # Card rows are told apart by endpoint and tier, or by their own label where those coincide,
+                # so two rows that read alike must not differ in price.
+                shown = {}
+                for o in [dict(cell, label=cell.get("tier"))] + [v for v in variants if not v.get("context_only") and not v.get("future_only")]:
+                    row = (o.get("endpoint") or o.get("comparison_scope"), o.get("tier_label") or o.get("service_tier"), o.get("label"))
+                    shown.setdefault(row, set()).add(tuple(o.get(f) for f in ("in", "out", "cache_read", "cache_write")))
+                for row, prices in shown.items():
+                    check(len(prices) == 1, at + ": two card rows read " + " · ".join(map(str, row)) + " with different prices.")
                 for v in variants:
                     vat = at + " / " + str(v.get("label"))
                     check(isinstance(v.get("label"), str) and v["label"].strip(), at + ": variant label missing.")
@@ -113,8 +121,8 @@ def validate(data):
             if "endpoints" in cell:
                 e = cell["endpoints"]
                 check(date(e.get("checked_at")) and all(sid in data["source_meta"] for sid in e.get("src", [])) and e.get("src"), at + ": endpoint details need a date and known sources.")
-                for key in ("hk", "tw"):
-                    check(isinstance(e.get(key), list) and len(e[key]) == 2 and e[key][0] in {"in-region", "routed", "none", "unknown"}, at + ": invalid " + key + " availability.")
+                for place in ("hk", "tw"):
+                    check(isinstance(e.get(place), list) and len(e[place]) == 2 and e[place][0] in {"in-region", "routed", "none", "unknown"}, at + ": invalid " + place + " availability.")
                 check(all(region_entry(r) for r in e.get("regions", [])), at + ": invalid region entry.")
                 check(all(isinstance(n, list) and len(n) == 2 and all(isinstance(x, str) and x for x in n) for n in e.get("notes", [])), at + ": invalid note entry.")
                 check(isinstance(e.get("ids"), list) and all(isinstance(x, str) and x for x in e["ids"]), at + ": invalid ID list.")

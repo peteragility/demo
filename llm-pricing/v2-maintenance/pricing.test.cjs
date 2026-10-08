@@ -46,11 +46,21 @@ test('Gemini cache storage uses million token-hours as an additional cost', () =
 });
 
 test('unverified cache-write prices produce an incomplete estimate, never a free write', () => {
-  const c = offer('moonshot/kimi-k3');
-  const result = M.calculate(c, {...date, cacheHit: 80, writeM: 0.5});
+  // Vertex publishes Grok 4.7's cache reads but no cache-write price.
+  const c = offer('xai/grok-4.7', 'gcloud');
+  assert.equal(c.endpoints.cache_write, 'not-listed');
+  const result = M.calculate(c, {asOf: '2026-10-08', cacheHit: 80, writeM: 0.5});
   assert.equal(result.complete, false);
   assert.equal(result.total, null);
   assert.ok(result.unknown.some(x => /Cache writes/.test(x)));
+});
+
+test('a platform without a cache-write charge bills written tokens at the input rate', () => {
+  const c = offer('moonshot/kimi-k3');
+  assert.equal(c.endpoints.cache_write, 'input-rate');
+  const result = M.calculate(c, {asOf: '2026-10-08', cacheHit: 80, writeM: 0.5});
+  assert.equal(result.complete, true);
+  close(result.parts.find(p => /Cache writes/.test(p.label)).rate, c.in);
 });
 
 test('a variant does not inherit a Standard cache-write rate', () => {

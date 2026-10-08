@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import sys
 import urllib.request
+from zoneinfo import ZoneInfo
 
 HERE = Path(__file__).resolve().parent
 TARGET = HERE.parent / "v2-ranking.json"
@@ -124,7 +125,7 @@ def main():
     parser.add_argument("--check", action="store_true", help="Validate v2-ranking.json; fetch nothing.")
     parser.add_argument("--html", type=Path, help="Use a saved leaderboard page instead of fetching it.")
     parser.add_argument("--summary", type=Path, help="Append the Markdown report to this file (e.g. $GITHUB_STEP_SUMMARY).")
-    parser.add_argument("--as-of", default=dt.datetime.now(dt.timezone.utc).date().isoformat())
+    parser.add_argument("--as-of", default=dt.datetime.now(ZoneInfo("Asia/Hong_Kong")).date().isoformat(), help="Run date (default: today in Hong Kong).")
     args = parser.parse_args()
     config = json.loads((HERE / "ranking-config.json").read_text())
     if args.check:

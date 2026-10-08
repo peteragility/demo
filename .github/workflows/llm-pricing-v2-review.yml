@@ -7,9 +7,10 @@ name: LLM pricing v2 daily refresh
 #   3. every official price / region source re-read: offers whose source lines are unchanged get
 #      today's "verified" date; Databricks prices are checked number by number against its DBU
 #      tables                                                     (published automatically)
-#   4. low-risk changes (no price, rate or date moved) are accepted automatically; anything else
-#      opens or updates one GitHub issue labelled llm-pricing-review.
+#   4. low-risk changes (no price, rate, limit, date or region moved) are accepted automatically;
+#      anything else opens or updates one GitHub issue labelled llm-pricing-review.
 # Prices are never changed automatically: a person reviews the issue and updates the data.
+# Run dates follow Hong Kong time.
 on:
   schedule:
     - cron: '17 18 * * *'
@@ -118,7 +119,7 @@ jobs:
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -q -m "LLM pricing v2: daily refresh $(date -u +%F)"
+          git commit -q -m "LLM pricing v2: daily refresh $(TZ=Asia/Hong_Kong date +%F)"
           for attempt in 1 2 3; do
             if git pull -q --rebase origin main && git push -q origin HEAD:main; then
               gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null && echo "Requested a Pages build." ||
@@ -142,10 +143,10 @@ jobs:
             # The first line carries the date; comment only when the findings themselves change.
             elif [ "$(gh issue view "$number" --json body --jq .body | tail -n +2)" != "$(tail -n +2 "$ISSUE_FILE")" ]; then
               gh issue edit "$number" --body-file "$ISSUE_FILE"
-              gh issue comment "$number" --body "Updated by the daily check on $(date -u +%F). See the list above."
+              gh issue comment "$number" --body "Updated by the daily check on $(TZ=Asia/Hong_Kong date +%F). See the list above."
             fi
           elif [ -n "$number" ]; then
-            gh issue close "$number" --comment "Daily check $(date -u +%F): nothing left to review."
+            gh issue close "$number" --comment "Daily check $(TZ=Asia/Hong_Kong date +%F): nothing left to review."
           fi
       - name: Save the full report
         if: always()

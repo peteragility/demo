@@ -8,8 +8,10 @@ For every model and platform, the records that mention the model are compared wi
 reviewed baseline: unchanged sources move that offer's verified date to today (written to
 v2-checks.json with --checks); changed ones are listed for review. Databricks DBU tables are
 also compared number by number with the published prices.
+Changed lines that name no model are compared too, and a low-risk change (no price, rate, limit,
+date or region moved) is accepted into the baseline with --accept-low-risk.
 Exit 0 = review completed (changes, if any, are in the report), 1 = more than half of the
-sources failed. With --fail-on-change: 2 = changes or lifecycle events need review.
+sources failed. With --fail-on-change: 2 = something needs review (the issue is written).
 """
 import argparse
 import concurrent.futures
@@ -26,6 +28,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from zoneinfo import ZoneInfo
 
 HERE = Path(__file__).resolve().parent
 _spec = importlib.util.spec_from_file_location("official", HERE / "official.py")
@@ -33,12 +36,27 @@ official = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(official)
 Page, clean, NOTICE = official.Page, official.clean, official.NOTICE
 ALERT_WINDOW = 30  # days before or after a dated event that it is listed in the report
-DUE_WINDOW = 7
-STAMP = re.compile(r"^(?:text|notice): Last updated \d{4}-\d{2}-\d{2}(?: UTC)?\.?$")     # days before or after a dated event that it needs an acknowledged review
+DUE_WINDOW = 7     # days before or after a dated event that it needs an acknowledged review
+STALE_DAYS = 2     # days without a successful read before a source is listed in the issue
+HKT = ZoneInfo("Asia/Hong_Kong")  # run dates follow the page's audience
+STAMP = re.compile(r"^(?:text|notice): Last updated \d{4}-\d{2}-\d{2}(?: UTC)?\.?$")
 
 
 def packed(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def grouped(rows):
+    """Rows that leave the first cell blank continue the row above (Vertex names each Claude model on its
+    Input row only), so every row says what it prices."""
+    out, group = [], ""
+    for row in rows:
+        if row and row[0]:
+            group = row[0]
+        elif row and group and any(row[1:]):
+            row = [group] + row[1:]
+        out.append(row)
+    return out
 
 
 def html_records(text, kind):
@@ -51,12 +69,12 @@ def html_records(text, kind):
     elif kind == "text":
         # Documentation pages: every paragraph and list item, plus any tables.
         records = ["text: " + x for x in page.paragraphs]
-        records += ["table: " + packed({"heading": t["heading"], "cells": row}) for t in page.tables for row in t["rows"]]
+        records += ["table: " + packed({"heading": t["heading"], "cells": row}) for t in page.tables for row in grouped(t["rows"])]
     elif kind == "aws-catalog":
         records = ["model-card: " + href.split("/")[-1].split("#")[0] for href in page.links if "model-card-openai-" in href]
     else:
         for table in page.tables:
-            for row in table["rows"]:
+            for row in grouped(table["rows"]):
                 records.append("table: " + packed({"heading": table["heading"], "cells": row}))
     if kind == "card":
         # Model cards often render availability and prices as divs rather than tables.
@@ -250,6 +268,12 @@ def due_alerts(alerts, acknowledged):
     return [a for a in alerts if abs(a["days"]) <= DUE_WINDOW and alert_key(a) not in seen]
 
 
+def needs_action(alert):
+    """Retirements and promotions switch on their dates by themselves. A tier whose rates are verified only
+    through a date shows "not verified" after it, until someone re-checks the rates."""
+    return alert["event"] == "tier rates verified through"
+
+
 def make_report(baseline, current, errors, data, today):
     changes = []
     for sid, snapshot in current.items():
@@ -375,15 +399,53 @@ def cell_sources(cell, meta_index):
 
 
 PRICE = re.compile(r"\$\s?\d[\d,]*(?:\.\d+)?|\d+(?:\.\d+)?\s?%|\d+(?:\.\d+)?\s?[x×](?![a-z])|(?<![\w.])\d+\.\d+(?![\w.])")
-DATE = re.compile(r"\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2},?\s+\d{4}|\b\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{4}|\b\d{4}-\d{2}-\d{2}\b", re.I)
+LIMIT = re.compile(r"(?<![\w.$])\d+(?:\.\d+)?\s?[km](?![a-z])")  # context limits and thresholds: 272k, 1m
+MONTH = r"(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?"
+DATE = re.compile(rf"\b{MONTH}\s+\d{{1,2}},?\s+\d{{4}}|\b\d{{1,2}}\s+{MONTH}\s+\d{{4}}|\b\d{{4}}-\d{{2}}-\d{{2}}\b|\b\d{{1,2}}/\d{{1,2}}/\d{{2,4}}\b|\b{MONTH}\s+\d{{4}}\b", re.I)
+# Region codes and names the page maps (AWS, Azure, Google Cloud), plus Hong Kong and Taiwan.
+PLACE = re.compile(r"(?<![\w-])(?:" + "|".join(sorted({re.escape(official.norm(x)) for table in (official.AWS, official.AZURE, official.GCP)
+                                                         for code, (_, place) in table.items() for x in (code, place)} | {"hong kong", "taiwan", "taipei"},
+                                                        key=len, reverse=True)) + r")(?![\w-])")
+# A model the dataset does not track ("Llama 3.3 70B", "Claude Opus 4.7", "Mistral Large 4", "o3").
+OTHER_MODEL = re.compile(r"(?<![\w-])(?:(?:claude|opus|sonnet|haiku|fable|mythos|gpt|codex|gemini|gemma|imagen|veo|lyria|chirp|llama|mistral|mixtral|"
+                         r"ministral|magistral|codestral|devstral|pixtral|voxtral|qwen|qwq|deepseek|kimi|glm|grok|nova|titan|jamba|phi|minimax|nemotron|"
+                         r"granite|olmo|ernie|hunyuan|whisper|dall e|sora|flux|cohere|command|palmyra|marengo|pegasus|seedream|seedance|wan)"
+                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d|o\d\b)")
+# Documents whose lines that name no model (a residency multiplier, a batch discount, a region list) can
+# apply to every model they cover; structured price lists and model indexes have one line per model.
+DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
 
 
-def price_tokens(line, rx):
-    """Prices, rates, percentages and multipliers in a line, without the model's own name and version."""
+def risk_tokens(line, rx):
+    """What a wording-only change keeps: prices, rates, multipliers, context limits and dates, plus the places a
+    line names with any short marks beside them (a Bedrock region row: "us-east-1 (N. Virginia) | no | yes")."""
     text = official.norm(line)
     if rx:
         text = rx.sub(" ", text)
-    return [re.sub(r"[\s,]", "", t) for t in PRICE.findall(text)]
+    tokens = {"price:" + re.sub(r"[\s,]", "", t) for t in PRICE.findall(text) + LIMIT.findall(text)}
+    tokens |= {"date:" + d.lower() for d in DATE.findall(line)}
+    places = sorted(set(PLACE.findall(text)))
+    if places:
+        tokens |= {"place:" + p for p in places}
+        cells = json.loads(line[len("table: "):]).get("cells", []) if line.startswith("table: {") else []
+        marks = [c.lower() for c in cells if isinstance(c, str) and c and len(c) <= 16 and not PRICE.search(c)]
+        if marks:
+            tokens.add("place:" + "/".join(places) + " = " + " | ".join(marks))
+    return tokens
+
+
+def compare(removed, added, rx):
+    """("low" | "high", reason) for changed lines: high when they differ in a price, rate, multiplier, context
+    limit, date, or region and its marks. Which values appear counts, not how often: a table that repeats a
+    price once less is a layout change."""
+    old = set().union(*(risk_tokens(r, rx) for r in removed))
+    new = set().union(*(risk_tokens(r, rx) for r in added))
+    moved = {t.split(":", 1)[0] for t in old ^ new}
+    if not moved:
+        return "low", "wording or layout only; no price, rate, limit, date or region changed"
+    what = [text for kind, text in (("price", "a price, rate, multiplier or context limit"), ("date", "a date"),
+                                    ("place", "a region or its availability")) if kind in moved]
+    return "high", " and ".join(what) + " changed"
 
 
 def classify(before, after, rx):
@@ -392,44 +454,74 @@ def classify(before, after, rx):
         return "high", "new lines about the model (it may now be offered)"
     if not after:
         return "high", "the model's lines are gone (it may no longer be offered)"
-    removed, added = sorted(set(before) - set(after)), sorted(set(after) - set(before))
-    # Which values appear, not how often: a table that repeats a price once less is a layout change.
-    if {t for r in removed for t in price_tokens(r, rx)} != {t for r in added for t in price_tokens(r, rx)}:
-        return "high", "a price, rate or multiplier changed"
-    if {d.lower() for r in removed for d in DATE.findall(r)} != {d.lower() for r in added for d in DATE.findall(r)}:
-        return "high", "a date changed"
-    return "low", "wording or layout only; no price, rate or date changed"
+    return compare(sorted(set(before) - set(after)), sorted(set(after) - set(before)), rx)
 
 
-def accept_low_risk(baseline, current, changes, errors, alerts, today):
-    """The reviewed baseline after accepting today's low-risk changes; high-risk lines stay as reviewed."""
-    out = dict(baseline, checked_at=today.isoformat(), sources=dict(baseline.get("sources", {})))
-    by_source = {}
-    for c in changes:
-        by_source.setdefault(c["source"], []).append(c)
-    for sid, snapshot in current.items():
-        if sid in errors:
+def names_a_model(record, rxs):
+    text = official.norm(record)
+    return bool(OTHER_MODEL.search(text)) or any(rx.search(text) for rx in rxs)
+
+
+def scoped_lines(records, rx, others):
+    """A model's lines in a page about it: those naming it, plus those naming no model at all (region rows,
+    notes). Lines about other models are not its own."""
+    return [r for r in records if (rx and rx.search(official.norm(r))) or not names_a_model(r, others)]
+
+
+def general_changes(data, config, baseline, current, errors):
+    """Changed lines in a multi-model document that name no model. Lines about models the dataset does not
+    track are ignored; the rest (a residency multiplier, a batch discount, a region list) concern every model
+    the document covers, so a changed price, limit, date or region among them is held for review."""
+    rxs = [rx for rx in map(model_regex, data["models"].values()) if rx]
+    found = []
+    for source in config:
+        sid = source["id"]
+        snapshot, previous = current.get(sid), baseline.get("sources", {}).get(sid)
+        if (not snapshot or not previous or sid in errors or source.get("auto") or source.get("models")
+                or source.get("kind") not in DOCUMENT_KINDS):
             continue
-        mine = by_source.get(sid, [])
-        if all(c["risk"] == "low" for c in mine):
+        before, after = set(previous.get("records", [])), set(snapshot["records"])
+        removed = sorted(r for r in before - after if not names_a_model(r, rxs))
+        added = sorted(r for r in after - before if not names_a_model(r, rxs))
+        if removed or added:
+            risk, reason = compare(removed, added, None)
+            found.append(dict(source=sid, url=snapshot["url"], risk=risk, reason=reason, added=added[:12], removed=removed[:12],
+                              added_all=added, removed_all=removed))
+    return found
+
+
+def accept_low_risk(baseline, current, changes, errors, alerts, general=()):
+    """The reviewed baseline after accepting today's low-risk changes. Every line in a high-risk change (about a
+    model, or naming none) stays as reviewed; a source without a reviewed baseline waits for --record-baseline."""
+    out = dict(baseline, sources=dict(baseline.get("sources", {})))
+    held = {}
+    for c in [*changes, *general]:
+        if c["risk"] == "high":
+            added, removed = held.setdefault(c["source"], (set(), set()))
+            added |= set(c["added_all"])
+            removed |= set(c["removed_all"])
+    for sid, snapshot in current.items():
+        if sid in errors or sid not in out["sources"]:
+            continue
+        added, removed = held.get(sid, (set(), set()))
+        if not added and not removed:
             out["sources"][sid] = snapshot
             continue
-        records = set((baseline["sources"].get(sid) or {}).get("records", []))
-        held = {r for c in mine if c["risk"] == "high" for r in c["added_all"] + c["removed_all"]}
-        for c in mine:
-            if c["risk"] == "low":
-                records -= set(c["removed_all"]) - held
-                records |= set(c["added_all"]) - held
-        kept = sorted(records)
+        kept = sorted((set(snapshot["records"]) - added) | removed)
         out["sources"][sid] = dict(snapshot, records=kept, digest=hashlib.sha256(packed(kept).encode()).hexdigest())
-    # Scheduled promotions and retirements already switch on their dates; record them as seen.
-    out["acknowledged_lifecycle"] = sorted(set(baseline.get("acknowledged_lifecycle", [])) | {alert_key(a) for a in alerts if abs(a["days"]) <= DUE_WINDOW})
+    # Retirements and promotions switch on their dates by themselves; record them as seen. A tier verified only
+    # through a date stays due until someone re-checks its rates and records the baseline.
+    out["acknowledged_lifecycle"] = sorted(set(baseline.get("acknowledged_lifecycle", [])) |
+                                           {alert_key(a) for a in alerts if abs(a["days"]) <= DUE_WINDOW and not needs_action(a)})
     return out
 
 
-def cell_checks(data, config, baseline, current, errors, fact_issues, previous, today):
-    """Per model and platform: verified today, or the sources whose lines about it changed."""
+def cell_checks(data, config, baseline, current, errors, fact_issues, previous, today, general=(), gone=()):
+    """Per model and platform: verified today, or the sources whose lines about it changed. general =
+    general_changes(); gone = Databricks endpoints missing from its region tables."""
     day = today.isoformat()
+    held = {g["source"] for g in general if g["risk"] == "high"}
+    rxs = {key: model_regex(model) for key, model in data["models"].items()}
     meta_index = {}
     for source in config:
         for meta in source.get("meta", []):
@@ -438,7 +530,8 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     old = (previous or {}).get("cells", {})
     cells, changes = {}, []
     for key, model in data["models"].items():
-        rx = model_regex(model)
+        rx = rxs[key]
+        others = [r for k, r in rxs.items() if k != key and r]
         for pl, cell in model["platforms"].items():
             # A source scoped to some models (a model card, say) checks only those models. Databricks offers
             # always depend on its DBU tables, so a price published for a pending offer is noticed.
@@ -461,9 +554,12 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                     unchecked.append(sid)
                     continue
                 after = current[sid]["records"]
-                rb, ra = relevant(before, rx), relevant(after, rx)
-                if not rb and not ra and by_id[sid].get("models"):
-                    rb, ra = before, after  # a model-specific page that never names the model
+                if sid in held:
+                    unchecked.append(sid)  # a line naming no model changed a price, date or region
+                if by_id[sid].get("models"):
+                    rb, ra = scoped_lines(before, rx, others), scoped_lines(after, rx, others)
+                else:
+                    rb, ra = relevant(before, rx), relevant(after, rx)
                 if not rb and not ra:
                     # No line names the model: still not offered, or (for an offered model) only a
                     # whole-source match can confirm nothing changed.
@@ -478,6 +574,8 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                                         risk=risk, reason=reason, added=added[:12], removed=removed[:12], added_all=added, removed_all=removed))
             if pl == "databricks" and key in fact_issues:
                 changed.append("dbx-prices")
+            if pl == "databricks" and key in gone:
+                changed.append("dbx-regions")
             last = old.get(ref, {})
             verified = max(filter(None, [last.get("verified"), cell.get("pricing_checked_at"), (cell.get("endpoints") or {}).get("checked_at")]), default=None)
             if changed:
@@ -489,14 +587,15 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     return cells, changes
 
 
-def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None):
-    """The rolling GitHub issue: only what a person needs to act on. failing = sources that also
-    failed on the previous run (a single failed read is usually temporary)."""
+def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None, general=(), unrecorded=(), gone=None, last_read=None):
+    """The rolling GitHub issue: only what a person needs to act on. failing = sources not read for STALE_DAYS
+    days or more (a single failed read is usually temporary)."""
     failing = report["sources_failed"] if failing is None else failing
+    gone, last_read = gone or {}, last_read or {}
     name = lambda key: data["models"].get(key, {}).get("name", key)
     review = sorted({ref for ref, c in cells.items() if c.get("changed_at") and ref.split("|")[0] in listed})
     verified = sum(1 for ref, c in cells.items() if c.get("verified") == report["checked_at"] and ref.split("|")[0] in listed)
-    low = sum(1 for c in changes if c.get("risk") == "low" and c["model"] in listed)
+    low = sum(1 for c in changes if c.get("risk") == "low" and c["model"] in listed) + sum(1 for g in general if g["risk"] == "low")
     lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified today; {len(review)} need review; "
              f"{low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
     fact_issues = {k: v for k, v in fact_issues.items() if k in listed}
@@ -513,17 +612,40 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
         if len(shown) > 60:
             lines.append(f"- … and {len(shown) - 60} more (see the run's JSON artifact)")
         lines.append("")
+    held = [g for g in general if g["risk"] == "high"]
+    if held:
+        lines += ["## Lines that name no model but changed a price, date or region", "",
+                  "They can apply to every model the source covers (a residency multiplier, a batch discount, a region list). "
+                  "Until they are reviewed, those offers keep their last verified date.", ""]
+        for g in held:
+            lines.append(f"- [{g['source']}]({g['url']}) · {g['reason']}")
+            lines += [f"  - `+ {r[:220]}`" for r in g["added"][:4]] + [f"  - `- {r[:220]}`" for r in g["removed"][:4]]
+        lines.append("")
+    if gone:
+        lines += ["## Databricks endpoints missing from its region tables", ""]
+        lines += [f"- **{name(k)}**: not in the tables since {since}; its card still shows the last regions." for k, since in sorted(gone.items())] + [""]
+    if unrecorded:
+        lines += ["## Sources without a reviewed baseline", "", "Check each source, then record the reviewed baseline. Until then its offers keep their last verified date.", ""]
+        lines += [f"- {sid}" for sid in unrecorded] + [""]
     if failing:
-        lines += ["## Sources that could not be read two days running", ""] + [f"- {sid}: {report['sources_failed'][sid]}" for sid in sorted(failing)] + [""]
-    if report.get("lifecycle_due"):
-        lines += [f"## Dates within {DUE_WINDOW} days", ""]
-        lines += [f"- {a['model']} · {a['platform']} · {a['event']} {a['date']} ({a['state']})" for a in report["lifecycle_due"]] + [""]
+        lines += [f"## Sources not read for {STALE_DAYS} days or more", ""]
+        lines += [f"- {sid} (last read {last_read.get(sid) or 'unknown'}): {report['sources_failed'][sid]}" for sid in sorted(failing)] + [""]
+    due = report.get("lifecycle_due") or []
+    action = [a for a in due if needs_action(a)]
+    if action:
+        lines += [f"## Tier rates verified only through a date within {DUE_WINDOW} days", "",
+                  "After that date the tier shows \"not verified\". Re-check its rates and update `endpoints.json`, then record the reviewed baseline.", ""]
+        lines += [f"- {a['model']} · {a['platform']} · {a['event']} {a['date']} ({a['state']})" for a in action] + [""]
+    scheduled = [a for a in due if not needs_action(a)]
+    if scheduled:
+        lines += [f"## Dates within {DUE_WINDOW} days (the page switches on its own)", ""]
+        lines += [f"- {a['model']} · {a['platform']} · {a['event']} {a['date']} ({a['state']})" for a in scheduled] + [""]
     lines += ["## How to resolve", "",
               "1. Open each source, confirm the change, and update `llm-pricing/v2-maintenance/build-data.py` or `endpoints.json`.",
               "2. Run `python v2-maintenance/build-data.py` and the tests, then push.",
               "3. Record the reviewed baseline: Actions → *LLM pricing v2 daily refresh* → Run workflow, tick **Record the reviewed baseline**. That run re-checks every source and closes this issue when nothing is left. (Locally: `review-sources.py --record-baseline`; it refuses if any source cannot be read.)",
               "",
-              "Changes that leave every price, rate and date untouched (wording, layout, renamed rows) are accepted automatically and listed only in the run summary.", ""]
+              "Changes that leave every price, rate, limit, date and region untouched (wording, layout, renamed rows), and lines about models the page does not track, are accepted automatically and listed only in the run summary.", ""]
     return "\n".join(lines), review
 
 
@@ -537,10 +659,11 @@ def markdown_report(report):
             lines.append(f"- {sid}: {error}")
         lines.append("")
     if report.get("lifecycle_due"):
-        lines.extend([f"## Lifecycle events within {DUE_WINDOW} days: review needed", "",
-                      "Confirm each provider made the announced change (or extended it), update the data if not, then record the reviewed baseline.", ""])
+        lines.extend([f"## Dates within {DUE_WINDOW} days", "",
+                      "Retirements and promotions switch on their dates by themselves and are acknowledged automatically. A tier verified "
+                      "only through a date needs its rates re-checked; it stays listed until a reviewed baseline is recorded.", ""])
         for alert in report["lifecycle_due"]:
-            lines.append(f"- {alert['model']} · {alert['platform']} · {alert['event']} {alert['date']} ({alert['state']})")
+            lines.append(f"- {alert['model']} · {alert['platform']} · {alert['event']} {alert['date']} ({alert['state']})" + (" · re-check needed" if needs_action(alert) else ""))
         lines.append("")
     if report["lifecycle_alerts"]:
         lines.extend([f"## Promotions and retirements within {ALERT_WINDOW} days", "", "| Model | Platform | Event | Date | State |", "|---|---|---|---|---|"])
@@ -559,6 +682,24 @@ def markdown_report(report):
     return "\n".join(lines)
 
 
+def sources_read(previous, sources, current, today):
+    """The last day each source was read, carried from run to run in v2-checks.json."""
+    if previous and "sources_read" in previous:
+        read = dict(previous["sources_read"])
+    elif previous:
+        read = {s["id"]: previous["checked_at"] for s in sources if s["id"] not in previous.get("sources_failed", [])}
+    else:
+        read = {}
+    read.update({sid: today.isoformat() for sid in current})
+    return {s["id"]: read[s["id"]] for s in sources if s["id"] in read}
+
+
+def stale(errors, last_read, today):
+    """Failed sources not read for STALE_DAYS days or more: one failed read, same-day re-runs and a source that
+    fails every other day are not listed."""
+    return sorted(sid for sid in errors if not last_read.get(sid) or (today - dt.date.fromisoformat(last_read[sid])).days >= STALE_DAYS)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cache-dir", type=Path, help="Use previously downloaded official source files (offline).")
@@ -566,9 +707,9 @@ def main():
     parser.add_argument("--record-baseline", action="store_true", help="Explicitly record a reviewed baseline. Never used by scheduled runs.")
     parser.add_argument("--checks", type=Path, help="Write per-offer verification dates (the page's v2-checks.json).")
     parser.add_argument("--issue", type=Path, help="Write the review-issue Markdown here (empty file when nothing needs review).")
-    parser.add_argument("--fail-on-change", action="store_true", help="Exit 2 when changes or lifecycle events need review.")
+    parser.add_argument("--fail-on-change", action="store_true", help="Exit 2 when anything needs review (the issue is written).")
     parser.add_argument("--accept-low-risk", action="store_true", help="Record low-risk changes (no price, rate or date moved) in the reviewed baseline.")
-    parser.add_argument("--as-of", default=dt.datetime.now(dt.timezone.utc).date().isoformat())
+    parser.add_argument("--as-of", default=dt.datetime.now(HKT).date().isoformat(), help="Run date (default: today in Hong Kong).")
     args = parser.parse_args()
     today = dt.date.fromisoformat(args.as_of)
     sources = json.loads((HERE / "source-config.json").read_text())
@@ -593,7 +734,8 @@ def main():
         # Recording the baseline also acknowledges the lifecycle events reviewed with it.
         alerts = time_alerts(data, today)
         acknowledged = sorted(set(previous.get("acknowledged_lifecycle", [])) | {alert_key(a) for a in alerts if abs(a["days"]) <= DUE_WINDOW})
-        baseline_file.write_text(json.dumps(dict(schema=1, checked_at=today.isoformat(), acknowledged_lifecycle=acknowledged, sources=current), ensure_ascii=False, indent=1) + "\n")
+        recorded = {sid: {k: v for k, v in snapshot.items() if k != "facts"} for sid, snapshot in current.items()}
+        baseline_file.write_text(json.dumps(dict(schema=1, checked_at=today.isoformat(), acknowledged_lifecycle=acknowledged, sources=recorded), ensure_ascii=False, indent=1) + "\n")
         print("Reviewed source baseline recorded; pricing data unchanged.")
         return
     if not baseline_file.exists():
@@ -606,31 +748,45 @@ def main():
     complete = not any(s.get("facts") == "dbx-prices" and s["id"] in errors for s in sources)
     fact_issues = dbx_fact_issues(data, facts, today, complete) if facts else {}
     previous = json.loads(args.checks.read_text()) if args.checks and args.checks.exists() else None
-    cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today)
     ranking_file = HERE.parent / "v2-ranking.json"
     listed = set(json.loads(ranking_file.read_text())["models"]) if ranking_file.exists() else set(data["models"])
-    failing = sorted(set(errors) & set((previous or {}).get("sources_failed", []))) if previous else sorted(errors)
-    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing)
+    auto_file = HERE / "endpoints-auto.json"
+    auto = json.loads(auto_file.read_text()).get("databricks", {}) if auto_file.exists() else {}
+    gone = {k: e["missing_since"] for k, e in auto.items() if e.get("missing_since") and k in listed}
+    general = general_changes(data, sources, baseline, current, errors)
+    cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone)
+    last_read = sources_read(previous, sources, current, today)
+    failing = stale(errors, last_read, today)
+    unrecorded = sorted(sid for sid in current if sid not in baseline.get("sources", {}))
+    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read)
     listed_facts = {k: v for k, v in fact_issues.items() if k in listed}
-    accepted = [c for c in changes if c["risk"] == "low"]
+    held = [g for g in general if g["risk"] == "high"]
+    action = [a for a in report["lifecycle_due"] if needs_action(a)]
+    needs_review = bool(review or listed_facts or failing or held or unrecorded or gone or action)
+    accepted = [c for c in changes if c["risk"] == "low"] + [g for g in general if g["risk"] == "low"]
     if args.accept_low_risk:
-        baseline_file.write_text(json.dumps(accept_low_risk(baseline, current, changes, errors, report["lifecycle_alerts"], today), ensure_ascii=False, indent=1) + "\n")
-    for c in changes:
+        updated = accept_low_risk(baseline, current, changes, errors, report["lifecycle_alerts"], general)
+        # The baseline is 3.6 MB: rewrite it only when something in it changed.
+        if updated["sources"] != baseline.get("sources") or updated["acknowledged_lifecycle"] != baseline.get("acknowledged_lifecycle", []):
+            updated["checked_at"] = today.isoformat()
+            baseline_file.write_text(json.dumps(updated, ensure_ascii=False, indent=1) + "\n")
+    for c in [*changes, *general]:
         c.pop("added_all", None)
         c.pop("removed_all", None)
-    report.update(dbx_price_issues=fact_issues, model_changes=changes)
+    report.update(dbx_price_issues=fact_issues, model_changes=changes, unattributed_changes=general)
     args.report_dir.mkdir(parents=True, exist_ok=True)
     stem = "source-review-" + today.isoformat()
     (args.report_dir / (stem + ".json")).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     summary = markdown_report(report)
     if accepted:
         summary += "\n## Accepted automatically (low risk)\n\n" + "\n".join(
-            f"- {c['name']} · {c['platform']} · {c['source']}: {c['reason']}" for c in accepted) + "\n"
+            f"- {c['name']} · {c['platform']} · {c['source']}: {c['reason']}" if "model" in c else f"- {c['source']} · lines naming no model: {c['reason']}"
+            for c in accepted) + "\n"
     (args.report_dir / (stem + ".md")).write_text(summary)
     if args.checks:
         repo = os.environ.get("GITHUB_REPOSITORY")
         names = lambda ref: data["models"][ref.split("|")[0]].get("name", ref) + " · " + ref.split("|")[1]
-        checks = dict(schema=1, checked_at=today.isoformat(), sources_checked=len(current), sources_failed=sorted(errors),
+        checks = dict(schema=1, checked_at=today.isoformat(), sources_checked=len(current), sources_failed=sorted(errors), sources_read=last_read,
                       review=[names(ref) for ref in review],
                       issue_url=f"https://github.com/{repo}/issues?q=is%3Aopen+label%3Allm-pricing-review" if repo else None,
                       cells=dict(sorted(cells.items())))
@@ -638,17 +794,18 @@ def main():
             checks["issue_url"] = previous["issue_url"]
         args.checks.write_text(json.dumps(checks, ensure_ascii=False, indent=1) + "\n")
     if args.issue:
-        args.issue.write_text(issue if review or listed_facts or failing else "")
+        args.issue.write_text(issue if needs_review else "")
     verified = sum(1 for c in cells.values() if c.get("verified") == today.isoformat())
-    print(f"Review report: {verified} offers verified today; {len(review)} listed offers need review; {len(accepted)} low-risk changes accepted; {len(report['changes'])} changed sources; "
-          f"{len(errors)} failed sources; {len(report['lifecycle_due'])} lifecycle events due for review.")
+    print(f"Review report: {verified} offers verified today; {len(review)} listed offers need review; {len(held)} sources with changed lines naming no model; "
+          f"{len(accepted)} low-risk changes accepted; {len(report['changes'])} changed sources; {len(errors)} failed sources ({len(failing)} for {STALE_DAYS}+ days); "
+          f"{len(action)} tier dates to re-check.")
     if os.environ.get("GITHUB_ACTIONS") == "true":
         # Upcoming dates show as run annotations even while they are not yet due.
         for alert in report["lifecycle_alerts"]:
             print(f"::warning title=Lifecycle {alert['date']}::{alert['model']} · {alert['platform']} · {alert['event']} ({alert['days']} days)")
     if len(errors) * 2 > len(sources):
         sys.exit(1)
-    if args.fail_on_change and (errors or report["changes"] or report["lifecycle_due"]):
+    if args.fail_on_change and needs_review:
         sys.exit(2)
 
 
