@@ -137,7 +137,22 @@ table{min-width:640px}
 <div class="results" id="results"></div>
 </div>
 
-<h2 id="rates">Rate card used (list, fact-checked 2026-10-08) 🧾</h2>
+<h2 id="rates">What each Lakebase CU equals · rate card 🧾</h2>
+<div class="tblwrap">
+<table>
+<tr><th>Lakebase CU</th><th>RAM</th><th>≈ vCPU</th><th>Closest Aurora db.r7g</th><th>Closest Azure D-series</th><th>Closest Cloud SQL</th></tr>
+<tr><td><b>1 CU</b></td><td>2 GB</td><td>~0.5</td><td>— (below db.t3.medium)</td><td>B1ms burst (1 vCore/2 GiB)</td><td>db-g1-small class</td></tr>
+<tr><td><b>4 CU</b></td><td>8 GB</td><td>~2</td><td>db.t3.medium / db.r7g.large (16 GiB)</td><td>D2ds (2 vCores/8 GiB)</td><td>2 vCPU / 8 GB custom</td></tr>
+<tr><td><b>8 CU</b></td><td>16 GB</td><td>~4</td><td>db.r7g.xlarge (4 vCPU/32 GiB)</td><td>D4ds v5 (4 vCores/16 GiB)</td><td>4 vCPU / 15 GB custom</td></tr>
+<tr><td><b>16 CU</b></td><td>32 GB</td><td>~8</td><td>db.r7g.2xlarge (8 vCPU/64 GiB)</td><td>D8ds v4 (8 vCores/32 GiB)</td><td>8 vCPU / 32 GB custom</td></tr>
+<tr><td><b>32 CU</b></td><td>64 GB</td><td>~16</td><td>db.r7g.4xlarge (16 vCPU/128 GiB)</td><td>D16ds v4 (16 vCores/64 GiB)</td><td>16 vCPU / 64 GB custom</td></tr>
+<tr><td><b>64 CU</b></td><td>128 GB</td><td>~32</td><td>db.r7g.8xlarge (32 vCPU/256 GiB)</td><td>D32ds v4 (32 vCores/128 GiB)</td><td>32 vCPU / 128 GB custom</td></tr>
+<tr><td><b>112 CU</b> (fixed only)</td><td>224 GB</td><td>~56</td><td>db.r7g.16xlarge class</td><td>D64ds v4 (64 vCores/256 GiB)</td><td>64 vCPU / 416 GB custom</td></tr>
+</table>
+</div>
+<p class="muted">Official definition: <b>each CU = 2 GB RAM</b> plus associated vCPU and local SSD (Databricks docs table: 4 CU=8 GB, 8 CU=16 GB, 16 CU=32 GB, 32 CU=64 GB, 64 CU=128 GB, 112 CU=224 GB). The vCPU ratio is ~0.5/CU (Neon's earlier spec was 1 CU ≈ 1 vCPU + 4 GB — Lakebase now uses the 2GB/CU definition). <b>Same-size ≠ same-speed</b>: this is a spec crosswalk, not a performance one — independent pgbench measured Lakebase 1,737 TPS vs Aurora 1,508 (4M-row/180-client shape).</p>
+
+<h3 style="color:var(--txt)">Rate card used (list, fact-checked 2026-10-08)</h3>
 <div class="tblwrap">
 <table>
 <tr><th>Vendor</th><th>Compute basis</th><th>Storage</th><th>I/O</th><th>HA multiplier</th></tr>
@@ -195,11 +210,11 @@ Independent model — not affiliated with any vendor. Built 2026-10-08; re-verif
 
 <script>
 const SIZES=[
- {label:'2 vCPU / 8–16 GB', dbxCU:4,  aurora:'large',  rds:0.276, azVCores:2, azMem:16, gcpu:2,  gmem:16},
- {label:'4 vCPU / 16–32 GB',dbxCU:8,  aurora:'xlarge', rds:0.552, azVCores:4, azMem:16, gcpu:4,  gmem:15},
- {label:'8 vCPU / 32–64 GB',dbxCU:16, aurora:'2xlarge',rds:1.104, azVCores:8, azMem:32, gcpu:8,  gmem:32},
- {label:'16 vCPU / 64–128 GB',dbxCU:32,aurora:'4xlarge',rds:2.208,azVCores:16,azMem:64, gcpu:16, gmem:64},
- {label:'32 vCPU / 128–256 GB',dbxCU:64,aurora:'8xlarge',rds:4.416,azVCores:32,azMem:128,gcpu:32, gmem:128}
+ {label:'2 vCPU / 8–16 GB', dbxCU:4,  dbxLabel:'4 CU = ~2 vCPU / 8 GB',  aurora:'large',  auroraLabel:'db.r7g.large · 2 vCPU / 16 GiB',  rds:0.276, rdsLabel:'db.r7g.large · 2 vCPU / 16 GiB',  azVCores:2, azMem:16, azLabel:'D2ds · 2 vCores / 8 GiB',  gcpu:2,  gmem:16, gLabel:'2 vCPU / 16 GB (custom)'},
+ {label:'4 vCPU / 16–32 GB',dbxCU:8,  dbxLabel:'8 CU = ~4 vCPU / 16 GB', aurora:'xlarge', auroraLabel:'db.r7g.xlarge · 4 vCPU / 32 GiB', rds:0.552, rdsLabel:'db.r7g.xlarge · 4 vCPU / 32 GiB', azVCores:4, azMem:16, azLabel:'D4ds v5 · 4 vCores / 16 GiB', gcpu:4,  gmem:15, gLabel:'4 vCPU / 15 GB (custom)'},
+ {label:'8 vCPU / 32–64 GB',dbxCU:16, dbxLabel:'16 CU = ~8 vCPU / 32 GB',aurora:'2xlarge',auroraLabel:'db.r7g.2xlarge · 8 vCPU / 64 GiB',rds:1.104, rdsLabel:'db.r7g.2xlarge · 8 vCPU / 64 GiB',azVCores:8, azMem:32, azLabel:'D8ds v4 · 8 vCores / 32 GiB', gcpu:8,  gmem:32, gLabel:'8 vCPU / 32 GB (custom)'},
+ {label:'16 vCPU / 64–128 GB',dbxCU:32,dbxLabel:'32 CU = ~16 vCPU / 64 GB',aurora:'4xlarge',auroraLabel:'db.r7g.4xlarge · 16 vCPU / 128 GiB',rds:2.208,azLabel:'D16ds v4 · 16 vCores / 64 GiB',rdsLabel:'db.r7g.4xlarge · 16 vCPU / 128 GiB',azVCores:16,azMem:64, gcpu:16, gmem:64, gLabel:'16 vCPU / 64 GB (custom)'},
+ {label:'32 vCPU / 128–256 GB',dbxCU:64,dbxLabel:'64 CU = ~32 vCPU / 128 GB',aurora:'8xlarge',auroraLabel:'db.r7g.8xlarge · 32 vCPU / 256 GiB',rds:4.416,azLabel:'D32ds v4 · 32 vCores / 128 GiB',rdsLabel:'db.r7g.8xlarge · 32 vCPU / 256 GiB',azVCores:32,azMem:128,gcpu:32, gmem:128, gLabel:'32 vCPU / 128 GB (custom)'}
 ];
 const AURORA_HR={large:0.26,xlarge:0.52,'2xlarge':1.04,'4xlarge':2.08,'8xlarge':4.16};
 const HOURS=730;
@@ -240,7 +255,7 @@ function calc(){
  const dbxRepCount=(rep?1:0)+Math.min(repN,6);
  const dbxRepCUs=dbxCUhr*0.5;   // replicas modeled at half the primary's CU-hours (read skew typical)
  let dbx = dbxCUhr * 0.111 + sto * 0.345 + (ha ? dbxCUhr * 0.111 : 0) + dbxRepCount * dbxRepCUs * 0.111;
- rows.push({name:'Lakebase Postgres', sub:'Databricks · Autoscaling'+(ha?' · HA (sync standby)':'')+(dbxRepCount?' · '+dbxRepCount+' read replica'+(dbxRepCount>1?'s':''):''), price:dbx,
+ rows.push({name:'Lakebase Postgres', sub:s.dbxLabel+(ha?' · HA (sync standby)':'')+(dbxRepCount?' · '+dbxRepCount+' read replica'+(dbxRepCount>1?'s':'')+' (half CU-hours each)':''), price:dbx,
   parts:[['Compute',dbxCUhr*0.111],['Storage',sto*0.345]].concat(ha?[['HA standby',dbxCUhr*0.111]]:[]).concat(dbxRepCount?[['Read replicas ×'+dbxRepCount,dbxRepCount*dbxRepCUs*0.111]]:[]),
   color:'var(--accent)', note:(pr.scaleZero?'scale-to-zero active':'Always-On baseline −25%')+' · replicas share storage, no extra storage cost'});
 
@@ -249,13 +264,13 @@ function calc(){
  const aOptBase=AURORA_HR[s.aurora]*1.3;
  const auroraRepCount=(rep?1:0)+Math.min(repN,15);   // Aurora supports up to 15 readers
  let aOpt=aOptBase*HOURS + sto*0.225 + auroraRepCount*AURORA_HR[s.aurora]*1.3*HOURS;
- rows.push({name:'Aurora PostgreSQL', sub:'I/O-Optimized · db.r7g '+s.aurora+(auroraRepCount?' · '+auroraRepCount+' reader'+(auroraRepCount>1?'s':''):''), price:aOpt,
+ rows.push({name:'Aurora PostgreSQL', sub:s.auroraLabel+(ha?' · storage-level HA':'')+(auroraRepCount?' · '+auroraRepCount+' reader'+(auroraRepCount>1?'s':'')+' (same size)':''), price:aOpt,
   parts:[['Writer',aOptBase*HOURS],['Storage',sto*0.225]].concat(auroraRepCount?[['Readers ×'+auroraRepCount,auroraRepCount*AURORA_HR[s.aurora]*1.3*HOURS]]:[]),
   color:'var(--blue)', note: ha?'HA = storage-level, included — add readers for failover/read scale':'I/O included; storage replication free'});
 
  // Aurora Standard + I/O
  const aStd=AURORA_HR[s.aurora]*HOURS + sto*0.10 + ioUnits*0.20 + auroraRepCount*AURORA_HR[s.aurora]*HOURS;
- rows.push({name:'Aurora PostgreSQL', sub:'Standard · db.r7g '+s.aurora+(auroraRepCount?' · '+auroraRepCount+' reader'+(auroraRepCount>1?'s':''):''), price:aStd,
+ rows.push({name:'Aurora PostgreSQL', sub:s.auroraLabel+' · Standard'+(auroraRepCount?' · '+auroraRepCount+' reader'+(auroraRepCount>1?'s':'')+' (same size)':''), price:aStd,
   parts:[['Writer',AURORA_HR[s.aurora]*HOURS],['Storage',sto*0.10],['I/O',ioUnits*0.20]].concat(auroraRepCount?[['Readers ×'+auroraRepCount,auroraRepCount*AURORA_HR[s.aurora]*HOURS]]:[]),
   color:'var(--blue)', note: ha?'HA = storage-level, included — readers add failover targets':(ioUnits>0?('+'+Math.round(ioUnits)+'M I/O billed'):'')});
 
@@ -264,7 +279,7 @@ function calc(){
  const rdsIOPSCost=Math.max(0,(rdsIOPS-3000))*0.005;
  const rdsRepCount=(rep?1:0)+Math.min(repN,5);   // RDS: 5 read replicas per primary
  let rds=(s.rds*HOURS)*(ha?2:1) + sto*0.115 + rdsIOPSCost + rdsRepCount*s.rds*HOURS;
- rows.push({name:'RDS PostgreSQL', sub:'Multi-AZ · db.r7g '+(ha?'(HA ×2)':'single')+(rdsRepCount?' · '+rdsRepCount+' replica'+(rdsRepCount>1?'s':''):''), price:rds,
+ rows.push({name:'RDS PostgreSQL', sub:s.rdsLabel+(ha?' · Multi-AZ ×2':'')+(rdsRepCount?' · '+rdsRepCount+' replica'+(rdsRepCount>1?'s':'')+' (same size)':''), price:rds,
   parts:[['Compute',s.rds*HOURS*(ha?2:1)],['Storage',sto*0.115],['IOPS ('+(rdsIOPS).toLocaleString()+')',rdsIOPSCost]].concat(rdsRepCount?[['Replicas ×'+rdsRepCount,rdsRepCount*s.rds*HOURS]]:[]),
   color:'var(--orange,#ff9f43)', note: rdsIOPS>30000?'io1 territory — real quote needed':''});
 
@@ -272,7 +287,7 @@ function calc(){
  const azC=s.azVCores*0.096*HOURS*(ha?2:1) + s.azMem*0.013*HOURS;
  const azRepCount=(rep?1:0)+Math.min(repN,10);   // Azure Flexible: up to 10 read replicas
  let az=azC + sto*0.115 + Math.min(ioUnits*1e6/(730*3600)*1.5, s.azVCores*3000)*0.0 + azRepCount*(s.azVCores*0.096*HOURS + s.azMem*0.013*HOURS);
- rows.push({name:'Azure PG Flexible', sub:'D-series '+s.azVCores+' vCores'+(ha?' · Zonal HA ×2':'')+(azRepCount?' · '+azRepCount+' replica'+(azRepCount>1?'s':''):''), price:az,
+ rows.push({name:'Azure PG Flexible', sub:s.azLabel+(ha?' · Zonal HA ×2':'')+(azRepCount?' · '+azRepCount+' replica'+(azRepCount>1?'s':'')+' (same size)':''), price:az,
   parts:[['Compute',azC],['Storage',sto*0.115]].concat(azRepCount?[['Replicas ×'+azRepCount,azRepCount*(s.azVCores*0.096*HOURS + s.azMem*0.013*HOURS)]]:[]),
   color:'var(--purple)', note:'IOPS mostly bundled in D-series tiers'});
 
@@ -280,7 +295,7 @@ function calc(){
  const gC=(s.gcpu*0.0413 + s.gmem*0.007)*HOURS*(ha?2:1);
  const gRepCount=(rep?1:0)+Math.min(repN,Math.min(repN+1,99));   // Cloud SQL: read replicas limited by IP quota, practically ≤10
  let gcp=gC + sto*(ha?0.34:0.17) + gRepCount*(s.gcpu*0.0413 + s.gmem*0.007)*HOURS;
- rows.push({name:'Cloud SQL for PostgreSQL', sub:'Enterprise dedicated '+s.gcpu+' vCPU/'+s.gmem+' GB'+(ha?' · Regional HA ×2':'')+(gRepCount?' · '+gRepCount+' replica'+(gRepCount>1?'s':''):''), price:gcp,
+ rows.push({name:'Cloud SQL for PostgreSQL', sub:s.gLabel+(ha?' · Regional HA ×2':'')+(gRepCount?' · '+gRepCount+' replica'+(gRepCount>1?'s':'')+' (same size)':''), price:gcp,
   parts:[['Compute',gC],['Storage',sto*(ha?0.34:0.17)]].concat(gRepCount?[['Read replicas ×'+gRepCount,gRepCount*(s.gcpu*0.0413 + s.gmem*0.007)*HOURS]]:[]),
   color:'var(--teal)', note:'vCPU+memory billed as separate meters'});
 
