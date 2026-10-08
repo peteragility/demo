@@ -4,8 +4,6 @@
  "sources_checked": 107,
  "sources_failed": [],
  "review": [
-  "Claude Fable 5.1 · databricks",
-  "Claude Opus 5.5 · databricks",
   "Claude Sonnet 5.5 · databricks"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
@@ -20,11 +18,7 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5.1|databricks": {
-   "verified": "2026-10-08",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "dbx-prices"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-fable-5.1|fireworks": {
    "verified": "2026-10-08"
@@ -129,11 +123,7 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|databricks": {
-   "verified": "2026-10-08",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "dbx-prices"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-opus-5.5|fireworks": {
    "verified": "2026-10-08"
