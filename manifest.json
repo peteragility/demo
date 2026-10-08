@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-03",
+ "generated": "2026-10-08",
  "pages": [
   {
    "path": "aidecide-arena/",
@@ -49,6 +49,13 @@
    "desc": "檳城之旅 🌴",
    "tag": "Travel",
    "color": "#2ecc71"
+  },
+  {
+   "path": "sandbox-compare/",
+   "title": "Agent Sandbox Isolation Comparison",
+   "desc": "Vendors vs open source — E2B/Modal/Daytona/AWS/Databricks/Monty ranked by isolation tier · 2026",
+   "tag": "Work",
+   "color": "#58a6ff"
   },
   {
    "path": "tongjian/",

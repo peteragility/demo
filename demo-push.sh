@@ -8,6 +8,7 @@ python3 - <<'PYEOF'
 import os, json, datetime
 
 META = {
+  'sandbox-compare/':('Agent Sandbox Isolation Comparison','Vendors vs open source — E2B/Modal/Daytona/AWS/Databricks/Monty ranked by isolation tier · 2026','Work','#58a6ff'),
   'lakebase-objection-faq/':('Lakebase Objections FAQ','Nine technical objections answered honestly · incl. Aurora head-to-head','Work','#f7b731'),
   'aidecide-arena/':('AI Arena — ai_decide vs Jev','Snake + Tic-Tac-Toe deathmatch, live model I/O inspection','AI','#FF3621'),
   'tongjian/':         ('資治通鑑 · 294卷全文','司馬光 · 周威烈王至後周世宗 · 前403–959','📖 讀史','#8b2f1f'),
