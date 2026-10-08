@@ -3,9 +3,7 @@
  "checked_at": "2026-10-08",
  "sources_checked": 107,
  "sources_failed": [],
- "review": [
-  "Claude Sonnet 5.5 · databricks"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -186,11 +184,7 @@
    "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-10-08",
-   "changed_at": "2026-10-08",
-   "sources": [
-    "dbx-prices"
-   ]
+   "verified": "2026-10-08"
   },
   "anthropic/claude-sonnet-5.5|fireworks": {
    "verified": "2026-10-08"
