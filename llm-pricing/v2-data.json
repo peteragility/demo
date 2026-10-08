@@ -1796,7 +1796,7 @@
             {
               "in": 1.0,
               "out": 5.0,
-              "cache_read": 0.05,
+              "cache_read": 0.025,
               "cache_write": 1.25,
               "cache_write_1h": 2.0,
               "label": "Claude API · global · Batch",
@@ -1810,7 +1810,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.11,
+              "cache_read": 0.055,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "US-only inference · Standard",
@@ -1824,7 +1824,7 @@
             {
               "in": 1.1,
               "out": 5.5,
-              "cache_read": 0.055,
+              "cache_read": 0.0275,
               "cache_write": 1.375,
               "cache_write_1h": 2.2,
               "label": "US-only inference · Batch",
@@ -1924,7 +1924,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.11,
+              "cache_read": 0.055,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "Geo CRIS · Standard",
@@ -2039,7 +2039,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.11,
+              "cache_read": 0.055,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "Data Zone US · Standard",
@@ -2119,7 +2119,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.11,
+              "cache_read": 0.055,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "US multi-region · Standard",
@@ -2133,7 +2133,7 @@
             {
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.11,
+              "cache_read": 0.055,
               "cache_write": 2.75,
               "cache_write_1h": 4.4,
               "label": "EU multi-region · Standard",
@@ -2147,7 +2147,7 @@
             {
               "in": 1.1,
               "out": 5.5,
-              "cache_read": 0.055,
+              "cache_read": 0.0275,
               "cache_write": 1.375,
               "cache_write_1h": 2.2,
               "label": "US multi-region · Batch",
@@ -2161,7 +2161,7 @@
             {
               "in": 1.1,
               "out": 5.5,
-              "cache_read": 0.055,
+              "cache_read": 0.0275,
               "cache_write": 1.375,
               "cache_write_1h": 2.2,
               "label": "EU multi-region · Batch",
@@ -10170,14 +10170,14 @@
       "note": "Highest tier. Cache reads $0.25 (Fable 5 was $1.00).",
       "in": 10.0,
       "out": 50.0,
-      "cache_read": 0.125,
+      "cache_read": 0.25,
       "cache_write": 12.5,
       "unit": "USD/1M",
       "platforms": {
         "databricks": {
           "in": 10.0,
           "out": 50.0,
-          "cache_read": 0.125,
+          "cache_read": 0.25,
           "cache_write": 12.5,
           "cache_write_1h": 20.0,
           "tier": "Standard pay-per-token",
@@ -10186,7 +10186,7 @@
               "label": "Regional processing ⌖ +10%",
               "in": 11.0,
               "out": 55.0,
-              "cache_read": 0.1375,
+              "cache_read": 0.275,
               "id": "variant-0",
               "pricing_checked_at": "2026-10-08",
               "comparison_scope": "regional",
@@ -10268,7 +10268,7 @@
         "official": {
           "in": 10.0,
           "out": 50.0,
-          "cache_read": 0.125,
+          "cache_read": 0.25,
           "cache_write": 12.5,
           "cache_write_1h": 20.0,
           "tier": "Claude API",
@@ -10394,7 +10394,7 @@
         "bedrock": {
           "in": 10.0,
           "out": 50.0,
-          "cache_read": 0.125,
+          "cache_read": 0.25,
           "cache_write": 12.5,
           "cache_write_1h": 20.0,
           "tier": "Global cross-region",
@@ -10495,7 +10495,7 @@
         "azure_foundry": {
           "in": 10.0,
           "out": 50.0,
-          "cache_read": 0.125,
+          "cache_read": 0.25,
           "cache_write": 12.5,
           "cache_write_1h": 20.0,
           "tier": "Global Standard · billed via Azure Marketplace",
@@ -10568,7 +10568,7 @@
         "gcloud": {
           "in": 10.0,
           "out": 50.0,
-          "cache_read": 0.125,
+          "cache_read": 0.25,
           "cache_write": 12.5,
           "cache_write_1h": 20.0,
           "tier": "Global endpoint",
@@ -10729,14 +10729,14 @@
       "note": null,
       "in": 4.0,
       "out": 20.0,
-      "cache_read": 0.1,
+      "cache_read": 0.2,
       "cache_write": 5.0,
       "unit": "USD/1M",
       "platforms": {
         "databricks": {
           "in": 4.0,
           "out": 20.0,
-          "cache_read": 0.1,
+          "cache_read": 0.2,
           "cache_write": 5.0,
           "cache_write_1h": 8.0,
           "tier": "Standard pay-per-token",
@@ -10745,7 +10745,7 @@
               "label": "Regional processing ⌖ +10%",
               "in": 4.4,
               "out": 22.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "id": "variant-0",
               "pricing_checked_at": "2026-10-08",
               "comparison_scope": "regional",
@@ -10845,7 +10845,7 @@
         "official": {
           "in": 4.0,
           "out": 20.0,
-          "cache_read": 0.1,
+          "cache_read": 0.2,
           "cache_write": 5.0,
           "cache_write_1h": 8.0,
           "tier": "Claude API",
@@ -11002,7 +11002,7 @@
         "bedrock": {
           "in": 4.0,
           "out": 20.0,
-          "cache_read": 0.1,
+          "cache_read": 0.2,
           "cache_write": 5.0,
           "cache_write_1h": 8.0,
           "tier": "Global cross-region",
@@ -11151,7 +11151,7 @@
         "azure_foundry": {
           "in": 4.0,
           "out": 20.0,
-          "cache_read": 0.1,
+          "cache_read": 0.2,
           "cache_write": 5.0,
           "cache_write_1h": 8.0,
           "tier": "Global Standard · billed via Azure Marketplace",
@@ -11246,7 +11246,7 @@
         "gcloud": {
           "in": 4.0,
           "out": 20.0,
-          "cache_read": 0.1,
+          "cache_read": 0.2,
           "cache_write": 5.0,
           "cache_write_1h": 8.0,
           "tier": "Global endpoint",
