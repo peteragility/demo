@@ -7,7 +7,8 @@ name: LLM pricing v2 daily refresh
 #   3. every official price / region source re-read: offers whose source lines are unchanged get
 #      today's "verified" date; Databricks prices are checked number by number against its DBU
 #      tables                                                     (published automatically)
-#   4. anything that changed opens or updates one GitHub issue labelled llm-pricing-review.
+#   4. low-risk changes (no price, rate or date moved) are accepted automatically; anything else
+#      opens or updates one GitHub issue labelled llm-pricing-review.
 # Prices are never changed automatically: a person reviews the issue and updates the data.
 on:
   schedule:
@@ -103,7 +104,7 @@ jobs:
         if: inputs.record_baseline
         run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-baseline" --record-baseline
       - name: Check every official source
-        run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md"
+        run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md" --accept-low-risk
       - name: Add the review to the run summary
         if: always()
         run: |

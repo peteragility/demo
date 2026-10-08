@@ -180,5 +180,45 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(cells["m/medium-3.5|official"], {"verified": "2026-10-07"})
 
 
+    def test_changes_that_leave_prices_and_dates_alone_are_low_risk(self):
+        rx = review.model_regex({"name": "Claude Opus 5.5"})
+        spacing = ("table: Cache read 0.1x (0.05x on Claude Opus 5.5)", "table: Cache read 0.1x (0.05x on Claude Opus 5.5 )")
+        self.assertEqual(review.classify([spacing[0]], [spacing[1]], rx)[0], "low")
+        renamed = ("table: Regional (Mantle in IAD) | $2.20 | $11.00", "table: Regional (bedrock-mantle in US East) | $2.20 | $11.00")
+        self.assertEqual(review.classify([renamed[0]], [renamed[1]], rx)[0], "low")
+        limits = ("table: Tier 1 | 500 | 500,000 | Claude Opus 5.5", "table: Build | 5,000 | 1,000,000 | Claude Opus 5.5")
+        self.assertEqual(review.classify([limits[0]], [limits[1]], rx)[0], "low")
+        repeated = ("table: Opus 5.5 | Input | $4.00 | $4.00", "table: Opus 5.5 | Input | $4.00 |  | ")
+        self.assertEqual(review.classify([repeated[0]], [repeated[1]], rx)[0], "low")
+        heading = ["table: Claude Opus 5.5 / Pricing | $4.00"]
+        self.assertEqual(review.classify(heading, heading + ["table: Claude Opus 5.5 / Regional Availability | us-east-1 (N. Virginia)"], rx)[0], "low")
+
+    def test_price_date_and_availability_changes_need_review(self):
+        rx = review.model_regex({"name": "Kimi K3"})
+        base = ["table: Kimi K3 | Global CRIS | $3.00 | $15.00"]
+        self.assertEqual(review.classify(base, base + ["table: Kimi K3 | IN CRIS | $3.30 | $16.50"], rx), ("high", "a price, rate or multiplier changed"))
+        self.assertEqual(review.classify(base, ["table: Kimi K3 | Global CRIS | $2.50 | $15.00"], rx)[0], "high")
+        self.assertEqual(review.classify(base, base + ["notice: Kimi K3 retires on November 5, 2026."], rx), ("high", "a date changed"))
+        self.assertEqual(review.classify([], base, rx)[0], "high")
+        self.assertEqual(review.classify(base, [], rx)[0], "high")
+
+    def test_accepting_low_risk_changes_keeps_high_risk_lines_for_review(self):
+        baseline = {"sources": {"p": {"records": ["a old wording", "b $1.00"]}}, "acknowledged_lifecycle": []}
+        current = {"p": {"url": "u", "kind": "tables", "digest": "x", "records": ["a new wording", "b $2.00"]}}
+        changes = [{"source": "p", "risk": "low", "added_all": ["a new wording"], "removed_all": ["a old wording"]},
+                   {"source": "p", "risk": "high", "added_all": ["b $2.00"], "removed_all": ["b $1.00"]}]
+        out = review.accept_low_risk(baseline, current, changes, {}, [], dt.date(2026, 10, 8))
+        self.assertEqual(out["sources"]["p"]["records"], ["a new wording", "b $1.00"])
+        out = review.accept_low_risk(baseline, current, changes[:1], {}, [], dt.date(2026, 10, 8))
+        self.assertEqual(out["sources"]["p"]["records"], current["p"]["records"])
+
+    def test_one_failed_read_does_not_open_the_issue(self):
+        report = {"checked_at": "2026-10-08", "sources_failed": {"p": "HTTP 503"}, "lifecycle_due": []}
+        text, review_list = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=[])
+        self.assertNotIn("could not be read two days", text)
+        text, _ = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=["p"])
+        self.assertIn("could not be read two days running", text)
+
+
 if __name__ == "__main__":
     unittest.main()

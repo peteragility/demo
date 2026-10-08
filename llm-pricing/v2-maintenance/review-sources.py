@@ -374,6 +374,59 @@ def cell_sources(cell, meta_index):
     return sorted({sid for meta in ids if meta for sid in meta_index.get(meta, [])})
 
 
+PRICE = re.compile(r"\$\s?\d[\d,]*(?:\.\d+)?|\d+(?:\.\d+)?\s?%|\d+(?:\.\d+)?\s?[x×](?![a-z])|(?<![\w.])\d+\.\d+(?![\w.])")
+DATE = re.compile(r"\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2},?\s+\d{4}|\b\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{4}|\b\d{4}-\d{2}-\d{2}\b", re.I)
+
+
+def price_tokens(line, rx):
+    """Prices, rates, percentages and multipliers in a line, without the model's own name and version."""
+    text = official.norm(line)
+    if rx:
+        text = rx.sub(" ", text)
+    return [re.sub(r"[\s,]", "", t) for t in PRICE.findall(text)]
+
+
+def classify(before, after, rx):
+    """("low" | "high", reason) for one model's lines in one source, before and after."""
+    if not before:
+        return "high", "new lines about the model (it may now be offered)"
+    if not after:
+        return "high", "the model's lines are gone (it may no longer be offered)"
+    removed, added = sorted(set(before) - set(after)), sorted(set(after) - set(before))
+    # Which values appear, not how often: a table that repeats a price once less is a layout change.
+    if {t for r in removed for t in price_tokens(r, rx)} != {t for r in added for t in price_tokens(r, rx)}:
+        return "high", "a price, rate or multiplier changed"
+    if {d.lower() for r in removed for d in DATE.findall(r)} != {d.lower() for r in added for d in DATE.findall(r)}:
+        return "high", "a date changed"
+    return "low", "wording or layout only; no price, rate or date changed"
+
+
+def accept_low_risk(baseline, current, changes, errors, alerts, today):
+    """The reviewed baseline after accepting today's low-risk changes; high-risk lines stay as reviewed."""
+    out = dict(baseline, checked_at=today.isoformat(), sources=dict(baseline.get("sources", {})))
+    by_source = {}
+    for c in changes:
+        by_source.setdefault(c["source"], []).append(c)
+    for sid, snapshot in current.items():
+        if sid in errors:
+            continue
+        mine = by_source.get(sid, [])
+        if all(c["risk"] == "low" for c in mine):
+            out["sources"][sid] = snapshot
+            continue
+        records = set((baseline["sources"].get(sid) or {}).get("records", []))
+        held = {r for c in mine if c["risk"] == "high" for r in c["added_all"] + c["removed_all"]}
+        for c in mine:
+            if c["risk"] == "low":
+                records -= set(c["removed_all"]) - held
+                records |= set(c["added_all"]) - held
+        kept = sorted(records)
+        out["sources"][sid] = dict(snapshot, records=kept, digest=hashlib.sha256(packed(kept).encode()).hexdigest())
+    # Scheduled promotions and retirements already switch on their dates; record them as seen.
+    out["acknowledged_lifecycle"] = sorted(set(baseline.get("acknowledged_lifecycle", [])) | {alert_key(a) for a in alerts if abs(a["days"]) <= DUE_WINDOW})
+    return out
+
+
 def cell_checks(data, config, baseline, current, errors, fact_issues, previous, today):
     """Per model and platform: verified today, or the sources whose lines about it changed."""
     day = today.isoformat()
@@ -396,7 +449,7 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                 continue
             offered = cell.get("status") in ("priced", "dedicated") or cell.get("available")
             ref = key + "|" + pl
-            changed, unchecked = [], []
+            changed, unchecked, accepted = [], [], []
             for sid in deps:
                 if sid in errors or sid not in current:
                     unchecked.append(sid)
@@ -418,9 +471,11 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                         unchecked.append(sid)
                     continue
                 if set(rb) != set(ra):
-                    changed.append(sid)
+                    risk, reason = classify(rb, ra, rx)
+                    (changed if risk == "high" else accepted).append(sid)
+                    added, removed = sorted(set(ra) - set(rb)), sorted(set(rb) - set(ra))
                     changes.append(dict(model=key, name=model.get("name", key), platform=pl, source=sid, url=current[sid]["url"],
-                                        added=sorted(set(ra) - set(rb))[:12], removed=sorted(set(rb) - set(ra))[:12]))
+                                        risk=risk, reason=reason, added=added[:12], removed=removed[:12], added_all=added, removed_all=removed))
             if pl == "databricks" and key in fact_issues:
                 changed.append("dbx-prices")
             last = old.get(ref, {})
@@ -430,40 +485,45 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
             elif unchecked:
                 cells[ref] = dict(verified=verified, unchecked=unchecked)
             else:
-                cells[ref] = dict(verified=day)
+                cells[ref] = dict(verified=day, accepted=accepted) if accepted else dict(verified=day)
     return cells, changes
 
 
-def issue_markdown(report, cells, changes, fact_issues, data, listed):
-    """The rolling GitHub issue: only what a person needs to act on."""
+def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None):
+    """The rolling GitHub issue: only what a person needs to act on. failing = sources that also
+    failed on the previous run (a single failed read is usually temporary)."""
+    failing = report["sources_failed"] if failing is None else failing
     name = lambda key: data["models"].get(key, {}).get("name", key)
     review = sorted({ref for ref, c in cells.items() if c.get("changed_at") and ref.split("|")[0] in listed})
     verified = sum(1 for ref, c in cells.items() if c.get("verified") == report["checked_at"] and ref.split("|")[0] in listed)
-    lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified unchanged today; "
-             f"{len(review)} need review; {len(report['sources_failed'])} sources could not be read.", ""]
+    low = sum(1 for c in changes if c.get("risk") == "low" and c["model"] in listed)
+    lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified today; {len(review)} need review; "
+             f"{low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
     fact_issues = {k: v for k, v in fact_issues.items() if k in listed}
     if fact_issues:
         lines += ["## Databricks prices that differ from its DBU tables", ""]
         lines += [f"- **{name(k)}**: " + "; ".join(v) for k, v in sorted(fact_issues.items())]
         lines.append("")
-    shown = [c for c in changes if c["model"] in listed]
+    shown = [c for c in changes if c["model"] in listed and c.get("risk", "high") == "high"]
     if shown:
         lines += ["## Official sources whose lines about a model changed", ""]
         for c in shown[:60]:
-            lines.append(f"- **{c['name']}** · {c['platform']} · [{c['source']}]({c['url']})")
+            lines.append(f"- **{c['name']}** · {c['platform']} · [{c['source']}]({c['url']}) · {c.get('reason', '')}")
             lines += [f"  - `+ {r[:220]}`" for r in c["added"][:4]] + [f"  - `- {r[:220]}`" for r in c["removed"][:4]]
         if len(shown) > 60:
             lines.append(f"- … and {len(shown) - 60} more (see the run's JSON artifact)")
         lines.append("")
-    if report["sources_failed"]:
-        lines += ["## Sources that could not be read", ""] + [f"- {sid}: {err}" for sid, err in sorted(report["sources_failed"].items())] + [""]
+    if failing:
+        lines += ["## Sources that could not be read two days running", ""] + [f"- {sid}: {report['sources_failed'][sid]}" for sid in sorted(failing)] + [""]
     if report.get("lifecycle_due"):
         lines += [f"## Dates within {DUE_WINDOW} days", ""]
         lines += [f"- {a['model']} · {a['platform']} · {a['event']} {a['date']} ({a['state']})" for a in report["lifecycle_due"]] + [""]
     lines += ["## How to resolve", "",
               "1. Open each source, confirm the change, and update `llm-pricing/v2-maintenance/build-data.py` or `endpoints.json`.",
               "2. Run `python v2-maintenance/build-data.py` and the tests, then push.",
-              "3. Record the reviewed baseline: Actions → *LLM pricing v2 daily refresh* → Run workflow, tick **Record the reviewed baseline**. That run re-checks every source and closes this issue when nothing is left. (Locally: `review-sources.py --record-baseline`; it refuses if any source cannot be read.)", ""]
+              "3. Record the reviewed baseline: Actions → *LLM pricing v2 daily refresh* → Run workflow, tick **Record the reviewed baseline**. That run re-checks every source and closes this issue when nothing is left. (Locally: `review-sources.py --record-baseline`; it refuses if any source cannot be read.)",
+              "",
+              "Changes that leave every price, rate and date untouched (wording, layout, renamed rows) are accepted automatically and listed only in the run summary.", ""]
     return "\n".join(lines), review
 
 
@@ -507,6 +567,7 @@ def main():
     parser.add_argument("--checks", type=Path, help="Write per-offer verification dates (the page's v2-checks.json).")
     parser.add_argument("--issue", type=Path, help="Write the review-issue Markdown here (empty file when nothing needs review).")
     parser.add_argument("--fail-on-change", action="store_true", help="Exit 2 when changes or lifecycle events need review.")
+    parser.add_argument("--accept-low-risk", action="store_true", help="Record low-risk changes (no price, rate or date moved) in the reviewed baseline.")
     parser.add_argument("--as-of", default=dt.datetime.now(dt.timezone.utc).date().isoformat())
     args = parser.parse_args()
     today = dt.date.fromisoformat(args.as_of)
@@ -548,13 +609,24 @@ def main():
     cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today)
     ranking_file = HERE.parent / "v2-ranking.json"
     listed = set(json.loads(ranking_file.read_text())["models"]) if ranking_file.exists() else set(data["models"])
-    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed)
+    failing = sorted(set(errors) & set((previous or {}).get("sources_failed", []))) if previous else sorted(errors)
+    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing)
     listed_facts = {k: v for k, v in fact_issues.items() if k in listed}
+    accepted = [c for c in changes if c["risk"] == "low"]
+    if args.accept_low_risk:
+        baseline_file.write_text(json.dumps(accept_low_risk(baseline, current, changes, errors, report["lifecycle_alerts"], today), ensure_ascii=False, indent=1) + "\n")
+    for c in changes:
+        c.pop("added_all", None)
+        c.pop("removed_all", None)
     report.update(dbx_price_issues=fact_issues, model_changes=changes)
     args.report_dir.mkdir(parents=True, exist_ok=True)
     stem = "source-review-" + today.isoformat()
     (args.report_dir / (stem + ".json")).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
-    (args.report_dir / (stem + ".md")).write_text(markdown_report(report))
+    summary = markdown_report(report)
+    if accepted:
+        summary += "\n## Accepted automatically (low risk)\n\n" + "\n".join(
+            f"- {c['name']} · {c['platform']} · {c['source']}: {c['reason']}" for c in accepted) + "\n"
+    (args.report_dir / (stem + ".md")).write_text(summary)
     if args.checks:
         repo = os.environ.get("GITHUB_REPOSITORY")
         names = lambda ref: data["models"][ref.split("|")[0]].get("name", ref) + " · " + ref.split("|")[1]
@@ -566,9 +638,9 @@ def main():
             checks["issue_url"] = previous["issue_url"]
         args.checks.write_text(json.dumps(checks, ensure_ascii=False, indent=1) + "\n")
     if args.issue:
-        args.issue.write_text(issue if review or listed_facts or report["sources_failed"] or report.get("lifecycle_due") else "")
+        args.issue.write_text(issue if review or listed_facts or failing else "")
     verified = sum(1 for c in cells.values() if c.get("verified") == today.isoformat())
-    print(f"Review report: {verified} offers verified today; {len(review)} listed offers need review; {len(report['changes'])} changed sources; "
+    print(f"Review report: {verified} offers verified today; {len(review)} listed offers need review; {len(accepted)} low-risk changes accepted; {len(report['changes'])} changed sources; "
           f"{len(errors)} failed sources; {len(report['lifecycle_due'])} lifecycle events due for review.")
     if os.environ.get("GITHUB_ACTIONS") == "true":
         # Upcoming dates show as run annotations even while they are not yet due.
