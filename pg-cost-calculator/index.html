@@ -157,7 +157,7 @@ table{min-width:640px}
 <div class="tblwrap">
 <table>
 <tr><th>Vendor</th><th>Compute basis</th><th>Storage</th><th>I/O</th><th>HA multiplier</th></tr>
-<tr><td><b>Lakebase</b> (Autoscaling)</td><td><b>$0.111 / CU-hour</b> standard · $0.083 Always-On (baseline −25% after 24h continuous, promo to 2027-01-31) · scale-to-zero when idle</td><td>$0.345 / GB-mo branch storage (snapshots $0.09, PITR $0.20 cheaper tiers)</td><td>Included</td><td>HA = 1 primary + secondaries; standalone price shown is primary-only</td></tr>
+<tr><td><b>Lakebase</b> (Autoscaling)</td><td><b>$0.111 / CU-hour</b> standard · Always-On baseline −25% = $0.083, <b>stacked with a 50% promo → $0.0415/CU-hr</b> (both run through 2027-01-31) · scale-to-zero when idle</td><td>$0.345 / GB-mo branch storage (snapshots $0.09, PITR $0.20 cheaper tiers)</td><td>Included</td><td>HA = 1 primary + hot standby (standby also gets Always-On+promo rates); replicas bill their own CU-hours</td></tr>
 <tr><td><b>Aurora PostgreSQL</b> (I/O-Optimized)</td><td>db.r7g: $0.26 (large) · $0.52 (xl) · $1.04 (2xl) · $2.08 (4xl) /hr — +~30% vs Standard</td><td>$0.225 / GB-mo</td><td><b>Free</b> (replicated cross-region write I/O still billed)</td><td>Each reader = separate instance</td></tr>
 <tr><td><b>Aurora PostgreSQL</b> (Standard)</td><td>db.r7g large $0.26 / xl $0.52 / 2xl $1.04 /hr</td><td>$0.10 / GB-mo</td><td><b>$0.20 / 1M requests</b> — the budget-killer on chatty workloads</td><td>Each reader = separate instance</td></tr>
 <tr><td><b>RDS PostgreSQL</b></td><td>db.r7g large ~$0.276 / xl ~$0.552 / 2xl ~$1.104 /hr (Graviton)</td><td>gp3 ~$0.115 / GB-mo + provisioned IOPS (io1/io2 billed separately)</td><td>gp3: 3,000 IOPS free, then ~$0.005/IOPS-mo; io1 $0.065/IOPS-mo</td><td>Multi-AZ ≈ ×2 compute</td></tr>
@@ -195,7 +195,7 @@ table{min-width:640px}
 <h2 id="notes">Model notes & honest caveats 📝</h2>
 <ul class="check">
 <li>This is a <b>list-price model</b> — it excludes egress, backup overages, cross-region replication, support-plan effects, and discount instruments (RIs/CUD/savings plans) except where noted. Real bills also include VAT.</li>
-<li><b>Lakebase</b> models CU-hours consumed (profile × size × hours) at $0.111 standard / $0.083 Always-On baseline; storage at $0.345/GB-mo. Your autoscaling telemetry will differ from any static profile.</li>
+<li><b>Lakebase</b> models CU-hours consumed (profile × size × hours): $0.111 standard, and for always-on profiles the Always-On baseline (75% of CU-hours) at $0.083 <b>stacked with the 50% promo → $0.0415/CU-hr</b> (promo through 2027-01-31 — the calculator models it as active; after expiry flip PROMO off in the page script). Storage at $0.345/GB-mo. Your autoscaling telemetry will differ from any static profile.</li>
 <li><b>Same-size ≠ same-speed.</b> A CU is not a vCPU is not an ACU. Per the independent pgbench pass (Diggibyte, 2026): Lakebase 1,737 TPS @104ms vs Aurora 1,508 @119ms at a 4M-row/180-client shape — and same-AZ placement doubled Lakebase TPS. Performance-normalize before trusting a raw $ comparison.</li>
 <li><b>HA definitions differ.</b> Lakebase: sync standby, RPO 0, automatic failover (kills connections). Aurora: storage-level replication is free; readers bill as instances. Azure: ×2 compute. Cloud SQL: ×2 compute + ×2 storage. RDS: ×2 compute.</li>
 <li>Azure PAYG rates vary by region and machine generation (Ddsv4/Ddsv5/Dads v5); the $259.88 D4ds v5 figure is East-US-class. Cloud SQL rates are us-central1 Enterprise dedicated.</li>
@@ -251,15 +251,31 @@ function calc(){
  let dbxCUhr;
  if(pr.scaleZero){ dbxCUhr = s.dbxCU * 0.35 * activeHrs; }
  else { dbxCUhr = s.dbxCU * (pr.alwaysOn ? (0.75 + 0.25*pr.util) : pr.util) * activeHrs; }
+ // Promotional stacking (through 2027-01-31): additional 50% off on top of the Always-On baseline rate
+ // → Always-On baseline bills at 0.083 × 0.5 = $0.0415/CU-hr; standard CU-hours keep 0.111 unless on baseline.
+ const PROMO=true;
+ const aonRate = PROMO ? 0.083*0.5 : 0.083;
  // Lakebase: HA = sync standby compute (RPO 0, automatic failover) — standby bills like the primary.
  // Standby is NOT read capacity (hot-standby query cancellations + slower failover); use read replicas instead.
  // Replicas: up to 6 per branch; zero extra storage (shared storage layer).
  const dbxRepCount=(rep?1:0)+Math.min(repN,6);
  const dbxRepCUs=dbxCUhr*0.5;   // replicas modeled at half the primary's CU-hours (read skew typical)
- let dbx = dbxCUhr * 0.111 + sto * 0.345 + (ha ? dbxCUhr * 0.111 : 0) + dbxRepCount * dbxRepCUs * 0.111;
+ // With Always-On: baseline 75% of CU-hours at aonRate, peak 25% at standard; HA standby & replicas inherit the Always-On rate too (they run continuously)
+ let dbxCompute, dbxParts;
+ if(pr.alwaysOn && !pr.scaleZero){
+   const baseCU = s.dbxCU*0.75*activeHrs, peakCU = dbxCUhr - baseCU;
+   dbxCompute = baseCU*aonRate + peakCU*0.111;
+   dbxParts = [['Baseline (Always-On'+(PROMO?' +50% promo':'')+')',baseCU*aonRate],['Peak',peakCU*0.111]];
+ } else {
+   dbxCompute = dbxCUhr*0.111;
+   dbxParts = [['Compute',dbxCUhr*0.111]];
+ }
+ const dbxHA = ha ? s.dbxCU*activeHrs*aonRate : 0;
+ const dbxRep = dbxRepCount * dbxRepCUs * (pr.alwaysOn&&!pr.scaleZero ? aonRate : 0.111);
+ let dbx = dbxCompute + sto*0.345 + dbxHA + dbxRep;
  rows.push({name:'Lakebase Postgres', sub:s.dbxLabel+(ha?' · HA (sync standby)':'')+(dbxRepCount?' · '+dbxRepCount+' read replica'+(dbxRepCount>1?'s':'')+' (half CU-hours each)':''), price:dbx,
-  parts:[['Compute',dbxCUhr*0.111],['Storage',sto*0.345]].concat(ha?[['HA standby',dbxCUhr*0.111]]:[]).concat(dbxRepCount?[['Read replicas ×'+dbxRepCount,dbxRepCount*dbxRepCUs*0.111]]:[]),
-  color:'var(--accent)', note:(pr.scaleZero?'scale-to-zero active':'Always-On baseline −25%')+' · replicas share storage, no extra storage cost'});
+  parts:dbxParts.concat(ha?[['HA standby',dbxHA]]:[]).concat(dbxRepCount?[['Read replicas ×'+dbxRepCount,dbxRep]]:[]),
+  color:'var(--accent)', note:(pr.scaleZero?'scale-to-zero active':(pr.alwaysOn?'Always-On baseline −25%'+(PROMO?' +50% promo (to 2027-01-31)':''):'standard rate'))+' · replicas share storage, no extra storage cost'});
 
  // Aurora: storage replication is free & automatic — "HA" in Aurora terms means adding a reader, which the replica toggle already models
  // Aurora I/O-Optimized (r7g) — HA modeled as the +30% already in rate; readers separate
