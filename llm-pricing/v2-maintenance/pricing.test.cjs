@@ -35,7 +35,7 @@ test('Kimi K3 Priority stays consistently global or US geo, including cache hits
 test('1-hour Anthropic cache writes use their own charge', () => {
   const c = offer('anthropic/claude-sonnet-5.5', 'official');
   const result = M.calculate(c, {...date, cacheHit: 80, writeM: 0.5, writeTTL: '1h'});
-  close(result.total, 12.68);
+  close(result.total, 12.44);
 });
 
 test('Gemini cache storage uses million token-hours as an additional cost', () => {

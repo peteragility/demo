@@ -1722,7 +1722,7 @@
    "warn": null,
    "in": 10.0,
    "out": 50.0,
-   "cache_read": 0.25,
+   "cache_read": 0.125,
    "cache_write": 12.5,
    "unit": "USD/1M",
    "verified": true,
@@ -1730,7 +1730,7 @@
     "databricks": {
      "in": 10.0,
      "out": 50.0,
-     "cache_read": 0.25,
+     "cache_read": 0.125,
      "cache_write": 12.5,
      "cache_write_1h": 20.0,
      "tier": "Standard pay-per-token",
@@ -1740,7 +1740,7 @@
        "label": "Regional processing ⌖ +10%",
        "in": 11.0,
        "out": 55.0,
-       "cache_read": 0.275
+       "cache_read": 0.1375
       }
      ],
      "src": "dbx_prop"
@@ -1748,7 +1748,7 @@
     "official": {
      "in": 10.0,
      "out": 50.0,
-     "cache_read": 0.25,
+     "cache_read": 0.125,
      "cache_write": 12.5,
      "cache_write_1h": 20.0,
      "tier": "Claude API",
@@ -1762,7 +1762,7 @@
        "label": "US-only inference ×1.1",
        "in": 11.0,
        "out": 55.0,
-       "cache_read": 0.275
+       "cache_read": 0.1375
       }
      ],
      "src": "anthropic"
@@ -1770,7 +1770,7 @@
     "bedrock": {
      "in": 10.0,
      "out": 50.0,
-     "cache_read": 0.25,
+     "cache_read": 0.125,
      "cache_write": 12.5,
      "cache_write_1h": 20.0,
      "tier": "Global cross-region",
@@ -1780,7 +1780,7 @@
        "label": "Regional +10%",
        "in": 11.0,
        "out": 55.0,
-       "cache_read": 0.275
+       "cache_read": 0.1375
       }
      ],
      "src": "aws_fm"
@@ -1788,7 +1788,7 @@
     "azure_foundry": {
      "in": 10.0,
      "out": 50.0,
-     "cache_read": 0.25,
+     "cache_read": 0.125,
      "cache_write": 12.5,
      "cache_write_1h": 20.0,
      "tier": "Global Standard · billed via Azure Marketplace",
@@ -1799,7 +1799,7 @@
     "gcloud": {
      "in": 10.0,
      "out": 50.0,
-     "cache_read": 0.25,
+     "cache_read": 0.125,
      "cache_write": 12.5,
      "cache_write_1h": 20.0,
      "tier": "Global endpoint",
@@ -1809,7 +1809,7 @@
        "label": "Regional endpoint +10%",
        "in": 11.0,
        "out": 55.0,
-       "cache_read": 0.275
+       "cache_read": 0.1375
       }
      ],
      "src": "vertex"
@@ -1838,7 +1838,7 @@
    "warn": null,
    "in": 4.0,
    "out": 20.0,
-   "cache_read": 0.2,
+   "cache_read": 0.1,
    "cache_write": 5.0,
    "unit": "USD/1M",
    "verified": true,
@@ -1846,7 +1846,7 @@
     "databricks": {
      "in": 4.0,
      "out": 20.0,
-     "cache_read": 0.2,
+     "cache_read": 0.1,
      "cache_write": 5.0,
      "cache_write_1h": 8.0,
      "tier": "Standard pay-per-token",
@@ -1856,7 +1856,7 @@
        "label": "Regional processing ⌖ +10%",
        "in": 4.4,
        "out": 22.0,
-       "cache_read": 0.22
+       "cache_read": 0.11
       }
      ],
      "src": "dbx_prop"
@@ -1864,7 +1864,7 @@
     "official": {
      "in": 4.0,
      "out": 20.0,
-     "cache_read": 0.2,
+     "cache_read": 0.1,
      "cache_write": 5.0,
      "cache_write_1h": 8.0,
      "tier": "Claude API",
@@ -1878,7 +1878,7 @@
        "label": "US-only inference ×1.1",
        "in": 4.4,
        "out": 22.0,
-       "cache_read": 0.22
+       "cache_read": 0.11
       }
      ],
      "src": "anthropic"
@@ -1886,7 +1886,7 @@
     "bedrock": {
      "in": 4.0,
      "out": 20.0,
-     "cache_read": 0.2,
+     "cache_read": 0.1,
      "cache_write": 5.0,
      "cache_write_1h": 8.0,
      "tier": "Global cross-region",
@@ -1896,7 +1896,7 @@
        "label": "Regional +10%",
        "in": 4.4,
        "out": 22.0,
-       "cache_read": 0.22
+       "cache_read": 0.11
       }
      ],
      "src": "aws_fm"
@@ -1904,7 +1904,7 @@
     "azure_foundry": {
      "in": 4.0,
      "out": 20.0,
-     "cache_read": 0.2,
+     "cache_read": 0.1,
      "cache_write": 5.0,
      "cache_write_1h": 8.0,
      "tier": "Global Standard · billed via Azure Marketplace",
@@ -1915,7 +1915,7 @@
     "gcloud": {
      "in": 4.0,
      "out": 20.0,
-     "cache_read": 0.2,
+     "cache_read": 0.1,
      "cache_write": 5.0,
      "cache_write_1h": 8.0,
      "tier": "Global endpoint",
@@ -1925,7 +1925,7 @@
        "label": "Regional endpoint +10%",
        "in": 4.4,
        "out": 22.0,
-       "cache_read": 0.22
+       "cache_read": 0.11
       }
      ],
      "src": "vertex"

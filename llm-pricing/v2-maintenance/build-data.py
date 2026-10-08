@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-REVIEWED = "2026-10-02"
+REVIEWED = "2026-10-08"
 RATE_FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_storage")
 PLATFORMS = ("databricks", "official", "bedrock", "azure_foundry", "fireworks", "gcloud", "alicloud")
 
@@ -178,8 +178,46 @@ def add_models(data):
                 # Residency premiums include both cache-write TTLs.
                 if v["comparison_scope"] == "regional":
                     v.update(cache_write=2.75, cache_write_1h=4.4)
-    sonnet["platforms"]["official"]["variants"][0].update(cache_read=0.1, cache_write=1.25, cache_write_1h=2.0)
+                # 2026-10-08: Anthropic cut the Sonnet 5.5 cache-hit rate to 5% of the input
+                # price (was 10%); every cache_read below is 0.05x of this row's input rate.
+                if "cache_read" in v:
+                    v["cache_read"] = round(v["in"] * 0.05, 6)
+    sonnet["platforms"]["official"]["variants"][0].update(cache_read=0.05, cache_write=1.25, cache_write_1h=2.0)
+    for pl in PLATFORMS:
+        c = sonnet["platforms"][pl]
+        if c["status"] == "priced" and "cache_read" in c:
+            c["cache_read"] = round(c["in"] * 0.05, 6)
     models["anthropic/claude-sonnet-5.5"] = sonnet
+
+    # Claude Haiku 5.5 (reviewed 2026-10-08): Anthropic pricing page and the Bedrock
+    # marketplace price list list it at 10% of the Haiku 4.5 rates; the cache-hit rate is
+    # the new base 10% (no tiered cut for Haiku). 1M context is explicitly excluded.
+    haiku = copy.deepcopy(models["anthropic/claude-haiku-4.5"])
+    haiku.update(name="Claude Haiku 5.5", short="Haiku 5.5", model_key="anthropic/claude-haiku-5.5",
+                 badges=["Added"], ctx="200K",
+                 note="High-volume, latency-sensitive tier. No 1M-token context option. Prices are one tenth of Haiku 4.5.")
+    for pl in PLATFORMS:
+        c = haiku["platforms"][pl]
+        c["availability_checked_at"] = REVIEWED
+        if c["status"] == "priced":
+            c["pricing_checked_at"] = REVIEWED
+            c["model_id"] = {"databricks": "databricks-claude-haiku-5-5", "bedrock": "anthropic.claude-haiku-5-5"}.get(pl, "claude-haiku-5-5")
+            c["model_id_source"] = "dbx_models" if pl == "databricks" else "anthropic_models"
+            c["model_id_checked_at"] = REVIEWED
+            c["regions"] = "Consult the current model-region catalog for this endpoint."
+            for field in ("in", "out", "cache_read", "cache_write", "cache_write_1h"):
+                if c.get(field) is not None:
+                    c[field] = round(c[field] / 10, 6)
+            for v in c.get("variants", []):
+                v["pricing_checked_at"] = REVIEWED
+                for field in ("in", "out", "cache_read", "cache_write", "cache_write_1h"):
+                    if v.get(field) is not None:
+                        v[field] = round(v[field] / 10, 6)
+    haiku["platforms"]["databricks"] = pending("Not in the reviewed Databricks proprietary-model price list yet; it still lists Claude Haiku 4.5.", "dbx_prop")
+    haiku["platforms"]["azure_foundry"] = pending("Not in the reviewed Microsoft Foundry price list for current Claude models.", "azure_claude")
+    models["anthropic/claude-haiku-5.5"] = haiku
+    if "Replaced" not in models["anthropic/claude-haiku-4.5"].get("badges", []):
+        models["anthropic/claude-haiku-4.5"]["badges"] = models["anthropic/claude-haiku-4.5"].get("badges", []) + ["Replaced"]
 
     common_closed = {
         "gcloud": unavailable("vertex", "Vertex offers gpt-oss; no closed OpenAI GPT offer was verified."),
@@ -832,7 +870,7 @@ def build():
                 c["model_id_checked_at"] = REVIEWED
     data["sources"] = sorted({s["url"] for s in data["source_meta"].values()})
     # Put new versions first within each family; keep the original curated OSS order.
-    first = ["anthropic/claude-sonnet-5.5", "openai/gpt-6.1-sol", "google/gemini-3.5-flash-lite", "google/gemini-3.1-flash-lite", "xai/grok-4.7", "xai/grok-4.6"]
+    first = ["anthropic/claude-sonnet-5.5", "anthropic/claude-haiku-5.5", "openai/gpt-6.1-sol", "google/gemini-3.5-flash-lite", "google/gemini-3.1-flash-lite", "xai/grok-4.7", "xai/grok-4.6"]
     data["models"] = {k: data["models"][k] for k in first + [k for k in data["models"] if k not in first]}
     return data
 
