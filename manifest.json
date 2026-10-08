@@ -51,6 +51,13 @@
    "color": "#2ecc71"
   },
   {
+   "path": "pg-cost-calculator/",
+   "title": "Postgres Cost Calculator",
+   "desc": "Lakebase vs Aurora vs RDS vs Azure Flexible vs Cloud SQL — live interactive monthly cost model",
+   "tag": "🔥 Hot",
+   "color": "#3fb950"
+  },
+  {
    "path": "sandbox-compare/",
    "title": "Agent Sandbox Isolation Comparison",
    "desc": "Vendors vs open source — E2B/Modal/Daytona/AWS/Databricks/Monty ranked by isolation tier · 2026",

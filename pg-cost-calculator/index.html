@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Postgres Cost Calculator — Lakebase vs Aurora vs RDS vs Azure Flexible vs Cloud SQL</title>
+<meta name="description" content="Live interactive cost calculator comparing Databricks Lakebase Postgres with AWS Aurora PostgreSQL, Amazon RDS PostgreSQL, Azure Database for PostgreSQL Flexible Server and Google Cloud SQL for PostgreSQL. Compute, storage, I/O, HA — instant monthly totals. List prices fact-checked 2026-10-08.">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--txt:#e6edf3;--muted:#8b949e;--accent:#FF3621;--blue:#58a6ff;--green:#3fb950;--amber:#d29922;--red:#f85149;--purple:#bc8cff;--teal:#39d2c0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.55;padding-bottom:80px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 18px}
+header{background:linear-gradient(135deg,#1B3139 0%,#0d1117 100%);border-bottom:2px solid var(--accent);padding:50px 0 34px;margin-bottom:28px}
+.kicker{color:var(--accent);font-weight:700;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+h1{font-size:clamp(1.5rem,4.2vw,2.3rem);line-height:1.2;margin-bottom:10px}
+.sub{color:var(--muted);font-size:.98rem;max-width:860px}
+.sub b{color:var(--txt)}
+.updated{display:inline-block;margin-top:14px;font-size:.76rem;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:4px 14px}
+nav.toc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:30px}
+nav.toc a{display:inline-block;color:var(--blue);text-decoration:none;margin:5px 16px 3px 0;font-size:.9rem}
+h2{font-size:1.32rem;margin:40px 0 14px;padding-left:12px;border-left:4px solid var(--accent);scroll-margin-top:16px}
+h3{font-size:1rem;margin:18px 0 8px;color:var(--blue)}
+p{margin-bottom:12px}
+.muted{color:var(--muted)}
+.layout{display:grid;grid-template-columns:400px 1fr;gap:20px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.panel h3{margin-top:0}
+.fld{margin-bottom:14px}
+.fld label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:5px}
+.fld label output{color:var(--txt);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--accent)}
+select{width:100%;background:#0a0e14;color:var(--txt);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:.9rem}
+.chk{display:flex;align-items:center;gap:8px;font-size:.88rem;margin:6px 0;cursor:pointer}
+.chk input{accent-color:var(--accent);width:16px;height:16px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{background:#1c2430;color:var(--txt);border:1px solid var(--border);border-radius:8px;padding:7px 13px;font-size:.8rem;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.results{display:flex;flex-direction:column;gap:12px}
+.rcard{border:1px solid var(--border);border-radius:12px;padding:16px 18px;background:var(--card);position:relative;transition:border-color .2s, box-shadow .2s}
+.rcard.best{border-color:var(--green);box-shadow:0 0 18px rgba(63,185,80,.12)}
+.rcard .name{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.rcard .nm{font-weight:700;font-size:1rem}
+.rcard .nm small{color:var(--muted);font-weight:400;margin-left:6px}
+.rcard .price{font-size:1.45rem;font-weight:800;font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
+.rcard.best .price{color:var(--green)}
+.rcard .diff{font-size:.8rem;color:var(--muted);text-align:right}
+.rcard .break{margin-top:8px;font-size:.8rem;color:var(--muted);display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 14px}
+.rcard .break b{color:var(--txt);font-weight:600}
+.bar{height:8px;border-radius:4px;background:#0a0e14;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px}
+.badge{position:absolute;top:-10px;right:14px;background:var(--green);color:#04260f;font-weight:800;font-size:.68rem;padding:3px 10px;border-radius:999px;letter-spacing:.05em}
+.notes{font-size:.8rem;color:var(--muted);margin-top:4px}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0;border:1px solid var(--border);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+th{background:#1c2430;text-align:left;padding:9px 11px;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:9px 11px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:16px 0}
+.card.warn{border-left:4px solid var(--red)}
+.card h4{font-size:.98rem;margin-bottom:8px}
+.check{list-style:none}
+.check li{padding-left:24px;position:relative;margin-bottom:7px;font-size:.9rem}
+.check li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
+footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+@media(max-width:760px){
+h1{font-size:1.45rem}h2{font-size:1.12rem}
+header{padding:36px 0 24px}
+.tblwrap{margin:14px -8px;border-left:none;border-right:none}
+table{min-width:640px}
+.rcard .price{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="kicker">Interactive Calculator · Managed Postgres</div>
+<h1>Postgres Cost Calculator 💰 — Lakebase vs the Field</h1>
+<p class="sub">Model your monthly bill for <b>Databricks Lakebase Postgres</b> against <b>AWS Aurora PostgreSQL</b>, <b>Amazon RDS PostgreSQL</b>, <b>Azure Database for PostgreSQL (Flexible)</b> and <b>Google Cloud SQL for PostgreSQL</b>. Pick a shape, toggle HA, move the workload sliders — totals recompute instantly.</p>
+<span class="updated">List prices fact-checked 2026-10-08 · us-east-1 / us-east / East US us-east2-class regions · verify in each console before committing</span>
+</div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+<b>Jump to</b>
+<a href="#calc">Calculator</a>
+<a href="#rates">Rate card</a>
+<a href="#scenarios">Reference scenarios</a>
+<a href="#gotchas">Billing gotchas</a>
+<a href="#notes">Sources & caveats</a>
+</nav>
+
+<h2 id="calc">Calculator 🧮</h2>
+<div class="layout">
+<div class="panel">
+<h3 style="margin-bottom:12px">Workload shape</h3>
+<div class="fld">
+<label>Workload profile</label>
+<select id="profile">
+<option value="dev">Dev / test — days, scales down</option>
+<option value="prod" selected>Steady production — always on</option>
+<option value="burst">Bursty — quiet nights, peak days</option>
+<option value="heavy">Heavy OLTP — high write I/O</option>
+</select>
+</div>
+<div class="fld">
+<label>CPU size <output id="cpuOut">4 vCPU / 16 GB class</output></label>
+<input type="range" id="cpu" min="0" max="4" step="1" value="1">
+</div>
+<div class="fld">
+<label>Storage <output id="stoOut">200 GB</output></label>
+<input type="range" id="sto" min="20" max="4000" step="20" value="200">
+</div>
+<div class="fld">
+<label>Monthly write I/O <output id="ioOut">50M requests</output></label>
+<input type="range" id="io" min="0" max="20000" step="50" value="50">
+</div>
+<label class="chk"><input type="checkbox" id="ha" checked> High availability (HA / multi-AZ / standby)</label>
+<label class="chk"><input type="checkbox" id="replica"> +1 read replica (same size as primary)</label>
+<div class="btns">
+<button class="btn" onclick="setProfile('dev')">Dev</button>
+<button class="btn" onclick="setProfile('prod')">Prod</button>
+<button class="btn" onclick="setProfile('heavy')">Heavy</button>
+<button class="btn" onclick="setProfile('smb')">Small app</button>
+</div>
+<p class="notes" style="margin-top:12px">Hours/month = 730. Lakebase CU ≈ 2 GB RAM + vCPU; sizes below map 1:1 to the closest instance each vendor sells.</p>
+</div>
+
+<div class="results" id="results"></div>
+</div>
+
+<h2 id="rates">Rate card used (list, fact-checked 2026-10-08) 🧾</h2>
+<div class="tblwrap">
+<table>
+<tr><th>Vendor</th><th>Compute basis</th><th>Storage</th><th>I/O</th><th>HA multiplier</th></tr>
+<tr><td><b>Lakebase</b> (Autoscaling)</td><td><b>$0.111 / CU-hour</b> standard · $0.083 Always-On (baseline −25% after 24h continuous, promo to 2027-01-31) · scale-to-zero when idle</td><td>$0.345 / GB-mo branch storage (snapshots $0.09, PITR $0.20 cheaper tiers)</td><td>Included</td><td>HA = 1 primary + secondaries; standalone price shown is primary-only</td></tr>
+<tr><td><b>Aurora PostgreSQL</b> (I/O-Optimized)</td><td>db.r7g: $0.26 (large) · $0.52 (xl) · $1.04 (2xl) · $2.08 (4xl) /hr — +~30% vs Standard</td><td>$0.225 / GB-mo</td><td><b>Free</b> (replicated cross-region write I/O still billed)</td><td>Each reader = separate instance</td></tr>
+<tr><td><b>Aurora PostgreSQL</b> (Standard)</td><td>db.r7g large $0.26 / xl $0.52 / 2xl $1.04 /hr</td><td>$0.10 / GB-mo</td><td><b>$0.20 / 1M requests</b> — the budget-killer on chatty workloads</td><td>Each reader = separate instance</td></tr>
+<tr><td><b>RDS PostgreSQL</b></td><td>db.r7g large ~$0.276 / xl ~$0.552 / 2xl ~$1.104 /hr (Graviton)</td><td>gp3 ~$0.115 / GB-mo + provisioned IOPS (io1/io2 billed separately)</td><td>gp3: 3,000 IOPS free, then ~$0.005/IOPS-mo; io1 $0.065/IOPS-mo</td><td>Multi-AZ ≈ ×2 compute</td></tr>
+<tr><td><b>Azure PG Flexible</b> (Ddsv4-class)</td><td>~$0.096–0.10 /vCore-hr → 4 vCores ≈ <b>$259.88/mo</b> PAYG (D4ds v5, 16 GB); 1-yr ≈ $156</td><td>~$0.115 / GB-mo (P15 class)</td><td>Burst-to-provisioned IOPS model; high-IOPS tiers bill separately</td><td>Zone-redundant HA ≈ <b>×2 compute</b></td></tr>
+<tr><td><b>Cloud SQL for PostgreSQL</b></td><td>$0.0413 /vCPU-hr + $0.007 /GiB-hr (Enterprise dedicated, us-central1-class) — 4 vCPU/15 GB ≈ $197/mo zonal</td><td>SSD $0.17 / GB-mo</td><td>Included (throughput scales with size)</td><td>Regional/HA = ×2 compute + ×2 storage ($0.34/GB)</td></tr>
+</table>
+</div>
+
+<h2 id="scenarios">Reference scenarios 📊</h2>
+<div class="card">
+<h4>Scenario A — small production app (4 vCPU/16 GB, 200 GB, HA, low I/O)</h4>
+<p style="margin-bottom:0">Lakebase (8 CU floor, Always-On) ≈ <b>$170–230</b> + storage $69 ≈ <b>$240–300</b> · Aurora r7g.large I/O-Opt ≈ $190 + $45 = <b>$235</b> · Aurora Standard + light I/O ≈ <b>$235</b> · RDS r7g.large multi-AZ ≈ <b>$465</b> · Azure D4ds HA ≈ <b>$520</b> + storage · Cloud SQL HA 4/15 ≈ <b>$590</b> + storage. <b>Read:</b> at small scale, Lakebase's scale-to-zero/Always-On and Aurora I/O-Optimized trade the lead; the legacy-cloud HA tax (×2 instance) is what hurts.</p>
+</div>
+<div class="card">
+<h4>Scenario B — chatty OLTP (8 vCPU/32–64 GB, 500 GB, HA, 2B I/O/mo)</h4>
+<p style="margin-bottom:0">Aurora Standard: I/O alone = <b>$400/mo</b> on top of ~$840 compute → I/O-Optimized wins despite +30% instance price. Lakebase: I/O included; cost scales with CU-hours actually consumed. RDS with provisioned IOPS to cover 2B/mo needs ~10K IOPS ≈ <b>$650/mo of IOPS alone</b>. <b>Read:</b> this is the workload where per-I/O billing models bleed.</p>
+</div>
+<div class="card">
+<h4>Scenario C — dev/test (2 vCPU, 50 GB, no HA, 8h/day weekdays)</h4>
+<p style="margin-bottom:0">Lakebase scale-to-zero: compute only for hours used ≈ <b>$15–30/mo</b>. Aurora/RDS stopped instances still bill storage (~$6/mo) but compute ≈ $0 when fully stopped (Aurora can't stop with replicas; RDS can stop ≤7 days at a time). Cloud SQL storage-only ≈ <b>$8.50/mo</b> when stopped. <b>Read:</b> scale-to-zero is Lakebase's cleanest win.</p>
+</div>
+
+<h2 id="gotchas">Billing gotchas each vendor hopes you miss ⚠️</h2>
+<div class="tblwrap">
+<table>
+<tr><th>Vendor</th><th>Gotcha</th></tr>
+<tr><td>Lakebase</td><td>Default project autoscaling starts at <b>8–16 CU</b> — a small app left on defaults pays for capacity it never uses. Scale-to-zero kicks in after <b>24h of inactivity</b> (not instantly). Public egress: Neon heritage bills transfer (500 GB/mo included, then ~$0.10/GB) — verify your plan's terms.</td></tr>
+<tr><td>Aurora</td><td>Standard's <b>$0.20/1M I/O</b> quietly wrecks chatty budgets (2B I/O = $400). I/O-Optimized costs +~30% instance but removes it — crossover is typically a few hundred million I/Os/mo. Global Database cross-region replicated write I/O bills <b>even on I/O-Optimized</b>.</td></tr>
+<tr><td>RDS</td><td>gp3 includes only <b>3,000 IOPS</b>; provisioning to match Aurora-class throughput is where the bill explodes. Multi-AZ = ×2 compute. Stop is capped at 7 days per action.</td></tr>
+<tr><td>Azure Flexible</td><td>Zone-redundant HA = <b>×2 compute</b> (standby is a live instance). Same-zone HA is cheaper but shares the zone. Storage and IOPS scale independently and both bill.</td></tr>
+<tr><td>Cloud SQL</td><td>HA = <b>×2 compute AND ×2 storage</b> ($0.17 → $0.34/GB). CPU+memory are billed as separate meters (vCPU $0.0413 + mem $0.007/GiB-hr) — a memory-heavy small-vCPU box surprises.</td></tr>
+</table>
+</div>
+
+<h2 id="notes">Model notes & honest caveats 📝</h2>
+<ul class="check">
+<li>This is a <b>list-price model</b> — it excludes egress, backup overages, cross-region replication, support-plan effects, and discount instruments (RIs/CUD/savings plans) except where noted. Real bills also include VAT.</li>
+<li><b>Lakebase</b> models CU-hours consumed (profile × size × hours) at $0.111 standard / $0.083 Always-On baseline; storage at $0.345/GB-mo. Your autoscaling telemetry will differ from any static profile.</li>
+<li><b>Same-size ≠ same-speed.</b> A CU is not a vCPU is not an ACU. Per the independent pgbench pass (Diggibyte, 2026): Lakebase 1,737 TPS @104ms vs Aurora 1,508 @119ms at a 4M-row/180-client shape — and same-AZ placement doubled Lakebase TPS. Performance-normalize before trusting a raw $ comparison.</li>
+<li><b>HA definitions differ.</b> Lakebase: sync standby, RPO 0, automatic failover (kills connections). Aurora: storage-level replication is free; readers bill as instances. Azure: ×2 compute. Cloud SQL: ×2 compute + ×2 storage. RDS: ×2 compute.</li>
+<li>Azure PAYG rates vary by region and machine generation (Ddsv4/Ddsv5/Dads v5); the $259.88 D4ds v5 figure is East-US-class. Cloud SQL rates are us-central1 Enterprise dedicated.</li>
+<li>Prices move. Verify in each console (AWS Pricing Calculator, Azure Pricing Calculator, Google Cloud SQL pricing, Databricks Lakebase pricing page) before procurement. Fact-checked against public pages 2026-10-08.</li>
+</ul>
+
+<footer>
+Sources: Databricks Lakebase pricing & Always-On announcement (databricks.com, 2026) · AWS Aurora/RDS pricing pages & db.r7g rate cards · Azure Database for PostgreSQL Flexible Server pricing (azure.microsoft.com) · Google Cloud SQL pricing (cloud.google.com) · independent cross-checks: Bytebase dbcost, usage.ai, spendark, CloudBurn (2026).<br>
+Independent model — not affiliated with any vendor. Built 2026-10-08; re-verify rates before procurement decisions.
+</footer>
+
+</div>
+
+<script>
+const SIZES=[
+ {label:'2 vCPU / 8–16 GB', dbxCU:4,  aurora:'large',  rds:0.276, azVCores:2, azMem:16, gcpu:2,  gmem:16},
+ {label:'4 vCPU / 16–32 GB',dbxCU:8,  aurora:'xlarge', rds:0.552, azVCores:4, azMem:16, gcpu:4,  gmem:15},
+ {label:'8 vCPU / 32–64 GB',dbxCU:16, aurora:'2xlarge',rds:1.104, azVCores:8, azMem:32, gcpu:8,  gmem:32},
+ {label:'16 vCPU / 64–128 GB',dbxCU:32,aurora:'4xlarge',rds:2.208,azVCores:16,azMem:64, gcpu:16, gmem:64},
+ {label:'32 vCPU / 128–256 GB',dbxCU:64,aurora:'8xlarge',rds:4.416,azVCores:32,azMem:128,gcpu:32, gmem:128}
+];
+const AURORA_HR={large:0.26,xlarge:0.52,'2xlarge':1.04,'4xlarge':2.08,'8xlarge':4.16};
+const HOURS=730;
+const $=id=>document.getElementById(id);
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+
+function profParams(){
+ const p=$('profile').value;
+ if(p==='dev')  return {hours:220,  util:0.25, ioScale:0.1, alwaysOn:false, scaleZero:true};
+ if(p==='burst')return {hours:500,  util:0.45, ioScale:0.6, alwaysOn:false, scaleZero:false};
+ if(p==='heavy')return {hours:730,  util:0.95, ioScale:6.0, alwaysOn:true,  scaleZero:false};
+ return {hours:730, util:0.8, ioScale:1, alwaysOn:true, scaleZero:false}; // prod
+}
+function setProfile(p){$('profile').value=p;calc();}
+
+function calc(){
+ const s=SIZES[+$('cpu').value];
+ const sto=+$('sto').value;
+ const ioM=+$('io').value;             // M I/O requests per month (slider already millions)
+ const ha=$('ha').checked, rep=$('replica').checked;
+ const pr=profParams();
+ const activeHrs=Math.min(HOURS,pr.hours);
+ const ioUnits=ioM*pr.ioScale;         // effective M I/Os
+ $('cpuOut').textContent=s.label;
+ $('stoOut').textContent=sto.toLocaleString('en-US')+' GB';
+ $('ioOut').textContent=(ioM*pr.ioScale).toLocaleString('en-US', {maximumFractionDigits:0})+'M requests';
+
+ const rows=[];
+
+ // Lakebase: CU-hours consumed; scale-to-zero profiles bill reduced active hours; steady profiles get the Always-On 25% cut on the baseline share
+ let dbxCUhr;
+ if(pr.scaleZero){ dbxCUhr = s.dbxCU * 0.35 * activeHrs; }
+ else { dbxCUhr = s.dbxCU * (pr.alwaysOn ? (0.75 + 0.25*pr.util) : pr.util) * activeHrs; }
+ let dbx = dbxCUhr * 0.111 + sto * 0.345 + (rep ? dbxCUhr * 0.111 * 0.5 : 0);
+ rows.push({name:'Lakebase Postgres', sub:'Databricks · Autoscaling', price:dbx,
+  parts:[['Compute',dbxCUhr*0.111],['Storage',sto*0.345]].concat(rep?[['Replica',dbxCUhr*0.111*0.5]]:[]),
+  color:'var(--accent)', note: pr.scaleZero?'scale-to-zero active':'Always-On baseline −25%'});
+
+ // Aurora I/O-Optimized (r7g) — HA modeled as the +30% already in rate; readers separate
+ const aOptBase=AURORA_HR[s.aurora]*1.3;
+ let aOpt=aOptBase*HOURS*(ha?1:1) + sto*0.225 + (rep?AURORA_HR[s.aurora]*1.3*HOURS:0);
+ rows.push({name:'Aurora PostgreSQL', sub:'I/O-Optimized · db.r7g '+s.aurora, price:aOpt,
+  parts:[['Writer',aOptBase*HOURS],['Storage',sto*0.225]].concat(rep?[['Reader',AURORA_HR[s.aurora]*1.3*HOURS]]:[]),
+  color:'var(--blue)', note:'I/O included'});
+
+ // Aurora Standard + I/O
+ const aStd=AURORA_HR[s.aurora]*HOURS + sto*0.10 + ioUnits*0.20 + (rep?AURORA_HR[s.aurora]*HOURS:0);
+ rows.push({name:'Aurora PostgreSQL', sub:'Standard · db.r7g '+s.aurora, price:aStd,
+  parts:[['Writer',AURORA_HR[s.aurora]*HOURS],['Storage',sto*0.10],['I/O',ioUnits*0.20]].concat(rep?[['Reader',AURORA_HR[s.aurora]*HOURS]]:[]),
+  color:'var(--blue)', note:ioUnits>0?('+'+Math.round(ioUnits)+'M I/O billed'):''});
+
+ // RDS multi-AZ ×2, gp3 with provisioned IOPS ~ ioUnits spread → needed IOPS ≈ ioUnits*1e6/(730*3600) * burst factor 3
+ const rdsIOPS=Math.max(3000, Math.ceil(ioUnits*1e6/(730*3600)*3));
+ const rdsIOPSCost=Math.max(0,(rdsIOPS-3000))*0.005;
+ let rds=(s.rds*HOURS)*(ha?2:1) + sto*0.115 + rdsIOPSCost + (rep?s.rds*HOURS:0);
+ rows.push({name:'RDS PostgreSQL', sub:'Multi-AZ · db.r7g '+(ha?'(HA ×2)':'single'), price:rds,
+  parts:[['Compute',s.rds*HOURS*(ha?2:1)],['Storage',sto*0.115],['IOPS ('+(rdsIOPS).toLocaleString()+')',rdsIOPSCost]].concat(rep?[['Replica',s.rds*HOURS]]:[]),
+  color:'var(--orange,#ff9f43)', note: rdsIOPS>30000?'io1 territory — real quote needed':''});
+
+ // Azure Flexible Ddsv4-class: ~$0.096/vCore-hr → vCores*0.096*730; HA ×2; storage 0.115 + IOPS-ish flat
+ const azC=s.azVCores*0.096*HOURS*(ha?2:1) + s.azMem*0.013*HOURS;
+ let az=azC + sto*0.115 + Math.min(ioUnits*1e6/(730*3600)*1.5, s.azVCores*3000)*0.0 + (rep?azC:0);
+ rows.push({name:'Azure PG Flexible', sub:'D-series '+s.azVCores+' vCores'+(ha?' · Zonal HA ×2':''), price:az,
+  parts:[['Compute',azC],['Storage',sto*0.115]].concat(rep?[['Replica',azC]]:[]),
+  color:'var(--purple)', note:'IOPS mostly bundled in D-series tiers'});
+
+ // Cloud SQL: vCPU + mem separate meters; HA ×2 both; storage 0.17
+ const gC=(s.gcpu*0.0413 + s.gmem*0.007)*HOURS*(ha?2:1);
+ let gcp=gC + sto*(ha?0.34:0.17) + (rep?gC*0.5:0);
+ rows.push({name:'Cloud SQL for PostgreSQL', sub:'Enterprise dedicated '+s.gcpu+' vCPU/'+s.gmem+' GB'+(ha?' · Regional HA ×2':''), price:gcp,
+  parts:[['Compute',gC],['Storage',sto*(ha?0.34:0.17)]].concat(rep?[['Read replica',gC*0.5]]:[]),
+  color:'var(--teal)', note:'vCPU+memory billed as separate meters'});
+
+ rows.sort((a,b)=>a.price-b.price);
+ const max=rows[rows.length-1].price;
+ $('results').innerHTML=rows.map((r,i)=>`
+  <div class="rcard ${i===0?'best':''}">
+   ${i===0?'<span class="badge">LOWEST</span>':''}
+   <div class="name"><span class="nm">${r.name}<small>${r.sub}</small></span>
+   <div style="text-align:right"><span class="price">${fmt(r.price)}/mo</span>
+   <div class="diff">${i===0?'baseline':'+'+fmt(r.price-rows[0].price)+' vs best'}</div></div></div>
+   <div class="bar"><i style="width:${(r.price/max*100).toFixed(1)}%;background:${r.color}"></i></div>
+   <div class="break">${r.parts.map(p=>`<span>${p[0]}: <b>${fmt(p[1])}</b></span>`).join('')}${r.note?`<span class="muted">${r.note}</span>`:''}</div>
+  </div>`).join('');
+}
+
+['cpu','sto','io','ha','replica','profile'].forEach(id=>$(id).addEventListener('input',calc));
+calc();
+</script>
+</body>
+</html>
