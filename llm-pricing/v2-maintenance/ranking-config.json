@@ -13,6 +13,7 @@
     "anthropic/claude-sonnet-5": "^claude sonnet 5(?![\\d.])",
     "anthropic/claude-sonnet-4.6": "^claude sonnet 4\\.6(?![\\d.])",
     "anthropic/claude-haiku-4.5": "^claude haiku 4\\.5(?![\\d.])",
+    "anthropic/claude-haiku-5.5": "^claude haiku 5\\.5(?![\\d.])",
     "openai/gpt-6.1-sol": "^gpt 6\\.1 sol\\b",
     "openai/gpt-6-astra": "^gpt 6 astra\\b",
     "openai/gpt-6-sol": "^gpt 6 sol\\b",
