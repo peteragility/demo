@@ -228,23 +228,25 @@ function calc(){
  let dbxCUhr;
  if(pr.scaleZero){ dbxCUhr = s.dbxCU * 0.35 * activeHrs; }
  else { dbxCUhr = s.dbxCU * (pr.alwaysOn ? (0.75 + 0.25*pr.util) : pr.util) * activeHrs; }
- let dbx = dbxCUhr * 0.111 + sto * 0.345 + (rep ? dbxCUhr * 0.111 * 0.5 : 0);
- rows.push({name:'Lakebase Postgres', sub:'Databricks · Autoscaling', price:dbx,
-  parts:[['Compute',dbxCUhr*0.111],['Storage',sto*0.345]].concat(rep?[['Replica',dbxCUhr*0.111*0.5]]:[]),
+ // Lakebase: HA = sync standby compute (RPO 0, automatic failover) — standby bills like the primary
+ let dbx = dbxCUhr * 0.111 + sto * 0.345 + (ha ? dbxCUhr * 0.111 : 0) + (rep ? dbxCUhr * 0.111 * 0.5 : 0);
+ rows.push({name:'Lakebase Postgres', sub:'Databricks · Autoscaling'+(ha?' · HA (sync standby)':''), price:dbx,
+  parts:[['Compute',dbxCUhr*0.111],['Storage',sto*0.345]].concat(ha?[['HA standby',dbxCUhr*0.111]]:[]).concat(rep?[['Replica',dbxCUhr*0.111*0.5]]:[]),
   color:'var(--accent)', note: pr.scaleZero?'scale-to-zero active':'Always-On baseline −25%'});
 
+ // Aurora: storage replication is free & automatic — "HA" in Aurora terms means adding a reader, which the replica toggle already models
  // Aurora I/O-Optimized (r7g) — HA modeled as the +30% already in rate; readers separate
  const aOptBase=AURORA_HR[s.aurora]*1.3;
- let aOpt=aOptBase*HOURS*(ha?1:1) + sto*0.225 + (rep?AURORA_HR[s.aurora]*1.3*HOURS:0);
+ let aOpt=aOptBase*HOURS + sto*0.225 + (rep?AURORA_HR[s.aurora]*1.3*HOURS:0);
  rows.push({name:'Aurora PostgreSQL', sub:'I/O-Optimized · db.r7g '+s.aurora, price:aOpt,
   parts:[['Writer',aOptBase*HOURS],['Storage',sto*0.225]].concat(rep?[['Reader',AURORA_HR[s.aurora]*1.3*HOURS]]:[]),
-  color:'var(--blue)', note:'I/O included'});
+  color:'var(--blue)', note: ha?'HA = storage-level, included — add a reader for failover':'I/O included; storage replication free'});
 
  // Aurora Standard + I/O
  const aStd=AURORA_HR[s.aurora]*HOURS + sto*0.10 + ioUnits*0.20 + (rep?AURORA_HR[s.aurora]*HOURS:0);
  rows.push({name:'Aurora PostgreSQL', sub:'Standard · db.r7g '+s.aurora, price:aStd,
   parts:[['Writer',AURORA_HR[s.aurora]*HOURS],['Storage',sto*0.10],['I/O',ioUnits*0.20]].concat(rep?[['Reader',AURORA_HR[s.aurora]*HOURS]]:[]),
-  color:'var(--blue)', note:ioUnits>0?('+'+Math.round(ioUnits)+'M I/O billed'):''});
+  color:'var(--blue)', note: ha?'HA = storage-level, included — use the replica toggle for failover':(ioUnits>0?('+'+Math.round(ioUnits)+'M I/O billed'):'')});
 
  // RDS multi-AZ ×2, gp3 with provisioned IOPS ~ ioUnits spread → needed IOPS ≈ ioUnits*1e6/(730*3600) * burst factor 3
  const rdsIOPS=Math.max(3000, Math.ceil(ioUnits*1e6/(730*3600)*3));
