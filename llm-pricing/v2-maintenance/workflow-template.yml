@@ -1,6 +1,7 @@
 name: LLM pricing v2 daily refresh
 
-# Daily at 06:17 Hong Kong time (22:17 UTC):
+# Daily, scheduled for 02:17 Hong Kong time (18:17 UTC). GitHub often starts scheduled runs a few
+# hours late when it is busy, so the early slot lands the refresh around 6am HKT:
 #   1. model order from the arena.ai Best Overall ranking        (published automatically)
 #   2. Databricks model regions from its official region tables   (published automatically)
 #   3. every official price / region source re-read: offers whose source lines are unchanged get
@@ -10,7 +11,7 @@ name: LLM pricing v2 daily refresh
 # Prices are never changed automatically: a person reviews the issue and updates the data.
 on:
   schedule:
-    - cron: '17 22 * * *'
+    - cron: '17 18 * * *'
   workflow_dispatch:
     inputs:
       record_baseline:
