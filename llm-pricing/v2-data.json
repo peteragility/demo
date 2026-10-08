@@ -1719,29 +1719,60 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-02",
+            "checked_at": "2026-10-08",
             "src": [
               "dbx_region",
               "dbx_region_azure",
               "dbx_region_gcp"
             ],
-            "regions": [],
+            "regions": [
+              [
+                "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+              ],
+              [
+                "Americas",
+                "global",
+                "Cross-geo",
+                "Azure Canada Central, Brazil South"
+              ],
+              [
+                "Europe",
+                "in-region",
+                "In-region",
+                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+              ],
+              [
+                "Europe",
+                "global",
+                "Cross-geo",
+                "Azure UK South"
+              ],
+              [
+                "APAC",
+                "global",
+                "Cross-geo",
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
+              ]
+            ],
             "hk": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "routed",
+              "Azure East Asia (Hong Kong) through cross-geo routing"
             ],
             "tw": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "none",
+              "No Taiwan region in Databricks' model-serving tables"
             ],
             "notes": [
               [
-                "Regional processing",
-                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
+                "Residency",
+                "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
               ],
               [
-                "Regions",
-                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
               ],
               [
                 "Billing",

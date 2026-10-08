@@ -348,6 +348,50 @@
    "adi": false,
    "changed_at": "2026-10-04"
   },
+  "anthropic/claude-sonnet-5.5": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+    ],
+    [
+     "Americas",
+     "global",
+     "Cross-geo",
+     "Azure Canada Central, Brazil South"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+    ],
+    [
+     "Europe",
+     "global",
+     "Cross-geo",
+     "Azure UK South"
+    ],
+    [
+     "APAC",
+     "global",
+     "Cross-geo",
+     "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Azure East Asia (Hong Kong) through cross-geo routing"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region in Databricks' model-serving tables"
+   ],
+   "adi": false,
+   "changed_at": "2026-10-08"
+  },
   "deepseek/deepseek-v4-flash": {
    "regions": [
     [
