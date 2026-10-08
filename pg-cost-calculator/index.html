@@ -107,8 +107,9 @@ table{min-width:640px}
 </select>
 </div>
 <div class="fld">
-<label>CPU size <output id="cpuOut">4 vCPU / 16 GB class</output></label>
-<input type="range" id="cpu" min="0" max="4" step="1" value="1">
+<label>Compute size <output id="cpuOut">8 CU · 16 GB RAM</output></label>
+<input type="range" id="cpu" min="0" max="5" step="1" value="2">
+<p class="notes">Lakebase CU scale (1 CU = 2 GB RAM). Other vendors snap to their closest instance class at that size.</p>
 </div>
 <div class="fld">
 <label>Storage <output id="stoOut">200 GB</output></label>
@@ -167,7 +168,7 @@ table{min-width:640px}
 
 <h2 id="scenarios">Reference scenarios 📊</h2>
 <div class="card">
-<h4>Scenario A — small production app (4 vCPU/16 GB, 200 GB, HA, low I/O)</h4>
+<h4>Scenario A — small production app (8 CU ≈ 4 vCPU/16 GB, 200 GB, HA, low I/O)</h4>
 <p style="margin-bottom:0">Lakebase (8 CU floor, Always-On) ≈ <b>$170–230</b> + storage $69 ≈ <b>$240–300</b> · Aurora r7g.large I/O-Opt ≈ $190 + $45 = <b>$235</b> · Aurora Standard + light I/O ≈ <b>$235</b> · RDS r7g.large multi-AZ ≈ <b>$465</b> · Azure D4ds HA ≈ <b>$520</b> + storage · Cloud SQL HA 4/15 ≈ <b>$590</b> + storage. <b>Read:</b> at small scale, Lakebase's scale-to-zero/Always-On and Aurora I/O-Optimized trade the lead; the legacy-cloud HA tax (×2 instance) is what hurts.</p>
 </div>
 <div class="card">
@@ -210,11 +211,12 @@ Independent model — not affiliated with any vendor. Built 2026-10-08; re-verif
 
 <script>
 const SIZES=[
- {label:'2 vCPU / 8–16 GB', dbxCU:4,  dbxLabel:'4 CU = ~2 vCPU / 8 GB',  aurora:'large',  auroraLabel:'db.r7g.large · 2 vCPU / 16 GiB',  rds:0.276, rdsLabel:'db.r7g.large · 2 vCPU / 16 GiB',  azVCores:2, azMem:16, azLabel:'D2ds · 2 vCores / 8 GiB',  gcpu:2,  gmem:16, gLabel:'2 vCPU / 16 GB (custom)'},
- {label:'4 vCPU / 16–32 GB',dbxCU:8,  dbxLabel:'8 CU = ~4 vCPU / 16 GB', aurora:'xlarge', auroraLabel:'db.r7g.xlarge · 4 vCPU / 32 GiB', rds:0.552, rdsLabel:'db.r7g.xlarge · 4 vCPU / 32 GiB', azVCores:4, azMem:16, azLabel:'D4ds v5 · 4 vCores / 16 GiB', gcpu:4,  gmem:15, gLabel:'4 vCPU / 15 GB (custom)'},
- {label:'8 vCPU / 32–64 GB',dbxCU:16, dbxLabel:'16 CU = ~8 vCPU / 32 GB',aurora:'2xlarge',auroraLabel:'db.r7g.2xlarge · 8 vCPU / 64 GiB',rds:1.104, rdsLabel:'db.r7g.2xlarge · 8 vCPU / 64 GiB',azVCores:8, azMem:32, azLabel:'D8ds v4 · 8 vCores / 32 GiB', gcpu:8,  gmem:32, gLabel:'8 vCPU / 32 GB (custom)'},
- {label:'16 vCPU / 64–128 GB',dbxCU:32,dbxLabel:'32 CU = ~16 vCPU / 64 GB',aurora:'4xlarge',auroraLabel:'db.r7g.4xlarge · 16 vCPU / 128 GiB',rds:2.208,azLabel:'D16ds v4 · 16 vCores / 64 GiB',rdsLabel:'db.r7g.4xlarge · 16 vCPU / 128 GiB',azVCores:16,azMem:64, gcpu:16, gmem:64, gLabel:'16 vCPU / 64 GB (custom)'},
- {label:'32 vCPU / 128–256 GB',dbxCU:64,dbxLabel:'64 CU = ~32 vCPU / 128 GB',aurora:'8xlarge',auroraLabel:'db.r7g.8xlarge · 32 vCPU / 256 GiB',rds:4.416,azLabel:'D32ds v4 · 32 vCores / 128 GiB',rdsLabel:'db.r7g.8xlarge · 32 vCPU / 256 GiB',azVCores:32,azMem:128,gcpu:32, gmem:128, gLabel:'32 vCPU / 128 GB (custom)'}
+ {label:'2 CU · 4 GB RAM (~1 vCPU)',   dbxCU:2,  dbxLabel:'2 CU = 4 GB RAM',        aurora:'large',  auroraLabel:'db.r7g.large · 2 vCPU / 16 GiB (closest ≥2CU)',  rds:0.276, rdsLabel:'db.r7g.large · 2 vCPU / 16 GiB',  azVCores:2, azMem:8,  azLabel:'D2ds v5 · 2 vCores / 8 GiB',  gcpu:1,  gmem:4,  gLabel:'1 vCPU / 4 GB (custom)'},
+ {label:'4 CU · 8 GB RAM (~2 vCPU)',   dbxCU:4,  dbxLabel:'4 CU = 8 GB RAM',        aurora:'large',  auroraLabel:'db.r7g.large · 2 vCPU / 16 GiB (closest)',       rds:0.276, rdsLabel:'db.r7g.large · 2 vCPU / 16 GiB',  azVCores:2, azMem:16, azLabel:'D2ds v5 · 2 vCores / 16 GiB', gcpu:2,  gmem:8,  gLabel:'2 vCPU / 8 GB (custom)'},
+ {label:'8 CU · 16 GB RAM (~4 vCPU)',  dbxCU:8,  dbxLabel:'8 CU = 16 GB RAM',       aurora:'xlarge', auroraLabel:'db.r7g.xlarge · 4 vCPU / 32 GiB (closest)',      rds:0.552, rdsLabel:'db.r7g.xlarge · 4 vCPU / 32 GiB', azVCores:4, azMem:16, azLabel:'D4ds v5 · 4 vCores / 16 GiB', gcpu:4,  gmem:15, gLabel:'4 vCPU / 15 GB (custom)'},
+ {label:'16 CU · 32 GB RAM (~8 vCPU)', dbxCU:16, dbxLabel:'16 CU = 32 GB RAM',      aurora:'2xlarge',auroraLabel:'db.r7g.2xlarge · 8 vCPU / 64 GiB (closest)',     rds:1.104, rdsLabel:'db.r7g.2xlarge · 8 vCPU / 64 GiB',azVCores:8, azMem:32, azLabel:'D8ds v4 · 8 vCores / 32 GiB', gcpu:8,  gmem:32, gLabel:'8 vCPU / 32 GB (custom)'},
+ {label:'32 CU · 64 GB RAM (~16 vCPU)',dbxCU:32, dbxLabel:'32 CU = 64 GB RAM',      aurora:'4xlarge',auroraLabel:'db.r7g.4xlarge · 16 vCPU / 128 GiB (closest)',   rds:2.208, rdsLabel:'db.r7g.4xlarge · 16 vCPU / 128 GiB',azVCores:16,azMem:64, azLabel:'D16ds v4 · 16 vCores / 64 GiB', gcpu:16, gmem:64, gLabel:'16 vCPU / 64 GB (custom)'},
+ {label:'64 CU · 128 GB RAM (~32 vCPU)',dbxCU:64,dbxLabel:'64 CU = 128 GB RAM',     aurora:'8xlarge',auroraLabel:'db.r7g.8xlarge · 32 vCPU / 256 GiB (closest)',   rds:4.416, rdsLabel:'db.r7g.8xlarge · 32 vCPU / 256 GiB',azVCores:32,azMem:128, azLabel:'D32ds v4 · 32 vCores / 128 GiB', gcpu:32, gmem:128, gLabel:'32 vCPU / 128 GB (custom)'}
 ];
 const AURORA_HR={large:0.26,xlarge:0.52,'2xlarge':1.04,'4xlarge':2.08,'8xlarge':4.16};
 const HOURS=730;
