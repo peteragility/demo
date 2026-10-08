@@ -1685,7 +1685,7 @@
         "databricks": {
           "in": 2.0,
           "out": 10.0,
-          "cache_read": 0.1,
+          "cache_read": 0.2,
           "cache_write": 2.5,
           "cache_write_1h": 4.0,
           "tier": "Standard pay-per-token",
@@ -1694,7 +1694,7 @@
               "label": "Regional processing ⌖ +10%",
               "in": 2.2,
               "out": 11.0,
-              "cache_read": 0.11,
+              "cache_read": 0.22,
               "id": "variant-0",
               "pricing_checked_at": "2026-10-08",
               "comparison_scope": "regional",
@@ -1796,7 +1796,7 @@
             {
               "in": 1.0,
               "out": 5.0,
-              "cache_read": 0.025,
+              "cache_read": 0.05,
               "cache_write": 1.25,
               "cache_write_1h": 2.0,
               "label": "Claude API · global · Batch",
@@ -1824,7 +1824,7 @@
             {
               "in": 1.1,
               "out": 5.5,
-              "cache_read": 0.0275,
+              "cache_read": 0.055,
               "cache_write": 1.375,
               "cache_write_1h": 2.2,
               "label": "US-only inference · Batch",
@@ -2147,7 +2147,7 @@
             {
               "in": 1.1,
               "out": 5.5,
-              "cache_read": 0.0275,
+              "cache_read": 0.055,
               "cache_write": 1.375,
               "cache_write_1h": 2.2,
               "label": "US multi-region · Batch",
@@ -2161,7 +2161,7 @@
             {
               "in": 1.1,
               "out": 5.5,
-              "cache_read": 0.0275,
+              "cache_read": 0.055,
               "cache_write": 1.375,
               "cache_write_1h": 2.2,
               "label": "EU multi-region · Batch",

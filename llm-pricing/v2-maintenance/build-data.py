@@ -180,12 +180,15 @@ def add_models(data):
                     v.update(cache_write=2.75, cache_write_1h=4.4)
                 # 2026-10-08: Anthropic cut the Sonnet 5.5 cache-hit rate to 5% of the input
                 # price (was 10%); every cache_read below is 0.05x of this row's input rate.
-                if "cache_read" in v:
-                    v["cache_read"] = round(v["in"] * 0.05, 6)
+                # Databricks is excluded: its DBU tables still publish the 0.1x rate.
+                if pl != "databricks" and "cache_read" in v:
+                    v["cache_read"] = round(c["in"] * 0.05, 6)
     sonnet["platforms"]["official"]["variants"][0].update(cache_read=0.05, cache_write=1.25, cache_write_1h=2.0)
+    # Databricks keeps its own published DBU-table rates (still 0.1x); only Anthropic's
+    # first-party API passes the new 0.05x cache-hit rate through.
     for pl in PLATFORMS:
         c = sonnet["platforms"][pl]
-        if c["status"] == "priced" and "cache_read" in c:
+        if pl != "databricks" and c["status"] == "priced" and "cache_read" in c:
             c["cache_read"] = round(c["in"] * 0.05, 6)
     models["anthropic/claude-sonnet-5.5"] = sonnet
 
