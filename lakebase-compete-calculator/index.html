@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lakebase Compete Calculator</title>
+<meta name="description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and AlloyDB: region-aware list prices verified 2026-10-09, HA, replicas, storage, backups, I/O and commitments.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#f3f4f6; --panel:#ffffff; --panel-2:#f7f8fa; --line:#e1e4ea; --line-2:#cdd3dc;
+  --ink:#121620; --ink-2:#434d5d; --ink-3:#6f7988;
+  --dbx:#cf2f19; --dbx-soft:#fff4f1; --dbx-line:#f2b7aa;
+  --up:#08744e; --up-soft:#e8f5ef; --down:#9c5200; --down-soft:#fdf0dc; --par:#6b7482; --na:#9aa3af;
+  --bar:#d8dde5; --focus:#2d6cdf;
+  --f:"IBM Plex Sans Condensed",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0d1015; --panel:#151920; --panel-2:#1a1f28; --line:#262c36; --line-2:#363f4c;
+  --ink:#e8ecf1; --ink-2:#b3bcc9; --ink-3:#8a94a3;
+  --dbx:#ff6e57; --dbx-soft:#281614; --dbx-line:#5c2b22;
+  --up:#44d392; --up-soft:#0f271d; --down:#f1ab52; --down-soft:#2b2012; --par:#9aa3b1; --na:#5f6977;
+  --bar:#2a313c; --focus:#76a5ff; color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.4 var(--f);font-variant-numeric:tabular-nums}
+a{color:inherit}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+[hidden]{display:none!important}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top top" "tabs tools" "sum sum" "inp inp" "tbl tbl" "tech tech" "foot foot"}
+.top{grid-area:top}.bar{grid-area:tabs}.tools{grid-area:tools}.summary{grid-area:sum}.inputs{grid-area:inp}.tblwrap.main{grid-area:tbl}.techsec{grid-area:tech;min-width:0}.foot{grid-area:foot}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px;padding-block:12px 0}
+.top h1{margin:0;font-size:20px;line-height:1.25;font-weight:700;letter-spacing:-.01em}
+.top p{margin:0;color:var(--ink-3);font-size:12px}
+.top p b{color:var(--ink-2);font-weight:600}
+.intref{align-self:center;padding:1px 7px;border:1px solid var(--line-2);border-radius:10px;font-size:11px;font-weight:600;line-height:16px;color:var(--ink-3);white-space:nowrap}
+
+/* sticky scenario tabs + tools */
+.bar,.tools{position:sticky;top:0;z-index:30;align-self:start;background:var(--bg);padding-block:8px}
+.bar{min-width:0;padding-right:10px}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:3px;margin:-3px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;flex:none;height:30px;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);font-weight:600;font-size:13px;padding:0 10px;border-radius:7px;white-space:nowrap;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+.tools{display:flex;gap:6px;align-items:center;justify-content:flex-end;min-width:0;flex-wrap:wrap}
+.sel{flex:none;display:flex;align-items:center;gap:3px;height:30px;padding:0 4px 0 8px;background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--ink-3);font-size:11px;white-space:nowrap}
+.sel select{border:0;background:transparent;outline:none;font-size:13px;font-weight:600;color:var(--ink);padding:0 2px;max-width:150px}
+.sel select:disabled{opacity:.5}
+
+/* KPI strip */
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:6px;margin-block:2px 6px}
+.kpi{min-width:0;display:flex;align-items:center;gap:8px;padding:4px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.kpi b{flex:none;font-size:18px;line-height:1.2;font-weight:700;letter-spacing:-.01em}
+.kpi b small{font-size:12px;font-weight:600;color:var(--ink-3)}
+.kpi span{min-width:0;font-size:11px;line-height:1.3;color:var(--ink-3)}
+.kpi.dbx b{color:var(--dbx)} .kpi.good b{color:var(--up)} .kpi.warn b{color:var(--down)}
+.acts{display:flex;gap:4px}
+.abtn{appearance:none;display:flex;align-items:center;padding:0 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-size:12px;font-weight:600;color:var(--ink-2);white-space:nowrap;cursor:pointer}
+.abtn[aria-expanded]::after{content:"▾";margin-left:4px;color:var(--ink-3);font-size:11px}
+.abtn[aria-expanded="true"]::after{content:"▴"}
+
+/* inputs */
+.inputs{margin:0 0 8px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 12px}
+.fi{min-width:0}
+.fi label{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:var(--ink-3);line-height:16px;white-space:nowrap}
+.fi label output{color:var(--ink);font-weight:600}
+.fi input[type=range]{width:100%;margin:2px 0 0;accent-color:var(--dbx);height:18px}
+.fi input[type=number],.fi select{width:100%;height:26px;padding:0 6px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;font-size:12.5px}
+.fi input:disabled,.fi select:disabled{opacity:.45}
+.fi .h{font-size:10.5px;color:var(--ink-3);line-height:1.25;margin-top:1px}
+.fi.chks{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:2px 16px;padding-top:4px;border-top:1px solid var(--line)}
+.ck{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.ck input{accent-color:var(--dbx);margin:0}
+.ck input:disabled+span{opacity:.45}
+.warn{color:var(--down);font-size:11px}
+.inote{grid-column:1/-1;font-size:11px;color:var(--down);min-height:0}
+
+/* main matrix */
+.tblwrap{overflow-x:auto;min-width:0}
+.mx{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.mx th,.mx td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mx thead th{background:var(--panel);font-size:11.5px;font-weight:600;color:var(--ink-2);border-bottom:1px solid var(--line-2)}
+.mx thead th:first-child{border-top-left-radius:10px}.mx thead th:last-child{border-top-right-radius:10px}
+.mx th.m,.mx td.m{text-align:left}
+.nm{font-weight:600;font-size:13px;line-height:18px}
+.mk{display:block;font-size:11px;line-height:15px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis}
+.rk{display:inline-block;min-width:16px;margin-right:4px;font-size:11px;font-weight:600;color:var(--ink-3)}
+tr.row{cursor:pointer}
+tr.row:hover>*,tr.row.open>*{background:var(--panel-2)}
+tr.row .chev{display:inline-block;margin-left:4px;color:var(--ink-3);font-size:10px;transition:transform .15s}
+tr.row.open .chev{transform:rotate(90deg)}
+tr.row.lb>*{background:var(--dbx-soft)}
+tr.row.lb>td.m{box-shadow:inset 3px 0 0 var(--dbx)}
+tr.row.lb .nm{color:var(--dbx)}
+td.z{color:var(--na)}
+td.tot{font-weight:700;font-size:14px;background-image:linear-gradient(var(--bar),var(--bar));background-repeat:no-repeat;background-position:left bottom;background-size:var(--w,0%) 3px}
+td.tot small{display:block;font-size:10.5px;font-weight:500;color:var(--ink-3)}
+.d{font-size:12px;font-weight:600}
+.d.up{color:var(--up)}.d.down{color:var(--down)}.d.par{color:var(--par)}
+.bdg{display:inline-block;vertical-align:1px;margin-left:5px;padding:0 4px;border:1px solid var(--line-2);border-radius:4px;font-size:9.5px;font-weight:600;line-height:14px;color:var(--ink-3)}
+.bdg.best{border-color:var(--up);color:var(--up)}
+tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:normal}
+.dw{padding:8px 12px 10px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:4px 20px;font-size:12px;color:var(--ink-2)}
+.dw dl{margin:0;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:2px 10px}
+.dw dt{color:var(--ink-3);font-weight:600}
+.dw dd{margin:0}
+.dw ul{margin:0;padding-left:15px}
+.dw li{margin:1px 0}
+.dw .rates{grid-column:1/-1;font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:4px}
+tr.na>*{color:var(--ink-3)}
+tfoot td{border-bottom:0;font-size:11.5px;color:var(--ink-3);background:var(--panel-2);text-align:left;white-space:normal}
+tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius:10px}
+
+/* technical comparison */
+.techsec h2,.foot h2{margin:14px 0 4px;font-size:12px;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}
+.tech{table-layout:auto}
+.tech th,.tech td{white-space:normal;text-align:left;vertical-align:top;font-size:11.5px;line-height:1.35;padding:4px 7px;min-width:118px}
+.tech thead th{font-size:11px}
+.tech td:first-child,.tech th:first-child{font-weight:600;color:var(--ink-2);min-width:96px;position:sticky;left:0;background:var(--panel);z-index:1}
+.tech td.lb,.tech th.lb{background:var(--dbx-soft);box-shadow:inset 2px 0 0 var(--dbx-line),inset -2px 0 0 var(--dbx-line)}
+.tech th.lb{color:var(--dbx)}
+
+/* footer */
+.foot{margin-block:10px 36px;color:var(--ink-3);font-size:12px;line-height:1.5;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:4px 24px}
+.foot p{margin:0 0 6px}
+.foot details{margin:0 0 6px}
+.foot summary{cursor:pointer;color:var(--ink-2);font-weight:600}
+.foot ul{margin:3px 0 0;padding-left:16px}
+.foot li{margin:1px 0}
+.foot b{color:var(--ink-2)}
+.foot .disclaimer{grid-column:1/-1;margin:2px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px}
+.toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:6px 12px;border-radius:8px;font-size:12.5px;z-index:50}
+
+@media (max-width:1060px){
+  .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tabs" "tools" "sum" "inp" "tbl" "tech" "foot"}
+  .tools{position:static;padding:0 0 6px;justify-content:flex-start}
+  .mx .c-bk,.mx .c-io{display:none}
+}
+@media (max-width:760px){
+  .wrap{padding-inline:10px}
+  .top h1{font-size:16px}.top p{font-size:11px}
+  .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .acts{grid-column:1/-1}
+  .kpi b{font-size:15px}
+  .mx .c-ha,.mx .c-rep,.mx .c-sto,.mx .c-cmp{display:none}
+  .dw{grid-template-columns:minmax(0,1fr)}
+  .foot{grid-template-columns:minmax(0,1fr)}
+}
+@media (hover:none) and (pointer:coarse){.sel select,.fi input,.fi select{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Lakebase Compete Calculator</h1>
+    <span class="intref" title="Built by Peter Chan for internal reference, from public list prices on official sources only">Internal reference only</span>
+    <p>Lakebase vs Aurora · Aurora Serverless v2 · RDS · Azure PG Flexible · Azure SQL · Cloud SQL · AlloyDB · Snowflake Postgres · USD/month at list · verified <b>2026-10-09</b> · <a href="../">demo index</a></p>
+  </header>
+
+  <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Scenario">
+    <button class="tab" data-p="dev" aria-pressed="false">Dev / test</button>
+    <button class="tab" data-p="small" aria-pressed="false">Small prod</button>
+    <button class="tab" data-p="prod" aria-pressed="true">Steady prod</button>
+    <button class="tab" data-p="spiky" aria-pressed="false">Spiky app / agent</button>
+    <button class="tab" data-p="read" aria-pressed="false">Read-heavy</button>
+    <button class="tab" data-p="io" aria-pressed="false">I/O-heavy</button>
+    <button class="tab" data-p="large" aria-pressed="false">Large 80 CU</button>
+    <button class="tab" data-p="custom" aria-pressed="false" id="customTab">Custom</button>
+  </div></div>
+  <div class="tools">
+    <label class="sel"><span>Region</span><select id="region"><option value="us">US East</option><option value="sg">Singapore</option><option value="tk">Tokyo</option><option value="hk">Hong Kong</option></select></label>
+    <label class="sel"><span>Lakebase on</span><select id="lbCloud"><option value="aws">AWS</option><option value="azure">Azure</option><option value="gcp">Google Cloud</option></select></label>
+    <label class="sel"><span>Tier</span><select id="lbTier"><option value="enterprise">Enterprise</option><option value="premium">Premium</option></select></label>
+    <label class="sel" title="Published 1/3-year discounts applied to competitor instance compute"><span>Others</span><select id="commit"><option value="od">On-demand</option><option value="1y">1-yr commit</option><option value="3y">3-yr commit</option></select></label>
+  </div>
+
+  <section class="summary" id="summary" aria-live="polite"></section>
+
+  <section class="inputs" id="inputs">
+    <div class="fi"><label for="peak">Peak size <output id="peakOut"></output></label><input type="range" id="peak" min="0" max="12" step="1" value="3"><div class="h">Every vendor sized to this RAM (1 CU ≈ 2 GB)</div></div>
+    <div class="fi"><label for="floor">Lakebase min <output id="floorOut"></output></label><input type="range" id="floor" min="0.5" max="8" step="0.5" value="4"><div class="h" id="floorHint">max − min ≤ 16 CU</div></div>
+    <div class="fi"><label for="load">Avg load above min <output id="loadOut"></output></label><input type="range" id="load" min="0" max="100" step="5" value="30"><div class="h">Share of the min→peak band used</div></div>
+    <div class="fi"><label for="hpd">Active h/day <output id="hpdOut"></output></label><input type="range" id="hpd" min="1" max="24" step="1" value="24"></div>
+    <div class="fi"><label for="dpw">Active days/wk <output id="dpwOut"></output></label><input type="range" id="dpw" min="1" max="7" step="1" value="7"></div>
+    <div class="fi"><label for="rep">Read replicas <output id="repOut"></output></label><input type="range" id="rep" min="0" max="6" step="1" value="0"></div>
+    <div class="fi"><label for="repLoad">Replica load <output id="repLoadOut"></output></label><input type="range" id="repLoad" min="10" max="100" step="5" value="50"><div class="h">vs primary (autoscaling replicas)</div></div>
+    <div class="fi"><label for="haN">HA (Lakebase secondaries)</label><select id="haN"><option value="0">Off</option><option value="1" selected>1 secondary</option><option value="2">2 secondaries</option><option value="3">3 secondaries</option></select><div class="h">Others: 1 standby</div></div>
+    <div class="fi"><label for="sto">DB size (GB)</label><input type="number" id="sto" min="1" max="65000" step="10" value="200"></div>
+    <div class="fi"><label for="chg">Changed GB/day</label><input type="number" id="chg" min="0" max="10000" step="1" value="5"></div>
+    <div class="fi"><label for="ret">PITR window (days)</label><input type="number" id="ret" min="2" max="35" step="1" value="7"><div class="h">Lakebase 2–30</div></div>
+    <div class="fi"><label for="avgIops">Avg I/O per sec</label><input type="number" id="avgIops" min="0" max="1000000" step="50" value="300"><div class="h">Aurora Standard bills per request</div></div>
+    <div class="fi"><label for="peakIops">Peak IOPS</label><input type="number" id="peakIops" min="0" max="256000" step="500" value="3000"><div class="h">RDS gp3 / Azure SSD v2 above baseline</div></div>
+    <div class="fi"><label for="family">Competitor family</label><select id="family"><option value="mem">Memory-opt (8 GB/vCPU)</option><option value="gp">General (4 GB/vCPU)</option></select></div>
+    <div class="fi"><label for="disc">Databricks discount %</label><input type="number" id="disc" min="0" max="90" step="1" value="0"><div class="h">On Lakebase compute</div></div>
+    <div class="fi"><label for="sync">Synced tables $/mo</label><input type="number" id="sync" min="0" step="10" value="0"><div class="h">Lakebase pipeline DBUs</div></div>
+    <div class="fi"><label for="etl">Others' ETL/CDC $/mo</label><input type="number" id="etl" min="0" step="10" value="0"><div class="h">To keep the lakehouse in sync</div></div>
+    <div class="fi chks">
+      <label class="ck"><input type="checkbox" id="promo" checked><span>Lakebase 50% compute promo (to 31 Jan 2027)</span></label>
+      <label class="ck"><input type="checkbox" id="s2z"><span>Lakebase scale-to-zero (≤ 32 CU, no HA)</span></label>
+      <label class="ck"><input type="checkbox" id="stopIdle"><span>Stop competitor instances when idle</span></label>
+      <label class="ck"><input type="checkbox" id="burst" checked><span>Burstable classes ≤ 8 GB (t4g, B-series)</span></label>
+      <label class="ck"><input type="checkbox" id="azsqlAhb"><span>Azure SQL: Hybrid Benefit (own SQL licenses)</span></label>
+    </div>
+    <div class="inote" id="inote"></div>
+  </section>
+
+  <div class="tblwrap main"><table class="mx" id="mx"></table></div>
+
+  <section class="techsec">
+    <h2>Technical comparison</h2>
+    <div class="tblwrap"><table class="mx tech">
+    <thead><tr><th>Capability</th><th class="lb">Lakebase</th><th>Aurora PG</th><th>Aurora Serverless v2</th><th>RDS PG</th><th>Azure PG Flexible</th><th>Azure SQL Database</th><th>Cloud SQL</th><th>AlloyDB</th><th>Snowflake Postgres</th></tr></thead>
+    <tbody>
+    <tr><td>Engine</td><td class="lb">Postgres 16–18</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres-compatible</td><td>Postgres 16–18</td></tr>
+    <tr><td>Billing unit</td><td class="lb">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second · provisioned storage</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>vCPU-hrs + GiB-hrs + used storage</td><td>Credits/hr per size + $/TB-mo storage</td></tr>
+    <tr><td>Size range</td><td class="lb">Autoscale 0.5–64 CU (max−min ≤ 16); fixed to 112 CU</td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU</td><td>t4g → r8g.48xlarge</td><td>Burstable → 96 vCores</td><td>GP 2–80 vCores (5.1 GB/vCore) · serverless 0.5–80 vCores (≤ 240 GB)</td><td>96 vCPU / 624 GiB (Ent+ 128 / 864)</td><td>288 vCPU / 2,232 GiB per node</td><td>Up to 192 cores / 1.5 TB</td></tr>
+    <tr><td>Autoscaling</td><td class="lb">In place, no restart or dropped connections</td><td>No</td><td>Yes</td><td>No (storage only)</td><td>No</td><td>Serverless tier</td><td>No</td><td>No (add read nodes)</td><td>No</td></tr>
+    <tr><td>Scale to zero</td><td class="lb">Yes ≤ 32 CU · timeout 60 s–7 d (default 24 h) · resume in a few hundred ms</td><td>Manual stop ≤ 7 d</td><td>Yes (0-ACU auto-pause)</td><td>Manual stop ≤ 7 d</td><td>Manual stop</td><td>Serverless auto-pause; provisioned can't stop</td><td>Manual stop</td><td>No</td><td>Manual suspend</td></tr>
+    <tr><td>HA</td><td class="lb">1–3 secondaries across AZs, ≥ primary size, can serve reads</td><td>Needs an Aurora Replica (billed)</td><td>Reader in another AZ (billed)</td><td>Multi-AZ: ×2 instance + storage rates; standby not readable</td><td>Standby: same vCores + storage</td><td>Built in; zone redundancy is an uplift; Business Critical = replicas + readable secondary</td><td>Regional: ×2 CPU, RAM, storage rates</td><td>Primary = 2 nodes</td><td>Standby (not on burstable)</td></tr>
+    <tr><td>Read replicas</td><td class="lb">6 per branch · seconds to create · no extra storage · autoscale + scale-to-zero</td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases; read scale-out on BC / Hyperscale</td><td>Own instance + storage</td><td>Read pool ≤ 20 nodes · shared</td><td>Yes · replication billed as transfer</td></tr>
+    <tr><td>Storage</td><td class="lb">Separated · billed on data stored · per-branch quota adjustable</td><td>Auto-grow to 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>Provisioned · P-tier 2× steps, no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Auto-scaling · max 128 TiB</td><td>Provisioned disks</td></tr>
+    <tr><td>I/O charges</td><td class="lb">None</td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2 IOPS above 3,000</td><td>IOPS limits scale with vCores</td><td>None</td><td>None</td><td>Fixed IOPS per size</td></tr>
+    <tr><td>PITR</td><td class="lb">2–30 d (default 7) · history at PITR rate</td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS by default</td><td>Backups per GB used</td><td>First 7 d of logs free</td><td>Via fork</td></tr>
+    <tr><td>Branch / clone</td><td class="lb">Instant copy-on-write branches (500 / project)</td><td>Fast clone</td><td>Fast clone</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>Clone cluster</td><td>Fork</td></tr>
+    <tr><td>Lakehouse</td><td class="lb">Synced tables from Unity Catalog · UC-governed</td><td colspan="8">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing: price it with "Others' ETL/CDC"</td></tr>
+    <tr><td>Pooling</td><td class="lb">Built-in PgBouncer · 8 CU ≈ 1,795 direct connections</td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling (Ent+)</td><td>Managed pooling</td><td>Built-in PgBouncer</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <footer class="foot">
+    <div>
+      <h2>How to read it</h2>
+      <p><b class="d up">▲</b> competitor costs more than Lakebase · <b class="d down">▼</b> cheaper · <b>=</b> within 1%. Tap a row for its sizing, rates and notes. Columns split each bill into compute, the HA standby, read scale, storage, backups/PITR and I/O.</p>
+      <p>Every vendor is sized to the same peak RAM. <b>Same memory isn't the same speed</b>: CU, ACU and vCPU differ, and Databricks says CU performance "will depend on the data and query complexity". Benchmark before a final call.</p>
+      <details><summary>Model rules</summary><ul>
+        <li><b>Lakebase compute:</b>
+          <ul>
+            <li><b>Scale-to-zero off:</b> the min is billed for 730 h at the Always-On minimum-usage rate.</li>
+            <li><b>Scale-to-zero on:</b> everything is billed at the autoscaling rate, for active hours only.</li>
+            <li><b>Above the min:</b> usage (band × load × active h) is billed at the autoscaling rate.</li>
+            <li><b>HA and replicas:</b> each HA secondary bills the primary's CU-hours; replicas bill the primary's CU-hours × replica load.</li>
+            <li><b>Discounts:</b> the promo and your discount apply to compute only.</li>
+          </ul></li>
+        <li><b>Lakebase storage:</b> DB GB × the database rate, plus PITR history (changed GB/day × window × the PITR rate). Snapshots aren't modeled.</li>
+        <li><b>Provisioned vendors:</b> the smallest class with RAM ≥ peak, running 730 h (active hours if stop-when-idle is on; AlloyDB always 730 h). Serverless v2 gets Lakebase's capacity profile (1 ACU ≈ 2 GiB).</li>
+        <li><b>HA conventions:</b>
+          <ul>
+            <li><b>Aurora:</b> +1 replica.</li>
+            <li><b>RDS:</b> Multi-AZ rates.</li>
+            <li><b>Azure:</b> ×2 compute and storage.</li>
+            <li><b>Cloud SQL:</b> HA rates.</li>
+            <li><b>AlloyDB:</b> 2 nodes.</li>
+          </ul></li>
+        <li><b>Backups:</b> AWS and Azure bill changes × window beyond 100% of DB size. Cloud SQL bills DB + changes. AlloyDB bills DB + changes beyond 7 days.</li>
+        <li><b>Aurora:</b> the row uses whichever of Standard and I/O-Optimized is cheaper and names the other.</li>
+        <li><b>Azure SQL Database (General Purpose):</b> the cheaper of provisioned (smallest vCores with 5.1 GB/vCore ≥ peak RAM, 730 h) and serverless. Serverless is billed on memory/3 GB over Lakebase's capacity profile. HA = zone redundancy; replicas = extra databases.</li>
+        <li><b>Commitments</b> (instance compute only):
+          <ul>
+            <li><b>AWS RI:</b> −33% / −53%.</li>
+            <li><b>Azure reserved:</b> −40% / −60% (PG Flexible), −21% / −33% (Azure SQL provisioned).</li>
+            <li><b>Google CUD:</b> −25% / −52%.</li>
+            <li><b>Not covered:</b> burstable classes and Serverless v2.</li>
+          </ul></li>
+        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies. Snowflake Postgres is sized but not priced: its credit rates are only in Snowflake's Service Consumption Table PDF.</li>
+      </ul></details>
+      <details><summary>Billing gotchas</summary><ul>
+        <li><b>Lakebase:</b>
+          <ul>
+            <li><b>Default billing:</b> new production branches have scale-to-zero on (24 h timeout), so a busy DB stays on the autoscaling rate.</li>
+            <li><b>Always-On rate:</b> turn scale-to-zero off, and after 24 h the min bills at the minimum-usage rate (25% lower). Raising the min restarts the 24 h clock.</li>
+            <li><b>Dev branches:</b> shorten the timeout, or overnight idle won't suspend.</li>
+            <li><b>HA:</b> no scale-to-zero, and secondaries run at ≥ primary size.</li>
+            <li><b>Not discounted:</b> storage and PITR bill at list.</li>
+            <li><b>Extra charges:</b> synced tables bill pipeline DBUs; transfer and private connectivity are billed separately.</li>
+          </ul></li>
+        <li><b>Aurora:</b> Standard bills every I/O request. I/O-Optimized costs ~30% more per instance and 2.25× the storage rate. Storage HA isn't compute HA: fast failover needs a billed replica.</li>
+        <li><b>Serverless v2:</b> higher unit price than provisioned. A tier 0–1 reader scales with the writer. No RIs.</li>
+        <li><b>RDS:</b> Multi-AZ doubles instance, storage and IOPS rates. Each replica brings its own storage. gp3 includes 3,000 IOPS below 400 GB. Stopped instances restart after 7 days.</li>
+        <li><b>Azure:</b> the standby duplicates vCores and storage. Burstable has no HA. P-tier storage grows only in 2× steps and can't shrink.</li>
+        <li><b>Azure SQL Database:</b>
+          <ul>
+            <li><b>Engine:</b> SQL Server, so moving to Postgres means a schema and T-SQL migration.</li>
+            <li><b>License:</b> list prices include the SQL license; Hybrid Benefit removes it on provisioned only.</li>
+            <li><b>Stop and pause:</b> provisioned databases can't be stopped; serverless auto-pauses.</li>
+            <li><b>Zone redundancy:</b> an uplift on compute and storage.</li>
+            <li><b>Read scale:</b> on General Purpose, read replicas are full databases.</li>
+          </ul></li>
+        <li><b>Cloud SQL:</b> HA doubles CPU, RAM and storage rates. Backups have no free allowance.</li>
+        <li><b>AlloyDB:</b> an HA primary is 2 nodes. Logs kept beyond 7 days bill as backup.</li>
+        <li><b>Snowflake Postgres:</b> credits/hr per size. Replica replication is billed as data transfer. Burstable sizes have no HA and a 100 GB cap.</li>
+      </ul></details>
+    </div>
+    <div>
+      <details><summary>Sources (fetched 2026-10-09)</summary><ul>
+        <li><a href="https://www.databricks.com/product/pricing/lakebase" target="_blank" rel="noopener">Databricks Lakebase pricing</a>: AWS/Azure/Google rates by region and tier; Always-On, minimum-usage, promo, data-transfer FAQs</li>
+        <li>Lakebase docs: <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-computes" target="_blank" rel="noopener">computes</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero" target="_blank" rel="noopener">scale to zero</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/high-availability" target="_blank" rel="noopener">HA</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/read-replicas" target="_blank" rel="noopener">read replicas</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore" target="_blank" rel="noopener">PITR</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">limits</a></li>
+        <li><a href="https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json" target="_blank" rel="noopener">AWS Price List API</a>: AmazonRDS v20261006224050 (us-east-1, ap-southeast-1, ap-northeast-1, ap-east-1) · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.how-it-works.html" target="_blank" rel="noopener">Serverless v2 capacity</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html" target="_blank" rel="noopener">RDS storage</a></li>
+        <li><a href="https://prices.azure.com/api/retail/prices" target="_blank" rel="noopener">Azure Retail Prices API</a> · <a href="https://azure.microsoft.com/en-us/pricing/details/azure-sql-database/single/" target="_blank" rel="noopener">Azure SQL Database pricing</a> (license-included and reserved rates) · Microsoft Learn: <a href="https://learn.microsoft.com/en-us/azure/postgresql/high-availability/concepts-high-availability" target="_blank" rel="noopener">HA</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/backup-restore/concepts-backup-restore" target="_blank" rel="noopener">backup</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/compute-storage/concepts-storage" target="_blank" rel="noopener">storage</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/read-replica/concepts-read-replicas" target="_blank" rel="noopener">replicas</a></li>
+        <li>Google: <a href="https://cloud.google.com/sql/pricing" target="_blank" rel="noopener">Cloud SQL pricing</a> · <a href="https://cloud.google.com/alloydb/pricing" target="_blank" rel="noopener">AlloyDB pricing</a> · <a href="https://cloud.google.com/sql/docs/postgres/quotas" target="_blank" rel="noopener">Cloud SQL quotas</a> · <a href="https://cloud.google.com/alloydb/quotas" target="_blank" rel="noopener">AlloyDB quotas</a></li>
+        <li>Snowflake Postgres docs: <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/about" target="_blank" rel="noopener">about</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/postgres-cost" target="_blank" rel="noopener">cost</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/postgres-instance-sizes" target="_blank" rel="noopener">sizes</a></li>
+      </ul></details>
+      <p>Formerly "Postgres Cost Calculator" (/pg-cost-calculator/). Settings are saved in the link: use <b>Share</b> to send a scenario.</p>
+    </div>
+    <p class="disclaimer"><b>Disclaimer.</b> Built by Peter Chan for internal reference only. Prices are public list prices taken only from providers' official websites, documentation and price APIs (see Sources). They exclude private, committed-use and negotiated pricing unless entered above. This is not an official Databricks price list or quote, and it isn't affiliated with AWS, Microsoft, Google or Snowflake. Check the source before quoting a customer.</p>
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const HRS = 730, WKS = 52 / 12;
+const PEAKS = [1, 2, 4, 8, 12, 16, 24, 32, 48, 64, 80, 96, 112];
+const REG = {
+  us: {name: 'US East', aws: 'us-east-1', az: 'East US', gcp: 'us-east1'},
+  sg: {name: 'Singapore', aws: 'ap-southeast-1', az: 'Southeast Asia', gcp: 'asia-southeast1'},
+  tk: {name: 'Tokyo', aws: 'ap-northeast-1', az: 'Japan East', gcp: 'asia-northeast1'},
+  hk: {name: 'Hong Kong', aws: 'ap-east-1', az: 'East Asia', gcp: 'asia-east2'}
+};
+// Lakebase [autoscaling $/CU-hr, Always-On minimum-usage $/CU-hr]; st [database $/GB-mo, PITR $/GB-mo]
+const LB = {
+  us: {aws: {p: [0.092, 0.069], e: [0.111, 0.083], st: [0.345, 0.200], label: 'AWS US East'},
+       azure: {x: [0.111, 0.083], st: [0.390, 0.226], label: 'Azure East US'},
+       gcp: {p: [0.104, 0.078], e: [0.125, 0.093], st: [0.345, 0.200], label: 'Google us-east1'}},
+  sg: {aws: {p: [0.110, 0.083], e: [0.134, 0.101], st: [0.375, 0.218], label: 'AWS Singapore'},
+       azure: {x: [0.134, 0.101], st: [0.375, 0.218], label: 'Azure Southeast Asia'},
+       gcp: {p: [0.113, 0.085], e: [0.136, 0.102], st: [0.375, 0.218], label: 'Google asia-southeast1'}},
+  tk: {aws: {p: [0.110, 0.083], e: [0.134, 0.101], st: [0.375, 0.218], label: 'AWS Tokyo'},
+       azure: {x: [0.134, 0.101], st: [0.375, 0.218], label: 'Azure Japan East'},
+       gcp: {p: [0.117, 0.088], e: [0.141, 0.106], st: [0.375, 0.218], label: 'Google asia-northeast1'}},
+  hk: {azure: {x: [0.151, 0.113], st: [0.450, 0.261], label: 'Azure East Asia (HK)'}}
+};
+const AWS = {"regions":{"us-east-1":{"aurora_std":{"t4g.medium":0.073,"t4g.large":0.146,"r8g.large":0.276,"r8g.xlarge":0.552,"r8g.2xlarge":1.104,"r8g.4xlarge":2.208,"r8g.8xlarge":4.416,"r8g.12xlarge":6.624,"r8g.16xlarge":8.832},"aurora_io":{"t4g.medium":0.095,"t4g.large":0.19,"r8g.large":0.359,"r8g.xlarge":0.718,"r8g.2xlarge":1.436,"r8g.4xlarge":2.872,"r8g.8xlarge":5.744,"r8g.12xlarge":8.616,"r8g.16xlarge":11.488},"rds_saz":{"t4g.medium":0.065,"t4g.large":0.129,"r8g.large":0.239,"r8g.xlarge":0.478,"r8g.2xlarge":0.956,"r8g.4xlarge":1.912,"r8g.8xlarge":3.824,"r8g.12xlarge":5.736,"r8g.16xlarge":7.648,"m8g.large":0.168,"m8g.xlarge":0.336,"m8g.2xlarge":0.672,"m8g.4xlarge":1.344,"m8g.8xlarge":2.688,"m8g.12xlarge":4.032,"m8g.16xlarge":5.376},"rds_maz":{"t4g.medium":0.129,"t4g.large":0.258,"r8g.large":0.478,"r8g.xlarge":0.956,"r8g.2xlarge":1.912,"r8g.4xlarge":3.824,"r8g.8xlarge":7.648,"r8g.12xlarge":11.472,"r8g.16xlarge":15.296,"m8g.large":0.336,"m8g.xlarge":0.672,"m8g.2xlarge":1.344,"m8g.4xlarge":2.688,"m8g.8xlarge":5.376,"m8g.12xlarge":8.064,"m8g.16xlarge":10.752},"r":{"aurora_std_storage":0.1,"aurora_io_storage":0.225,"aurora_io_req":0.2,"aurora_backup":0.021,"asv2_std":0.12,"asv2_io":0.16,"gp3_saz":0.115,"gp3_maz":0.23,"gp3_iops_saz":0.02,"gp3_iops_maz":0.04,"rds_backup":0.095}},"ap-southeast-1":{"aurora_std":{"t4g.medium":0.114,"t4g.large":0.229,"r8g.large":0.333,"r8g.xlarge":0.666,"r8g.2xlarge":1.332,"r8g.4xlarge":2.664,"r8g.8xlarge":5.328,"r8g.12xlarge":7.992,"r8g.16xlarge":10.656},"aurora_io":{"t4g.medium":0.148,"t4g.large":0.298,"r8g.large":0.433,"r8g.xlarge":0.866,"r8g.2xlarge":1.732,"r8g.4xlarge":3.464,"r8g.8xlarge":6.928,"r8g.12xlarge":10.392,"r8g.16xlarge":13.856},"rds_saz":{"t4g.medium":0.102,"t4g.large":0.203,"r8g.large":0.287,"r8g.xlarge":0.574,"r8g.2xlarge":1.148,"r8g.4xlarge":2.296,"r8g.8xlarge":4.592,"r8g.12xlarge":6.888,"r8g.16xlarge":9.184,"m8g.large":0.234,"m8g.xlarge":0.468,"m8g.2xlarge":0.937,"m8g.4xlarge":1.874,"m8g.8xlarge":3.747,"m8g.12xlarge":5.621,"m8g.16xlarge":7.494},"rds_maz":{"t4g.medium":0.203,"t4g.large":0.406,"r8g.large":0.574,"r8g.xlarge":1.148,"r8g.2xlarge":2.296,"r8g.4xlarge":4.592,"r8g.8xlarge":9.184,"r8g.12xlarge":13.776,"r8g.16xlarge":18.368,"m8g.large":0.468,"m8g.xlarge":0.936,"m8g.2xlarge":1.872,"m8g.4xlarge":3.744,"m8g.8xlarge":7.488,"m8g.12xlarge":11.232,"m8g.16xlarge":14.976},"r":{"aurora_std_storage":0.11,"aurora_io_storage":0.248,"aurora_io_req":0.22,"aurora_backup":0.023,"asv2_std":0.2,"asv2_io":0.26,"gp3_saz":0.138,"gp3_maz":0.276,"gp3_iops_saz":0.024,"gp3_iops_maz":0.048,"rds_backup":0.095}},"ap-northeast-1":{"aurora_std":{"t4g.medium":0.113,"t4g.large":0.225,"r8g.large":0.333,"r8g.xlarge":0.666,"r8g.2xlarge":1.332,"r8g.4xlarge":2.664,"r8g.8xlarge":5.328,"r8g.12xlarge":7.992,"r8g.16xlarge":10.656},"aurora_io":{"t4g.medium":0.147,"t4g.large":0.293,"r8g.large":0.433,"r8g.xlarge":0.866,"r8g.2xlarge":1.732,"r8g.4xlarge":3.464,"r8g.8xlarge":6.928,"r8g.12xlarge":10.392,"r8g.16xlarge":13.856},"rds_saz":{"t4g.medium":0.101,"t4g.large":0.202,"r8g.large":0.287,"r8g.xlarge":0.574,"r8g.2xlarge":1.148,"r8g.4xlarge":2.296,"r8g.8xlarge":4.592,"r8g.12xlarge":6.888,"r8g.16xlarge":9.184,"m8g.large":0.234,"m8g.xlarge":0.468,"m8g.2xlarge":0.936,"m8g.4xlarge":1.872,"m8g.8xlarge":3.744,"m8g.12xlarge":5.616,"m8g.16xlarge":7.488},"rds_maz":{"t4g.medium":0.202,"t4g.large":0.403,"r8g.large":0.574,"r8g.xlarge":1.148,"r8g.2xlarge":2.296,"r8g.4xlarge":4.592,"r8g.8xlarge":9.184,"r8g.12xlarge":13.776,"r8g.16xlarge":18.368,"m8g.large":0.468,"m8g.xlarge":0.936,"m8g.2xlarge":1.872,"m8g.4xlarge":3.744,"m8g.8xlarge":7.488,"m8g.12xlarge":11.232,"m8g.16xlarge":14.976},"r":{"aurora_std_storage":0.12,"aurora_io_storage":0.27,"aurora_io_req":0.24,"aurora_backup":0.023,"asv2_std":0.15,"asv2_io":0.2,"gp3_saz":0.138,"gp3_maz":0.276,"gp3_iops_saz":0.024,"gp3_iops_maz":0.048,"rds_backup":0.095}},"ap-east-1":{"aurora_std":{"t4g.medium":0.125,"t4g.large":0.25,"r8g.large":0.367,"r8g.xlarge":0.733,"r8g.2xlarge":1.467,"r8g.4xlarge":2.934,"r8g.8xlarge":5.868,"r8g.12xlarge":8.802,"r8g.16xlarge":11.736},"aurora_io":{"t4g.medium":0.163,"t4g.large":0.325,"r8g.large":0.477,"r8g.xlarge":0.953,"r8g.2xlarge":1.907,"r8g.4xlarge":3.814,"r8g.8xlarge":7.628,"r8g.12xlarge":11.443,"r8g.16xlarge":15.257},"rds_saz":{"t4g.medium":0.111,"t4g.large":0.222,"r8g.large":0.316,"r8g.xlarge":0.631,"r8g.2xlarge":1.262,"r8g.4xlarge":2.525,"r8g.8xlarge":5.05,"r8g.12xlarge":7.574,"r8g.16xlarge":10.099,"m8g.large":0.258,"m8g.xlarge":0.516,"m8g.2xlarge":1.032,"m8g.4xlarge":2.064,"m8g.8xlarge":4.128,"m8g.12xlarge":6.192,"m8g.16xlarge":8.255},"rds_maz":{"t4g.medium":0.222,"t4g.large":0.445,"r8g.large":0.631,"r8g.xlarge":1.262,"r8g.2xlarge":2.525,"r8g.4xlarge":5.05,"r8g.8xlarge":10.099,"r8g.12xlarge":15.149,"r8g.16xlarge":20.198,"m8g.large":0.516,"m8g.xlarge":1.032,"m8g.2xlarge":2.064,"m8g.4xlarge":4.128,"m8g.8xlarge":8.256,"m8g.12xlarge":12.384,"m8g.16xlarge":16.51},"r":{"aurora_std_storage":0.12,"aurora_io_storage":0.27,"aurora_io_req":0.24,"aurora_backup":0.023,"asv2_std":0.22,"asv2_io":0.29,"gp3_saz":0.15,"gp3_maz":0.3,"gp3_iops_saz":0.026,"gp3_iops_maz":0.052,"rds_backup":0.095}}},"spec":{"t4g.medium":[2,4],"t4g.large":[2,8],"r8g.large":[2,16],"r8g.xlarge":[4,32],"r8g.2xlarge":[8,64],"r8g.4xlarge":[16,128],"r8g.8xlarge":[32,256],"r8g.12xlarge":[48,384],"r8g.16xlarge":[64,512],"m8g.large":[2,8],"m8g.xlarge":[4,16],"m8g.2xlarge":[8,32],"m8g.4xlarge":[16,64],"m8g.8xlarge":[32,128],"m8g.12xlarge":[48,256],"m8g.16xlarge":[64,384]}};
+// Azure Flexible: $/vCore-hr (E=Edsv5 8 GiB/vCore, D=Ddsv5 4 GiB/vCore), B-series $/hr, storage $/GB-mo, SSD v2 $/IOPS-mo, backup $/GB-mo
+const AZ = {
+  us: {E: 0.125, D: 0.089, B2s: 0.068, B2ms: 0.136, st: 0.115, iops: 0.02, bk: 0.095},
+  sg: {E: 0.150, D: 0.122, B2s: 0.104, B2ms: 0.208, st: 0.138, iops: 0.026, bk: 0.095},
+  tk: {E: 0.150, D: 0.122, B2s: 0.104, B2ms: 0.208, st: 0.138, iops: 0.029, bk: 0.095},
+  hk: {E: 0.166, D: 0.134, B2s: 0.1144, B2ms: 0.2288, st: 0.150, iops: 0.031, bk: 0.095}
+};
+// Cloud SQL Enterprise: $/vCPU-hr, $/GiB-hr, SSD $/GB-mo zonal & HA, backups $/GB-mo
+const CSQL = {
+  us: {v: 0.0413, m: 0.007, ssd: 0.170, ssdHA: 0.340, bk: 0.080},
+  sg: {v: 0.0578, m: 0.0098, ssd: 0.238, ssdHA: 0.476, bk: 0.112},
+  tk: {v: 0.0537, m: 0.0091, ssd: 0.221, ssdHA: 0.442, bk: 0.104},
+  hk: {v: 0.062, m: 0.0105, ssd: 0.255, ssdHA: 0.510, bk: 0.120}
+};
+// AlloyDB N2/C4A: $/vCPU-hr, $/GiB-hr, storage $/GB-mo, standard backup $/GB-mo
+const ALLOY = {
+  us: {v: 0.07467, m: 0.01266, st: 0.339, bk: 0.113},
+  sg: {v: 0.08128, m: 0.01378, st: 0.369, bk: 0.123},
+  tk: {v: 0.08458, m: 0.01434, st: 0.384, bk: 0.128},
+  hk: {v: 0.09251, m: 0.01568, st: 0.420, bk: 0.140}
+};
+// Azure SQL Database (General Purpose, standard-series Gen5): li = provisioned $/vCore-hr license included, ahb = with Azure Hybrid Benefit,
+// zr = zone-redundancy uplift $/vCore-hr, sv / svZR = serverless $/vCore-hr (license included) and its ZR uplift, st / stZR = $/GB-mo, bk = RA-GRS backup $/GB-mo
+const AZSQL = {
+  us: {li: 0.2523, ahb: 0.1522, zr: 0.0913, sv: 0.5218, svZR: 0.3131, st: 0.115, stZR: 0.230, bk: 0.20},
+  sg: {li: 0.2815, ahb: 0.1811, zr: 0.1087, sv: 0.6209, svZR: 0.3725, st: 0.138, stZR: 0.276, bk: 0.24},
+  tk: {li: 0.2720, ahb: 0.1720, zr: 0.1032, sv: 0.5896, svZR: 0.3538, st: 0.138, stZR: 0.276, bk: 0.24},
+  hk: {li: 0.3270, ahb: 0.2268, zr: 0.1361, sv: 0.7774, svZR: 0.4665, st: 0.1725, stZR: 0.345, bk: 0.30}
+};
+const COMMIT = {aws: {od: 0, '1y': 0.33, '3y': 0.53}, az: {od: 0, '1y': 0.40, '3y': 0.60}, gcp: {od: 0, '1y': 0.25, '3y': 0.52}, azsql: {od: 0, '1y': 0.21, '3y': 0.33}};
+const CLOUDN = {aws: 'AWS', azure: 'Azure', gcp: 'Google Cloud'};
+const LBCONN = [[0.5, 105], [1, 218], [2, 443], [3, 668], [4, 894], [5, 1119], [6, 1344], [7, 1570], [8, 1795], [9, 2020], [10, 2246], [12, 2696], [14, 3147], [16, 3597], [24, 3993]];
+
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+const fmt2 = n => { let x = n.toFixed(n >= 1 ? 3 : 4); while (/\.\d{4,}$/.test(x) && x.endsWith('0')) x = x.slice(0, -1); if (n < 1) while (/\.\d{4}$/.test(x) && x.endsWith('0')) x = x.slice(0, -1); return '$' + x; };
+const fmtCU = v => (v % 1 ? v.toFixed(1) : v) + ' CU';
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+function activeHours(s) { return (s.hpd >= 24 && s.dpw >= 7) ? HRS : s.hpd * s.dpw * WKS; }
+function lbConn(cu) { let v = LBCONN[0][1]; for (const [c, n] of LBCONN) if (cu >= c) v = n; return v; }
+
+function state() {
+  const haN = +$('haN').value;
+  return {
+    region: $('region').value, cloud: $('lbCloud').value, tier: $('lbTier').value, promo: $('promo').checked,
+    disc: clamp(+$('disc').value || 0, 0, 90), commit: $('commit').value, family: $('family').value,
+    peak: PEAKS[+$('peak').value], floor: +$('floor').value, load: +$('load').value / 100,
+    hpd: +$('hpd').value, dpw: +$('dpw').value, s2z: $('s2z').checked, stopIdle: $('stopIdle').checked, burst: $('burst').checked, azsqlAhb: $('azsqlAhb').checked,
+    ha: haN > 0, haN, rep: +$('rep').value, repLoad: +$('repLoad').value / 100,
+    sto: Math.max(1, +$('sto').value || 1), chg: Math.max(0, +$('chg').value || 0), ret: clamp(+$('ret').value || 7, 1, 35),
+    avgIops: Math.max(0, +$('avgIops').value || 0), peakIops: Math.max(0, +$('peakIops').value || 0),
+    sync: Math.max(0, +$('sync').value || 0), etl: Math.max(0, +$('etl').value || 0)
+  };
+}
+
+function syncControls() {
+  const P = PEAKS[+$('peak').value], fixed = P > 64, fl = $('floor');
+  if (fixed) { fl.min = P; fl.max = P; fl.value = P; fl.disabled = true; }
+  else { const mn = Math.max(0.5, P - 16); fl.disabled = false; fl.min = mn; fl.max = P; fl.step = 0.5; fl.value = clamp(+fl.value, mn, P); }
+  $('floorHint').textContent = fixed ? 'Fixed size above 64 CU' : 'max − min ≤ 16 CU' + (P > 16 ? ' (min ≥ ' + fmtCU(P - 16) + ')' : '');
+  const ha = +$('haN').value > 0, s2zOK = P <= 32 && !ha;
+  $('s2z').disabled = !s2zOK; if (!s2zOK) $('s2z').checked = false;
+  const reg = $('region').value;
+  [...$('lbCloud').options].forEach(o => { o.disabled = !LB[reg][o.value]; });
+  $('lbCloud').value = LB[reg][prefCloud] ? prefCloud : Object.keys(LB[reg])[0];
+  $('lbTier').disabled = $('lbCloud').value === 'azure';
+}
+
+function pickAws(R, fam, s) {
+  if (s.burst && R <= 4) return 't4g.medium';
+  if (s.burst && R <= 8) return 't4g.large';
+  const r = [['r8g.large', 16], ['r8g.xlarge', 32], ['r8g.2xlarge', 64], ['r8g.4xlarge', 128], ['r8g.8xlarge', 256], ['r8g.12xlarge', 384], ['r8g.16xlarge', 512]];
+  const m = [['m8g.large', 8], ['m8g.xlarge', 16], ['m8g.2xlarge', 32], ['m8g.4xlarge', 64], ['m8g.8xlarge', 128], ['m8g.12xlarge', 192], ['m8g.16xlarge', 256]];
+  const list = fam === 'm' ? m : r;
+  return (list.find(x => x[1] >= R) || list[list.length - 1])[0];
+}
+function awsSpec(c) {
+  const [fam, sz] = c.split('.');
+  if (fam === 't4g') return [2, sz === 'medium' ? 4 : 8];
+  const vc = {large: 2, xlarge: 4, '2xlarge': 8, '4xlarge': 16, '8xlarge': 32, '12xlarge': 48, '16xlarge': 64}[sz];
+  return [vc, vc * (fam === 'm8g' ? 4 : 8)];
+}
+function row(o) { o.total = ['cmp', 'ha', 'rep', 'sto', 'bk', 'io', 'ext'].reduce((t, k) => t + (o.c[k] || 0), 0); return o; }
+
+function calcLakebase(s) {
+  const reg = LB[s.region], cloud = reg[s.cloud] ? s.cloud : Object.keys(reg)[0], r = reg[cloud];
+  const [asR, minR] = cloud === 'azure' ? r.x : (s.tier === 'enterprise' ? r.e : r.p);
+  const pf = s.promo ? 0.5 : 1, df = 1 - s.disc / 100;
+  const P = s.peak, fixed = P > 64, m = fixed ? P : s.floor, band = P - m, act = activeHours(s);
+  const s2z = s.s2z && P <= 32 && !s.ha;
+  const floorH = s2z ? m * act : m * HRS, aboveH = band * s.load * act, floorRate = s2z ? asR : minR;
+  const listPrim = floorH * floorRate + aboveH * asR, prim = listPrim * pf * df;
+  const haN = s.ha ? s.haN : 0, pitrGB = s.chg * clamp(s.ret, 2, 30);
+  const c = {cmp: prim, ha: prim * haN, rep: prim * s.rep * s.repLoad, sto: s.sto * r.st[0], bk: pitrGB * r.st[1], io: 0, ext: s.sync};
+  const post = listPrim * df * (1 + haN + s.rep * s.repLoad) + c.sto + c.bk + c.ext;
+  const notes = [];
+  if (s2z) {
+    notes.push('Scale-to-zero: active hours only, all at the autoscaling rate.');
+    notes.push(act >= HRS ? '⚠ Never idle, so scale-to-zero only forfeits the Always-On minimum rate. Turn it off.' : 'Assumes the scale-to-zero timeout is shortened from the 24 h default so idle hours actually suspend.');
+  } else notes.push('Always-On: the ' + fmtCU(m) + ' minimum bills 730 h at the minimum-usage rate; usage above it at the autoscaling rate.');
+  if (haN) notes.push('HA: ' + pl(haN, 'secondary').replace('secondarys', 'secondaries') + (haN === 1 ? ' in another AZ' : ' in other AZs') + ', each ≥ primary size; can serve reads via -ro.');
+  if (s.promo) notes.push('After the promo (from 1 Feb 2027): ' + fmt(post) + '/mo at today\'s list.');
+  if (cloud !== s.cloud) notes.push('Not priced on ' + CLOUDN[s.cloud] + ' in ' + REG[s.region].name + '; showing ' + r.label + '.');
+  if (s.region === 'hk') notes.push('In Hong Kong, Lakebase is priced on Azure East Asia only.');
+  return row({key: 'lb', name: 'Lakebase', sub: r.label + ' · ' + (cloud === 'azure' ? 'Azure Premium' : s.tier[0].toUpperCase() + s.tier.slice(1)) + ' · ' + (fixed ? 'fixed ' + fmtCU(P) : fmtCU(m) + '–' + fmtCU(P)),
+    c, post, notes,
+    size: [['Compute', (fixed ? 'Fixed ' + fmtCU(P) : 'Autoscale ' + fmtCU(m) + '–' + fmtCU(P)) + ' · avg ' + fmtCU(+(m + band * s.load).toFixed(1)) + ' active · ~' + 2 * m + '–' + 2 * P + ' GB RAM'],
+      ['Hours', s2z ? Math.round(act) + ' h (scale-to-zero)' : '730 h (Always-On minimum)'], ['HA', haN ? pl(haN, 'secondary').replace('secondarys', 'secondaries') + ', autoscale with primary' : 'off'],
+      ['Read scale', s.rep ? pl(s.rep, 'replica') + ' @ ' + Math.round(s.repLoad * 100) + '% load, no extra storage' : 'none'],
+      ['Storage', s.sto.toLocaleString() + ' GB + ~' + Math.round(pitrGB).toLocaleString() + ' GB PITR history · no I/O charges'],
+      ['Connections', '≈ ' + lbConn(Math.min(P, 8 * m)).toLocaleString() + ' direct + PgBouncer pooler']],
+    rates: 'Autoscaling ' + fmt2(asR) + ' · Always-On minimum ' + fmt2(minR) + ' /CU-hr' + (s.promo ? ' (−50% to 31 Jan 2027)' : '') + (s.disc ? ' · −' + s.disc + '% contract' : '') + ' · storage ' + fmt2(r.st[0]) + ' · PITR ' + fmt2(r.st[1]) + ' /GB-mo'});
+}
+
+function calcASv2(s) {
+  const a = AWS.regions[REG[s.region].aws].r, act = activeHours(s);
+  const P = s.peak, m = P > 64 ? P : s.floor, band = P - m, s2z = s.s2z && P <= 32 && !s.ha;
+  const acuh = s2z ? (m + band * s.load) * act : m * HRS + band * s.load * act;
+  const ioReq = s.avgIops * act * 3600 / 1e6 * a.aurora_io_req, bk = Math.max(0, s.chg * s.ret - s.sto) * a.aurora_backup;
+  const mk = (rate, stoR, io) => ({cmp: acuh * rate, ha: s.ha ? acuh * rate : 0, rep: acuh * rate * s.rep * s.repLoad, sto: s.sto * stoR, bk, io, ext: s.etl});
+  const std = row({c: mk(a.asv2_std, a.aurora_std_storage, ioReq)}), opt = row({c: mk(a.asv2_io, a.aurora_io_storage, 0)});
+  const useOpt = opt.total < std.total, pick = useOpt ? opt : std;
+  return row({key: 'asv2', name: 'Aurora Serverless v2', sub: (useOpt ? 'I/O-Optimized' : 'Standard') + ' · ' + m + '–' + P + ' ACU · ' + REG[s.region].aws,
+    c: pick.c, notes: [(useOpt ? 'Standard' : 'I/O-Optimized') + ' would be ' + fmt((useOpt ? std : opt).total) + '/mo.'].concat(s.commit !== 'od' ? ['Reserved instances don\'t apply to Serverless v2.'] : []).concat(s2z ? ['Scale-to-zero modeled as 0-ACU auto-pause.'] : []),
+    size: [['Compute', m + '–' + P + ' ACU (1 ACU ≈ 2 GiB) · same profile as Lakebase · ' + Math.round(acuh).toLocaleString() + ' ACU-h'], ['Hours', s2z ? Math.round(act) + ' h (auto-pause)' : '730 h at min'],
+      ['HA', s.ha ? '1 reader in another AZ, tier 0–1 (scales with writer)' : 'off'], ['Read scale', s.rep ? pl(s.rep, 'reader') + ' @ ' + Math.round(s.repLoad * 100) + '% load' : 'none'],
+      ['I/O', useOpt ? 'included (I/O-Optimized)' : Math.round(s.avgIops * act * 3600 / 1e6).toLocaleString() + 'M requests']],
+    rates: fmt2(a.asv2_std) + ' Standard · ' + fmt2(a.asv2_io) + ' I/O-Opt /ACU-hr · storage ' + fmt2(a.aurora_std_storage) + ' / ' + fmt2(a.aurora_io_storage) + ' /GB-mo · I/O ' + fmt2(a.aurora_io_req) + '/1M · backup ' + fmt2(a.aurora_backup) + '/GB-mo'});
+}
+
+function calcAurora(s) {
+  const A = AWS.regions[REG[s.region].aws], a = A.r, act = activeHours(s), R = 2 * s.peak;
+  const cls = pickAws(R, 'r', s), cd = COMMIT.aws[s.commit], hrs = s.stopIdle ? act : HRS, [vc, gb] = awsSpec(cls);
+  const ioReq = s.avgIops * act * 3600 / 1e6 * a.aurora_io_req, bk = Math.max(0, s.chg * s.ret - s.sto) * a.aurora_backup;
+  const mk = (h, stoR, io) => { const i = h * hrs * (1 - cd); return {cmp: i, ha: s.ha ? i : 0, rep: i * s.rep, sto: s.sto * stoR, bk, io, ext: s.etl}; };
+  const std = row({c: mk(A.aurora_std[cls], a.aurora_std_storage, ioReq)}), opt = row({c: mk(A.aurora_io[cls], a.aurora_io_storage, 0)});
+  const useOpt = opt.total < std.total, pick = useOpt ? opt : std;
+  return row({key: 'aurora', name: 'Aurora PostgreSQL', sub: 'db.' + cls + ' · ' + vc + ' vCPU / ' + gb + ' GiB · ' + (useOpt ? 'I/O-Optimized' : 'Standard'),
+    c: pick.c, notes: [(useOpt ? 'Standard' : 'I/O-Optimized') + ' would be ' + fmt((useOpt ? std : opt).total) + '/mo.'].concat(cls.startsWith('t4g') ? ['Burstable T class (CPU credits); AWS positions it for dev/test and light workloads.'] : []).concat(cd ? ['RI −' + Math.round(cd * 100) + '% on instances.'] : []),
+    size: [['Compute', 'db.' + cls + ' · ' + vc + ' vCPU / ' + gb + ' GiB × ' + pl(1 + (s.ha ? 1 : 0) + s.rep, 'instance')], ['Hours', Math.round(hrs) + ' h'],
+      ['HA', s.ha ? '+1 Aurora Replica in another AZ' : 'storage-only (writer recreated on failure)'], ['Read scale', s.rep ? pl(s.rep, 'full-size reader') + ', shared storage' : 'none'],
+      ['I/O', useOpt ? 'included (I/O-Optimized)' : Math.round(s.avgIops * act * 3600 / 1e6).toLocaleString() + 'M requests']],
+    rates: 'db.' + cls + ' ' + fmt2(A.aurora_std[cls]) + ' Std · ' + fmt2(A.aurora_io[cls]) + ' I/O-Opt /hr · storage ' + fmt2(a.aurora_std_storage) + ' / ' + fmt2(a.aurora_io_storage) + ' /GB-mo · I/O ' + fmt2(a.aurora_io_req) + '/1M · ' + REG[s.region].aws});
+}
+
+function calcRDS(s) {
+  const A = AWS.regions[REG[s.region].aws], a = A.r, act = activeHours(s), R = 2 * s.peak;
+  const cls = pickAws(R, s.family === 'gp' ? 'm' : 'r', s), cd = COMMIT.aws[s.commit], hrs = s.stopIdle ? act : HRS, [vc, gb] = awsSpec(cls);
+  const one = A.rds_saz[cls] * hrs * (1 - cd), maz = A.rds_maz[cls] * hrs * (1 - cd);
+  const base = s.sto >= 400 ? 12000 : 3000, xi = Math.max(0, s.peakIops - base);
+  const c = {cmp: one, ha: s.ha ? (maz - one) + s.sto * (a.gp3_maz - a.gp3_saz) + xi * (a.gp3_iops_maz - a.gp3_iops_saz) : 0,
+    rep: s.rep * (one + s.sto * a.gp3_saz), sto: s.sto * a.gp3_saz, bk: Math.max(0, s.chg * s.ret - s.sto) * a.rds_backup, io: xi * a.gp3_iops_saz, ext: s.etl};
+  return row({key: 'rds', name: 'RDS for PostgreSQL', sub: 'db.' + cls + ' · ' + vc + ' vCPU / ' + gb + ' GiB · gp3' + (s.ha ? ' · Multi-AZ' : ''),
+    c, notes: (s.ha ? ['Multi-AZ doubles instance, storage and IOPS rates; standby not readable.'] : []).concat(s.rep ? ['Each replica has its own storage.'] : []).concat(cls.startsWith('t4g') ? ['Burstable T class.'] : []).concat(cd ? ['RI −' + Math.round(cd * 100) + '% on instances.'] : []),
+    size: [['Compute', 'db.' + cls + ' · ' + vc + ' vCPU / ' + gb + ' GiB' + (s.ha ? ' Multi-AZ' : ' Single-AZ')], ['Hours', Math.round(hrs) + ' h'], ['HA', s.ha ? '1 synchronous standby (not readable)' : 'off'],
+      ['Read scale', s.rep ? pl(s.rep, 'full-size replica') + ', own storage' : 'none'], ['I/O', 'gp3 baseline ' + base.toLocaleString() + ' IOPS' + (xi ? ' + ' + xi.toLocaleString() + ' provisioned' : '')]],
+    rates: 'db.' + cls + ' ' + fmt2(A.rds_saz[cls]) + ' Single-AZ · ' + fmt2(A.rds_maz[cls]) + ' Multi-AZ /hr · gp3 ' + fmt2(a.gp3_saz) + ' (MAZ ' + fmt2(a.gp3_maz) + ') /GB-mo · IOPS ' + fmt2(a.gp3_iops_saz) + ' /IOPS-mo · backup ' + fmt2(a.rds_backup) + '/GB-mo'});
+}
+
+function calcAzure(s) {
+  const z = AZ[s.region], act = activeHours(s), R = 2 * s.peak, hrs = s.stopIdle ? act : HRS;
+  let label, vc, gb, hourly, cd = COMMIT.az[s.commit];
+  if (s.burst && R <= 8 && !s.ha) { const b = R <= 4 ? 'B2s' : 'B2ms'; label = 'Burstable ' + b; vc = 2; gb = R <= 4 ? 4 : 8; hourly = z[b]; cd = 0; }
+  else {
+    const fam = s.family === 'gp' ? 'D' : 'E', per = fam === 'D' ? 4 : 8, sizes = fam === 'D' ? [2, 4, 8, 16, 32, 48, 64, 96] : [2, 4, 8, 16, 20, 32, 48, 64, 96];
+    vc = sizes.find(v => v * per >= R) || 96; gb = vc * per; hourly = vc * z[fam]; label = fam + vc + 'ds_v5';
+  }
+  const comp = hourly * hrs * (1 - cd), xi = Math.max(0, s.peakIops - 3000);
+  const c = {cmp: comp, ha: s.ha ? comp + s.sto * z.st + xi * z.iops : 0, rep: s.rep * (comp + s.sto * z.st), sto: s.sto * z.st, bk: Math.max(0, s.chg * s.ret - s.sto) * z.bk, io: xi * z.iops, ext: s.etl};
+  return row({key: 'azure', name: 'Azure PG Flexible', sub: label + ' · ' + vc + ' vCores / ' + gb + ' GiB' + (s.ha ? ' · zone-redundant HA' : '') + ' · ' + REG[s.region].az,
+    c, notes: (s.ha ? ['HA standby has the same vCores and storage.'] : []).concat(s.burst && R <= 8 && s.ha ? ['Burstable has no HA, so D/E series is used.'] : []).concat(cd ? ['Reserved −' + Math.round(cd * 100) + '% on compute.'] : []),
+    size: [['Compute', label + ' · ' + vc + ' vCores / ' + gb + ' GiB'], ['Hours', Math.round(hrs) + ' h'], ['HA', s.ha ? 'standby, same vCores + storage' : 'off'],
+      ['Read scale', s.rep ? pl(s.rep, 'replica') + ', own compute + storage' : 'none'], ['I/O', 'Premium SSD v2: 3,000 IOPS included' + (xi ? ' + ' + xi.toLocaleString() : '')]],
+    rates: 'Edsv5 ' + fmt2(z.E) + ' · Ddsv5 ' + fmt2(z.D) + ' /vCore-hr · B2s ' + fmt2(z.B2s) + ' · B2ms ' + fmt2(z.B2ms) + ' /hr · storage ' + fmt2(z.st) + '/GB-mo · IOPS ' + fmt2(z.iops) + '/IOPS-mo · backup ' + fmt2(z.bk) + ' beyond 100%'});
+}
+
+function calcCloudSQL(s) {
+  const g = CSQL[s.region], act = activeHours(s), R = 2 * s.peak, cd = COMMIT.gcp[s.commit], hrs = s.stopIdle ? act : HRS;
+  let vc = Math.max(1, Math.ceil(R / (s.family === 'gp' ? 4 : 6.5))); if (vc > 1 && vc % 2) vc++; vc = Math.min(vc, 96);
+  const mem = Math.min(R, 624), node = (vc * g.v + mem * g.m) * hrs * (1 - cd);
+  const c = {cmp: node, ha: s.ha ? node + s.sto * (g.ssdHA - g.ssd) : 0, rep: s.rep * (node + s.sto * g.ssd), sto: s.sto * g.ssd, bk: (s.sto + s.chg * s.ret) * g.bk, io: 0, ext: s.etl};
+  return row({key: 'csql', name: 'Cloud SQL (PG)', sub: 'Enterprise · ' + vc + ' vCPU / ' + mem + ' GiB' + (s.ha ? ' · regional HA' : '') + ' · ' + REG[s.region].gcp,
+    c, notes: (s.ha ? ['HA doubles CPU, RAM and storage rates.'] : []).concat(['Backups billed per GB used (no free allowance).']).concat(cd ? ['CUD −' + Math.round(cd * 100) + '% on vCPU and RAM.'] : []),
+    size: [['Compute', 'Enterprise custom · ' + vc + ' vCPU / ' + mem + ' GiB'], ['Hours', Math.round(hrs) + ' h'], ['HA', s.ha ? 'regional (HA rates)' : 'zonal'],
+      ['Read scale', s.rep ? pl(s.rep, 'replica') + ', own storage' : 'none'], ['I/O', 'no I/O charges; IOPS scale with disk size and vCPU']],
+    rates: fmt2(g.v) + '/vCPU-hr + ' + fmt2(g.m) + '/GiB-hr (HA ×2) · SSD ' + fmt2(g.ssd) + ' (HA ' + fmt2(g.ssdHA) + ') /GB-mo · backup ' + fmt2(g.bk) + '/GB-mo'});
+}
+
+function calcAlloy(s) {
+  const g = ALLOY[s.region], R = 2 * s.peak, cd = COMMIT.gcp[s.commit];
+  const shapes = [[2, 16], [4, 32], [8, 64], [16, 128], [32, 256], [64, 512], [96, 768]];
+  const [vc, mem] = shapes.find(x => x[1] >= R) || shapes[shapes.length - 1];
+  const node = (vc * g.v + mem * g.m) * HRS * (1 - cd);
+  const c = {cmp: node, ha: s.ha ? node : 0, rep: node * s.rep, sto: s.sto * g.st, bk: (s.sto + s.chg * Math.max(0, s.ret - 7)) * g.bk, io: 0, ext: s.etl};
+  return row({key: 'alloy', name: 'AlloyDB', sub: vc + ' vCPU / ' + mem + ' GiB' + (s.ha ? ' · HA primary (2 nodes)' : ' · basic') + ' · ' + REG[s.region].gcp,
+    c, notes: ['No I/O charges; read pools share storage.'].concat(cd ? ['CUD −' + Math.round(cd * 100) + '% on vCPU and RAM.'] : []).concat(s.stopIdle ? ['Modeled always running (730 h).'] : []),
+    size: [['Compute', vc + ' vCPU / ' + mem + ' GiB per node'], ['Hours', '730 h'], ['HA', s.ha ? '2 nodes (active + standby)' : '1 node'],
+      ['Read scale', s.rep ? s.rep + '-node read pool, shared storage' : 'none'], ['I/O', 'no I/O charges']],
+    rates: fmt2(g.v) + '/vCPU-hr + ' + fmt2(g.m) + '/GiB-hr per node · storage ' + fmt2(g.st) + '/GB-mo · backup ' + fmt2(g.bk) + '/GB-mo'});
+}
+
+function calcAzureSQL(s) {
+  const q = AZSQL[s.region], act = activeHours(s), R = 2 * s.peak, cd = COMMIT.azsql[s.commit];
+  const sizes = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 32, 40, 80];
+  const vc = sizes.find(v => v * 5.1 >= R) || 80, rate = s.azsqlAhb ? q.ahb : q.li;
+  const pc = vc * rate * HRS * (1 - cd);
+  const prov = row({c: {cmp: pc, ha: s.ha ? vc * q.zr * HRS + s.sto * (q.stZR - q.st) : 0, rep: s.rep * (pc + s.sto * q.st), sto: s.sto * q.st, bk: Math.max(0, s.chg * s.ret - s.sto) * q.bk, io: 0, ext: s.etl}});
+  // Serverless: billed per vCore-second on max(CPU, memory / 3 GB); modeled memory-bound on the Lakebase capacity profile
+  const P = s.peak, m = P > 64 ? P : s.floor, band = P - m, s2z = s.s2z && P <= 32 && !s.ha;
+  const gbh = 2 * (s2z ? (m + band * s.load) * act : m * HRS + band * s.load * act), vch = gbh / 3;
+  const svOK = R <= 240;
+  const sv = svOK ? row({c: {cmp: vch * q.sv, ha: s.ha ? vch * q.svZR + s.sto * (q.stZR - q.st) : 0, rep: s.rep * (vch * s.repLoad * q.sv + s.sto * q.st), sto: s.sto * q.st, bk: Math.max(0, s.chg * s.ret - s.sto) * q.bk, io: 0, ext: s.etl}}) : null;
+  const useSv = sv && sv.total < prov.total, pick = useSv ? sv : prov;
+  const svMax = Math.min(80, Math.ceil(R / 3)), svMin = Math.max(0.5, Math.round(2 * m / 3 * 2) / 2);
+  return row({key: 'azsql', name: 'Azure SQL Database', sub: 'General Purpose · ' + (useSv ? 'serverless ' + svMin + '–' + svMax + ' vCores' : vc + ' vCores / ' + (vc * 5.1).toFixed(1) + ' GB') + (s.ha ? ' · zone-redundant' : '') + ' · SQL Server engine',
+    c: pick.c, notes: [(useSv ? 'Provisioned ' + vc + ' vCores' : (sv ? 'Serverless' : 'Serverless (≤ 240 GB)')) + ' would be ' + (useSv ? fmt(prov.total) : (sv ? fmt(sv.total) : 'n/a')) + '/mo.',
+      'SQL Server engine (T-SQL), not Postgres: switching either way is a migration project.',
+      (s.azsqlAhb ? 'Azure Hybrid Benefit: provisioned compute without the SQL license (serverless always includes it).' : 'License included. Tick Hybrid Benefit if the customer brings SQL Server licenses.')]
+      .concat(s.ha ? ['HA is built in; zone redundancy adds a per-vCore and storage uplift. Business Critical (3 replicas, readable secondary) costs more.'] : [])
+      .concat(cd && !useSv ? ['Reserved −' + Math.round(cd * 100) + '% on provisioned compute.'] : []).concat(s.stopIdle && !useSv ? ['Provisioned databases can\'t be stopped, so 730 h.'] : []),
+    size: [['Compute', useSv ? 'Serverless ' + svMin + '–' + svMax + ' vCores (3 GB/vCore) · ~' + Math.round(vch).toLocaleString() + ' vCore-h' + (s2z ? ' with auto-pause' : '') : 'Provisioned ' + vc + ' vCores / ' + (vc * 5.1).toFixed(1) + ' GB (5.1 GB/vCore)'],
+      ['Hours', useSv && s2z ? Math.round(act) + ' h (auto-pause)' : '730 h'], ['HA', s.ha ? 'built-in + zone redundancy' : 'built-in (locally redundant)'],
+      ['Read scale', s.rep ? pl(s.rep, 'geo-replica / copy') + ', each billed as a database' : 'none'], ['Storage', 'GP data 5 GB–4 TB provisioned · backups RA-GRS beyond 100% free']],
+    rates: 'Provisioned ' + fmt2(q.li) + ' (AHB ' + fmt2(q.ahb) + ') /vCore-hr · ZR +' + fmt2(q.zr) + ' · serverless ' + fmt2(q.sv) + '/vCore-hr · storage ' + fmt2(q.st) + ' (ZR ' + fmt2(q.stZR) + ') /GB-mo · backup ' + fmt2(q.bk) + '/GB-mo'});
+}
+
+function snowflakeSize(s) {
+  const R = 2 * s.peak;
+  const hm = [['HIGHMEM_L', 2, 16], ['HIGHMEM_XL', 4, 32], ['HIGHMEM_2XL', 8, 64], ['HIGHMEM_4XL', 16, 128], ['HIGHMEM_8XL', 32, 256], ['HIGHMEM_12XL', 48, 384]];
+  const st = [['STANDARD_M', 1, 4], ['STANDARD_L', 2, 8], ['STANDARD_XL', 4, 16], ['STANDARD_2XL', 8, 32], ['STANDARD_4XL', 16, 64], ['STANDARD_8XL', 32, 128], ['STANDARD_12XL', 48, 192], ['STANDARD_24XL', 96, 384]];
+  const list = s.family === 'gp' ? st : hm;
+  return list.find(x => x[2] >= R) || list[list.length - 1];
+}
+
+const OPEN = new Set();
+let prefCloud = 'aws';
+function allRows(s) { return [calcLakebase(s), calcAurora(s), calcASv2(s), calcRDS(s), calcAzure(s), calcAzureSQL(s), calcCloudSQL(s), calcAlloy(s)]; }
+function render() {
+  syncControls();
+  const s = state(), act = activeHours(s);
+  $('peakOut').textContent = fmtCU(s.peak) + ' · ' + 2 * s.peak + ' GB';
+  $('floorOut').textContent = s.peak > 64 ? 'fixed' : fmtCU(+$('floor').value);
+  $('loadOut').textContent = Math.round(s.load * 100) + '%'; $('hpdOut').textContent = s.hpd + ' h'; $('dpwOut').textContent = s.dpw + ' d';
+  $('repOut').textContent = s.rep; $('repLoadOut').textContent = Math.round(s.repLoad * 100) + '%';
+  const inote = [];
+  if (s.region === 'hk') inote.push('Hong Kong: Lakebase is priced on Azure East Asia only.');
+  if ($('lbCloud').value === 'azure') inote.push('Azure Databricks Premium = Enterprise tier on AWS/Google.');
+  if ($('s2z').checked && act >= HRS) inote.push('Scale-to-zero with no idle time keeps the autoscaling rate: turn it off for the Always-On rate.');
+  if ($('s2z').disabled) inote.push('Scale-to-zero needs ≤ 32 CU and no HA.');
+  $('inote').textContent = inote.join(' · ');
+
+  const rows = allRows(s), lb = rows[0];
+  const sorted = rows.slice().sort((a, b) => a.total - b.total), max = sorted[sorted.length - 1].total;
+  const best = sorted.find(r => r.key !== 'lb'), rank = sorted.indexOf(lb) + 1, pct = (lb.total / best.total - 1) * 100;
+  $('summary').innerHTML =
+    '<div class="kpi dbx"><b>' + fmt(lb.total) + '<small>/mo</small></b><span>Lakebase' + (s.promo ? '<br>after promo ' + fmt(lb.post) : '<br>' + fmt(lb.total * 12) + '/yr') + '</span></div>'
+    + '<div class="kpi"><b>' + fmt(best.total) + '<small>/mo</small></b><span>cheapest other<br>' + best.name + '</span></div>'
+    + '<div class="kpi ' + (pct <= 1 ? 'good' : 'warn') + '"><b>' + (pct <= 0 ? '−' : '+') + Math.abs(pct).toFixed(0) + '%</b><span>Lakebase vs<br>cheapest other</span></div>'
+    + '<div class="kpi"><b>#' + rank + '<small> of ' + sorted.length + '</small></b><span>' + REG[s.region].name + '<br>' + ({od: 'others on-demand', '1y': 'others 1-yr commit', '3y': 'others 3-yr commit'})[s.commit] + '</span></div>'
+    + '<div class="acts"><button class="abtn" id="inpBtn" aria-expanded="' + !$('inputs').hidden + '" aria-controls="inputs">Inputs</button><button class="abtn" id="copyBtn">Copy</button><button class="abtn" id="shareBtn">Share</button></div>';
+  $('inpBtn').onclick = () => { $('inputs').hidden = !$('inputs').hidden; render(); };
+  $('copyBtn').onclick = () => navigator.clipboard.writeText(summaryText()).then(() => toast('Summary copied'));
+  $('shareBtn').onclick = () => { writeHash(); navigator.clipboard.writeText(location.href).then(() => toast('Link copied')); };
+
+  const cell = (v, cls) => '<td class="' + cls + (v > 0.5 ? '' : ' z') + '">' + (v > 0.5 ? fmt(v) : '—') + '</td>';
+  let h = '<colgroup><col style="width:27%"><col class="c-cmp"><col class="c-ha"><col class="c-rep"><col class="c-sto"><col class="c-bk"><col class="c-io"><col style="width:11%"><col style="width:9%"></colgroup>'
+    + '<thead><tr><th class="m">Platform <span class="mk" style="display:inline;margin-left:4px">sized to ' + fmtCU(s.peak) + ' / ' + 2 * s.peak + ' GB peak</span></th><th class="c-cmp">Compute</th><th class="c-ha">HA</th><th class="c-rep">Read scale</th><th class="c-sto">Storage</th><th class="c-bk">Backup / PITR</th><th class="c-io">I/O + extras</th><th>Monthly</th><th>vs Lakebase</th></tr></thead><tbody>';
+  sorted.forEach((r, i) => {
+    const d = r.key === 'lb' ? '<span class="d par">base</span>' : (() => { const p = (r.total / lb.total - 1) * 100; return Math.abs(p) < 1 ? '<span class="d par">=</span>' : '<span class="d ' + (p > 0 ? 'up">▲ +' : 'down">▼ ') + p.toFixed(0) + '%</span>'; })();
+    const open = OPEN.has(r.key);
+    h += '<tr class="row' + (r.key === 'lb' ? ' lb' : '') + (open ? ' open' : '') + '" data-k="' + r.key + '"><td class="m"><span class="rk">' + (i + 1) + '</span><span class="nm">' + r.name + '</span>' + (i === 0 ? '<span class="bdg best">lowest</span>' : '') + '<span class="chev">▸</span><span class="mk">' + r.sub + '</span></td>'
+      + cell(r.c.cmp, 'c-cmp') + cell(r.c.ha, 'c-ha') + cell(r.c.rep, 'c-rep') + cell(r.c.sto, 'c-sto') + cell(r.c.bk, 'c-bk') + cell(r.c.io + r.c.ext, 'c-io')
+      + '<td class="tot" style="--w:' + (r.total / max * 100).toFixed(1) + '%">' + fmt(r.total) + '<small>' + fmt(r.total * 12) + '/yr</small></td><td>' + d + '</td></tr>';
+    if (open) h += '<tr class="detail"><td colspan="9"><div class="dw"><dl>' + r.size.map(x => '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>').join('') + '</dl><ul>' + r.notes.map(n => '<li>' + n + '</li>').join('') + '</ul><div class="rates">Rates used: ' + r.rates + '</div></div></td></tr>';
+  });
+  const sf = snowflakeSize(s);
+  h += '<tr class="na"><td class="m"><span class="rk">–</span><span class="nm">Snowflake Postgres</span><span class="mk">closest ' + sf[0] + ' · ' + sf[1] + ' cores / ' + sf[2] + ' GB' + (s.ha ? ' + HA standby' : '') + '</span></td><td colspan="8" style="text-align:left;white-space:normal;font-size:11.5px">Not priced: credits/hr per size are published only in Snowflake\'s Service Consumption Table. Multiply credits/hr × 730 × your $/credit. Storage is a flat $/TB-month, and replica replication is billed as data transfer.</td></tr>';
+  h += '</tbody><tfoot><tr><td colspan="9">' + REG[s.region].name + ' list prices verified 2026-10-09 · 730 h/month · ' + (s.promo ? 'Lakebase promo on' : 'Lakebase list') + (s.disc ? ' · −' + s.disc + '% Databricks discount' : '') + ' · competitors ' + ({od: 'on-demand', '1y': '1-yr commitment', '3y': '3-yr commitment'})[s.commit] + ' · excludes tax, support and data transfer.</td></tr></tfoot>';
+  $('mx').innerHTML = h;
+  $('mx').querySelectorAll('tr.row').forEach(tr => tr.onclick = () => { const k = tr.dataset.k; OPEN.has(k) ? OPEN.delete(k) : OPEN.add(k); render(); });
+  writeHash();
+}
+
+const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'promo', 'disc', 'family', 'peak', 'floor', 'load', 'hpd', 'dpw', 's2z', 'stopIdle', 'burst', 'azsqlAhb', 'haN', 'rep', 'repLoad', 'sto', 'chg', 'ret', 'avgIops', 'peakIops', 'sync', 'etl'];
+const DEFAULTS = {};
+function getVal(id) { const e = $(id); return e.type === 'checkbox' ? (e.checked ? 1 : 0) : e.value; }
+function setVal(id, v) { const e = $(id); if (e.type === 'checkbox') e.checked = (v === true || v === 1 || v === '1'); else e.value = v; }
+let curPreset = 'prod';
+function writeHash() { const p = new URLSearchParams(); p.set('s', curPreset); IDS.forEach(id => p.set(id, getVal(id))); history.replaceState(null, '', '#' + p.toString()); }
+function readHash() { if (!location.hash) return false; const p = new URLSearchParams(location.hash.slice(1)); if (p.get('s')) curPreset = p.get('s'); IDS.forEach(id => { if (p.has(id)) setVal(id, p.get(id)); }); return true; }
+const PI = cu => PEAKS.indexOf(cu);
+const PRESETS = {
+  dev:   {peak: PI(4), floor: 0.5, load: 20, hpd: 9, dpw: 5, s2z: 1, haN: 0, rep: 0, sto: 50, chg: 1, ret: 7, avgIops: 50, peakIops: 1000},
+  small: {peak: PI(4), floor: 2, load: 30, hpd: 24, dpw: 7, s2z: 0, haN: 1, rep: 0, sto: 100, chg: 2, ret: 7, avgIops: 150, peakIops: 3000},
+  prod:  {peak: PI(8), floor: 4, load: 30, hpd: 24, dpw: 7, s2z: 0, haN: 1, rep: 0, sto: 200, chg: 5, ret: 7, avgIops: 300, peakIops: 3000},
+  spiky: {peak: PI(16), floor: 2, load: 15, hpd: 24, dpw: 7, s2z: 0, haN: 0, rep: 0, sto: 100, chg: 3, ret: 7, avgIops: 300, peakIops: 4000},
+  read:  {peak: PI(16), floor: 8, load: 40, hpd: 24, dpw: 7, s2z: 0, haN: 1, rep: 2, repLoad: 50, sto: 500, chg: 10, ret: 7, avgIops: 1500, peakIops: 6000},
+  io:    {peak: PI(16), floor: 8, load: 50, hpd: 24, dpw: 7, s2z: 0, haN: 1, rep: 0, sto: 1000, chg: 40, ret: 7, avgIops: 8000, peakIops: 16000},
+  large: {peak: PI(80), floor: 80, load: 0, hpd: 24, dpw: 7, s2z: 0, haN: 1, rep: 0, sto: 2000, chg: 50, ret: 14, avgIops: 5000, peakIops: 20000}
+};
+function markTab() { document.querySelectorAll('#tabs .tab').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === curPreset))); }
+function applyPreset(k) {
+  if (k === 'custom') { curPreset = 'custom'; markTab(); $('inputs').hidden = false; render(); return; }
+  const p = PRESETS[k]; curPreset = k;
+  setVal('peak', p.peak); syncControls();
+  Object.entries(p).forEach(([id, v]) => { if (id !== 'peak') setVal(id, v); });
+  markTab(); OPEN.clear(); render();
+}
+function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
+function summaryText() {
+  const s = state(), rows = allRows(s).sort((a, b) => a.total - b.total);
+  const L = ['Lakebase Compete Calculator: ' + REG[s.region].name + ', list prices verified 2026-10-09',
+    'Workload: peak ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM), Lakebase min ' + (s.peak > 64 ? s.peak : s.floor) + ' CU, avg load ' + Math.round(s.load * 100) + '%, ' + s.hpd + 'h x ' + s.dpw + 'd, HA ' + (s.ha ? s.haN : 'off') + ', ' + s.rep + ' replicas, ' + s.sto + ' GB, ' + s.chg + ' GB/day, ' + s.ret + '-day PITR',
+    'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
+  rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after promo ' + fmt(r.post) + '/mo]' : '')));
+  L.push('', location.href);
+  return L.join('\n');
+}
+
+$('lbCloud').addEventListener('change', () => { prefCloud = $('lbCloud').value; });
+IDS.forEach(id => { DEFAULTS[id] = getVal(id); const ev = () => { if (!['region', 'lbCloud', 'lbTier', 'commit'].includes(id)) { curPreset = 'custom'; markTab(); } render(); }; $(id).addEventListener('input', ev); $(id).addEventListener('change', ev); });
+document.querySelectorAll('#tabs .tab').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.p)));
+if (matchMedia('(max-width:760px)').matches) $('inputs').hidden = true;
+if (readHash()) { prefCloud = $('lbCloud').value; syncControls(); readHash(); markTab(); render(); } else applyPreset('prod');
+</script>
+</body>
+</html>
