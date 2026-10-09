@@ -103,6 +103,10 @@
    "rank": 31,
    "arena": "GPT 5.6 Terra (xHigh)"
   },
+  "qwen/qwen3.8-flash": {
+   "rank": 34,
+   "arena": "Qwen3.8 Flash Next"
+  },
   "zai/glm-5.3-flash": {
    "rank": 35,
    "arena": "GLM 5.3 Flash"
@@ -143,5 +147,14 @@
    "rank": 50,
    "arena": "Inkling"
   }
- }
+ },
+ "flagship": [
+  "anthropic/claude-fable-5.1",
+  "anthropic/claude-opus-5.5",
+  "anthropic/claude-sonnet-5.5",
+  "anthropic/claude-haiku-5.5",
+  "openai/gpt-6-astra",
+  "openai/gpt-6.1-sol",
+  "openai/gpt-6-luna"
+ ]
 }

@@ -23828,6 +23828,327 @@
       },
       "model_key": "qwen/qwen3.8-max"
     },
+    "qwen/qwen3.8-flash": {
+      "name": "Qwen3.8 Flash",
+      "short": "Qwen3.8 Flash",
+      "maker": "Alibaba Qwen",
+      "group": "other",
+      "oss": false,
+      "badges": [
+        "Added"
+      ],
+      "ctx": null,
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-09",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 0.113,
+          "out": 0.382,
+          "src": "ali",
+          "tier": "Alibaba Model Studio · Global scope",
+          "model_id": "qwen3.8-flash",
+          "note": "Arena lists it as Qwen3.8 Flash Next; Model Studio sells qwen3.8-flash, and the match is not confirmed.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "unverified",
+          "variants": [
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "International (Singapore) · Standard",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "International (Singapore)",
+              "id": "variant-0",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "US (Virginia) · US scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "US (Virginia) · US scope",
+              "id": "variant-1",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.113,
+              "out": 0.382,
+              "label": "Chinese mainland (Beijing) · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-2",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.0565,
+              "out": 0.191,
+              "label": "Chinese mainland (Beijing) · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-3",
+              "model_match": "unverified"
+            }
+          ],
+          "model_id_checked_at": "2026-10-09",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+          "endpoint": "Global",
+          "endpoints": {
+            "checked_at": "2026-10-09",
+            "src": [
+              "ali_ali_batch",
+              "ali_ali_pricing",
+              "ali_ali_regions"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "global",
+                "Global",
+                "US (Virginia)"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US",
+                "US (Virginia): inference stays in the US"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global",
+                "Germany (Frankfurt)"
+              ],
+              [
+                "APAC",
+                "global",
+                "International",
+                "Singapore"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global",
+                "Hong Kong, Tokyo"
+              ],
+              [
+                "APAC",
+                "geo",
+                "Chinese mainland",
+                "Beijing"
+              ]
+            ],
+            "hk": [
+              "routed",
+              "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+            ],
+            "tw": [
+              "none",
+              "No Taiwan region"
+            ],
+            "notes": [
+              [
+                "Batch",
+                "Batch only in Beijing at 50% of real-time."
+              ],
+              [
+                "Model",
+                "Arena ranks Qwen3.8 Flash Next; Model Studio's current Flash model is qwen3.8-flash, and the two are not confirmed to be the same checkpoint."
+              ]
+            ],
+            "ids": [
+              "qwen3.8-flash (model ID)"
+            ],
+            "cache_write": "not-listed"
+          }
+        },
+        "alicloud": {
+          "in": 0.113,
+          "out": 0.382,
+          "src": "ali",
+          "tier": "Global scope",
+          "model_id": "qwen3.8-flash",
+          "note": "Arena lists it as Qwen3.8 Flash Next; Model Studio sells qwen3.8-flash, and the match is not confirmed.",
+          "status": "priced",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "unverified",
+          "variants": [
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "International (Singapore) · Standard",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "International (Singapore)",
+              "id": "variant-0",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "US (Virginia) · US scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "US (Virginia) · US scope",
+              "id": "variant-1",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.113,
+              "out": 0.382,
+              "label": "Chinese mainland (Beijing) · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-2",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.0565,
+              "out": 0.191,
+              "label": "Chinese mainland (Beijing) · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-3",
+              "model_match": "unverified"
+            }
+          ],
+          "model_id_checked_at": "2026-10-09",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+          "endpoint": "Global",
+          "endpoints": {
+            "checked_at": "2026-10-09",
+            "src": [
+              "ali_ali_batch",
+              "ali_ali_pricing",
+              "ali_ali_regions"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "global",
+                "Global",
+                "US (Virginia)"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US",
+                "US (Virginia): inference stays in the US"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global",
+                "Germany (Frankfurt)"
+              ],
+              [
+                "APAC",
+                "global",
+                "International",
+                "Singapore"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global",
+                "Hong Kong, Tokyo"
+              ],
+              [
+                "APAC",
+                "geo",
+                "Chinese mainland",
+                "Beijing"
+              ]
+            ],
+            "hk": [
+              "routed",
+              "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+            ],
+            "tw": [
+              "none",
+              "No Taiwan region"
+            ],
+            "notes": [
+              [
+                "Batch",
+                "Batch only in Beijing at 50% of real-time."
+              ],
+              [
+                "Model",
+                "Arena ranks Qwen3.8 Flash Next; Model Studio's current Flash model is qwen3.8-flash, and the two are not confirmed to be the same checkpoint."
+              ]
+            ],
+            "ids": [
+              "qwen3.8-flash (model ID)"
+            ],
+            "cache_write": "not-listed"
+          }
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Not in the reviewed Bedrock price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-09",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unavailable",
+          "src": "azure",
+          "note": "Not in the reviewed Azure Foundry price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-09",
+          "model_id": null,
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Not in the reviewed Vertex price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-09",
+          "model_id": null,
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Not in the reviewed Fireworks serverless price list.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-09",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        }
+      },
+      "model_key": "qwen/qwen3.8-flash"
+    },
     "qwen/qwen3.7-max": {
       "name": "Qwen3.7 Max",
       "short": "Qwen3.7 Max",
@@ -25367,6 +25688,7 @@
   },
   "reviewed_at": "2026-10-09",
   "changes": [
+    "2026-10-09: The list now adds the latest OpenAI and Anthropic models outside the arena.ai top 50 when a compared platform sells them with general access (Claude Haiku 5.5), and Qwen3.8 Flash on Alibaba Cloud (arena: Qwen3.8 Flash Next). Mistral Medium 3.5 left the top 50.",
     "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
     "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
     "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",

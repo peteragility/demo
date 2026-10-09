@@ -94,11 +94,13 @@
   const rankOf = k => RANKING && RANKING.models[k] ? RANKING.models[k].rank : null;
   const offered = c => Boolean(c) && (c.status === 'priced' || c.status === 'dedicated' || (c.status === 'unverified' && c.available));
   const hosted = k => PL.some(pl => pl !== 'official' && offered(RESOLVED.models[k][pl]));
-  const isListed = k => (!RANKING || rankOf(k) != null) && hosted(k);
+  // The latest OpenAI and Anthropic models are listed outside the top N too, after the ranked models.
+  const flagship = k => !!RANKING && (RANKING.flagship || []).includes(k);
+  const isListed = k => (!RANKING || rankOf(k) != null || flagship(k)) && hosted(k);
   const listed = () => Object.entries(DATA.models).filter(([k]) => isListed(k));
   function rows() {
     const q = S.q.trim().toLowerCase();
-    let arr = listed().map(([k, m], i) => ({ k, m, i: rankOf(k) ?? i, g: groupOf(k, m) }));
+    let arr = listed().map(([k, m], i) => ({ k, m, i: rankOf(k) ?? 1000 + i, g: groupOf(k, m) }));
     if (S.group !== 'all') arr = arr.filter(r => r.g === S.group);
     if (q) arr = arr.filter(r => [r.k, r.m.name, r.m.short, r.m.maker, r.m.about, ...Object.values(r.m.platforms).map(c => c.model_id)].join(' ').toLowerCase().includes(q));
     if (S.sort === 'price') {
@@ -503,7 +505,7 @@
       const [title, sub] = String(RANKING.board).split(/ (?=\()/);
       const board = `<a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(title)}<span class="bsub">${sub ? ' ' + esc(sub) : ''}</span></a>`;
       $('#rankSrc').innerHTML = ` · ranked by ${board}, ${esc(when)}`;
-      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba hosts the model. Checked daily; order last changed ${esc(when)}.`;
+      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)} plus the latest OpenAI and Anthropic models (no #), listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba sells the model. Checked daily; order last changed ${esc(when)}.`;
     }
     const long = day => day ? new Date(day + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
     // The daily source check moves the verified date forward while the official sources are unchanged.

@@ -13356,5 +13356,219 @@
     "Meters: 'MM3.5 Inp|Outp glbl|DZ' (product 'Azure Mistral Models')"
    ]
   }
+ },
+ "qwen/qwen3.8-flash": {
+  "official": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Global"
+   },
+   "variants": [
+    {
+     "label": "International (Singapore) · Standard",
+     "in": 0.15,
+     "out": 0.47,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "International (Singapore)"
+    },
+    {
+     "label": "US (Virginia) · US scope · Standard",
+     "in": 0.15,
+     "out": 0.47,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US (Virginia) · US scope"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Standard",
+     "in": 0.113,
+     "out": 0.382,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Chinese mainland (Beijing)"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Batch",
+     "in": 0.0565,
+     "out": 0.191,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "Chinese mainland (Beijing)"
+    }
+   ],
+   "src": [
+    "ali_ali_batch",
+    "ali_ali_pricing",
+    "ali_ali_regions"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "global",
+     "Global",
+     "US (Virginia)"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US",
+     "US (Virginia): inference stays in the US"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global",
+     "Germany (Frankfurt)"
+    ],
+    [
+     "APAC",
+     "global",
+     "International",
+     "Singapore"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global",
+     "Hong Kong, Tokyo"
+    ],
+    [
+     "APAC",
+     "geo",
+     "Chinese mainland",
+     "Beijing"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region"
+   ],
+   "cache_write": "not-listed",
+   "notes": [
+    [
+     "Batch",
+     "Batch only in Beijing at 50% of real-time."
+    ],
+    [
+     "Model",
+     "Arena ranks Qwen3.8 Flash Next; Model Studio's current Flash model is qwen3.8-flash, and the two are not confirmed to be the same checkpoint."
+    ]
+   ],
+   "ids": [
+    "qwen3.8-flash (model ID)"
+   ]
+  },
+  "alicloud": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Global"
+   },
+   "variants": [
+    {
+     "label": "International (Singapore) · Standard",
+     "in": 0.15,
+     "out": 0.47,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "International (Singapore)"
+    },
+    {
+     "label": "US (Virginia) · US scope · Standard",
+     "in": 0.15,
+     "out": 0.47,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US (Virginia) · US scope"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Standard",
+     "in": 0.113,
+     "out": 0.382,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Chinese mainland (Beijing)"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Batch",
+     "in": 0.0565,
+     "out": 0.191,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "Chinese mainland (Beijing)"
+    }
+   ],
+   "src": [
+    "ali_ali_batch",
+    "ali_ali_pricing",
+    "ali_ali_regions"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "global",
+     "Global",
+     "US (Virginia)"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US",
+     "US (Virginia): inference stays in the US"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global",
+     "Germany (Frankfurt)"
+    ],
+    [
+     "APAC",
+     "global",
+     "International",
+     "Singapore"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global",
+     "Hong Kong, Tokyo"
+    ],
+    [
+     "APAC",
+     "geo",
+     "Chinese mainland",
+     "Beijing"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region"
+   ],
+   "cache_write": "not-listed",
+   "notes": [
+    [
+     "Batch",
+     "Batch only in Beijing at 50% of real-time."
+    ],
+    [
+     "Model",
+     "Arena ranks Qwen3.8 Flash Next; Model Studio's current Flash model is qwen3.8-flash, and the two are not confirmed to be the same checkpoint."
+    ]
+   ],
+   "ids": [
+    "qwen3.8-flash (model ID)"
+   ]
+  }
  }
 }

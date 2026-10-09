@@ -450,6 +450,12 @@ def add_top50_models(data):
     fw38 = offer(2, 6, 0.25, src="fireworks", tier="Serverless Standard")
     fw38["variants"] = [variant("Priority", 3, 9, 0.375, service="priority")]
     qwen("qwen/qwen3.8-max", "Qwen3.8 Max", "Qwen3.8 Max", "other", (1.65, 4.951), [("International (Singapore)", 2, 6, {})], fireworks=fw38)
+    # Arena ranks "Qwen3.8 Flash Next"; Model Studio's current Flash model is qwen3.8-flash (reviewed 2026-10-09).
+    qwen("qwen/qwen3.8-flash", "Qwen3.8 Flash", "Qwen3.8 Flash", "other", (0.113, 0.382), [("International (Singapore)", 0.15, 0.47, {})],
+         note="Arena lists it as Qwen3.8 Flash Next; Model Studio sells qwen3.8-flash, and the match is not confirmed.")
+    for c in m["qwen/qwen3.8-flash"]["platforms"].values():
+        if c["status"] == "priced":
+            c["model_match"] = "unverified"
     qwen("qwen/qwen3.7-max", "Qwen3.7 Max", "Qwen3.7 Max", "other", (1.65, 4.951),
          [("International (Singapore)", 2.5, 7.5, {}), ("US (Virginia)", 2.5, 7.5, dict(scope="regional"))])
     qwen("qwen/qwen3.7-plus", "Qwen3.7 Plus", "Qwen3.7 Plus", "other", (0.276, 1.101), [("International (Singapore) ≤256K", 0.4, 1.6, {})],
@@ -483,6 +489,8 @@ def add_top50_models(data):
                 "qwen/qwen3.8-max", "qwen/qwen3.7-max", "qwen/qwen3.7-plus", "qwen/qwen3.8-27b", "minimax/minimax-m3", "mistral/mistral-medium-3.5"):
         for pl, c in m[key]["platforms"].items():
             m[key]["platforms"][pl] = checked(copy.deepcopy(c))
+    for pl, c in m["qwen/qwen3.8-flash"]["platforms"].items():
+        m["qwen/qwen3.8-flash"]["platforms"][pl] = checked(copy.deepcopy(c), "2026-10-09")
 
 
 REGION_LEVELS = ("in-region", "geo", "global", "unknown", "none")
@@ -929,6 +937,7 @@ def build():
     if proven_log:
         data["reviewed_at"] = max(data["reviewed_at"], max(line[:10] for line in proven_log))
     data["changes"] = proven_log[::-1] + [
+        "2026-10-09: The list now adds the latest OpenAI and Anthropic models outside the arena.ai top 50 when a compared platform sells them with general access (Claude Haiku 5.5), and Qwen3.8 Flash on Alibaba Cloud (arena: Qwen3.8 Flash Next). Mistral Medium 3.5 left the top 50.",
         "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
         "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
         "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",

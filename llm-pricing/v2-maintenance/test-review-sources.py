@@ -385,6 +385,22 @@ class SourceReviewTests(unittest.TestCase):
         self.assertIn("New One", text)
         self.assertIn("left the top 50", text)
 
+    def test_a_new_model_on_a_makers_price_list_is_reported_once_unknown(self):
+        data = {"models": {"a/sonnet": {"name": "Claude Sonnet 5.5"}, "o/sol": {"name": "GPT-6.1 Sol"}}}
+        current = {"anthropic-pricing": {"records": [
+                       'table: {"cells":["Claude Sonnet 5.5 Balanced","$2 / MTok"],"heading":"Model pricing "}',
+                       'table: {"cells":["Claude Haiku 6 Fast","$0.20 / MTok"],"heading":"Model pricing "}',
+                       'table: {"cells":["Claude Opus 4.1","$15 / MTok"],"heading":"Model pricing "}',
+                       'table: {"cells":["Claude Haiku 6","$0.10 / MTok"],"heading":"Batch processing"}']},
+                   "openai-pricing": {"records": [
+                       'table: {"cells":["gpt-6.1-sol","$2.00"],"heading":"Standard pricing data"}',
+                       'table: {"cells":["gpt-6.2-sol","$2.00"],"heading":"Standard pricing data"}',
+                       'table: {"cells":["gpt-4o-transcribe","$2.50"],"heading":"Audio pricing data"}']}}
+        self.assertEqual(review.maker_models(current, data, ["Claude Opus 4.1"]), ["Claude Haiku 6", "gpt-6.2-sol"])
+        text, _ = review.issue_markdown({"checked_at": "2026-10-09", "sources_failed": {}, "lifecycle_due": []}, {}, [], {}, {"models": {}}, set(), [],
+                                        new_models=["gpt-6.2-sol"])
+        self.assertIn("gpt-6.2-sol", text)
+
 
 if __name__ == "__main__":
     unittest.main()

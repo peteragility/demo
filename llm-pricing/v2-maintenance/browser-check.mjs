@@ -98,11 +98,13 @@ try {
     };
     const measure = `({rows:document.querySelectorAll('#mx tr.row').length,columns:document.querySelectorAll('#mx>thead th').length,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,priceFont:getComputedStyle(document.querySelector('td.c')).fontSize,fontFamily:getComputedStyle(document.body).fontFamily,headingSize:getComputedStyle(document.querySelector('h1')).fontSize,wrapWidth:document.querySelector('.wrap').getBoundingClientRect().width,rowHeight:document.querySelector('tr.row').getBoundingClientRect().height,visibleRows:[...document.querySelectorAll('#mx tr.row')].filter(r=>r.getBoundingClientRect().bottom<=innerHeight&&r.getBoundingClientRect().top>=0).length,summary:document.querySelector('#summary').innerText})`;
     await navigate();
-    // Expected rows come from the page's own ranking: the priced models arena ranks, in rank order.
+    // Expected rows come from the page's own ranking: the priced models arena ranks, in rank order, then the
+    // latest OpenAI and Anthropic models outside it (flagship), in data order.
     const expected = await evalJS(`(async () => {
       const [d, r] = await Promise.all([fetch('v2-data.json').then(x => x.json()), fetch('v2-ranking.json').then(x => x.json())]);
       const hosted = k => Object.entries(d.models[k].platforms).some(([pl, c]) => pl !== 'official' && (c.status === 'priced' || c.status === 'dedicated' || (c.status === 'unverified' && c.available)));
-      const keys = Object.keys(r.models).filter(k => d.models[k] && hosted(k)).sort((a, b) => r.models[a].rank - r.models[b].rank);
+      const keys = Object.keys(r.models).filter(k => d.models[k] && hosted(k)).sort((a, b) => r.models[a].rank - r.models[b].rank)
+        .concat(Object.keys(d.models).filter(k => (r.flagship || []).includes(k) && !r.models[k] && hosted(k)));
       const count = g => keys.filter(k => d.models[k].group === g).length;
       return {keys, all: keys.length, oss: count('oss'), anthropic: count('anthropic'), openai: count('openai'), google: count('google'), xai: count('xai'), other: count('other')};
     })()`);
