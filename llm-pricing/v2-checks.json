@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "checked_at": "2026-10-09",
- "sources_checked": 107,
+ "sources_checked": 111,
  "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-10-09",
@@ -67,6 +67,8 @@
   "aws-card-claude-fable-5": "2026-10-09",
   "aws-card-claude-fable-5-1": "2026-10-09",
   "aws-card-claude-opus-4-8": "2026-10-09",
+  "aws-card-claude-opus-4-7": "2026-10-09",
+  "aws-card-claude-opus-4-6": "2026-10-09",
   "aws-card-claude-opus-5": "2026-10-09",
   "aws-card-claude-opus-5-5": "2026-10-09",
   "aws-card-claude-sonnet-5": "2026-10-09",
@@ -95,6 +97,8 @@
   "gcp-claude-fable-5": "2026-10-09",
   "gcp-claude-fable-5-1": "2026-10-09",
   "gcp-claude-opus-4-8": "2026-10-09",
+  "gcp-claude-opus-4-7": "2026-10-09",
+  "gcp-claude-opus-4-6": "2026-10-09",
   "gcp-claude-opus-5": "2026-10-09",
   "gcp-claude-opus-5-5": "2026-10-09",
   "gcp-claude-sonnet-5": "2026-10-09",
@@ -197,6 +201,48 @@
    "verified": "2026-10-09"
   },
   "anthropic/claude-haiku-5.5|official": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.6|alicloud": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.6|azure_foundry": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.6|bedrock": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.6|databricks": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.6|fireworks": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.6|gcloud": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.6|official": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7|alicloud": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7|azure_foundry": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7|bedrock": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7|databricks": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7|fireworks": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7|gcloud": {
+   "verified": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7|official": {
    "verified": "2026-10-09"
   },
   "anthropic/claude-opus-4.8|alicloud": {
@@ -326,10 +372,7 @@
    "verified": "2026-10-09"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-10-09",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-09"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
    "verified": "2026-10-09"
@@ -350,10 +393,7 @@
    "verified": "2026-10-09"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-10-09",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-09"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
    "verified": "2026-10-09"
