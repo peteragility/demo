@@ -306,7 +306,7 @@
   "alibaba-pricing": {
    "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
    "kind": "tables",
-   "digest": "d4b692ec538849d1836026ce57bfa2b336ee7ad81832bd38607982157a7b3a71",
+   "digest": "8effd3d2d66d3c5615be935d62c877fd2f2c3e045c2e441d6139c3f42786b89a",
    "records": [
     "notice: 50% batch inference discount",
     "notice: Context Cache context caching discount",
@@ -1215,6 +1215,12 @@
     "table: {\"cells\":[\"qwen-image-2.1-pro\",\"Global\",\"$0.035333/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Japan (Tokyo)\"}",
     "table: {\"cells\":[\"qwen-image-2.1-pro\",\"Global\",\"$0.035333/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / US (Virginia)\"}",
     "table: {\"cells\":[\"qwen-image-2.1-pro\",\"International\",\"$0.04/image\",\"10 images\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Singapore\"}",
+    "table: {\"cells\":[\"qwen-image-2.1-turbo\",\"Global\",\"$0.014133/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / China (Beijing)\"}",
+    "table: {\"cells\":[\"qwen-image-2.1-turbo\",\"Global\",\"$0.014133/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Germany (Frankfurt)\"}",
+    "table: {\"cells\":[\"qwen-image-2.1-turbo\",\"Global\",\"$0.014133/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Hong Kong (China)\"}",
+    "table: {\"cells\":[\"qwen-image-2.1-turbo\",\"Global\",\"$0.014133/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Japan (Tokyo)\"}",
+    "table: {\"cells\":[\"qwen-image-2.1-turbo\",\"Global\",\"$0.014133/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / US (Virginia)\"}",
+    "table: {\"cells\":[\"qwen-image-2.1-turbo\",\"International\",\"$0.016/image\",\"10 images\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Singapore\"}",
     "table: {\"cells\":[\"qwen-image-3.0\",\"1k\",\"$0.002750/image\",\"$0.024754/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-image-3.0\",\"Global\",\"1k\",\"$0.002750/image\",\"$0.024754/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Germany (Frankfurt)\"}",
     "table: {\"cells\":[\"qwen-image-3.0\",\"Global\",\"1k\",\"$0.002750/image\",\"$0.024754/image\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Hong Kong (China)\"}",
