@@ -115,7 +115,7 @@ try {
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*', ...['oss','anthropic','openai','google','xai','other'].filter(g => expected[g])]);
     assert.match(await evalJS("document.querySelector('#rankSrc').textContent"), /ranked by arena\.ai Best \w+/);
     // The disclaimer shows at the top on every screen size, and in full in the footer.
-    assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), 'Internal reference only');
+    assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), "Databricks' Internal reference only");
     assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /Built by Peter Chan for internal reference only/);
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
