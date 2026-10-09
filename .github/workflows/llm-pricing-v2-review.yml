@@ -9,8 +9,9 @@ name: LLM pricing v2 daily refresh
 #      tables                                                     (published automatically)
 #   4. price changes the source proves (Databricks' DBU tables, or a table row where only the price
 #      moved) are applied and published; wording-only changes are accepted. Anything else (a change
-#      it cannot prove, a model joining or leaving the top 50, a platform adding or dropping a model,
-#      a source unreadable for two days) opens or updates one issue labelled llm-pricing-review.
+#      it cannot prove, a platform adding or dropping a model, a source unreadable for two days)
+#      opens or updates one issue labelled llm-pricing-review. Models joining or leaving the top 50
+#      change the page by themselves.
 # Run dates follow Hong Kong time.
 on:
   schedule:
@@ -90,7 +91,7 @@ jobs:
         with:
           node-version: '24'
       - name: Model order (arena.ai Best Overall)
-        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" --events "$RUNNER_TEMP/llm-pricing-v2-ranking.json" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
+        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
       - name: Databricks regions (official region tables)
         run: python v2-maintenance/update-endpoints.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Regions::A Databricks region table could not be read; regions are unchanged today."
       - name: Rebuild and validate
@@ -109,7 +110,7 @@ jobs:
         run: >-
           python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json
           --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md" --accept-low-risk --apply-proven
-          --ranking-events "$RUNNER_TEMP/llm-pricing-v2-ranking.json" --applied "$RUNNER_TEMP/llm-pricing-v2-applied.txt"
+          --applied "$RUNNER_TEMP/llm-pricing-v2-applied.txt"
       - name: Add the review to the run summary
         if: always()
         run: |

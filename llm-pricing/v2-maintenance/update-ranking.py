@@ -95,16 +95,6 @@ def report(ranking, previous, unmatched, config):
     return "\n".join(lines)
 
 
-def events(ranking, previous, unmatched, config):
-    """What the review issue reports: top-N models not reviewed for the page and not already known
-    (known_unlisted in ranking-config.json), and listed models that left the top N."""
-    known = set(config.get("known_unlisted", []))
-    new = [dict(rank=e["rank"], name=e["modelDisplayName"], maker=e.get("modelOrganization", "")) for e in unmatched if e["modelDisplayName"] not in known]
-    old = (previous or {}).get("models", {})
-    left = [dict(key=k, name=v.get("arena") or k) for k, v in old.items() if k not in ranking["models"]]
-    return dict(top=config.get("top"), unreviewed=new, left=left)
-
-
 def check(config):
     """Validate the published ranking against the priced models (used by CI on push)."""
     ranking = json.loads(TARGET.read_text())
@@ -135,7 +125,6 @@ def main():
     parser.add_argument("--check", action="store_true", help="Validate v2-ranking.json; fetch nothing.")
     parser.add_argument("--html", type=Path, help="Use a saved leaderboard page instead of fetching it.")
     parser.add_argument("--summary", type=Path, help="Append the Markdown report to this file (e.g. $GITHUB_STEP_SUMMARY).")
-    parser.add_argument("--events", type=Path, help="Write the top-N models to review (see events()) as JSON for review-sources.py.")
     parser.add_argument("--as-of", default=dt.datetime.now(ZoneInfo("Asia/Hong_Kong")).date().isoformat(), help="Run date (default: today in Hong Kong).")
     args = parser.parse_args()
     config = json.loads((HERE / "ranking-config.json").read_text())
@@ -159,8 +148,6 @@ def main():
         sys.exit(1)
     text = report(ranking, previous, unmatched, config)
     print(text)
-    if args.events:
-        args.events.write_text(json.dumps(events(ranking, previous, unmatched, config), ensure_ascii=False, indent=1) + "\n")
     if args.summary:
         with open(args.summary, "a") as summary:
             summary.write(text + "\n")

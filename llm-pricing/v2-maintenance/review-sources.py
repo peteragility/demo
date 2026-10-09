@@ -776,11 +776,11 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     return cells, changes
 
 
-def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None, general=(), unrecorded=(), gone=None, last_read=None, ranking=None):
+def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None, general=(), unrecorded=(), gone=None, last_read=None):
     """The rolling GitHub issue: only what a person needs to act on. failing = sources not read for STALE_DAYS
     days or more (a single failed read is usually temporary)."""
     failing = report["sources_failed"] if failing is None else failing
-    gone, last_read, ranking = gone or {}, last_read or {}, ranking or {}
+    gone, last_read = gone or {}, last_read or {}
     name = lambda key: data["models"].get(key, {}).get("name", key)
     review = sorted({ref for ref, c in cells.items() if c.get("changed_at") and ref.split("|")[0] in listed})
     verified = sum(1 for ref, c in cells.items() if c.get("verified") == report["checked_at"] and ref.split("|")[0] in listed)
@@ -788,15 +788,6 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
     done = sum(1 for c in changes if c.get("risk") == "applied" and c["model"] in listed)
     lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified today; {len(review)} need review; "
              f"{done} price changes applied and {low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
-    top = ranking.get("top", 50)
-    if ranking.get("unreviewed") or ranking.get("left"):
-        lines += [f"## Changes in the arena.ai top {top}", ""]
-        lines += [f"- **{m['name']}** ({m['maker']}) is #{m['rank']} but not on the page. If a compared platform sells it with general access, add its pricing in "
-                  f"`build-data.py` and a pattern in `ranking-config.json`; if none does, add the name to `known_unlisted` in `ranking-config.json`."
-                  for m in ranking.get("unreviewed", [])]
-        lines += [f"- **{m['name']}** left the top {top}: it is hidden on the page, and its reviewed prices are kept in case it returns."
-                  for m in ranking.get("left", [])]
-        lines.append("")
     fact_issues = {k: v for k, v in fact_issues.items() if k in listed}
     if fact_issues:
         lines += ["## Databricks prices that differ from its DBU tables", ""]
@@ -909,7 +900,6 @@ def main():
     parser.add_argument("--fail-on-change", action="store_true", help="Exit 2 when anything needs review (the issue is written).")
     parser.add_argument("--accept-low-risk", action="store_true", help="Record low-risk changes (no price, rate or date moved) in the reviewed baseline.")
     parser.add_argument("--apply-proven", action="store_true", help="Apply price changes the official sources prove (prices-auto.json), rebuild and validate.")
-    parser.add_argument("--ranking-events", type=Path, help="update-ranking.py --events output: top-N models to review.")
     parser.add_argument("--applied", type=Path, help="Write one line per price change applied automatically (for the commit message).")
     parser.add_argument("--as-of", default=dt.datetime.now(HKT).date().isoformat(), help="Run date (default: today in Hong Kong).")
     args = parser.parse_args()
@@ -969,15 +959,14 @@ def main():
                 done.setdefault((e["model"], e["platform"], e["source"]), []).append(describe(e, data))
             done = {k: "applied automatically: " + "; ".join(v) for k, v in done.items()}
             cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, done)
-    events = json.loads(args.ranking_events.read_text()) if args.ranking_events and args.ranking_events.exists() else {}
     last_read = sources_read(previous, sources, current, today)
     failing = stale(errors, last_read, today)
     unrecorded = sorted(sid for sid in current if sid not in baseline.get("sources", {}))
-    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read, events)
+    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read)
     listed_facts = {k: v for k, v in fact_issues.items() if k in listed}
     held = [g for g in general if g["risk"] == "high"]
     action = [a for a in report["lifecycle_due"] if needs_action(a)]
-    needs_review = bool(review or listed_facts or failing or held or unrecorded or gone or action or events.get("unreviewed") or events.get("left"))
+    needs_review = bool(review or listed_facts or failing or held or unrecorded or gone or action)
     accepted = [c for c in changes if c["risk"] == "low"] + [g for g in general if g["risk"] == "low"]
     if args.accept_low_risk:
         updated = accept_low_risk(baseline, current, changes, errors, report["lifecycle_alerts"], general)

@@ -371,20 +371,6 @@ class SourceReviewTests(unittest.TestCase):
         cells, changes = review.cell_checks(data, config, {"sources": {"dbu": {"records": before}}}, {"dbu": {"url": "u", "records": after}}, {}, {}, None, dt.date(2026, 10, 9))
         self.assertEqual((changes[0]["risk"], cells["g/pro|databricks"]["verified"]), ("low", "2026-10-09"))
 
-    def test_ranking_events_list_new_top_models_and_models_that_left(self):
-        spec = importlib.util.spec_from_file_location("update_ranking", HERE / "update-ranking.py")
-        ranking = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(ranking)
-        previous = {"models": {"m/a": {"rank": 3, "arena": "Model A"}, "m/b": {"rank": 50, "arena": "Model B"}}}
-        current = {"models": {"m/a": {"rank": 2, "arena": "Model A"}}}
-        unmatched = [{"rank": 7, "modelDisplayName": "New One", "modelOrganization": "Lab"}, {"rank": 9, "modelDisplayName": "Old One"}]
-        out = ranking.events(current, previous, unmatched, {"top": 50, "known_unlisted": ["Old One"]})
-        self.assertEqual(out["unreviewed"], [{"rank": 7, "name": "New One", "maker": "Lab"}])
-        self.assertEqual(out["left"], [{"key": "m/b", "name": "Model B"}])
-        text, _ = review.issue_markdown({"checked_at": "2026-10-09", "sources_failed": {}, "lifecycle_due": []}, {}, [], {}, {"models": {}}, set(), [], ranking=out)
-        self.assertIn("New One", text)
-        self.assertIn("left the top 50", text)
-
 
 if __name__ == "__main__":
     unittest.main()
