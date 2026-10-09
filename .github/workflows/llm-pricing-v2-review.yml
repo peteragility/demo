@@ -7,9 +7,10 @@ name: LLM pricing v2 daily refresh
 #   3. every official price / region source re-read: offers whose source lines are unchanged get
 #      today's "verified" date; Databricks prices are checked number by number against its DBU
 #      tables                                                     (published automatically)
-#   4. low-risk changes (no price, rate, limit, date or region moved) are accepted automatically;
-#      anything else opens or updates one GitHub issue labelled llm-pricing-review.
-# Prices are never changed automatically: a person reviews the issue and updates the data.
+#   4. price changes the source proves (Databricks' DBU tables, or a table row where only the price
+#      moved) are applied and published; wording-only changes are accepted. Anything else (a change
+#      it cannot prove, a model joining or leaving the top 50, a platform adding or dropping a model,
+#      a source unreadable for two days) opens or updates one issue labelled llm-pricing-review.
 # Run dates follow Hong Kong time.
 on:
   schedule:
@@ -89,7 +90,7 @@ jobs:
         with:
           node-version: '24'
       - name: Model order (arena.ai Best Overall)
-        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
+        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" --events "$RUNNER_TEMP/llm-pricing-v2-ranking.json" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
       - name: Databricks regions (official region tables)
         run: python v2-maintenance/update-endpoints.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Regions::A Databricks region table could not be read; regions are unchanged today."
       - name: Rebuild and validate
@@ -105,21 +106,31 @@ jobs:
         if: inputs.record_baseline
         run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-baseline" --record-baseline
       - name: Check every official source
-        run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md" --accept-low-risk
+        run: >-
+          python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json
+          --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md" --accept-low-risk --apply-proven
+          --ranking-events "$RUNNER_TEMP/llm-pricing-v2-ranking.json" --applied "$RUNNER_TEMP/llm-pricing-v2-applied.txt"
       - name: Add the review to the run summary
         if: always()
         run: |
           issue="$RUNNER_TEMP/llm-pricing-v2-issue.md"
+          applied="$RUNNER_TEMP/llm-pricing-v2-applied.txt"
+          if [ -s "$applied" ]; then { echo "## Price changes applied automatically"; echo; sed 's/^/- /' "$applied"; echo; } >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -s "$issue" ]; then cat "$issue" >> "$GITHUB_STEP_SUMMARY"; else echo "Nothing to review today." >> "$GITHUB_STEP_SUMMARY"; fi
-      - name: Publish order, regions and verified dates
+      - name: Publish order, regions, proven prices and verified dates
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/endpoints-auto.json v2-maintenance/source-baseline.json
+          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/endpoints-auto.json v2-maintenance/source-baseline.json v2-maintenance/prices-auto.json
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -q -m "LLM pricing v2: daily refresh $(TZ=Asia/Hong_Kong date +%F)"
+          applied="$RUNNER_TEMP/llm-pricing-v2-applied.txt"
+          {
+            echo "LLM pricing v2: daily refresh $(TZ=Asia/Hong_Kong date +%F)"
+            if [ -s "$applied" ]; then echo; echo "Price changes applied automatically from the official sources:"; sed 's/^/- /' "$applied"; fi
+          } > "$RUNNER_TEMP/llm-pricing-v2-commit.txt"
+          git commit -q -F "$RUNNER_TEMP/llm-pricing-v2-commit.txt"
           for attempt in 1 2 3; do
             if git pull -q --rebase origin main && git push -q origin HEAD:main; then
               gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null && echo "Requested a Pages build." ||

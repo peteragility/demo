@@ -2149,7 +2149,7 @@
    }
   },
   "official": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-09",
    "reverified": true,
    "base": {
     "endpoint": "Global (api.openai.com)",
@@ -2259,14 +2259,14 @@
      }
     },
     {
-     "label": "Regional processing (US) · Fast",
+     "label": "Regional processing (US / EU) · Fast",
      "in": 4.4,
      "out": 22.0,
      "cache_read": 0.44,
      "cache_write": 5.5,
      "scope": "geographic",
      "service": "priority",
-     "endpoint": "Regional processing (US)",
+     "endpoint": "Regional processing (US / EU)",
      "tier_label": "Fast",
      "long_context": {
       "in": 8.8,
@@ -2341,7 +2341,7 @@
    "notes": [
     [
      "Residency",
-     "EU data residency covers Standard, Flex and Batch only; Fast mode is unavailable with EU residency."
+     "US and EU data residency, including Fast mode (+10%)."
     ],
     [
      "Context",
@@ -2644,7 +2644,7 @@
    }
   },
   "official": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-09",
    "reverified": true,
    "base": {
     "endpoint": "Global (api.openai.com)",
@@ -2754,14 +2754,14 @@
      }
     },
     {
-     "label": "Regional processing (US) · Fast",
+     "label": "Regional processing (US / EU) · Fast",
      "in": 0.22,
      "out": 1.1,
      "cache_read": 0.022,
      "cache_write": 0.275,
      "scope": "geographic",
      "service": "priority",
-     "endpoint": "Regional processing (US)",
+     "endpoint": "Regional processing (US / EU)",
      "tier_label": "Fast",
      "long_context": {
       "in": 0.44,
@@ -2836,7 +2836,7 @@
    "notes": [
     [
      "Residency",
-     "EU data residency covers Standard, Flex and Batch only; Fast mode is unavailable with EU residency."
+     "US and EU data residency, including Fast mode (+10%)."
     ],
     [
      "Context",
@@ -7589,6 +7589,12 @@
     ],
     [
      "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
      "global",
      "Global CRIS",
      "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
@@ -7617,6 +7623,7 @@
     "anthropic.claude-sonnet-5-5 (model ID; bedrock-runtime + bedrock-mantle)",
     "us.anthropic.claude-sonnet-5-5 (US geo inference profile)",
     "eu.anthropic.claude-sonnet-5-5 (EU geo inference profile)",
+    "au.anthropic.claude-sonnet-5-5 (AU geo inference profile)",
     "global.anthropic.claude-sonnet-5-5 (global inference profile)",
     "https://bedrock-mantle.{region}.api.aws/anthropic/v1/messages (bedrock-mantle base URL)"
    ]
@@ -10130,7 +10137,7 @@
  },
  "qwen/qwen3.8-max": {
   "alicloud": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-09",
    "reverified": true,
    "base": {
     "endpoint": "Global"
@@ -10144,6 +10151,15 @@
      "scope": "global",
      "service": "standard",
      "endpoint": "International (Singapore)"
+    },
+    {
+     "label": "US (Virginia) · US scope · Standard",
+     "in": 2.0,
+     "out": 6.0,
+     "cache_write": 2.5,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US (Virginia) · US scope"
     },
     {
      "label": "Chinese mainland (Beijing) · Standard",
@@ -10183,6 +10199,12 @@
      "global",
      "Global",
      "US (Virginia)"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US",
+     "US (Virginia): inference stays in the US"
     ],
     [
      "Europe",
@@ -10302,7 +10324,7 @@
    ]
   },
   "official": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-09",
    "reverified": true,
    "base": {
     "endpoint": "Global"
@@ -10316,6 +10338,15 @@
      "scope": "global",
      "service": "standard",
      "endpoint": "International (Singapore)"
+    },
+    {
+     "label": "US (Virginia) · US scope · Standard",
+     "in": 2.0,
+     "out": 6.0,
+     "cache_write": 2.5,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US (Virginia) · US scope"
     },
     {
      "label": "Chinese mainland (Beijing) · Standard",
@@ -10355,6 +10386,12 @@
      "global",
      "Global",
      "US (Virginia)"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US",
+     "US (Virginia): inference stays in the US"
     ],
     [
      "Europe",
@@ -12310,7 +12347,7 @@
  },
  "openai/gpt-6.1-sol": {
   "official": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-10-09",
    "reverified": true,
    "base": {
     "endpoint": "Global (api.openai.com)"
@@ -12366,6 +12403,23 @@
      }
     },
     {
+     "label": "Global (api.openai.com) · Ultrafast",
+     "in": 12.0,
+     "out": 60.0,
+     "cache_read": 0.6,
+     "cache_write": 15.0,
+     "scope": "global",
+     "service": "priority",
+     "endpoint": "Global (api.openai.com)",
+     "tier_label": "Ultrafast",
+     "long_context": {
+      "in": 24.0,
+      "out": 90.0,
+      "cache_read": 1.2,
+      "cache_write": 30.0
+     }
+    },
+    {
      "label": "Regional processing (US / EU) · Standard",
      "in": 2.2,
      "out": 11.0,
@@ -12414,20 +12468,37 @@
      }
     },
     {
-     "label": "Regional processing (US) · Fast",
+     "label": "Regional processing (US / EU) · Fast",
      "in": 4.4,
      "out": 22.0,
      "cache_read": 0.22,
      "cache_write": 5.5,
      "scope": "geographic",
      "service": "priority",
-     "endpoint": "Regional processing (US)",
+     "endpoint": "Regional processing (US / EU)",
      "tier_label": "Fast",
      "long_context": {
       "in": 8.8,
       "out": 33.0,
       "cache_read": 0.44,
       "cache_write": 11.0
+     }
+    },
+    {
+     "label": "Regional processing (US / EU) · Ultrafast",
+     "in": 13.2,
+     "out": 66.0,
+     "cache_read": 0.66,
+     "cache_write": 16.5,
+     "scope": "geographic",
+     "service": "priority",
+     "endpoint": "Regional processing (US / EU)",
+     "tier_label": "Ultrafast",
+     "long_context": {
+      "in": 26.4,
+      "out": 99.0,
+      "cache_read": 1.32,
+      "cache_write": 33.0
      }
     }
    ],
@@ -12473,7 +12544,7 @@
     ],
     [
      "Residency",
-     "Only US and EU data residency; Fast mode is unavailable with EU data residency."
+     "US and EU data residency, including Fast and Ultrafast modes (+10%)."
     ],
     [
      "Context",
@@ -12482,6 +12553,10 @@
     [
      "API",
      "Tool calling needs the Responses API; reasoning efforts 'none' and 'minimal' are not supported."
+    ],
+    [
+     "Tiers",
+     "Ultrafast (service_tier \"ultrafast\") costs 6x Standard, Fast 2x; Batch and Flex are 50% off."
     ]
    ],
    "ids": [
@@ -12489,7 +12564,7 @@
    ]
   },
   "bedrock": {
-   "checked_at": "2026-10-06",
+   "checked_at": "2026-10-09",
    "reverified": true,
    "base": {
     "endpoint": "Global CRIS"
@@ -12525,6 +12600,57 @@
       "out": 16.5,
       "cache_read": 0.22,
       "cache_write": 5.5
+     }
+    },
+    {
+     "label": "Global CRIS · Ultrafast",
+     "in": 12.0,
+     "out": 60.0,
+     "cache_read": 0.6,
+     "cache_write": 15.0,
+     "scope": "global",
+     "service": "priority",
+     "endpoint": "Global CRIS",
+     "tier_label": "Ultrafast",
+     "long_context": {
+      "in": 24.0,
+      "out": 90.0,
+      "cache_read": 1.2,
+      "cache_write": 30.0
+     }
+    },
+    {
+     "label": "US CRIS · Ultrafast",
+     "in": 13.2,
+     "out": 66.0,
+     "cache_read": 0.66,
+     "cache_write": 16.5,
+     "scope": "geographic",
+     "service": "priority",
+     "endpoint": "US CRIS",
+     "tier_label": "Ultrafast",
+     "long_context": {
+      "in": 26.4,
+      "out": 99.0,
+      "cache_read": 1.32,
+      "cache_write": 33.0
+     }
+    },
+    {
+     "label": "In-region · Ultrafast",
+     "in": 13.2,
+     "out": 66.0,
+     "cache_read": 0.66,
+     "cache_write": 16.5,
+     "scope": "regional",
+     "service": "priority",
+     "endpoint": "In-region",
+     "tier_label": "Ultrafast",
+     "long_context": {
+      "in": 26.4,
+      "out": 99.0,
+      "cache_read": 1.32,
+      "cache_write": 33.0
      }
     }
    ],
@@ -12571,6 +12697,10 @@
     [
      "Quota",
      "Output-token burndown rate is 10: each output token consumes 10 tokens of quota."
+    ],
+    [
+     "Tiers",
+     "Ultrafast (6x Standard) on Global CRIS and US CRIS (bedrock-runtime) and in-region on bedrock-mantle in us-east-1; Priority, Flex and Reserved are not offered."
     ]
    ],
    "ids": [

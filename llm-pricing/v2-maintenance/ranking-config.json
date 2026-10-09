@@ -57,5 +57,22 @@
     "minimax/minimax-m3": "^minimax m3\\b",
     "mistral/mistral-medium-3.5": "^mistral medium 3\\.5\\b"
   },
-  "top": 50
+  "top": 50,
+  "known_unlisted_note": "Top-50 models already known on 2026-10-09 and not on the page (no compared platform listed them then). A top-50 model not reviewed for the page and not in this list opens the review issue.",
+  "known_unlisted": [
+    "Gemini 4 Argon (High)",
+    "Muse Spark 1.3 (Max)",
+    "Hy4 preview",
+    "MiMo V2.6 Pro",
+    "Grok 4.5",
+    "MiMo V2.6 Flash",
+    "Step 5 Preview",
+    "Qwen3.8 Flash Next",
+    "Muse Spark 1.2 (xHigh)",
+    "Muse Spark 1.1",
+    "Hy3",
+    "mistral-large-4",
+    "Mimo V2.5 Pro",
+    "Inkling Small"
+  ]
 }

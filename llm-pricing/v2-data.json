@@ -1696,7 +1696,7 @@
               "out": 11.0,
               "cache_read": 0.22,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "cache_write": 2.75,
@@ -1711,10 +1711,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
@@ -1845,7 +1845,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "anthropic_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://platform.claude.com/docs/en/about-claude/pricing",
           "endpoint": "Claude API · global",
           "endpoints": {
@@ -1945,7 +1945,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "anthropic_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
@@ -1982,6 +1982,12 @@
               ],
               [
                 "APAC",
+                "geo",
+                "AU CRIS",
+                "Sydney, Melbourne"
+              ],
+              [
+                "APAC",
                 "global",
                 "Global CRIS",
                 "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
@@ -2009,6 +2015,7 @@
               "anthropic.claude-sonnet-5-5 (model ID; bedrock-runtime + bedrock-mantle)",
               "us.anthropic.claude-sonnet-5-5 (US geo inference profile)",
               "eu.anthropic.claude-sonnet-5-5 (EU geo inference profile)",
+              "au.anthropic.claude-sonnet-5-5 (AU geo inference profile)",
               "global.anthropic.claude-sonnet-5-5 (global inference profile)",
               "https://bedrock-mantle.{region}.api.aws/anthropic/v1/messages (bedrock-mantle base URL)"
             ],
@@ -2032,7 +2039,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "anthropic_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
           "endpoint": "Global Standard",
           "variants": [
@@ -2182,7 +2189,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "anthropic_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
           "endpoint": "Global",
           "endpoints": {
@@ -2245,7 +2252,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "url": "https://docs.fireworks.ai/nexus/provider-keys"
         },
         "alicloud": {
@@ -2256,7 +2263,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
@@ -2281,43 +2288,113 @@
       "unit": "USD/1M",
       "platforms": {
         "databricks": {
-          "status": "unverified",
-          "note": "Not in the reviewed Databricks proprietary-model price list yet; it still lists Claude Haiku 4.5.",
+          "in": 0.1,
+          "out": 0.5,
+          "cache_read": 0.01,
+          "cache_write": 0.125,
+          "cache_write_1h": 0.2,
+          "tier": "Standard pay-per-token",
+          "variants": [
+            {
+              "label": "Regional processing ⌖ +10%",
+              "in": 0.11,
+              "out": 0.55,
+              "cache_read": 0.011,
+              "id": "variant-0",
+              "pricing_checked_at": "2026-10-09",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "model_match": "confirmed",
+              "cache_write": 0.1375,
+              "cache_write_1h": 0.22,
+              "endpoint": "Regional processing ⌖"
+            }
+          ],
           "src": "dbx_prop",
-          "model_id": null,
-          "available": null,
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "status": "priced",
+          "model_id": "databricks-claude-haiku-5-5",
+          "model_match": "confirmed",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
+          "model_id_source": "dbx_models",
+          "model_id_checked_at": "2026-10-09",
+          "dbu_rate_basis": 0.07,
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
+          "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-08",
+            "checked_at": "2026-10-09",
             "src": [
               "dbx_region",
               "dbx_region_azure",
               "dbx_region_gcp"
             ],
-            "regions": [],
+            "regions": [
+              [
+                "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+              ],
+              [
+                "Americas",
+                "global",
+                "Cross-geo",
+                "AWS São Paulo · Azure Canada Central, Brazil South"
+              ],
+              [
+                "Europe",
+                "in-region",
+                "In-region",
+                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+              ],
+              [
+                "Europe",
+                "global",
+                "Cross-geo",
+                "Azure UK South"
+              ],
+              [
+                "APAC",
+                "in-region",
+                "In-region",
+                "AWS Tokyo, Seoul, Singapore, Sydney · Azure Japan East, Australia East · GCP Singapore"
+              ],
+              [
+                "APAC",
+                "global",
+                "Cross-geo",
+                "AWS Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai"
+              ]
+            ],
             "hk": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "routed",
+              "Azure East Asia (Hong Kong) through cross-geo routing"
             ],
             "tw": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "none",
+              "No Taiwan region in Databricks' model-serving tables"
             ],
             "notes": [
               [
-                "Regions",
-                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
+                "Residency",
+                "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
+              ],
+              [
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
               ],
               [
                 "Billing",
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
               ]
             ],
-            "ids": [],
-            "cache_write": "not-listed"
-          },
-          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+            "ids": [
+              "databricks-claude-haiku-5-5"
+            ],
+            "cache_write": "priced"
+          }
         },
         "official": {
           "in": 0.1,
@@ -2332,7 +2409,7 @@
               "in": 0.05,
               "out": 0.25,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "batch",
               "model_match": "confirmed"
@@ -2344,10 +2421,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "anthropic_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "regions": "Consult the current model-region catalog for this endpoint.",
           "url": "https://platform.claude.com/docs/en/about-claude/pricing"
         },
@@ -2366,7 +2443,7 @@
               "out": 0.55,
               "cache_read": 0.011,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed"
@@ -2378,10 +2455,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "anthropic_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
         },
         "azure_foundry": {
@@ -2391,7 +2468,7 @@
           "model_id": null,
           "available": null,
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners"
         },
         "gcloud": {
@@ -2409,7 +2486,7 @@
               "out": 0.55,
               "cache_read": 0.011,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed"
@@ -2421,10 +2498,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "anthropic_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
         },
         "fireworks": {
@@ -2436,7 +2513,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "url": "https://docs.fireworks.ai/nexus/provider-keys"
         },
         "alicloud": {
@@ -2447,7 +2524,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       },
@@ -2471,7 +2548,7 @@
           "src": "vertex",
           "note": "Vertex offers gpt-oss; no closed OpenAI GPT offer was verified.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
         },
@@ -2480,7 +2557,7 @@
           "src": "fireworks_nexus",
           "note": "Nexus routes with your own provider key; no Fireworks per-token offer.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://docs.fireworks.ai/nexus/provider-keys"
         },
@@ -2489,7 +2566,7 @@
           "src": "ali",
           "note": "No closed OpenAI GPT offer in the reviewed Model Studio catalog.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         },
@@ -2661,8 +2738,8 @@
           "model_id": "gpt-6.1-sol",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -2683,7 +2760,7 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
@@ -2702,7 +2779,7 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
@@ -2721,7 +2798,7 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
@@ -2734,6 +2811,26 @@
               "model_match": "confirmed"
             },
             {
+              "in": 12.0,
+              "out": 60.0,
+              "cache_read": 0.6,
+              "cache_write": 15.0,
+              "label": "Global (api.openai.com) · Ultrafast",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Global (api.openai.com)",
+              "tier_label": "Ultrafast",
+              "long_context": {
+                "in": 24.0,
+                "out": 90.0,
+                "cache_read": 1.2,
+                "cache_write": 30.0
+              },
+              "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
               "in": 2.2,
               "out": 11.0,
               "cache_read": 0.11,
@@ -2741,7 +2838,7 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 4.4,
@@ -2749,7 +2846,7 @@
                 "cache_read": 0.22,
                 "cache_write": 5.5
               },
-              "id": "variant-3",
+              "id": "variant-4",
               "model_match": "confirmed"
             },
             {
@@ -2760,26 +2857,7 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Regional processing (US / EU)",
-              "long_context": {
-                "in": 2.2,
-                "out": 8.25,
-                "cache_read": 0.11,
-                "cache_write": 2.75
-              },
-              "id": "variant-4",
-              "model_match": "confirmed"
-            },
-            {
-              "in": 1.1,
-              "out": 5.5,
-              "cache_read": 0.055,
-              "cache_write": 1.375,
-              "label": "Regional processing (US / EU) · Flex",
-              "comparison_scope": "geographic",
-              "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 2.2,
@@ -2791,15 +2869,34 @@
               "model_match": "confirmed"
             },
             {
+              "in": 1.1,
+              "out": 5.5,
+              "cache_read": 0.055,
+              "cache_write": 1.375,
+              "label": "Regional processing (US / EU) · Flex",
+              "comparison_scope": "geographic",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Regional processing (US / EU)",
+              "long_context": {
+                "in": 2.2,
+                "out": 8.25,
+                "cache_read": 0.11,
+                "cache_write": 2.75
+              },
+              "id": "variant-6",
+              "model_match": "confirmed"
+            },
+            {
               "in": 4.4,
               "out": 22.0,
               "cache_read": 0.22,
               "cache_write": 5.5,
-              "label": "Regional processing (US) · Fast",
+              "label": "Regional processing (US / EU) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Regional processing (US)",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Regional processing (US / EU)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 8.8,
@@ -2807,14 +2904,34 @@
                 "cache_read": 0.44,
                 "cache_write": 11.0
               },
-              "id": "variant-6",
+              "id": "variant-7",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 13.2,
+              "out": 66.0,
+              "cache_read": 0.66,
+              "cache_write": 16.5,
+              "label": "Regional processing (US / EU) · Ultrafast",
+              "comparison_scope": "geographic",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Regional processing (US / EU)",
+              "tier_label": "Ultrafast",
+              "long_context": {
+                "in": 26.4,
+                "out": 99.0,
+                "cache_read": 1.32,
+                "cache_write": 33.0
+              },
+              "id": "variant-8",
               "model_match": "confirmed"
             }
           ],
           "url": "https://developers.openai.com/api/docs/pricing",
           "endpoint": "Global (api.openai.com)",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-09",
             "src": [
               "api_west_openai_countries",
               "api_west_openai_m_gpt_6_1_sol",
@@ -2856,7 +2973,7 @@
               ],
               [
                 "Residency",
-                "Only US and EU data residency; Fast mode is unavailable with EU data residency."
+                "US and EU data residency, including Fast and Ultrafast modes (+10%)."
               ],
               [
                 "Context",
@@ -2865,6 +2982,10 @@
               [
                 "API",
                 "Tool calling needs the Responses API; reasoning efforts 'none' and 'minimal' are not supported."
+              ],
+              [
+                "Tiers",
+                "Ultrafast (service_tier \"ultrafast\") costs 6x Standard, Fast 2x; Batch and Flex are 50% off."
               ]
             ],
             "ids": [
@@ -2872,7 +2993,7 @@
             ],
             "cache_write": "priced"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "bedrock": {
           "in": 2,
@@ -2884,8 +3005,8 @@
           "model_id": "openai.gpt-6.1-sol",
           "note": "Implicit and explicit prompt caching supported (explicit: Responses, Chat Completions and InvokeModel; not Converse). Cache write billed at 1.25x, cache read at 0.05x of the input rate.",
           "status": "priced",
-          "pricing_checked_at": "2026-10-06",
-          "availability_checked_at": "2026-10-06",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -2906,7 +3027,7 @@
               "label": "In-region · Standard",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-06",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "In-region",
               "long_context": {
                 "in": 4.4,
@@ -2925,7 +3046,7 @@
               "label": "US CRIS · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-06",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "US CRIS",
               "long_context": {
                 "in": 4.4,
@@ -2935,12 +3056,72 @@
               },
               "id": "variant-1",
               "model_match": "confirmed"
+            },
+            {
+              "in": 12.0,
+              "out": 60.0,
+              "cache_read": 0.6,
+              "cache_write": 15.0,
+              "label": "Global CRIS · Ultrafast",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Global CRIS",
+              "tier_label": "Ultrafast",
+              "long_context": {
+                "in": 24.0,
+                "out": 90.0,
+                "cache_read": 1.2,
+                "cache_write": 30.0
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 13.2,
+              "out": 66.0,
+              "cache_read": 0.66,
+              "cache_write": 16.5,
+              "label": "US CRIS · Ultrafast",
+              "comparison_scope": "geographic",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "US CRIS",
+              "tier_label": "Ultrafast",
+              "long_context": {
+                "in": 26.4,
+                "out": 99.0,
+                "cache_read": 1.32,
+                "cache_write": 33.0
+              },
+              "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 13.2,
+              "out": 66.0,
+              "cache_read": 0.66,
+              "cache_write": 16.5,
+              "label": "In-region · Ultrafast",
+              "comparison_scope": "regional",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "In-region",
+              "tier_label": "Ultrafast",
+              "long_context": {
+                "in": 26.4,
+                "out": 99.0,
+                "cache_read": 1.32,
+                "cache_write": 33.0
+              },
+              "id": "variant-4",
+              "model_match": "confirmed"
             }
           ],
           "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-06",
+            "checked_at": "2026-10-09",
             "src": [
               "aws_card_gpt_6_1_sol",
               "aws_endpoint_regions"
@@ -2983,6 +3164,10 @@
               [
                 "Quota",
                 "Output-token burndown rate is 10: each output token consumes 10 tokens of quota."
+              ],
+              [
+                "Tiers",
+                "Ultrafast (6x Standard) on Global CRIS and US CRIS (bedrock-runtime) and in-region on bedrock-mantle in us-east-1; Priority, Flex and Reserved are not offered."
               ]
             ],
             "ids": [
@@ -2993,7 +3178,7 @@
             ],
             "cache_write": "priced"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "azure_foundry": {
           "in": 2.0,
@@ -3158,8 +3343,8 @@
           "model_id": "databricks-gemini-3-5-flash-lite",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -3182,7 +3367,7 @@
               "label": "Priority (promotion)",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "promotion": {
                 "ends_on": "2027-01-31",
                 "after": {
@@ -3204,7 +3389,7 @@
               "label": "Regional processing +10%",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "promotion": {
                 "ends_on": "2027-01-31",
                 "after": {
@@ -3226,7 +3411,7 @@
               "label": "Regional processing ⌖ Priority",
               "comparison_scope": "regional",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
               "promotion": {
                 "ends_on": "2027-01-31",
@@ -3303,7 +3488,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "official": {
           "in": 0.3,
@@ -3316,8 +3501,8 @@
           "regions": null,
           "note": "Cache storage: $1 / million token-hours. Audio input has a different price on 3.1 Flash-Lite.",
           "status": "priced",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -3329,7 +3514,7 @@
               "label": "Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "cache_storage": 1,
               "id": "variant-0",
               "model_match": "confirmed"
@@ -3341,7 +3526,7 @@
               "label": "Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "cache_storage": 1,
               "id": "variant-1",
               "model_match": "confirmed"
@@ -3353,14 +3538,14 @@
               "label": "Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "cache_storage": 1,
               "id": "variant-2",
               "model_match": "confirmed"
             }
           ],
           "url": "https://ai.google.dev/gemini-api/docs/pricing",
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "gcloud": {
           "in": 0.3,
@@ -3373,8 +3558,8 @@
           "regions": null,
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -3386,7 +3571,7 @@
               "label": "Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "id": "variant-0",
               "model_match": "confirmed"
             },
@@ -3397,7 +3582,7 @@
               "label": "Flex / Batch",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "id": "variant-1",
               "model_match": "confirmed"
             },
@@ -3408,20 +3593,20 @@
               "label": "Non-global +10%",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "id": "variant-2",
               "model_match": "confirmed"
             }
           ],
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "bedrock": {
           "status": "unavailable",
           "src": "aws",
           "note": "No Gemini offer in the reviewed Bedrock catalog.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
         },
@@ -3430,7 +3615,7 @@
           "src": "azure",
           "note": "No Gemini per-token offer verified on Foundry.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
         },
@@ -3439,7 +3624,7 @@
           "src": "fireworks_nexus",
           "note": "Fireworks Nexus does not offer a Gemini per-token API.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://docs.fireworks.ai/nexus/provider-keys"
         },
@@ -3448,7 +3633,7 @@
           "src": "ali",
           "note": null,
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
@@ -3482,8 +3667,8 @@
           "model_id": "databricks-gemini-3-1-flash-lite",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -3506,7 +3691,7 @@
               "label": "Priority (promotion)",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "promotion": {
                 "ends_on": "2027-01-31",
                 "after": {
@@ -3528,7 +3713,7 @@
               "label": "Regional processing +10%",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "promotion": {
                 "ends_on": "2027-01-31",
                 "after": {
@@ -3550,7 +3735,7 @@
               "label": "Regional processing ⌖ Priority",
               "comparison_scope": "regional",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
               "promotion": {
                 "ends_on": "2027-01-31",
@@ -3627,7 +3812,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "official": {
           "in": 0.25,
@@ -3640,8 +3825,8 @@
           "regions": null,
           "note": "Cache storage: $1 / million token-hours. Audio input has a different price on 3.1 Flash-Lite.",
           "status": "priced",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -3653,7 +3838,7 @@
               "label": "Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "cache_storage": 0.5,
               "id": "variant-0",
               "model_match": "confirmed"
@@ -3665,7 +3850,7 @@
               "label": "Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "cache_storage": 0.5,
               "id": "variant-1",
               "model_match": "confirmed"
@@ -3677,14 +3862,14 @@
               "label": "Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "cache_storage": 1.8,
               "id": "variant-2",
               "model_match": "confirmed"
             }
           ],
           "url": "https://ai.google.dev/gemini-api/docs/pricing",
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "gcloud": {
           "in": 0.25,
@@ -3697,8 +3882,8 @@
           "regions": null,
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -3710,7 +3895,7 @@
               "label": "Priority",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "id": "variant-0",
               "model_match": "confirmed"
             },
@@ -3721,7 +3906,7 @@
               "label": "Flex / Batch",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "id": "variant-1",
               "model_match": "confirmed"
             },
@@ -3732,20 +3917,20 @@
               "label": "Non-global +10%",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "id": "variant-2",
               "model_match": "confirmed"
             }
           ],
           "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "bedrock": {
           "status": "unavailable",
           "src": "aws",
           "note": "No Gemini offer in the reviewed Bedrock catalog.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
         },
@@ -3754,7 +3939,7 @@
           "src": "azure",
           "note": "No Gemini per-token offer verified on Foundry.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
         },
@@ -3763,7 +3948,7 @@
           "src": "fireworks_nexus",
           "note": "Fireworks Nexus does not offer a Gemini per-token API.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://docs.fireworks.ai/nexus/provider-keys"
         },
@@ -3772,7 +3957,7 @@
           "src": "ali",
           "note": null,
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
@@ -4021,7 +4206,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "bedrock": {
           "in": 2,
@@ -4169,7 +4354,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "azure_foundry": {
           "status": "unavailable",
@@ -4279,7 +4464,7 @@
           "src": "fireworks_models",
           "note": "No Fireworks per-token offer verified.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://fireworks.ai/models"
         },
@@ -4288,7 +4473,7 @@
           "src": "ali",
           "note": null,
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
@@ -4321,8 +4506,8 @@
           "model_id": "databricks-grok-4-6",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -4345,7 +4530,7 @@
               "label": "Regional processing +10%",
               "comparison_scope": "regional",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "promotion": {
                 "ends_on": "2027-01-31",
                 "after": {
@@ -4417,7 +4602,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "official": {
           "in": 2,
@@ -4533,7 +4718,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "bedrock": {
           "in": 2,
@@ -4724,7 +4909,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "azure_foundry": {
           "in": 2,
@@ -4891,7 +5076,7 @@
           "src": "fireworks_models",
           "note": "No Fireworks per-token offer verified.",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://fireworks.ai/models"
         },
@@ -4900,7 +5085,7 @@
           "src": "ali",
           "note": null,
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08",
+          "availability_checked_at": "2026-10-09",
           "model_id": null,
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
@@ -4942,7 +5127,7 @@
               "out": 26.25,
               "cache_read": 0.525,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "priority",
               "model_match": "confirmed",
@@ -4954,7 +5139,7 @@
               "out": 16.5,
               "cache_read": 0.33,
               "id": "variant-1",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -4967,7 +5152,7 @@
               "label": "Regional processing ⌖ Priority",
               "comparison_scope": "regional",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
               "endpoint": "Regional processing ⌖",
               "id": "variant-2",
@@ -4980,10 +5165,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -5069,7 +5254,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "moonshot",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://platform.kimi.ai/docs/pricing/chat",
           "endpoint": "Kimi API",
           "endpoints": {
@@ -5661,7 +5846,7 @@
               "out": 7.7,
               "cache_read": 0.455,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "priority",
               "model_match": "confirmed",
@@ -5674,10 +5859,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -5954,7 +6139,7 @@
             ],
             "cache_write": "priced"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "azure_foundry": {
           "in": 1.75,
@@ -6329,10 +6514,10 @@
           "model_match": "confirmed",
           "comparison_scope": "regional",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "retires_on": "2026-10-30",
           "replacement": [
@@ -6405,7 +6590,7 @@
           "availability_checked_at": "2026-10-04",
           "snapshot": "DeepSeek-V4-Pro-0813",
           "model_id_source": "deepseek",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://api-docs.deepseek.com/quick_start/pricing",
           "endpoint": "DeepSeek API",
           "endpoints": {
@@ -6611,8 +6796,8 @@
           "url": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-pro-0813",
           "src": "fireworks_models",
           "model_id_source": "fireworks_models",
-          "model_id_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "pricing_checked_at": null,
           "note": "Serverless is not supported. Serverless deprecation began 25 Sep 2026; dedicated GPU deployment remains available."
         },
@@ -6793,10 +6978,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -6890,7 +7075,7 @@
           "availability_checked_at": "2026-10-04",
           "snapshot": "DeepSeek-V4.1-Flash",
           "model_id_source": "deepseek",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://api-docs.deepseek.com/quick_start/pricing",
           "endpoint": "DeepSeek API",
           "endpoints": {
@@ -7334,10 +7519,10 @@
           "model_match": "confirmed",
           "comparison_scope": "regional",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-10-07",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "retires_on": "2026-11-05",
           "replacement": [
@@ -7506,8 +7691,8 @@
           "url": "https://fireworks.ai/models/deepseek-ai/deepseek-v4-flash-0731",
           "src": "fireworks_models",
           "model_id_source": "fireworks_models",
-          "model_id_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "pricing_checked_at": null,
           "note": "Serverless is not supported. Serverless deprecation began 25 Sep 2026; dedicated GPU deployment remains available."
         },
@@ -7599,7 +7784,7 @@
               "out": 0.875,
               "cache_read": 0.0525,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "priority",
               "model_match": "confirmed",
@@ -7612,10 +7797,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -8011,8 +8196,8 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "retires_on": "2026-10-30",
           "replacement": [
@@ -8021,7 +8206,7 @@
           "retirement_src": "dbx_retirement",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-08",
+            "checked_at": "2026-10-09",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -8064,7 +8249,7 @@
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "moonshot",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "url": "https://platform.kimi.ai/docs/pricing/chat"
         },
         "bedrock": {
@@ -8136,8 +8321,8 @@
           "url": "https://fireworks.ai/models/fireworks/kimi-k2p7-code",
           "src": "fireworks_models",
           "model_id_source": "fireworks_models",
-          "model_id_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "pricing_checked_at": null,
           "note": "Serverless is not supported. Serverless deprecation began 25 Sep 2026; dedicated GPU deployment remains available."
         },
@@ -8209,10 +8394,10 @@
           "model_match": "confirmed",
           "comparison_scope": "regional",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
-          "availability_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "retires_on": "2026-10-30",
           "replacement": [
@@ -8333,7 +8518,7 @@
             ],
             "cache_write": "input-rate"
           },
-          "model_id_checked_at": "2026-10-08"
+          "model_id_checked_at": "2026-10-09"
         },
         "bedrock": {
           "note": "Not in the Bedrock price list.",
@@ -8489,7 +8674,7 @@
               "in": 0.385,
               "out": 3.85,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "priority",
               "model_match": "confirmed",
@@ -8502,10 +8687,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -8673,7 +8858,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08"
+          "availability_checked_at": "2026-10-09"
         },
         "alicloud": {
           "in": 0.115,
@@ -8740,10 +8925,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -8910,7 +9095,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08"
+          "availability_checked_at": "2026-10-09"
         },
         "alicloud": {
           "in": 0.144,
@@ -8967,10 +9152,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -9212,10 +9397,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -9374,7 +9559,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08"
+          "availability_checked_at": "2026-10-09"
         },
         "alicloud": {
           "src": "ali",
@@ -9416,10 +9601,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -9564,7 +9749,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08"
+          "availability_checked_at": "2026-10-09"
         },
         "alicloud": {
           "src": "ali",
@@ -9606,10 +9791,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -9759,7 +9944,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08"
+          "availability_checked_at": "2026-10-09"
         },
         "alicloud": {
           "src": "ali",
@@ -9801,10 +9986,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -9965,7 +10150,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08"
+          "availability_checked_at": "2026-10-09"
         },
         "alicloud": {
           "src": "ali",
@@ -10007,10 +10192,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
@@ -10142,7 +10327,7 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-08"
+          "availability_checked_at": "2026-10-09"
         },
         "alicloud": {
           "src": "ali",
@@ -10188,7 +10373,7 @@
               "out": 55.0,
               "cache_read": 0.275,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -10203,10 +10388,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
@@ -10747,7 +10932,7 @@
               "out": 22.0,
               "cache_read": 0.22,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -10762,10 +10947,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
@@ -11425,7 +11610,7 @@
               "out": 27.5,
               "cache_read": 0.55,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -11440,10 +11625,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
@@ -12125,7 +12310,7 @@
               "out": 11.0,
               "cache_read": 0.22,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -12140,10 +12325,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
@@ -12744,7 +12929,7 @@
               "out": 16.5,
               "cache_read": 0.33,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -12759,10 +12944,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
@@ -13018,7 +13203,7 @@
               "out": 5.5,
               "cache_read": 0.11,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -13033,10 +13218,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
@@ -13278,7 +13463,7 @@
               "out": 75.0,
               "cache_read": 2.0,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -13310,7 +13495,7 @@
               "out": 55.0,
               "cache_read": 1.1,
               "id": "variant-2",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -13350,10 +13535,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 272000,
           "long_context": {
@@ -13627,7 +13812,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "long_context": {
             "in": 20.0,
@@ -13826,7 +14011,7 @@
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
@@ -14108,7 +14293,7 @@
               "out": 15.0,
               "cache_read": 0.4,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -14140,7 +14325,7 @@
               "out": 11.0,
               "cache_read": 0.22,
               "id": "variant-2",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -14180,10 +14365,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 272000,
           "long_context": {
@@ -14280,7 +14465,7 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
@@ -14299,7 +14484,7 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
@@ -14318,7 +14503,7 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
@@ -14338,7 +14523,7 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 4.4,
@@ -14357,7 +14542,7 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 2.2,
@@ -14376,7 +14561,7 @@
               "label": "Regional processing (US / EU) · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 2.2,
@@ -14392,11 +14577,11 @@
               "out": 22.0,
               "cache_read": 0.44,
               "cache_write": 5.5,
-              "label": "Regional processing (US) · Fast",
+              "label": "Regional processing (US / EU) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Regional processing (US)",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Regional processing (US / EU)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 8.8,
@@ -14415,7 +14600,7 @@
               "label": "Data residency, storage only · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Data residency, storage only",
               "long_context": {
                 "in": 4.4,
@@ -14433,10 +14618,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "long_context": {
             "in": 4.0,
@@ -14448,7 +14633,7 @@
           "url": "https://developers.openai.com/api/docs/pricing",
           "endpoint": "Global (api.openai.com)",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-09",
             "src": [
               "api_west_openai_countries",
               "api_west_openai_pricing",
@@ -14497,7 +14682,7 @@
             "notes": [
               [
                 "Residency",
-                "EU data residency covers Standard, Flex and Batch only; Fast mode is unavailable with EU residency."
+                "US and EU data residency, including Fast mode (+10%)."
               ],
               [
                 "Context",
@@ -14575,7 +14760,7 @@
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
@@ -14894,7 +15079,7 @@
               "out": 0.75,
               "cache_read": 0.02,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -14926,7 +15111,7 @@
               "out": 0.55,
               "cache_read": 0.011,
               "id": "variant-2",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -14966,10 +15151,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 272000,
           "long_context": {
@@ -15066,7 +15251,7 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 0.1,
@@ -15085,7 +15270,7 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 0.1,
@@ -15104,7 +15289,7 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
@@ -15124,7 +15309,7 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 0.22,
@@ -15143,7 +15328,7 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 0.11,
@@ -15162,7 +15347,7 @@
               "label": "Regional processing (US / EU) · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 0.11,
@@ -15178,11 +15363,11 @@
               "out": 1.1,
               "cache_read": 0.022,
               "cache_write": 0.275,
-              "label": "Regional processing (US) · Fast",
+              "label": "Regional processing (US / EU) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
-              "endpoint": "Regional processing (US)",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "Regional processing (US / EU)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 0.44,
@@ -15201,7 +15386,7 @@
               "label": "Data residency, storage only · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Data residency, storage only",
               "long_context": {
                 "in": 0.22,
@@ -15219,10 +15404,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "model_id_source": "openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "long_context": {
             "in": 0.2,
@@ -15234,7 +15419,7 @@
           "url": "https://developers.openai.com/api/docs/pricing",
           "endpoint": "Global (api.openai.com)",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-09",
             "src": [
               "api_west_openai_countries",
               "api_west_openai_pricing",
@@ -15283,7 +15468,7 @@
             "notes": [
               [
                 "Residency",
-                "EU data residency covers Standard, Flex and Batch only; Fast mode is unavailable with EU residency."
+                "US and EU data residency, including Fast mode (+10%)."
               ],
               [
                 "Context",
@@ -15357,7 +15542,7 @@
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
@@ -15637,7 +15822,7 @@
               "out": 30.0,
               "cache_read": 0.8,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -15670,7 +15855,7 @@
               "out": 22.0,
               "cache_read": 0.44,
               "id": "variant-2",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "valid_through": "2026-11-21",
@@ -15712,10 +15897,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 272000,
           "long_context": {
@@ -15973,7 +16158,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "long_context": {
             "in": 8.0,
@@ -16130,7 +16315,7 @@
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
@@ -16441,7 +16626,7 @@
               "out": 18.0,
               "cache_read": 0.4,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -16473,7 +16658,7 @@
               "out": 13.2,
               "cache_read": 0.22,
               "id": "variant-2",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -16513,10 +16698,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 272000,
           "long_context": {
@@ -16750,7 +16935,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "long_context": {
             "in": 4.0,
@@ -16885,7 +17070,7 @@
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
@@ -17191,7 +17376,7 @@
               "out": 1.8,
               "cache_read": 0.04,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -17223,7 +17408,7 @@
               "out": 1.32,
               "cache_read": 0.022,
               "id": "variant-2",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -17263,10 +17448,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 272000,
           "long_context": {
@@ -17500,7 +17685,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "long_context": {
             "in": 0.4,
@@ -17635,7 +17820,7 @@
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
           "model_id_source": "aws_openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "Global CRIS",
@@ -17914,7 +18099,7 @@
               "out": 45.0,
               "cache_read": 1.0,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -17927,7 +18112,7 @@
               "out": 75.0,
               "cache_read": 1.25,
               "id": "variant-1",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "priority",
               "model_match": "confirmed",
@@ -17939,7 +18124,7 @@
               "out": 33.0,
               "cache_read": 0.55,
               "id": "variant-2",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -17957,7 +18142,7 @@
               "label": "Regional processing ⌖ Priority",
               "comparison_scope": "regional",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
               "endpoint": "Regional processing ⌖",
               "id": "variant-3",
@@ -17970,10 +18155,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 272000,
           "long_context": {
@@ -18181,7 +18366,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "long_context": {
             "in": 10.0,
@@ -18275,7 +18460,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "aws_openai",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 272000,
           "has_long_context": true,
           "endpoint": "In-region",
@@ -18582,7 +18767,7 @@
               "out": 15.0,
               "cache_read": 0.25,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "model_match": "confirmed",
@@ -18596,7 +18781,7 @@
               "out": 18.0,
               "cache_read": 0.4,
               "id": "variant-1",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "context_only": true,
@@ -18642,10 +18827,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "context_threshold": 200000,
           "long_context": {
@@ -18792,7 +18977,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "google",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 200000,
           "long_context": {
             "in": 4.0,
@@ -18927,7 +19112,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "vertex",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "context_threshold": 200000,
           "long_context": {
             "in": 4.0,
@@ -19045,7 +19230,7 @@
               "out": 7.5,
               "cache_read": 0.15,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
@@ -19059,7 +19244,7 @@
               "out": 4.125,
               "cache_read": 0.0825,
               "id": "variant-1",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "promotion": {
@@ -19127,10 +19312,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "promotion": {
             "ends_on": "2026-12-31",
@@ -19294,7 +19479,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "google",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "promotion": {
             "ends_on": "2026-12-31",
             "after": {
@@ -19517,7 +19702,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "vertex",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "promotion": {
             "ends_on": "2026-12-31",
             "after": {
@@ -19650,7 +19835,7 @@
               "out": 7.5,
               "cache_read": 0.15,
               "id": "variant-0",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "global",
               "service_tier": "standard",
               "future_only": true,
@@ -19664,7 +19849,7 @@
               "out": 4.125,
               "cache_read": 0.0825,
               "id": "variant-1",
-              "pricing_checked_at": "2026-10-08",
+              "pricing_checked_at": "2026-10-09",
               "comparison_scope": "regional",
               "service_tier": "standard",
               "promotion": {
@@ -19732,10 +19917,10 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-08",
+          "pricing_checked_at": "2026-10-09",
           "availability_checked_at": "2026-09-28",
           "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "promotion": {
             "ends_on": "2026-12-31",
@@ -19899,7 +20084,7 @@
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "google",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "promotion": {
             "ends_on": "2026-12-31",
             "after": {
@@ -20122,7 +20307,7 @@
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
           "model_id_source": "vertex",
-          "model_id_checked_at": "2026-10-08",
+          "model_id_checked_at": "2026-10-09",
           "promotion": {
             "ends_on": "2026-12-31",
             "after": {
@@ -23239,8 +23424,8 @@
           "model_id": "qwen3.8-max",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -23252,9 +23437,21 @@
               "label": "International (Singapore) · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "International (Singapore)",
               "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.0,
+              "out": 6.0,
+              "cache_write": 2.5,
+              "label": "US (Virginia) · US scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "US (Virginia) · US scope",
+              "id": "variant-1",
               "model_match": "confirmed"
             },
             {
@@ -23264,9 +23461,9 @@
               "label": "Chinese mainland (Beijing) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Chinese mainland (Beijing)",
-              "id": "variant-1",
+              "id": "variant-2",
               "model_match": "confirmed"
             },
             {
@@ -23275,9 +23472,9 @@
               "label": "Chinese mainland (Beijing) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Chinese mainland (Beijing)",
-              "id": "variant-2",
+              "id": "variant-3",
               "model_match": "confirmed"
             },
             {
@@ -23286,10 +23483,10 @@
               "label": "Chinese mainland (Beijing) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Chinese mainland (Beijing)",
               "tier_label": "Fast",
-              "id": "variant-3",
+              "id": "variant-4",
               "model_match": "confirmed"
             }
           ],
@@ -23297,7 +23494,7 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
           "endpoint": "Global",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-09",
             "src": [
               "ali_ali_batch",
               "ali_ali_pricing",
@@ -23309,6 +23506,12 @@
                 "global",
                 "Global",
                 "US (Virginia)"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US",
+                "US (Virginia): inference stays in the US"
               ],
               [
                 "Europe",
@@ -23369,8 +23572,8 @@
           "model_id": "qwen3.8-max",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -23382,9 +23585,21 @@
               "label": "International (Singapore) · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "International (Singapore)",
               "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.0,
+              "out": 6.0,
+              "cache_write": 2.5,
+              "label": "US (Virginia) · US scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-09",
+              "endpoint": "US (Virginia) · US scope",
+              "id": "variant-1",
               "model_match": "confirmed"
             },
             {
@@ -23394,9 +23609,9 @@
               "label": "Chinese mainland (Beijing) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Chinese mainland (Beijing)",
-              "id": "variant-1",
+              "id": "variant-2",
               "model_match": "confirmed"
             },
             {
@@ -23405,9 +23620,9 @@
               "label": "Chinese mainland (Beijing) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Chinese mainland (Beijing)",
-              "id": "variant-2",
+              "id": "variant-3",
               "model_match": "confirmed"
             },
             {
@@ -23416,10 +23631,10 @@
               "label": "Chinese mainland (Beijing) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-09",
               "endpoint": "Chinese mainland (Beijing)",
               "tier_label": "Fast",
-              "id": "variant-3",
+              "id": "variant-4",
               "model_match": "confirmed"
             }
           ],
@@ -23427,7 +23642,7 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
           "endpoint": "Global",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-09",
             "src": [
               "ali_ali_batch",
               "ali_ali_pricing",
@@ -23439,6 +23654,12 @@
                 "global",
                 "Global",
                 "US (Virginia)"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US",
+                "US (Virginia): inference stays in the US"
               ],
               [
                 "Europe",
@@ -25144,8 +25365,9 @@
       "model_key": "mistral/mistral-medium-3.5"
     }
   },
-  "reviewed_at": "2026-10-08",
+  "reviewed_at": "2026-10-09",
   "changes": [
+    "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
     "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
     "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",
     "2026-10-04: Row details became one card per platform: every endpoint and tier with input, output, cache read and cache write prices; regions by geography and processing level; Hong Kong and Taiwan; notes and IDs, reviewed for all 35 listed models.",

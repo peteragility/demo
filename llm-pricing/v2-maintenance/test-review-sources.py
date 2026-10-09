@@ -309,6 +309,82 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(out["databricks"]["m/b"]["missing_since"], "2026-10-08")
         self.assertNotIn("missing_since", out["databricks"]["m/a"])
 
+    def test_a_price_that_moved_in_its_table_row_is_proven(self):
+        cell = {"status": "priced", "tier": "Serverless", "in": 1.4, "out": 4.4, "variants": [{"label": "Serverless · Fast", "in": 2.1, "out": 6.6}]}
+        header = 'table: {"cells":["Model","Input","Output"],"heading":"Serverless"}'
+        old, new = 'table: {"cells":["GLM 5.3","$1.40","$4.40"],"heading":"Serverless"}', 'table: {"cells":["GLM 5.3","$1.20","$4.40"],"heading":"Serverless"}'
+        change = {"added_all": [new], "removed_all": [old]}
+        self.assertEqual(review.row_edits(change, cell, [header, new]), [{"offer": "base", "field": "in", "old": 1.4, "new": 1.2}])
+        # Not proven: two offers charge the old price, a multiplier moved, a row came or went, or no column names the rate.
+        twin = dict(cell, variants=[{"label": "Serverless · Batch", "in": 1.4, "out": 2.2}])
+        self.assertIsNone(review.row_edits(change, twin, [header, new]))
+        multiplier = {"added_all": ['table: {"cells":["GLM 5.3","1.2x"],"heading":"Serverless"}'], "removed_all": ['table: {"cells":["GLM 5.3","1.1x"],"heading":"Serverless"}']}
+        self.assertIsNone(review.row_edits(multiplier, cell, []))
+        extra = {"added_all": [new, 'table: {"cells":["GLM 5.3 Fast","$2.00","$6.60"],"heading":"Serverless"}'], "removed_all": [old]}
+        self.assertIsNone(review.row_edits(extra, cell, [header]))
+        self.assertIsNone(review.row_edits(change, cell, [new]))
+
+    def test_a_tier_word_picks_the_offer_when_prices_repeat(self):
+        cell = {"status": "priced", "tier": "Standard", "in": 2.0, "out": 10.0,
+                "variants": [{"label": "Global · Batch", "in": 1.0, "out": 5.0}, {"label": "Global · Flex", "in": 1.0, "out": 5.0}]}
+        header = 'table: {"cells":["Model","Short context input","Short context output"],"heading":"Batch pricing data"}'
+        change = {"removed_all": ['table: {"cells":["gpt-x","$1.00","$5.00"],"heading":"Batch pricing data"}'],
+                  "added_all": ['table: {"cells":["gpt-x","$0.80","$5.00"],"heading":"Batch pricing data"}']}
+        self.assertEqual(review.row_edits(change, cell, [header]), [{"offer": "variant:Global · Batch", "field": "in", "old": 1.0, "new": 0.8}])
+
+    def test_dbu_tables_prove_databricks_rates(self):
+        cell = {"status": "priced", "in": 2.0, "out": 10.0, "variants": []}
+        data = {"models": {"m/x": {"name": "Model X", "platforms": {"databricks": cell}}}}
+        facts = {"model x": {"regional": False, "standard": {"": {"in": 2.50003, "out": 9.99998}}}}
+        self.assertEqual(review.dbx_edits(data, facts, dt.date(2026, 10, 9)), {"m/x": [{"offer": "base", "field": "in", "old": 2.0, "new": 2.5}]})
+        promoted = dict(cell, promotion={"ends_on": "2026-12-31", "after": {"in": 3.0, "out": 12.0, "tier": "Standard"}})
+        data["models"]["m/x"]["platforms"]["databricks"] = promoted
+        self.assertEqual(review.dbx_edits(data, facts, dt.date(2026, 10, 9)), {})
+        self.assertIn("m/x", review.dbx_fact_issues(data, facts, dt.date(2026, 10, 9)))
+
+    def test_the_build_applies_proven_rates_once_and_only_over_the_old_rate(self):
+        spec = importlib.util.spec_from_file_location("build_data", HERE / "build-data.py")
+        build = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(build)
+        cell = {"in": 2.0, "out": 10.0, "service_tier": "standard",
+                "variants": [{"label": "Regional processing ⌖ +10%", "in": 2.2, "out": 11.0, "comparison_scope": "regional", "service_tier": "standard"}]}
+        edit = {"date": "2026-10-09", "offer": "base", "field": "in", "old": 2.0, "new": 2.5}
+        log = build.apply_proven(cell, [edit], "Model X", "Databricks", regional_uplift=True)
+        self.assertEqual((cell["in"], cell["variants"][0]["in"], cell["pricing_checked_at"]), (2.5, 2.75, "2026-10-09"))
+        self.assertEqual(len(log), 1)
+        self.assertEqual(build.apply_proven(cell, [edit], "Model X", "Databricks", regional_uplift=True), [])
+        moved = {"in": 3.0}
+        self.assertEqual(build.apply_proven(moved, [edit], "Model X", "Fireworks"), [])
+        self.assertEqual(moved["in"], 3.0)
+
+    def test_quiet_changes_dates_in_identifiers_dbu_wording_and_named_qwen_tiers(self):
+        rx = review.model_regex({"name": "Claude Opus 5"})
+        base = ["table: Claude Opus 5 | Global CRIS | $5.00 | $25.00"]
+        beta = 'table: {"cells":["Yes","compact-2026-09-04"],"heading":"Claude Opus 5 / Capabilities and Features"}'
+        self.assertEqual(review.classify(base, base + [beta], rx)[0], "low")
+        qwen_flash = 'table: {"cells":["32K<Token≤256K","$0.100","$0.400"],"heading":"Text generation - Qwen / Qwen-Flash / US (Virginia)"}'
+        self.assertTrue(review.names_a_model(qwen_flash, []))
+        config = [{"id": "dbu", "url": "u", "meta": ["dbx_prop"], "facts": "dbx-prices"}]
+        data = {"models": {"g/pro": {"name": "Gemini 3.1 Pro", "platforms": {"databricks": {"status": "priced", "src": "dbx_prop"}}}}}
+        before = ['table: {"cells":["Gemini 3.0 Pro, 3.1 Pro*","Short context","35.714","214.286"]}']
+        after = ['table: {"cells":["Gemini 3.1 Pro*","Short context","35.714","214.286"]}']
+        cells, changes = review.cell_checks(data, config, {"sources": {"dbu": {"records": before}}}, {"dbu": {"url": "u", "records": after}}, {}, {}, None, dt.date(2026, 10, 9))
+        self.assertEqual((changes[0]["risk"], cells["g/pro|databricks"]["verified"]), ("low", "2026-10-09"))
+
+    def test_ranking_events_list_new_top_models_and_models_that_left(self):
+        spec = importlib.util.spec_from_file_location("update_ranking", HERE / "update-ranking.py")
+        ranking = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(ranking)
+        previous = {"models": {"m/a": {"rank": 3, "arena": "Model A"}, "m/b": {"rank": 50, "arena": "Model B"}}}
+        current = {"models": {"m/a": {"rank": 2, "arena": "Model A"}}}
+        unmatched = [{"rank": 7, "modelDisplayName": "New One", "modelOrganization": "Lab"}, {"rank": 9, "modelDisplayName": "Old One"}]
+        out = ranking.events(current, previous, unmatched, {"top": 50, "known_unlisted": ["Old One"]})
+        self.assertEqual(out["unreviewed"], [{"rank": 7, "name": "New One", "maker": "Lab"}])
+        self.assertEqual(out["left"], [{"key": "m/b", "name": "Model B"}])
+        text, _ = review.issue_markdown({"checked_at": "2026-10-09", "sources_failed": {}, "lifecycle_due": []}, {}, [], {}, {"models": {}}, set(), [], ranking=out)
+        self.assertIn("New One", text)
+        self.assertIn("left the top 50", text)
+
 
 if __name__ == "__main__":
     unittest.main()

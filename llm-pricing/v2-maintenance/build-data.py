@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-REVIEWED = "2026-10-08"
+REVIEWED = "2026-10-09"
 RATE_FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_storage")
 PLATFORMS = ("databricks", "official", "bedrock", "azure_foundry", "fireworks", "gcloud", "alicloud")
 # Share of the same tier's input price that Anthropic charges for a cache hit (pricing page, 2026-10-08):
@@ -217,7 +217,13 @@ def add_models(data):
                 for field in ("in", "out", "cache_read", "cache_write", "cache_write_1h"):
                     if v.get(field) is not None:
                         v[field] = round(v[field] / 10, 6)
-    haiku["platforms"]["databricks"] = pending("Not in the reviewed Databricks proprietary-model price list yet; it still lists Claude Haiku 4.5.", "dbx_prop")
+    # 2026-10-09: Databricks' proprietary DBU table lists Claude Haiku 5.5 ⌖ at the same one-tenth rates
+    # (1.429 / 7.143 DBU = $0.10 / $0.50). Its long-context row (7.143 / 35.714 DBU) is left out: Anthropic
+    # sells Haiku 5.5 with a 200K context window only.
+    dbx = haiku["platforms"]["databricks"]
+    for each in [dbx, *dbx.get("variants", [])]:
+        each["pricing_checked_at"] = "2026-10-09"
+    dbx.update(availability_checked_at="2026-10-09", model_id_checked_at="2026-10-09")
     haiku["platforms"]["azure_foundry"] = pending("Not in the reviewed Microsoft Foundry price list for current Claude models.", "azure_claude")
     models["anthropic/claude-haiku-5.5"] = haiku
     if "Replaced" not in models["anthropic/claude-haiku-4.5"].get("badges", []):
@@ -494,6 +500,8 @@ def apply_endpoints(data):
     """
     curated = json.loads((HERE / "endpoints.json").read_text())
     auto = json.loads((HERE / "endpoints-auto.json").read_text())
+    proven = json.loads((HERE / "prices-auto.json").read_text()).get("changes", [])
+    data["_proven"] = []
     for sid, meta in curated.get("_sources", {}).items():
         data["source_meta"][sid] = dict(meta)
     for key, model in data["models"].items():
@@ -501,6 +509,11 @@ def apply_endpoints(data):
             spec = curated.get(key, {}).get(pl)
             if spec:
                 apply_spec(cell, spec, data["source_meta"])
+            mine = [e for e in proven if e["model"] == key and e["platform"] == pl]
+            if mine and cell.get("status") == "priced":
+                # Before Databricks' regional tiers are derived, so they follow a proven base rate.
+                label = data.get("platform_meta", {}).get(pl, {}).get("label", pl)
+                data["_proven"] += apply_proven(cell, mine, model.get("name", key), label, regional_uplift=pl == "databricks")
             if pl == "databricks" and cell["status"] in ("priced", "unverified"):
                 dbx_endpoints(cell, auto["databricks"].get(key), spec)
 
@@ -571,6 +584,50 @@ def finish_variants(data):
                     v["valid_through"] = c["promotion"]["ends_on"]
                 v.setdefault("comparison_scope", c.get("comparison_scope", "global"))
                 v.setdefault("service_tier", "standard")
+
+
+FIELD_NAMES = {"in": "input", "out": "output", "cache_read": "cache read", "cache_write": "cache write", "cache_write_1h": "1-hour cache write"}
+
+
+def find_offer(cell, path):
+    """(offer that carries the date, rates dict) for a prices-auto.json path: "base", "variant:<label>",
+    either followed by "/long_context"."""
+    head, _, tail = path.partition("/")
+    if head == "base":
+        offer = cell
+    else:
+        offer = next((v for v in cell.get("variants", []) if "variant:" + v.get("label", "") == head), None)
+    if offer is None:
+        return None, None
+    rates = offer.get("long_context") if tail == "long_context" else offer
+    return (offer, rates) if isinstance(rates, dict) else (None, None)
+
+
+def apply_proven(cell, edits, name, platform, regional_uplift=False):
+    """Applies the rates the daily check proved (prices-auto.json) to one offer; returns change-log lines.
+    With regional_uplift (Databricks), a regional (⌖) tier that mirrors the edited rate at +10% follows it."""
+    log = []
+    for e in edits:
+        offer, rates = find_offer(cell, e["offer"])
+        if rates is None or rates.get(e["field"]) is None or abs(rates[e["field"]] - e["new"]) < 1e-9:
+            continue  # the tier is gone, or the reviewed data already has the new rate
+        if abs(rates[e["field"]] - e["old"]) > 1e-9:
+            continue  # the reviewed data has moved on since the check
+        rates[e["field"]] = e["new"]
+        offer["pricing_checked_at"] = e["date"]
+        if regional_uplift:
+            for v in cell.get("variants", []):
+                if v.get("comparison_scope") != "regional" or v.get("service_tier") != offer.get("service_tier", "standard"):
+                    continue
+                twin = v.get("long_context") if e["offer"].endswith("/long_context") else v
+                if isinstance(twin, dict) and twin.get(e["field"]) is not None and abs(twin[e["field"]] - round(e["old"] * 1.1, 6)) < 1e-6:
+                    twin[e["field"]] = round(e["new"] * 1.1, 6)
+                    v["pricing_checked_at"] = e["date"]
+        tier = "" if e["offer"] == "base" else " (" + e["offer"].replace("variant:", "").replace("/long_context", ", long context") + ")"
+        usd = lambda v: f"${v:.2f}" if round(v, 2) == v else f"${v:g}"
+        log.append(f"{e['date']}: {name} on {platform}{tier}: {FIELD_NAMES.get(e['field'], e['field'])} {usd(e['old'])} → {usd(e['new'])}, "
+                   f"applied by the daily check from its official source.")
+    return log
 
 
 def check_cache_reads(data):
@@ -868,7 +925,11 @@ def build():
                 {"text": "Grok 4.7 and 4.6 on Databricks are $2.50 / $7.50 since the promotion ended 31 Jan 2027; xAI, Bedrock and Vertex stay at $2 / $6.", "from": "2027-02-01"},
                 "Bedrock adds Global Priority ($3.50 / $10.50) and Flex ($1 / $3) tiers for Grok; xAI's own US endpoint and Bedrock US CRIS are +10%. Azure sells Grok 4.6 as Global Standard only."],
     }
-    data["changes"] = [
+    proven_log = data.pop("_proven", [])
+    if proven_log:
+        data["reviewed_at"] = max(data["reviewed_at"], max(line[:10] for line in proven_log))
+    data["changes"] = proven_log[::-1] + [
+        "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
         "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
         "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",
         "2026-10-04: Row details became one card per platform: every endpoint and tier with input, output, cache read and cache write prices; regions by geography and processing level; Hong Kong and Taiwan; notes and IDs, reviewed for all 35 listed models.",

@@ -1,0 +1,5 @@
+{
+ "schema": 1,
+ "note": "Rates the daily check proved from official pages (review-sources.py --apply-proven); build-data.py applies them in order. An entry whose old rate no longer matches the reviewed data is skipped. Fix the reviewed data in build-data.py or endpoints.json instead of editing this file.",
+ "changes": []
+}
