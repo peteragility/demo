@@ -1,8 +1,10 @@
 {
  "schema": 1,
  "checked_at": "2026-10-10",
- "sources_checked": 111,
- "sources_failed": [],
+ "sources_checked": 110,
+ "sources_failed": [
+  "gcp-grok-4-7"
+ ],
  "sources_read": {
   "dbx-models": "2026-10-10",
   "dbx-oss": "2026-10-10",
@@ -116,7 +118,9 @@
   "aws-card-glm-5-3": "2026-10-10",
   "aws-pricing-page": "2026-10-10"
  },
- "review": [],
+ "review": [
+  "Gemini 3.8 Flash · official"
+ ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -471,10 +475,16 @@
    "verified": "2026-10-10"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "gcp-gemini-3-1-pro"
+   ]
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.5-flash-lite|alicloud": {
    "verified": "2026-10-10"
@@ -513,7 +523,10 @@
    "verified": "2026-10-10"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "gcp-gemini-3-6-flash"
+   ]
   },
   "google/gemini-3.6-flash|official": {
    "verified": "2026-10-10"
@@ -534,10 +547,18 @@
    "verified": "2026-10-10"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "gcp-gemini-3-7-flash"
+   ]
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "changed_at": "2026-10-10",
+   "sources": [
+    "google-pricing"
+   ],
+   "quiet": true
   },
   "google/gemini-3.8-flash|alicloud": {
    "verified": "2026-10-10"
@@ -555,10 +576,17 @@
    "verified": "2026-10-10"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "gcp-gemini-3-8-flash"
+   ]
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "changed_at": "2026-10-10",
+   "sources": [
+    "google-pricing"
+   ]
   },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-10-10"
@@ -711,7 +739,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-5.4|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-card-gpt-5-4"
+   ]
   },
   "openai/gpt-5.4|databricks": {
    "verified": "2026-10-10"
@@ -732,7 +763,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-5.5|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-card-gpt-5-5"
+   ]
   },
   "openai/gpt-5.5|databricks": {
    "verified": "2026-10-10"
@@ -753,7 +787,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-5.6-luna|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-card-gpt-5-6-luna"
+   ]
   },
   "openai/gpt-5.6-luna|databricks": {
    "verified": "2026-10-10"
@@ -774,7 +811,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-5.6-sol|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-card-gpt-5-6-sol"
+   ]
   },
   "openai/gpt-5.6-sol|databricks": {
    "verified": "2026-10-10"
@@ -795,7 +835,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-5.6-terra|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-card-gpt-5-6-terra"
+   ]
   },
   "openai/gpt-5.6-terra|databricks": {
    "verified": "2026-10-10"
@@ -816,7 +859,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-6-astra|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-card-gpt-6-astra"
+   ]
   },
   "openai/gpt-6-astra|databricks": {
    "verified": "2026-10-10"
@@ -837,7 +883,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-6-luna|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-gpt6luna"
+   ]
   },
   "openai/gpt-6-luna|databricks": {
    "verified": "2026-10-10"
@@ -858,7 +907,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-6-sol|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-gpt6sol"
+   ]
   },
   "openai/gpt-6-sol|databricks": {
    "verified": "2026-10-10"
@@ -879,7 +931,10 @@
    "verified": "2026-10-10"
   },
   "openai/gpt-6.1-sol|bedrock": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "accepted": [
+    "aws-gpt61"
+   ]
   },
   "openai/gpt-6.1-sol|databricks": {
    "verified": "2026-10-10"
@@ -960,7 +1015,10 @@
    "verified": "2026-10-10"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "unchecked": [
+    "dbx-models"
+   ]
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-10"
@@ -1092,7 +1150,11 @@
    "verified": "2026-10-10"
   },
   "tml/inkling|official": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "changed_at": "2026-10-10",
+   "sources": [
+    "api-other-tml-tinker-pricing"
+   ]
   },
   "xai/grok-4.6|alicloud": {
    "verified": "2026-10-10"
@@ -1125,7 +1187,10 @@
    "verified": "2026-10-10"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-10-10"
+   "verified": "2026-10-10",
+   "unchecked": [
+    "gcp-grok-4-7"
+   ]
   },
   "xai/grok-4.7|official": {
    "verified": "2026-10-10"
