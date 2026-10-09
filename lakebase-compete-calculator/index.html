@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lakebase Compete Calculator</title>
-<meta name="description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and AlloyDB: region-aware list prices verified 2026-10-09, HA, replicas, storage, backups, I/O and commitments.">
+<meta name="description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL, Snowflake Postgres and ClickHouse Managed Postgres: region-aware list prices verified 2026-10-09, HA, replicas, storage, backups, I/O and commitments.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -114,8 +114,10 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
 .dw dd{margin:0}
 .dw ul{margin:0;padding-left:15px}
 .dw li{margin:1px 0}
+.dw dl.split{grid-column:1/-1;grid-template-columns:repeat(3,max-content minmax(0,1fr));padding-bottom:4px;border-bottom:1px solid var(--line)}
 .dw .rates{grid-column:1/-1;font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:4px}
 tr.na>*{color:var(--ink-3)}
+.mx tfoot td{white-space:normal}
 tfoot td{border-bottom:0;font-size:11.5px;color:var(--ink-3);background:var(--panel-2);text-align:left;white-space:normal}
 tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius:10px}
 
@@ -142,7 +144,6 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 @media (max-width:1060px){
   .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tabs" "tools" "sum" "inp" "tbl" "tech" "foot"}
   .tools{position:static;padding:0 0 6px;justify-content:flex-start}
-  .mx .c-bk,.mx .c-io{display:none}
 }
 @media (max-width:760px){
   .wrap{padding-inline:10px}
@@ -150,7 +151,9 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
   .acts{grid-column:1/-1}
   .kpi b{font-size:15px}
-  .mx .c-ha,.mx .c-rep,.mx .c-sto,.mx .c-cmp{display:none}
+  .mx td.m .mk{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .mx th,.mx td{padding:5px 6px}
+  td.tot{font-size:13.5px}
   .dw{grid-template-columns:minmax(0,1fr)}
   .foot{grid-template-columns:minmax(0,1fr)}
 }
@@ -162,7 +165,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   <header class="top">
     <h1>Lakebase Compete Calculator</h1>
     <span class="intref" title="Built by Peter Chan for internal reference, from public list prices on official sources only">Internal reference only</span>
-    <p>Lakebase vs Aurora · Aurora Serverless v2 · RDS · Azure PG Flexible · Azure SQL · Cloud SQL · AlloyDB · Snowflake Postgres · USD/month at list · verified <b>2026-10-09</b> · <a href="../">demo index</a></p>
+    <p>Lakebase vs Aurora PG · Aurora Serverless v2 · RDS PG · Azure PG · Azure SQL · Cloud SQL PG · Snowflake Postgres · ClickHouse Postgres · USD/month at list · verified <b>2026-10-09</b> · <a href="../">demo index</a></p>
   </header>
 
   <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Scenario">
@@ -199,6 +202,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <div class="fi"><label for="avgIops">Avg I/O per sec</label><input type="number" id="avgIops" min="0" max="1000000" step="50" value="300"><div class="h">Aurora Standard bills per request</div></div>
     <div class="fi"><label for="peakIops">Peak IOPS</label><input type="number" id="peakIops" min="0" max="256000" step="500" value="3000"><div class="h">RDS gp3 / Azure SSD v2 above baseline</div></div>
     <div class="fi"><label for="family">Competitor family</label><select id="family"><option value="mem">Memory-opt (8 GB/vCPU)</option><option value="gp">General (4 GB/vCPU)</option></select></div>
+    <div class="fi"><label for="sfEd">Snowflake edition</label><select id="sfEd"><option value="std">Standard</option><option value="ent" selected>Enterprise</option><option value="bc">Business Critical</option></select><div class="h">Sets $/credit</div></div>
     <div class="fi"><label for="disc">Databricks discount %</label><input type="number" id="disc" min="0" max="90" step="1" value="0"><div class="h">On Lakebase compute</div></div>
     <div class="fi"><label for="sync">Synced tables $/mo</label><input type="number" id="sync" min="0" step="10" value="0"><div class="h">Lakebase pipeline DBUs</div></div>
     <div class="fi"><label for="etl">Others' ETL/CDC $/mo</label><input type="number" id="etl" min="0" step="10" value="0"><div class="h">To keep the lakehouse in sync</div></div>
@@ -208,6 +212,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
       <label class="ck"><input type="checkbox" id="stopIdle"><span>Stop competitor instances when idle</span></label>
       <label class="ck"><input type="checkbox" id="burst" checked><span>Burstable classes ≤ 8 GB (t4g, B-series)</span></label>
       <label class="ck"><input type="checkbox" id="azsqlAhb"><span>Azure SQL: Hybrid Benefit (own SQL licenses)</span></label>
+      <label class="ck"><input type="checkbox" id="chBeta" checked><span>ClickHouse Postgres Beta 50% discount</span></label>
     </div>
     <div class="inote" id="inote"></div>
   </section>
@@ -217,21 +222,22 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   <section class="techsec">
     <h2>Technical comparison</h2>
     <div class="tblwrap"><table class="mx tech">
-    <thead><tr><th>Capability</th><th class="lb">Lakebase</th><th>Aurora PG</th><th>Aurora Serverless v2</th><th>RDS PG</th><th>Azure PG Flexible</th><th>Azure SQL Database</th><th>Cloud SQL</th><th>AlloyDB</th><th>Snowflake Postgres</th></tr></thead>
+    <thead><tr><th>Capability</th><th class="lb">Lakebase</th><th>Aurora PG</th><th>Aurora Serverless v2</th><th>RDS PG</th><th>Azure PG Flexible</th><th>Azure SQL Database</th><th>Cloud SQL PG</th><th>Snowflake Postgres</th><th>ClickHouse Postgres</th></tr></thead>
     <tbody>
-    <tr><td>Engine</td><td class="lb">Postgres 16–18</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres-compatible</td><td>Postgres 16–18</td></tr>
-    <tr><td>Billing unit</td><td class="lb">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second · provisioned storage</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>vCPU-hrs + GiB-hrs + used storage</td><td>Credits/hr per size + $/TB-mo storage</td></tr>
-    <tr><td>Size range</td><td class="lb">Autoscale 0.5–64 CU (max−min ≤ 16); fixed to 112 CU</td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU</td><td>t4g → r8g.48xlarge</td><td>Burstable → 96 vCores</td><td>GP 2–80 vCores (5.1 GB/vCore) · serverless 0.5–80 vCores (≤ 240 GB)</td><td>96 vCPU / 624 GiB (Ent+ 128 / 864)</td><td>288 vCPU / 2,232 GiB per node</td><td>Up to 192 cores / 1.5 TB</td></tr>
-    <tr><td>Autoscaling</td><td class="lb">In place, no restart or dropped connections</td><td>No</td><td>Yes</td><td>No (storage only)</td><td>No</td><td>Serverless tier</td><td>No</td><td>No (add read nodes)</td><td>No</td></tr>
-    <tr><td>Scale to zero</td><td class="lb">Yes ≤ 32 CU · timeout 60 s–7 d (default 24 h) · resume in a few hundred ms</td><td>Manual stop ≤ 7 d</td><td>Yes (0-ACU auto-pause)</td><td>Manual stop ≤ 7 d</td><td>Manual stop</td><td>Serverless auto-pause; provisioned can't stop</td><td>Manual stop</td><td>No</td><td>Manual suspend</td></tr>
-    <tr><td>HA</td><td class="lb">1–3 secondaries across AZs, ≥ primary size, can serve reads</td><td>Needs an Aurora Replica (billed)</td><td>Reader in another AZ (billed)</td><td>Multi-AZ: ×2 instance + storage rates; standby not readable</td><td>Standby: same vCores + storage</td><td>Built in; zone redundancy is an uplift; Business Critical = replicas + readable secondary</td><td>Regional: ×2 CPU, RAM, storage rates</td><td>Primary = 2 nodes</td><td>Standby (not on burstable)</td></tr>
-    <tr><td>Read replicas</td><td class="lb">6 per branch · seconds to create · no extra storage · autoscale + scale-to-zero</td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases; read scale-out on BC / Hyperscale</td><td>Own instance + storage</td><td>Read pool ≤ 20 nodes · shared</td><td>Yes · replication billed as transfer</td></tr>
-    <tr><td>Storage</td><td class="lb">Separated · billed on data stored · per-branch quota adjustable</td><td>Auto-grow to 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>Provisioned · P-tier 2× steps, no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Auto-scaling · max 128 TiB</td><td>Provisioned disks</td></tr>
-    <tr><td>I/O charges</td><td class="lb">None</td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2 IOPS above 3,000</td><td>IOPS limits scale with vCores</td><td>None</td><td>None</td><td>Fixed IOPS per size</td></tr>
-    <tr><td>PITR</td><td class="lb">2–30 d (default 7) · history at PITR rate</td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS by default</td><td>Backups per GB used</td><td>First 7 d of logs free</td><td>Via fork</td></tr>
-    <tr><td>Branch / clone</td><td class="lb">Instant copy-on-write branches (500 / project)</td><td>Fast clone</td><td>Fast clone</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>Clone cluster</td><td>Fork</td></tr>
-    <tr><td>Lakehouse</td><td class="lb">Synced tables from Unity Catalog · UC-governed</td><td colspan="8">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing: price it with "Others' ETL/CDC"</td></tr>
-    <tr><td>Pooling</td><td class="lb">Built-in PgBouncer · 8 CU ≈ 1,795 direct connections</td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling (Ent+)</td><td>Managed pooling</td><td>Built-in PgBouncer</td></tr>
+    <tr><td>Engine</td><td class="lb">Postgres 16–18</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres 16–18</td><td>Postgres (Beta) + pg_clickhouse</td></tr>
+    <tr><td>Billing unit</td><td class="lb">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>Credits/hr per size × $/credit (edition) + $/TB-mo allocated storage</td><td>Per instance-hour: CPU + RAM + local NVMe bundled (Basic / Scale / Enterprise tiers)</td></tr>
+    <tr><td>Size range</td><td class="lb">Autoscale 0.5–64 CU (max−min ≤ 16); fixed to 112 CU</td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU</td><td>t4g → r8g.48xlarge</td><td>Burstable → 96 vCores</td><td>GP 2–80 vCores (5.1 GB/vCore) · serverless 0.5–80</td><td>96 vCPU / 624 GiB (Ent+ 128 / 864)</td><td>Up to 192 cores / 1.5 TB</td><td>1 vCPU / 8 GB / 59 GB → 96 vCPU / 768 GB / 60 TB</td></tr>
+    <tr><td>Autoscaling</td><td class="lb">In place, no restart or dropped connections</td><td>No</td><td>Yes</td><td>No (storage only)</td><td>No</td><td>Serverless tier</td><td>No</td><td>No</td><td>No (resize runs old + new in parallel, both billed)</td></tr>
+    <tr><td>Scale to zero</td><td class="lb">Yes ≤ 32 CU · timeout 60 s–7 d (default 24 h) · resume in a few hundred ms</td><td>Manual stop ≤ 7 d</td><td>Yes (0-ACU auto-pause)</td><td>Manual stop ≤ 7 d</td><td>Manual stop</td><td>Serverless auto-pause; provisioned can't stop</td><td>Manual stop</td><td>Manual suspend</td><td>No</td></tr>
+    <tr><td>HA</td><td class="lb">1–3 secondaries across AZs, ≥ primary size, can serve reads</td><td>Needs an Aurora Replica (billed)</td><td>Reader in another AZ (billed)</td><td>Multi-AZ: ×2 instance + storage rates; standby not readable</td><td>Standby: same vCores + storage</td><td>Built in; zone redundancy is an uplift; Business Critical = replicas + readable secondary</td><td>Regional: ×2 CPU, RAM, storage rates</td><td>HA: ×2 credits + ×2 storage (not on burstable)</td><td>Standbys, each billed as an instance</td></tr>
+    <tr><td>Read replicas</td><td class="lb">6 per branch · seconds to create · no extra storage · autoscale + scale-to-zero</td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases</td><td>Own instance + storage</td><td>Yes · instance + storage; replication billed as transfer</td><td>Yes · billed as instances</td></tr>
+    <tr><td>Storage</td><td class="lb">Separated · billed on data stored · per-branch quota adjustable</td><td>Auto-grow to 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>Provisioned · P-tier 2× steps, no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Allocated disks (burstable ≤ 100 GB)</td><td>Local NVMe tied to instance size (up to 60 TB)</td></tr>
+    <tr><td>I/O charges</td><td class="lb">None</td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2 IOPS above 3,000</td><td>IOPS limits scale with vCores</td><td>None</td><td>None (IOPS fixed per size)</td><td>None (local NVMe)</td></tr>
+    <tr><td>PITR / backups</td><td class="lb">2–30 d (default 7) · history at PITR rate</td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS default</td><td>Backups per GB used</td><td>Point-in-time via fork · not billed separately</td><td>Free in Beta · 1 d (Basic) / 7 d (Scale) retention</td></tr>
+    <tr><td>Branch / clone</td><td class="lb">Instant copy-on-write branches (500 / project)</td><td>Fast clone</td><td>Fast clone</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>Fork</td><td>Restore from backup</td></tr>
+    <tr><td>Lakehouse / analytics</td><td class="lb">Synced tables from Unity Catalog · UC-governed</td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing: price it with "Others' ETL/CDC"</td><td>Snowflake data movement into Snowflake tables</td><td>Native CDC to ClickHouse (free in Beta)</td></tr>
+    <tr><td>Pooling</td><td class="lb">Built-in PgBouncer · 8 CU ≈ 1,795 direct connections</td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling (Ent+)</td><td>Built-in PgBouncer</td><td>—</td></tr>
+    <tr><td>Status</td><td class="lb">GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA (some regions preview)</td><td>Beta (AWS; GCP private preview)</td></tr>
     </tbody></table></div>
   </section>
 
@@ -250,26 +256,29 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Discounts:</b> the promo and your discount apply to compute only.</li>
           </ul></li>
         <li><b>Lakebase storage:</b> DB GB × the database rate, plus PITR history (changed GB/day × window × the PITR rate). Snapshots aren't modeled.</li>
-        <li><b>Provisioned vendors:</b> the smallest class with RAM ≥ peak, running 730 h (active hours if stop-when-idle is on; AlloyDB always 730 h). Serverless v2 gets Lakebase's capacity profile (1 ACU ≈ 2 GiB).</li>
+        <li><b>Provisioned vendors:</b> the smallest class with RAM ≥ peak, running 730 h (active hours if stop-when-idle is on, except Azure SQL provisioned, Snowflake and ClickHouse, which stay at 730 h). Serverless v2 gets Lakebase's capacity profile (1 ACU ≈ 2 GiB).</li>
         <li><b>HA conventions:</b>
           <ul>
             <li><b>Aurora:</b> +1 replica.</li>
             <li><b>RDS:</b> Multi-AZ rates.</li>
             <li><b>Azure:</b> ×2 compute and storage.</li>
             <li><b>Cloud SQL:</b> HA rates.</li>
-            <li><b>AlloyDB:</b> 2 nodes.</li>
+            <li><b>Snowflake:</b> HA rates (×2 credits and storage).</li>
+            <li><b>ClickHouse:</b> +1 standby instance.</li>
           </ul></li>
-        <li><b>Backups:</b> AWS and Azure bill changes × window beyond 100% of DB size. Cloud SQL bills DB + changes. AlloyDB bills DB + changes beyond 7 days.</li>
+        <li><b>Backups:</b> AWS and Azure bill changes × window beyond 100% of DB size. Cloud SQL bills DB + changes. Snowflake and ClickHouse (Beta) don't bill backups separately.</li>
         <li><b>Aurora:</b> the row uses whichever of Standard and I/O-Optimized is cheaper and names the other.</li>
         <li><b>Azure SQL Database (General Purpose):</b> the cheaper of provisioned (smallest vCores with 5.1 GB/vCore ≥ peak RAM, 730 h) and serverless. Serverless is billed on memory/3 GB over Lakebase's capacity profile. HA = zone redundancy; replicas = extra databases.</li>
+        <li><b>Snowflake Postgres:</b> the smallest HIGHMEM (memory-optimized) or STANDARD (general-purpose) size with RAM ≥ peak (BURST at ≤ 4 GB without HA). Credits/hr × 730 × on-demand $/credit for the chosen edition, plus allocated storage.</li>
+        <li><b>ClickHouse Postgres:</b> the smallest memory-optimized size whose RAM ≥ peak and local NVMe ≥ DB size. Scale-tier list price, with the current 50% Beta discount when ticked. Storage is included.</li>
         <li><b>Commitments</b> (instance compute only):
           <ul>
             <li><b>AWS RI:</b> −33% / −53%.</li>
             <li><b>Azure reserved:</b> −40% / −60% (PG Flexible), −21% / −33% (Azure SQL provisioned).</li>
             <li><b>Google CUD:</b> −25% / −52%.</li>
-            <li><b>Not covered:</b> burstable classes and Serverless v2.</li>
+            <li><b>Not covered:</b> burstable classes, Serverless v2, Snowflake (capacity pricing is by contract) and ClickHouse.</li>
           </ul></li>
-        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies. Snowflake Postgres is sized but not priced: its credit rates are only in Snowflake's Service Consumption Table PDF.</li>
+        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies. ClickHouse Beta pricing may change at GA.</li>
       </ul></details>
       <details><summary>Billing gotchas</summary><ul>
         <li><b>Lakebase:</b>
@@ -294,8 +303,14 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Read scale:</b> on General Purpose, read replicas are full databases.</li>
           </ul></li>
         <li><b>Cloud SQL:</b> HA doubles CPU, RAM and storage rates. Backups have no free allowance.</li>
-        <li><b>AlloyDB:</b> an HA primary is 2 nodes. Logs kept beyond 7 days bill as backup.</li>
-        <li><b>Snowflake Postgres:</b> credits/hr per size. Replica replication is billed as data transfer. Burstable sizes have no HA and a 100 GB cap.</li>
+        <li><b>Snowflake Postgres:</b> $/credit depends on edition and region, and HA doubles both credits and storage. Replica replication is billed as data transfer. Burstable sizes have no HA and a 100 GB cap. Not offered in Hong Kong.</li>
+        <li><b>ClickHouse Postgres:</b>
+          <ul>
+            <li><b>Beta pricing:</b> 50% off today; egress and longer backup retention may be charged at GA.</li>
+            <li><b>Storage:</b> it's local NVMe, so a bigger database forces a bigger instance. Each standby is a full instance.</li>
+            <li><b>Resizes:</b> old and new instances run in parallel and are both billed.</li>
+            <li><b>Region:</b> not offered in Hong Kong.</li>
+          </ul></li>
       </ul></details>
     </div>
     <div>
@@ -304,12 +319,13 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
         <li>Lakebase docs: <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-computes" target="_blank" rel="noopener">computes</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero" target="_blank" rel="noopener">scale to zero</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/high-availability" target="_blank" rel="noopener">HA</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/read-replicas" target="_blank" rel="noopener">read replicas</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore" target="_blank" rel="noopener">PITR</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">limits</a></li>
         <li><a href="https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json" target="_blank" rel="noopener">AWS Price List API</a>: AmazonRDS v20261006224050 (us-east-1, ap-southeast-1, ap-northeast-1, ap-east-1) · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.how-it-works.html" target="_blank" rel="noopener">Serverless v2 capacity</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html" target="_blank" rel="noopener">RDS storage</a></li>
         <li><a href="https://prices.azure.com/api/retail/prices" target="_blank" rel="noopener">Azure Retail Prices API</a> · <a href="https://azure.microsoft.com/en-us/pricing/details/azure-sql-database/single/" target="_blank" rel="noopener">Azure SQL Database pricing</a> (license-included and reserved rates) · Microsoft Learn: <a href="https://learn.microsoft.com/en-us/azure/postgresql/high-availability/concepts-high-availability" target="_blank" rel="noopener">HA</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/backup-restore/concepts-backup-restore" target="_blank" rel="noopener">backup</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/compute-storage/concepts-storage" target="_blank" rel="noopener">storage</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/read-replica/concepts-read-replicas" target="_blank" rel="noopener">replicas</a></li>
-        <li>Google: <a href="https://cloud.google.com/sql/pricing" target="_blank" rel="noopener">Cloud SQL pricing</a> · <a href="https://cloud.google.com/alloydb/pricing" target="_blank" rel="noopener">AlloyDB pricing</a> · <a href="https://cloud.google.com/sql/docs/postgres/quotas" target="_blank" rel="noopener">Cloud SQL quotas</a> · <a href="https://cloud.google.com/alloydb/quotas" target="_blank" rel="noopener">AlloyDB quotas</a></li>
-        <li>Snowflake Postgres docs: <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/about" target="_blank" rel="noopener">about</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/postgres-cost" target="_blank" rel="noopener">cost</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/postgres-instance-sizes" target="_blank" rel="noopener">sizes</a></li>
+        <li>Google: <a href="https://cloud.google.com/sql/pricing" target="_blank" rel="noopener">Cloud SQL pricing</a> · <a href="https://cloud.google.com/sql/docs/postgres/quotas" target="_blank" rel="noopener">Cloud SQL quotas</a></li>
+        <li><a href="https://www.snowflake.com/legal-files/CreditConsumptionTable.pdf" target="_blank" rel="noopener">Snowflake Service Consumption Table</a> (effective 2026-10-09): Table 1(i) Postgres compute, 2(a) $/credit, 3(f) Postgres storage · Snowflake Postgres docs: <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/about" target="_blank" rel="noopener">about</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/postgres-cost" target="_blank" rel="noopener">cost</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-postgres/postgres-instance-sizes" target="_blank" rel="noopener">sizes</a></li>
+        <li>ClickHouse Managed Postgres: <a href="https://clickhouse.com/pricing?service=postgres#pricing-calculator" target="_blank" rel="noopener">pricing calculator</a> (Scale, AWS, memory-optimized ARM) · <a href="https://clickhouse.com/docs/cloud/managed-postgres/pricing" target="_blank" rel="noopener">pricing docs</a></li>
       </ul></details>
       <p>Formerly "Postgres Cost Calculator" (/pg-cost-calculator/). Settings are saved in the link: use <b>Share</b> to send a scenario.</p>
     </div>
-    <p class="disclaimer"><b>Disclaimer.</b> Built by Peter Chan for internal reference only. Prices are public list prices taken only from providers' official websites, documentation and price APIs (see Sources). They exclude private, committed-use and negotiated pricing unless entered above. This is not an official Databricks price list or quote, and it isn't affiliated with AWS, Microsoft, Google or Snowflake. Check the source before quoting a customer.</p>
+    <p class="disclaimer"><b>Disclaimer.</b> Built by Peter Chan for internal reference only. Prices are public list prices taken only from providers' official websites, documentation and price APIs (see Sources). They exclude private, committed-use and negotiated pricing unless entered above. This is not an official Databricks price list or quote, and it isn't affiliated with AWS, Microsoft, Google, Snowflake or ClickHouse. Check the source before quoting a customer.</p>
   </footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
@@ -351,13 +367,16 @@ const CSQL = {
   tk: {v: 0.0537, m: 0.0091, ssd: 0.221, ssdHA: 0.442, bk: 0.104},
   hk: {v: 0.062, m: 0.0105, ssd: 0.255, ssdHA: 0.510, bk: 0.120}
 };
-// AlloyDB N2/C4A: $/vCPU-hr, $/GiB-hr, storage $/GB-mo, standard backup $/GB-mo
-const ALLOY = {
-  us: {v: 0.07467, m: 0.01266, st: 0.339, bk: 0.113},
-  sg: {v: 0.08128, m: 0.01378, st: 0.369, bk: 0.123},
-  tk: {v: 0.08458, m: 0.01434, st: 0.384, bk: 0.128},
-  hk: {v: 0.09251, m: 0.01568, st: 0.420, bk: 0.140}
+// Snowflake Postgres (Service Consumption Table, effective 2026-10-09): AWS credits/hr by instance [name, cores, GB, credits/hr]; HA = 2x credits and 2x storage
+const SFPG = {
+  HIGHMEM: [['HIGHMEM_L', 2, 16, 0.1024], ['HIGHMEM_XL', 4, 32, 0.2048], ['HIGHMEM_2XL', 8, 64, 0.4096], ['HIGHMEM_4XL', 16, 128, 0.8192], ['HIGHMEM_8XL', 32, 256, 1.6384], ['HIGHMEM_12XL', 48, 384, 2.4576], ['HIGHMEM_16XL', 64, 512, 3.2768], ['HIGHMEM_24XL', 96, 768, 4.9152]],
+  STANDARD: [['STANDARD_M', 1, 4, 0.0356], ['STANDARD_L', 2, 8, 0.0712], ['STANDARD_XL', 4, 16, 0.1424], ['STANDARD_2XL', 8, 32, 0.2848], ['STANDARD_4XL', 16, 64, 0.5696], ['STANDARD_8XL', 32, 128, 1.1392], ['STANDARD_12XL', 48, 192, 1.7088], ['STANDARD_24XL', 96, 384, 3.4176]],
+  BURST: [['BURST_S', 2, 2, 0.0136], ['BURST_M', 2, 4, 0.0272]],
+  // on-demand $/credit by edition, Postgres storage $/GB-mo (non-HA); Hong Kong not offered
+  reg: {us: {std: 2.00, ent: 3.00, bc: 4.00, st: 0.11776, label: 'AWS us-east-1'}, sg: {std: 2.50, ent: 3.70, bc: 5.00, st: 0.14132, label: 'AWS ap-southeast-1'}, tk: {std: 2.85, ent: 4.30, bc: 5.70, st: 0.14132, label: 'AWS ap-northeast-1'}}
 };
+// ClickHouse Managed Postgres (Beta), Scale tier, AWS memory-optimized ARM: list $/vCPU-month (calculator shows 50% Beta discount); NVMe GB per vCPU
+const CHPG = {us: {vm: 71.48, label: 'AWS us-east-1'}, sg: {vm: 86.25, label: 'AWS ap-southeast-1'}, tk: {vm: 86.25, label: 'AWS ap-northeast-1'}, sizes: [[1, 8, 59], [2, 16, 118], [4, 32, 237], [8, 64, 474], [16, 128, 950], [32, 256, 1900], [48, 384, 2850], [64, 512, 3800]]};
 // Azure SQL Database (General Purpose, standard-series Gen5): li = provisioned $/vCore-hr license included, ahb = with Azure Hybrid Benefit,
 // zr = zone-redundancy uplift $/vCore-hr, sv / svZR = serverless $/vCore-hr (license included) and its ZR uplift, st / stZR = $/GB-mo, bk = RA-GRS backup $/GB-mo
 const AZSQL = {
@@ -372,7 +391,7 @@ const LBCONN = [[0.5, 105], [1, 218], [2, 443], [3, 668], [4, 894], [5, 1119], [
 
 const $ = id => document.getElementById(id);
 const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
-const fmt2 = n => { let x = n.toFixed(n >= 1 ? 3 : 4); while (/\.\d{4,}$/.test(x) && x.endsWith('0')) x = x.slice(0, -1); if (n < 1) while (/\.\d{4}$/.test(x) && x.endsWith('0')) x = x.slice(0, -1); return '$' + x; };
+const fmt2 = n => { const min = n >= 1 ? 2 : 3; let x = n.toFixed(n >= 1 ? 3 : 4); while (x.split('.')[1].length > min && x.endsWith('0')) x = x.slice(0, -1); return '$' + x; };
 const fmtCU = v => (v % 1 ? v.toFixed(1) : v) + ' CU';
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
@@ -385,7 +404,7 @@ function state() {
     region: $('region').value, cloud: $('lbCloud').value, tier: $('lbTier').value, promo: $('promo').checked,
     disc: clamp(+$('disc').value || 0, 0, 90), commit: $('commit').value, family: $('family').value,
     peak: PEAKS[+$('peak').value], floor: +$('floor').value, load: +$('load').value / 100,
-    hpd: +$('hpd').value, dpw: +$('dpw').value, s2z: $('s2z').checked, stopIdle: $('stopIdle').checked, burst: $('burst').checked, azsqlAhb: $('azsqlAhb').checked,
+    hpd: +$('hpd').value, dpw: +$('dpw').value, s2z: $('s2z').checked, stopIdle: $('stopIdle').checked, burst: $('burst').checked, azsqlAhb: $('azsqlAhb').checked, sfEd: $('sfEd').value, chBeta: $('chBeta').checked,
     ha: haN > 0, haN, rep: +$('rep').value, repLoad: +$('repLoad').value / 100,
     sto: Math.max(1, +$('sto').value || 1), chg: Math.max(0, +$('chg').value || 0), ret: clamp(+$('ret').value || 7, 1, 35),
     avgIops: Math.max(0, +$('avgIops').value || 0), peakIops: Math.max(0, +$('peakIops').value || 0),
@@ -526,19 +545,6 @@ function calcCloudSQL(s) {
     rates: fmt2(g.v) + '/vCPU-hr + ' + fmt2(g.m) + '/GiB-hr (HA ×2) · SSD ' + fmt2(g.ssd) + ' (HA ' + fmt2(g.ssdHA) + ') /GB-mo · backup ' + fmt2(g.bk) + '/GB-mo'});
 }
 
-function calcAlloy(s) {
-  const g = ALLOY[s.region], R = 2 * s.peak, cd = COMMIT.gcp[s.commit];
-  const shapes = [[2, 16], [4, 32], [8, 64], [16, 128], [32, 256], [64, 512], [96, 768]];
-  const [vc, mem] = shapes.find(x => x[1] >= R) || shapes[shapes.length - 1];
-  const node = (vc * g.v + mem * g.m) * HRS * (1 - cd);
-  const c = {cmp: node, ha: s.ha ? node : 0, rep: node * s.rep, sto: s.sto * g.st, bk: (s.sto + s.chg * Math.max(0, s.ret - 7)) * g.bk, io: 0, ext: s.etl};
-  return row({key: 'alloy', name: 'AlloyDB', sub: vc + ' vCPU / ' + mem + ' GiB' + (s.ha ? ' · HA primary (2 nodes)' : ' · basic') + ' · ' + REG[s.region].gcp,
-    c, notes: ['No I/O charges; read pools share storage.'].concat(cd ? ['CUD −' + Math.round(cd * 100) + '% on vCPU and RAM.'] : []).concat(s.stopIdle ? ['Modeled always running (730 h).'] : []),
-    size: [['Compute', vc + ' vCPU / ' + mem + ' GiB per node'], ['Hours', '730 h'], ['HA', s.ha ? '2 nodes (active + standby)' : '1 node'],
-      ['Read scale', s.rep ? s.rep + '-node read pool, shared storage' : 'none'], ['I/O', 'no I/O charges']],
-    rates: fmt2(g.v) + '/vCPU-hr + ' + fmt2(g.m) + '/GiB-hr per node · storage ' + fmt2(g.st) + '/GB-mo · backup ' + fmt2(g.bk) + '/GB-mo'});
-}
-
 function calcAzureSQL(s) {
   const q = AZSQL[s.region], act = activeHours(s), R = 2 * s.peak, cd = COMMIT.azsql[s.commit];
   const sizes = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 32, 40, 80];
@@ -564,17 +570,40 @@ function calcAzureSQL(s) {
     rates: 'Provisioned ' + fmt2(q.li) + ' (AHB ' + fmt2(q.ahb) + ') /vCore-hr · ZR +' + fmt2(q.zr) + ' · serverless ' + fmt2(q.sv) + '/vCore-hr · storage ' + fmt2(q.st) + ' (ZR ' + fmt2(q.stZR) + ') /GB-mo · backup ' + fmt2(q.bk) + '/GB-mo'});
 }
 
-function snowflakeSize(s) {
-  const R = 2 * s.peak;
-  const hm = [['HIGHMEM_L', 2, 16], ['HIGHMEM_XL', 4, 32], ['HIGHMEM_2XL', 8, 64], ['HIGHMEM_4XL', 16, 128], ['HIGHMEM_8XL', 32, 256], ['HIGHMEM_12XL', 48, 384]];
-  const st = [['STANDARD_M', 1, 4], ['STANDARD_L', 2, 8], ['STANDARD_XL', 4, 16], ['STANDARD_2XL', 8, 32], ['STANDARD_4XL', 16, 64], ['STANDARD_8XL', 32, 128], ['STANDARD_12XL', 48, 192], ['STANDARD_24XL', 96, 384]];
-  const list = s.family === 'gp' ? st : hm;
-  return list.find(x => x[2] >= R) || list[list.length - 1];
+function calcSnowflake(s) {
+  const g = SFPG.reg[s.region], R = 2 * s.peak;
+  if (!g) return {key: 'sf', name: 'Snowflake Postgres', na: 'Not offered in Hong Kong (nearest: AWS / Azure Singapore).'};
+  const burst = s.burst && R <= 4 && !s.ha, list = burst ? SFPG.BURST : (s.family === 'gp' ? SFPG.STANDARD : SFPG.HIGHMEM);
+  const [nm, cores, gb, cr] = list.find(x => x[2] >= R) || list[list.length - 1];
+  const usd = g[s.sfEd], node = cr * HRS * usd;
+  const c = {cmp: node, ha: s.ha ? node + s.sto * g.st : 0, rep: s.rep * (node + s.sto * g.st), sto: s.sto * g.st, bk: 0, io: 0, ext: s.etl};
+  return row({key: 'sf', name: 'Snowflake Postgres', sub: nm + ' · ' + cores + ' cores / ' + gb + ' GB' + (s.ha ? ' · HA' : '') + ' · ' + ({std: 'Standard', ent: 'Enterprise', bc: 'Business Critical'})[s.sfEd] + ' · ' + g.label,
+    c, notes: ['Compute bills ' + cr + ' credits/hr' + (s.ha ? ' (×2 with HA)' : '') + ' at ' + fmt2(usd) + '/credit (on-demand, ' + ({std: 'Standard', ent: 'Enterprise', bc: 'Business Critical'})[s.sfEd] + ').', 'Storage billed on allocated GB (×2 with HA); data transfer, incl. replication to replicas, is extra.'].concat(burst ? ['Burstable size: no HA, max 100 GB storage.'] : []).concat(s.commit !== 'od' ? ['Capacity (pre-purchase) discounts are by contract; not applied.'] : []),
+    size: [['Compute', nm + ' · ' + cores + ' cores / ' + gb + ' GB · ' + cr + ' credits/hr'], ['Hours', '730 h (manual suspend only)'], ['HA', s.ha ? 'HA standby (2× credits + storage)' : 'off'],
+      ['Read scale', s.rep ? pl(s.rep, 'replica') + ', each billed as an instance + storage' : 'none'], ['Storage', s.sto.toLocaleString() + ' GB allocated · IOPS fixed per size']],
+    rates: cr + ' credits/hr × ' + fmt2(usd) + '/credit · storage ' + fmt2(g.st) + '/GB-mo (' + fmt2(g.st * 1000) + '/TB) · source: Snowflake Service Consumption Table 1(i), 2(a), 3(f)'});
+}
+
+function calcClickHouse(s) {
+  const g = CHPG[s.region], R = 2 * s.peak;
+  if (!g) return {key: 'ch', name: 'ClickHouse Postgres', na: 'Not offered in Hong Kong (nearest: AWS Singapore).'};
+  const fit = CHPG.sizes.find(x => x[1] >= R && x[2] >= s.sto) || CHPG.sizes[CHPG.sizes.length - 1];
+  const [vc, gb, nvme] = fit, df = s.chBeta ? 0.5 : 1, node = vc * g.vm * df;
+  const byStorage = CHPG.sizes.find(x => x[1] >= R)[0] < vc;
+  const c = {cmp: node, ha: s.ha ? node : 0, rep: s.rep * node, sto: 0, bk: 0, io: 0, ext: s.etl};
+  return row({key: 'ch', name: 'ClickHouse Postgres', sub: vc + ' vCPU / ' + gb + ' GiB / ' + nvme.toLocaleString() + ' GB NVMe · Scale' + (s.ha ? ' · 1 standby' : '') + ' · Beta · ' + g.label,
+    c, notes: [(s.chBeta ? 'Includes the 50% Beta discount; list would be ' + fmt(row({c: {cmp: node / df, ha: s.ha ? node / df : 0, rep: s.rep * node / df, ext: s.etl}}).total) + '/mo.' : 'List price (Beta discount off).'), 'Price covers the whole VM: CPU, RAM and local NVMe storage. Backups, data transfer and CDC to ClickHouse are free in Beta; egress and longer backup retention may be charged at GA.']
+      .concat(byStorage ? ['Size driven by storage: local NVMe must hold the database. A storage-optimized family may be cheaper.'] : []).concat(s.region !== 'us' ? [] : []).concat(s.commit !== 'od' ? ['No public commitment discount; not applied.'] : []).concat(s.stopIdle ? ['Modeled always running (730 h).'] : []),
+    size: [['Compute', vc + ' vCPU / ' + gb + ' GiB (memory-optimized, Graviton) · ' + nvme.toLocaleString() + ' GB NVMe'], ['Hours', '730 h'], ['HA', s.ha ? '1 standby (billed as an instance)' : 'off'],
+      ['Read scale', s.rep ? pl(s.rep, 'replica') + ', billed as instances' : 'none'], ['Storage', 'included (local NVMe) · no I/O charges']],
+    rates: fmt2(g.vm) + '/vCPU-month list (' + fmt2(g.vm / 2) + ' with Beta discount) · Scale tier · Enterprise tier ≈ +12% · source: clickhouse.com pricing calculator'});
 }
 
 const OPEN = new Set();
 let prefCloud = 'aws';
-function allRows(s) { return [calcLakebase(s), calcAurora(s), calcASv2(s), calcRDS(s), calcAzure(s), calcAzureSQL(s), calcCloudSQL(s), calcAlloy(s)]; }
+function allRows(s) { return [calcLakebase(s), calcAurora(s), calcASv2(s), calcRDS(s), calcAzure(s), calcAzureSQL(s), calcCloudSQL(s), calcSnowflake(s), calcClickHouse(s)]; }
+function colsFor() { const w = window.innerWidth; return w <= 760 ? ['tot', 'd'] : w <= 1060 ? ['cmp', 'ha', 'rep', 'sto', 'tot', 'd'] : ['cmp', 'ha', 'rep', 'sto', 'bk', 'io', 'tot', 'd']; }
+const COLH = {cmp: 'Compute', ha: 'HA', rep: 'Read scale', sto: 'Storage', bk: 'Backup / PITR', io: 'I/O + extras', tot: 'Monthly', d: 'vs Lakebase'};
 function render() {
   syncControls();
   const s = state(), act = activeHours(s);
@@ -583,13 +612,13 @@ function render() {
   $('loadOut').textContent = Math.round(s.load * 100) + '%'; $('hpdOut').textContent = s.hpd + ' h'; $('dpwOut').textContent = s.dpw + ' d';
   $('repOut').textContent = s.rep; $('repLoadOut').textContent = Math.round(s.repLoad * 100) + '%';
   const inote = [];
-  if (s.region === 'hk') inote.push('Hong Kong: Lakebase is priced on Azure East Asia only.');
+  if (s.region === 'hk') inote.push('Hong Kong: Lakebase is priced on Azure East Asia only; Snowflake and ClickHouse Postgres aren\'t offered there.');
   if ($('lbCloud').value === 'azure') inote.push('Azure Databricks Premium = Enterprise tier on AWS/Google.');
   if ($('s2z').checked && act >= HRS) inote.push('Scale-to-zero with no idle time keeps the autoscaling rate: turn it off for the Always-On rate.');
   if ($('s2z').disabled) inote.push('Scale-to-zero needs ≤ 32 CU and no HA.');
   $('inote').textContent = inote.join(' · ');
 
-  const rows = allRows(s), lb = rows[0];
+  const all = allRows(s), lb = all[0], rows = all.filter(r => !r.na), na = all.filter(r => r.na);
   const sorted = rows.slice().sort((a, b) => a.total - b.total), max = sorted[sorted.length - 1].total;
   const best = sorted.find(r => r.key !== 'lb'), rank = sorted.indexOf(lb) + 1, pct = (lb.total / best.total - 1) * 100;
   $('summary').innerHTML =
@@ -602,26 +631,29 @@ function render() {
   $('copyBtn').onclick = () => navigator.clipboard.writeText(summaryText()).then(() => toast('Summary copied'));
   $('shareBtn').onclick = () => { writeHash(); navigator.clipboard.writeText(location.href).then(() => toast('Link copied')); };
 
-  const cell = (v, cls) => '<td class="' + cls + (v > 0.5 ? '' : ' z') + '">' + (v > 0.5 ? fmt(v) : '—') + '</td>';
-  let h = '<colgroup><col style="width:27%"><col class="c-cmp"><col class="c-ha"><col class="c-rep"><col class="c-sto"><col class="c-bk"><col class="c-io"><col style="width:11%"><col style="width:9%"></colgroup>'
-    + '<thead><tr><th class="m">Platform <span class="mk" style="display:inline;margin-left:4px">sized to ' + fmtCU(s.peak) + ' / ' + 2 * s.peak + ' GB peak</span></th><th class="c-cmp">Compute</th><th class="c-ha">HA</th><th class="c-rep">Read scale</th><th class="c-sto">Storage</th><th class="c-bk">Backup / PITR</th><th class="c-io">I/O + extras</th><th>Monthly</th><th>vs Lakebase</th></tr></thead><tbody>';
+  const cols = colsFor(), n = cols.length + 1, narrow = cols.length === 2;
+  const money = v => v > 0.5 ? fmt(v) : '—';
+  const dcell = r => { if (r.key === 'lb') return '<span class="d par">base</span>'; const p = (r.total / lb.total - 1) * 100; return Math.abs(p) < 1 ? '<span class="d par">=</span>' : '<span class="d ' + (p > 0 ? 'up">▲ +' : 'down">▼ −') + Math.abs(p).toFixed(0) + '%</span>'; };
+  const cw = {cmp: 9, ha: 8, rep: 8, sto: 8, bk: 8, io: 8, tot: narrow ? 26 : 11, d: narrow ? 18 : 9};
+  let h = '<colgroup><col>' + cols.map(c => '<col style="width:' + cw[c] + '%">').join('') + '</colgroup>'
+    + '<thead><tr><th class="m">Platform' + (narrow ? '' : ' <span class="mk" style="display:inline;margin-left:4px">sized to ' + fmtCU(s.peak) + ' / ' + 2 * s.peak + ' GB peak</span>') + '</th>' + cols.map(c => '<th>' + (narrow && c === 'd' ? 'vs LB' : COLH[c]) + '</th>').join('') + '</tr></thead><tbody>';
   sorted.forEach((r, i) => {
-    const d = r.key === 'lb' ? '<span class="d par">base</span>' : (() => { const p = (r.total / lb.total - 1) * 100; return Math.abs(p) < 1 ? '<span class="d par">=</span>' : '<span class="d ' + (p > 0 ? 'up">▲ +' : 'down">▼ ') + p.toFixed(0) + '%</span>'; })();
     const open = OPEN.has(r.key);
     h += '<tr class="row' + (r.key === 'lb' ? ' lb' : '') + (open ? ' open' : '') + '" data-k="' + r.key + '"><td class="m"><span class="rk">' + (i + 1) + '</span><span class="nm">' + r.name + '</span>' + (i === 0 ? '<span class="bdg best">lowest</span>' : '') + '<span class="chev">▸</span><span class="mk">' + r.sub + '</span></td>'
-      + cell(r.c.cmp, 'c-cmp') + cell(r.c.ha, 'c-ha') + cell(r.c.rep, 'c-rep') + cell(r.c.sto, 'c-sto') + cell(r.c.bk, 'c-bk') + cell(r.c.io + r.c.ext, 'c-io')
-      + '<td class="tot" style="--w:' + (r.total / max * 100).toFixed(1) + '%">' + fmt(r.total) + '<small>' + fmt(r.total * 12) + '/yr</small></td><td>' + d + '</td></tr>';
-    if (open) h += '<tr class="detail"><td colspan="9"><div class="dw"><dl>' + r.size.map(x => '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>').join('') + '</dl><ul>' + r.notes.map(n => '<li>' + n + '</li>').join('') + '</ul><div class="rates">Rates used: ' + r.rates + '</div></div></td></tr>';
+      + cols.map(c => c === 'tot' ? '<td class="tot" style="--w:' + (r.total / max * 100).toFixed(1) + '%">' + fmt(r.total) + '<small>' + fmt(r.total * 12) + '/yr</small></td>' : c === 'd' ? '<td>' + dcell(r) + '</td>' : c === 'io' ? '<td class="' + (r.c.io + r.c.ext > 0.5 ? '' : 'z') + '">' + money(r.c.io + r.c.ext) + '</td>' : '<td class="' + (r.c[c] > 0.5 ? '' : 'z') + '">' + money(r.c[c]) + '</td>').join('') + '</tr>';
+    if (open) {
+      const split = narrow ? '<dl class="split">' + ['cmp', 'ha', 'rep', 'sto', 'bk', 'io'].filter(k => (k === 'io' ? r.c.io + r.c.ext : r.c[k]) > 0.5).map(k => '<dt>' + COLH[k] + '</dt><dd>' + fmt(k === 'io' ? r.c.io + r.c.ext : r.c[k]) + '</dd>').join('') + '</dl>' : '';
+      h += '<tr class="detail"><td colspan="' + n + '"><div class="dw">' + split + '<dl>' + r.size.map(x => '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>').join('') + '</dl><ul>' + r.notes.map(x => '<li>' + x + '</li>').join('') + '</ul><div class="rates">Rates used: ' + r.rates + '</div></div></td></tr>';
+    }
   });
-  const sf = snowflakeSize(s);
-  h += '<tr class="na"><td class="m"><span class="rk">–</span><span class="nm">Snowflake Postgres</span><span class="mk">closest ' + sf[0] + ' · ' + sf[1] + ' cores / ' + sf[2] + ' GB' + (s.ha ? ' + HA standby' : '') + '</span></td><td colspan="8" style="text-align:left;white-space:normal;font-size:11.5px">Not priced: credits/hr per size are published only in Snowflake\'s Service Consumption Table. Multiply credits/hr × 730 × your $/credit. Storage is a flat $/TB-month, and replica replication is billed as data transfer.</td></tr>';
-  h += '</tbody><tfoot><tr><td colspan="9">' + REG[s.region].name + ' list prices verified 2026-10-09 · 730 h/month · ' + (s.promo ? 'Lakebase promo on' : 'Lakebase list') + (s.disc ? ' · −' + s.disc + '% Databricks discount' : '') + ' · competitors ' + ({od: 'on-demand', '1y': '1-yr commitment', '3y': '3-yr commitment'})[s.commit] + ' · excludes tax, support and data transfer.</td></tr></tfoot>';
+  na.forEach(r => { h += '<tr class="na"><td class="m"><span class="rk">–</span><span class="nm">' + r.name + '</span><span class="mk">' + r.na + '</span></td><td colspan="' + cols.length + '" style="text-align:right">n/a</td></tr>'; });
+  h += '</tbody><tfoot><tr><td colspan="' + n + '">' + REG[s.region].name + ' list prices verified 2026-10-09 · 730 h/month · ' + (s.promo ? 'Lakebase promo on' : 'Lakebase list') + (s.disc ? ' · −' + s.disc + '% Databricks discount' : '') + ' · competitors ' + ({od: 'on-demand', '1y': '1-yr commitment', '3y': '3-yr commitment'})[s.commit] + (s.chBeta ? ' · ClickHouse Beta 50% off' : '') + ' · excludes tax, support and data transfer.' + (narrow ? ' Tap a row for the cost split.' : '') + '</td></tr></tfoot>';
   $('mx').innerHTML = h;
   $('mx').querySelectorAll('tr.row').forEach(tr => tr.onclick = () => { const k = tr.dataset.k; OPEN.has(k) ? OPEN.delete(k) : OPEN.add(k); render(); });
   writeHash();
 }
 
-const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'promo', 'disc', 'family', 'peak', 'floor', 'load', 'hpd', 'dpw', 's2z', 'stopIdle', 'burst', 'azsqlAhb', 'haN', 'rep', 'repLoad', 'sto', 'chg', 'ret', 'avgIops', 'peakIops', 'sync', 'etl'];
+const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'promo', 'disc', 'family', 'peak', 'floor', 'load', 'hpd', 'dpw', 's2z', 'stopIdle', 'burst', 'azsqlAhb', 'sfEd', 'chBeta', 'haN', 'rep', 'repLoad', 'sto', 'chg', 'ret', 'avgIops', 'peakIops', 'sync', 'etl'];
 const DEFAULTS = {};
 function getVal(id) { const e = $(id); return e.type === 'checkbox' ? (e.checked ? 1 : 0) : e.value; }
 function setVal(id, v) { const e = $(id); if (e.type === 'checkbox') e.checked = (v === true || v === 1 || v === '1'); else e.value = v; }
@@ -648,7 +680,7 @@ function applyPreset(k) {
 }
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
 function summaryText() {
-  const s = state(), rows = allRows(s).sort((a, b) => a.total - b.total);
+  const s = state(), rows = allRows(s).filter(r => !r.na).sort((a, b) => a.total - b.total);
   const L = ['Lakebase Compete Calculator: ' + REG[s.region].name + ', list prices verified 2026-10-09',
     'Workload: peak ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM), Lakebase min ' + (s.peak > 64 ? s.peak : s.floor) + ' CU, avg load ' + Math.round(s.load * 100) + '%, ' + s.hpd + 'h x ' + s.dpw + 'd, HA ' + (s.ha ? s.haN : 'off') + ', ' + s.rep + ' replicas, ' + s.sto + ' GB, ' + s.chg + ' GB/day, ' + s.ret + '-day PITR',
     'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
@@ -660,6 +692,7 @@ function summaryText() {
 $('lbCloud').addEventListener('change', () => { prefCloud = $('lbCloud').value; });
 IDS.forEach(id => { DEFAULTS[id] = getVal(id); const ev = () => { if (!['region', 'lbCloud', 'lbTier', 'commit'].includes(id)) { curPreset = 'custom'; markTab(); } render(); }; $(id).addEventListener('input', ev); $(id).addEventListener('change', ev); });
 document.querySelectorAll('#tabs .tab').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.p)));
+let lastCols = colsFor().length; window.addEventListener('resize', () => { const c = colsFor().length; if (c !== lastCols) { lastCols = c; render(); } });
 if (matchMedia('(max-width:760px)').matches) $('inputs').hidden = true;
 if (readHash()) { prefCloud = $('lbCloud').value; syncControls(); readHash(); markTab(); render(); } else applyPreset('prod');
 </script>

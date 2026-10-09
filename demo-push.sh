@@ -9,7 +9,7 @@ import os, json, datetime
 
 META = {
   'sandbox-compare/':('Agent Sandbox Isolation Comparison','Vendors vs open source — E2B/Modal/Daytona/AWS/Databricks/Monty ranked by isolation tier · 2026','Work','#58a6ff'),
-  'lakebase-compete-calculator/':('Lakebase Compete Calculator','Lakebase vs Aurora · Serverless v2 · RDS · Azure PG · Azure SQL · Cloud SQL · AlloyDB: region-aware list prices, HA, replicas, backups, I/O, commitments','🔥 Hot','#3fb950'),
+  'lakebase-compete-calculator/':('Lakebase Compete Calculator','Lakebase vs Aurora PG · Serverless v2 · RDS · Azure PG · Azure SQL · Cloud SQL · Snowflake Postgres · ClickHouse Postgres: region-aware list prices, HA, replicas, backups, I/O, commitments','🔥 Hot','#3fb950'),
   'lakebase-objection-faq/':('Lakebase Objections FAQ','Nine technical objections answered honestly · incl. Aurora head-to-head','Work','#f7b731'),
   'aidecide-arena/':('AI Arena — ai_decide vs Jev','Snake + Tic-Tac-Toe deathmatch, live model I/O inspection','AI','#FF3621'),
   'tongjian/':         ('資治通鑑 · 294卷全文','司馬光 · 周威烈王至後周世宗 · 前403–959','📖 讀史','#8b2f1f'),
