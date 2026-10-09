@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lakebase Compete Calculator</title>
+<title>Lakebase Calculator</title>
 <meta name="description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and ClickHouse Managed Postgres: region-aware list prices verified 2026-10-09, HA, replicas, storage, backups, I/O and commitments.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -170,8 +170,8 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>Lakebase Compete Calculator</h1>
-    <span class="intref" title="Built by Peter Chan for internal reference, from public list prices on official sources only">Internal reference only</span>
+    <h1>Lakebase Calculator</h1>
+    <span class="intref" title="Built by Peter Chan for internal reference, from public list prices on official sources only">Databricks' internal reference only</span>
     <p>Lakebase vs Aurora PG · Aurora Serverless v2 · RDS PG · Azure PG · Azure SQL · Cloud SQL PG · ClickHouse Postgres · USD/month at list · verified <b>2026-10-09</b> · <a href="../">demo index</a></p>
   </header>
 
@@ -649,7 +649,7 @@ function markTab() { document.querySelectorAll('#tabs .tab').forEach(b => b.setA
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
 function summaryText() {
   const s = state(), rows = allRows(s).filter(r => !r.na).sort((a, b) => a.total - b.total);
-  const L = ['Lakebase Compete Calculator: ' + REG[s.region].name + ', list prices verified 2026-10-09',
+  const L = ['Lakebase Calculator: ' + REG[s.region].name + ', list prices verified 2026-10-09',
     'Workload: ' + PAT[s.pattern].name + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + s.sto + ' GB, HA ' + (s.ha ? 'on' : 'off') + ', ' + s.rep + ' replicas, I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR',
     'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
   rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after promo ' + fmt(r.post) + '/mo]' : '')));
