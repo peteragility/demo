@@ -634,6 +634,35 @@ def row_edits(change, cell, records, parts=None):
     return edits or None
 
 
+# Pages of the compared platforms (not the makers' own APIs), searched for new top-50 models.
+PLATFORM_SOURCES = ("dbx-", "fireworks-", "aws-", "az-", "azure-", "gcp-", "vertex-", "alibaba-", "ali-")
+EFFORT = re.compile(r"\s*\([^)]*\)|[\s_-]+(?:high|xhigh|max|low|medium|minimal|agent)$", re.I)
+
+
+def name_pattern(name):
+    """A pattern for an arena display name on a platform page: "muse-spark-1.3-max" finds "Muse Spark 1.3" and
+    "muse-spark-1-3". Effort suffixes are dropped; every other word must appear."""
+    base = official.norm(EFFORT.sub("", EFFORT.sub("", name)))
+    parts = [re.escape(t) for t in re.split(r"[\s.]+", base) if t]
+    return re.compile(r"(?<![a-z0-9])" + r"[\s._-]*".join(parts) + r"(?![a-z0-9]|[._-]?\d)") if parts else None
+
+
+def unpriced_on_platforms(unpriced, current, skip):
+    """Top-50 models with no reviewed prices whose name appears on a compared platform's page: each probably
+    needs adding. skip = names a platform shows but does not sell with general access (not_sold)."""
+    skip = {official.norm(n) for n in skip}
+    found = []
+    for model in unpriced:
+        rx = name_pattern(model["name"])
+        if not rx or official.norm(model["name"]) in skip:
+            continue
+        where = sorted(sid for sid, snap in current.items() if sid.startswith(PLATFORM_SOURCES)
+                       and any(rx.search(official.norm(r)) for r in snap["records"]))
+        if where:
+            found.append(dict(model, sources=where))
+    return found
+
+
 def proven_edits(data, changes, current, dbx, sources):
     """Every edit the live sources prove: Databricks rates from its DBU tables, and table rows where only a
     price moved. Edits that disagree about the same rate are dropped."""
@@ -808,7 +837,7 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     return cells, changes
 
 
-def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None, general=(), unrecorded=(), gone=None, last_read=None):
+def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None, general=(), unrecorded=(), gone=None, last_read=None, new_models=()):
     """The rolling GitHub issue: only what a person needs to act on. failing = sources not read for STALE_DAYS
     days or more (a single failed read is usually temporary)."""
     failing = report["sources_failed"] if failing is None else failing
@@ -820,6 +849,11 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
     done = sum(1 for c in changes if c.get("risk") == "applied" and c["model"] in listed)
     lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified today; {len(review)} need review; "
              f"{done} price changes applied and {low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
+    if new_models:
+        lines += ["## New top-50 models a platform seems to sell", "",
+                  "Each has no prices on the page yet. Ask Claude to add it; if no platform sells it with general access, add its name to "
+                  "`not_sold` in `ranking-config.json`. The item clears once the model is added.", ""]
+        lines += [f"- **#{m['rank']} {m['name']}** ({m['maker']}): named on " + ", ".join(m["sources"]) for m in new_models] + [""]
     fact_issues = {k: [t for t in v if not dbx_availability(t)] for k, v in fact_issues.items() if k in listed}
     fact_issues = {k: v for k, v in fact_issues.items() if v}
     if fact_issues:
@@ -930,6 +964,7 @@ def main():
     parser.add_argument("--fail-on-change", action="store_true", help="Exit 2 when anything needs review (the issue is written).")
     parser.add_argument("--accept-low-risk", action="store_true", help="Record low-risk changes (no price, rate or date moved) in the reviewed baseline.")
     parser.add_argument("--apply-proven", action="store_true", help="Apply price changes the official sources prove (prices-auto.json), rebuild and validate.")
+    parser.add_argument("--unpriced", type=Path, help="update-ranking.py --unpriced output: top-N models with no reviewed prices.")
     parser.add_argument("--applied", type=Path, help="Write one line per price change applied automatically (for the commit message).")
     parser.add_argument("--as-of", default=dt.datetime.now(HKT).date().isoformat(), help="Run date (default: today in Hong Kong).")
     args = parser.parse_args()
@@ -992,14 +1027,16 @@ def main():
                 done.setdefault((e["model"], e["platform"], e["source"]), []).append(describe(e, data))
             done = {k: "applied automatically: " + "; ".join(v) for k, v in done.items()}
             cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, done, auto_regions)
+    unpriced = json.loads(args.unpriced.read_text()) if args.unpriced and args.unpriced.exists() else []
+    new_models = unpriced_on_platforms(unpriced, current, json.loads((HERE / "ranking-config.json").read_text()).get("not_sold", []))
     last_read = sources_read(previous, sources, current, today)
     failing = stale(errors, last_read, today)
     unrecorded = sorted(sid for sid in current if sid not in baseline.get("sources", {}))
-    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read)
+    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read, new_models)
     listed_facts = {k: v for k, v in fact_issues.items() if k in listed and not all(dbx_availability(t) for t in v)}
     held = [g for g in general if g["risk"] == "high"]
     action = [a for a in report["lifecycle_due"] if needs_action(a)]
-    needs_review = bool(review or listed_facts or failing or held or unrecorded or action)
+    needs_review = bool(review or listed_facts or failing or held or unrecorded or action or new_models)
     quiet = [c for c in changes if c["risk"] == "quiet"] + [g for g in general if g["risk"] == "quiet"]
     accepted = [c for c in changes if c["risk"] == "low"] + [g for g in general if g["risk"] == "low"]
     if args.accept_low_risk:

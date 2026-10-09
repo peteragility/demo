@@ -10,9 +10,9 @@ name: LLM pricing v2 daily refresh
 #   4. price changes the source proves (Databricks' DBU tables, or a table row where only the price
 #      moved) are applied and published, as is a model Databricks starts pricing; wording-only changes
 #      are accepted. A platform starting or stopping a model, or a region change, is flagged on the
-#      card only. A price change it cannot prove or a source unreadable for two days opens or updates
-#      one issue labelled llm-pricing-review. Models joining or leaving the top 50 change the page
-#      by themselves.
+#      card only. A price change it cannot prove, a new top-50 model a platform page names but the page
+#      has no prices for, or a source unreadable for two days opens or updates one issue labelled
+#      llm-pricing-review. Other models joining or leaving the top 50 change the page by themselves.
 # Run dates follow Hong Kong time.
 on:
   schedule:
@@ -92,7 +92,7 @@ jobs:
         with:
           node-version: '24'
       - name: Model order (arena.ai Best Overall)
-        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
+        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" --unpriced "$RUNNER_TEMP/llm-pricing-v2-unpriced.json" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
       - name: Databricks regions (official region tables)
         run: python v2-maintenance/update-endpoints.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Regions::A Databricks region table could not be read; regions are unchanged today."
       - name: Rebuild and validate
@@ -110,7 +110,7 @@ jobs:
       - name: Check every official source
         run: >-
           python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json
-          --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md" --accept-low-risk --apply-proven
+          --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md" --accept-low-risk --apply-proven --unpriced "$RUNNER_TEMP/llm-pricing-v2-unpriced.json"
           --applied "$RUNNER_TEMP/llm-pricing-v2-applied.txt"
       - name: Add the review to the run summary
         if: always()

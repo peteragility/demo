@@ -423,6 +423,19 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(review.official.bedrock_hk_tw(marks), (["none", "No Bedrock endpoint in Hong Kong (ap-east-1)"],
                                                                 ["routed", "Taipei (ap-east-2) through global cross-region inference only"]))
 
+    def test_a_new_top_model_a_platform_names_opens_the_issue_until_added(self):
+        unpriced = [{"rank": 36, "name": "claude-opus-4-7-high", "maker": "Anthropic"}, {"rank": 35, "name": "step-5-preview-high", "maker": "StepFun"},
+                    {"rank": 13, "name": "muse-spark-1.3-max", "maker": "Meta"}]
+        current = {"dbx-models": {"records": ["endpoint: databricks-claude-opus-4-7"]},
+                   "aws-card-glm-5-3": {"records": ["text: Step 5 - Run your first inference request"]},
+                   "gcp-claude-opus-5-5": {"records": ["text: Muse Spark 1.3 is in Preview"]},
+                   "api-other-step": {"records": ["table: step-5-preview | $1.00"]}}
+        found = review.unpriced_on_platforms(unpriced, current, ["muse-spark-1.3-max"])
+        # Opus 4.7 is on Databricks' model list; Step 5 only on its maker's page; Muse Spark is skipped (not_sold).
+        self.assertEqual([(m["name"], m["sources"]) for m in found], [("claude-opus-4-7-high", ["dbx-models"])])
+        text, _ = review.issue_markdown({"checked_at": "2026-10-10", "sources_failed": {}, "lifecycle_due": []}, {}, [], {}, {"models": {}}, set(), [], new_models=found)
+        self.assertIn("#36 claude-opus-4-7-high", text)
+
 
 if __name__ == "__main__":
     unittest.main()

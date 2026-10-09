@@ -60,5 +60,7 @@
     "anthropic/claude-opus-4.7": "^claude opus 4[. ]7(?![\\d.]| \\d)",
     "anthropic/claude-opus-4.6": "^claude opus 4[. ]6(?![\\d.]| \\d)"
   },
-  "top": 50
+  "top": 50,
+  "not_sold_note": "Top-50 models that a compared platform's page names but that it does not sell with general access (a gated or on-request preview). Any other top-50 model with no reviewed prices that a platform page names opens the review issue.",
+  "not_sold": []
 }

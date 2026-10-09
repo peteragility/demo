@@ -125,6 +125,7 @@ def main():
     parser.add_argument("--check", action="store_true", help="Validate v2-ranking.json; fetch nothing.")
     parser.add_argument("--html", type=Path, help="Use a saved leaderboard page instead of fetching it.")
     parser.add_argument("--summary", type=Path, help="Append the Markdown report to this file (e.g. $GITHUB_STEP_SUMMARY).")
+    parser.add_argument("--unpriced", type=Path, help="Write the top-N models with no reviewed prices as JSON, for review-sources.py --unpriced.")
     parser.add_argument("--as-of", default=dt.datetime.now(ZoneInfo("Asia/Hong_Kong")).date().isoformat(), help="Run date (default: today in Hong Kong).")
     args = parser.parse_args()
     config = json.loads((HERE / "ranking-config.json").read_text())
@@ -148,6 +149,9 @@ def main():
         sys.exit(1)
     text = report(ranking, previous, unmatched, config)
     print(text)
+    if args.unpriced:
+        args.unpriced.write_text(json.dumps([dict(rank=e["rank"], name=e["modelDisplayName"], maker=e.get("modelOrganization", "")) for e in unmatched],
+                                            ensure_ascii=False, indent=1) + "\n")
     if args.summary:
         with open(args.summary, "a") as summary:
             summary.write(text + "\n")
