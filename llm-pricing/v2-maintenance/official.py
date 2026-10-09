@@ -196,6 +196,66 @@ def tables(html):
     return page.tables
 
 
+# Bedrock model cards: one Region table per endpoint (bedrock-runtime, bedrock-mantle) with yes / no icons
+# for in-region, geographic and global processing. The card's lines follow these rules.
+BEDROCK_GEO = {"Americas": "US CRIS", "Europe": "EU CRIS"}
+BEDROCK_APAC_GEO = (("JP CRIS", ("ap-northeast-1", "ap-northeast-3")), ("AU CRIS", ("ap-southeast-2", "ap-southeast-4")),
+                    ("IN CRIS", ("ap-south-1", "ap-south-2")))
+
+
+def bedrock_marks(html):
+    """Region code -> (in-region, geo, global) as "yes" / "no"; a Region supported on either endpoint counts."""
+    page = Page()
+    page.feed(html)
+    marks = {}
+    for table in page.tables:
+        if table["rows"] and table["rows"][0][:2] == ["Region", "In-Region"]:
+            for row in table["rows"][1:]:
+                code = row[0].split(" ")[0]
+                old = marks.get(code, ("no", "no", "no"))
+                marks[code] = tuple("yes" if "yes" in (a, b) else "no" for a, b in zip(old, (row[1:4] + ["no"] * 3)[:3]))
+    return marks
+
+
+def bedrock_regions(marks):
+    """The card's region lines: [geography, level, label, Regions], the Americas in AWS order and Europe and
+    APAC by Region code; a geography whose geo and global Regions match shares one line."""
+    name = lambda code: "Taipei (ap-east-2)" if code == "ap-east-2" else AWS[code][1]
+    lines = []
+    for geo in GEOS:
+        codes = [c for c in AWS if c in marks and AWS[c][0] == geo]
+        codes = codes if geo == "Americas" else sorted(codes)
+        pick = lambda i, cs=codes: [name(c) for c in cs if marks[c][i] == "yes"]
+        local, everywhere = pick(0), pick(2)
+        if local:
+            lines.append([geo, "in-region", "In-region", ", ".join(local)])
+        if geo == "APAC":
+            geos = [(label, pick(1, [c for c in codes if c in members])) for label, members in BEDROCK_APAC_GEO]
+            geos = [(label, names) for label, names in geos if names]
+        else:
+            geos = [(BEDROCK_GEO[geo], pick(1))] if pick(1) else []
+        if geo != "APAC" and len(geos) == 1 and geos[0][1] == everywhere:
+            lines.append([geo, ["geo", "global"], [geos[0][0], "Global CRIS"], ", ".join(everywhere)])
+            continue
+        lines += [[geo, "geo", label, ", ".join(names)] for label, names in geos]
+        if everywhere:
+            lines.append([geo, "global", "Global CRIS", ", ".join(everywhere)])
+    return lines
+
+
+def bedrock_hk_tw(marks):
+    """[state, text] for Hong Kong (ap-east-1) and Taiwan (ap-east-2)."""
+    hk, tw = marks.get("ap-east-1", ("no",) * 3), marks.get("ap-east-2", ("no",) * 3)
+    hk_state = (["in-region", "Hong Kong (ap-east-1) in-region"] if hk[0] == "yes" else
+                ["routed", "Hong Kong (ap-east-1) through cross-region inference"] if "yes" in hk else
+                ["none", "No Bedrock endpoint in Hong Kong (ap-east-1)"])
+    tw_state = (["in-region", "Taipei (ap-east-2) in-region"] if tw[0] == "yes" else
+                ["routed", "Taipei (ap-east-2) through geographic cross-region inference"] if tw[1] == "yes" else
+                ["routed", "Taipei (ap-east-2) through global cross-region inference only"] if tw[2] == "yes" else
+                ["none", "No access from Taipei (ap-east-2) for this model"])
+    return hk_state, tw_state
+
+
 def norm(name):
     """Comparable model name: lowercase, '-' and '_' as spaces, footnote and region marks removed."""
     name = re.sub(r"[*⌖†⥂]", " ", name.lower())

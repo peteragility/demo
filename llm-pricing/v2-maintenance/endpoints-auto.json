@@ -1910,5 +1910,683 @@
    "adi": true,
    "changed_at": "2026-10-04"
   }
+ },
+ "bedrock": {
+  "anthropic/claude-fable-5": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "anthropic/claude-fable-5.1": {
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "anthropic/claude-opus-4.8": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "Stockholm, Ireland"
+    ],
+    [
+     "Europe",
+     [
+      "geo",
+      "global"
+     ],
+     [
+      "EU CRIS",
+      "Global CRIS"
+     ],
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "in-region",
+     "In-region",
+     "Tokyo, Melbourne"
+    ],
+    [
+     "APAC",
+     "geo",
+     "JP CRIS",
+     "Tokyo, Osaka"
+    ],
+    [
+     "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "anthropic/claude-opus-4.7": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "Stockholm, Ireland"
+    ],
+    [
+     "Europe",
+     [
+      "geo",
+      "global"
+     ],
+     [
+      "EU CRIS",
+      "Global CRIS"
+     ],
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "in-region",
+     "In-region",
+     "Tokyo, Melbourne"
+    ],
+    [
+     "APAC",
+     "geo",
+     "JP CRIS",
+     "Tokyo, Osaka"
+    ],
+    [
+     "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "anthropic/claude-opus-4.6": {
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "London"
+    ],
+    [
+     "Europe",
+     [
+      "geo",
+      "global"
+     ],
+     [
+      "EU CRIS",
+      "Global CRIS"
+     ],
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "anthropic/claude-opus-5.5": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "London"
+    ],
+    [
+     "Europe",
+     [
+      "geo",
+      "global"
+     ],
+     [
+      "EU CRIS",
+      "Global CRIS"
+     ],
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "in-region",
+     "In-region",
+     "Melbourne"
+    ],
+    [
+     "APAC",
+     "geo",
+     "JP CRIS",
+     "Tokyo, Osaka"
+    ],
+    [
+     "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "anthropic/claude-sonnet-5.5": {
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     [
+      "geo",
+      "global"
+     ],
+     [
+      "EU CRIS",
+      "Global CRIS"
+     ],
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "openai/gpt-5.4": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia, Ohio, Oregon"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "none",
+    "No access from Taipei (ap-east-2) for this model"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "openai/gpt-5.5": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia, Ohio"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "none",
+    "No access from Taipei (ap-east-2) for this model"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "openai/gpt-5.6-luna": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia, Ohio, Oregon"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "geo",
+     "IN CRIS",
+     "Mumbai, Hyderabad"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "openai/gpt-5.6-sol": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia, Ohio"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "openai/gpt-5.6-terra": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia, Ohio, Oregon"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "geo",
+     "IN CRIS",
+     "Mumbai, Hyderabad"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "openai/gpt-6-astra": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia, Oregon"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Stockholm, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Tokyo, Seoul, Osaka, Mumbai, Singapore, Sydney"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "none",
+    "No access from Taipei (ap-east-2) for this model"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  },
+  "zai/glm-5.3": {
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-10",
+   "changed_at": "2026-10-10"
+  }
  }
 }

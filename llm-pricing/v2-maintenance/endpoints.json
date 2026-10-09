@@ -2024,7 +2024,8 @@
     "us.openai.gpt-6-astra (US geo inference profile)",
     "global.openai.gpt-6-astra (global inference profile)",
     "https://bedrock-mantle.us-east-1.api.aws/openai/v1 (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -3422,7 +3423,8 @@
     "us.openai.gpt-5.6-sol (US geo inference profile)",
     "global.openai.gpt-5.6-sol (global inference profile)",
     "https://bedrock-mantle.{region}.api.aws/openai/v1 (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -3890,7 +3892,8 @@
     "in.openai.gpt-5.6-terra (India geo inference profile)",
     "global.openai.gpt-5.6-terra (global inference profile)",
     "https://bedrock-mantle.{region}.api.aws/openai/v1 (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -4352,7 +4355,8 @@
     "in.openai.gpt-5.6-luna (India geo inference profile)",
     "global.openai.gpt-5.6-luna (global inference profile)",
     "https://bedrock-mantle.{region}.api.aws/openai/v1 (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -5603,7 +5607,8 @@
     "us.anthropic.claude-fable-5 (US geo inference profile)",
     "global.anthropic.claude-fable-5 (global inference profile)",
     "https://bedrock-mantle.{region}.api.aws/anthropic/v1/messages (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -6045,7 +6050,8 @@
     "jp.anthropic.claude-opus-4-8 (JP geo inference profile)",
     "au.anthropic.claude-opus-4-8 (AU geo inference profile)",
     "global.anthropic.claude-opus-4-8 (global inference profile)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -6366,7 +6372,8 @@
    "ids": [
     "openai.gpt-5.4 (model ID; bedrock-mantle)",
     "https://bedrock-mantle.{region}.api.aws/openai/v1 (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -6856,7 +6863,8 @@
     "us.anthropic.claude-fable-5-1 (US geo inference profile)",
     "global.anthropic.claude-fable-5-1 (global inference profile)",
     "https://bedrock-mantle.{region}.api.aws/anthropic/v1/messages (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -7274,7 +7282,8 @@
     "au.anthropic.claude-opus-5-5 (AU geo inference profile)",
     "jp.anthropic.claude-opus-5-5 (JP geo inference profile)",
     "global.anthropic.claude-opus-5-5 (global inference profile)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -7646,7 +7655,8 @@
     "au.anthropic.claude-sonnet-5-5 (AU geo inference profile)",
     "global.anthropic.claude-sonnet-5-5 (global inference profile)",
     "https://bedrock-mantle.{region}.api.aws/anthropic/v1/messages (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -10906,7 +10916,8 @@
     "global.zai.glm-5.3 (global)",
     "us.zai.glm-5.3 (US geo)",
     "zai.glm-5.3 (model)"
-   ]
+   ],
+   "regions_from_card": true
   }
  },
  "deepseek/deepseek-v4-pro": {
@@ -13068,7 +13079,8 @@
    "ids": [
     "openai.gpt-5.5 (model ID; bedrock-mantle)",
     "https://bedrock-mantle.{region}.api.aws/openai/v1 (bedrock-mantle base URL)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "azure_foundry": {
    "checked_at": "2026-10-04",
@@ -13824,7 +13836,8 @@
     "jp.anthropic.claude-opus-4-7 (JP geo inference profile)",
     "au.anthropic.claude-opus-4-7 (AU geo inference profile)",
     "global.anthropic.claude-opus-4-7 (global inference profile)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "gcloud": {
    "checked_at": "2026-10-09",
@@ -14225,7 +14238,8 @@
     "eu.anthropic.claude-opus-4-6-v1 (EU geo inference profile)",
     "au.anthropic.claude-opus-4-6-v1 (AU geo inference profile)",
     "global.anthropic.claude-opus-4-6-v1 (global inference profile)"
-   ]
+   ],
+   "regions_from_card": true
   },
   "gcloud": {
    "checked_at": "2026-10-09",

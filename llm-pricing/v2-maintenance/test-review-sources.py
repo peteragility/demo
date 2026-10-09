@@ -252,8 +252,12 @@ class SourceReviewTests(unittest.TestCase):
         before = ['table: {"cells":["Model ID","moonshot.kimi-k3"]}', 'table: {"cells":["ap-east-2 (Taipei)","no","no","yes"],"heading":"Regional Availability"}']
         after = [before[0], 'table: {"cells":["ap-east-2 (Taipei)","yes","no","yes"],"heading":"Regional Availability"}']
         cells, changes = review.cell_checks(data, config, {"sources": {"card": {"records": before}}}, {"card": {"url": "u", "records": after}}, {}, {}, None, dt.date(2026, 10, 8))
-        self.assertEqual(cells["m/k3|bedrock"]["sources"], ["card"])
-        self.assertEqual(changes[0]["reason"], "a region or its availability changed")
+        self.assertEqual((cells["m/k3|bedrock"]["sources"], cells["m/k3|bedrock"].get("quiet")), (["card"], True))
+        self.assertEqual((changes[0]["risk"], changes[0]["reason"]), ("quiet", "a region or its availability changed"))
+        # A card whose regions update-endpoints.py rebuilds from this model card takes the change as applied.
+        cells, changes = review.cell_checks(data, config, {"sources": {"card": {"records": before}}}, {"card": {"url": "u", "records": after}}, {}, {}, None,
+                                            dt.date(2026, 10, 8), auto_regions={("m/k3", "card")})
+        self.assertEqual((changes[0]["risk"], cells["m/k3|bedrock"]["verified"]), ("applied", "2026-10-08"))
 
     def test_table_rows_name_their_model_and_region_icons_become_marks(self):
         text = ('<h2>Claude models</h2><table><tr><td>Sonnet 5.5</td><td>Input</td><td>$2.00</td></tr>'
@@ -304,6 +308,9 @@ class SourceReviewTests(unittest.TestCase):
         current = {"databricks": {"m/a": {k: v for k, v in entry.items() if k != "changed_at"}}}
         lines = regions.changes(previous, current)
         out = regions.carry(previous, current, {"m/a": {}, "m/b": {}}, "2026-10-08")
+        card = {"regions": [["Europe", ["geo", "global"], ["EU CRIS", "Global CRIS"], "Ireland"]], "hk": ["none", ""], "tw": ["none", ""]}
+        moved = dict(card, regions=[["Europe", ["geo", "global"], ["EU CRIS", "Global CRIS"], "Ireland, Paris"]])
+        self.assertTrue(any("Paris" in line for line in regions.changes({"bedrock": {"m/c": card}}, {"bedrock": {"m/c": moved}})))
         self.assertTrue(any("m/b" in line and "no longer" in line for line in lines), lines)
         self.assertEqual((out["databricks"]["m/a"]["changed_at"], out["databricks"]["m/b"]["changed_at"]), ("2026-10-01", "2026-10-01"))
         self.assertEqual(out["databricks"]["m/b"]["missing_since"], "2026-10-08")
@@ -370,6 +377,51 @@ class SourceReviewTests(unittest.TestCase):
         after = ['table: {"cells":["Gemini 3.1 Pro*","Short context","35.714","214.286"]}']
         cells, changes = review.cell_checks(data, config, {"sources": {"dbu": {"records": before}}}, {"dbu": {"url": "u", "records": after}}, {}, {}, None, dt.date(2026, 10, 9))
         self.assertEqual((changes[0]["risk"], cells["g/pro|databricks"]["verified"]), ("low", "2026-10-09"))
+
+    def test_a_platform_starting_or_stopping_a_model_is_flagged_on_the_card_not_in_the_issue(self):
+        config = [{"id": "p", "url": "u", "kind": "tables", "meta": ["src"]}]
+        data = {"models": {"m/x": {"name": "Model X", "platforms": {"bedrock": {"status": "unavailable", "src": "src"}}}}}
+        baseline = {"sources": {"p": {"records": ["table: Other 1 | $1.00"]}}, "acknowledged_lifecycle": []}
+        current = {"p": {"url": "u", "kind": "tables", "digest": "x", "records": ["table: Other 1 | $1.00", "table: Model X | $2.00 | $8.00"]}}
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, dt.date(2026, 10, 10))
+        self.assertEqual((changes[0]["risk"], changes[0]["reason"]), ("quiet", review.APPEARS))
+        self.assertTrue(cells["m/x|bedrock"]["quiet"])
+        text, review_list = review.issue_markdown({"checked_at": "2026-10-10", "sources_failed": {}, "lifecycle_due": []}, cells, changes, {}, data, {"m/x"}, [])
+        self.assertEqual(review_list, [])
+        self.assertNotIn("Model X", text)
+        # Its lines stay unreviewed, so the card keeps its flag until someone updates the data.
+        out = review.accept_low_risk(baseline, current, changes, {}, [])
+        self.assertEqual(out["sources"]["p"]["records"], ["table: Other 1 | $1.00"])
+
+    def test_databricks_pricing_a_pending_model_is_added_from_its_dbu_table(self):
+        data = {"models": {"a/h": {"name": "Claude Haiku 5.5", "platforms": {"databricks": {"status": "unverified", "available": True, "src": "dbx_prop"}}}}}
+        facts = {"claude haiku 5.5": {"regional": True, "standard": {"short context": {"in": 0.10003, "out": 0.50001, "cache_read": 0.01001}}}}
+        found = review.dbx_check(data, facts, dt.date(2026, 10, 10))["a/h"]
+        self.assertTrue(review.dbx_availability(found[0][0]))
+        edits = review.proven_edits(data, [], {"dbx-models": {"records": ["endpoint: databricks-claude-haiku-5-5"]}},
+                                    review.dbx_edits(data, facts, dt.date(2026, 10, 10)), [])
+        self.assertEqual((edits[0]["offer"], edits[0]["rates"], edits[0]["model_id"], edits[0]["regional"]),
+                         ("new", {"in": 0.1, "out": 0.5, "cache_read": 0.01}, "databricks-claude-haiku-5-5", True))
+        spec = importlib.util.spec_from_file_location("build_data", HERE / "build-data.py")
+        build = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(build)
+        cell = dict(data["models"]["a/h"]["platforms"]["databricks"])
+        build.new_offer(cell, dict(edits[0], date="2026-10-10"), "Claude Haiku 5.5", {"dbx_prop": {"url": "https://example.com"}})
+        self.assertEqual((cell["status"], cell["in"], cell["model_id"], [v["label"] for v in cell["variants"]]),
+                         ("priced", 0.1, "databricks-claude-haiku-5-5", ["Regional processing ⌖ +10%"]))
+
+    def test_bedrock_region_lines_come_from_the_model_card(self):
+        card = ('<table><tr><th>Region</th><th>In-Region</th><th>Geo</th><th>Global</th></tr>'
+                + "".join(f'<tr><td>{code} (x)</td>' + "".join(f'<td><img src="/i/icon-{"yes" if m == "y" else "no"}.png"></td>' for m in marks) + "</tr>"
+                          for code, marks in [("us-east-1", "nyy"), ("us-west-2", "nyy"), ("eu-west-1", "yyy"), ("ap-east-2", "nny"), ("ap-northeast-1", "nny")])
+                + "</table>")
+        marks = review.official.bedrock_marks(card)
+        self.assertEqual(review.official.bedrock_regions(marks), [
+            ["Americas", ["geo", "global"], ["US CRIS", "Global CRIS"], "N. Virginia, Oregon"],
+            ["Europe", "in-region", "In-region", "Ireland"], ["Europe", ["geo", "global"], ["EU CRIS", "Global CRIS"], "Ireland"],
+            ["APAC", "global", "Global CRIS", "Taipei (ap-east-2), Tokyo"]])
+        self.assertEqual(review.official.bedrock_hk_tw(marks), (["none", "No Bedrock endpoint in Hong Kong (ap-east-1)"],
+                                                                ["routed", "Taipei (ap-east-2) through global cross-region inference only"]))
 
 
 if __name__ == "__main__":

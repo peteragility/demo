@@ -1973,7 +1973,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_claude_sonnet_5_5",
               "aws_endpoint_regions",
@@ -6176,7 +6176,7 @@
             }
           ],
           "endpoints": {
-            "checked_at": "2026-10-06",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_glm_5_3",
               "aws_glm53_blog"
@@ -10711,7 +10711,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_claude_fable_5_1",
               "aws_endpoint_regions",
@@ -11333,7 +11333,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_claude_opus_5_5",
               "aws_endpoint_regions",
@@ -14117,7 +14117,7 @@
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-06",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_gpt_6_astra",
               "aws_endpoint_regions"
@@ -16421,7 +16421,7 @@
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-06",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_gpt_5_6_sol",
               "aws_endpoint_regions"
@@ -17176,7 +17176,7 @@
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-06",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_gpt_5_6_terra",
               "aws_endpoint_regions"
@@ -17926,7 +17926,7 @@
           "has_long_context": true,
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-06",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_gpt_5_6_luna",
               "aws_endpoint_regions"
@@ -18566,7 +18566,7 @@
           "has_long_context": true,
           "endpoint": "In-region",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_gpt_5_5",
               "aws_endpoint_regions"
@@ -20798,7 +20798,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_claude_fable_5",
               "aws_endpoint_regions",
@@ -21403,7 +21403,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_claude_opus_4_8",
               "aws_endpoint_regions",
@@ -22037,7 +22037,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_claude_opus_4_7",
               "aws_endpoint_regions",
@@ -22663,7 +22663,7 @@
           "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
           "endpoint": "Global CRIS",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_claude_opus_4_6",
               "aws_endpoint_regions",
@@ -23335,7 +23335,7 @@
           "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html",
           "endpoint": "In-region",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-10",
             "src": [
               "aws_card_gpt_5_4",
               "aws_endpoint_regions"

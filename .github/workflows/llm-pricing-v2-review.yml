@@ -3,15 +3,16 @@ name: LLM pricing v2 daily refresh
 # Daily, scheduled for 02:17 Hong Kong time (18:17 UTC). GitHub often starts scheduled runs a few
 # hours late when it is busy, so the early slot lands the refresh around 6am HKT:
 #   1. model order from the arena.ai Best Overall ranking        (published automatically)
-#   2. Databricks model regions from its official region tables   (published automatically)
+#   2. Databricks regions from its region tables, Bedrock regions from model cards (published automatically)
 #   3. every official price / region source re-read: offers whose source lines are unchanged get
 #      today's "verified" date; Databricks prices are checked number by number against its DBU
 #      tables                                                     (published automatically)
 #   4. price changes the source proves (Databricks' DBU tables, or a table row where only the price
-#      moved) are applied and published; wording-only changes are accepted. Anything else (a change
-#      it cannot prove, a platform adding or dropping a model, a source unreadable for two days)
-#      opens or updates one issue labelled llm-pricing-review. Models joining or leaving the top 50
-#      change the page by themselves.
+#      moved) are applied and published, as is a model Databricks starts pricing; wording-only changes
+#      are accepted. A platform starting or stopping a model, or a region change, is flagged on the
+#      card only. A price change it cannot prove or a source unreadable for two days opens or updates
+#      one issue labelled llm-pricing-review. Models joining or leaving the top 50 change the page
+#      by themselves.
 # Run dates follow Hong Kong time.
 on:
   schedule:

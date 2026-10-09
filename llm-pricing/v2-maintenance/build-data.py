@@ -535,7 +535,16 @@ def apply_endpoints(data):
             spec = curated.get(key, {}).get(pl)
             if spec:
                 apply_spec(cell, spec, data["source_meta"])
+            if pl == "bedrock" and key in auto.get("bedrock", {}) and cell.get("endpoints"):
+                # Regions, Hong Kong and Taiwan follow the Bedrock model card (update-endpoints.py).
+                card = auto["bedrock"][key]
+                cell["endpoints"].update(regions=card["regions"], hk=card["hk"], tw=card["tw"],
+                                         checked_at=max(cell["endpoints"]["checked_at"], card.get("changed_at", "")))
             mine = [e for e in proven if e["model"] == key and e["platform"] == pl]
+            news = [e for e in mine if e["offer"] == "new"]
+            if news and cell.get("status") != "priced":
+                data["_proven"].append(new_offer(cell, news[-1], model.get("name", key), data["source_meta"]))
+            mine = [e for e in mine if e["offer"] != "new"]
             if mine and cell.get("status") == "priced":
                 # Before Databricks' regional tiers are derived, so they follow a proven base rate.
                 label = data.get("platform_meta", {}).get(pl, {}).get("label", pl)
@@ -654,6 +663,27 @@ def apply_proven(cell, edits, name, platform, regional_uplift=False):
         log.append(f"{e['date']}: {name} on {platform}{tier}: {FIELD_NAMES.get(e['field'], e['field'])} {usd(e['old'])} → {usd(e['new'])}, "
                    f"applied by the daily check from its official source.")
     return log
+
+
+def new_offer(cell, e, name, source_meta):
+    """A Databricks offer that its DBU tables now price (prices-auto.json offer "new"): the listed rates and its
+    Priority tier; for a ⌖ model, dbx_endpoints derives the +10% regional tiers."""
+    r, src = e["rates"], cell.get("src") or "dbx_prop"
+    cell.clear()
+    cell.update(offer(r["in"], r["out"], r.get("cache_read"), r.get("cache_write"), r.get("cache_write_1h"), src=src, tier="Standard pay-per-token",
+                      model_id=e.get("model_id"), model_id_source="dbx_models", dbu_rate_basis=0.07))
+    cell.update(pricing_checked_at=e["date"], availability_checked_at=e["date"], model_id_checked_at=e["date"], url=source_meta.get(src, {}).get("url"))
+    variants = []
+    if e.get("priority"):
+        p = e["priority"]
+        variants.append(variant("Priority", p["in"], p["out"], p.get("cache_read"), p.get("cache_write"), p.get("cache_write_1h"), service="priority"))
+    if e.get("regional"):
+        variants.append(dict(label="Regional processing ⌖ +10%", comparison_scope="regional", service_tier="standard"))
+    for v in variants:
+        v["pricing_checked_at"] = e["date"]
+    if variants:
+        cell["variants"] = variants
+    return f"{e['date']}: Databricks now prices {name} at ${r['in']:g} / ${r['out']:g} per its DBU table, added by the daily check."
 
 
 def check_cache_reads(data):

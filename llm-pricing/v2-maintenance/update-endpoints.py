@@ -49,14 +49,37 @@ def build(data, pages):
     return out
 
 
+def bedrock_cards(config, specs, cache_dir, previous, as_of):
+    """Bedrock regions, Hong Kong and Taiwan from each monitored model card whose curated card follows it
+    (regions_from_card in endpoints.json). A card that cannot be read keeps its last entry."""
+    found, failed = {}, []
+    for source in config:
+        models = source.get("models", [])
+        if not source["id"].startswith("aws-card-") or len(models) != 1 or not specs.get(models[0], {}).get("bedrock", {}).get("regions_from_card"):
+            continue
+        key = models[0]
+        try:
+            marks = official.bedrock_marks(read(source["cache_file"], source["url"], cache_dir))
+            if not marks:
+                raise ValueError("no Region table on the model card")
+            hk, tw = official.bedrock_hk_tw(marks)
+            found[key] = dict(regions=official.bedrock_regions(marks), hk=hk, tw=tw, read_at=as_of)
+        except Exception as error:
+            failed.append(f"- bedrock · {key}: model card not read ({error}); regions unchanged")
+            old = ((previous or {}).get("bedrock") or {}).get(key)
+            if old:
+                found[key] = old
+    return found, failed
+
+
 def changes(previous, current):
     """One line per model whose regions or HK / Taiwan state changed."""
     lines = []
-    for platform in ("databricks",):
+    for platform in ("databricks", "bedrock"):
         old, new = (previous or {}).get(platform, {}), current.get(platform, {})
         for key in sorted(set(old) | set(new)):
             a, b = old.get(key), new.get(key)
-            strip = lambda e: e and {k: v for k, v in e.items() if k not in ("changed_at", "missing_since")}
+            strip = lambda e: e and {k: v for k, v in e.items() if k not in ("changed_at", "missing_since", "read_at")}
             if a and a.get("missing_since") and b:
                 lines.append(f"- {platform} · {key}: back in the region tables")
             if strip(a) == strip(b):
@@ -66,10 +89,13 @@ def changes(previous, current):
             elif not b:
                 lines.append(f"- {platform} · {key}: no longer in the region tables (regions kept)")
             else:
-                gone = {tuple(r) for r in a["regions"]} - {tuple(r) for r in b["regions"]}
-                came = {tuple(r) for r in b["regions"]} - {tuple(r) for r in a["regions"]}
-                detail = [f"{g} {label}: {text}" for g, _, label, text in sorted(came)]
-                detail += [f"{g} {label} removed: {text}" for g, _, label, text in sorted(gone) if (g, label) not in {(x[0], x[2]) for x in came}]
+                # A line's level and label may be lists (one line for several endpoint types).
+                row = lambda r: json.dumps(r, ensure_ascii=False)
+                label = lambda r: " / ".join(r[2]) if isinstance(r[2], list) else r[2]
+                came = [r for r in b["regions"] if row(r) not in {row(x) for x in a["regions"]}]
+                gone = [r for r in a["regions"] if row(r) not in {row(x) for x in b["regions"]}]
+                detail = [f"{r[0]} {label(r)}: {r[3]}" for r in came]
+                detail += [f"{r[0]} {label(r)} removed: {r[3]}" for r in gone if (r[0], label(r)) not in {(x[0], label(x)) for x in came}]
                 if a["hk"] != b["hk"]:
                     detail.append(f"HK {a['hk'][0]} → {b['hk'][0]}")
                 if a["tw"] != b["tw"]:
@@ -81,36 +107,38 @@ def changes(previous, current):
 def carry(previous, current, models, as_of):
     """Dates each entry by its last change. A model that drops out of every table keeps its last regions and
     date until someone reviews it; missing_since puts it in the review issue."""
-    for platform, entries in (previous or {}).items():
-        if isinstance(entries, dict):
-            for key, entry in entries.items():
-                if key not in current.get(platform, {}) and key in models:
-                    current.setdefault(platform, {})[key] = dict(entry, missing_since=entry.get("missing_since") or as_of)
-    bare = lambda e: {k: v for k, v in e.items() if k not in ("changed_at", "missing_since")}
-    for key, entry in current.get("databricks", {}).items():
-        old = ((previous or {}).get("databricks") or {}).get(key)
-        entry["changed_at"] = old["changed_at"] if old and bare(old) == bare(entry) else as_of
+    for key, entry in ((previous or {}).get("databricks") or {}).items():
+        if key not in current.get("databricks", {}) and key in models:
+            current.setdefault("databricks", {})[key] = dict(entry, missing_since=entry.get("missing_since") or as_of)
+    bare = lambda e: {k: v for k, v in e.items() if k not in ("changed_at", "missing_since", "read_at")}
+    for platform in ("databricks", "bedrock"):
+        for key, entry in current.get(platform, {}).items():
+            old = ((previous or {}).get(platform) or {}).get(key)
+            entry["changed_at"] = old["changed_at"] if old and bare(old) == bare(entry) else as_of
     return current
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--cache-dir", type=Path, help="Read saved pages (dbx-aws.html, dbx-azure.html, dbx-gcp.html) instead of fetching.")
+    parser.add_argument("--cache-dir", type=Path, help="Read saved pages (dbx-aws.html, dbx-azure.html, dbx-gcp.html and the Bedrock model cards' cache files) instead of fetching.")
     parser.add_argument("--summary", type=Path, help="Append the Markdown report to this file (e.g. $GITHUB_STEP_SUMMARY).")
     parser.add_argument("--as-of", default=dt.datetime.now(ZoneInfo("Asia/Hong_Kong")).date().isoformat(), help="Run date (default: today in Hong Kong).")
     args = parser.parse_args()
     data = json.loads((HERE.parent / "v2-data.json").read_text())
+    previous = json.loads(TARGET.read_text()) if TARGET.exists() else None
     try:
         pages = {cloud: read(f"dbx-{cloud}.html", url, args.cache_dir) for cloud, (_, url) in DBX_PAGES.items()}
         current = build(data, pages)
     except Exception as error:
         print("Regions not updated: " + str(error), file=sys.stderr)
         sys.exit(1)
-    previous = json.loads(TARGET.read_text()) if TARGET.exists() else None
-    lines = changes(previous, current)
+    config = json.loads((HERE / "source-config.json").read_text())
+    current["bedrock"], failed = bedrock_cards(config, json.loads((HERE / "endpoints.json").read_text()), args.cache_dir, previous, args.as_of)
+    lines = changes(previous, current) + failed
     carry(previous, current, data["models"], args.as_of)
     current = dict(schema=1, note="Generated by update-endpoints.py from official region tables; do not edit.", **current)
-    text = "\n".join(["# LLM pricing v2 regions", "", f"Databricks: {len(current['databricks'])} endpoints in the official region tables.", "",
+    text = "\n".join(["# LLM pricing v2 regions", "", f"Databricks: {len(current['databricks'])} endpoints in the official region tables. "
+                      f"Bedrock: {len(current['bedrock'])} model cards.", "",
                       "## Changes", ""] + (lines or ["No region changes."])) + "\n"
     print(text)
     if args.summary:

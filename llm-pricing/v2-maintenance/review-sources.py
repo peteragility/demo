@@ -357,7 +357,11 @@ def dbx_check(data, facts, today, complete=True):
             std = row.get("standard", {})
             short = std.get("") or std.get("short context") or std.get("text tokens") or {}
             if "in" in short and "out" in short:
-                issues[key] = [(f"now priced in the DBU table: ${short['in']:g} / ${short['out']:g} (list, before any promotion)", None)]
+                p = row.get("priority", {})
+                p = p.get("") or p.get("short context") or {}
+                issues[key] = [(f"now priced in the DBU table: ${short['in']:g} / ${short['out']:g} (list, before any promotion)",
+                                dict(offer="new", field="offer", old=0, new=0, rates={f: dbx_rate(v) for f, v in short.items()},
+                                     priority={f: dbx_rate(v) for f, v in p.items()} or None, regional=row["regional"]))]
             continue
         if cell.get("status") != "priced" or (cell.get("retires_on") and today.isoformat() >= cell["retires_on"]):
             continue
@@ -404,6 +408,11 @@ def dbx_check(data, facts, today, complete=True):
         if found:
             issues[key] = found
     return issues
+
+
+def dbx_availability(text):
+    """A DBU-table finding about which models or tiers Databricks sells, not about a rate: quiet."""
+    return text.startswith(("now priced", "not found", "Priority tier", "regional processing"))
 
 
 def dbx_fact_issues(data, facts, today, complete=True):
@@ -475,12 +484,20 @@ def compare(removed, added, rx):
     return "high", " and ".join(what) + " changed"
 
 
+APPEARS = "new lines about the model (it may now be offered)"
+VANISHES = "the model's lines are gone (it may no longer be offered)"
+PLACE_ONLY = "a region or its availability changed"
+# A platform starting or stopping a model, or a region change: flagged on the card ("source changed ·
+# re-check") and in the run summary, never in the review issue.
+QUIET = {APPEARS, VANISHES, PLACE_ONLY}
+
+
 def classify(before, after, rx):
     """("low" | "high", reason) for one model's lines in one source, before and after."""
     if not before:
-        return "high", "new lines about the model (it may now be offered)"
+        return "high", APPEARS
     if not after:
-        return "high", "the model's lines are gone (it may no longer be offered)"
+        return "high", VANISHES
     return compare(sorted(set(before) - set(after)), sorted(set(after) - set(before)), rx)
 
 
@@ -512,6 +529,7 @@ def general_changes(data, config, baseline, current, errors):
         added = sorted(r for r in after - before if not names_a_model(r, rxs))
         if removed or added:
             risk, reason = compare(removed, added, None)
+            risk = "quiet" if risk == "high" and reason == PLACE_ONLY else risk
             found.append(dict(source=sid, url=snapshot["url"], risk=risk, reason=reason, added=added[:12], removed=removed[:12],
                               added_all=added, removed_all=removed))
     return found
@@ -620,6 +638,12 @@ def proven_edits(data, changes, current, dbx, sources):
     """Every edit the live sources prove: Databricks rates from its DBU tables, and table rows where only a
     price moved. Edits that disagree about the same rate are dropped."""
     out = [dict(model=key, platform="databricks", source="dbx-prices", **e) for key, edits in dbx.items() for e in edits]
+    endpoints = {r.split(": ", 1)[1] for r in (current.get("dbx-models") or {}).get("records", []) if r.startswith("endpoint: ")}
+    for e in out:
+        if e["offer"] == "new":
+            slug = "databricks-" + re.sub(r"[^a-z0-9]+", "-", data["models"][e["model"]]["name"].lower()).strip("-")
+            if slug in endpoints:
+                e["model_id"] = slug
     for c in changes:
         if c["risk"] != "high" or c["platform"] == "databricks" or c["source"] not in current:
             continue
@@ -639,6 +663,8 @@ def usd(value):
 
 def describe(edit, data):
     model = data["models"].get(edit["model"], {}).get("name", edit["model"])
+    if edit["offer"] == "new":
+        return f"{model} · {edit['platform']}: now priced from its DBU table at {usd(edit['rates']['in'])} / {usd(edit['rates']['out'])}"
     tier = "" if edit["offer"] == "base" else " (" + edit["offer"].replace("variant:", "").replace("/long_context", ", long context") + ")"
     return f"{model} · {edit['platform']}{tier}: {FIELD_NAMES[edit['field']]} {usd(edit['old'])} → {usd(edit['new'])}"
 
@@ -678,7 +704,7 @@ def accept_low_risk(baseline, current, changes, errors, alerts, general=()):
     out = dict(baseline, sources=dict(baseline.get("sources", {})))
     held = {}
     for c in [*changes, *general]:
-        if c["risk"] == "high":
+        if c["risk"] in ("high", "quiet"):
             added, removed = held.setdefault(c["source"], (set(), set()))
             added |= set(c["added_all"])
             removed |= set(c["removed_all"])
@@ -698,10 +724,11 @@ def accept_low_risk(baseline, current, changes, errors, alerts, general=()):
     return out
 
 
-def cell_checks(data, config, baseline, current, errors, fact_issues, previous, today, general=(), gone=(), applied=None):
+def cell_checks(data, config, baseline, current, errors, fact_issues, previous, today, general=(), gone=(), applied=None, auto_regions=()):
     """Per model and platform: verified today, or the sources whose lines about it changed. general =
     general_changes(); gone = Databricks endpoints missing from its region tables; applied = changes whose new
-    rates the check applied itself, {(model, platform, source): reason}."""
+    rates the check applied itself, {(model, platform, source): reason}; auto_regions = (model, source) pairs whose
+    regions update-endpoints.py rebuilds from that source."""
     day = today.isoformat()
     applied = applied or {}
     held = {g["source"] for g in general if g["risk"] == "high"}
@@ -726,7 +753,7 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                 continue
             offered = cell.get("status") in ("priced", "dedicated") or cell.get("available")
             ref = key + "|" + pl
-            changed, unchecked, accepted = [], [], []
+            changed, quiet, unchecked, accepted = [], [], [], []
             for sid in deps:
                 if sid in errors or sid not in current:
                     unchecked.append(sid)
@@ -757,18 +784,23 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                         risk, reason = "applied", applied[proof]
                     if risk == "high" and pl == "databricks" and by_id[sid].get("facts") == "dbx-prices" and key not in fact_issues:
                         risk, reason = "low", "every rate still matches the DBU table"
-                    (changed if risk == "high" else accepted).append(sid)
+                    if risk == "high" and reason == PLACE_ONLY and (key, sid) in auto_regions:
+                        risk, reason = "applied", "regions updated from the model card"
+                    risk = "quiet" if risk == "high" and reason in QUIET else risk
+                    (changed if risk == "high" else quiet if risk == "quiet" else accepted).append(sid)
                     added, removed = sorted(set(ra) - set(rb)), sorted(set(rb) - set(ra))
                     changes.append(dict(model=key, name=model.get("name", key), platform=pl, source=sid, url=current[sid]["url"],
                                         risk=risk, reason=reason, added=added[:12], removed=removed[:12], added_all=added, removed_all=removed))
             if pl == "databricks" and key in fact_issues:
-                changed.append("dbx-prices")
+                (quiet if all(dbx_availability(t) for t in fact_issues[key]) else changed).append("dbx-prices")
             if pl == "databricks" and key in gone:
-                changed.append("dbx-regions")
+                quiet.append("dbx-regions")
             last = old.get(ref, {})
             verified = max(filter(None, [last.get("verified"), cell.get("pricing_checked_at"), (cell.get("endpoints") or {}).get("checked_at")]), default=None)
             if changed:
                 cells[ref] = dict(verified=verified, changed_at=last.get("changed_at") or day, sources=changed)
+            elif quiet:
+                cells[ref] = dict(verified=verified, changed_at=last.get("changed_at") or day, sources=quiet, quiet=True)
             elif unchecked:
                 cells[ref] = dict(verified=verified, unchecked=unchecked)
             else:
@@ -782,13 +814,14 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
     failing = report["sources_failed"] if failing is None else failing
     gone, last_read = gone or {}, last_read or {}
     name = lambda key: data["models"].get(key, {}).get("name", key)
-    review = sorted({ref for ref, c in cells.items() if c.get("changed_at") and ref.split("|")[0] in listed})
+    review = sorted({ref for ref, c in cells.items() if c.get("changed_at") and not c.get("quiet") and ref.split("|")[0] in listed})
     verified = sum(1 for ref, c in cells.items() if c.get("verified") == report["checked_at"] and ref.split("|")[0] in listed)
     low = sum(1 for c in changes if c.get("risk") == "low" and c["model"] in listed) + sum(1 for g in general if g["risk"] == "low")
     done = sum(1 for c in changes if c.get("risk") == "applied" and c["model"] in listed)
     lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified today; {len(review)} need review; "
              f"{done} price changes applied and {low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
-    fact_issues = {k: v for k, v in fact_issues.items() if k in listed}
+    fact_issues = {k: [t for t in v if not dbx_availability(t)] for k, v in fact_issues.items() if k in listed}
+    fact_issues = {k: v for k, v in fact_issues.items() if v}
     if fact_issues:
         lines += ["## Databricks prices that differ from its DBU tables", ""]
         lines += [f"- **{name(k)}**: " + "; ".join(v) for k, v in sorted(fact_issues.items())]
@@ -811,9 +844,6 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
             lines.append(f"- [{g['source']}]({g['url']}) · {g['reason']}")
             lines += [f"  - `+ {r[:220]}`" for r in g["added"][:4]] + [f"  - `- {r[:220]}`" for r in g["removed"][:4]]
         lines.append("")
-    if gone:
-        lines += ["## Databricks endpoints missing from its region tables", ""]
-        lines += [f"- **{name(k)}**: not in the tables since {since}; its card still shows the last regions." for k, since in sorted(gone.items())] + [""]
     if unrecorded:
         lines += ["## Sources without a reviewed baseline", "", "Check each source, then record the reviewed baseline. Until then its offers keep their last verified date.", ""]
         lines += [f"- {sid}" for sid in unrecorded] + [""]
@@ -943,10 +973,13 @@ def main():
     ranking_file = HERE.parent / "v2-ranking.json"
     listed = set(json.loads(ranking_file.read_text())["models"]) if ranking_file.exists() else set(data["models"])
     auto_file = HERE / "endpoints-auto.json"
-    auto = json.loads(auto_file.read_text()).get("databricks", {}) if auto_file.exists() else {}
-    gone = {k: e["missing_since"] for k, e in auto.items() if e.get("missing_since") and k in listed}
+    auto = json.loads(auto_file.read_text()) if auto_file.exists() else {}
+    gone = {k: e["missing_since"] for k, e in auto.get("databricks", {}).items() if e.get("missing_since") and k in listed}
+    auto_regions = {(s["models"][0], s["id"]) for s in sources
+                    if s["id"].startswith("aws-card-") and len(s.get("models", [])) == 1
+                    and auto.get("bedrock", {}).get(s["models"][0], {}).get("read_at") == today.isoformat()}  # read today, so its regions are current
     general = general_changes(data, sources, baseline, current, errors)
-    cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone)
+    cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, None, auto_regions)
     applied = []
     if args.apply_proven:
         applied = apply_edits(proven_edits(data, changes, current, dbx_edits(data, facts, today, complete) if facts else {}, sources), today)
@@ -958,15 +991,16 @@ def main():
             for e in applied:
                 done.setdefault((e["model"], e["platform"], e["source"]), []).append(describe(e, data))
             done = {k: "applied automatically: " + "; ".join(v) for k, v in done.items()}
-            cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, done)
+            cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, done, auto_regions)
     last_read = sources_read(previous, sources, current, today)
     failing = stale(errors, last_read, today)
     unrecorded = sorted(sid for sid in current if sid not in baseline.get("sources", {}))
     issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read)
-    listed_facts = {k: v for k, v in fact_issues.items() if k in listed}
+    listed_facts = {k: v for k, v in fact_issues.items() if k in listed and not all(dbx_availability(t) for t in v)}
     held = [g for g in general if g["risk"] == "high"]
     action = [a for a in report["lifecycle_due"] if needs_action(a)]
-    needs_review = bool(review or listed_facts or failing or held or unrecorded or gone or action)
+    needs_review = bool(review or listed_facts or failing or held or unrecorded or action)
+    quiet = [c for c in changes if c["risk"] == "quiet"] + [g for g in general if g["risk"] == "quiet"]
     accepted = [c for c in changes if c["risk"] == "low"] + [g for g in general if g["risk"] == "low"]
     if args.accept_low_risk:
         updated = accept_low_risk(baseline, current, changes, errors, report["lifecycle_alerts"], general)
@@ -986,6 +1020,10 @@ def main():
         summary += "\n## Accepted automatically (low risk)\n\n" + "\n".join(
             f"- {c['name']} · {c['platform']} · {c['source']}: {c['reason']}" if "model" in c else f"- {c['source']} · lines naming no model: {c['reason']}"
             for c in accepted) + "\n"
+    if quiet:
+        summary += "\n## Flagged on the card, no issue (a platform starting or stopping a model, or a region change)\n\n" + "\n".join(
+            f"- {c['name']} · {c['platform']} · {c['source']}: {c['reason']}" if "model" in c else f"- {c['source']} · lines naming no model: {c['reason']}"
+            for c in quiet) + "\n"
     if applied:
         summary += "\n## Applied automatically (proven by the official source)\n\n" + "\n".join(f"- {describe(e, data)} ({e['source']})" for e in applied) + "\n"
     (args.report_dir / (stem + ".md")).write_text(summary)
