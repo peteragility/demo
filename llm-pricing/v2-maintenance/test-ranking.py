@@ -11,7 +11,7 @@ spec.loader.exec_module(ranking)
 CONFIG = json.loads((HERE / "ranking-config.json").read_text())
 
 
-def page(entries, board_id="best-overall-agents"):
+def page(entries, board_id=CONFIG["board_id"]):
     """A leaderboard page with its data split across Next.js flight chunks, as served."""
     flight = '40:["$","$L43",null,' + json.dumps({"pills": [{"id": "other", "entries": []}, {"id": board_id, "entries": entries}]}) + "]"
     escaped = json.dumps(flight)[1:-1]
@@ -27,7 +27,7 @@ def entry(rank, name):
 
 class RankingTests(unittest.TestCase):
     def test_entries_are_read_from_split_flight_data(self):
-        entries = ranking.board_entries(page([entry(1, "Claude Fable 5.1 (Max)")]), "best-overall-agents")
+        entries = ranking.board_entries(page([entry(1, "Claude Fable 5.1 (Max)")]), CONFIG["board_id"])
         self.assertEqual(entries[0]["modelDisplayName"], "Claude Fable 5.1 (Max)")
 
     def test_each_model_takes_its_best_rank_and_versions_do_not_collide(self):

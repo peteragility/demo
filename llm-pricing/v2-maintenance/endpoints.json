@@ -1125,6 +1125,26 @@
    "url": "https://aws.amazon.com/blogs/machine-learning/introducing-glm-5-3-on-amazon-bedrock/",
    "label": "AWS: Introducing GLM 5.3 on Amazon Bedrock (5 Oct 2026)",
    "short": "launch post"
+  },
+  "aws_card_claude_opus_4_7": {
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-7.html",
+   "label": "Amazon Bedrock model card - Claude Opus 4.7",
+   "short": "model page"
+  },
+  "gcp_claude_opus_4_7": {
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/opus-4-7",
+   "label": "Claude Opus 4.7 on Google Cloud model page",
+   "short": "model page"
+  },
+  "aws_card_claude_opus_4_6": {
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-6.html",
+   "label": "Amazon Bedrock model card - Claude Opus 4.6",
+   "short": "model page"
+  },
+  "gcp_claude_opus_4_6": {
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/opus-4-6",
+   "label": "Claude Opus 4.6 on Google Cloud model page",
+   "short": "model page"
   }
  },
  "moonshot/kimi-k3": {
@@ -13568,6 +13588,791 @@
    ],
    "ids": [
     "qwen3.8-flash (model ID)"
+   ]
+  }
+ },
+ "anthropic/claude-opus-4.7": {
+  "databricks": {
+   "checked_at": "2026-10-09",
+   "add": [
+    {
+     "label": "Regional processing ⌖ +10%",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11,
+     "scope": "regional"
+    }
+   ]
+  },
+  "official": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Claude API · global"
+   },
+   "variants": [
+    {
+     "label": "Claude API · global · Batch",
+     "in": 2.5,
+     "out": 12.5,
+     "cache_read": 0.25,
+     "cache_write": 3.125,
+     "cache_write_1h": 5.0,
+     "scope": "global",
+     "service": "batch",
+     "endpoint": "Claude API · global"
+    },
+    {
+     "label": "US-only inference · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US-only inference"
+    },
+    {
+     "label": "US-only inference · Batch",
+     "in": 2.75,
+     "out": 13.75,
+     "cache_read": 0.275,
+     "cache_write": 3.4375,
+     "cache_write_1h": 5.5,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "US-only inference"
+    }
+   ],
+   "src": [
+    "api_west_anthropic_countries",
+    "api_west_anthropic_pricing",
+    "api_west_anthropic_residency"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US-only inference",
+     "United States, 1.1× price"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global (default)",
+     "Any geography; locations not published"
+    ],
+    [
+     "Europe",
+     "none",
+     "None",
+     "No EU inference geography"
+    ],
+    [
+     "APAC",
+     "none",
+     "None",
+     "No APAC inference geography"
+    ]
+   ],
+   "hk": [
+    "none",
+    "Not available: Hong Kong is not on Anthropic's supported-regions list"
+   ],
+   "tw": [
+    "none",
+    "Available in Taiwan (supported region); no Taiwan processing region"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "Minimum cacheable prompt 1,024 tokens; cache reads 0.1x base input ($0.50/MTok)."
+    ],
+    [
+     "Status",
+     "Legacy model; Opus 5.5 recommended. Priority Tier works only for existing commitments."
+    ]
+   ],
+   "ids": [
+    "claude-opus-4-7 (Claude API model ID; alias is the same)"
+   ]
+  },
+  "bedrock": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Global CRIS"
+   },
+   "variants": [
+    {
+     "label": "Geo CRIS · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Geo CRIS"
+    },
+    {
+     "label": "In-region · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "regional",
+     "service": "standard",
+     "endpoint": "In-region"
+    }
+   ],
+   "src": [
+    "aws_card_claude_opus_4_7",
+    "aws_endpoint_regions",
+    "aws_fm_use1"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "Stockholm, Ireland"
+    ],
+    [
+     "Europe",
+     [
+      "geo",
+      "global"
+     ],
+     [
+      "EU CRIS",
+      "Global CRIS"
+     ],
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "in-region",
+     "In-region",
+     "Tokyo, Melbourne"
+    ],
+    [
+     "APAC",
+     "geo",
+     "JP CRIS",
+     "Tokyo, Osaka"
+    ],
+    [
+     "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "In-region",
+     "bedrock-runtime in-region: none; bedrock-mantle in-region: N. Virginia, Stockholm, Ireland, Tokyo, Melbourne."
+    ],
+    [
+     "Caching",
+     "Explicit caching: 1,024-token minimum per checkpoint (Opus 5: 512), 5-minute or 1-hour TTL."
+    ]
+   ],
+   "ids": [
+    "anthropic.claude-opus-4-7 (model ID; bedrock-runtime + bedrock-mantle)",
+    "us.anthropic.claude-opus-4-7 (US geo inference profile)",
+    "eu.anthropic.claude-opus-4-7 (EU geo inference profile)",
+    "jp.anthropic.claude-opus-4-7 (JP geo inference profile)",
+    "au.anthropic.claude-opus-4-7 (AU geo inference profile)",
+    "global.anthropic.claude-opus-4-7 (global inference profile)"
+   ]
+  },
+  "gcloud": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Global"
+   },
+   "variants": [
+    {
+     "label": "US multi-region · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US multi-region"
+    },
+    {
+     "label": "EU multi-region · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "EU multi-region"
+    },
+    {
+     "label": "US multi-region · Batch",
+     "in": 2.75,
+     "out": 13.75,
+     "cache_read": 0.275,
+     "cache_write": 3.438,
+     "cache_write_1h": 5.5,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "US multi-region"
+    },
+    {
+     "label": "EU multi-region · Batch",
+     "in": 2.75,
+     "out": 13.75,
+     "cache_read": 0.275,
+     "cache_write": 3.438,
+     "cache_write_1h": 5.5,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "EU multi-region"
+    }
+   ],
+   "src": [
+    "gcp_claude_opus_4_7",
+    "gcp_locations",
+    "gcp_pricing"
+   ],
+   "regions": [
+    [
+     "Global",
+     "global",
+     "Global",
+     "Any Google Cloud region; no data residency"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US multi-region",
+     "United States; processing stays in the US"
+    ],
+    [
+     "Europe",
+     "geo",
+     "EU multi-region",
+     "EU member states (not the UK or Switzerland); processing stays in the EU"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Hong Kong (asia-east2) endpoint"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan (asia-east1) endpoint for this model"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Residency",
+     "Only global and US/EU multi-region endpoints; ML processing is limited to the US and EU multi-regions, with no APAC option."
+    ],
+    [
+     "Batch",
+     "Batch isn't supported on the global endpoint; US/EU multi-region batch is $2.75/$13.75."
+    ],
+    [
+     "Context",
+     "Rates above 200K input tokens equal the base rates (no long-context premium); limits are 1M input and 128K output tokens."
+    ]
+   ],
+   "ids": [
+    "claude-opus-4-7 (Vertex model ID; publishers/anthropic/models/claude-opus-4-7)"
+   ]
+  },
+  "azure_foundry": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "offer": {
+    "in": 5,
+    "out": 25,
+    "cache_read": 0.5,
+    "cache_write": 6.25,
+    "cache_write_1h": 10,
+    "src": "az_anthropic_pricing",
+    "tier": "Global Standard",
+    "scope": "global"
+   },
+   "base": {
+    "endpoint": "Global Standard"
+   },
+   "src": [
+    "az_anthropic_countries",
+    "az_anthropic_pricing",
+    "az_learn_partners"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "global",
+     "Global Standard",
+     "Central US, East US, East US 2, North Central US, South Central US, West Central US, West US, West US 3"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global Standard",
+     "Sweden Central"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Hong Kong (East Asia) region; Anthropic's API country list also excludes Hong Kong"
+   ],
+   "tw": [
+    "none",
+    "No Azure region in Taiwan"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Billing",
+     "Billed via Azure Marketplace in Claude Consumption Units ($0.01 each) at Anthropic list rates; MACC-eligible; not in Retail Prices API."
+    ],
+    [
+     "Tiers",
+     "Message Batches API unsupported on Foundry; fast mode is first-party API only; 1M context billed at standard rates."
+    ]
+   ],
+   "ids": [
+    "claude-opus-4-7 (Foundry deployment/model name)",
+    "version 1 = Hosted on Anthropic infrastructure (no Hosted on Azure version)",
+    "Billing: 'Claude Platform on Foundry' Azure Marketplace offer, CCU meter"
+   ]
+  }
+ },
+ "anthropic/claude-opus-4.6": {
+  "databricks": {
+   "checked_at": "2026-10-09",
+   "add": [
+    {
+     "label": "Regional processing ⌖ +10%",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11,
+     "scope": "regional"
+    }
+   ]
+  },
+  "official": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Claude API · global"
+   },
+   "variants": [
+    {
+     "label": "Claude API · global · Batch",
+     "in": 2.5,
+     "out": 12.5,
+     "cache_read": 0.25,
+     "cache_write": 3.125,
+     "cache_write_1h": 5.0,
+     "scope": "global",
+     "service": "batch",
+     "endpoint": "Claude API · global"
+    },
+    {
+     "label": "US-only inference · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US-only inference"
+    },
+    {
+     "label": "US-only inference · Batch",
+     "in": 2.75,
+     "out": 13.75,
+     "cache_read": 0.275,
+     "cache_write": 3.4375,
+     "cache_write_1h": 5.5,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "US-only inference"
+    }
+   ],
+   "src": [
+    "api_west_anthropic_countries",
+    "api_west_anthropic_pricing",
+    "api_west_anthropic_residency"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US-only inference",
+     "United States, 1.1× price"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global (default)",
+     "Any geography; locations not published"
+    ],
+    [
+     "Europe",
+     "none",
+     "None",
+     "No EU inference geography"
+    ],
+    [
+     "APAC",
+     "none",
+     "None",
+     "No APAC inference geography"
+    ]
+   ],
+   "hk": [
+    "none",
+    "Not available: Hong Kong is not on Anthropic's supported-regions list"
+   ],
+   "tw": [
+    "none",
+    "Available in Taiwan (supported region); no Taiwan processing region"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "Minimum cacheable prompt 1,024 tokens; cache reads 0.1x base input ($0.50/MTok)."
+    ],
+    [
+     "Status",
+     "Legacy model; Opus 5.5 recommended. Priority Tier works only for existing commitments."
+    ]
+   ],
+   "ids": [
+    "claude-opus-4-6 (Claude API model ID; alias is the same)"
+   ]
+  },
+  "bedrock": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Global CRIS"
+   },
+   "variants": [
+    {
+     "label": "Geo CRIS · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Geo CRIS"
+    },
+    {
+     "label": "In-region · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "regional",
+     "service": "standard",
+     "endpoint": "In-region"
+    },
+    {
+     "label": "Global CRIS · Batch",
+     "in": 2.5,
+     "out": 12.5,
+     "scope": "global",
+     "service": "batch",
+     "endpoint": "Global CRIS"
+    },
+    {
+     "label": "Geo CRIS · Batch",
+     "in": 2.75,
+     "out": 13.75,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "Geo CRIS"
+    }
+   ],
+   "src": [
+    "aws_card_claude_opus_4_6",
+    "aws_endpoint_regions",
+    "aws_fm_use1"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "London"
+    ],
+    [
+     "Europe",
+     [
+      "geo",
+      "global"
+     ],
+     [
+      "EU CRIS",
+      "Global CRIS"
+     ],
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "geo",
+     "AU CRIS",
+     "Sydney, Melbourne"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "In-region",
+     "bedrock-runtime in-region: London; bedrock-mantle in-region: none."
+    ],
+    [
+     "Caching",
+     "Explicit caching: 1,024-token minimum per checkpoint (Opus 5: 512), 5-minute or 1-hour TTL."
+    ],
+    [
+     "Batch",
+     "Batch inference: Global $2.50 / $12.50, Geo $2.75 / $13.75 per 1M (50% off); no batch cache rates listed."
+    ]
+   ],
+   "ids": [
+    "anthropic.claude-opus-4-6-v1 (model ID; bedrock-runtime + bedrock-mantle)",
+    "us.anthropic.claude-opus-4-6-v1 (US geo inference profile)",
+    "eu.anthropic.claude-opus-4-6-v1 (EU geo inference profile)",
+    "au.anthropic.claude-opus-4-6-v1 (AU geo inference profile)",
+    "global.anthropic.claude-opus-4-6-v1 (global inference profile)"
+   ]
+  },
+  "gcloud": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "base": {
+    "endpoint": "Global"
+   },
+   "variants": [
+    {
+     "label": "Regional endpoint · Standard",
+     "in": 5.5,
+     "out": 27.5,
+     "cache_read": 0.55,
+     "cache_write": 6.875,
+     "cache_write_1h": 11.0,
+     "scope": "regional",
+     "service": "standard",
+     "endpoint": "Regional endpoint"
+    },
+    {
+     "label": "Regional endpoint · Batch",
+     "in": 2.75,
+     "out": 13.75,
+     "cache_read": 0.275,
+     "cache_write": 3.438,
+     "cache_write_1h": 5.5,
+     "scope": "regional",
+     "service": "batch",
+     "endpoint": "Regional endpoint"
+    }
+   ],
+   "src": [
+    "gcp_claude_opus_4_6",
+    "gcp_locations",
+    "gcp_pricing"
+   ],
+   "regions": [
+    [
+     "Global",
+     "global",
+     "Global",
+     "Any Google Cloud region; no data residency"
+    ],
+    [
+     "Americas",
+     "geo",
+     "Regional endpoint",
+     "us-east5 (Columbus); processing stays in the US multi-region"
+    ],
+    [
+     "Europe",
+     "geo",
+     "Regional endpoint",
+     "europe-west1 (Belgium); processing stays in the EU multi-region"
+    ],
+    [
+     "APAC",
+     "in-region",
+     "Regional endpoint",
+     "asia-southeast1 (Singapore); processing stays there"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Hong Kong (asia-east2) endpoint"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan (asia-east1) endpoint for this model"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Residency",
+     "Global endpoint plus regional endpoints in us-east5, europe-west1 and asia-southeast1 (+10%); no multi-region endpoints."
+    ],
+    [
+     "Batch",
+     "Batch runs on the regional endpoints at $2.75 / $13.75 (+10%), not on the global endpoint."
+    ],
+    [
+     "Context",
+     "Rates above 200K input tokens equal the base rates (no long-context premium); limits are 1M input and 128K output tokens."
+    ]
+   ],
+   "ids": [
+    "claude-opus-4-6 (Vertex model ID; publishers/anthropic/models/claude-opus-4-6)"
+   ]
+  },
+  "azure_foundry": {
+   "checked_at": "2026-10-09",
+   "reverified": true,
+   "offer": {
+    "in": 5,
+    "out": 25,
+    "cache_read": 0.5,
+    "cache_write": 6.25,
+    "cache_write_1h": 10,
+    "src": "az_anthropic_pricing",
+    "tier": "Global Standard",
+    "scope": "global"
+   },
+   "base": {
+    "endpoint": "Global Standard"
+   },
+   "src": [
+    "az_anthropic_countries",
+    "az_anthropic_pricing",
+    "az_learn_partners"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "global",
+     "Global Standard",
+     "Central US, East US, East US 2, North Central US, South Central US, West Central US, West US, West US 3"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global Standard",
+     "Sweden Central"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Hong Kong (East Asia) region; Anthropic's API country list also excludes Hong Kong"
+   ],
+   "tw": [
+    "none",
+    "No Azure region in Taiwan"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Billing",
+     "Billed via Azure Marketplace in Claude Consumption Units ($0.01 each) at Anthropic list rates; MACC-eligible; not in Retail Prices API."
+    ],
+    [
+     "Tiers",
+     "Message Batches API unsupported on Foundry; fast mode is first-party API only; 1M context billed at standard rates."
+    ]
+   ],
+   "ids": [
+    "claude-opus-4-6 (Foundry deployment/model name)",
+    "version 1 = Hosted on Anthropic infrastructure (no Hosted on Azure version)",
+    "Billing: 'Claude Platform on Foundry' Azure Marketplace offer, CCU meter"
    ]
   }
  }

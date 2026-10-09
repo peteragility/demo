@@ -89,14 +89,13 @@
     }
   }
 
-  // The arena.ai Best Overall ranking decides which models appear and their default order. A model is
-  // listed only while a compared platform hosts it; the maker's own API alone does not count.
+  // The arena.ai ranking named in v2-ranking.json decides which models appear and their default order. A model
+  // is listed only while a compared platform sells it; the maker's own API alone does not count.
   const rankOf = k => RANKING && RANKING.models[k] ? RANKING.models[k].rank : null;
+  const boardName = () => 'arena.ai ' + String(RANKING ? RANKING.board : '').split(/ (?=\()/)[0];
   const offered = c => Boolean(c) && (c.status === 'priced' || c.status === 'dedicated' || (c.status === 'unverified' && c.available));
   const hosted = k => PL.some(pl => pl !== 'official' && offered(RESOLVED.models[k][pl]));
-  // The latest OpenAI and Anthropic models are listed outside the top N too, after the ranked models.
-  const flagship = k => !!RANKING && (RANKING.flagship || []).includes(k);
-  const isListed = k => (!RANKING || rankOf(k) != null || flagship(k)) && hosted(k);
+  const isListed = k => (!RANKING || rankOf(k) != null) && hosted(k);
   const listed = () => Object.entries(DATA.models).filter(([k]) => isListed(k));
   function rows() {
     const q = S.q.trim().toLowerCase();
@@ -161,7 +160,7 @@
     const badges = (m.badges || []).map(b => `<span class="bdg">${esc(b)}</span>`).join('') + (warn ? `<span class="bdg warn" title="${esc(warn)}">!</span>` : '');
     const meta = [m.maker, m.ctx && (m.ctx + ' ctx')].filter(Boolean).join(' · ');
     const rank = rankOf(r.k);
-    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm">${rank != null ? `<span class="rk" title="arena.ai Best Overall rank">${rank}</span>` : ''}<span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
+    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm">${rank != null ? `<span class="rk" title="${esc(boardName())} rank">${rank}</span>` : ''}<span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
   }
 
   // Why a priced cell has no Δ, or which tier its Δ uses. Plain text: the card escapes it, the copied summary uses it as is.
@@ -394,7 +393,7 @@
       else if (selected.left < bounds.left) tabs.scrollLeft -= bounds.left - selected.left;
     }
     renderSummary(list);
-    const head = `<colgroup><col class="cm">${PL.map(() => '<col>').join('')}</colgroup><thead><tr><th scope="col" class="m">${RANKING ? '<span class="rk" title="arena.ai Best Overall rank">#</span>' : ''}Model<span class="u">$ / 1M · in / out</span></th>${PL.map(pl => `<th scope="col"${pl === 'databricks' ? ' class="dbx"' : ''} title="${esc(LONG[pl])}"><span class="lg">${esc(LONG[pl])}</span><span class="sh">${esc(SHORT[pl])}</span></th>`).join('')}</tr></thead>`;
+    const head = `<colgroup><col class="cm">${PL.map(() => '<col>').join('')}</colgroup><thead><tr><th scope="col" class="m">${RANKING ? '<span class="rk" title="${esc(boardName())} rank">#</span>' : ''}Model<span class="u">$ / 1M · in / out</span></th>${PL.map(pl => `<th scope="col"${pl === 'databricks' ? ' class="dbx"' : ''} title="${esc(LONG[pl])}"><span class="lg">${esc(LONG[pl])}</span><span class="sh">${esc(SHORT[pl])}</span></th>`).join('')}</tr></thead>`;
     let body = '';
     for (const r of list) {
       body += rowHtml(r);
@@ -409,7 +408,7 @@
   function copySummary(mk) {
     const m = DATA.models[mk];
     const rank = rankOf(mk);
-    const lines = [`${m.name} (${m.maker})${rank != null ? `, arena.ai Best Overall #${rank}` : ''}: USD per 1M text tokens, input / output, reviewed ${DATA.reviewed_at}; prices as of ${AS_OF}. Δ compares each platform's cheapest standard price with Databricks' at ${S.blend}:1 input:output.`];
+    const lines = [`${m.name} (${m.maker})${rank != null ? `, ${boardName()} #${rank}` : ''}: USD per 1M text tokens, input / output, reviewed ${DATA.reviewed_at}; prices as of ${AS_OF}. Δ compares each platform's cheapest standard price with Databricks' at ${S.blend}:1 input:output.`];
     for (const pl of PL) {
       const c = shown(mk, pl), k = kind(c);
       if (k === 'gpu') lines.push(`• ${LONG[pl]}: dedicated deployment only · ${c.note || 'No verified per-token price.'}`);
@@ -505,7 +504,7 @@
       const [title, sub] = String(RANKING.board).split(/ (?=\()/);
       const board = `<a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(title)}<span class="bsub">${sub ? ' ' + esc(sub) : ''}</span></a>`;
       $('#rankSrc').innerHTML = ` · ranked by ${board}, ${esc(when)}`;
-      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)} plus the latest OpenAI and Anthropic models (no #), listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba sells the model. Checked daily; order last changed ${esc(when)}.`;
+      $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba sells the model. Checked daily; order last changed ${esc(when)}.`;
     }
     const long = day => day ? new Date(day + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
     // The daily source check moves the verified date forward while the official sources are unchanged.

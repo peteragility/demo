@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Order the v2 page by the arena.ai Best Overall ranking; publishes order only, never prices.
+"""Order the v2 page by the arena.ai ranking named in ranking-config.json; publishes order only, never prices.
 
 The page shows the reviewed models in arena's top 50 that a compared platform hosts, in rank
 order. A model leaves the page when it drops out of the top 50 and returns when it is back.
@@ -66,8 +66,7 @@ def build(config, html, today, previous=None):
     if not models:
         raise ValueError("No priced model is ranked; refusing to empty the page.")
     ranking = dict(schema=1, source=config["source"], board=config["board"], board_url=config["board_url"],
-                   ranked_at=today, top=config.get("top"), entries=len(entries), models=dict(sorted(models.items(), key=lambda kv: kv[1]["rank"])),
-                   flagship=list(config.get("flagship", [])))
+                   ranked_at=today, top=config.get("top"), entries=len(entries), models=dict(sorted(models.items(), key=lambda kv: kv[1]["rank"])))
     # Keep the previous date when nothing the page uses has changed.
     if previous and {k: v for k, v in previous.items() if k not in ("ranked_at", "entries")} == \
             {k: v for k, v in ranking.items() if k not in ("ranked_at", "entries")}:
@@ -102,8 +101,7 @@ def events(ranking, previous, unmatched, config):
     known = set(config.get("known_unlisted", []))
     new = [dict(rank=e["rank"], name=e["modelDisplayName"], maker=e.get("modelOrganization", "")) for e in unmatched if e["modelDisplayName"] not in known]
     old = (previous or {}).get("models", {})
-    # A latest OpenAI / Anthropic model stays listed outside the top N, so leaving it is no news.
-    left = [dict(key=k, name=v.get("arena") or k) for k, v in old.items() if k not in ranking["models"] and k not in config.get("flagship", [])]
+    left = [dict(key=k, name=v.get("arena") or k) for k, v in old.items() if k not in ranking["models"]]
     return dict(top=config.get("top"), unreviewed=new, left=left)
 
 
@@ -122,9 +120,6 @@ def check(config):
             problems.append(key + " is ranked but has no pricing data.")
         if key not in config["models"]:
             problems.append(key + " is ranked but has no pattern in ranking-config.json.")
-    for key in ranking.get("flagship", []):
-        if key not in data["models"]:
-            problems.append(key + " is a flagship model but has no pricing data.")
     missing = [k for k in data["models"] if k not in config["models"]]
     if missing:
         problems.append("No ranking pattern for: " + ", ".join(missing))

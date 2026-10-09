@@ -198,8 +198,8 @@ def add_models(data):
     # the new base 10% (no tiered cut for Haiku). 1M context is explicitly excluded.
     haiku = copy.deepcopy(models["anthropic/claude-haiku-4.5"])
     haiku.update(name="Claude Haiku 5.5", short="Haiku 5.5", model_key="anthropic/claude-haiku-5.5",
-                 badges=["Added"], ctx="200K",
-                 note="High-volume, latency-sensitive tier. No 1M-token context option. Prices are one tenth of Haiku 4.5.")
+                 badges=["Added"], ctx="1M",
+                 note="High-volume, latency-sensitive tier: one tenth of Haiku 4.5. Prompts over 100K tokens are billed at 5x every rate ($0.50 / $2.50).")
     for pl in PLATFORMS:
         c = haiku["platforms"][pl]
         c["availability_checked_at"] = REVIEWED
@@ -218,12 +218,26 @@ def add_models(data):
                     if v.get(field) is not None:
                         v[field] = round(v[field] / 10, 6)
     # 2026-10-09: Databricks' proprietary DBU table lists Claude Haiku 5.5 ⌖ at the same one-tenth rates
-    # (1.429 / 7.143 DBU = $0.10 / $0.50). Its long-context row (7.143 / 35.714 DBU) is left out: Anthropic
-    # sells Haiku 5.5 with a 200K context window only.
+    # (1.429 / 7.143 DBU = $0.10 / $0.50).
     dbx = haiku["platforms"]["databricks"]
     for each in [dbx, *dbx.get("variants", [])]:
         each["pricing_checked_at"] = "2026-10-09"
     dbx.update(availability_checked_at="2026-10-09", model_id_checked_at="2026-10-09")
+    # Haiku 5.5 is priced by prompt length (1M context): over 100,000 prompt tokens every rate is 5x, as Anthropic,
+    # Databricks (DBU long-context row), Bedrock and Vertex list (2026-10-09); regional tiers stay +10%, cache writes
+    # included. US-only inference on the Claude API is 1.1x (Claude 4.6 and later).
+    long = rates(0.5, 2.5, 0.05, 0.625, 1.0)
+    up = lambda r: {k: round(x * 1.1, 6) for k, x in r.items()}
+    for pl in ("official", "databricks", "bedrock", "gcloud"):
+        c = haiku["platforms"][pl]
+        c.update(context_threshold=100000, long_context=dict(long))
+        for v in c.get("variants", []):
+            if v.get("comparison_scope") == "regional":
+                v.update(cache_write=0.1375, cache_write_1h=0.22)
+                if pl != "databricks":  # Databricks derives its ⌖ long-context tier from the base
+                    v["long_context"] = up(long)
+    haiku["platforms"]["official"]["variants"].append(
+        variant("US-only inference ×1.1", 0.11, 0.55, 0.011, 0.1375, 0.22, scope="regional", long_context=up(long)))
     haiku["platforms"]["azure_foundry"] = pending("Not in the reviewed Microsoft Foundry price list for current Claude models.", "azure_claude")
     models["anthropic/claude-haiku-5.5"] = haiku
     if "Replaced" not in models["anthropic/claude-haiku-4.5"].get("badges", []):
@@ -373,7 +387,10 @@ def add_top50_models(data):
     for key, name, short, i, o, cr, cw, cw1h, dbx_id, extra in [
             ("anthropic/claude-fable-5", "Claude Fable 5", "Fable 5", 10, 50, 1, 12.5, 20, "databricks-claude-fable-5", []),
             ("anthropic/claude-opus-4.8", "Claude Opus 4.8", "Opus 4.8", 5, 25, 0.5, 6.25, 10, "databricks-claude-opus-4-8",
-             [variant("Fast mode", 10, 50, service="priority")])]:
+             [variant("Fast mode", 10, 50, service="priority")]),
+            # Reviewed 2026-10-09 for the arena.ai WebDev top 50: Opus 4.8's rates on every platform, without fast mode.
+            ("anthropic/claude-opus-4.7", "Claude Opus 4.7", "Opus 4.7", 5, 25, 0.5, 6.25, 10, "databricks-claude-opus-4-7", []),
+            ("anthropic/claude-opus-4.6", "Claude Opus 4.6", "Opus 4.6", 5, 25, 0.5, 6.25, 10, "databricks-claude-opus-4-6", [])]:
         regional = [round(x * 1.1, 6) for x in (i, o, cr, cw, cw1h)]
         official = offer(i, o, cr, cw, cw1h, src="anthropic", tier="Claude API")
         official["variants"] = [variant("Batch −50%", i / 2, o / 2, service="batch"), *extra]
@@ -489,8 +506,9 @@ def add_top50_models(data):
                 "qwen/qwen3.8-max", "qwen/qwen3.7-max", "qwen/qwen3.7-plus", "qwen/qwen3.8-27b", "minimax/minimax-m3", "mistral/mistral-medium-3.5"):
         for pl, c in m[key]["platforms"].items():
             m[key]["platforms"][pl] = checked(copy.deepcopy(c))
-    for pl, c in m["qwen/qwen3.8-flash"]["platforms"].items():
-        m["qwen/qwen3.8-flash"]["platforms"][pl] = checked(copy.deepcopy(c), "2026-10-09")
+    for key in ("qwen/qwen3.8-flash", "anthropic/claude-opus-4.7", "anthropic/claude-opus-4.6"):
+        for pl, c in m[key]["platforms"].items():
+            m[key]["platforms"][pl] = checked(copy.deepcopy(c), "2026-10-09")
 
 
 REGION_LEVELS = ("in-region", "geo", "global", "unknown", "none")
@@ -937,7 +955,7 @@ def build():
     if proven_log:
         data["reviewed_at"] = max(data["reviewed_at"], max(line[:10] for line in proven_log))
     data["changes"] = proven_log[::-1] + [
-        "2026-10-09: The list now adds the latest OpenAI and Anthropic models outside the arena.ai top 50 when a compared platform sells them with general access (Claude Haiku 5.5), and Qwen3.8 Flash on Alibaba Cloud (arena: Qwen3.8 Flash Next). Mistral Medium 3.5 left the top 50.",
+        "2026-10-09: The list follows arena.ai's Best WebDev (Code | Overall) top 50 instead of Best Overall (Agent), shown when a compared platform sells the model with general access. Added Claude Opus 4.7 and Opus 4.6 (Databricks, Bedrock, Vertex, Azure Foundry) and Qwen3.8 Flash (Alibaba Cloud; arena: Qwen3.8 Flash Next); Claude Haiku 5.5 is #30, with a 1M context billed at 5x over 100K prompt tokens on every platform and US-only inference on the Claude API.",
         "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
         "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",
         "2026-10-06: Databricks prices GPT-6.1 Sol ($2 / $10) and Grok 4.7 ($2 / $6 promotion); GLM 5.3 on Bedrock; Vertex retires Gemini 3.6 Flash (19 Nov 2026) and 3.7 Flash (28 Jan 2027); Bedrock US CRIS adds Canada / Calgary; Vertex lists no Singapore endpoint for Claude.",

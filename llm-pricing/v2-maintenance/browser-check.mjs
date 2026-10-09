@@ -98,13 +98,11 @@ try {
     };
     const measure = `({rows:document.querySelectorAll('#mx tr.row').length,columns:document.querySelectorAll('#mx>thead th').length,width:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,priceFont:getComputedStyle(document.querySelector('td.c')).fontSize,fontFamily:getComputedStyle(document.body).fontFamily,headingSize:getComputedStyle(document.querySelector('h1')).fontSize,wrapWidth:document.querySelector('.wrap').getBoundingClientRect().width,rowHeight:document.querySelector('tr.row').getBoundingClientRect().height,visibleRows:[...document.querySelectorAll('#mx tr.row')].filter(r=>r.getBoundingClientRect().bottom<=innerHeight&&r.getBoundingClientRect().top>=0).length,summary:document.querySelector('#summary').innerText})`;
     await navigate();
-    // Expected rows come from the page's own ranking: the priced models arena ranks, in rank order, then the
-    // latest OpenAI and Anthropic models outside it (flagship), in data order.
+    // Expected rows come from the page's own ranking: the priced models arena ranks, in rank order.
     const expected = await evalJS(`(async () => {
       const [d, r] = await Promise.all([fetch('v2-data.json').then(x => x.json()), fetch('v2-ranking.json').then(x => x.json())]);
       const hosted = k => Object.entries(d.models[k].platforms).some(([pl, c]) => pl !== 'official' && (c.status === 'priced' || c.status === 'dedicated' || (c.status === 'unverified' && c.available)));
-      const keys = Object.keys(r.models).filter(k => d.models[k] && hosted(k)).sort((a, b) => r.models[a].rank - r.models[b].rank)
-        .concat(Object.keys(d.models).filter(k => (r.flagship || []).includes(k) && !r.models[k] && hosted(k)));
+      const keys = Object.keys(r.models).filter(k => d.models[k] && hosted(k)).sort((a, b) => r.models[a].rank - r.models[b].rank);
       const count = g => keys.filter(k => d.models[k].group === g).length;
       return {keys, all: keys.length, oss: count('oss'), anthropic: count('anthropic'), openai: count('openai'), google: count('google'), xai: count('xai'), other: count('other')};
     })()`);
@@ -115,7 +113,7 @@ try {
     assert.equal(initial.rows, expected.all, viewport.name + ': All is the default view');
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx tr.row')].map(r=>r.dataset.k)"), expected.keys, viewport.name + ': arena rank order');
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*', ...['oss','anthropic','openai','google','xai','other'].filter(g => expected[g])]);
-    assert.match(await evalJS("document.querySelector('#rankSrc').textContent"), /ranked by arena\.ai Best Overall/);
+    assert.match(await evalJS("document.querySelector('#rankSrc').textContent"), /ranked by arena\.ai Best \w+/);
     // The disclaimer shows at the top on every screen size, and in full in the footer.
     assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), 'Internal reference only');
     assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /Built by Peter Chan for internal reference only/);
@@ -125,7 +123,7 @@ try {
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','Fireworks','Azure Foundry','AWS Bedrock','Google Vertex','Alibaba']);
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','FW','Azure','AWS','GCP','Ali']);
     assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','DBX edge']);
-    assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /arena\.ai Best Overall/);
+    assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /arena\.ai Best \w+/);
     assert.equal(await evalJS("(()=>{const tab=document.querySelector('[data-g=all]').getBoundingClientRect(),tabs=document.querySelector('#tabs').getBoundingClientRect();return tab.left>=tabs.left-1&&tab.right<=tabs.right+1;})()"), true, 'Selected family tab is visible');
     await saveScreenshot(viewport.name);
 
@@ -196,7 +194,7 @@ try {
       assert.match(await evalJS('window.copiedSummary'), /Databricks: 2\.00 \/ 10\.00/);
       assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
       assert.match(await evalJS('window.copiedSummary'), /Price checked 2026-10-0\d/);
-      assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best Overall #\d+/);
+      assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best \w+ #\d+/);
       assert.match(await evalJS('window.copiedSummary'), /Internal reference only/);
       await toggle('openai/gpt-6.1-sol');
     }

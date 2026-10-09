@@ -166,6 +166,106 @@
    "adi": false,
    "changed_at": "2026-10-09"
   },
+  "anthropic/claude-opus-4.6": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+    ],
+    [
+     "Americas",
+     "global",
+     "Cross-geo",
+     "AWS São Paulo · Azure Canada Central, Brazil South"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
+    ],
+    [
+     "Europe",
+     "global",
+     "Cross-geo",
+     "AWS Frankfurt, Ireland, London · Azure UK South · GCP London, Frankfurt"
+    ],
+    [
+     "APAC",
+     "in-region",
+     "In-region",
+     "AWS Sydney · Azure Australia East"
+    ],
+    [
+     "APAC",
+     "global",
+     "Cross-geo",
+     "AWS Tokyo, Seoul, Mumbai, Singapore · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India · GCP Mumbai, Singapore"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Azure East Asia (Hong Kong) through cross-geo routing"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region in Databricks' model-serving tables"
+   ],
+   "adi": false,
+   "changed_at": "2026-10-09"
+  },
+  "anthropic/claude-opus-4.7": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+    ],
+    [
+     "Americas",
+     "global",
+     "Cross-geo",
+     "Azure Canada Central, Brazil South"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+    ],
+    [
+     "Europe",
+     "global",
+     "Cross-geo",
+     "Azure UK South"
+    ],
+    [
+     "APAC",
+     "in-region",
+     "In-region",
+     "AWS Tokyo, Singapore, Sydney · Azure Japan East, Australia East · GCP Singapore"
+    ],
+    [
+     "APAC",
+     "global",
+     "Cross-geo",
+     "AWS Seoul, Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Azure East Asia (Hong Kong) through cross-geo routing"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region in Databricks' model-serving tables"
+   ],
+   "adi": false,
+   "changed_at": "2026-10-09"
+  },
   "anthropic/claude-opus-4.8": {
    "regions": [
     [

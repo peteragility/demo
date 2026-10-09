@@ -616,29 +616,6 @@ def row_edits(change, cell, records, parts=None):
     return edits or None
 
 
-# The makers' own price lists, read for models the page might add as a latest flagship: (heading, model name).
-MAKER_LISTS = {"anthropic-pricing": ("Model pricing", re.compile(r"Claude (?:Fable|Mythos|Opus|Sonnet|Haiku) \d+(?:\.\d+)?")),
-               "openai-pricing": ("Standard pricing", re.compile(r"^(?:gpt-\d[\w.-]*|o\d[\w-]*)$"))}
-
-
-def maker_models(current, data, known):
-    """OpenAI and Anthropic models on their own price lists that the page neither tracks nor already knows
-    (maker_known in ranking-config.json): each may be a new latest flagship to review."""
-    seen = {official.norm(m.get("name", "")) for m in data["models"].values()} | {official.norm(n) for n in known}
-    found = set()
-    for sid, (heading, rx) in MAKER_LISTS.items():
-        for record in (current.get(sid) or {}).get("records", []):
-            if not record.startswith("table: {"):
-                continue
-            row = json.loads(record[len("table: "):])
-            first = (row.get("cells") or [""])[0].strip()
-            if heading not in row.get("heading", ""):
-                continue
-            names = [m.group(0) for m in rx.finditer(first)] if sid == "anthropic-pricing" else [first] if rx.match(first) else []
-            found |= {n for n in names if official.norm(n) not in seen}
-    return sorted(found)
-
-
 def proven_edits(data, changes, current, dbx, sources):
     """Every edit the live sources prove: Databricks rates from its DBU tables, and table rows where only a
     price moved. Edits that disagree about the same rate are dropped."""
@@ -799,8 +776,7 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     return cells, changes
 
 
-def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None, general=(), unrecorded=(), gone=None, last_read=None, ranking=None,
-                   new_models=()):
+def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=None, general=(), unrecorded=(), gone=None, last_read=None, ranking=None):
     """The rolling GitHub issue: only what a person needs to act on. failing = sources not read for STALE_DAYS
     days or more (a single failed read is usually temporary)."""
     failing = report["sources_failed"] if failing is None else failing
@@ -820,12 +796,6 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
                   for m in ranking.get("unreviewed", [])]
         lines += [f"- **{m['name']}** left the top {top}: it is hidden on the page, and its reviewed prices are kept in case it returns."
                   for m in ranking.get("left", [])]
-        lines.append("")
-    if new_models:
-        lines += ["## New models on OpenAI's or Anthropic's price list", ""]
-        lines += [f"- **{n}**. If it is a latest flagship that a compared platform sells with general access, add it (pricing in `build-data.py`, "
-                  f"a pattern and the `flagship` list in `ranking-config.json`); if not, add the name to `maker_known` in `ranking-config.json`."
-                  for n in new_models]
         lines.append("")
     fact_issues = {k: v for k, v in fact_issues.items() if k in listed}
     if fact_issues:
@@ -981,9 +951,7 @@ def main():
     fact_issues = dbx_fact_issues(data, facts, today, complete) if facts else {}
     previous = json.loads(args.checks.read_text()) if args.checks and args.checks.exists() else None
     ranking_file = HERE.parent / "v2-ranking.json"
-    ranking_doc = json.loads(ranking_file.read_text()) if ranking_file.exists() else None
-    listed = (set(ranking_doc["models"]) | set(ranking_doc.get("flagship", []))) if ranking_doc else set(data["models"])
-    new_models = maker_models(current, data, json.loads((HERE / "ranking-config.json").read_text()).get("maker_known", []))
+    listed = set(json.loads(ranking_file.read_text())["models"]) if ranking_file.exists() else set(data["models"])
     auto_file = HERE / "endpoints-auto.json"
     auto = json.loads(auto_file.read_text()).get("databricks", {}) if auto_file.exists() else {}
     gone = {k: e["missing_since"] for k, e in auto.items() if e.get("missing_since") and k in listed}
@@ -1005,11 +973,11 @@ def main():
     last_read = sources_read(previous, sources, current, today)
     failing = stale(errors, last_read, today)
     unrecorded = sorted(sid for sid in current if sid not in baseline.get("sources", {}))
-    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read, events, new_models)
+    issue, review = issue_markdown(report, cells, changes, fact_issues, data, listed, failing, general, unrecorded, gone, last_read, events)
     listed_facts = {k: v for k, v in fact_issues.items() if k in listed}
     held = [g for g in general if g["risk"] == "high"]
     action = [a for a in report["lifecycle_due"] if needs_action(a)]
-    needs_review = bool(review or listed_facts or failing or held or unrecorded or gone or action or events.get("unreviewed") or events.get("left") or new_models)
+    needs_review = bool(review or listed_facts or failing or held or unrecorded or gone or action or events.get("unreviewed") or events.get("left"))
     accepted = [c for c in changes if c["risk"] == "low"] + [g for g in general if g["risk"] == "low"]
     if args.accept_low_risk:
         updated = accept_low_risk(baseline, current, changes, errors, report["lifecycle_alerts"], general)

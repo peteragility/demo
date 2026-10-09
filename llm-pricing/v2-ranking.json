@@ -1,160 +1,139 @@
 {
  "schema": 1,
  "source": "https://arena.ai/leaderboard/",
- "board": "Best Overall (Agent | Overall)",
- "board_url": "https://arena.ai/leaderboard/agent",
+ "board": "Best WebDev (Code | Overall)",
+ "board_url": "https://arena.ai/leaderboard/code/webdev",
  "ranked_at": "2026-10-09",
  "top": 50,
  "entries": 50,
  "models": {
   "anthropic/claude-opus-5.5": {
    "rank": 1,
-   "arena": "Claude Opus 5.5 (High)"
+   "arena": "claude-opus-5.5-max"
   },
   "openai/gpt-6-astra": {
    "rank": 2,
-   "arena": "GPT 6 Astra (Max)"
-  },
-  "anthropic/claude-fable-5.1": {
-   "rank": 3,
-   "arena": "Claude Fable 5.1 (Max)"
+   "arena": "gpt-6-astra-max"
   },
   "anthropic/claude-sonnet-5.5": {
-   "rank": 4,
-   "arena": "Claude Sonnet 5.5 (Max)"
+   "rank": 3,
+   "arena": "claude-sonnet-5.5-xhigh"
   },
   "openai/gpt-6.1-sol": {
+   "rank": 4,
+   "arena": "gpt-6.1-sol-max"
+  },
+  "anthropic/claude-fable-5.1": {
    "rank": 5,
-   "arena": "GPT 6.1 Sol (Max)"
-  },
-  "openai/gpt-6-sol": {
-   "rank": 6,
-   "arena": "GPT 6 Sol (Max)"
-  },
-  "anthropic/claude-fable-5": {
-   "rank": 8,
-   "arena": "Claude Fable 5 (High)"
+   "arena": "claude-fable-5.1-max"
   },
   "anthropic/claude-opus-5": {
-   "rank": 9,
-   "arena": "Claude Opus 5 (Max)"
+   "rank": 7,
+   "arena": "claude-opus-5-max"
   },
-  "anthropic/claude-opus-4.8": {
-   "rank": 11,
-   "arena": "Claude Opus 4.8 (High)"
-  },
-  "openai/gpt-5.6-sol": {
-   "rank": 12,
-   "arena": "GPT 5.6 Sol (xHigh)"
-  },
-  "anthropic/claude-sonnet-5": {
-   "rank": 13,
-   "arena": "Claude Sonnet 5 (High)"
-  },
-  "openai/gpt-5.5": {
-   "rank": 14,
-   "arena": "GPT 5.5 (xHigh)"
-  },
-  "deepseek/deepseek-v4.1-flash": {
-   "rank": 16,
-   "arena": "Deepseek V4.1 Flash (Max)"
-  },
-  "moonshot/kimi-k3": {
-   "rank": 17,
-   "arena": "Kimi K3 (Max)"
-  },
-  "zai/glm-5.2": {
-   "rank": 20,
-   "arena": "GLM 5.2 (Max)"
-  },
-  "xai/grok-4.7": {
-   "rank": 21,
-   "arena": "Grok 4.7 (xHigh)"
-  },
-  "google/gemini-3.8-flash": {
-   "rank": 22,
-   "arena": "Gemini 3.8 Flash (High)"
+  "openai/gpt-6-sol": {
+   "rank": 8,
+   "arena": "gpt-6-sol-max"
   },
   "qwen/qwen3.8-max": {
-   "rank": 23,
-   "arena": "Qwen3.8 Max"
+   "rank": 10,
+   "arena": "qwen3.8-max-0902"
   },
-  "zai/glm-5.3": {
-   "rank": 24,
-   "arena": "GLM 5.3 (Max)"
+  "moonshot/kimi-k3": {
+   "rank": 14,
+   "arena": "kimi-k3-max"
   },
-  "openai/gpt-6-luna": {
-   "rank": 25,
-   "arena": "GPT 6 Luna (Max)"
-  },
-  "deepseek/deepseek-v4-pro": {
-   "rank": 26,
-   "arena": "DeepSeek V4 Pro (High) (0813)"
-  },
-  "openai/gpt-5.4": {
-   "rank": 28,
-   "arena": "GPT 5.4 (High)"
-  },
-  "xai/grok-4.6": {
-   "rank": 29,
-   "arena": "Grok 4.6 (xHigh)"
-  },
-  "openai/gpt-5.6-terra": {
-   "rank": 31,
-   "arena": "GPT 5.6 Terra (xHigh)"
+  "xai/grok-4.7": {
+   "rank": 15,
+   "arena": "grok-4.7-xhigh"
   },
   "qwen/qwen3.8-flash": {
-   "rank": 34,
-   "arena": "Qwen3.8 Flash Next"
+   "rank": 17,
+   "arena": "qwen3.8-flash-next"
+  },
+  "anthropic/claude-fable-5": {
+   "rank": 21,
+   "arena": "claude-fable-5-high"
+  },
+  "zai/glm-5.3": {
+   "rank": 22,
+   "arena": "glm-5.3-max"
+  },
+  "deepseek/deepseek-v4.1-flash": {
+   "rank": 23,
+   "arena": "deepseek-v4.1-flash-max"
+  },
+  "openai/gpt-5.6-sol": {
+   "rank": 24,
+   "arena": "gpt-5.6-sol-xhigh (codex-harness)"
+  },
+  "xai/grok-4.6": {
+   "rank": 25,
+   "arena": "grok-4.6-high"
   },
   "zai/glm-5.3-flash": {
-   "rank": 35,
-   "arena": "GLM 5.3 Flash"
+   "rank": 26,
+   "arena": "glm-5.3-flash"
   },
-  "openai/gpt-5.6-luna": {
-   "rank": 36,
-   "arena": "GPT 5.6 Luna (xHigh)"
+  "zai/glm-5.2": {
+   "rank": 27,
+   "arena": "glm-5.2-max"
   },
   "qwen/qwen3.8-27b": {
-   "rank": 37,
-   "arena": "Qwen 3.8 27B"
+   "rank": 28,
+   "arena": "qwen3.8-27b"
   },
   "google/gemini-3.7-flash": {
-   "rank": 38,
-   "arena": "Gemini 3.7 Flash (High)"
+   "rank": 29,
+   "arena": "gemini-3.7-flash-high"
   },
-  "qwen/qwen3.7-max": {
-   "rank": 42,
-   "arena": "Qwen3.7 Max"
+  "anthropic/claude-haiku-5.5": {
+   "rank": 30,
+   "arena": "claude-haiku-5.5-high"
   },
-  "minimax/minimax-m3": {
-   "rank": 44,
-   "arena": "Minimax M3"
+  "google/gemini-3.8-flash": {
+   "rank": 31,
+   "arena": "gemini-3.8-flash-high"
   },
-  "qwen/qwen3.7-plus": {
-   "rank": 45,
-   "arena": "Qwen3.7 Plus"
+  "deepseek/deepseek-v4-pro": {
+   "rank": 32,
+   "arena": "deepseek-v4-pro-high-20260813"
+  },
+  "deepseek/deepseek-v4-flash": {
+   "rank": 33,
+   "arena": "deepseek-v4-flash-high"
+  },
+  "openai/gpt-6-luna": {
+   "rank": 34,
+   "arena": "gpt-6-luna-max"
+  },
+  "anthropic/claude-opus-4.7": {
+   "rank": 36,
+   "arena": "claude-opus-4-7-high"
+  },
+  "anthropic/claude-opus-4.8": {
+   "rank": 37,
+   "arena": "claude-opus-4-8-high"
+  },
+  "anthropic/claude-opus-4.6": {
+   "rank": 40,
+   "arena": "claude-opus-4-6-high"
+  },
+  "anthropic/claude-sonnet-5": {
+   "rank": 43,
+   "arena": "claude-sonnet-5-high"
   },
   "google/gemini-3.6-flash": {
-   "rank": 47,
-   "arena": "Gemini 3.6 Flash (High)"
+   "rank": 44,
+   "arena": "gemini-3.6-flash-high"
   },
-  "google/gemini-3.1-pro": {
+  "anthropic/claude-sonnet-4.6": {
    "rank": 48,
-   "arena": "Gemini 3.1 Pro Preview"
+   "arena": "claude-sonnet-4-6"
   },
-  "tml/inkling": {
-   "rank": 50,
-   "arena": "Inkling"
+  "openai/gpt-5.6-terra": {
+   "rank": 49,
+   "arena": "gpt-5.6-terra-xhigh (codex-harness)"
   }
- },
- "flagship": [
-  "anthropic/claude-fable-5.1",
-  "anthropic/claude-opus-5.5",
-  "anthropic/claude-sonnet-5.5",
-  "anthropic/claude-haiku-5.5",
-  "openai/gpt-6-astra",
-  "openai/gpt-6.1-sol",
-  "openai/gpt-6-luna"
- ]
+ }
 }
