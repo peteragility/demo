@@ -11,7 +11,7 @@
   {
    "path": "lakebase-compete-calculator/",
    "title": "Lakebase Compete Calculator",
-   "desc": "Lakebase vs Aurora PG · Serverless v2 · RDS · Azure PG · Azure SQL · Cloud SQL · Snowflake Postgres · ClickHouse Postgres: region-aware list prices, HA, replicas, backups, I/O, commitments",
+   "desc": "Lakebase vs Aurora PG · Serverless v2 · RDS · Azure PG · Azure SQL · Cloud SQL · ClickHouse Postgres: pick a workload pattern, size, HA, replicas and I/O for a monthly comparison",
    "tag": "🔥 Hot",
    "color": "#3fb950"
   },
