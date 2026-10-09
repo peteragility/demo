@@ -3,25 +3,25 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best Overall (Agent | Overall)",
  "board_url": "https://arena.ai/leaderboard/agent",
- "ranked_at": "2026-10-03",
+ "ranked_at": "2026-10-09",
  "top": 50,
  "entries": 50,
  "models": {
-  "anthropic/claude-fable-5.1": {
-   "rank": 1,
-   "arena": "Claude Fable 5.1 (Max)"
-  },
   "anthropic/claude-opus-5.5": {
-   "rank": 2,
+   "rank": 1,
    "arena": "Claude Opus 5.5 (High)"
   },
-  "anthropic/claude-sonnet-5.5": {
-   "rank": 3,
-   "arena": "Claude Sonnet 5.5 (Max)"
-  },
   "openai/gpt-6-astra": {
-   "rank": 4,
+   "rank": 2,
    "arena": "GPT 6 Astra (Max)"
+  },
+  "anthropic/claude-fable-5.1": {
+   "rank": 3,
+   "arena": "Claude Fable 5.1 (Max)"
+  },
+  "anthropic/claude-sonnet-5.5": {
+   "rank": 4,
+   "arena": "Claude Sonnet 5.5 (Max)"
   },
   "openai/gpt-6.1-sol": {
    "rank": 5,
@@ -31,13 +31,13 @@
    "rank": 6,
    "arena": "GPT 6 Sol (Max)"
   },
-  "anthropic/claude-opus-5": {
-   "rank": 7,
-   "arena": "Claude Opus 5 (High)"
-  },
   "anthropic/claude-fable-5": {
    "rank": 8,
    "arena": "Claude Fable 5 (High)"
+  },
+  "anthropic/claude-opus-5": {
+   "rank": 9,
+   "arena": "Claude Opus 5 (Max)"
   },
   "anthropic/claude-opus-4.8": {
    "rank": 11,
@@ -51,25 +51,25 @@
    "rank": 13,
    "arena": "Claude Sonnet 5 (High)"
   },
-  "moonshot/kimi-k3": {
-   "rank": 14,
-   "arena": "Kimi K3 (Max)"
-  },
   "openai/gpt-5.5": {
-   "rank": 15,
+   "rank": 14,
    "arena": "GPT 5.5 (xHigh)"
   },
-  "xai/grok-4.7": {
-   "rank": 16,
-   "arena": "Grok 4.7 (xHigh)"
-  },
   "deepseek/deepseek-v4.1-flash": {
-   "rank": 17,
+   "rank": 16,
    "arena": "Deepseek V4.1 Flash (Max)"
+  },
+  "moonshot/kimi-k3": {
+   "rank": 17,
+   "arena": "Kimi K3 (Max)"
   },
   "zai/glm-5.2": {
    "rank": 20,
    "arena": "GLM 5.2 (Max)"
+  },
+  "xai/grok-4.7": {
+   "rank": 21,
+   "arena": "Grok 4.7 (xHigh)"
   },
   "google/gemini-3.8-flash": {
    "rank": 22,
@@ -87,65 +87,61 @@
    "rank": 25,
    "arena": "GPT 6 Luna (Max)"
   },
-  "xai/grok-4.6": {
-   "rank": 26,
-   "arena": "Grok 4.6 (xHigh)"
-  },
   "deepseek/deepseek-v4-pro": {
-   "rank": 28,
+   "rank": 26,
    "arena": "DeepSeek V4 Pro (High) (0813)"
   },
   "openai/gpt-5.4": {
-   "rank": 29,
+   "rank": 28,
    "arena": "GPT 5.4 (High)"
   },
+  "xai/grok-4.6": {
+   "rank": 29,
+   "arena": "Grok 4.6 (xHigh)"
+  },
   "openai/gpt-5.6-terra": {
-   "rank": 32,
+   "rank": 31,
    "arena": "GPT 5.6 Terra (xHigh)"
   },
   "zai/glm-5.3-flash": {
-   "rank": 33,
+   "rank": 35,
    "arena": "GLM 5.3 Flash"
   },
   "openai/gpt-5.6-luna": {
    "rank": 36,
    "arena": "GPT 5.6 Luna (xHigh)"
   },
-  "google/gemini-3.7-flash": {
-   "rank": 37,
-   "arena": "Gemini 3.7 Flash (High)"
-  },
   "qwen/qwen3.8-27b": {
-   "rank": 38,
+   "rank": 37,
    "arena": "Qwen 3.8 27B"
   },
+  "google/gemini-3.7-flash": {
+   "rank": 38,
+   "arena": "Gemini 3.7 Flash (High)"
+  },
   "qwen/qwen3.7-max": {
-   "rank": 41,
+   "rank": 42,
    "arena": "Qwen3.7 Max"
   },
   "minimax/minimax-m3": {
-   "rank": 43,
+   "rank": 44,
    "arena": "Minimax M3"
   },
   "qwen/qwen3.7-plus": {
-   "rank": 44,
+   "rank": 45,
    "arena": "Qwen3.7 Plus"
   },
   "google/gemini-3.6-flash": {
-   "rank": 46,
+   "rank": 47,
    "arena": "Gemini 3.6 Flash (High)"
   },
   "google/gemini-3.1-pro": {
-   "rank": 47,
+   "rank": 48,
    "arena": "Gemini 3.1 Pro Preview"
   },
   "tml/inkling": {
-   "rank": 49,
-   "arena": "Inkling"
-  },
-  "mistral/mistral-medium-3.5": {
    "rank": 50,
-   "arena": "Mistral Medium 3.5"
+   "arena": "Inkling"
   }
  }
 }
