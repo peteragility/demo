@@ -33,7 +33,7 @@ button,select,input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 [hidden]{display:none!important}
 .wrap{max-width:1240px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));
-  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top top" "tabs tools" "sum sum" "inp inp" "tbl tbl" "tech tech" "foot foot"}
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top top" "tabs tabs" "tools tools" "sum sum" "inp inp" "tbl tbl" "tech tech" "foot foot"}
 .top{grid-area:top}.bar{grid-area:tabs}.tools{grid-area:tools}.summary{grid-area:sum}.inputs{grid-area:inp}.tblwrap.main{grid-area:tbl}.techsec{grid-area:tech;min-width:0}.foot{grid-area:foot}
 
 /* header */
@@ -41,16 +41,18 @@ button,select,input{font:inherit;color:inherit}
 .top h1{margin:0;font-size:20px;line-height:1.25;font-weight:700;letter-spacing:-.01em}
 .top p{margin:0;color:var(--ink-3);font-size:12px}
 .top p b{color:var(--ink-2);font-weight:600}
+.top .note{flex-basis:100%;margin:6px 0 0;padding:5px 9px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--down);border-radius:6px;font-size:11.5px;line-height:1.4;color:var(--ink-2)}
 .intref{align-self:center;padding:1px 7px;border:1px solid var(--line-2);border-radius:10px;font-size:11px;font-weight:600;line-height:16px;color:var(--ink-3);white-space:nowrap}
 
 /* sticky scenario tabs + tools */
-.bar,.tools{position:sticky;top:0;z-index:30;align-self:start;background:var(--bg);padding-block:8px}
+.bar{position:sticky;top:0;z-index:30;align-self:start;background:var(--bg);padding-block:8px}
+.tools{padding-block:0 8px}
 .bar{min-width:0;padding-right:10px}
 .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:3px;margin:-3px}
 .tabs::-webkit-scrollbar{display:none}
 .tab{appearance:none;flex:none;height:30px;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);font-weight:600;font-size:13px;padding:0 10px;border-radius:7px;white-space:nowrap;cursor:pointer}
 .tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--panel)}
-.tools{display:flex;gap:6px;align-items:center;justify-content:flex-end;min-width:0;flex-wrap:wrap}
+.tools{display:flex;gap:6px;align-items:center;justify-content:flex-start;min-width:0;flex-wrap:wrap}
 .sel{flex:none;display:flex;align-items:center;gap:3px;height:30px;padding:0 4px 0 8px;background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--ink-3);font-size:11px;white-space:nowrap}
 .sel select{border:0;background:transparent;outline:none;font-size:13px;font-weight:600;color:var(--ink);padding:0 2px;max-width:150px}
 .sel select:disabled{opacity:.5}
@@ -110,7 +112,7 @@ td.z{color:var(--na)}
 td.tot{font-weight:700;font-size:14px;background-image:linear-gradient(var(--bar),var(--bar));background-repeat:no-repeat;background-position:left bottom;background-size:var(--w,0%) 3px}
 td.tot small{display:block;font-size:10.5px;font-weight:500;color:var(--ink-3)}
 .d{font-size:12px;font-weight:600}
-.d.up{color:var(--up)}.d.down{color:var(--down)}.d.par{color:var(--par)}
+.d.up,.d.down{color:var(--ink-2)}.d.par{color:var(--par)}
 .bdg{display:inline-block;vertical-align:1px;margin-left:5px;padding:0 4px;border:1px solid var(--line-2);border-radius:4px;font-size:9.5px;font-weight:600;line-height:14px;color:var(--ink-3)}
 .bdg.best{border-color:var(--up);color:var(--up)}
 tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:normal}
@@ -171,39 +173,46 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 <div class="wrap">
   <header class="top">
     <h1>Lakebase Calculator</h1>
-    <span class="intref" title="Built by Peter Chan for internal reference, from public list prices on official sources only">Databricks' internal reference only</span>
-    <p>Lakebase vs Aurora PG · Aurora Serverless v2 · RDS PG · Azure PG · Azure SQL · Cloud SQL PG · ClickHouse Postgres · USD/month at list · verified <b>2026-10-09</b> · <a href="../">demo index</a></p>
+    <span class="intref" title="Unofficial estimator built from public list prices">Public list prices · estimate only</span>
+    <p>Ballpark Databricks Lakebase cost and compare it with Aurora, RDS, Azure, Cloud SQL and ClickHouse Postgres · USD/month · prices checked <b>2026-10-09</b> · <a href="../">demo index</a></p>
+    <p class="note">For reference only. Prices are public list prices from each provider's official pricing pages and APIs, checked on 2026-10-09, and may have changed. Estimates are simplified and exclude taxes, data transfer, support and negotiated discounts. Please confirm with the provider (or your Databricks account team) before making decisions.</p>
   </header>
 
-  <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Workload pattern">
-    <button class="tab" data-p="steady" aria-pressed="true">Steady 24×7</button>
-    <button class="tab" data-p="biz" aria-pressed="false">Business hours</button>
-    <button class="tab" data-p="spiky" aria-pressed="false">Spiky</button>
+  <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Common scenarios">
+    <button class="tab" data-p="web" aria-pressed="true">Web / SaaS</button>
+    <button class="tab" data-p="shop" aria-pressed="false">E-commerce</button>
+    <button class="tab" data-p="internal" aria-pressed="false">Internal app</button>
+    <button class="tab" data-p="agent" aria-pressed="false">AI agent app</button>
+    <button class="tab" data-p="serving" aria-pressed="false">Lakehouse serving</button>
+    <button class="tab" data-p="core" aria-pressed="false">Core OLTP</button>
     <button class="tab" data-p="dev" aria-pressed="false">Dev / test</button>
+    <button class="tab" data-p="custom" aria-pressed="false">Custom</button>
   </div></div>
   <div class="tools">
     <label class="sel"><span>Region</span><select id="region"><option value="us">US East</option><option value="sg">Singapore</option><option value="tk">Tokyo</option><option value="hk">Hong Kong</option></select></label>
-    <label class="sel"><span>Lakebase on</span><select id="lbCloud"><option value="aws">AWS</option><option value="azure">Azure</option><option value="gcp">Google Cloud</option></select></label>
-    <label class="sel"><span>Tier</span><select id="lbTier"><option value="enterprise">Enterprise</option><option value="premium">Premium</option></select></label>
-    <label class="sel" title="Published 1/3-year discounts applied to competitor instance compute"><span>Others</span><select id="commit"><option value="od">On-demand</option><option value="1y">1-yr commit</option><option value="3y">3-yr commit</option></select></label>
+    <label class="sel"><span>Lakebase cloud</span><select id="lbCloud"><option value="aws">AWS</option><option value="azure">Azure</option><option value="gcp">Google Cloud</option></select></label>
+    <label class="sel"><span>Databricks tier</span><select id="lbTier"><option value="enterprise">Enterprise</option><option value="premium">Premium</option></select></label>
+    <label class="sel" title="Published 1/3-year discounts applied to competitor instance compute"><span>Competitor pricing</span><select id="commit"><option value="od">On-demand</option><option value="1y">1-yr commit</option><option value="3y">3-yr commit</option></select></label>
   </div>
 
   <section class="summary" id="summary" aria-live="polite"></section>
 
   <section class="inputs" id="inputs">
-    <div class="fi wide"><label for="peak">Compute size <output id="peakOut"></output></label><input type="range" id="peak" min="0" max="12" step="1" value="3"><div class="h">Match the customer's current instance RAM (1 CU ≈ 2 GB)</div></div>
+    <div class="fi"><label for="peak">Compute size <output id="peakOut"></output></label><input type="range" id="peak" min="0" max="12" step="1" value="3"><div class="h">Peak RAM needed, e.g. the current instance (1 CU ≈ 2 GB)</div></div>
     <div class="fi"><label for="sto">Database size (GB)</label><input type="number" id="sto" min="1" max="65000" step="10" value="200"></div>
-    <div class="fi"><label for="ha">High availability</label><select id="ha"><option value="1" selected>On (1 standby)</option><option value="0">Off</option></select></div>
+    <div class="fi"><label for="pat">Load pattern</label><select id="pat"><option value="daily" selected>Daily peaks, 24×7</option><option value="steady">Steady, always busy</option><option value="biz">Business hours only</option><option value="spiky">Spiky / bursty</option><option value="intermittent">Intermittent (dev / test)</option></select></div>
+    <div class="fi"><label for="io">I/O intensity</label><select id="io"><option value="light">Light (read-mostly, cached)</option><option value="mod" selected>Moderate</option><option value="heavy">Heavy (write-heavy)</option></select></div>
+    <div class="fi"><label for="ha">High availability</label><select id="ha"><option value="0" selected>Off</option><option value="1">On (1 standby)</option></select></div>
     <div class="fi"><label for="rep">Read replicas</label><select id="rep"><option value="0" selected>None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
-    <div class="fi"><label for="io">I/O intensity</label><select id="io"><option value="light">Light (read-mostly, cached)</option><option value="mod" selected>Moderate</option><option value="heavy">Heavy (write-heavy OLTP)</option></select></div>
     <div class="pat" id="patNote"></div>
     <details class="adv" id="adv"><summary>Advanced</summary><div class="advg">
-      <div class="fi"><label for="disc">Databricks discount %</label><input type="number" id="disc" min="0" max="90" step="1" value="0"><div class="h">On Lakebase compute</div></div>
+      <div class="fi"><label for="disc">Databricks discount %</label><input type="number" id="disc" min="0" max="90" step="1" value="0"><div class="h">Contracted discount on Lakebase compute</div></div>
       <div class="fi"><label for="ret">Backup / PITR window (days)</label><input type="number" id="ret" min="2" max="35" step="1" value="7"></div>
       <div class="fi chks">
-        <label class="ck"><input type="checkbox" id="promo"><span>Lakebase 50% compute promo (to 31 Jan 2027)</span></label>
-        <label class="ck"><input type="checkbox" id="chBeta"><span>ClickHouse Postgres Beta 50% discount</span></label>
-        <label class="ck"><input type="checkbox" id="azsqlAhb"><span>Azure SQL: Hybrid Benefit (own SQL licenses)</span></label>
+        <label class="ck"><input type="checkbox" id="lfl"><span>Like-for-like: bill Lakebase at peak size 24×7, the same basis as provisioned databases</span></label>
+        <label class="ck"><input type="checkbox" id="promo"><span id="promoLbl">Lakebase 50% compute promotion (public Databricks offer, ends 31 Jan 2027)</span></label>
+        <label class="ck"><input type="checkbox" id="chBeta"><span>ClickHouse Postgres Beta 50% discount (may end at GA)</span></label>
+        <label class="ck"><input type="checkbox" id="azsqlAhb"><span>Azure SQL: Hybrid Benefit (customer brings SQL Server licenses)</span></label>
       </div>
     </div></details>
   </section>
@@ -235,16 +244,35 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   <footer class="foot">
     <div>
       <h2>How to read it</h2>
-      <p><b class="d up">▲</b> competitor costs more than Lakebase · <b class="d down">▼</b> cheaper · <b>=</b> within 1%. Tap a row for its sizing, rates and notes. Columns split each bill into compute, the HA standby, read scale, storage, backups/PITR and I/O.</p>
+      <p>Rows are sorted from lowest to highest monthly cost. <b>▲</b> costs more than Lakebase · <b>▼</b> costs less · <b>=</b> within 1%. Tap a row for its sizing, rates and notes. Columns split each bill into compute, the HA standby, read scale, storage, backups/PITR and I/O.</p>
       <p>Every vendor is sized to the same peak RAM. <b>Same memory isn't the same speed</b>: CU, ACU and vCPU differ, and Databricks says CU performance "will depend on the data and query complexity". Benchmark before a final call.</p>
       <details><summary>Model rules</summary><ul>
-        <li><b>Workload pattern</b> sets how busy the database is. Lakebase minimum / average while busy, as a share of peak:
+        <li><b>Scenarios</b> are common cloud OLTP uses; each sets load pattern, size, data and I/O (HA and replicas stay as you set them):
           <ul>
-            <li><b>Steady 24×7:</b> 50% / 70%.</li>
-            <li><b>Business hours</b> (12 h × 5 days): 25% / 70%.</li>
+            <li><b>Web / SaaS app:</b> daily peaks · 8 CU · 200 GB · moderate I/O.</li>
+            <li><b>E-commerce:</b> daily peaks · 16 CU · 500 GB · heavy.</li>
+            <li><b>Internal business app:</b> business hours · 4 CU · 100 GB · moderate.</li>
+            <li><b>AI agent / chat app:</b> spiky · 8 CU · 50 GB · light.</li>
+            <li><b>Lakehouse data serving:</b> steady · 16 CU · 300 GB · light.</li>
+            <li><b>Core OLTP:</b> steady · 32 CU · 1 TB · heavy.</li>
+            <li><b>Dev / test:</b> intermittent · 2 CU · 20 GB · light.</li>
+          </ul></li>
+        <li><b>Load pattern</b>: Lakebase minimum / average load while busy, as a share of peak:
+          <ul>
+            <li><b>Daily peaks, 24×7:</b> 25% / 50% (peak ≈ 2× average).</li>
+            <li><b>Steady:</b> 50% / 70%.</li>
+            <li><b>Business hours</b> (12 h × 5 days): 25% / 60%.</li>
             <li><b>Spiky:</b> 12.5% / 30%.</li>
-            <li><b>Dev / test</b> (6 h × 5 days, scale-to-zero): 6% / 30%.</li>
-            <li><b>Range rule:</b> the gap between Lakebase's minimum and maximum can't exceed 16 CU; above 64 CU, computes are fixed-size.</li>
+            <li><b>Intermittent</b> (6 h × 5 days, scale-to-zero): 6% / 30%.</li>
+            <li><b>Range rule:</b> Lakebase's max − min ≤ 16 CU; above 64 CU it's fixed-size.</li>
+            <li><b>Like-for-like</b> (Advanced): bills Lakebase at peak 24×7 instead.</li>
+          </ul></li>
+        <li><b>Why these defaults:</b>
+          <ul>
+            <li><b>Use cases:</b> application development is the leading Postgres use case (<a href="https://www.tigerdata.com/state-of-postgres/2024" target="_blank" rel="noopener">State of PostgreSQL 2024</a>).</li>
+            <li><b>Steady vs variable:</b> AWS positions provisioned databases for steady workloads and serverless for variable ones, such as promotions, multi-tenant SaaS, new apps and dev/test (<a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html" target="_blank" rel="noopener">Aurora docs</a>).</li>
+            <li><b>Lakebase scenarios:</b> agent memory, feature serving and serving lakehouse data follow the <a href="https://docs.databricks.com/aws/en/oltp/" target="_blank" rel="noopener">Lakebase docs</a>.</li>
+            <li><b>Caveat:</b> these are assumptions, not your workload's measurements.</li>
           </ul></li>
         <li><b>Lakebase compute:</b>
           <ul>
@@ -332,7 +360,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
       </ul></details>
       <p>Formerly "Postgres Cost Calculator" (/pg-cost-calculator/). Settings are saved in the link: use <b>Share</b> to send a scenario.</p>
     </div>
-    <p class="disclaimer"><b>Disclaimer.</b> Built by Peter Chan for internal reference only. Prices are public list prices taken only from providers' official websites, documentation and price APIs (see Sources). They exclude private, committed-use and negotiated pricing unless entered above. This is not an official Databricks price list or quote, and it isn't affiliated with AWS, Microsoft, Google or ClickHouse. Check the source before quoting a customer.</p>
+    <p class="disclaimer"><b>About this estimate.</b> An unofficial calculator built by Peter Chan at Databricks to give a quick ballpark. It collects publicly listed prices from each provider's official websites, documentation and price APIs (see Sources; last checked 2026-10-09) and applies the simplified, documented assumptions above to every vendor. It's not an official Databricks price list, quote or offer, and it isn't affiliated with or endorsed by AWS, Microsoft, Google or ClickHouse. Prices, promotions and regional availability change, and real costs depend on your actual usage, configuration and contract terms. Please double-check current pricing with each provider, or with your Databricks account team, before relying on these numbers.</p>
   </footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
@@ -397,25 +425,38 @@ const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
 function activeHours(s) { return (s.hpd >= 24 && s.dpw >= 7) ? HRS : s.hpd * s.dpw * WKS; }
 function lbConn(cu) { let v = LBCONN[0][1]; for (const [c, n] of LBCONN) if (cu >= c) v = n; return v; }
 
-// Workload patterns: Lakebase minimum and average (as a share of peak) during active hours; idle hours sit at the minimum (or zero with scale-to-zero)
+// Load patterns: Lakebase minimum and average load (shares of peak) while busy; idle hours sit at the minimum, or at zero with scale-to-zero.
+// Daily peaks follow the common ~2x peak-to-average shape of customer-facing traffic; these are modeling assumptions, not measurements.
 const PAT = {
-  steady: {name: 'Steady 24×7', minR: 0.5, avgR: 0.7, hpd: 24, dpw: 7, s2z: false, txt: 'busy around the clock'},
-  biz:    {name: 'Business hours', minR: 0.25, avgR: 0.7, hpd: 12, dpw: 5, s2z: false, txt: 'busy 12 h on weekdays, quiet nights and weekends'},
-  spiky:  {name: 'Spiky', minR: 0.125, avgR: 0.3, hpd: 24, dpw: 7, s2z: false, txt: 'low baseline with short bursts to peak'},
-  dev:    {name: 'Dev / test', minR: 0.0625, avgR: 0.3, hpd: 6, dpw: 5, s2z: true, txt: 'used ~6 h on weekdays, idle otherwise'}
+  daily:        {name: 'Daily peaks, 24×7', minR: 0.25, avgR: 0.5, hpd: 24, dpw: 7, s2z: false, txt: 'busy all day with a daily peak about 2× the average'},
+  steady:       {name: 'Steady, always busy', minR: 0.5, avgR: 0.7, hpd: 24, dpw: 7, s2z: false, txt: 'high load around the clock'},
+  biz:          {name: 'Business hours only', minR: 0.25, avgR: 0.6, hpd: 12, dpw: 5, s2z: false, txt: 'busy 12 h on weekdays, quiet nights and weekends'},
+  spiky:        {name: 'Spiky / bursty', minR: 0.125, avgR: 0.3, hpd: 24, dpw: 7, s2z: false, txt: 'low baseline with short bursts to peak'},
+  intermittent: {name: 'Intermittent (dev / test)', minR: 0.0625, avgR: 0.3, hpd: 6, dpw: 5, s2z: true, txt: 'used ~6 h on weekdays, idle otherwise'}
 };
+// Common cloud OLTP scenarios: each sets load pattern, compute size (index into PEAKS), database size and I/O. HA and replicas are left to the user.
+const PRESETS = {
+  web:      {name: 'Web / SaaS app', pat: 'daily', peak: 3, sto: 200, io: 'mod'},
+  shop:     {name: 'E-commerce', pat: 'daily', peak: 5, sto: 500, io: 'heavy'},
+  internal: {name: 'Internal business app', pat: 'biz', peak: 2, sto: 100, io: 'mod'},
+  agent:    {name: 'AI agent / chat app', pat: 'spiky', peak: 3, sto: 50, io: 'light'},
+  serving:  {name: 'Lakehouse data serving', pat: 'steady', peak: 5, sto: 300, io: 'light'},
+  core:     {name: 'Core OLTP (always busy)', pat: 'steady', peak: 7, sto: 1000, io: 'heavy'},
+  dev:      {name: 'Dev / test', pat: 'intermittent', peak: 1, sto: 20, io: 'light'}
+};
+const OLDPAT = {steady: 'steady', biz: 'biz', spiky: 'spiky', dev: 'intermittent'};
 const IOM = {light: {perCU: 25, chg: 0.01, name: 'Light'}, mod: {perCU: 100, chg: 0.03, name: 'Moderate'}, heavy: {perCU: 400, chg: 0.10, name: 'Heavy'}};
-let curPat = 'steady';
+let curPreset = 'web';
 function state() {
-  const pat = PAT[curPat], P = PEAKS[+$('peak').value], fixed = P > 64, ha = $('ha').value === '1';
+  const patKey = $('pat').value, pat = PAT[patKey], P = PEAKS[+$('peak').value], lfl = $('lfl').checked, fixed = P > 64 || lfl, ha = $('ha').value === '1';
   const m = fixed ? P : clamp(Math.round(Math.max(pat.minR * P, P - 16, 0.5) * 2) / 2, 0.5, P);
   const avg = fixed ? P : Math.max(m, pat.avgR * P), band = P - m;
   const io = IOM[$('io').value], sto = Math.max(1, +$('sto').value || 1), avgIops = io.perCU * P;
   return {
-    pattern: curPat, region: $('region').value, cloud: $('lbCloud').value, tier: $('lbTier').value, promo: $('promo').checked,
+    pattern: patKey, preset: curPreset, lfl, region: $('region').value, cloud: $('lbCloud').value, tier: $('lbTier').value, promo: $('promo').checked,
     disc: clamp(+$('disc').value || 0, 0, 90), commit: $('commit').value, family: 'mem',
     peak: P, floor: m, load: band > 0 ? (avg - m) / band : 0,
-    hpd: pat.hpd, dpw: pat.dpw, s2z: pat.s2z, stopIdle: false, burst: curPat === 'dev', azsqlAhb: $('azsqlAhb').checked, chBeta: $('chBeta').checked,
+    hpd: pat.hpd, dpw: pat.dpw, s2z: pat.s2z && !lfl, stopIdle: false, burst: patKey === 'intermittent', azsqlAhb: $('azsqlAhb').checked, chBeta: $('chBeta').checked,
     ha, haN: ha ? 1 : 0, rep: +$('rep').value, repLoad: 0.5,
     sto, chg: sto * io.chg, ret: clamp(+$('ret').value || 7, 1, 35),
     avgIops, peakIops: Math.max(3000, 3 * avgIops), io: $('io').value, sync: 0, etl: 0
@@ -599,8 +640,11 @@ function render() {
   const s = state(), act = activeHours(s);
   $('peakOut').textContent = fmtCU(s.peak) + ' · ' + 2 * s.peak + ' GB RAM';
   const pat = PAT[s.pattern], s2zOn = s.s2z && s.peak <= 32 && !s.ha;
-  const notes = ['<b>' + pat.name + ':</b> ' + pat.txt + '. Lakebase ' + (s.peak > 64 ? 'runs fixed at ' + fmtCU(s.peak) : 'autoscales ' + fmtCU(s.floor) + '–' + fmtCU(s.peak) + ', averaging ' + fmtCU(+(s.floor + (s.peak - s.floor) * s.load).toFixed(1)) + ' when busy') + (s2zOn ? ', with scale-to-zero when idle' : (s.pattern === 'dev' ? ' (no scale-to-zero: ' + (s.ha ? 'HA is on' : 'over 32 CU') + ')' : '')) + '. Provisioned vendors are sized to peak and bill 24×7.'];
-  notes.push('I/O ' + IOM[s.io].name + ': ~' + Math.round(s.avgIops).toLocaleString() + ' avg / ' + Math.round(s.peakIops).toLocaleString() + ' peak IOPS, ~' + Math.round(s.chg).toLocaleString() + ' GB changed per day.');
+  const lead = (s.preset !== 'custom' ? '<b>' + PRESETS[s.preset].name + '</b> · ' : '') + '<b>' + pat.name + ':</b> ' + pat.txt + '. ';
+  const lbTxt = s.lfl ? 'Like-for-like: Lakebase billed at ' + fmtCU(s.peak) + ' 24×7, the same basis as provisioned databases.'
+    : 'Lakebase ' + (s.peak > 64 ? 'runs fixed at ' + fmtCU(s.peak) : 'autoscales ' + fmtCU(s.floor) + '–' + fmtCU(s.peak) + ', averaging ' + fmtCU(+(s.floor + (s.peak - s.floor) * s.load).toFixed(1)) + ' when busy') + (s2zOn ? ', with scale-to-zero when idle' : (s.pattern === 'intermittent' ? ' (no scale-to-zero: ' + (s.ha ? 'HA is on' : 'over 32 CU') + ')' : '')) + '. Provisioned databases are sized to peak and billed 24×7' + (s.pattern === 'intermittent' || s.pattern === 'biz' ? '; most can be stopped manually when idle, which would lower their cost.' : '.');
+  const notes = [lead + lbTxt];
+  notes.push('I/O ' + IOM[s.io].name + ': ~' + Math.round(s.avgIops).toLocaleString() + ' avg / ' + Math.round(s.peakIops).toLocaleString() + ' peak IOPS, ~' + (s.chg < 10 ? s.chg.toFixed(1) : Math.round(s.chg).toLocaleString()) + ' GB changed per day.');
   if (s.region === 'hk') notes.push('Hong Kong: Lakebase is priced on Azure East Asia only; ClickHouse Postgres isn\'t offered there.');
   $('patNote').innerHTML = notes.join(' ');
 
@@ -609,8 +653,8 @@ function render() {
   const best = sorted.find(r => r.key !== 'lb'), rank = sorted.indexOf(lb) + 1, pct = (lb.total / best.total - 1) * 100;
   $('summary').innerHTML =
     '<div class="kpi dbx"><b>' + fmt(lb.total) + '<small>/mo</small></b><span>Lakebase' + (s.promo ? '<br>after promo ' + fmt(lb.post) : '<br>' + fmt(lb.total * 12) + '/yr') + '</span></div>'
-    + '<div class="kpi"><b>' + fmt(best.total) + '<small>/mo</small></b><span>cheapest other<br>' + best.name + '</span></div>'
-    + '<div class="kpi ' + (pct <= 1 ? 'good' : 'warn') + '"><b>' + (pct <= 0 ? '−' : '+') + Math.abs(pct).toFixed(0) + '%</b><span>Lakebase vs<br>cheapest other</span></div>'
+    + '<div class="kpi"><b>' + fmt(best.total) + '<small>/mo</small></b><span>cheapest other<br>' + best.name + (best.key === 'ch' && s.chBeta ? ' (Beta price)' : '') + '</span></div>'
+    + '<div class="kpi"><b>' + (pct <= 0 ? '−' : '+') + Math.abs(pct).toFixed(0) + '%</b><span>Lakebase vs<br>cheapest other</span></div>'
     + '<div class="kpi"><b>#' + rank + '<small> of ' + sorted.length + '</small></b><span>' + REG[s.region].name + '<br>' + ({od: 'others on-demand', '1y': 'others 1-yr commit', '3y': 'others 3-yr commit'})[s.commit] + '</span></div>'
     + '<div class="acts"><button class="abtn" id="inpBtn" aria-expanded="' + !$('inputs').hidden + '" aria-controls="inputs">Inputs</button><button class="abtn" id="copyBtn">Copy</button><button class="abtn" id="shareBtn">Share</button></div>';
   $('inpBtn').onclick = () => { $('inputs').hidden = !$('inputs').hidden; render(); };
@@ -639,18 +683,19 @@ function render() {
   writeHash();
 }
 
-const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'peak', 'sto', 'ha', 'rep', 'io', 'disc', 'ret', 'promo', 'chBeta', 'azsqlAhb'];
+const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'peak', 'sto', 'pat', 'io', 'ha', 'rep', 'disc', 'ret', 'lfl', 'promo', 'chBeta', 'azsqlAhb'];
 const DEFAULTS = {};
 function getVal(id) { const e = $(id); return e.type === 'checkbox' ? (e.checked ? 1 : 0) : e.value; }
 function setVal(id, v) { const e = $(id); if (e.type === 'checkbox') e.checked = (v === true || v === 1 || v === '1'); else e.value = v; }
-function writeHash() { const p = new URLSearchParams(); p.set('w', curPat); IDS.forEach(id => p.set(id, getVal(id))); history.replaceState(null, '', '#' + p.toString()); }
-function readHash() { if (!location.hash) return false; const p = new URLSearchParams(location.hash.slice(1)); if (!p.has('w')) return false; if (PAT[p.get('w')]) curPat = p.get('w'); IDS.forEach(id => { if (p.has(id)) setVal(id, p.get(id)); }); return true; }
-function markTab() { document.querySelectorAll('#tabs .tab').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === curPat))); }
+function writeHash() { const p = new URLSearchParams(); p.set('w', curPreset); IDS.forEach(id => p.set(id, getVal(id))); history.replaceState(null, '', '#' + p.toString()); }
+function readHash() { if (!location.hash) return false; const p = new URLSearchParams(location.hash.slice(1)); if (!p.has('w')) return false; const w = p.get('w'); curPreset = PRESETS[w] ? w : 'custom'; if (OLDPAT[w]) $('pat').value = OLDPAT[w]; IDS.forEach(id => { if (p.has(id)) setVal(id, p.get(id)); }); return true; }
+function markTab() { document.querySelectorAll('#tabs .tab').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === curPreset))); }
+function applyPreset(k) { curPreset = k; if (PRESETS[k]) { const q = PRESETS[k]; $('pat').value = q.pat; $('peak').value = q.peak; $('sto').value = q.sto; $('io').value = q.io; } markTab(); OPEN.clear(); render(); }
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
 function summaryText() {
   const s = state(), rows = allRows(s).filter(r => !r.na).sort((a, b) => a.total - b.total);
-  const L = ['Lakebase Calculator: ' + REG[s.region].name + ', list prices verified 2026-10-09',
-    'Workload: ' + PAT[s.pattern].name + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + s.sto + ' GB, HA ' + (s.ha ? 'on' : 'off') + ', ' + s.rep + ' replicas, I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR',
+  const L = ['Lakebase Calculator estimate: ' + REG[s.region].name + ', public list prices checked 2026-10-09. For reference only; verify with each provider before use.',
+    'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + s.sto + ' GB, HA ' + (s.ha ? 'on' : 'off') + ', ' + s.rep + ' replicas, I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR',
     'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
   rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after promo ' + fmt(r.post) + '/mo]' : '')));
   L.push('', location.href);
@@ -658,11 +703,13 @@ function summaryText() {
 }
 
 $('lbCloud').addEventListener('change', () => { prefCloud = $('lbCloud').value; });
-IDS.forEach(id => { DEFAULTS[id] = getVal(id); $(id).addEventListener('input', render); $(id).addEventListener('change', render); });
-document.querySelectorAll('#tabs .tab').forEach(b => b.addEventListener('click', () => { curPat = b.dataset.p; $('ha').value = curPat === 'dev' ? '0' : '1'; markTab(); OPEN.clear(); render(); }));
+const TOOLBAR = ['region', 'lbCloud', 'lbTier', 'commit'], PRESET_IDS = ['pat', 'peak', 'sto', 'io'];
+IDS.forEach(id => { DEFAULTS[id] = getVal(id); const ev = () => { if (PRESET_IDS.includes(id) && curPreset !== 'custom') { curPreset = 'custom'; markTab(); } render(); }; $(id).addEventListener('input', ev); $(id).addEventListener('change', ev); });
+document.querySelectorAll('#tabs .tab').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.p)));
+// The Lakebase promotion ends on 31 Jan 2027: after that the option is switched off and disabled.
+if (Date.now() >= Date.UTC(2027, 1, 1)) { $('promo').checked = false; $('promo').disabled = true; $('promoLbl').textContent = 'Lakebase 50% compute promotion (ended 31 Jan 2027)'; }
 let lastCols = colsFor().length; window.addEventListener('resize', () => { const c = colsFor().length; if (c !== lastCols) { lastCols = c; render(); } });
-if (readHash()) prefCloud = $('lbCloud').value;
-markTab(); render();
+if (readHash()) { prefCloud = $('lbCloud').value; if (Date.now() >= Date.UTC(2027, 1, 1)) $('promo').checked = false; markTab(); render(); } else applyPreset('web');
 </script>
 </body>
 </html>
