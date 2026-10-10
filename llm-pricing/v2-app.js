@@ -2,8 +2,8 @@
   'use strict';
   const M = window.LLMPricingMath;
   const PL = ['databricks','official','fireworks','azure_foundry','bedrock','gcloud','alicloud'];
-  const LONG = {databricks:'Databricks',official:'Maker API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
-  const SHORT = {databricks:'DBX',official:'Maker',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
+  const LONG = {databricks:'Databricks',official:'原廠 API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
+  const SHORT = {databricks:'DBX',official:'原廠',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
   const ORDER = ['oss','anthropic','openai','google','xai','other'];
   // [hash id, label, phone label]
   const TABS = [['all','All','All'],['oss','OSS','OSS'],['anthropic','Anthropic','Claude'],['openai','OpenAI','GPT'],['google','Google','Gemini'],['xai','xAI','Grok'],['other','Other','Other']];

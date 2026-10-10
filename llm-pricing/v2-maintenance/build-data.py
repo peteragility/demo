@@ -919,9 +919,6 @@ def build():
                 basis="Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, "
                       "in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and "
                       "off-peak prices are listed in the row details and are not compared.")
-    # Public labels, as on the page.
-    data["platform_meta"]["databricks"].update(short="Databricks", label="Databricks Foundation Model APIs")
-    data["platform_meta"]["official"].update(short="Maker", label="Maker API")
     sources = {
         "dbx_retirement": ("https://docs.databricks.com/aws/en/machine-learning/retired-models-policy", "Databricks retirement dates and replacements"),
         "anthropic_models": ("https://platform.claude.com/docs/en/about-claude/models/overview", "Anthropic model IDs by platform"),

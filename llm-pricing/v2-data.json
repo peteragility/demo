@@ -1502,13 +1502,13 @@
   },
   "platform_meta": {
     "databricks": {
-      "short": "Databricks",
-      "label": "Databricks Foundation Model APIs",
+      "short": "DBX",
+      "label": "Databricks FMAPI",
       "src": "dbx_oss"
     },
     "official": {
-      "short": "Maker",
-      "label": "Maker API",
+      "short": "原廠",
+      "label": "原廠 direct API",
       "src": null
     },
     "bedrock": {
