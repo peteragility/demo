@@ -69,9 +69,10 @@ button,select,input{font:inherit;color:inherit}
 .abtn[aria-expanded="true"]::after{content:"▴"}
 
 /* inputs */
-.inputs{margin:0 0 8px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;display:grid;grid-template-columns:minmax(0,1.3fr) repeat(6,minmax(0,1fr));gap:6px 12px}
+.inputs{margin:0 0 8px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) repeat(5,minmax(0,1fr));gap:6px 12px}
 .fi{min-width:0}
-.fi label{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:var(--ink-3);line-height:16px;white-space:nowrap}
+.fi label{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:11px;color:var(--ink-3);line-height:16px;white-space:nowrap}
+.fi .vbox{flex:none;width:78px;height:20px;padding:0 5px;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;color:var(--ink);font-size:12px;font-weight:600;text-align:right}
 .fi label output{color:var(--ink);font-weight:600}
 .fi input[type=range]{width:100%;margin:2px 0 0;accent-color:var(--dbx);height:18px}
 .fi input[type=number],.fi select{width:100%;height:26px;padding:0 6px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;font-size:12.5px}
@@ -180,7 +181,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   .dw{grid-template-columns:minmax(0,1fr)}
   .foot{grid-template-columns:minmax(0,1fr)}
 }
-@media (hover:none) and (pointer:coarse){.sel select,.fi input,.fi select{font-size:16px}}
+@media (hover:none) and (pointer:coarse){.sel select,.fi input,.fi select{font-size:16px}.fi .vbox{width:96px;height:28px}}
 @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
 </style>
 </head>
@@ -213,7 +214,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 
   <section class="inputs" id="inputs">
     <div class="fi size"><label for="peak">Compute size <output id="peakOut"></output></label><input type="range" id="peak" min="0" max="12" step="1" value="3"><div class="h">Peak RAM needed, e.g. the current instance (1 CU ≈ 2 GB)</div></div>
-    <div class="fi"><label for="sto">Database size (GB)</label><input type="number" id="sto" min="1" max="65000" step="10" value="200"></div>
+    <div class="fi size"><label for="stoTxt">Database size <input type="text" id="stoTxt" class="vbox" inputmode="decimal" autocomplete="off" spellcheck="false" aria-describedby="stoHelp"></label><input type="range" id="stoR" min="0" max="25" step="1" aria-label="Database size"><input type="hidden" id="sto" min="1" max="64000" value="200" data-def="200"><div class="h" id="stoHelp">1 GB–64 TB · drag, or type e.g. 750 GB or 2.5 TB</div></div>
     <div class="fi"><label for="pat">Load pattern</label><select id="pat"><option value="daily" selected>Daily peaks, 24×7</option><option value="steady">Steady, always busy</option><option value="biz">Business hours only</option><option value="spiky">Spiky / bursty</option><option value="intermittent">Intermittent (dev / test)</option><option value="peak">Constant at peak (like-for-like)</option></select></div>
     <div class="fi"><label for="io">I/O intensity</label><select id="io"><option value="light">Light (read-mostly)</option><option value="mod" selected>Moderate</option><option value="heavy">Heavy (write-heavy)</option></select></div>
     <div class="fi"><label for="ha">High availability</label><select id="ha"><option value="0" selected>Off</option><option value="1">On (1 standby)</option></select></div>
@@ -459,7 +460,12 @@ const fmt2 = n => { const min = n >= 1 ? 2 : 3; let x = n.toFixed(n >= 1 ? 3 : 4
 const fmtCU = v => (v % 1 ? v.toFixed(1) : v) + ' CU';
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 // Number inputs: empty or invalid means the field's default; anything else is held to its min / max.
-const num = id => { const e = $(id), v = parseFloat(e.value); return clamp(Number.isFinite(v) ? v : +e.defaultValue, +e.min, +e.max); };
+// (a hidden input's defaultValue follows its value, so #sto keeps its default in data-def)
+const num = id => { const e = $(id), v = parseFloat(e.value); return clamp(Number.isFinite(v) ? v : +(e.dataset.def || e.defaultValue), +e.min, +e.max); };
+// Database size in GB: the slider steps through these stops; the box takes any size, in GB or TB (1 TB = 1,000 GB).
+const STO_STEPS = [1, 2, 3, 5, 10, 20, 30, 50, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000, 8000, 10000, 15000, 20000, 30000, 50000, 64000];
+const fmtSize = g => g >= 1000 && g % 10 === 0 ? +(g / 1000).toFixed(2) + ' TB' : Math.round(g).toLocaleString('en-US') + ' GB';
+const parseSize = t => { const m = String(t).trim().toLowerCase().replace(/,/g, '').match(/^(\d*\.?\d+)\s*(tb?|gb?)?$/); return m ? +m[1] * (m[2] && m[2][0] === 't' ? 1000 : 1) : null; };
 const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
 function activeHours(s) { return (s.hpd >= 24 && s.dpw >= 7) ? HRS : s.hpd * s.dpw * WKS; }
 function lbConn(cu) { let v = LBCONN[0][1]; for (const [c, n] of LBCONN) if (cu >= c) v = n; return v; }
@@ -491,7 +497,7 @@ function state() {
   const patKey = $('pat').value, pat = PAT[patKey], P = PEAKS[+$('peak').value], lfl = patKey === 'peak', fixed = P > 64 || lfl, ha = $('ha').value === '1';
   const m = fixed ? P : clamp(Math.round(Math.max(pat.minR * P, P - 16, 0.5) * 2) / 2, 0.5, P);
   const avg = fixed ? P : Math.max(m, pat.avgR * P), band = P - m;
-  const io = IOM[$('io').value], sto = num('sto'), avgIops = io.perCU * P;
+  const io = IOM[$('io').value], sto = Math.round(num('sto')), avgIops = io.perCU * P;
   return {
     pattern: patKey, preset: curPreset, lfl, region: $('region').value, cloud: $('lbCloud').value, tier: $('lbTier').value, promo: $('promo').checked,
     disc: num('disc'), commit: $('commit').value, family: 'mem',
@@ -562,6 +568,7 @@ function calcLakebase(s) {
     notes.push(act >= HRS ? '⚠ Never idle, so scale-to-zero only forfeits the Always-On minimum rate. Turn it off.' : 'Assumes the scale-to-zero timeout is shortened from the 24 h default so idle hours actually suspend.');
   } else notes.push('Always-On: the ' + fmtCU(m) + ' minimum bills 730 h at the minimum-usage rate; usage above it at the autoscaling rate.');
   if (haN) notes.push('HA: ' + pl(haN, 'secondary').replace('secondarys', 'secondaries') + (haN === 1 ? ' in another AZ' : ' in other AZs') + ', each ≥ primary size; can serve reads via -ro.');
+  if (s.sto > 8000) notes.push('Over 8 TB: ask Databricks Support to raise the branch storage quota (adjustable on request).');
   if (s.promo) notes.push('After the promo (from 1 Feb 2027): ' + fmt(post) + '/mo at today\'s list.');
   if (CLOUDN[prefCloud] && prefCloud !== cloud && s.region !== 'hk') notes.push('Not offered on ' + CLOUDN[prefCloud] + ' in ' + REG[s.region].name + '; showing ' + r.label + '.');
   if (s.region === 'hk') notes.push('In Hong Kong, Lakebase is priced on Azure East Asia only.');
@@ -705,6 +712,9 @@ function render() {
   const s = state(), act = activeHours(s);
   $('checked').textContent = longDate(REG[s.region].checked || CHECKED);
   $('peakOut').textContent = fmtCU(s.peak) + ' · ' + 2 * s.peak + ' GB RAM';
+  if (document.activeElement !== $('stoTxt')) $('stoTxt').value = fmtSize(s.sto);
+  $('stoR').value = STO_STEPS.reduce((b, v, i) => Math.abs(Math.log(v / s.sto)) < Math.abs(Math.log(STO_STEPS[b] / s.sto)) ? i : b, 0);
+  $('stoR').setAttribute('aria-valuetext', fmtSize(s.sto));
   const pat = PAT[s.pattern], s2zOn = s.s2z && s.peak <= 32 && !s.ha;
   const lead = (s.preset !== 'custom' ? '<b>' + PRESETS[s.preset].name + '</b> · ' : '') + '<b>' + pat.name + ':</b> ' + pat.txt + '. ';
   const lbTxt = s.lfl ? 'Lakebase runs fixed at ' + fmtCU(s.peak) + ', with no autoscaling savings.'
@@ -763,7 +773,7 @@ function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; s
 function summaryText() {
   const s = state(), rows = allRows(s).filter(r => !r.na).sort((a, b) => a.total - b.total);
   const L = ['Lakebase Calculator estimate: ' + REG[s.region].name + ', public list prices checked ' + longDate(REG[s.region].checked || CHECKED) + '. Estimate only; verify before use.',
-    'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + s.sto + ' GB, HA ' + (s.ha ? 'on' : 'off') + ', ' + pl(s.rep, 'replica') + ', I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR' + (s.syncMode !== 'none' ? ', lakehouse sync ' + SYNCM[s.syncMode] + ' (' + fmt(s.sync) + '/mo, same for all)' : ''),
+    'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + fmtSize(s.sto) + ', HA ' + (s.ha ? 'on' : 'off') + ', ' + pl(s.rep, 'replica') + ', I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR' + (s.syncMode !== 'none' ? ', lakehouse sync ' + SYNCM[s.syncMode] + ' (' + fmt(s.sync) + '/mo, same for all)' : ''),
     'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
   rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after the promo ends: ' + fmt(r.post) + '/mo]' : '')));
   L.push('', location.href);
@@ -774,13 +784,19 @@ $('lbCloud').addEventListener('change', () => { prefCloud = $('lbCloud').value; 
 const TOOLBAR = ['region', 'lbCloud', 'lbTier', 'commit'], PRESET_IDS = ['pat', 'peak', 'sto', 'io', 'ha', 'rep', 'sync'];
 IDS.forEach(id => { DEFAULTS[id] = getVal(id); const ev = () => { if (PRESET_IDS.includes(id) && curPreset !== 'custom') { curPreset = 'custom'; markTab(); } render(); }; $(id).addEventListener('input', ev); $(id).addEventListener('change', () => { if ($(id).type === 'number') $(id).value = num(id); ev(); }); });
 const NUMS = IDS.filter(id => $(id).type === 'number');
+const setSto = g => { $('sto').value = clamp(Math.round(g), +$('sto').min, +$('sto').max); $('sto').dispatchEvent(new Event('input')); };
+$('stoR').max = STO_STEPS.length - 1;
+$('stoR').addEventListener('input', () => setSto(STO_STEPS[+$('stoR').value]));
+$('stoTxt').addEventListener('input', () => { const g = parseSize($('stoTxt').value); if (g != null) setSto(g); });
+$('stoTxt').addEventListener('change', () => { $('stoTxt').value = fmtSize(+$('sto').value); });
+$('stoTxt').addEventListener('keydown', e => { if (e.key === 'Enter') $('stoTxt').value = fmtSize(+$('sto').value); else if (e.key === 'Escape') $('stoTxt').blur(); });
 $('checked').textContent = longDate(CHECKED); $('srcDate').textContent = '· checked ' + longDate(CHECKED);
 $('srcCount').textContent = '· ' + new Set([...$('srcs').querySelectorAll('a')].map(a => a.href)).size + ' official pages, tap to list';
 document.querySelectorAll('#tabs .tab').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.p)));
 // The Lakebase promotion ends on 31 Jan 2027: after that the option is switched off and disabled.
 if (Date.now() >= Date.UTC(2027, 1, 1)) { $('promo').checked = false; $('promo').disabled = true; $('promoLbl').textContent = 'Lakebase 50% compute promotion (ended 31 Jan 2027)'; }
 let lastCols = colsFor().length; window.addEventListener('resize', () => { const c = colsFor().length; if (c !== lastCols) { lastCols = c; render(); } });
-if (readHash()) { NUMS.forEach(id => { $(id).value = num(id); }); prefCloud = $('lbCloud').value; if (Date.now() >= Date.UTC(2027, 1, 1)) $('promo').checked = false; markTab(); render(); } else applyPreset('web');
+if (readHash()) { NUMS.forEach(id => { $(id).value = num(id); }); $('sto').value = Math.round(num('sto')); prefCloud = $('lbCloud').value; if (Date.now() >= Date.UTC(2027, 1, 1)) $('promo').checked = false; markTab(); render(); } else applyPreset('web');
 </script>
 </body>
 </html>
