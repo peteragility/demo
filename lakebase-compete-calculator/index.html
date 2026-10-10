@@ -201,8 +201,8 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
       <div class="fi"><label for="disc">Databricks discount %</label><input type="number" id="disc" min="0" max="90" step="1" value="0"><div class="h">On Lakebase compute</div></div>
       <div class="fi"><label for="ret">Backup / PITR window (days)</label><input type="number" id="ret" min="2" max="35" step="1" value="7"></div>
       <div class="fi chks">
-        <label class="ck"><input type="checkbox" id="promo" checked><span>Lakebase 50% compute promo (to 31 Jan 2027)</span></label>
-        <label class="ck"><input type="checkbox" id="chBeta" checked><span>ClickHouse Postgres Beta 50% discount</span></label>
+        <label class="ck"><input type="checkbox" id="promo"><span>Lakebase 50% compute promo (to 31 Jan 2027)</span></label>
+        <label class="ck"><input type="checkbox" id="chBeta"><span>ClickHouse Postgres Beta 50% discount</span></label>
         <label class="ck"><input type="checkbox" id="azsqlAhb"><span>Azure SQL: Hybrid Benefit (own SQL licenses)</span></label>
       </div>
     </div></details>
@@ -661,7 +661,6 @@ $('lbCloud').addEventListener('change', () => { prefCloud = $('lbCloud').value; 
 IDS.forEach(id => { DEFAULTS[id] = getVal(id); $(id).addEventListener('input', render); $(id).addEventListener('change', render); });
 document.querySelectorAll('#tabs .tab').forEach(b => b.addEventListener('click', () => { curPat = b.dataset.p; $('ha').value = curPat === 'dev' ? '0' : '1'; markTab(); OPEN.clear(); render(); }));
 let lastCols = colsFor().length; window.addEventListener('resize', () => { const c = colsFor().length; if (c !== lastCols) { lastCols = c; render(); } });
-if (matchMedia('(max-width:760px)').matches) $('inputs').hidden = true;
 if (readHash()) prefCloud = $('lbCloud').value;
 markTab(); render();
 </script>
