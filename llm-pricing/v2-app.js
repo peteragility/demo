@@ -2,8 +2,8 @@
   'use strict';
   const M = window.LLMPricingMath;
   const PL = ['databricks','official','fireworks','azure_foundry','bedrock','gcloud','alicloud'];
-  const LONG = {databricks:'Databricks',official:'原廠 API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
-  const SHORT = {databricks:'DBX',official:'原廠',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
+  const LONG = {databricks:'Databricks',official:'Maker API',bedrock:'AWS Bedrock',azure_foundry:'Azure Foundry',gcloud:'Google Vertex',fireworks:'Fireworks',alicloud:'Alibaba'};
+  const SHORT = {databricks:'DBX',official:'Maker',bedrock:'AWS',azure_foundry:'Azure',gcloud:'GCP',fireworks:'FW',alicloud:'Ali'};
   const ORDER = ['oss','anthropic','openai','google','xai','other'];
   // [hash id, label, phone label]
   const TABS = [['all','All','All'],['oss','OSS','OSS'],['anthropic','Anthropic','Claude'],['openai','OpenAI','GPT'],['google','Google','Gemini'],['xai','xAI','Grok'],['other','Other','Other']];
@@ -67,7 +67,7 @@
   const precise = v => M.validRate(v) ? v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:6}) : '—';
   const srcUrl = (c, pl) => { if (c && c.url) return c.url; const id = (c && c.src) || (DATA.platform_meta && DATA.platform_meta[pl] && DATA.platform_meta[pl].src); return id && DATA.source_meta && DATA.source_meta[id] ? DATA.source_meta[id].url : null; };
   const shortAlt = a => a.short || String(a.name).replace(/^(DeepSeek|Kimi|Claude)\s+/i, '');
-  // Dated notices and talk-track lines: plain strings always apply; {text, from, until} apply within their
+  // Dated notices and highlights: plain strings always apply; {text, from, until} apply within their
   // dates, and lines naming models only while one of them is listed.
   const active = list => (Array.isArray(list) ? list : list ? [list] : [])
     .filter(n => typeof n === 'string' || (isObject(n) && n.text && (!n.from || AS_OF >= n.from) && (!n.until || AS_OF <= n.until) &&
@@ -124,7 +124,7 @@
     } else arr.sort((a, b) => a.i - b.i);
     return arr;
   }
-  // +1 for each platform without the model or pricier than DBX, −1 for each cheaper one; summed Δ breaks ties.
+  // +1 for each platform without the model or pricier than Databricks, −1 for each cheaper one; summed Δ breaks ties.
   function edge(r) {
     if (!PICK[r.k].databricks) return -Infinity;
     let s = 0, sum = 0;
@@ -145,7 +145,7 @@
     if (c.tier) bits.push(c.tier + (c.variant_id ? ' (cheapest standard tier)' : ''));
     if (c.pricing_checked_at) bits.push('price checked ' + c.pricing_checked_at);
     if (c.model_id) bits.push(c.model_id);
-    if (d != null && pl !== 'databricks') bits.push(dir === 'par' ? 'parity with DBX' : (dir === 'up' ? '+' : '−') + pct(d) + ' vs DBX (' + S.blend + ':1 blend)');
+    if (d != null && pl !== 'databricks') bits.push(dir === 'par' ? 'parity with Databricks' : (dir === 'up' ? '+' : '−') + pct(d) + ' vs Databricks (' + S.blend + ':1 blend)');
     return bits.join(' · ');
   }
 
@@ -295,7 +295,7 @@
   function cardHtml(mk, pl) {
     const c = DATA.models[mk].platforms[pl], e = c.endpoints, d = deltaOf(mk, pl), dir = dirOf(d);
     const src = srcUrl(c, pl), when = checkedText(mk, pl, c);
-    const chip = pl === 'databricks' ? '<span class="cdv base">baseline</span>' : d == null ? '' : `<span class="cdv ${dir}">${dir === 'par' ? '= DBX' : dLabel(d, dir) + ' vs DBX'}</span>`;
+    const chip = pl === 'databricks' ? '<span class="cdv base">reference</span>' : d == null ? '' : `<span class="cdv ${dir}">${dir === 'par' ? '= Databricks' : dLabel(d, dir) + ' vs Databricks'}</span>`;
     // One link per label: the offer's price source first, then the other sources the card cites.
     const seen = new Set(['prices']), links = [src && `<a href="${esc(src)}" target="_blank" rel="noopener">prices ↗</a>`];
     for (const id of (e && e.src) || []) {
@@ -346,7 +346,7 @@
       const cd = pl === 'databricks' ? '' : `<span class="cd">${up ? `<i class="up">▲${up}</i>` : ''}${dn ? `<i class="down">▼${dn}</i>` : ''}</span>`;
       return `<td><span class="cv">${off}/${n}</span>${cd}</td>`;
     }).join('');
-    return `<tfoot><tr><th scope="row" class="m"><span class="nm">Has model</span><span class="mk mk2">priced cells · ▲ ▼ vs DBX</span></th>${cells}</tr></tfoot>`;
+    return `<tfoot><tr><th scope="row" class="m"><span class="nm">Has model</span><span class="mk mk2">priced cells · ▲ ▼ vs Databricks</span></th>${cells}</tr></tfoot>`;
   }
 
   // The cheaper-than-Databricks cells among the shown models, from published prices.
@@ -361,7 +361,7 @@
     if (!found.length) return null;
     found.sort((a, b) => a.d - b.d);
     return 'Priced below Databricks at ' + S.blend + ':1: ' + found.slice(0, 6).map(x => x.text).join(', ') +
-      (found.length > 6 ? ' and ' + (found.length - 6) + ' more ▼ cells' : '') + '. Check these before quoting.';
+      (found.length > 6 ? ' and ' + (found.length - 6) + ' more ▼ cells' : '') + '.';
   }
 
   const kpi = (cls, value, long, short) => `<div class="kpi${cls ? ' ' + cls : ''}"><b>${value}</b><span class="kl">${long}</span><span class="ks">${short}</span></div>`;
@@ -375,10 +375,10 @@
     const onDbx = list.filter(r => offered(RESOLVED.models[r.k].databricks)).length;
     paint($('#summary'),
       kpi('', `${onDbx}<small>/${list.length}</small>`, 'listed models offered on Databricks', 'on Databricks') +
-      kpi('good', `${p.noCheaperModels}<small>/${p.comparedModels}</small>`, 'models where no hyperscaler beats DBX (Azure · AWS · GCP)', 'no hyperscaler cheaper') +
+      kpi('good', `${p.noCheaperModels}<small>/${p.comparedModels}</small>`, 'models where Azure, AWS and Google are not below Databricks', 'hyperscalers not below') +
       kpi('', `${gaps.azure_foundry}<small> · </small>${gaps.bedrock}<small> · </small>${gaps.gcloud}`, 'models not offered on Azure · AWS · GCP (✕)', 'not on Azure · AWS · GCP') +
-      kpi('warn', String(p.cheaperCells), 'cells cheaper than DBX on any platform (▼): check first', 'cheaper cells ▼') +
-      (tips.length ? `<button type="button" class="talkbtn" id="talkBtn" aria-expanded="${open}" aria-controls="talk">Talk track</button><ul class="talk" id="talk"${open ? '' : ' hidden'}>${tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''));
+      kpi('warn', String(p.cheaperCells), 'cells priced below Databricks (▼)', 'cells below ▼') +
+      (tips.length ? `<button type="button" class="talkbtn" id="talkBtn" aria-expanded="${open}" aria-controls="talk">Highlights</button><ul class="talk" id="talk"${open ? '' : ' hidden'}>${tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''));
   }
 
   function focusKey(el) {
@@ -405,7 +405,7 @@
       else if (selected.left < bounds.left) tabs.scrollLeft -= bounds.left - selected.left;
     }
     renderSummary(list);
-    const head = `<colgroup><col class="cm">${PL.map(() => '<col>').join('')}</colgroup><thead><tr><th scope="col" class="m">${RANKING ? '<span class="rk" title="${esc(boardName())} rank">#</span>' : ''}Model<span class="u">$ / 1M · in / out</span></th>${PL.map(pl => `<th scope="col"${pl === 'databricks' ? ' class="dbx"' : ''} title="${esc(LONG[pl])}"><span class="lg">${esc(LONG[pl])}</span><span class="sh">${esc(SHORT[pl])}</span></th>`).join('')}</tr></thead>`;
+    const head = `<colgroup><col class="cm">${PL.map(() => '<col>').join('')}</colgroup><thead><tr><th scope="col" class="m">${RANKING ? `<span class="rk" title="${esc(boardName())} rank">#</span>` : ''}Model<span class="u">$ / 1M · in / out</span></th>${PL.map(pl => `<th scope="col"${pl === 'databricks' ? ' class="dbx"' : ''} title="${esc(LONG[pl])}"><span class="lg">${esc(LONG[pl])}</span><span class="sh">${esc(SHORT[pl])}</span></th>`).join('')}</tr></thead>`;
     let body = '';
     for (const r of list) {
       body += rowHtml(r);
@@ -429,10 +429,10 @@
       else {
         const d = deltaOf(mk, pl), dir = dirOf(d);
         const note = d == null ? comparisonNote(mk, pl, m.platforms[pl]) : null;
-        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : (m.platforms[pl].endpoints || {}).cache_write === 'input-rate' && c.cache_read != null ? ' · no cache-write charge' : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
+        lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : (m.platforms[pl].endpoints || {}).cache_write === 'input-rate' && c.cache_read != null ? ' · no cache-write charge' : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs Databricks)` : note ? ' · ' + note : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
       }
     }
-    lines.push('Internal reference only by Databricks\' Peter Chan: public list prices from official sources. Not an official Databricks price list or quote.');
+    lines.push(`Public list prices from official sources, via ${location.href.split(/[?#]/)[0]} on ${AS_OF}. Not an official quote.`);
     const text = lines.join('\n');
     const done = () => toast('Copied summary');
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text));

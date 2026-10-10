@@ -115,14 +115,14 @@ try {
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*', ...['oss','anthropic','openai','google','xai','other'].filter(g => expected[g])]);
     assert.match(await evalJS("document.querySelector('#rankSrc').textContent"), /ranked by arena\.ai Best \w+/);
     // The disclaimer shows at the top on every screen size, and in full in the footer.
-    assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), "Internal reference only by Databricks' Peter Chan");
-    assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /not an official Databricks price list or quote/);
+    assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), 'Public list prices · not an official quote');
+    assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /Not a quote or offer from Databricks or any provider.*not an official Databricks publication/);
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
-    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','Fireworks','Azure Foundry','AWS Bedrock','Google Vertex','Alibaba']);
-    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','FW','Azure','AWS','GCP','Ali']);
-    assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','DBX edge']);
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','Maker API','Fireworks','Azure Foundry','AWS Bedrock','Google Vertex','Alibaba']);
+    assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','Maker','FW','Azure','AWS','GCP','Ali']);
+    assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','Δ vs Databricks']);
     assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /arena\.ai Best \w+/);
     assert.equal(await evalJS("(()=>{const tab=document.querySelector('[data-g=all]').getBoundingClientRect(),tabs=document.querySelector('#tabs').getBoundingClientRect();return tab.left>=tabs.left-1&&tab.right<=tabs.right+1;})()"), true, 'Selected family tab is visible');
     await saveScreenshot(viewport.name);
@@ -160,7 +160,7 @@ try {
       assert.match(detail.text, /Fireworks dedicated GPU deployment only/);
       assert.match(detail.text, /snapshot|checkpoint/);
       assert.match(detail.text, /verified 20\d\d-\d\d-\d\d/);
-      assert.deepEqual(detail.cards, ['Databricks', '原廠 API', 'Azure Foundry', 'Alibaba'].filter(name => detail.text.includes(name)));
+      assert.deepEqual(detail.cards, ['Databricks', 'Maker API', 'Azure Foundry', 'Alibaba'].filter(name => detail.text.includes(name)));
       assert.deepEqual(detail.headers.slice(1), viewport.width <= 720 ? ['Input','Output','Cache rd','Cache wr'] : ['Input','Output','Cache read','Cache write']);
       assert.match(detail.text, /HK/);
       assert.match(detail.text, /Taiwan/);
@@ -192,10 +192,10 @@ try {
       await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedSummary=text;}}});document.querySelector('[data-copy=\"openai/gpt-6.1-sol\"]').click();");
       await waitFor("typeof window.copiedSummary==='string'");
       assert.match(await evalJS('window.copiedSummary'), /Databricks: 2\.00 \/ 10\.00/);
-      assert.match(await evalJS('window.copiedSummary'), /原廠 API/);
+      assert.match(await evalJS('window.copiedSummary'), /Maker API: /);
       assert.match(await evalJS('window.copiedSummary'), /Price checked \d{4}-\d{2}-\d{2}/);
       assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best \w+ #\d+/);
-      assert.match(await evalJS('window.copiedSummary'), /Internal reference only/);
+      assert.match(await evalJS('window.copiedSummary'), /Public list prices from official sources, via https?:\/\/\S+\/ on \d{4}-\d{2}-\d{2}\. Not an official quote\.$/);
       await toggle('openai/gpt-6.1-sol');
     }
 

@@ -919,6 +919,9 @@ def build():
                 basis="Each cell shows the platform's cheapest standard (real-time, on-demand) text-token price for the confirmed model version, "
                       "in any region or processing scope. Δ compares it with Databricks' cheapest standard price. Batch, Flex, Priority and "
                       "off-peak prices are listed in the row details and are not compared.")
+    # Public labels, as on the page.
+    data["platform_meta"]["databricks"].update(short="Databricks", label="Databricks Foundation Model APIs")
+    data["platform_meta"]["official"].update(short="Maker", label="Maker API")
     sources = {
         "dbx_retirement": ("https://docs.databricks.com/aws/en/machine-learning/retired-models-policy", "Databricks retirement dates and replacements"),
         "anthropic_models": ("https://platform.claude.com/docs/en/about-claude/models/overview", "Anthropic model IDs by platform"),
@@ -940,7 +943,7 @@ def build():
     finish_variants(data)
     check_cache_reads(data)
     lifecycle_notices(data)
-    # Talk-track lines: the original page's seller insights, re-checked against the v2 offers.
+    # Highlights: neutral, dated facts re-checked against the v2 offers.
     # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
     # with "models" only while one of those models is listed. The page computes the
     # "priced below Databricks" line from the rows it shows.
@@ -949,13 +952,13 @@ def build():
                 {"text": "Inkling, DeepSeek V4 Pro (0813) and Kimi K2.7 retired on Databricks on 30 Oct 2026. Their rows list the replacements.", "from": "2026-10-30"},
                 "Same model, same list price on Fireworks and the maker's own API. Azure's Fireworks-hosted GLM 5.3, GLM 5.3 Flash and DeepSeek V4.1 Flash cost +25%.",
                 {"text": "GLM 5.3 reached Bedrock on 5 Oct 2026 at $1.68 / $5.28 (Global CRIS), 20% above Databricks and Z.ai ($1.40 / $4.40); access is for eligible enterprise customers.", "models": ["zai/glm-5.3"]},
-                "Vertex trails a generation: GLM 5.2, DeepSeek V3.2, Kimi K2.x; no GLM 5.3, DeepSeek V4 or Kimi K3. Bedrock has no DeepSeek V4.",
+                "Vertex lists GLM 5.2, DeepSeek V3.2 and Kimi K2.x; not GLM 5.3, DeepSeek V4 or Kimi K3. Bedrock does not list DeepSeek V4.",
                 {"text": "DeepSeek V4 Flash (0731): $0.14 / $0.28 on Databricks vs $0.44 / $1.32 on Azure and $0.424 / $1.27 on Alibaba. Fireworks now sells it on dedicated GPUs only.", "models": ["deepseek/deepseek-v4-flash"]},
                 {"text": "APAC residency: Bedrock in-region Tokyo is +20% on OSS; Databricks regional processing is +10% on ⌖ models.", "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "google/gemma-3-12b", "qwen/qwen3-next-80b-instruct"]},
                 "Hong Kong: Databricks serves Kimi K3, DeepSeek V4.1 Flash and GLM 5.x from Azure East Asia (cross-geo); Alibaba has a Hong Kong endpoint with Global scope (data stays in Hong Kong, inference may run elsewhere). Bedrock, Azure, Vertex and Fireworks have none.",
-                {"text": "Not on Databricks: MiniMax M3 (Fireworks $0.30 / $1.20; Azure Data Zone), Mistral Medium 3.5 (Azure $1.50 / $7.50) and Qwen3.8 27B (Alibaba).", "models": ["minimax/minimax-m3", "mistral/mistral-medium-3.5", "qwen/qwen3.8-27b"]}],
-        "anthropic": ["List-price parity on input and output: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10). One gap: since 8 Oct 2026 Sonnet 5.5 cached input is $0.10 everywhere else but still $0.20 on Databricks.",
-                      "Hong Kong: only Databricks serves the 2026 Claude models there (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
+                {"text": "MiniMax M3, Mistral Medium 3.5 and Qwen3.8 27B are not on Databricks: MiniMax M3 is on Fireworks ($0.30 / $1.20) and Azure Data Zone, Mistral Medium 3.5 on Azure ($1.50 / $7.50), Qwen3.8 27B on Alibaba.", "models": ["minimax/minimax-m3", "mistral/mistral-medium-3.5", "qwen/qwen3.8-27b"]}],
+        "anthropic": ["List-price parity on input and output: Databricks, Bedrock global, Vertex global and Microsoft Foundry all charge Anthropic's rates, including Sonnet 5.5 ($2 / $10). One difference: since 8 Oct 2026 Sonnet 5.5 cached input is $0.10 everywhere else but still $0.20 on Databricks.",
+                      "Of the compared platforms, only Databricks offers the 2026 Claude models in Hong Kong (Azure East Asia, cross-geo routing). Bedrock, Vertex and Azure have no Hong Kong endpoint, and Anthropic's API does not serve Hong Kong.",
                       "Data residency costs +10% everywhere: Bedrock US / EU CRIS and in-region, Vertex US / EU multi-region, Azure US Data Zone, Databricks regional processing (⌖) and Anthropic's US-only inference.",
                       {"text": "APAC in-region Claude on Databricks: Opus 5.5 and Opus 4.8 in AWS Tokyo, Singapore and Sydney, Azure Japan East and Australia East, and GCP Singapore; Opus 5 in AWS Sydney and Azure Australia East. Bedrock: Opus 5 in Seoul, Sonnet 5 in Seoul and Singapore; Taipei only via global routing.", "models": ["anthropic/claude-opus-5.5", "anthropic/claude-opus-4.8", "anthropic/claude-opus-5", "anthropic/claude-sonnet-5"]},
                       "Vertex has no Taiwan or Hong Kong endpoint for the 2026 Claude models: only global and US / EU multi-region. Azure deploys Claude from US regions and Sweden Central."],
@@ -967,7 +970,7 @@ def build():
                    "GPT-6.1 Sol: $2 / $10 with $0.10 cached input on Databricks, OpenAI, Bedrock Global and Azure Global Standard; long context (>272K) is $4 / $15.",
                    {"text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.", "until": "2026-11-21"},
                    {"text": "GPT-5.6 Sol is $5 / $30 on every platform since its promotion ended 21 Nov 2026.", "from": "2026-11-22"}],
-        "google": [{"text": "Databricks matches Google today: a 20% promotion on Gemini 3.1 Pro runs to 31 Jan 2027, then Databricks lists +25% ($2.50 / $15.00).", "until": "2027-01-31"},
+        "google": [{"text": "Gemini 3.1 Pro: a 20% Databricks promotion matches Google's price through 31 Jan 2027; then Databricks lists $2.50 / $15.00 (+25%).", "until": "2027-01-31"},
                    {"text": "Gemini 3.1 Pro on Databricks lists at $2.50 / $15.00 since its promotion ended 31 Jan 2027: 25% above the Gemini API and Vertex.", "from": "2027-02-01"},
                    {"text": "The same 20% Databricks promotion covers Gemini 3.5 and 3.1 Flash-Lite to 31 Jan 2027, then $0.375 / $3.125 and $0.3125 / $1.875 (+25%).", "until": "2027-01-31", "models": ["google/gemini-3.5-flash-lite", "google/gemini-3.1-flash-lite"]},
                    {"text": "Flash intro pricing (50% off) ends 31 Dec 2026 everywhere, then $1.50 / $7.50.", "until": "2026-12-31"},
@@ -994,11 +997,11 @@ def build():
         "2026-10-04: Platforms appear in the order Databricks, maker API, Fireworks, Azure, AWS, Google, Alibaba. The daily check now verifies every offer and opens a review issue when a source changes.",
         "2026-10-03: Added the arena.ai Best Overall top-50 models that a compared platform hosts: Claude Fable 5, Claude Opus 4.8, GPT-5.4, Gemini 3.6 Flash, GLM 5.2, Qwen3.8 Max, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5.",
         "Added GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 3.5 / 3.1 Flash-Lite, Grok 4.7 and Grok 4.6.",
-        "Removed three discontinued Fireworks serverless quotes; dedicated deployments are a separate state.",
+        "Removed three discontinued Fireworks serverless prices; dedicated deployments are a separate state.",
         "Corrected Bedrock Kimi K3 Global / Regional Priority and cache-read / write tiers.",
         "Added Inkling retirement and replacement guidance; corrected GPT-6 Sol / Luna Mantle availability.",
         "2026-10-03: Δ compares each platform's cheapest standard price in any region (previously only matching processing scopes).",
-        "2026-10-03: Promotion and retirement notices, talk-track lines and post-promotion tier labels follow their dates.",
+        "2026-10-03: Promotion and retirement notices, highlights and post-promotion tier labels follow their dates.",
         "2026-10-03: Removed derived Batch / Flex cache rates and per-tier long-context rates that no source lists.",
     ]
     for key, m in data["models"].items():
