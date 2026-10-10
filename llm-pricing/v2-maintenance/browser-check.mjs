@@ -118,7 +118,7 @@ try {
     // The disclaimer shows at the top on every screen size, and in full in the footer.
     assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), 'Public list prices · not an official quote');
     assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /Not an official Databricks publication, quote or offer/);
-    assert.equal(await evalJS("document.querySelector('#builtby b').textContent + '|' + document.querySelector('#builtby').textContent"), 'Built by|Built by Peter Chan from Databricks');
+    assert.equal(await evalJS("document.querySelector('#builtby b').textContent + '|' + document.querySelector('#builtby').textContent"), 'Built by|Built by Peter Chan from Databricks in Sep 2026');
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
