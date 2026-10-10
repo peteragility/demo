@@ -115,7 +115,7 @@ tr.row{cursor:pointer}
 tr.row:hover th.m,tr.row.open th.m{background:var(--panel-2)}
 tr.row .chev{display:inline-block;margin-left:4px;color:var(--ink-3);font-size:10px;transition:transform .15s}
 tr.row.open .chev{transform:rotate(90deg)}
-.rowhint{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 8px;padding:7px 12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--ink-2)}
+.rowhint{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 8px;padding:7px 12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--ink-2);box-shadow:0 2px 8px rgba(0,0,0,.18)}
 .rowhint[hidden]{display:none}
 .rowhint button{appearance:none;border:0;background:none;color:var(--ink-3);font-size:13px;cursor:pointer;padding:2px 4px}
 td.c{font-size:13px;line-height:18px;white-space:nowrap;text-overflow:ellipsis}
@@ -241,7 +241,7 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   .top .pl{display:none}
   .nm .f{display:none}
   .nm .s{display:inline}
-  tr.row .chev{display:none}
+  tr.row .chev{display:inline-block;margin-left:3px}
 }
 /* phone: every provider column stays on screen without sideways scroll */
 @media (max-width:720px){
@@ -283,7 +283,7 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   .nm{font-size:12px;line-height:13px}
   .nm .f{display:none}
   .nm .s{display:inline}
-  .mk,tr.row .chev{display:none}
+  .mk{display:none}
   .bdg{display:none}
   .bdg.warn{display:inline-block;margin-left:3px;padding:0 3px;font-size:9px;line-height:12px}
   td.c{font-size:11.5px;line-height:13px}
