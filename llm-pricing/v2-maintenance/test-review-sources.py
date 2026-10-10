@@ -89,6 +89,16 @@ class SourceReviewTests(unittest.TestCase):
         glm = review.model_regex({"name": "GLM 5.3"})
         self.assertTrue(glm.search(review.official.norm("glm-5.3 | $1.40")))
         self.assertFalse(glm.search(review.official.norm("GLM 5.3 Flash | $0.15")))
+        # Variant suffixes that name different models must not match the text model,
+        # even when a page heading wraps the pair ("... / Gemini 3.8 Flash TTS / Standard").
+        flash = review.model_regex({"name": "Gemini 3.8 Flash"})
+        for line in ["Gemini 3.8 Flash TTS / Standard | $0.125 input caching",
+                     "table: {\"heading\":\"Gemini Developer API pricing / Gemini 3.8 Flash TTS / Standard\"}",
+                     "Gemini 3.8 Flash Audio | $1", "Gemini 3.8 Flash Live | $1"]:
+            self.assertFalse(flash.search(review.official.norm(line)), line)
+        self.assertTrue(flash.search(review.official.norm("Gemini 3.8 Flash | $0.75")))
+        gemini_tts = review.model_regex({"name": "Gemini 3.8 Flash TTS"})
+        self.assertTrue(gemini_tts.search(review.official.norm("Gemini 3.8 Flash TTS / Standard | $0.125")))
 
     def test_an_unchanged_model_line_is_verified_today_and_a_changed_one_needs_review(self):
         config = [{"id": "prices", "url": "https://example.com", "meta": ["src"]}]

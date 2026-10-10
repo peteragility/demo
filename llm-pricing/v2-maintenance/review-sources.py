@@ -298,7 +298,7 @@ def make_report(baseline, current, errors, data, today):
 
 # ---- Per-offer checks ------------------------------------------------------------------------
 
-SIBLINGS = r"flash|lite|mini|nano|pro|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder"
+SIBLINGS = r"flash|lite|mini|nano|pro|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use"
 
 
 def model_regex(model):
