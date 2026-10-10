@@ -515,7 +515,7 @@
       const when = new Date(RANKING.ranked_at + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
       const [title, sub] = String(RANKING.board).split(/ (?=\()/);
       const board = `<a href="${esc(RANKING.board_url)}" target="_blank" rel="noopener">arena.ai ${esc(title)}<span class="bsub">${sub ? ' ' + esc(sub) : ''}</span></a>`;
-      $('#rankSrc').innerHTML = ` · ranked by ${board}, ${esc(when)}`;
+      $('#rankSrc').innerHTML = ` · ranked by ${board}`;
       $('#rankNote').innerHTML = `Models and default order follow the ${board} leaderboard (# = arena rank): its top ${esc(RANKING.top || 50)}, listed when Databricks, Fireworks, Azure, AWS, Google or Alibaba sells the model. Checked daily; order last changed ${esc(when)}.`;
     }
     const long = day => day ? new Date(day + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';

@@ -205,7 +205,8 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
 .foot h2{margin:0 0 3px;font-size:12px;font-weight:600;color:var(--ink-2)}
 .foot p{margin:0 0 6px}
 .foot .disclaimer{grid-column:1/-1;margin:2px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-3)}
-.foot .disclaimer b{color:var(--ink-2)}
+.foot .disclaimer b,.foot .builtby b{color:var(--ink-2)}
+.foot .builtby{grid-column:1/-1;margin:0;font-size:11.5px}
 .legend{display:flex;flex-wrap:wrap;gap:2px 12px}
 .legend span{white-space:nowrap}
 .legend .up{color:var(--up);font-weight:600} .legend .down{color:var(--down);font-weight:600}

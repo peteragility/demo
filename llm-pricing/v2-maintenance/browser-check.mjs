@@ -114,9 +114,11 @@ try {
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx tr.row')].map(r=>r.dataset.k)"), expected.keys, viewport.name + ': arena rank order');
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#tabs .tab')].map(t=>t.dataset.g+(t.getAttribute('aria-pressed')==='true'?'*':''))"), ['all*', ...['oss','anthropic','openai','google','xai','other'].filter(g => expected[g])]);
     assert.match(await evalJS("document.querySelector('#rankSrc').textContent"), /ranked by arena\.ai Best \w+/);
+    assert.doesNotMatch(await evalJS("document.querySelector('#rankSrc').textContent"), /\d{4}/, 'the verified date is the only header date');
     // The disclaimer shows at the top on every screen size, and in full in the footer.
     assert.equal(await evalJS("getComputedStyle(document.querySelector('.intref')).display !== 'none' && document.querySelector('.intref').textContent"), 'Public list prices · not an official quote');
-    assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /Not a quote or offer from Databricks or any provider.*not an official Databricks publication/);
+    assert.match(await evalJS("document.querySelector('#disclaimer').textContent"), /Not an official Databricks publication, quote or offer/);
+    assert.equal(await evalJS("document.querySelector('#builtby b').textContent + '|' + document.querySelector('#builtby').textContent"), 'Built by|Built by Peter Chan from Databricks');
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
