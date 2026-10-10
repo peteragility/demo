@@ -31,6 +31,18 @@
   // The page is read-only: drop personal prices saved by its earlier editable version.
   store.del('llm-pricing-v2-overrides');
   if (prefs.theme === 'light' || prefs.theme === 'dark') document.documentElement.dataset.theme = prefs.theme;
+  // One-time expand hint: show until the user expands any row or dismisses it.
+  const HINT_KEY = PREF_KEY + '.rowHintSeen';
+  try {
+    const hint = document.getElementById('rowhint');
+    if (hint && !store.get(HINT_KEY)) {
+      hint.hidden = false;
+      const dismiss = () => { hint.hidden = true; store.set(HINT_KEY, true); };
+      document.getElementById('rowhintX').addEventListener('click', dismiss);
+      $('#mx').addEventListener('click', e => { if (e.target.closest('tr.row')) dismiss(); }, { once: true });
+    }
+  } catch (e) {}
+
   const savePrefs = () => { prefs.sort = S.sort; prefs.blend = S.blend; if (S.talk != null) prefs.talk = S.talk; store.set(PREF_KEY, prefs); };
   // Assign markup only when it changed, so unchanged regions keep focus and screen readers stay quiet.
   const paint = (el, html) => { if (el._html !== html) { el.innerHTML = html; el._html = html; } };
@@ -420,7 +432,7 @@
         lines.push(`• ${LONG[pl]}: ${precise(c.in)} / ${precise(c.out)}${c.cache_read != null ? ` · cache read ${precise(c.cache_read)}` : ''}${c.cache_write != null ? ` · cache write ${precise(c.cache_write)}` : (m.platforms[pl].endpoints || {}).cache_write === 'input-rate' && c.cache_read != null ? ' · no cache-write charge' : ''}${c.tier ? ' · ' + c.tier : ''}${d != null ? ` (${dir === 'par' ? 'parity' : (dir === 'up' ? '+' : '−') + pct(d)} vs DBX)` : note ? ' · ' + note : ''}${c.pricing_checked_at ? ' · Price checked ' + c.pricing_checked_at : ''}${c.model_id ? ' · ID ' + c.model_id : ''}`);
       }
     }
-    lines.push('Internal reference only: public list prices from official sources, compiled by Peter Chan. Not an official Databricks price list or quote.');
+    lines.push('Internal reference only by Databricks\' Peter Chan: public list prices from official sources. Not an official Databricks price list or quote.');
     const text = lines.join('\n');
     const done = () => toast('Copied summary');
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text));
