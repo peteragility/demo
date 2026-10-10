@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lakebase Calculator</title>
-<meta name="description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and ClickHouse Managed Postgres: region-aware list prices verified 2026-10-09, HA, replicas, storage, backups, I/O and commitments.">
+<meta name="description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and ClickHouse Managed Postgres: region-aware public list prices, HA, replicas, storage, backups, I/O and commitments.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,9 +39,8 @@ button,select,input{font:inherit;color:inherit}
 /* header */
 .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px;padding-block:12px 0}
 .top h1{margin:0;font-size:20px;line-height:1.25;font-weight:700;letter-spacing:-.01em}
-.top p{margin:0;color:var(--ink-3);font-size:12px}
+.top p{flex-basis:100%;margin:0;color:var(--ink-3);font-size:12px;line-height:1.4}
 .top p b{color:var(--ink-2);font-weight:600}
-.top .note{flex-basis:100%;margin:6px 0 0;padding:5px 9px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--down);border-radius:6px;font-size:11.5px;line-height:1.4;color:var(--ink-2)}
 .intref{align-self:center;padding:1px 7px;border:1px solid var(--line-2);border-radius:10px;font-size:11px;font-weight:600;line-height:16px;color:var(--ink-3);white-space:nowrap}
 
 /* sticky scenario tabs + tools */
@@ -52,6 +51,7 @@ button,select,input{font:inherit;color:inherit}
 .tabs::-webkit-scrollbar{display:none}
 .tab{appearance:none;flex:none;height:30px;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);font-weight:600;font-size:13px;padding:0 10px;border-radius:7px;white-space:nowrap;cursor:pointer}
 .tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+.tab .sh,.sel .sh{display:none}
 .tools{display:flex;gap:6px;align-items:center;justify-content:flex-start;min-width:0;flex-wrap:wrap}
 .sel{flex:none;display:flex;align-items:center;gap:3px;height:30px;padding:0 4px 0 8px;background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--ink-3);font-size:11px;white-space:nowrap}
 .sel select{border:0;background:transparent;outline:none;font-size:13px;font-weight:600;color:var(--ink);padding:0 2px;max-width:150px}
@@ -70,7 +70,7 @@ button,select,input{font:inherit;color:inherit}
 .abtn[aria-expanded="true"]::after{content:"▴"}
 
 /* inputs */
-.inputs{margin:0 0 8px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px 12px}
+.inputs{margin:0 0 8px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;display:grid;grid-template-columns:minmax(0,1.3fr) repeat(6,minmax(0,1fr));gap:6px 12px}
 .fi{min-width:0}
 .fi label{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:var(--ink-3);line-height:16px;white-space:nowrap}
 .fi label output{color:var(--ink);font-weight:600}
@@ -85,8 +85,9 @@ button,select,input{font:inherit;color:inherit}
 .adv summary{cursor:pointer;font-size:12px;font-weight:600;color:var(--ink-3)}
 .advg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px 12px;margin-top:6px}
 .fi.chks{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:2px 16px;padding-top:4px;border-top:1px solid var(--line)}
-.ck{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-2);cursor:pointer;white-space:nowrap}
-.ck input{accent-color:var(--dbx);margin:0}
+.ck{display:inline-flex;align-items:flex-start;gap:5px;font-size:12px;color:var(--ink-2);cursor:pointer}
+.ck input{flex:none;accent-color:var(--dbx);margin:2px 0 0}
+.fi .ck{white-space:normal;justify-content:flex-start;align-items:flex-start}
 .ck input:disabled+span{opacity:.45}
 .warn{color:var(--down);font-size:11px}
 .inote{grid-column:1/-1;font-size:11px;color:var(--down);min-height:0}
@@ -95,7 +96,7 @@ button,select,input{font:inherit;color:inherit}
 .tblwrap{overflow-x:auto;min-width:0}
 .mx{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;background:var(--panel);border:1px solid var(--line);border-radius:10px}
 .mx th,.mx td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mx thead th{background:var(--panel);font-size:11.5px;font-weight:600;color:var(--ink-2);border-bottom:1px solid var(--line-2)}
+.mx thead th{background:var(--panel);font-size:11.5px;font-weight:600;color:var(--ink-2);border-bottom:1px solid var(--line-2);white-space:normal;vertical-align:bottom}
 .mx thead th:first-child{border-top-left-radius:10px}.mx thead th:last-child{border-top-right-radius:10px}
 .mx th.m,.mx td.m{text-align:left}
 .nm{font-weight:600;font-size:13px;line-height:18px}
@@ -130,7 +131,7 @@ tfoot td{border-bottom:0;font-size:11.5px;color:var(--ink-3);background:var(--pa
 tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius:10px}
 
 /* technical comparison */
-.techsec h2,.foot h2{margin:14px 0 4px;font-size:12px;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}
+.techsec h2{margin:14px 0 4px;font-size:12px;font-weight:600;color:var(--ink-2)}
 .tech{table-layout:auto}
 .tech th,.tech td{white-space:normal;text-align:left;vertical-align:top;font-size:11.5px;line-height:1.35;padding:4px 7px;min-width:118px}
 .tech thead th{font-size:11px}
@@ -139,7 +140,8 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 .tech th.lb{color:var(--dbx)}
 
 /* footer */
-.foot{margin-block:10px 36px;color:var(--ink-3);font-size:12px;line-height:1.5;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:4px 24px}
+.foot{margin-block:12px 36px;color:var(--ink-3);font-size:12px;line-height:1.5;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:10px 24px}
+.foot h2{margin:0 0 3px;font-size:12px;font-weight:600;color:var(--ink-2)}
 .foot p{margin:0 0 6px}
 .foot details{margin:0 0 6px}
 .foot summary{cursor:pointer;color:var(--ink-2);font-weight:600}
@@ -147,19 +149,33 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 .foot li{margin:1px 0}
 .foot b{color:var(--ink-2)}
 .foot .disclaimer{grid-column:1/-1;margin:2px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px}
+.foot .builtby{grid-column:1/-1;margin:0;font-size:11.5px}
+.srcbox summary{color:var(--ink-3);font-weight:400}
+.srcbox summary h2{display:inline;margin:0}
+.srcbox[open] summary{margin-bottom:4px}
 .toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:6px 12px;border-radius:8px;font-size:12.5px;z-index:50}
 
 @media (max-width:1060px){
   .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tabs" "tools" "sum" "inp" "tbl" "tech" "foot"}
   .tools{position:static;padding:0 0 6px;justify-content:flex-start}
+  .inputs{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .fi.size{grid-column:span 2}
+}
+@media (max-width:900px){
+  .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .acts{grid-column:1/-1}
 }
 @media (max-width:760px){
   .inputs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .wrap{padding-inline:10px}
-  .top h1{font-size:16px}.top p{font-size:11px}
-  .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .acts{grid-column:1/-1}
+  .top h1{font-size:16px}.top p{font-size:11px}.top .pl{display:none}
+  .tabs{flex-wrap:wrap;overflow-x:visible}
+  .tab .lg,.sel .lg{display:none}.tab .sh,.sel .sh{display:inline}
+  .tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sel{min-width:0}.sel select{flex:1;min-width:0;max-width:none}
+  .fi.size{grid-column:1/-1}
   .kpi b{font-size:15px}
+  .mx td.m{white-space:normal}
   .mx td.m .mk{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
   .mx th,.mx td{padding:5px 6px}
   td.tot{font-size:13.5px}
@@ -167,38 +183,38 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   .foot{grid-template-columns:minmax(0,1fr)}
 }
 @media (hover:none) and (pointer:coarse){.sel select,.fi input,.fi select{font-size:16px}}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <h1>Lakebase Calculator</h1>
-    <span class="intref" title="Unofficial estimator built from public list prices">Public list prices · estimate only</span>
-    <p>Ballpark Databricks Lakebase cost and compare it with Aurora, RDS, Azure, Cloud SQL and ClickHouse Postgres · USD/month · prices checked <b>2026-10-09</b> · <a href="../">demo index</a></p>
-    <p class="note"><b>Estimate only.</b> Based on public list prices checked 2026-10-09. Prices change, and estimates exclude taxes, data transfer, support and discounts. Verify with each provider before deciding.</p>
+    <span class="intref" title="Built by Peter Chan from Databricks, from providers' official list prices; not an official Databricks publication.">Public list prices · estimate only</span>
+    <p><span class="pl">Estimate Databricks Lakebase monthly cost and compare it with Aurora, RDS, Azure, Cloud SQL and ClickHouse Postgres · </span>USD per month · prices checked <b id="checked">—</b></p>
   </header>
 
   <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Common scenarios">
-    <button class="tab" data-p="web" aria-pressed="true">Web / SaaS</button>
-    <button class="tab" data-p="shop" aria-pressed="false">E-commerce</button>
-    <button class="tab" data-p="internal" aria-pressed="false">Internal app</button>
-    <button class="tab" data-p="agent" aria-pressed="false">AI agent app</button>
-    <button class="tab" data-p="serving" aria-pressed="false">Lakehouse serving</button>
-    <button class="tab" data-p="core" aria-pressed="false">Core OLTP</button>
-    <button class="tab" data-p="dev" aria-pressed="false">Dev / test</button>
-    <button class="tab" data-p="custom" aria-pressed="false">Custom</button>
+    <button class="tab" data-p="web" aria-pressed="true"><span class="lg">Web / SaaS</span><span class="sh">Web</span></button>
+    <button class="tab" data-p="shop" aria-pressed="false"><span class="lg">E-commerce</span><span class="sh">Shop</span></button>
+    <button class="tab" data-p="internal" aria-pressed="false"><span class="lg">Internal app</span><span class="sh">Internal</span></button>
+    <button class="tab" data-p="agent" aria-pressed="false"><span class="lg">AI agent app</span><span class="sh">AI agent</span></button>
+    <button class="tab" data-p="serving" aria-pressed="false"><span class="lg">Lakehouse serving</span><span class="sh">Serving</span></button>
+    <button class="tab" data-p="core" aria-pressed="false"><span class="lg">Core OLTP</span><span class="sh">OLTP</span></button>
+    <button class="tab" data-p="dev" aria-pressed="false"><span class="lg">Dev / test</span><span class="sh">Dev</span></button>
+    <button class="tab" data-p="custom" aria-pressed="false"><span class="lg">Custom</span><span class="sh">Custom</span></button>
   </div></div>
   <div class="tools">
     <label class="sel"><span>Region</span><select id="region"><option value="us">US East</option><option value="sg">Singapore</option><option value="tk">Tokyo</option><option value="hk">Hong Kong</option></select></label>
-    <label class="sel"><span>Lakebase cloud</span><select id="lbCloud"><option value="aws">AWS</option><option value="azure">Azure</option><option value="gcp">Google Cloud</option></select></label>
-    <label class="sel"><span>Databricks tier</span><select id="lbTier"><option value="enterprise">Enterprise</option><option value="premium">Premium</option></select></label>
-    <label class="sel" title="Published 1/3-year discounts applied to competitor instance compute"><span>Competitor pricing</span><select id="commit"><option value="od">On-demand</option><option value="1y">1-yr commit</option><option value="3y">3-yr commit</option></select></label>
+    <label class="sel"><span class="lg">Lakebase cloud</span><span class="sh">Cloud</span><select id="lbCloud"><option value="aws">AWS</option><option value="azure">Azure</option><option value="gcp">Google Cloud</option></select></label>
+    <label class="sel"><span class="lg">Databricks tier</span><span class="sh">Tier</span><select id="lbTier"><option value="enterprise">Enterprise</option><option value="premium">Premium</option></select></label>
+    <label class="sel" title="Published 1/3-year discounts applied to competitor instance compute"><span class="lg">Competitor pricing</span><span class="sh">Others</span><select id="commit"><option value="od">On-demand</option><option value="1y">1-yr commit</option><option value="3y">3-yr commit</option></select></label>
   </div>
 
   <section class="summary" id="summary" aria-live="polite"></section>
 
   <section class="inputs" id="inputs">
-    <div class="fi"><label for="peak">Compute size <output id="peakOut"></output></label><input type="range" id="peak" min="0" max="12" step="1" value="3"><div class="h">Peak RAM needed, e.g. the current instance (1 CU ≈ 2 GB)</div></div>
+    <div class="fi size"><label for="peak">Compute size <output id="peakOut"></output></label><input type="range" id="peak" min="0" max="12" step="1" value="3"><div class="h">Peak RAM needed, e.g. the current instance (1 CU ≈ 2 GB)</div></div>
     <div class="fi"><label for="sto">Database size (GB)</label><input type="number" id="sto" min="1" max="65000" step="10" value="200"></div>
     <div class="fi"><label for="pat">Load pattern</label><select id="pat"><option value="daily" selected>Daily peaks, 24×7</option><option value="steady">Steady, always busy</option><option value="biz">Business hours only</option><option value="spiky">Spiky / bursty</option><option value="intermittent">Intermittent (dev / test)</option><option value="peak">Constant at peak (like-for-like)</option></select></div>
     <div class="fi"><label for="io">I/O intensity</label><select id="io"><option value="light">Light (read-mostly)</option><option value="mod" selected>Moderate</option><option value="heavy">Heavy (write-heavy)</option></select></div>
@@ -224,7 +240,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   <section class="techsec">
     <h2>Technical comparison</h2>
     <div class="tblwrap"><table class="mx tech">
-    <thead><tr><th>Capability</th><th class="lb">Lakebase</th><th>Aurora PG</th><th>Aurora Serverless v2</th><th>RDS PG</th><th>Azure PG Flexible</th><th>Azure SQL Database</th><th>Cloud SQL PG</th><th>ClickHouse Postgres</th></tr></thead>
+    <thead><tr><th scope="col">Capability</th><th scope="col" class="lb">Lakebase</th><th scope="col">Aurora PG</th><th scope="col">Aurora Serverless v2</th><th scope="col">RDS PG</th><th scope="col">Azure PG Flexible</th><th scope="col">Azure SQL Database</th><th scope="col">Cloud SQL PG</th><th scope="col">ClickHouse Postgres</th></tr></thead>
     <tbody>
     <tr><td>Engine</td><td class="lb">Postgres 16–18</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres (Beta) + pg_clickhouse</td></tr>
     <tr><td>Billing unit</td><td class="lb">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>Per instance-hour: CPU + RAM + local NVMe bundled (Basic / Scale / Enterprise tiers)</td></tr>
@@ -360,7 +376,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
       </ul></details>
     </div>
     <div>
-      <details><summary>Sources (fetched 2026-10-09)</summary><ul>
+      <details class="srcbox"><summary><h2>Sources <span id="srcDate"></span></h2> <span id="srcCount"></span></summary><ul id="srcs">
         <li><a href="https://www.databricks.com/product/pricing/lakebase" target="_blank" rel="noopener">Databricks Lakebase pricing</a>: AWS/Azure/Google rates by region and tier; Always-On, minimum-usage, promo, data-transfer FAQs</li>
         <li>Lakebase docs: <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-computes" target="_blank" rel="noopener">computes</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero" target="_blank" rel="noopener">scale to zero</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/high-availability" target="_blank" rel="noopener">HA</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/read-replicas" target="_blank" rel="noopener">read replicas</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore" target="_blank" rel="noopener">PITR</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">limits</a></li>
         <li><a href="https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json" target="_blank" rel="noopener">AWS Price List API</a>: AmazonRDS v20261006224050 (us-east-1, ap-southeast-1, ap-northeast-1, ap-east-1) · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.how-it-works.html" target="_blank" rel="noopener">Serverless v2 capacity</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html" target="_blank" rel="noopener">RDS storage</a></li>
@@ -368,14 +384,18 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
         <li>Google: <a href="https://cloud.google.com/sql/pricing" target="_blank" rel="noopener">Cloud SQL pricing</a> · <a href="https://cloud.google.com/sql/docs/postgres/quotas" target="_blank" rel="noopener">Cloud SQL quotas</a></li>
         <li>ClickHouse Managed Postgres: <a href="https://clickhouse.com/pricing?service=postgres#pricing-calculator" target="_blank" rel="noopener">pricing calculator</a> (Scale, AWS, memory-optimized ARM) · <a href="https://clickhouse.com/docs/cloud/managed-postgres/pricing" target="_blank" rel="noopener">pricing docs</a></li>
       </ul></details>
-      <p>Formerly "Postgres Cost Calculator" (/pg-cost-calculator/). Settings are saved in the link: use <b>Share</b> to send a scenario.</p>
+      <p>Settings are saved in the link: use <b>Share</b> to send a scenario.</p>
     </div>
-    <p class="disclaimer"><b>Disclaimer.</b> Unofficial calculator by Peter Chan (Databricks), built from public list prices on providers' official sites and APIs (checked 2026-10-09). Not a quote or official price list; not affiliated with AWS, Microsoft, Google or ClickHouse. Simplified assumptions; verify current pricing before use.</p>
+    <p class="disclaimer"><b>Disclaimer.</b> Estimates from public list prices on providers' official sites and price APIs; excludes taxes, data transfer, support and negotiated discounts. Simplified models, and prices may be out of date. Not an official Databricks publication, quote or offer; not affiliated with AWS, Microsoft, Google or ClickHouse. Trademarks belong to their owners.</p>
+    <p class="builtby"><b>Built by</b> Peter Chan from Databricks in Oct 2026</p>
   </footer>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
+// The date every list price on the page was last checked against its official source.
+const CHECKED = '2026-10-09';
+const longDate = d => +d.slice(8) + ' ' + 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ')[+d.slice(5, 7) - 1] + ' ' + d.slice(0, 4);
 const HRS = 730, WKS = 52 / 12;
 const PEAKS = [1, 2, 4, 8, 12, 16, 24, 32, 48, 64, 80, 96, 112];
 const REG = {
@@ -434,6 +454,8 @@ const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
 const fmt2 = n => { const min = n >= 1 ? 2 : 3; let x = n.toFixed(n >= 1 ? 3 : 4); while (x.split('.')[1].length > min && x.endsWith('0')) x = x.slice(0, -1); return '$' + x; };
 const fmtCU = v => (v % 1 ? v.toFixed(1) : v) + ' CU';
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+// Number inputs: empty or invalid means the field's default; anything else is held to its min / max.
+const num = id => { const e = $(id), v = parseFloat(e.value); return clamp(Number.isFinite(v) ? v : +e.defaultValue, +e.min, +e.max); };
 const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
 function activeHours(s) { return (s.hpd >= 24 && s.dpw >= 7) ? HRS : s.hpd * s.dpw * WKS; }
 function lbConn(cu) { let v = LBCONN[0][1]; for (const [c, n] of LBCONN) if (cu >= c) v = n; return v; }
@@ -465,14 +487,14 @@ function state() {
   const patKey = $('pat').value, pat = PAT[patKey], P = PEAKS[+$('peak').value], lfl = patKey === 'peak', fixed = P > 64 || lfl, ha = $('ha').value === '1';
   const m = fixed ? P : clamp(Math.round(Math.max(pat.minR * P, P - 16, 0.5) * 2) / 2, 0.5, P);
   const avg = fixed ? P : Math.max(m, pat.avgR * P), band = P - m;
-  const io = IOM[$('io').value], sto = Math.max(1, +$('sto').value || 1), avgIops = io.perCU * P;
+  const io = IOM[$('io').value], sto = num('sto'), avgIops = io.perCU * P;
   return {
     pattern: patKey, preset: curPreset, lfl, region: $('region').value, cloud: $('lbCloud').value, tier: $('lbTier').value, promo: $('promo').checked,
-    disc: clamp(+$('disc').value || 0, 0, 90), commit: $('commit').value, family: 'mem',
+    disc: num('disc'), commit: $('commit').value, family: 'mem',
     peak: P, floor: m, load: band > 0 ? (avg - m) / band : 0,
     hpd: pat.hpd, dpw: pat.dpw, s2z: pat.s2z && !lfl, stopIdle: false, burst: patKey === 'intermittent', azsqlAhb: $('azsqlAhb').checked, chBeta: $('chBeta').checked,
     ha, haN: ha ? 1 : 0, rep: +$('rep').value, repLoad: 0.5,
-    sto, chg: sto * io.chg, ret: clamp(+$('ret').value || 7, 1, 35),
+    sto, chg: sto * io.chg, ret: num('ret'),
     avgIops, peakIops: Math.max(3000, 3 * avgIops), io: $('io').value, ...syncCost(P, sto, io)
   };
 }
@@ -484,7 +506,7 @@ function syncCost(P, sto, io) {
   if (mode === 'none') return out;
   const reg = $('region').value, cl = SYNCR[reg][$('lbCloud').value] ? $('lbCloud').value : Object.keys(SYNCR[reg])[0], r = SYNCR[reg][cl];
   const rate = cl === 'azure' ? r.x : ($('lbTier').value === 'enterprise' ? r.e : r.p);
-  const gb = sto * clamp(+$('syncShare').value || 100, 1, 100) / 100, dbu = clamp(+$('syncDbu').value || 2, 0.1, 1000);
+  const gb = sto * num('syncShare') / 100, dbu = num('syncDbu');
   const snapGBh = 7.2 * P, incGBh = 0.54 * P, chgPerH = gb * io.chg / 24;
   let hrs;
   if (mode === 'snapshot') hrs = Math.max(0.25, gb / snapGBh) * 30.4;
@@ -492,7 +514,7 @@ function syncCost(P, sto, io) {
   else hrs = HRS;
   if (mode !== 'snapshot' && chgPerH > incGBh) out.syncWarn = 'Change rate exceeds the documented incremental write rate at ' + P + ' CU; a larger Lakebase compute may be needed.';
   if (mode === 'snapshot' && gb / snapGBh > 20) out.syncWarn = 'A daily full snapshot would run ~' + Math.round(gb / snapGBh) + ' h; consider incremental sync.';
-  const disc = 1 - clamp(+$('disc').value || 0, 0, 90) / 100, cost = hrs * dbu * rate * disc;
+  const disc = 1 - num('disc') / 100, cost = hrs * dbu * rate * disc;
   return Object.assign(out, {sync: cost, etl: cost, syncHrs: hrs, syncGB: gb, syncRate: rate, syncDbu: dbu});
 }
 
@@ -703,10 +725,10 @@ function render() {
 
   const cols = colsFor(), n = cols.length + 1, narrow = cols.length === 2;
   const money = v => v > 0.5 ? fmt(v) : '—';
-  const dcell = r => { if (r.key === 'lb') return '<span class="d par">base</span>'; const p = (r.total / lb.total - 1) * 100; return Math.abs(p) < 1 ? '<span class="d par">=</span>' : '<span class="d ' + (p > 0 ? 'up">▲ +' : 'down">▼ −') + Math.abs(p).toFixed(0) + '%</span>'; };
-  const cw = {cmp: 9, ha: 8, rep: 8, sto: 8, bk: 8, io: 8, tot: narrow ? 26 : 11, d: narrow ? 18 : 9};
+  const dcell = r => { if (r.key === 'lb') return '<span class="d par">base</span>'; const p = (r.total / lb.total - 1) * 100; return Math.abs(p) < 1 ? '<span class="d par">=</span>' : '<span class="d ' + (p > 0 ? 'up">▲' : 'down">▼') + Math.abs(p).toFixed(0) + '%</span>'; };
+  const cw = {cmp: 9, ha: 8, rep: 8, sto: 8, bk: 8, io: 8, tot: narrow ? 23 : 11, d: narrow ? 18 : 9};
   let h = '<colgroup><col>' + cols.map(c => '<col style="width:' + cw[c] + '%">').join('') + '</colgroup>'
-    + '<thead><tr><th class="m">Platform' + (narrow ? '' : ' <span class="mk" style="display:inline;margin-left:4px">sized to ' + fmtCU(s.peak) + ' / ' + 2 * s.peak + ' GB peak</span>') + '</th>' + cols.map(c => '<th>' + (narrow && c === 'd' ? 'vs LB' : COLH[c]) + '</th>').join('') + '</tr></thead><tbody>';
+    + '<thead><tr><th scope="col" class="m">Platform' + (narrow ? '' : ' <span class="mk" style="display:inline;margin-left:4px">sized to ' + fmtCU(s.peak) + ' / ' + 2 * s.peak + ' GB peak</span>') + '</th>' + cols.map(c => '<th scope="col">' + (narrow && c === 'd' ? 'vs LB' : COLH[c]) + '</th>').join('') + '</tr></thead><tbody>';
   sorted.forEach((r, i) => {
     const open = OPEN.has(r.key);
     h += '<tr class="row' + (r.key === 'lb' ? ' lb' : '') + (open ? ' open' : '') + '" data-k="' + r.key + '"><td class="m"><span class="rk">' + (i + 1) + '</span><span class="nm">' + r.name + '</span>' + (i === 0 ? '<span class="bdg best">lowest</span>' : '') + '<span class="chev">▸</span><span class="mk">' + r.sub + '</span></td>'
@@ -717,7 +739,7 @@ function render() {
     }
   });
   na.forEach(r => { h += '<tr class="na"><td class="m"><span class="rk">–</span><span class="nm">' + r.name + '</span><span class="mk">' + r.na + '</span></td><td colspan="' + cols.length + '" style="text-align:right">n/a</td></tr>'; });
-  h += '</tbody><tfoot><tr><td colspan="' + n + '">' + REG[s.region].name + ' list prices verified 2026-10-09 · 730 h/month · ' + (s.promo ? 'Lakebase promo on' : 'Lakebase list') + (s.disc ? ' · −' + s.disc + '% Databricks discount' : '') + ' · competitors ' + ({od: 'on-demand', '1y': '1-yr commitment', '3y': '3-yr commitment'})[s.commit] + (s.chBeta ? ' · ClickHouse Beta 50% off' : '') + ' · excludes tax, support and data transfer.' + (narrow ? ' Tap a row for the cost split.' : '') + '</td></tr></tfoot>';
+  h += '</tbody><tfoot><tr><td colspan="' + n + '">' + REG[s.region].name + ' list prices checked ' + longDate(CHECKED) + ' · 730 h/month · ' + (s.promo ? 'Lakebase promo on' : 'Lakebase list') + (s.disc ? ' · −' + s.disc + '% Databricks discount' : '') + ' · competitors ' + ({od: 'on-demand', '1y': '1-yr commitment', '3y': '3-yr commitment'})[s.commit] + (s.chBeta ? ' · ClickHouse Beta 50% off' : '') + ' · excludes tax, support and data transfer.' + (narrow ? ' Tap a row for the cost split.' : '') + '</td></tr></tfoot>';
   $('mx').innerHTML = h;
   $('mx').querySelectorAll('tr.row').forEach(tr => tr.onclick = () => { const k = tr.dataset.k; OPEN.has(k) ? OPEN.delete(k) : OPEN.add(k); render(); });
   writeHash();
@@ -734,22 +756,25 @@ function applyPreset(k) { curPreset = k; if (PRESETS[k]) { const q = PRESETS[k];
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
 function summaryText() {
   const s = state(), rows = allRows(s).filter(r => !r.na).sort((a, b) => a.total - b.total);
-  const L = ['Lakebase Calculator estimate: ' + REG[s.region].name + ', public list prices checked 2026-10-09. Estimate only; verify before use.',
-    'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + s.sto + ' GB, HA ' + (s.ha ? 'on' : 'off') + ', ' + s.rep + ' replicas, I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR' + (s.syncMode !== 'none' ? ', lakehouse sync ' + SYNCM[s.syncMode] + ' (' + fmt(s.sync) + '/mo, same for all)' : ''),
+  const L = ['Lakebase Calculator estimate: ' + REG[s.region].name + ', public list prices checked ' + longDate(CHECKED) + '. Estimate only; verify before use.',
+    'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + s.sto + ' GB, HA ' + (s.ha ? 'on' : 'off') + ', ' + pl(s.rep, 'replica') + ', I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR' + (s.syncMode !== 'none' ? ', lakehouse sync ' + SYNCM[s.syncMode] + ' (' + fmt(s.sync) + '/mo, same for all)' : ''),
     'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
-  rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after promo ' + fmt(r.post) + '/mo]' : '')));
+  rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after the promo ends: ' + fmt(r.post) + '/mo]' : '')));
   L.push('', location.href);
   return L.join('\n');
 }
 
 $('lbCloud').addEventListener('change', () => { prefCloud = $('lbCloud').value; });
 const TOOLBAR = ['region', 'lbCloud', 'lbTier', 'commit'], PRESET_IDS = ['pat', 'peak', 'sto', 'io', 'ha', 'rep', 'sync'];
-IDS.forEach(id => { DEFAULTS[id] = getVal(id); const ev = () => { if (PRESET_IDS.includes(id) && curPreset !== 'custom') { curPreset = 'custom'; markTab(); } render(); }; $(id).addEventListener('input', ev); $(id).addEventListener('change', ev); });
+IDS.forEach(id => { DEFAULTS[id] = getVal(id); const ev = () => { if (PRESET_IDS.includes(id) && curPreset !== 'custom') { curPreset = 'custom'; markTab(); } render(); }; $(id).addEventListener('input', ev); $(id).addEventListener('change', () => { if ($(id).type === 'number') $(id).value = num(id); ev(); }); });
+const NUMS = IDS.filter(id => $(id).type === 'number');
+$('checked').textContent = longDate(CHECKED); $('srcDate').textContent = '· checked ' + longDate(CHECKED);
+$('srcCount').textContent = '· ' + new Set([...$('srcs').querySelectorAll('a')].map(a => a.href)).size + ' official pages, tap to list';
 document.querySelectorAll('#tabs .tab').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.p)));
 // The Lakebase promotion ends on 31 Jan 2027: after that the option is switched off and disabled.
 if (Date.now() >= Date.UTC(2027, 1, 1)) { $('promo').checked = false; $('promo').disabled = true; $('promoLbl').textContent = 'Lakebase 50% compute promotion (ended 31 Jan 2027)'; }
 let lastCols = colsFor().length; window.addEventListener('resize', () => { const c = colsFor().length; if (c !== lastCols) { lastCols = c; render(); } });
-if (readHash()) { prefCloud = $('lbCloud').value; if (Date.now() >= Date.UTC(2027, 1, 1)) $('promo').checked = false; markTab(); render(); } else applyPreset('web');
+if (readHash()) { NUMS.forEach(id => { $(id).value = num(id); }); prefCloud = $('lbCloud').value; if (Date.now() >= Date.UTC(2027, 1, 1)) $('promo').checked = false; markTab(); render(); } else applyPreset('web');
 </script>
 </body>
 </html>
