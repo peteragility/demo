@@ -47,8 +47,7 @@ button,select,input{font:inherit;color:inherit}
 .bar{position:sticky;top:0;z-index:30;align-self:start;background:var(--bg);padding-block:8px}
 .tools{padding-block:0 8px}
 .bar{min-width:0;padding-right:10px}
-.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:3px;margin:-3px}
-.tabs::-webkit-scrollbar{display:none}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;padding:3px;margin:-3px}
 .tab{appearance:none;flex:none;height:30px;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);font-weight:600;font-size:13px;padding:0 10px;border-radius:7px;white-space:nowrap;cursor:pointer}
 .tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--panel)}
 .tab .sh,.sel .sh{display:none}
@@ -169,7 +168,6 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   .inputs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .wrap{padding-inline:10px}
   .top h1{font-size:16px}.top p{font-size:11px}.top .pl{display:none}
-  .tabs{flex-wrap:wrap;overflow-x:visible}
   .tab .lg,.sel .lg{display:none}.tab .sh,.sel .sh{display:inline}
   .tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .sel{min-width:0}.sel select{flex:1;min-width:0;max-width:none}
@@ -255,7 +253,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <tr><td>Branch / clone</td><td class="lb">Instant copy-on-write branches (500 / project)</td><td>Fast clone</td><td>Fast clone</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>Restore from backup</td></tr>
     <tr><td>Lakehouse / analytics</td><td class="lb">Managed synced tables from Unity Catalog (snapshot, triggered or continuous; serverless pipeline DBUs) · UC-governed</td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing</td><td>Native CDC to ClickHouse (free in Beta)</td></tr>
     <tr><td>Pooling</td><td class="lb">Built-in PgBouncer · 8 CU ≈ 1,795 direct connections</td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling (Ent+)</td><td>—</td></tr>
-    <tr><td>Status</td><td class="lb">GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
+    <tr><td>Status</td><td class="lb">GA · Beta on Google Cloud</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
     </tbody></table></div>
   </section>
 
@@ -409,15 +407,14 @@ const REG = {
 const LB = {
   us: {aws: {p: [0.092, 0.069], e: [0.111, 0.083], st: [0.345, 0.200], label: 'AWS US East'},
        azure: {x: [0.111, 0.083], st: [0.390, 0.226], label: 'Azure East US'},
-       gcp: {p: [0.104, 0.078], e: [0.125, 0.093], st: [0.345, 0.200], label: 'Google us-east1'}},
+       gcp: {p: [0.104, 0.078], e: [0.125, 0.093], st: [0.345, 0.200], label: 'Google us-east4 (Beta)'}},
   uw: {aws: {p: [0.092, 0.069], e: [0.111, 0.083], st: [0.345, 0.200], label: 'AWS US West (Oregon)'},
        azure: {x: [0.111, 0.083], st: [0.345, 0.200], label: 'Azure West US 2'}},
+  // Lakebase on Google Cloud (Beta) runs only in us-east4, us-central1 and europe-west3
   sg: {aws: {p: [0.110, 0.083], e: [0.134, 0.101], st: [0.375, 0.218], label: 'AWS Singapore'},
-       azure: {x: [0.134, 0.101], st: [0.375, 0.218], label: 'Azure Southeast Asia'},
-       gcp: {p: [0.113, 0.085], e: [0.136, 0.102], st: [0.375, 0.218], label: 'Google asia-southeast1'}},
+       azure: {x: [0.134, 0.101], st: [0.375, 0.218], label: 'Azure Southeast Asia'}},
   tk: {aws: {p: [0.110, 0.083], e: [0.134, 0.101], st: [0.375, 0.218], label: 'AWS Tokyo'},
-       azure: {x: [0.134, 0.101], st: [0.375, 0.218], label: 'Azure Japan East'},
-       gcp: {p: [0.117, 0.088], e: [0.141, 0.106], st: [0.375, 0.218], label: 'Google asia-northeast1'}},
+       azure: {x: [0.134, 0.101], st: [0.375, 0.218], label: 'Azure Japan East'}},
   hk: {azure: {x: [0.151, 0.113], st: [0.450, 0.261], label: 'Azure East Asia (HK)'}}
 };
 const AWS = {"regions":{"us-east-1":{"aurora_std":{"t4g.medium":0.073,"t4g.large":0.146,"r8g.large":0.276,"r8g.xlarge":0.552,"r8g.2xlarge":1.104,"r8g.4xlarge":2.208,"r8g.8xlarge":4.416,"r8g.12xlarge":6.624,"r8g.16xlarge":8.832},"aurora_io":{"t4g.medium":0.095,"t4g.large":0.19,"r8g.large":0.359,"r8g.xlarge":0.718,"r8g.2xlarge":1.436,"r8g.4xlarge":2.872,"r8g.8xlarge":5.744,"r8g.12xlarge":8.616,"r8g.16xlarge":11.488},"rds_saz":{"t4g.medium":0.065,"t4g.large":0.129,"r8g.large":0.239,"r8g.xlarge":0.478,"r8g.2xlarge":0.956,"r8g.4xlarge":1.912,"r8g.8xlarge":3.824,"r8g.12xlarge":5.736,"r8g.16xlarge":7.648,"m8g.large":0.168,"m8g.xlarge":0.336,"m8g.2xlarge":0.672,"m8g.4xlarge":1.344,"m8g.8xlarge":2.688,"m8g.12xlarge":4.032,"m8g.16xlarge":5.376},"rds_maz":{"t4g.medium":0.129,"t4g.large":0.258,"r8g.large":0.478,"r8g.xlarge":0.956,"r8g.2xlarge":1.912,"r8g.4xlarge":3.824,"r8g.8xlarge":7.648,"r8g.12xlarge":11.472,"r8g.16xlarge":15.296,"m8g.large":0.336,"m8g.xlarge":0.672,"m8g.2xlarge":1.344,"m8g.4xlarge":2.688,"m8g.8xlarge":5.376,"m8g.12xlarge":8.064,"m8g.16xlarge":10.752},"r":{"aurora_std_storage":0.1,"aurora_io_storage":0.225,"aurora_io_req":0.2,"aurora_backup":0.021,"asv2_std":0.12,"asv2_io":0.16,"gp3_saz":0.115,"gp3_maz":0.23,"gp3_iops_saz":0.02,"gp3_iops_maz":0.04,"rds_backup":0.095}},"us-west-2":{"aurora_std":{"t4g.medium":0.073,"t4g.large":0.146,"r8g.large":0.276,"r8g.xlarge":0.552,"r8g.2xlarge":1.104,"r8g.4xlarge":2.208,"r8g.8xlarge":4.416,"r8g.12xlarge":6.624,"r8g.16xlarge":8.832},"aurora_io":{"t4g.medium":0.095,"t4g.large":0.19,"r8g.large":0.359,"r8g.xlarge":0.718,"r8g.2xlarge":1.436,"r8g.4xlarge":2.872,"r8g.8xlarge":5.744,"r8g.12xlarge":8.616,"r8g.16xlarge":11.488},"rds_saz":{"t4g.medium":0.065,"t4g.large":0.129,"r8g.large":0.239,"r8g.xlarge":0.478,"r8g.2xlarge":0.956,"r8g.4xlarge":1.912,"r8g.8xlarge":3.824,"r8g.12xlarge":5.736,"r8g.16xlarge":7.648,"m8g.large":0.168,"m8g.xlarge":0.336,"m8g.2xlarge":0.672,"m8g.4xlarge":1.344,"m8g.8xlarge":2.688,"m8g.12xlarge":4.032,"m8g.16xlarge":5.376},"rds_maz":{"t4g.medium":0.129,"t4g.large":0.258,"r8g.large":0.478,"r8g.xlarge":0.956,"r8g.2xlarge":1.912,"r8g.4xlarge":3.824,"r8g.8xlarge":7.648,"r8g.12xlarge":11.472,"r8g.16xlarge":15.296,"m8g.large":0.336,"m8g.xlarge":0.672,"m8g.2xlarge":1.344,"m8g.4xlarge":2.688,"m8g.8xlarge":5.376,"m8g.12xlarge":8.064,"m8g.16xlarge":10.752},"r":{"aurora_std_storage":0.1,"aurora_io_storage":0.225,"aurora_io_req":0.2,"aurora_backup":0.021,"asv2_std":0.12,"asv2_io":0.16,"gp3_saz":0.115,"gp3_maz":0.23,"gp3_iops_saz":0.02,"gp3_iops_maz":0.04,"rds_backup":0.095}},"ap-southeast-1":{"aurora_std":{"t4g.medium":0.114,"t4g.large":0.229,"r8g.large":0.333,"r8g.xlarge":0.666,"r8g.2xlarge":1.332,"r8g.4xlarge":2.664,"r8g.8xlarge":5.328,"r8g.12xlarge":7.992,"r8g.16xlarge":10.656},"aurora_io":{"t4g.medium":0.148,"t4g.large":0.298,"r8g.large":0.433,"r8g.xlarge":0.866,"r8g.2xlarge":1.732,"r8g.4xlarge":3.464,"r8g.8xlarge":6.928,"r8g.12xlarge":10.392,"r8g.16xlarge":13.856},"rds_saz":{"t4g.medium":0.102,"t4g.large":0.203,"r8g.large":0.287,"r8g.xlarge":0.574,"r8g.2xlarge":1.148,"r8g.4xlarge":2.296,"r8g.8xlarge":4.592,"r8g.12xlarge":6.888,"r8g.16xlarge":9.184,"m8g.large":0.234,"m8g.xlarge":0.468,"m8g.2xlarge":0.937,"m8g.4xlarge":1.874,"m8g.8xlarge":3.747,"m8g.12xlarge":5.621,"m8g.16xlarge":7.494},"rds_maz":{"t4g.medium":0.203,"t4g.large":0.406,"r8g.large":0.574,"r8g.xlarge":1.148,"r8g.2xlarge":2.296,"r8g.4xlarge":4.592,"r8g.8xlarge":9.184,"r8g.12xlarge":13.776,"r8g.16xlarge":18.368,"m8g.large":0.468,"m8g.xlarge":0.936,"m8g.2xlarge":1.872,"m8g.4xlarge":3.744,"m8g.8xlarge":7.488,"m8g.12xlarge":11.232,"m8g.16xlarge":14.976},"r":{"aurora_std_storage":0.11,"aurora_io_storage":0.248,"aurora_io_req":0.22,"aurora_backup":0.023,"asv2_std":0.2,"asv2_io":0.26,"gp3_saz":0.138,"gp3_maz":0.276,"gp3_iops_saz":0.024,"gp3_iops_maz":0.048,"rds_backup":0.095}},"ap-northeast-1":{"aurora_std":{"t4g.medium":0.113,"t4g.large":0.225,"r8g.large":0.333,"r8g.xlarge":0.666,"r8g.2xlarge":1.332,"r8g.4xlarge":2.664,"r8g.8xlarge":5.328,"r8g.12xlarge":7.992,"r8g.16xlarge":10.656},"aurora_io":{"t4g.medium":0.147,"t4g.large":0.293,"r8g.large":0.433,"r8g.xlarge":0.866,"r8g.2xlarge":1.732,"r8g.4xlarge":3.464,"r8g.8xlarge":6.928,"r8g.12xlarge":10.392,"r8g.16xlarge":13.856},"rds_saz":{"t4g.medium":0.101,"t4g.large":0.202,"r8g.large":0.287,"r8g.xlarge":0.574,"r8g.2xlarge":1.148,"r8g.4xlarge":2.296,"r8g.8xlarge":4.592,"r8g.12xlarge":6.888,"r8g.16xlarge":9.184,"m8g.large":0.234,"m8g.xlarge":0.468,"m8g.2xlarge":0.936,"m8g.4xlarge":1.872,"m8g.8xlarge":3.744,"m8g.12xlarge":5.616,"m8g.16xlarge":7.488},"rds_maz":{"t4g.medium":0.202,"t4g.large":0.403,"r8g.large":0.574,"r8g.xlarge":1.148,"r8g.2xlarge":2.296,"r8g.4xlarge":4.592,"r8g.8xlarge":9.184,"r8g.12xlarge":13.776,"r8g.16xlarge":18.368,"m8g.large":0.468,"m8g.xlarge":0.936,"m8g.2xlarge":1.872,"m8g.4xlarge":3.744,"m8g.8xlarge":7.488,"m8g.12xlarge":11.232,"m8g.16xlarge":14.976},"r":{"aurora_std_storage":0.12,"aurora_io_storage":0.27,"aurora_io_req":0.24,"aurora_backup":0.023,"asv2_std":0.15,"asv2_io":0.2,"gp3_saz":0.138,"gp3_maz":0.276,"gp3_iops_saz":0.024,"gp3_iops_maz":0.048,"rds_backup":0.095}},"ap-east-1":{"aurora_std":{"t4g.medium":0.125,"t4g.large":0.25,"r8g.large":0.367,"r8g.xlarge":0.733,"r8g.2xlarge":1.467,"r8g.4xlarge":2.934,"r8g.8xlarge":5.868,"r8g.12xlarge":8.802,"r8g.16xlarge":11.736},"aurora_io":{"t4g.medium":0.163,"t4g.large":0.325,"r8g.large":0.477,"r8g.xlarge":0.953,"r8g.2xlarge":1.907,"r8g.4xlarge":3.814,"r8g.8xlarge":7.628,"r8g.12xlarge":11.443,"r8g.16xlarge":15.257},"rds_saz":{"t4g.medium":0.111,"t4g.large":0.222,"r8g.large":0.316,"r8g.xlarge":0.631,"r8g.2xlarge":1.262,"r8g.4xlarge":2.525,"r8g.8xlarge":5.05,"r8g.12xlarge":7.574,"r8g.16xlarge":10.099,"m8g.large":0.258,"m8g.xlarge":0.516,"m8g.2xlarge":1.032,"m8g.4xlarge":2.064,"m8g.8xlarge":4.128,"m8g.12xlarge":6.192,"m8g.16xlarge":8.255},"rds_maz":{"t4g.medium":0.222,"t4g.large":0.445,"r8g.large":0.631,"r8g.xlarge":1.262,"r8g.2xlarge":2.525,"r8g.4xlarge":5.05,"r8g.8xlarge":10.099,"r8g.12xlarge":15.149,"r8g.16xlarge":20.198,"m8g.large":0.516,"m8g.xlarge":1.032,"m8g.2xlarge":2.064,"m8g.4xlarge":4.128,"m8g.8xlarge":8.256,"m8g.12xlarge":12.384,"m8g.16xlarge":16.51},"r":{"aurora_std_storage":0.12,"aurora_io_storage":0.27,"aurora_io_req":0.24,"aurora_backup":0.023,"asv2_std":0.22,"asv2_io":0.29,"gp3_saz":0.15,"gp3_maz":0.3,"gp3_iops_saz":0.026,"gp3_iops_maz":0.052,"rds_backup":0.095}}},"spec":{"t4g.medium":[2,4],"t4g.large":[2,8],"r8g.large":[2,16],"r8g.xlarge":[4,32],"r8g.2xlarge":[8,64],"r8g.4xlarge":[16,128],"r8g.8xlarge":[32,256],"r8g.12xlarge":[48,384],"r8g.16xlarge":[64,512],"m8g.large":[2,8],"m8g.xlarge":[4,16],"m8g.2xlarge":[8,32],"m8g.4xlarge":[16,64],"m8g.8xlarge":[32,128],"m8g.12xlarge":[48,256],"m8g.16xlarge":[64,384]}};
@@ -437,19 +434,20 @@ const CSQL = {
   tk: {v: 0.0537, m: 0.0091, ssd: 0.221, ssdHA: 0.442, bk: 0.104},
   hk: {v: 0.062, m: 0.0105, ssd: 0.255, ssdHA: 0.510, bk: 0.120}
 };
-// ClickHouse Managed Postgres (Beta), Scale tier, AWS memory-optimized ARM: list $/vCPU-month (calculator shows 50% Beta discount); NVMe GB per vCPU
+// ClickHouse Managed Postgres (Beta), Scale tier, AWS memory-optimized ARM: list $/vCPU-month, twice what ClickHouse's calculator shows
+// ("Includes 50% discount": $143/mo for 4 vCPU in us-east-1); sizes [vCPU, GiB RAM, GB NVMe]
 const CHPG = {us: {vm: 71.48, label: 'AWS us-east-1'}, uw: {vm: 71.48, label: 'AWS us-west-2'}, sg: {vm: 86.25, label: 'AWS ap-southeast-1'}, tk: {vm: 86.25, label: 'AWS ap-northeast-1'}, sizes: [[1, 8, 59], [2, 16, 118], [4, 32, 237], [8, 64, 474], [16, 128, 950], [32, 256, 1900], [48, 384, 2850], [64, 512, 3800]]};
 // Azure SQL Database (General Purpose, standard-series Gen5): li = provisioned $/vCore-hr license included, ahb = with Azure Hybrid Benefit,
 // zr = zone-redundancy uplift $/vCore-hr, sv / svZR = serverless $/vCore-hr (license included) and its ZR uplift, st / stZR = $/GB-mo, bk = RA-GRS backup $/GB-mo
 const AZSQL = {
-  us: {li: 0.2523, ahb: 0.1522, zr: 0.0913, sv: 0.5218, svZR: 0.3131, st: 0.115, stZR: 0.230, bk: 0.20},
-  uw: {li: 0.2523, ahb: 0.1522, zr: 0.0913, sv: 0.5218, svZR: 0.3131, st: 0.115, stZR: 0.230, bk: 0.20},
-  sg: {li: 0.2815, ahb: 0.1811, zr: 0.1087, sv: 0.6209, svZR: 0.3725, st: 0.138, stZR: 0.276, bk: 0.24},
+  us: {li: 0.2522, ahb: 0.1522, zr: 0.0913, sv: 0.5218, svZR: 0.3131, st: 0.115, stZR: 0.230, bk: 0.20},
+  uw: {li: 0.2522, ahb: 0.1522, zr: 0.0913, sv: 0.5218, svZR: 0.3131, st: 0.115, stZR: 0.230, bk: 0.20},
+  sg: {li: 0.2811, ahb: 0.1811, zr: 0.1087, sv: 0.6209, svZR: 0.3725, st: 0.138, stZR: 0.276, bk: 0.24},
   tk: {li: 0.2720, ahb: 0.1720, zr: 0.1032, sv: 0.5896, svZR: 0.3538, st: 0.138, stZR: 0.276, bk: 0.24},
-  hk: {li: 0.3270, ahb: 0.2268, zr: 0.1361, sv: 0.7774, svZR: 0.4665, st: 0.1725, stZR: 0.345, bk: 0.30}
+  hk: {li: 0.3268, ahb: 0.2268, zr: 0.1361, sv: 0.7774, svZR: 0.4665, st: 0.1725, stZR: 0.345, bk: 0.30}
 };
 // Serverless pipeline $/DBU (synced tables run as serverless Lakeflow pipelines): AWS / Google by tier, Azure Premium
-const SYNCR = {us: {aws: {p: 0.35, e: 0.45}, gcp: {p: 0.35, e: 0.45}, azure: {x: 0.45}}, uw: {aws: {p: 0.35, e: 0.45}, azure: {x: 0.45}}, sg: {aws: {p: 0.39, e: 0.50}, gcp: {p: 0.39, e: 0.50}, azure: {x: 0.50}}, tk: {aws: {p: 0.39, e: 0.50}, gcp: {p: 0.39, e: 0.50}, azure: {x: 0.50}}, hk: {azure: {x: 0.52}}};
+const SYNCR = {us: {aws: {p: 0.35, e: 0.45}, gcp: {p: 0.35, e: 0.45}, azure: {x: 0.45}}, uw: {aws: {p: 0.35, e: 0.45}, azure: {x: 0.45}}, sg: {aws: {p: 0.39, e: 0.50}, azure: {x: 0.50}}, tk: {aws: {p: 0.39, e: 0.50}, azure: {x: 0.50}}, hk: {azure: {x: 0.52}}};
 const SYNCM = {none: 'None', snapshot: 'Daily snapshot', triggered: 'Hourly incremental', continuous: 'Continuous'};
 const COMMIT = {aws: {od: 0, '1y': 0.33, '3y': 0.53}, az: {od: 0, '1y': 0.40, '3y': 0.60}, gcp: {od: 0, '1y': 0.25, '3y': 0.52}, azsql: {od: 0, '1y': 0.21, '3y': 0.33}};
 const CLOUDN = {aws: 'AWS', azure: 'Azure', gcp: 'Google Cloud'};
@@ -565,7 +563,7 @@ function calcLakebase(s) {
   } else notes.push('Always-On: the ' + fmtCU(m) + ' minimum bills 730 h at the minimum-usage rate; usage above it at the autoscaling rate.');
   if (haN) notes.push('HA: ' + pl(haN, 'secondary').replace('secondarys', 'secondaries') + (haN === 1 ? ' in another AZ' : ' in other AZs') + ', each ≥ primary size; can serve reads via -ro.');
   if (s.promo) notes.push('After the promo (from 1 Feb 2027): ' + fmt(post) + '/mo at today\'s list.');
-  if (cloud !== s.cloud) notes.push('Not offered on ' + CLOUDN[s.cloud] + ' in ' + REG[s.region].name + '; showing ' + r.label + '.');
+  if (CLOUDN[prefCloud] && prefCloud !== cloud && s.region !== 'hk') notes.push('Not offered on ' + CLOUDN[prefCloud] + ' in ' + REG[s.region].name + '; showing ' + r.label + '.');
   if (s.region === 'hk') notes.push('In Hong Kong, Lakebase is priced on Azure East Asia only.');
   return row({key: 'lb', name: 'Lakebase', sub: r.label + ' · ' + (cloud === 'azure' ? 'Azure Premium' : s.tier[0].toUpperCase() + s.tier.slice(1)) + ' · ' + (fixed ? 'fixed ' + fmtCU(P) : fmtCU(m) + '–' + fmtCU(P)),
     c, post, notes,
@@ -715,6 +713,7 @@ function render() {
   notes.push('I/O ' + IOM[s.io].name + ': ~' + Math.round(s.avgIops).toLocaleString() + ' avg / ' + Math.round(s.peakIops).toLocaleString() + ' peak IOPS, ~' + (s.chg < 10 ? s.chg.toFixed(1) : Math.round(s.chg).toLocaleString()) + ' GB changed per day.');
   if (s.syncMode !== 'none') notes.push('Lakehouse sync ' + SYNCM[s.syncMode] + ': ~' + Math.round(s.syncGB).toLocaleString() + ' GB, ~' + Math.round(s.syncHrs).toLocaleString() + ' pipeline-hours/month at ' + s.syncDbu + ' DBU/h (' + fmt(s.sync) + '/mo). Competitors need an equivalent job, priced the same.' + (s.syncWarn ? ' ⚠ ' + s.syncWarn : ''));
   if (s.region === 'hk') notes.push('Hong Kong: Lakebase is priced on Azure East Asia only; ClickHouse Postgres isn\'t offered there.');
+  else if (CLOUDN[prefCloud] && prefCloud !== s.cloud) notes.push('Lakebase isn\'t offered on ' + CLOUDN[prefCloud] + ' in ' + REG[s.region].name + ', so ' + CLOUDN[s.cloud] + ' is shown.');
   $('patNote').innerHTML = notes.join(' ');
 
   const all = allRows(s), lb = all[0], rows = all.filter(r => !r.na), na = all.filter(r => r.na);
