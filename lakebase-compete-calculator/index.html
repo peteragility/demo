@@ -223,7 +223,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <div class="pat" id="patNote"></div>
     <details class="adv" id="adv"><summary>Advanced</summary><div class="advg">
       <div class="fi"><label for="disc">Databricks discount %</label><input type="number" id="disc" min="0" max="90" step="1" value="0"><div class="h">Contracted discount on Lakebase compute</div></div>
-      <div class="fi"><label for="ret">Backup / PITR window (days)</label><input type="number" id="ret" min="2" max="35" step="1" value="7"></div>
+      <div class="fi"><label for="ret">Backup / PITR window (days)</label><input type="number" id="ret" min="2" max="30" step="1" value="7"></div>
       <div class="fi"><label for="syncShare">Synced share of database (%)</label><input type="number" id="syncShare" min="1" max="100" step="5" value="100"><div class="h">Data copied from the lakehouse</div></div>
       <div class="fi"><label for="syncDbu">Sync pipeline size (DBU/hour)</label><input type="number" id="syncDbu" min="0.5" max="100" step="0.5" value="2"><div class="h">Assumption; measure yours in system.billing.usage</div></div>
       <div class="fi chks">
@@ -304,7 +304,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Minimum:</b> billed 730 h at the Always-On minimum-usage rate. With scale-to-zero (Dev / test), active hours are billed at the autoscaling rate instead.</li>
             <li><b>Above the minimum:</b> usage while busy is billed at the autoscaling rate.</li>
             <li><b>HA standby:</b> bills the same CU-hours as the primary.</li>
-            <li><b>Read replicas:</b> each bills 50% of the primary's CU-hours.</li>
+            <li><b>Read replicas:</b> each targets half the primary capacity, rounded up to supported CU sizes, with a 0.5 CU minimum.</li>
             <li><b>Discounts:</b> the promo and your discount apply to compute only.</li>
           </ul></li>
         <li><b>Lakebase storage:</b> database GB plus PITR history (changed GB/day × window).</li>
@@ -461,7 +461,8 @@ const fmtCU = v => (v % 1 ? v.toFixed(1) : v) + ' CU';
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 // Number inputs: empty or invalid means the field's default; anything else is held to its min / max.
 // (a hidden input's defaultValue follows its value, so #sto keeps its default in data-def)
-const num = id => { const e = $(id), v = parseFloat(e.value); return clamp(Number.isFinite(v) ? v : +(e.dataset.def || e.defaultValue), +e.min, +e.max); };
+const num = id => { const e = $(id), v = e.value.trim() === '' ? NaN : Number(e.value), step = Number(e.step) || 1, min = +e.min; return clamp(min + Math.round((clamp(Number.isFinite(v) ? v : +(e.dataset.def || e.defaultValue), min, +e.max) - min) / step) * step, min, +e.max); };
+const cuSize = v => v <= 0.5 ? 0.5 : Math.ceil(v);
 // Database size in GB: the slider steps through these stops; the box takes any size, in GB or TB (1 TB = 1,000 GB).
 const STO_STEPS = [1, 2, 3, 5, 10, 20, 30, 50, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000, 8000, 10000, 15000, 20000, 30000, 50000, 64000];
 const fmtSize = g => g >= 1000 && g % 10 === 0 ? +(g / 1000).toFixed(2) + ' TB' : Math.round(g).toLocaleString('en-US') + ' GB';
@@ -495,7 +496,7 @@ const IOM = {light: {perCU: 25, chg: 0.01, name: 'Light'}, mod: {perCU: 100, chg
 let curPreset = 'web';
 function state() {
   const patKey = $('pat').value, pat = PAT[patKey], P = PEAKS[+$('peak').value], lfl = patKey === 'peak', fixed = P > 64 || lfl, ha = $('ha').value === '1';
-  const m = fixed ? P : clamp(Math.round(Math.max(pat.minR * P, P - 16, 0.5) * 2) / 2, 0.5, P);
+  const m = fixed ? P : clamp(cuSize(Math.max(pat.minR * P, P - 16, 0.5)), 0.5, P);
   const avg = fixed ? P : Math.max(m, pat.avgR * P), band = P - m;
   const io = IOM[$('io').value], sto = Math.round(num('sto')), avgIops = io.perCU * P;
   return {
@@ -560,8 +561,11 @@ function calcLakebase(s) {
   const floorH = s2z ? m * act : m * HRS, aboveH = band * s.load * act, floorRate = s2z ? asR : minR;
   const listPrim = floorH * floorRate + aboveH * asR, prim = listPrim * pf * df;
   const haN = s.ha ? s.haN : 0, pitrGB = s.chg * clamp(s.ret, 2, 30);
-  const c = {cmp: prim, ha: prim * haN, rep: prim * s.rep * s.repLoad, sto: s.sto * r.st[0], bk: pitrGB * r.st[1], io: 0, ext: s.sync};
-  const post = listPrim * df * (1 + haN + s.rep * s.repLoad) + c.sto + c.bk + c.ext;
+  const repPeak = cuSize(P * s.repLoad), repMin = cuSize(Math.max(m * s.repLoad, repPeak - 16, 0.5));
+  const repAvg = clamp((m + band * s.load) * s.repLoad, repMin, repPeak);
+  const listRep = repMin * (s2z ? act : HRS) * floorRate + (repAvg - repMin) * act * asR;
+  const c = {cmp: prim, ha: prim * haN, rep: listRep * pf * df * s.rep, sto: s.sto * r.st[0], bk: pitrGB * r.st[1], io: 0, ext: s.sync};
+  const post = (listPrim * (1 + haN) + listRep * s.rep) * df + c.sto + c.bk + c.ext;
   const notes = [];
   if (s2z) {
     notes.push('Scale-to-zero: active hours only, all at the autoscaling rate.');
@@ -576,7 +580,7 @@ function calcLakebase(s) {
     c, post, notes,
     size: [['Compute', (fixed ? 'Fixed ' + fmtCU(P) : 'Autoscale ' + fmtCU(m) + '–' + fmtCU(P)) + ' · avg ' + fmtCU(+(m + band * s.load).toFixed(1)) + ' active · ~' + 2 * m + '–' + 2 * P + ' GB RAM'],
       ['Hours', s2z ? Math.round(act) + ' h (scale-to-zero)' : '730 h (Always-On minimum)'], ['HA', haN ? pl(haN, 'secondary').replace('secondarys', 'secondaries') + ', autoscale with primary' : 'off'],
-      ['Read scale', s.rep ? pl(s.rep, 'replica') + ' @ ' + Math.round(s.repLoad * 100) + '% load, no extra storage' : 'none'],
+      ['Read scale', s.rep ? pl(s.rep, 'replica') + ' · each ' + fmtCU(repMin) + '–' + fmtCU(repPeak) + ', no extra storage' : 'none'],
       ['Storage', s.sto.toLocaleString() + ' GB + ~' + Math.round(pitrGB).toLocaleString() + ' GB PITR history · no I/O charges'],
       ['Connections', '≈ ' + lbConn(Math.min(P, 8 * m)).toLocaleString() + ' direct + PgBouncer pooler']],
     rates: 'Autoscaling ' + fmt2(asR) + ' · Always-On minimum ' + fmt2(minR) + ' /CU-hr' + (s.promo ? ' (−50% to 31 Jan 2027)' : '') + (s.disc ? ' · −' + s.disc + '% contract' : '') + ' · storage ' + fmt2(r.st[0]) + ' · PITR ' + fmt2(r.st[1]) + ' /GB-mo'});
@@ -656,35 +660,52 @@ function calcCloudSQL(s) {
     rates: fmt2(g.v) + '/vCPU-hr + ' + fmt2(g.m) + '/GiB-hr (HA ×2) · SSD ' + fmt2(g.ssd) + ' (HA ' + fmt2(g.ssdHA) + ') /GB-mo · backup ' + fmt2(g.bk) + '/GB-mo'});
 }
 
+// Standard-series General Purpose limits: vCores, RAM (GB), maximum data storage (GB).
+// https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-vcore-single-databases
+const SQL_PROV = [[2,10.4,1024],[4,20.8,1024],[6,31.1,1536],[8,41.5,2048],[10,51.9,2048],[12,62.3,3072],[14,72.7,3072],[16,83,3072],[18,93.4,3072],[20,103.8,3072],[24,124.6,4096],[32,166.1,4096],[40,207.6,4096],[80,415.2,4096]];
+// Serverless: maximum vCores, minimum vCores, minimum RAM, maximum data storage.
+const SQL_SV = [[1,.5,2.02,512],[2,.5,2.05,1024],[4,.5,2.10,1024],[6,.75,2.25,1024],[8,1,3,2048],[10,1.25,3.75,2048],[12,1.5,4.5,3072],[14,1.75,5.25,3072],[16,2,6,3072],[18,2.25,6.75,3072],[20,2.5,7.5,3072],[24,3,9,4096],[32,4,12,4096],[40,5,15,4096],[80,10,30,4096]];
+function sqlServerlessProfile(s, factor = 1) {
+  const fit = SQL_SV.find(x => x[0] * 3 >= 2 * s.peak * factor && x[3] >= s.sto);
+  if (!fit) return null;
+  const [max, hardwareMin, hardwareMemory] = fit;
+  const min = Math.max(hardwareMin, Math.ceil(2 * s.floor * factor / 3 * 4) / 4);
+  const minimum = Math.max(min, hardwareMemory / 3);
+  const busy = Math.max(minimum, 2 * (s.floor + (s.peak - s.floor) * s.load) * factor / 3);
+  // Geo-replication prevents auto-pause on both the primary and its replicas.
+  const pause = s.s2z && s.peak <= 32 && !s.ha && !s.rep;
+  const act = activeHours(s), hours = busy * act + (pause ? 0 : minimum * (HRS - act));
+  return {min, max, minimum, hours, pause};
+}
 function calcAzureSQL(s) {
-  const q = AZSQL[s.region], act = activeHours(s), R = 2 * s.peak, cd = COMMIT.azsql[s.commit];
-  const sizes = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 32, 40, 80];
-  const vc = sizes.find(v => v * 5.1 >= R) || 80, rate = s.azsqlAhb ? q.ahb : q.li;
+  const q = AZSQL[s.region], R = 2 * s.peak, cd = COMMIT.azsql[s.commit];
+  const fit = SQL_PROV.find(x => x[1] >= R && x[2] >= s.sto);
+  if (!fit) return {key: 'azsql', name: 'Azure SQL Database', na: 'Exceeds the priced General Purpose configurations (maximum 4,096 GB data storage).'};
+  const [vc, memory] = fit, storage = Math.max(5, s.sto), rate = s.azsqlAhb ? q.ahb : q.li;
   const pc = vc * rate * HRS * (1 - cd);
-  const prov = row({c: {cmp: pc, ha: s.ha ? vc * q.zr * HRS + s.sto * (q.stZR - q.st) : 0, rep: s.rep * (pc + s.sto * q.st), sto: s.sto * q.st, bk: Math.max(0, s.chg * s.ret - s.sto) * q.bk, io: 0, ext: s.etl}});
-  // Serverless: billed per vCore-second on max(CPU, memory / 3 GB); modeled memory-bound on the Lakebase capacity profile
-  const P = s.peak, m = P > 64 ? P : s.floor, band = P - m, s2z = s.s2z && P <= 32 && !s.ha;
-  const gbh = 2 * (s2z ? (m + band * s.load) * act : m * HRS + band * s.load * act), vch = gbh / 3;
-  const svOK = R <= 240;
-  const sv = svOK ? row({c: {cmp: vch * q.sv, ha: s.ha ? vch * q.svZR + s.sto * (q.stZR - q.st) : 0, rep: s.rep * (vch * s.repLoad * q.sv + s.sto * q.st), sto: s.sto * q.st, bk: Math.max(0, s.chg * s.ret - s.sto) * q.bk, io: 0, ext: s.etl}}) : null;
+  const prov = row({c: {cmp: pc, ha: s.ha ? vc * q.zr * HRS + storage * (q.stZR - q.st) : 0, rep: s.rep * (pc + storage * q.st), sto: storage * q.st, bk: Math.max(0, s.chg * s.ret - storage) * q.bk, io: 0, ext: s.etl}});
+  const profile = sqlServerlessProfile(s), replica = sqlServerlessProfile(s, s.repLoad);
+  const sv = profile ? row({c: {cmp: profile.hours * q.sv, ha: s.ha ? profile.hours * q.svZR + storage * (q.stZR - q.st) : 0, rep: s.rep * (replica.hours * q.sv + storage * q.st), sto: storage * q.st, bk: Math.max(0, s.chg * s.ret - storage) * q.bk, io: 0, ext: s.etl}}) : null;
   const useSv = sv && sv.total < prov.total, pick = useSv ? sv : prov;
-  const svMax = Math.min(80, Math.ceil(R / 3)), svMin = Math.max(0.5, Math.round(2 * m / 3 * 2) / 2);
-  return row({key: 'azsql', name: 'Azure SQL Database', sub: 'General Purpose · ' + (useSv ? 'serverless ' + svMin + '–' + svMax + ' vCores' : vc + ' vCores / ' + (vc * 5.1).toFixed(1) + ' GB') + (s.ha ? ' · zone-redundant' : '') + ' · SQL Server engine',
-    c: pick.c, notes: [(useSv ? 'Provisioned ' + vc + ' vCores' : (sv ? 'Serverless' : 'Serverless (≤ 240 GB)')) + ' would be ' + (useSv ? fmt(prov.total) : (sv ? fmt(sv.total) : 'n/a')) + '/mo.',
+  return row({key: 'azsql', name: 'Azure SQL Database', sub: 'General Purpose · ' + (useSv ? 'serverless ' + profile.min + '–' + profile.max + ' vCores' : vc + ' vCores / ' + memory + ' GB') + (s.ha ? ' · zone-redundant' : '') + ' · SQL Server engine',
+    c: pick.c, notes: [(useSv ? 'Provisioned ' + vc + ' vCores' : 'Serverless') + ' would be ' + (useSv ? fmt(prov.total) : (sv ? fmt(sv.total) : 'n/a')) + '/mo.',
       'SQL Server engine (T-SQL), not Postgres: switching either way is a migration project.',
+      'Serverless bills the larger of modeled memory / 3 GB and the configured CPU/memory minimum; every geo-replica has its own minimum.',
       (s.azsqlAhb ? 'Azure Hybrid Benefit: provisioned compute without the SQL license (serverless always includes it).' : 'License included. Tick Hybrid Benefit if the customer brings SQL Server licenses.')]
+      .concat(s.rep ? ['Geo-replication disables auto-pause on the primary and replicas.'] : [])
       .concat(s.ha ? ['HA is built in; zone redundancy adds a per-vCore and storage uplift. Business Critical (3 replicas, readable secondary) costs more.'] : [])
-      .concat(cd && !useSv ? ['Reserved −' + Math.round(cd * 100) + '% on provisioned compute.'] : []).concat(s.stopIdle && !useSv ? ['Provisioned databases can\'t be stopped, so 730 h.'] : []),
-    size: [['Compute', useSv ? 'Serverless ' + svMin + '–' + svMax + ' vCores (3 GB/vCore) · ~' + Math.round(vch).toLocaleString() + ' vCore-h' + (s2z ? ' with auto-pause' : '') : 'Provisioned ' + vc + ' vCores / ' + (vc * 5.1).toFixed(1) + ' GB (5.1 GB/vCore)'],
-      ['Hours', useSv && s2z ? Math.round(act) + ' h (auto-pause)' : '730 h'], ['HA', s.ha ? 'built-in + zone redundancy' : 'built-in (locally redundant)'],
-      ['Read scale', s.rep ? pl(s.rep, 'geo-replica / copy') + ', each billed as a database' : 'none'], ['Storage', 'GP data 5 GB–4 TB provisioned · backups RA-GRS beyond 100% free']],
+      .concat(cd && !useSv ? ['Reserved −' + Math.round(cd * 100) + '% on provisioned compute.'] : []),
+    size: [['Compute', useSv ? 'Serverless ' + profile.min + '–' + profile.max + ' vCores · ~' + Math.round(profile.hours).toLocaleString() + ' vCore-h' + (profile.pause ? ' with auto-pause' : '') : 'Provisioned ' + vc + ' vCores / ' + memory + ' GB'],
+      ['Hours', useSv && profile.pause ? Math.round(activeHours(s)) + ' h (auto-pause)' : '730 h'], ['HA', s.ha ? 'built-in + zone redundancy' : 'built-in (locally redundant)'],
+      ['Read scale', s.rep ? pl(s.rep, 'geo-replica') + ', each billed as a database' : 'none'], ['Storage', storage.toLocaleString() + ' GB provisioned · GP maximum 4,096 GB · backups RA-GRS beyond 100% free']],
     rates: 'Provisioned ' + fmt2(q.li) + ' (AHB ' + fmt2(q.ahb) + ') /vCore-hr · ZR +' + fmt2(q.zr) + ' · serverless ' + fmt2(q.sv) + '/vCore-hr · storage ' + fmt2(q.st) + ' (ZR ' + fmt2(q.stZR) + ') /GB-mo · backup ' + fmt2(q.bk) + '/GB-mo'});
 }
 
 function calcClickHouse(s) {
   const g = CHPG[s.region], R = 2 * s.peak;
   if (!g) return {key: 'ch', name: 'ClickHouse Postgres', na: 'Not offered in Hong Kong (nearest: AWS Singapore).'};
-  const fit = CHPG.sizes.find(x => x[1] >= R && x[2] >= s.sto) || CHPG.sizes[CHPG.sizes.length - 1];
+  const fit = CHPG.sizes.find(x => x[1] >= R && x[2] >= s.sto);
+  if (!fit) return {key: 'ch', name: 'ClickHouse Postgres', na: 'Exceeds the priced memory-optimized configurations (maximum 3,800 GB local NVMe); request a storage-optimized quote.'};
   const [vc, gb, nvme] = fit, df = s.chBeta ? 0.5 : 1, node = vc * g.vm * df;
   const byStorage = CHPG.sizes.find(x => x[1] >= R)[0] < vc;
   const c = {cmp: node, ha: s.ha ? node : 0, rep: s.rep * node, sto: 0, bk: 0, io: 0, ext: s.etl};
@@ -764,18 +785,24 @@ function render() {
 const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'peak', 'sto', 'pat', 'io', 'ha', 'rep', 'sync', 'disc', 'ret', 'syncShare', 'syncDbu', 'promo', 'chBeta', 'azsqlAhb'];
 const DEFAULTS = {};
 function getVal(id) { const e = $(id); return e.type === 'checkbox' ? (e.checked ? 1 : 0) : e.value; }
-function setVal(id, v) { const e = $(id); if (e.type === 'checkbox') e.checked = (v === true || v === 1 || v === '1'); else e.value = v; }
+function setVal(id, v) {
+  const e = $(id);
+  if (e.type === 'checkbox') { if ([true, false, 1, 0, '1', '0'].includes(v)) e.checked = (v === true || v === 1 || v === '1'); }
+  else if (e.options) { if ([...e.options].some(o => o.value === String(v))) e.value = v; }
+  else { const n = String(v).trim() === '' ? NaN : Number(v); e.value = Number.isFinite(n) ? n : DEFAULTS[id]; e.value = num(id); }
+}
 function writeHash() { const p = new URLSearchParams(); p.set('w', curPreset); IDS.forEach(id => p.set(id, getVal(id))); history.replaceState(null, '', '#' + p.toString()); }
-function readHash() { if (!location.hash) return false; const p = new URLSearchParams(location.hash.slice(1)); if (!p.has('w')) return false; const w = p.get('w'); curPreset = PRESETS[w] ? w : 'custom'; if (OLDPAT[w]) $('pat').value = OLDPAT[w]; IDS.forEach(id => { if (p.has(id)) setVal(id, p.get(id)); }); return true; }
+function readHash() { if (!location.hash) return false; const p = new URLSearchParams(location.hash.slice(1)); if (!p.has('w')) return false; const w = p.get('w'); curPreset = Object.hasOwn(PRESETS, w) ? w : 'custom'; if (Object.hasOwn(OLDPAT, w)) $('pat').value = OLDPAT[w]; IDS.forEach(id => { if (p.has(id)) setVal(id, p.get(id)); }); return true; }
 function markTab() { document.querySelectorAll('#tabs .tab').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === curPreset))); }
-function applyPreset(k) { curPreset = k; if (PRESETS[k]) { const q = PRESETS[k]; $('pat').value = q.pat; $('peak').value = q.peak; $('sto').value = q.sto; $('io').value = q.io; $('ha').value = String(q.ha); $('rep').value = String(q.rep); $('sync').value = q.sync; } markTab(); OPEN.clear(); render(); }
+function applyPreset(k) { curPreset = k; if (Object.hasOwn(PRESETS, k)) { const q = PRESETS[k]; $('pat').value = q.pat; $('peak').value = q.peak; $('sto').value = q.sto; $('io').value = q.io; $('ha').value = String(q.ha); $('rep').value = String(q.rep); $('sync').value = q.sync; } markTab(); OPEN.clear(); render(); }
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
 function summaryText() {
-  const s = state(), rows = allRows(s).filter(r => !r.na).sort((a, b) => a.total - b.total);
+  const s = state(), all = allRows(s), rows = all.filter(r => !r.na).sort((a, b) => a.total - b.total);
   const L = ['Lakebase Calculator estimate: ' + REG[s.region].name + ', public list prices checked ' + longDate(REG[s.region].checked || CHECKED) + '. Estimate only; verify before use.',
     'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + fmtSize(s.sto) + ', HA ' + (s.ha ? 'on' : 'off') + ', ' + pl(s.rep, 'replica') + ', I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR' + (s.syncMode !== 'none' ? ', lakehouse sync ' + SYNCM[s.syncMode] + ' (' + fmt(s.sync) + '/mo, same for all)' : ''),
     'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
   rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after the promo ends: ' + fmt(r.post) + '/mo]' : '')));
+  all.filter(r => r.na).forEach(r => L.push(r.name + ': n/a — ' + r.na));
   L.push('', location.href);
   return L.join('\n');
 }

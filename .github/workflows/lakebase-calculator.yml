@@ -1,0 +1,30 @@
+name: Lakebase calculator checks
+
+on:
+  push:
+    paths:
+      - 'lakebase-compete-calculator/**'
+      - '.github/workflows/lakebase-calculator.yml'
+  pull_request:
+    paths:
+      - 'lakebase-compete-calculator/**'
+      - '.github/workflows/lakebase-calculator.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check inline JavaScript syntax
+        run: |
+          node -e 'const fs = require("node:fs"); fs.writeFileSync("/tmp/lakebase-script.js", fs.readFileSync("lakebase-compete-calculator/index.html", "utf8").match(/<script>([\s\S]*?)<\/script>/)[1]);'
+          node --check /tmp/lakebase-script.js
+      - name: Check calculator regressions
+        run: node --test lakebase-compete-calculator/calculator.test.cjs
