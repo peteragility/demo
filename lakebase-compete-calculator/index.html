@@ -191,6 +191,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <h1>Lakebase Calculator</h1>
     <span class="intref" title="Built by Peter Chan from Databricks, from providers' official list prices; not an official Databricks publication.">Public list prices · not an official quote</span>
     <p><span class="pl">Estimate Databricks Lakebase monthly cost and compare it with Aurora, RDS, Azure, Cloud SQL and ClickHouse Postgres · </span>USD per month · prices checked <b id="checked">—</b></p>
+    <p><a href="../lakebase-objection-faq/">Lakebase Field Guide: sales plays, technical FAQ &amp; production proof ↗</a></p>
   </header>
 
   <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Common scenarios">
@@ -237,25 +238,34 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
   <div class="tblwrap main"><table class="mx" id="mx"></table></div>
 
   <section class="techsec">
-    <h2>Technical comparison</h2>
+    <h2 id="technical-comparison">Technical comparison</h2>
+    <p>Features checked 12 Oct 2026. Service capabilities depend on version, region and tier. The estimates above price selected configurations: RDS Multi-AZ instance, Azure PG v5 + SSD v2, Azure SQL General Purpose standard-series, Cloud SQL Enterprise and ClickHouse Scale memory-optimized. <a href="../lakebase-objection-faq/#aurora">Read the technical tradeoffs ↗</a></p>
     <div class="tblwrap"><table class="mx tech">
     <thead><tr><th scope="col">Capability</th><th scope="col" class="lb">Lakebase</th><th scope="col">Aurora PG</th><th scope="col">Aurora Serverless v2</th><th scope="col">RDS PG</th><th scope="col">Azure PG Flexible</th><th scope="col">Azure SQL Database</th><th scope="col">Cloud SQL PG</th><th scope="col">ClickHouse Postgres</th></tr></thead>
     <tbody>
     <tr><td>Engine</td><td class="lb">Postgres 16–18</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres (Beta) + pg_clickhouse</td></tr>
     <tr><td>Billing unit</td><td class="lb">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>Per instance-hour: CPU + RAM + local NVMe bundled (Basic / Scale / Enterprise tiers)</td></tr>
-    <tr><td>Size range</td><td class="lb">Autoscale 0.5–64 CU (max−min ≤ 16); fixed to 112 CU</td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU</td><td>t4g → r8g.48xlarge</td><td>Burstable → 96 vCores</td><td>GP 2–80 vCores (5.1 GB/vCore) · serverless 0.5–80</td><td>96 vCPU / 624 GiB (Ent+ 128 / 864)</td><td>1 vCPU / 8 GB / 59 GB → 96 vCPU / 768 GB / 60 TB</td></tr>
-    <tr><td>Autoscaling</td><td class="lb">In place, no restart or dropped connections</td><td>No</td><td>Yes</td><td>No (storage only)</td><td>No</td><td>Serverless tier</td><td>No</td><td>No (resize runs old + new in parallel, both billed)</td></tr>
-    <tr><td>Scale to zero</td><td class="lb">Yes ≤ 32 CU · timeout 60 s–7 d (default 24 h) · resume in a few hundred ms</td><td>Manual stop ≤ 7 d</td><td>Yes (0-ACU auto-pause)</td><td>Manual stop ≤ 7 d</td><td>Manual stop</td><td>Serverless auto-pause; provisioned can't stop</td><td>Manual stop</td><td>No</td></tr>
-    <tr><td>HA</td><td class="lb">1–3 secondaries across AZs, ≥ primary size, can serve reads</td><td>Needs an Aurora Replica (billed)</td><td>Reader in another AZ (billed)</td><td>Multi-AZ: ×2 instance + storage rates; standby not readable</td><td>Standby: same vCores + storage</td><td>Built in; zone redundancy is an uplift; Business Critical = replicas + readable secondary</td><td>Regional: ×2 CPU, RAM, storage rates</td><td>Standbys, each billed as an instance</td></tr>
-    <tr><td>Read replicas</td><td class="lb">6 per branch · seconds to create · no extra storage · autoscale + scale-to-zero</td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases</td><td>Own instance + storage</td><td>Yes · billed as instances</td></tr>
-    <tr><td>Storage</td><td class="lb">Separated · billed on data stored · per-branch quota adjustable</td><td>Auto-grow to 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>Provisioned · P-tier 2× steps, no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Local NVMe tied to instance size (up to 60 TB)</td></tr>
-    <tr><td>I/O charges</td><td class="lb">None</td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2 IOPS above 3,000</td><td>IOPS limits scale with vCores</td><td>None</td><td>None (local NVMe)</td></tr>
-    <tr><td>PITR / backups</td><td class="lb">2–30 d (default 7) · history at PITR rate</td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS default</td><td>Backups per GB used</td><td>Free in Beta · 1 d (Basic) / 7 d (Scale) retention</td></tr>
-    <tr><td>Branch / clone</td><td class="lb">Instant copy-on-write branches (500 / project)</td><td>Fast clone</td><td>Fast clone</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>Restore from backup</td></tr>
-    <tr><td>Lakehouse / analytics</td><td class="lb">Managed synced tables from Unity Catalog (snapshot, triggered or continuous; serverless pipeline DBUs) · UC-governed</td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing</td><td>Native CDC to ClickHouse (free in Beta)</td></tr>
-    <tr><td>Pooling</td><td class="lb">Built-in PgBouncer · 8 CU ≈ 1,795 direct connections</td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling (Ent+)</td><td>—</td></tr>
-    <tr><td>Status</td><td class="lb">GA · Beta on Google Cloud</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
+    <tr><td>Size range</td><td class="lb">0.5 CU, then integers · autoscale to 64 CU (max−min ≤16); fixed to 112 CU</td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU on supported engine/platform versions; older versions have lower limits</td><td>t4g → r8g.48xlarge</td><td>Burstable → 192 vCores on v6; model prices v5 to 96</td><td>Priced GP standard: 2–80 vCores (~5.2 GB/vCore) · serverless min/max depends on SKU</td><td>Enterprise custom: 1 or even 2–96 vCPU / 3.75–624 GiB; Plus N2 to 128 / 864</td><td>1 vCPU / 8 GB / 59 GB → 96 vCPU / 768 GB / 60 TB</td></tr>
+    <tr><td>Autoscaling</td><td class="lb">Within configured range: no restart; changing min/max may interrupt connections</td><td>No</td><td>Yes</td><td>Storage autogrow; manual compute resize</td><td>Manual compute resize; storage autogrow depends on disk type</td><td>Serverless compute</td><td>Storage autogrow; manual compute resize</td><td>Storage autoscale; replacement cutover drops connections; old + new billed</td></tr>
+    <tr><td>Scale to zero</td><td class="lb">Yes, max ≤32 CU and no HA · timeout 60 s–7 d (default 24 h) · wake in a few hundred ms, before query work</td><td>Manual stop ≤ 7 d</td><td>0-ACU auto-pause on eligible configurations; typical resume ~15 s</td><td>Manual stop ≤ 7 d</td><td>Manual stop</td><td>GP serverless auto-pause on eligible configurations; geo-replication disables it</td><td>Manual stop</td><td>No</td></tr>
+    <tr><td>HA</td><td class="lb">1–3 AZ-separated secondaries, ≥ primary size; reads opt-in; failover disconnects clients</td><td>Needs an Aurora Replica (billed)</td><td>Reader in another AZ (billed)</td><td>Priced Multi-AZ instance: one unreadable standby · Multi-AZ cluster has two readable standbys (not priced)</td><td>Standby: same vCores + storage</td><td>Built in; zone redundancy is an uplift; Business Critical = replicas + readable secondary</td><td>Regional: ×2 CPU, RAM, storage rates</td><td>Standbys, each billed as an instance</td></tr>
+    <tr><td>Read replicas</td><td class="lb">6 standalone / branch · shared storage, separate compute · eventual consistency; not HA candidates</td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases</td><td>Own instance + storage</td><td>Yes · billed as instances</td></tr>
+    <tr><td>Storage</td><td class="lb">Separated · billed on data stored · per-branch quota adjustable</td><td>Auto-grow to 256 TiB (PG 17.5+, 16.9+, 15.13+); earlier versions 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>SSD v2: 1 GiB steps, to 64 TiB · SSD v1: fixed tiers, to 32 TiB · no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Local NVMe; service to 60 TB · priced family to 3,800 GB</td></tr>
+    <tr><td>I/O charges</td><td class="lb">No I/O-request meter; storage/history charged</td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2: 3,000 IOPS free below 400 GiB; 12,000 at ≥400 GiB; extra IOPS/throughput billed</td><td>IOPS limits scale with vCores</td><td>None</td><td>None (local NVMe)</td></tr>
+    <tr><td>PITR / backups</td><td class="lb">2–30 d (default 7) · history at PITR rate</td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS default</td><td>PITR logs: Enterprise 1–7 d, Plus 1–35 d · logs in Cloud Storage free; backups billed</td><td>Free in Beta · 1 d (Basic) / 7 d (Scale) retention</td></tr>
+    <tr><td>Branch / clone</td><td class="lb">Copy-on-write (500 / project) · expiring: changed-data billing; permanent: full-data billing</td><td>Copy-on-write clone, new DB cluster</td><td>Copy-on-write clone, new DB cluster</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>PITR branch: full new deployment from backup + WAL</td></tr>
+    <tr><td>Lakehouse / analytics</td><td class="lb">Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT (Beta) · UC for analytics; PG roles for direct access</td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing</td><td>Native CDC to ClickHouse (free in Beta)</td></tr>
+    <tr><td>Pooling</td><td class="lb">Built-in PgBouncer transaction mode · native password roles only; OAuth direct · 10K clients ≠ running transactions</td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling: Plus only (model prices Enterprise)</td><td>Bundled PgBouncer, enabled in connection settings</td></tr>
+    <tr><td>Status</td><td class="lb">AWS / Azure GA; GCP Beta · individual features have separate status</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
     </tbody></table></div>
+    <details><summary>Technical sources by provider</summary><ul>
+      <li><a href="../lakebase-objection-faq/#sources">Lakebase: dated status and sources beside each answer</a></li>
+      <li>AWS: <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_Limits.html" target="_blank" rel="noopener">Aurora limits</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2-auto-pause.html" target="_blank" rel="noopener">Auto-pause</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html" target="_blank" rel="noopener">Cloning</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html" target="_blank" rel="noopener">RDS HA deployments</a></li>
+      <li>Azure PG: <a href="https://learn.microsoft.com/en-us/azure/postgresql/compute-storage/concepts-compute" target="_blank" rel="noopener">Compute</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/compute-storage/concepts-storage" target="_blank" rel="noopener">Storage</a> · <a href="https://azure.microsoft.com/en-us/pricing/details/postgresql/flexible-server/" target="_blank" rel="noopener">SSD v2 included IOPS</a></li>
+      <li>Azure SQL: <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-vcore-single-databases" target="_blank" rel="noopener">SKU limits</a> · <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/serverless-tier-overview" target="_blank" rel="noopener">Serverless &amp; auto-pause</a></li>
+      <li>Cloud SQL: <a href="https://docs.cloud.google.com/sql/docs/postgres/instance-settings" target="_blank" rel="noopener">Sizing</a> · <a href="https://docs.cloud.google.com/sql/docs/postgres/backup-recovery/restore" target="_blank" rel="noopener">PITR retention</a> · <a href="https://cloud.google.com/sql" target="_blank" rel="noopener">Free PITR log storage</a> · <a href="https://docs.cloud.google.com/sql/docs/postgres/managed-connection-pooling" target="_blank" rel="noopener">Pooling</a></li>
+      <li>ClickHouse: <a href="https://clickhouse.com/docs/products/managed-postgres/pricing" target="_blank" rel="noopener">Tiers</a> · <a href="https://clickhouse.com/docs/products/managed-postgres/scaling" target="_blank" rel="noopener">Scaling</a> · <a href="https://clickhouse.com/docs/products/managed-postgres/branching" target="_blank" rel="noopener">Branching</a> · <a href="https://clickhouse.com/docs/products/managed-postgres/connection" target="_blank" rel="noopener">Pooling</a></li>
+    </ul></details>
   </section>
 
   <footer class="foot">
@@ -301,7 +311,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
           </ul></li>
         <li><b>Lakebase compute:</b>
           <ul>
-            <li><b>Minimum:</b> billed 730 h at the Always-On minimum-usage rate. With scale-to-zero (Dev / test), active hours are billed at the autoscaling rate instead.</li>
+            <li><b>Minimum:</b> billed 730 h at the Always-On minimum-usage rate, assuming scale-to-zero has been disabled for the qualifying 24 consecutive hours. With scale-to-zero (Dev / test), active hours are billed at the autoscaling rate instead.</li>
             <li><b>Above the minimum:</b> usage while busy is billed at the autoscaling rate.</li>
             <li><b>HA standby:</b> bills the same CU-hours as the primary.</li>
             <li><b>Read replicas:</b> each targets half the primary capacity, rounded up to supported CU sizes, with a 0.5 CU minimum.</li>
@@ -330,7 +340,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Cloud SQL:</b> HA rates.</li>
             <li><b>ClickHouse:</b> +1 standby.</li>
           </ul></li>
-        <li><b>Backups:</b> AWS, Azure PG and Azure SQL bill changes × window beyond 100% of DB size. Cloud SQL bills DB + changes. ClickHouse (Beta) doesn't bill backups.</li>
+        <li><b>Backups:</b> AWS, Azure PG and Azure SQL estimate changes × window beyond 100% of DB size. Cloud SQL estimates one DB-sized backup footprint; PITR logs in Cloud Storage are free. Actual backup bytes vary. Cloud SQL Enterprise and ClickHouse Scale are excluded for windows beyond 7 days.</li>
         <li><b>Aurora / Azure SQL:</b> the row uses the cheaper of Standard vs I/O-Optimized (Aurora) or provisioned vs serverless (Azure SQL), and names the other.</li>
         <li><b>Commitments</b> (instance compute only):
           <ul>
@@ -340,7 +350,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Not covered:</b> burstable classes, Serverless v2 and ClickHouse.</li>
           </ul></li>
         <li><b>ClickHouse Postgres:</b> the smallest memory-optimized size whose RAM ≥ peak and local NVMe ≥ DB size, at Scale-tier list price, with the 50% Beta discount when ticked.</li>
-        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies, and lakehouse ETL / sync costs. ClickHouse Beta pricing may change at GA.</li>
+        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies, snapshots and extra SSD v2 throughput. Lakehouse sync costs are added only when selected. ClickHouse Beta pricing may change at GA.</li>
       </ul></details>
       <details><summary>Billing gotchas</summary><ul>
         <li><b>Lakebase:</b>
@@ -355,16 +365,16 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
         <li><b>Aurora:</b> Standard bills every I/O request. I/O-Optimized costs ~30% more per instance and 2.25× the storage rate. Storage HA isn't compute HA: fast failover needs a billed replica.</li>
         <li><b>Serverless v2:</b> higher unit price than provisioned. A tier 0–1 reader scales with the writer. No RIs.</li>
         <li><b>RDS:</b> Multi-AZ doubles instance, storage and IOPS rates. Each replica brings its own storage. gp3 includes 3,000 IOPS below 400 GB. Stopped instances restart after 7 days.</li>
-        <li><b>Azure:</b> the standby duplicates vCores and storage. Burstable has no HA. P-tier storage grows only in 2× steps and can't shrink.</li>
+        <li><b>Azure:</b> the standby duplicates vCores and storage. Burstable has no HA. Premium SSD v1 uses fixed tiers; the model prices SSD v2 with 1 GiB steps. Neither can shrink.</li>
         <li><b>Azure SQL Database:</b>
           <ul>
             <li><b>Engine:</b> SQL Server, so moving to Postgres means a schema and T-SQL migration.</li>
             <li><b>License:</b> list prices include the SQL license; Hybrid Benefit removes it on provisioned only.</li>
-            <li><b>Stop and pause:</b> provisioned databases can't be stopped; serverless auto-pauses.</li>
+            <li><b>Stop and pause:</b> provisioned databases can't be stopped; eligible GP serverless configurations auto-pause; geo-replication disables it.</li>
             <li><b>Zone redundancy:</b> an uplift on compute and storage.</li>
             <li><b>Read scale:</b> on General Purpose, read replicas are full databases.</li>
           </ul></li>
-        <li><b>Cloud SQL:</b> HA doubles CPU, RAM and storage rates. Backups have no free allowance.</li>
+        <li><b>Cloud SQL:</b> HA doubles CPU, RAM and storage rates. Enterprise custom RAM starts at 3.75 GiB; PITR is limited to 7 days. Backups are billed, while PITR logs in Cloud Storage are free.</li>
         <li><b>ClickHouse Postgres:</b>
           <ul>
             <li><b>Beta pricing:</b> 50% off today; egress and longer backup retention may be charged at GA.</li>
@@ -639,22 +649,24 @@ function calcAzure(s) {
     const fam = s.family === 'gp' ? 'D' : 'E', per = fam === 'D' ? 4 : 8, sizes = fam === 'D' ? [2, 4, 8, 16, 32, 48, 64, 96] : [2, 4, 8, 16, 20, 32, 48, 64, 96];
     vc = sizes.find(v => v * per >= R) || 96; gb = vc * per; hourly = vc * z[fam]; label = fam + vc + 'ds_v5';
   }
-  const comp = hourly * hrs * (1 - cd), xi = Math.max(0, s.peakIops - 3000);
+  const includedIops = s.sto >= 400 ? 12000 : 3000;
+  const comp = hourly * hrs * (1 - cd), xi = Math.max(0, s.peakIops - includedIops);
   const c = {cmp: comp, ha: s.ha ? comp + s.sto * z.st + xi * z.iops : 0, rep: s.rep * (comp + s.sto * z.st), sto: s.sto * z.st, bk: Math.max(0, s.chg * s.ret - s.sto) * z.bk, io: xi * z.iops, ext: s.etl};
   return row({key: 'azure', name: 'Azure PG Flexible', sub: label + ' · ' + vc + ' vCores / ' + gb + ' GiB' + (s.ha ? ' · zone-redundant HA' : '') + ' · ' + REG[s.region].az,
-    c, notes: (s.ha ? ['HA standby has the same vCores and storage.'] : []).concat(s.burst && R <= 8 && s.ha ? ['Burstable has no HA, so D/E series is used.'] : []).concat(cd ? ['Reserved −' + Math.round(cd * 100) + '% on compute.'] : []),
+    c, notes: (s.ha ? ['HA standby has the same vCores and storage.'] : []).concat(['SSD v2 extra throughput is not modeled; verify disk and VM performance limits.']).concat(s.burst && R <= 8 && s.ha ? ['Burstable has no HA, so D/E series is used.'] : []).concat(cd ? ['Reserved −' + Math.round(cd * 100) + '% on compute.'] : []),
     size: [['Compute', label + ' · ' + vc + ' vCores / ' + gb + ' GiB'], ['Hours', Math.round(hrs) + ' h'], ['HA', s.ha ? 'standby, same vCores + storage' : 'off'],
-      ['Read scale', s.rep ? pl(s.rep, 'replica') + ', own compute + storage' : 'none'], ['I/O', 'Premium SSD v2: 3,000 IOPS included' + (xi ? ' + ' + xi.toLocaleString() : '')]],
+      ['Read scale', s.rep ? pl(s.rep, 'replica') + ', own compute + storage' : 'none'], ['I/O', 'Premium SSD v2: ' + includedIops.toLocaleString() + ' IOPS included' + (xi ? ' + ' + xi.toLocaleString() : '')]],
     rates: 'Edsv5 ' + fmt2(z.E) + ' · Ddsv5 ' + fmt2(z.D) + ' /vCore-hr · B2s ' + fmt2(z.B2s) + ' · B2ms ' + fmt2(z.B2ms) + ' /hr · storage ' + fmt2(z.st) + '/GB-mo · IOPS ' + fmt2(z.iops) + '/IOPS-mo · backup ' + fmt2(z.bk) + ' beyond 100%'});
 }
 
 function calcCloudSQL(s) {
+  if (s.ret > 7) return {key: 'csql', name: 'Cloud SQL (PG)', na: 'Enterprise PITR is limited to 7 days; Enterprise Plus supports up to 35 days but needs a separate quote.'};
   const g = CSQL[s.region], act = activeHours(s), R = 2 * s.peak, cd = COMMIT.gcp[s.commit], hrs = s.stopIdle ? act : HRS;
   let vc = Math.max(1, Math.ceil(R / (s.family === 'gp' ? 4 : 6.5))); if (vc > 1 && vc % 2) vc++; vc = Math.min(vc, 96);
-  const mem = Math.min(R, 624), node = (vc * g.v + mem * g.m) * hrs * (1 - cd);
-  const c = {cmp: node, ha: s.ha ? node + s.sto * (g.ssdHA - g.ssd) : 0, rep: s.rep * (node + s.sto * g.ssd), sto: s.sto * g.ssd, bk: (s.sto + s.chg * s.ret) * g.bk, io: 0, ext: s.etl};
+  const mem = Math.max(3.75, Math.min(R, 624)), node = (vc * g.v + mem * g.m) * hrs * (1 - cd);
+  const c = {cmp: node, ha: s.ha ? node + s.sto * (g.ssdHA - g.ssd) : 0, rep: s.rep * (node + s.sto * g.ssd), sto: s.sto * g.ssd, bk: s.sto * g.bk, io: 0, ext: s.etl};
   return row({key: 'csql', name: 'Cloud SQL (PG)', sub: 'Enterprise · ' + vc + ' vCPU / ' + mem + ' GiB' + (s.ha ? ' · regional HA' : '') + ' · ' + REG[s.region].gcp,
-    c, notes: (s.ha ? ['HA doubles CPU, RAM and storage rates.'] : []).concat(['Backups billed per GB used (no free allowance).']).concat(cd ? ['CUD −' + Math.round(cd * 100) + '% on vCPU and RAM.'] : []),
+    c, notes: (s.ha ? ['HA doubles CPU, RAM and storage rates.'] : []).concat(['Backup footprint estimated at one database size, billed per GB used; measure actual bytes. PITR logs in Cloud Storage are free (Enterprise: up to 7 days).']).concat(cd ? ['CUD −' + Math.round(cd * 100) + '% on vCPU and RAM.'] : []),
     size: [['Compute', 'Enterprise custom · ' + vc + ' vCPU / ' + mem + ' GiB'], ['Hours', Math.round(hrs) + ' h'], ['HA', s.ha ? 'regional (HA rates)' : 'zonal'],
       ['Read scale', s.rep ? pl(s.rep, 'replica') + ', own storage' : 'none'], ['I/O', 'no I/O charges; IOPS scale with disk size and vCPU']],
     rates: fmt2(g.v) + '/vCPU-hr + ' + fmt2(g.m) + '/GiB-hr (HA ×2) · SSD ' + fmt2(g.ssd) + ' (HA ' + fmt2(g.ssdHA) + ') /GB-mo · backup ' + fmt2(g.bk) + '/GB-mo'});
@@ -704,6 +716,7 @@ function calcAzureSQL(s) {
 function calcClickHouse(s) {
   const g = CHPG[s.region], R = 2 * s.peak;
   if (!g) return {key: 'ch', name: 'ClickHouse Postgres', na: 'Not offered in Hong Kong (nearest: AWS Singapore).'};
+  if (s.ret > 7) return {key: 'ch', name: 'ClickHouse Postgres', na: 'The priced Scale tier retains backups for 7 days; confirm an alternative for longer retention.'};
   const fit = CHPG.sizes.find(x => x[1] >= R && x[2] >= s.sto);
   if (!fit) return {key: 'ch', name: 'ClickHouse Postgres', na: 'Exceeds the priced memory-optimized configurations (maximum 3,800 GB local NVMe); request a storage-optimized quote.'};
   const [vc, gb, nvme] = fit, df = s.chBeta ? 0.5 : 1, node = vc * g.vm * df;

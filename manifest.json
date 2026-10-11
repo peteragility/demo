@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "pages": [
   {
    "path": "aidecide-arena/",
@@ -17,15 +17,8 @@
   },
   {
    "path": "lakebase-objection-faq/",
-   "title": "Lakebase Objections FAQ",
-   "desc": "Nine technical objections answered honestly · incl. Aurora head-to-head",
-   "tag": "Work",
-   "color": "#f7b731"
-  },
-  {
-   "path": "lakebase-sales-play/",
-   "title": "Lakebase Sales Play",
-   "desc": "銷售 playbook",
+   "title": "Lakebase Field Guide",
+   "desc": "Combined sales plays and technical FAQ: architecture, limits, Aurora tradeoffs, pricing and production proof",
    "tag": "Work",
    "color": "#f7b731"
   },

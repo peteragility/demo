@@ -107,3 +107,36 @@ test('all regions, load patterns and peak sizes produce finite quotes with valid
     assert.ok(run('state().peak - state().floor <= 16'));
   }
 });
+
+test('Azure SSD v2 included IOPS changes at 400 GiB on primary and HA', () => {
+  const {run, elements} = calculator();
+  elements.peak.value = '7'; elements.io.value = 'heavy'; elements.ha.value = '1';
+  elements.sto.value = '399';
+  close(run('calcAzure(state()).c.io'), (38400 - 3000) * .02);
+  elements.sto.value = '400';
+  close(run('calcAzure(state()).c.io'), (38400 - 12000) * .02);
+  close(run('calcAzure(state()).c.ha - calcAzure(state()).c.cmp - calcAzure(state()).c.sto'), run('calcAzure(state()).c.io'));
+});
+test('Cloud SQL custom memory respects minimum and does not bill free PITR logs', () => {
+  const {run, elements} = calculator();
+  elements.peak.value = '0'; elements.sto.value = '20'; elements.ret.value = '2';
+  assert.match(run('calcCloudSQL(state()).sub'), /1 vCPU \/ 3.75 GiB/);
+  close(run('calcCloudSQL(state()).c.cmp'), (.0413 + 3.75 * .007) * 730);
+  const backup = run('calcCloudSQL(state()).c.bk');
+  elements.ret.value = '7'; elements.io.value = 'heavy';
+  close(run('calcCloudSQL(state()).c.bk'), backup);
+});
+test('priced seven-day tiers are excluded for longer retention rather than underquoted', () => {
+  const {run, elements} = calculator();
+  elements.ret.value = '7';
+  assert.ok(run('Number.isFinite(calcCloudSQL(state()).total) && Number.isFinite(calcClickHouse(state()).total)'));
+  elements.ret.value = '8';
+  assert.match(run('calcCloudSQL(state()).na'), /Enterprise PITR is limited to 7 days/);
+  assert.match(run('calcClickHouse(state()).na'), /Scale tier retains backups for 7 days/);
+  assert.match(run('summaryText()'), /Cloud SQL \(PG\): n\/a/);
+});
+test('field guide production example agrees with the shared calculator scenario', () => {
+  const {run} = calculator('#w=custom&region=us&lbCloud=aws&lbTier=enterprise&commit=od&pat=peak&peak=7&sto=1000&ha=1&rep=2&io=mod&ret=7&promo=0&disc=0&sync=none');
+  run('readHash()');
+  close(run('calcLakebase(state()).total'), 6203.64);
+});
