@@ -14233,6 +14233,19 @@
               },
               "id": "variant-1",
               "model_match": "confirmed"
+            },
+            {
+              "in": 5.0,
+              "out": 25.0,
+              "cache_read": 0.5,
+              "cache_write": 6.25,
+              "label": "Global Flex",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-04",
+              "endpoint": "Global Flex",
+              "id": "variant-2",
+              "model_match": "confirmed"
             }
           ],
           "src": "azure",
@@ -15019,6 +15032,19 @@
                 "cache_write": 11.0
               },
               "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.0,
+              "out": 5.0,
+              "cache_read": 0.1,
+              "cache_write": 1.25,
+              "label": "Global Flex",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-04",
+              "endpoint": "Global Flex",
+              "id": "variant-4",
               "model_match": "confirmed"
             }
           ],

@@ -2071,6 +2071,16 @@
       "cache_read": 2.4,
       "cache_write": 30.0
      }
+    },
+    {
+     "label": "Global Flex",
+     "in": 5.0,
+     "out": 25.0,
+     "cache_read": 0.5,
+     "cache_write": 6.25,
+     "scope": "global",
+     "service": "flex",
+     "endpoint": "Global Flex"
     }
    ],
    "src": [
@@ -2567,6 +2577,16 @@
       "cache_read": 0.88,
       "cache_write": 11.0
      }
+    },
+    {
+     "label": "Global Flex",
+     "in": 1.0,
+     "out": 5.0,
+     "cache_read": 0.1,
+     "cache_write": 1.25,
+     "scope": "global",
+     "service": "flex",
+     "endpoint": "Global Flex"
     }
    ],
    "src": [
