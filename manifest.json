@@ -6,63 +6,81 @@
    "title": "AI Arena — ai_decide vs Jev",
    "desc": "Snake + Tic-Tac-Toe deathmatch, live model I/O inspection",
    "tag": "AI",
-   "color": "#FF3621"
+   "color": "#FF3621",
+   "category": "Interactive",
+   "featured": false
   },
   {
    "path": "lakebase-compete-calculator/",
    "title": "Lakebase Calculator",
    "desc": "Ballpark Lakebase cost vs Aurora, RDS, Azure PG, Azure SQL, Cloud SQL and ClickHouse Postgres from public list prices: common OLTP scenarios, HA, replicas, I/O",
-   "tag": "🔥 Hot",
-   "color": "#3fb950"
+   "tag": "Featured",
+   "color": "#3fb950",
+   "category": "Tools",
+   "featured": true
   },
   {
    "path": "lakebase-objection-faq/",
    "title": "Lakebase Field Guide",
    "desc": "Combined sales plays and technical FAQ: architecture, limits, Aurora tradeoffs, pricing and production proof",
    "tag": "Work",
-   "color": "#f7b731"
+   "color": "#f7b731",
+   "category": "Guides",
+   "featured": true
   },
   {
    "path": "lakehouse-quest.html",
    "title": "Lakehouse Quest",
-   "desc": "互動 Lakehouse 冒險",
+   "desc": "Databricks certification practice: questions, quests and exam preparation",
    "tag": "Interactive",
-   "color": "#4ecdc4"
+   "color": "#4ecdc4",
+   "category": "Interactive",
+   "featured": false
   },
   {
    "path": "llm-pricing/",
    "title": "LLM Token Pricing 對比",
    "desc": "Databricks FMAPI vs Fireworks / Azure / Bedrock / Vertex / Alibaba · 原廠價 · cache · regions · checked daily",
-   "tag": "🔥 Hot",
-   "color": "#ff6b35"
+   "tag": "Featured",
+   "color": "#ff6b35",
+   "category": "Tools",
+   "featured": true
   },
   {
    "path": "neon-orbit.html",
    "title": "Neon Orbit",
-   "desc": "Neon orbit demo",
+   "desc": "Explore an interactive orbital visualization",
    "tag": "Interactive",
-   "color": "#4ecdc4"
+   "color": "#4ecdc4",
+   "category": "Interactive",
+   "featured": false
   },
   {
    "path": "penang-trip/",
    "title": "Penang Trip",
    "desc": "檳城之旅 🌴",
    "tag": "Travel",
-   "color": "#2ecc71"
+   "color": "#2ecc71",
+   "category": "Travel",
+   "featured": false
   },
   {
    "path": "sandbox-compare/",
    "title": "Agent Sandbox Isolation Comparison",
    "desc": "Vendors vs open source — E2B/Modal/Daytona/AWS/Databricks/Monty ranked by isolation tier · 2026",
    "tag": "Work",
-   "color": "#58a6ff"
+   "color": "#58a6ff",
+   "category": "Guides",
+   "featured": false
   },
   {
    "path": "tongjian/",
    "title": "資治通鑑 · 294卷全文",
    "desc": "司馬光 · 周威烈王至後周世宗 · 前403–959",
    "tag": "📖 讀史",
-   "color": "#8b2f1f"
+   "color": "#8b2f1f",
+   "category": "Reading",
+   "featured": false
   }
  ]
 }

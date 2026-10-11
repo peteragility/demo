@@ -1,50 +1,201 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peter's Demo Site</title>
+<meta name="description" content="Peter Chan's collection of pricing tools, technical field guides, learning games and small interactive experiments.">
+<meta name="theme-color" content="#0d1117">
+<title>Peter's Demo Lab</title>
+<script src="assets/site-analytics.js" defer></script>
 <style>
-* { box-sizing: border-box; margin: 0; }
-body { background:#0d1117; color:#e6edf3; font-family:-apple-system,"Segoe UI",sans-serif; min-height:100vh; padding:48px 20px; }
-.wrap { max-width:860px; margin:0 auto; }
-h1 { font-size:2rem; color:#f0f6fc; margin-bottom:6px; }
-.sub { color:#8b949e; font-size:.92rem; margin-bottom:36px; }
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:14px; }
-a.card { display:block; background:#161b22; border:1px solid #30363d; border-radius:14px; padding:18px 18px 16px; text-decoration:none; color:inherit; transition:transform .15s,border-color .15s; position:relative; }
-a.card:hover { transform:translateY(-3px); border-color:#6e7681; }
-.tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--c,#58a6ff); background:color-mix(in srgb, var(--c,#58a6ff) 14%, transparent); border-radius:20px; padding:3px 10px; margin-bottom:10px; }
-.t { font-size:1.05rem; font-weight:600; color:#f0f6fc; margin-bottom:4px; line-height:1.35; }
-.d { font-size:.84rem; color:#8b949e; line-height:1.45; }
-.empty { color:#8b949e; padding:30px; text-align:center; grid-column:1/-1; }
-footer { margin-top:40px; color:#484f58; font-size:.78rem; text-align:center; }
-@media (max-width:600px){ h1{font-size:1.5rem} .grid{grid-template-columns:1fr} body{padding:32px 16px} }
+:root{color-scheme:dark;--bg:#0d1117;--panel:#161b22;--line:#30363d;--ink:#f0f6fc;--muted:#a1acb8;--accent:#83c5ff}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;min-height:100vh}
+a{color:var(--accent)}
+button,input,select{font:inherit}
+button,select{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+[hidden]{display:none!important}
+.wrap{max-width:1100px;margin:auto;padding:30px 24px 24px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;letter-spacing:.03em}
+.mark{display:grid;place-items:center;width:32px;height:32px;background:#1e3146;border:1px solid #385470;border-radius:9px;color:#b9dcff;font-size:12px;font-weight:700}
+header{padding:42px 0 32px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;font-weight:650}
+h1{font-size:clamp(32px,5vw,52px);line-height:1.12;letter-spacing:-.035em;max-width:780px;font-weight:720}
+.intro{font-size:17px;max-width:640px;color:var(--muted);margin-top:18px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:12px;color:var(--muted)}
+.meta b{color:#d9e4ee;font-weight:600}
+.explore{padding-top:28px}
+.tools{display:flex;gap:18px;align-items:end;margin-bottom:18px}
+.search{flex:1;position:relative}
+.tools label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px;font-weight:600}
+input,select{background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--ink);min-height:44px;padding:10px 13px;font-size:14px}
+input{width:100%;padding-right:68px}
+input::placeholder{color:#8b98a7}
+select{min-width:170px}
+.clear{position:absolute;right:8px;bottom:8px;background:transparent;border:0;color:var(--accent);font-size:12px;padding:4px 6px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter{background:transparent;border:1px solid var(--line);border-radius:20px;color:var(--muted);padding:7px 14px;font-size:12px;min-height:36px}
+.filter:hover{border-color:#64778a;color:var(--ink)}
+.filter[aria-pressed="true"]{color:#c5e3ff;background:#1b3146;border-color:#45688c}
+.results{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:22px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+a.card{display:flex;flex-direction:column;position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;text-decoration:none;color:inherit;min-height:222px;transition:border-color .15s,transform .15s;overflow-wrap:anywhere}
+a.card:hover{transform:translateY(-3px);border-color:var(--c)}
+a.card.featured{background:linear-gradient(140deg,color-mix(in srgb,var(--c) 8%,var(--panel)),var(--panel));border-top:2px solid var(--c)}
+.cardtop{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}
+.tag{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 65%,#fff);font-weight:650}
+.badge{color:#b6c3d0;border:1px solid #3c4b5a;font-size:10px;padding:2px 7px;border-radius:4px;white-space:nowrap}
+h2{font-size:18px;font-weight:650;line-height:1.35;letter-spacing:-.01em;margin-bottom:9px}
+.d{color:var(--muted);font-size:13px;line-height:1.65;flex:1}
+.cardfoot{display:flex;justify-content:space-between;gap:8px;margin-top:20px;font-size:11px;color:#b7c5d2}
+.arrow{font-size:17px;color:color-mix(in srgb,var(--c) 65%,#fff);line-height:1}
+.empty{color:var(--muted);padding:42px 20px;text-align:center;grid-column:1/-1;border:1px dashed var(--line);border-radius:12px}
+.retry{margin-top:16px;padding:8px 18px;background:#1b3146;border:1px solid #45688c;border-radius:6px;color:var(--ink)}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:38px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+footer a{text-decoration:none}
+noscript p{padding:20px 0}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.wrap{padding:22px 18px}header{padding:32px 0 26px}.intro{font-size:15px}.tools{align-items:stretch;flex-direction:column;gap:12px}.sort{display:flex;align-items:center;justify-content:space-between;gap:12px}.sort label{margin:0}.sort select{flex:1;max-width:240px}.grid{grid-template-columns:1fr}a.card{min-height:205px}input,select{font-size:16px}.results{margin-top:20px}}
+@media(prefers-reduced-motion:reduce){a.card{transition:none}a.card:hover{transform:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🚀 Peter's Demo Site</h1>
-  <div class="sub" id="sub">loading…</div>
-  <div class="grid" id="grid"></div>
-  <footer>auto-listed from manifest.json · <span id="count"></span></footer>
+<div class="brand"><span class="mark" aria-hidden="true">PC</span><span>Peter Chan / Demo lab</span></div>
+<header>
+<p class="eyebrow">Tools · Field notes · Experiments</p>
+<h1>A place to compare,<br>learn and try things.</h1>
+<p class="intro">Pricing calculators, technical guides and interactive demos. Pick a topic, open a tool, and explore.</p>
+<div class="meta"><span><b id="pageCount">—</b> demos</span><span>Updated <b id="updated">—</b></span></div>
+</header>
+<main class="explore" aria-label="Demo collection">
+<div class="tools">
+<div class="search"><label for="search">Find a demo</label><input id="search" type="search" placeholder="Try Lakebase, pricing, agents or games…" autocomplete="off"><button class="clear" id="clearSearch" type="button" hidden>Clear</button></div>
+<div class="sort"><label for="sort">Sort by</label><select id="sort"><option value="featured">Featured first</option><option id="popularOption" value="popular" disabled>Most visited</option><option value="az">A–Z</option></select></div>
+</div>
+<div class="filters" id="filters" role="group" aria-label="Filter demos by category"></div>
+<div class="results"><span id="resultCount" role="status" aria-live="polite">Loading demos…</span><span id="statsStatus">Visit stats not yet available</span></div>
+<div class="grid" id="grid" aria-busy="true"><p class="empty">Loading the collection…</p></div>
+<noscript><p>Open the <a href="lakebase-compete-calculator/">Lakebase Calculator</a>, <a href="lakebase-objection-faq/">Lakebase Field Guide</a> or <a href="llm-pricing/">LLM pricing comparison</a>.</p></noscript>
+</main>
+<footer><span>Built and maintained by Peter Chan</span><a id="analyticsLink" hidden target="_blank" rel="noopener noreferrer">Visit statistics ↗</a><span id="statsNote">A growing collection of useful tools and small experiments.</span></footer>
 </div>
 <script>
-const base = location.pathname.replace(/\/[^\/]*$/, '/');
-fetch(base + 'manifest.json', {cache:'no-store'})
-  .then(r => r.json())
-  .then(m => {
-    const grid = document.getElementById('grid');
-    document.getElementById('sub').textContent = m.generated ? `last updated ${m.generated}` : '';
-    document.getElementById('count').textContent = `${m.pages.length} pages`;
-    if (!m.pages.length) { grid.innerHTML = '<div class="empty">no pages yet</div>'; return; }
-    grid.innerHTML = m.pages.map(p => `
-      <a class="card" style="--c:${p.color||'#58a6ff'}" href="${base}${p.path}">
-        ${p.tag ? `<span class="tag">${p.tag}</span>` : ''}
-        <div class="t">${p.title}</div>
-        <div class="d">${p.desc||''}</div>
-      </a>`).join('');
-  })
-  .catch(() => { document.getElementById('grid').innerHTML = '<div class="empty">manifest.json not found</div>'; });
+'use strict';
+const base = new URL('./', location.href);
+const grid = document.getElementById('grid');
+const search = document.getElementById('search');
+const sort = document.getElementById('sort');
+const collator = new Intl.Collator('en', {numeric:true, sensitivity:'base'});
+let pages = [], category = 'All', sortChosen = false, loadVersion = 0;
+const categories = ['All', 'Tools', 'Guides', 'Interactive', 'Travel', 'Reading', 'Other'];
+
+function validPage(raw) {
+  if (!raw || typeof raw !== 'object' || typeof raw.path !== 'string' || typeof raw.title !== 'string' || !raw.title.trim()) return null;
+  // Accept local HTML pages/directories only. Reject protocols, traversal and encoded delimiters.
+  if (!/^[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*(?:\/|\.html)$/.test(raw.path)) return null;
+  return {path:raw.path, title:raw.title, desc:typeof raw.desc === 'string' ? raw.desc : '',
+    category:categories.includes(raw.category) && raw.category !== 'All' ? raw.category : 'Other',
+    featured:raw.featured === true, color:/^#[0-9a-f]{6}$/i.test(raw.color) ? raw.color : '#83c5ff', visits:null};
+}
+function ordered(list, mode) {
+  return [...list].sort((a,b) => {
+    if (mode === 'popular') {
+      const difference = (b.visits ?? -1) - (a.visits ?? -1);
+      if (difference) return difference;
+    }
+    if (mode === 'featured' && a.featured !== b.featured) return a.featured ? -1 : 1;
+    return collator.compare(a.title,b.title) || collator.compare(a.path,b.path);
+  });
+}
+function element(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+function render() {
+  const terms = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const matches = pages.filter(p => (category === 'All' || category === p.category) && terms.every(t => (p.title+' '+p.desc+' '+p.category).toLocaleLowerCase().includes(t)));
+  const ranked = ordered(pages,'popular').filter(p => p.visits !== null);
+  const fragment = document.createDocumentFragment();
+  ordered(matches,sort.value).forEach(p => {
+    const card = element('a','card'+(p.featured ? ' featured' : ''));
+    card.href = new URL(p.path,base).href;
+    card.style.setProperty('--c',p.color);
+    card.dataset.path = p.path;
+    const top = element('div','cardtop');
+    top.append(element('span','tag',p.category));
+    if (sort.value === 'popular' && p.visits !== null) top.append(element('span','badge','#'+(ranked.indexOf(p)+1)+' most visited'));
+    else if (p.featured) top.append(element('span','badge','Featured'));
+    const foot = element('div','cardfoot');
+    foot.append(element('span','',p.visits !== null ? new Intl.NumberFormat('en').format(p.visits)+' visits' : 'Open demo'),element('span','arrow','↗'));
+    foot.lastChild.setAttribute('aria-hidden','true');
+    card.append(top,element('h2','',p.title),element('p','d',p.desc),foot);
+    fragment.append(card);
+  });
+  if (!matches.length) fragment.append(element('p','empty',pages.length ? 'No demos match. Try another search or category.' : 'No demos published yet.'));
+  grid.replaceChildren(fragment);
+  grid.setAttribute('aria-busy','false');
+  document.getElementById('resultCount').textContent = matches.length+' of '+pages.length+' demos';
+  document.getElementById('clearSearch').hidden = !search.value;
+}
+function renderFilters() {
+  const filters = document.getElementById('filters');
+  filters.replaceChildren();
+  categories.filter(c => c === 'All' || pages.some(p => p.category === c)).forEach(c => {
+    const button = element('button','filter',c);
+    button.type = 'button'; button.setAttribute('aria-pressed',String(c === category));
+    button.addEventListener('click',() => { category=c; renderFilters(); render(); });
+    filters.append(button);
+  });
+}
+async function loadStats(version) {
+  try {
+    const analytics = await window.demoAnalytics.ready;
+    if (version !== loadVersion || !analytics) return;
+    document.getElementById('statsStatus').textContent = 'Loading visit stats…';
+    const counts = await analytics.visits(pages.map(p => p.path));
+    if (version !== loadVersion) return;
+    pages.forEach(p => p.visits = counts.get(p.path) ?? null);
+    const known = pages.filter(p => p.visits !== null).length;
+    if (!known) { document.getElementById('statsStatus').textContent='Visit stats temporarily unavailable'; return; }
+    document.getElementById('popularOption').disabled = false;
+    if (!sortChosen) sort.value = 'popular';
+    document.getElementById('statsStatus').textContent = known === pages.length ? 'Recorded visits · all time' : 'Visit counts available for '+known+' of '+pages.length+' demos';
+    document.getElementById('statsNote').textContent = 'Recorded visits since tracking began · counts may lag up to 4 hours.';
+    const link = document.getElementById('analyticsLink'); link.href=analytics.dashboard; link.hidden=false;
+    render();
+  } catch { if (version === loadVersion) document.getElementById('statsStatus').textContent='Visit stats temporarily unavailable'; }
+}
+async function loadPages() {
+  const version = ++loadVersion;
+  grid.setAttribute('aria-busy','true');
+  try {
+    const response = await fetch(new URL('manifest.json',base),{cache:'no-store',signal:AbortSignal.timeout(8000)});
+    if (!response.ok) throw new Error('Manifest unavailable');
+    const manifest = await response.json();
+    if (!manifest || !Array.isArray(manifest.pages)) throw new Error('Invalid manifest');
+    const seen = new Set();
+    pages = manifest.pages.map(validPage).filter(p => p && !seen.has(p.path) && seen.add(p.path));
+    document.getElementById('pageCount').textContent = pages.length;
+    document.getElementById('updated').textContent = /^\d{4}-\d{2}-\d{2}$/.test(manifest.generated) ? manifest.generated : '—';
+    if (!pages.some(p => p.category === category)) category = 'All';
+    renderFilters(); render();
+    void loadStats(version);
+  } catch {
+    const box = element('div','empty','The collection could not load. Please try again.');
+    const retry = element('button','retry','Retry'); retry.type='button'; retry.addEventListener('click',loadPages);
+    box.append(element('br'),retry); grid.replaceChildren(box); grid.setAttribute('aria-busy','false');
+    document.getElementById('resultCount').textContent = 'Collection unavailable';
+  }
+}
+search.addEventListener('input',render);
+sort.addEventListener('change',() => {sortChosen=true; render();});
+document.getElementById('clearSearch').addEventListener('click',() => {search.value='';render();search.focus();});
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',loadPages,{once:true});
+else void loadPages();
 </script>
 </body>
 </html>

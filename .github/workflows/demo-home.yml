@@ -1,0 +1,25 @@
+name: Demo homepage checks
+on:
+  push:
+    paths: ['index.html', 'manifest.json', 'demo-push.sh', 'analytics-config.json', 'assets/site-analytics.js', 'tests/demo-home.test.cjs', '.github/workflows/demo-home.yml']
+  pull_request:
+    paths: ['index.html', 'manifest.json', 'demo-push.sh', 'analytics-config.json', 'assets/site-analytics.js', 'tests/demo-home.test.cjs', '.github/workflows/demo-home.yml']
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Check scripts
+        run: |
+          node -e 'const fs=require("node:fs"); fs.writeFileSync("/tmp/demo-home.js", fs.readFileSync("index.html","utf8").match(/<script>([\s\S]*?)<\/script>/)[1]);'
+          node --check /tmp/demo-home.js
+          node --check assets/site-analytics.js
+          bash -n demo-push.sh
+      - name: Check safe rendering and analytics integration
+        run: node --test tests/demo-home.test.cjs
