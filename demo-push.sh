@@ -24,7 +24,7 @@ for name in sorted(os.listdir('.')):
     if name.startswith(('.', '_')) or name in ('logs',) or name.endswith(('.mp3', '.sh')):
         continue
     path = name + ('/' if os.path.isdir(name) else '')
-    if path in ('index.html', 'lakebase-sales-play/', 'pg-cost-calculator/'):
+    if path == 'index.html':
         continue
     ok = (os.path.isfile(name) and name.endswith('.html')) or (os.path.isdir(name) and os.path.exists(os.path.join(name, 'index.html')))
     if not ok:
