@@ -116,17 +116,11 @@
   "aws-card-glm-5-3": "2026-10-11",
   "aws-pricing-page": "2026-10-11"
  },
- "review": [
-  "GPT-6 Astra · azure_foundry",
-  "GPT-6 Sol · azure_foundry"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
    "verified": "2026-10-11"
@@ -147,10 +141,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-fable-5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-fable-5|azure_foundry": {
    "verified": "2026-10-11"
@@ -171,10 +162,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-haiku-4.5|azure_foundry": {
    "verified": "2026-10-11"
@@ -195,10 +183,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-haiku-5.5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-haiku-5.5|azure_foundry": {
    "verified": "2026-10-11"
@@ -219,10 +204,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-opus-4.6|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
    "verified": "2026-10-11"
@@ -243,10 +225,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-opus-4.7|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
    "verified": "2026-10-11"
@@ -267,10 +246,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-opus-4.8|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
    "verified": "2026-10-11"
@@ -291,10 +267,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-opus-5.5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
    "verified": "2026-10-11"
@@ -315,10 +288,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-opus-5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-opus-5|azure_foundry": {
    "verified": "2026-10-11"
@@ -339,10 +309,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-sonnet-4.6|azure_foundry": {
    "verified": "2026-10-11"
@@ -363,10 +330,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
    "verified": "2026-10-11"
@@ -387,10 +351,7 @@
    "verified": "2026-10-11"
   },
   "anthropic/claude-sonnet-5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
    "verified": "2026-10-11"
@@ -411,17 +372,10 @@
    "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing",
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4-flash|bedrock": {
    "verified": "2026-10-11"
@@ -439,17 +393,10 @@
    "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing",
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-10-11"
@@ -467,16 +414,10 @@
    "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
    "verified": "2026-10-11"
@@ -494,10 +435,7 @@
    "verified": "2026-10-11"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "google/gemini-3.1-flash-lite|azure_foundry": {
    "verified": "2026-10-11"
@@ -518,10 +456,7 @@
    "verified": "2026-10-11"
   },
   "google/gemini-3.1-pro|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "google/gemini-3.1-pro|azure_foundry": {
    "verified": "2026-10-11"
@@ -542,10 +477,7 @@
    "verified": "2026-10-11"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "google/gemini-3.5-flash-lite|azure_foundry": {
    "verified": "2026-10-11"
@@ -566,10 +498,7 @@
    "verified": "2026-10-11"
   },
   "google/gemini-3.6-flash|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "google/gemini-3.6-flash|azure_foundry": {
    "verified": "2026-10-11"
@@ -590,10 +519,7 @@
    "verified": "2026-10-11"
   },
   "google/gemini-3.7-flash|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "google/gemini-3.7-flash|azure_foundry": {
    "verified": "2026-10-11"
@@ -614,10 +540,7 @@
    "verified": "2026-10-11"
   },
   "google/gemini-3.8-flash|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "google/gemini-3.8-flash|azure_foundry": {
    "verified": "2026-10-11"
@@ -638,10 +561,7 @@
    "verified": "2026-10-11"
   },
   "google/gemma-3-12b|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "google/gemma-3-12b|azure_foundry": {
    "verified": "2026-10-11"
@@ -656,10 +576,7 @@
    "verified": "2026-10-11"
   },
   "meta/llama-3.1-8b|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "meta/llama-3.1-8b|azure_foundry": {
    "verified": "2026-10-11"
@@ -674,10 +591,7 @@
    "verified": "2026-10-11"
   },
   "meta/llama-3.3-70b|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "meta/llama-3.3-70b|azure_foundry": {
    "verified": "2026-10-11"
@@ -692,16 +606,10 @@
    "verified": "2026-10-11"
   },
   "meta/llama-4-maverick|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "meta/llama-4-maverick|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "meta/llama-4-maverick|bedrock": {
    "verified": "2026-10-11"
@@ -713,16 +621,10 @@
    "verified": "2026-10-11"
   },
   "minimax/minimax-m3|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "minimax/minimax-m3|bedrock": {
    "verified": "2026-10-11"
@@ -740,16 +642,10 @@
    "verified": "2026-10-11"
   },
   "mistral/mistral-medium-3.5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "mistral/mistral-medium-3.5|bedrock": {
    "verified": "2026-10-11"
@@ -767,10 +663,7 @@
    "verified": "2026-10-11"
   },
   "moonshot/kimi-k2.7|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "moonshot/kimi-k2.7|azure_foundry": {
    "verified": "2026-10-11"
@@ -791,10 +684,7 @@
    "verified": "2026-10-11"
   },
   "moonshot/kimi-k3|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "moonshot/kimi-k3|azure_foundry": {
    "verified": "2026-10-11"
@@ -815,16 +705,10 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-5.4|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-5.4|bedrock": {
    "verified": "2026-10-11"
@@ -842,16 +726,10 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-5.5|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-5.5|bedrock": {
    "verified": "2026-10-11"
@@ -869,10 +747,7 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-5.6-luna|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
    "verified": "2026-10-11"
@@ -893,10 +768,7 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-5.6-sol|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
    "verified": "2026-10-11"
@@ -917,10 +789,7 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-5.6-terra|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
    "verified": "2026-10-11"
@@ -941,17 +810,10 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-6-astra|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-10-10",
-   "changed_at": "2026-10-11",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-6-astra|bedrock": {
    "verified": "2026-10-11"
@@ -969,10 +831,7 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-6-luna|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-6-luna|azure_foundry": {
    "verified": "2026-10-11"
@@ -993,17 +852,10 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-6-sol|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-10-10",
-   "changed_at": "2026-10-11",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-6-sol|bedrock": {
    "verified": "2026-10-11"
@@ -1021,10 +873,7 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-6.1-sol|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
    "verified": "2026-10-11"
@@ -1045,10 +894,7 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-oss-120b|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-oss-120b|azure_foundry": {
    "verified": "2026-10-11"
@@ -1069,10 +915,7 @@
    "verified": "2026-10-11"
   },
   "openai/gpt-oss-20b|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "openai/gpt-oss-20b|azure_foundry": {
    "verified": "2026-10-11"
@@ -1090,11 +933,7 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-10-10",
-   "changed_at": "2026-10-11",
-   "sources": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
    "verified": "2026-10-11"
@@ -1109,17 +948,10 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-10-10",
-   "changed_at": "2026-10-11",
-   "sources": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.5-122b|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.5-122b|azure_foundry": {
    "verified": "2026-10-11"
@@ -1134,16 +966,10 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3.5-122b|official": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.7-max|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.7-max|azure_foundry": {
    "verified": "2026-10-11"
@@ -1161,16 +987,10 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3.7-max|official": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.7-plus|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.7-plus|azure_foundry": {
    "verified": "2026-10-11"
@@ -1188,16 +1008,10 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3.7-plus|official": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.8-27b|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.8-27b|azure_foundry": {
    "verified": "2026-10-11"
@@ -1215,16 +1029,10 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3.8-27b|official": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.8-flash|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.8-flash|azure_foundry": {
    "verified": "2026-10-11"
@@ -1242,16 +1050,10 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3.8-flash|official": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.8-max|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "qwen/qwen3.8-max|azure_foundry": {
    "verified": "2026-10-11"
@@ -1269,16 +1071,10 @@
    "verified": "2026-10-11"
   },
   "qwen/qwen3.8-max|official": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "tml/inkling|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "tml/inkling|azure_foundry": {
    "verified": "2026-10-11"
@@ -1299,16 +1095,10 @@
    "verified": "2026-10-11"
   },
   "xai/grok-4.6|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-11"
   },
   "xai/grok-4.6|bedrock": {
    "verified": "2026-10-11"
@@ -1323,10 +1113,7 @@
    "verified": "2026-10-11"
   },
   "xai/grok-4.7|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "xai/grok-4.7|azure_foundry": {
    "verified": "2026-10-11"
@@ -1344,10 +1131,7 @@
    "verified": "2026-10-11"
   },
   "zai/glm-5.2|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "zai/glm-5.2|azure_foundry": {
    "verified": "2026-10-11"
@@ -1368,10 +1152,7 @@
    "verified": "2026-10-11"
   },
   "zai/glm-5.3-flash|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "zai/glm-5.3-flash|azure_foundry": {
    "verified": "2026-10-11"
@@ -1392,10 +1173,7 @@
    "verified": "2026-10-11"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-10-10",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-11"
   },
   "zai/glm-5.3|azure_foundry": {
    "verified": "2026-10-11"
