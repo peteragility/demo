@@ -143,10 +143,15 @@ jobs:
           done
           exit 1
       - name: Open, update or close the review issue
+        if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           ISSUE_FILE="$RUNNER_TEMP/llm-pricing-v2-issue.md"
+          if [ ! -f "$ISSUE_FILE" ]; then
+            echo "No completed source review; leaving the review issue unchanged."
+            exit 0
+          fi
           label=llm-pricing-review
           gh label create "$label" --color FBCA04 --description "The daily LLM pricing check found something to review" 2>/dev/null || true
           number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')

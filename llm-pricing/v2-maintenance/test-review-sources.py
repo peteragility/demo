@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 import datetime as dt
 import importlib.util
+import io
+import json
+import os
 from pathlib import Path
+import subprocess
+import tempfile
+import textwrap
 import unittest
+from contextlib import redirect_stdout
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location("source_review", HERE / "review-sources.py")
@@ -11,6 +19,239 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_overdue_tier_findings_stay_due_until_resolved(self):
+        cell = {"variants": [{"valid_through": "2026-10-11", "promotion": {"ends_on": "2026-10-11"}}], "retires_on": "2026-10-11"}
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": cell}}}}
+        baseline = {"sources": {}}
+        for day in ("2026-10-04", "2026-10-11", "2026-10-19", "2026-11-12", "2027-10-11"):
+            report = review.make_report(baseline, {}, {}, data, dt.date.fromisoformat(day))
+            action = [a for a in report["lifecycle_due"] if review.needs_action(a)]
+            self.assertEqual(len(action), 1, day)
+            text, _ = review.issue_markdown(report, {}, [], {}, data, {"m/k3"}, failing=[])
+            self.assertIn("Tier rates expiring within 7 days or overdue", text)
+            self.assertIn("2026-10-11", text)
+            acknowledged = dict(baseline, acknowledged_lifecycle=[review.alert_key(action[0])])
+            self.assertFalse(any(review.needs_action(a) for a in review.make_report(acknowledged, {}, {}, data, dt.date.fromisoformat(day))["lifecycle_due"]))
+        self.assertEqual(review.make_report(baseline, {}, {}, data, dt.date(2026, 10, 3))["lifecycle_due"], [])
+        cell["variants"][0]["valid_through"] = "2027-12-31"
+        self.assertEqual(review.make_report(baseline, {}, {}, data, dt.date(2026, 11, 12))["lifecycle_due"], [])
+
+    def test_shared_pricing_findings_survive_failed_runs_and_clear_after_review(self):
+        before = ["text: Kimi K3 input $3 output $15", "notice: US-only inference is priced at 1.1x"]
+        after = [before[0], "notice: US-only inference is priced at 1.2x"]
+        snapshot = {"url": "https://example.test/pricing", "kind": "text", "records": after, "digest": "new"}
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": {"status": "priced", "src": "src",
+                                                                                     "pricing_checked_at": "2026-10-01"}}}}}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            maintenance = root / "maintenance"
+            maintenance.mkdir()
+            (maintenance / "source-config.json").write_text(json.dumps([{"id": "p", "kind": "text", "meta": ["src"]}]))
+            (maintenance / "source-baseline.json").write_text(json.dumps({"sources": {"p": dict(snapshot, records=before, digest="old")}}))
+            (maintenance / "ranking-config.json").write_text(json.dumps({"not_sold": []}))
+            (root / "v2-data.json").write_text(json.dumps(data))
+            checks, issue = root / "checks.json", root / "issue.md"
+            def run(day, failed=False, record=False):
+                argv = ["review-sources.py", "--as-of", day, "--report-dir", str(root / "report"),
+                        "--checks", str(checks), "--issue", str(issue), "--accept-low-risk"]
+                if record:
+                    argv.append("--record-baseline")
+                with patch.object(review, "HERE", maintenance), patch.object(review.sys, "argv", argv), \
+                        patch.object(review, "collect_one", side_effect=ValueError("HTTP 503") if failed else None, return_value=dict(snapshot)), redirect_stdout(io.StringIO()):
+                    if failed:
+                        with self.assertRaises(SystemExit) as stopped:
+                            review.main()
+                        self.assertEqual(stopped.exception.code, 1)
+                    else:
+                        review.main()
+            run("2026-10-11")
+            # Accepting an unrelated model's lines in the same source must not resolve
+            # its still-unreviewed shared multiplier when the next read fails.
+            baseline_path = maintenance / "source-baseline.json"
+            baseline = json.loads(baseline_path.read_text())
+            baseline["sources"]["p"]["records"].append("text: DeepSeek-V3.2 input $2 output $4")
+            baseline_path.write_text(json.dumps(baseline))
+            for day, failed in (("2026-10-12", True), ("2026-10-13", True), ("2026-10-14", False)):
+                run(day, failed=failed)
+                saved = json.loads(checks.read_text())
+                self.assertEqual(len(saved["pending_general"]), 1)
+                finding = saved["pending_general"][0]
+                self.assertEqual(finding["added_all"], [after[1]])
+                self.assertEqual(finding["removed_all"], [before[1]])
+                self.assertIn("1.2x", issue.read_text())
+                self.assertIn("1.1x", issue.read_text())
+                self.assertNotEqual(saved["cells"]["m/k3|official"]["verified"], day)
+            # Explicitly reviewing the new baseline resolves the finding, even if the
+            # next read fails before the updated checks have been published.
+            run("2026-10-14", record=True)
+            run("2026-10-15", failed=True)
+            self.assertEqual(json.loads(checks.read_text())["pending_general"], [])
+            self.assertEqual(issue.read_text(), "")
+            run("2026-10-15")
+            self.assertEqual(issue.read_text(), "")
+            self.assertEqual(json.loads(checks.read_text())["cells"]["m/k3|official"], {"verified": "2026-10-15"})
+
+    def test_record_baseline_acknowledges_long_overdue_tier_dates(self):
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": {"variants": [{"valid_through": "2026-10-11"}]}}}}}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            maintenance = root / "maintenance"
+            maintenance.mkdir()
+            (maintenance / "source-config.json").write_text("[]")
+            (root / "v2-data.json").write_text(json.dumps(data))
+            argv = ["review-sources.py", "--as-of", "2027-10-11", "--report-dir", str(root / "report"), "--record-baseline"]
+            with patch.object(review, "HERE", maintenance), patch.object(review.sys, "argv", argv), redirect_stdout(io.StringIO()):
+                review.main()
+            baseline = json.loads((maintenance / "source-baseline.json").read_text())
+            self.assertEqual(baseline["acknowledged_lifecycle"], ["m/k3|official|tier rates verified through|2026-10-11"])
+
+    def test_issue_step_requires_a_completed_report_and_handles_empty_or_open_reports(self):
+        workflow = (HERE.parent.parent / ".github/workflows/llm-pricing-v2-review.yml").read_text()
+        step = workflow.split("      - name: Open, update or close the review issue\n", 1)[1].split("      - name: Save the full report", 1)[0]
+        self.assertIn("if: ${{ !cancelled() }}", step)
+        script = textwrap.dedent(step.split("        run: |\n", 1)[1])
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            gh = root / "gh"
+            calls = root / "calls.jsonl"
+            gh.write_text('#!' + review.sys.executable + '\n' + textwrap.dedent('''\
+                import json, os, sys
+                from pathlib import Path
+                with Path(os.environ['ISSUE_TEST_CALLS']).open('a') as f:
+                    f.write(json.dumps(sys.argv[1:]) + '\\n')
+                if sys.argv[1:3] == ['issue', 'list']:
+                    print(os.environ.get('ISSUE_TEST_NUMBER', '7'))
+                elif sys.argv[1:3] == ['issue', 'view']:
+                    print('Old review body')
+                '''))
+            gh.chmod(0o755)
+            env = dict(os.environ, PATH=str(root) + os.pathsep + os.environ.get("PATH", ""), RUNNER_TEMP=str(root), ISSUE_TEST_CALLS=str(calls))
+            subprocess.run(["bash", "-e", "-o", "pipefail", "-c", script], env=env, check=True, capture_output=True, text=True)
+            self.assertFalse(calls.exists(), "An incomplete review cannot modify an issue")
+            issue = root / "llm-pricing-v2-issue.md"
+            for body, action, number in (("Daily check 2026-10-11\nUnresolved pricing change", "edit", "7"),
+                                         ("", "close", "7"), ("New review finding", "create", "")):
+                issue.write_text(body)
+                env["ISSUE_TEST_NUMBER"] = number
+                subprocess.run(["bash", "-e", "-o", "pipefail", "-c", script], env=env, check=True, capture_output=True, text=True)
+                commands = [json.loads(line) for line in calls.read_text().splitlines()]
+                self.assertTrue(any(c[:2] == ["issue", action] for c in commands))
+                calls.unlink()
+
+    def test_price_swaps_keep_their_columns_and_tiers_pending(self):
+        def row(tier, rates):
+            return 'table: ' + review.packed({"heading": "Kimi K3 pricing", "cells": [tier, *rates]})
+        before = [row("Standard", ["$3", "$15"]), row("Priority", ["$6", "$30"])]
+        cases = [[row("Standard", ["$15", "$3"]), before[1]],
+                 [row("Standard", ["$6", "$30"]), row("Priority", ["$3", "$15"])]]
+        config = [{"id": "prices", "meta": ["src"]}]
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": {"status": "priced", "src": "src"}}}}}
+        baseline = {"sources": {"prices": {"records": before}}}
+        for after in cases:
+            current = {"prices": {"url": "u", "records": after, "digest": "new"}}
+            cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, dt.date(2026, 10, 11))
+            self.assertEqual(changes[0]["risk"], "high")
+            self.assertEqual(cells["m/k3|official"]["changed_at"], "2026-10-11")
+            accepted = review.accept_low_risk(baseline, current, changes, {}, [])
+            self.assertEqual(set(accepted["sources"]["prices"]["records"]), set(before))
+        self.assertEqual(review.classify(["text: Kimi K3 input $3, output $15"],
+                                         ["text: Kimi K3 input $15, output $3"], review.model_regex({"name": "Kimi K3"}))[0], "high")
+        self.assertEqual(review.classify([row("Model", ["Input", "Output"])],
+                                         [row("Model", ["Output", "Input"])], None)[0], "high")
+
+    def test_json_prices_keep_integer_rates_fields_and_units(self):
+        before = {"productName": "Kimi K3", "meterName": "Input", "retailPrice": 3, "unitOfMeasure": "1M"}
+        for after in (dict(before, retailPrice=4), dict(before, unitOfMeasure="1K"), dict(before, meterName="Output")):
+            self.assertEqual(review.classify([review.packed(before)], [review.packed(after)], None)[0], "high")
+        self.assertEqual(review.classify([review.packed({"input": "$3", "output": "$15"})],
+                                         [review.packed({"input": "$15", "output": "$3"})], None)[0], "high")
+
+    def test_failed_reads_preserve_findings_until_the_affected_source_recovers(self):
+        key = "m/k3|official"
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": {"status": "priced", "src": "src",
+                                                                                      "pricing_checked_at": "2026-10-01"}}}}}
+        config = [{"id": "prices", "meta": ["src"]}]
+        records = ["text: Kimi K3 input $3, output $15"]
+        baseline = {"sources": {"prices": {"records": records}}}
+        previous = {"cells": {key: {"verified": "2026-10-01", "changed_at": "2026-10-10", "sources": ["prices"]}}}
+        for quiet in (False, True):
+            prior = {"cells": {key: dict(previous["cells"][key], **({"quiet": True} if quiet else {}))}}
+            cells, changes = review.cell_checks(data, config, baseline, {}, {"prices": "HTTP 503"}, {}, prior, dt.date(2026, 10, 11))
+            self.assertEqual(cells[key], dict(prior["cells"][key], unchecked=["prices"]))
+            text, pending = review.issue_markdown({"checked_at": "2026-10-11", "sources_failed": {"prices": "HTTP 503"}},
+                                               cells, changes, {}, data, {"m/k3"}, failing=[])
+            self.assertEqual(pending, [] if quiet else [key])
+            if not quiet:
+                self.assertIn("Unresolved changes that could not be rechecked", text)
+                self.assertIn("Kimi K3", text)
+        current = {"prices": {"url": "u", "records": records}}
+        cells, _ = review.cell_checks(data, config, baseline, current, {}, {}, previous, dt.date(2026, 10, 11))
+        self.assertEqual(cells[key], {"verified": "2026-10-11"})
+        # A resolved price warning clears even while an unrelated region source fails.
+        config.append({"id": "regions", "meta": ["region"]})
+        data["models"]["m/k3"]["platforms"]["official"]["endpoints"] = {"src": ["region"], "checked_at": "2026-10-11"}
+        cells, _ = review.cell_checks(data, config, baseline, current, {"regions": "HTTP 503"}, {}, previous, dt.date(2026, 10, 11))
+        self.assertNotIn("changed_at", cells[key])
+
+    def test_logical_databricks_findings_survive_physical_source_failures(self):
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"databricks": {"status": "priced", "src": "src"}}}}}
+        config = [{"id": "dbu", "meta": ["src"], "facts": "dbx-prices"}]
+        prior = {"cells": {"m/k3|databricks": {"verified": "2026-10-01", "changed_at": "2026-10-10", "sources": ["dbx-prices"]}}}
+        cells, _ = review.cell_checks(data, config, {}, {}, {"dbu": "HTTP 503"}, {}, prior, dt.date(2026, 10, 11))
+        self.assertEqual(cells["m/k3|databricks"], dict(prior["cells"]["m/k3|databricks"], unchecked=["dbu"]))
+
+    def test_region_dates_cannot_verify_an_unreadable_price(self):
+        cell = {"status": "priced", "src": "src", "pricing_checked_at": "2026-10-01",
+                "endpoints": {"src": ["region"], "checked_at": "2026-10-11"}}
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": cell}}}}
+        config = [{"id": "prices", "meta": ["src"]}, {"id": "regions", "meta": ["region"]}]
+        baseline = {"sources": {"regions": {"records": ["text: Kimi K3 supported in US"]}}}
+        current = {"regions": dict(baseline["sources"]["regions"], url="u")}
+        for previous, expected in ((None, "2026-10-01"), ({"cells": {"m/k3|official": {"verified": "2026-10-10"}}}, "2026-10-10")):
+            cells, _ = review.cell_checks(data, config, baseline, current, {"prices": "HTTP 503"}, {}, previous, dt.date(2026, 10, 11))
+            self.assertEqual(cells["m/k3|official"], {"verified": expected, "unchecked": ["prices"]})
+
+    def test_slashes_in_existing_tier_labels_and_long_context_paths(self):
+        build = review.build_data
+        data = json.loads((HERE.parent / "v2-data.json").read_text())
+        for model in data["models"].values():
+            for cell in model["platforms"].values():
+                for v in cell.get("variants", []):
+                    self.assertIs(build.find_offer(cell, "variant:" + v["label"])[0], v)
+        cell = data["models"]["openai/gpt-6-astra"]["platforms"]["azure_foundry"]
+        v = next(v for v in cell["variants"] if v["label"] == "Data Zone EU / APAC · Standard")
+        row = lambda values: 'table: ' + review.packed({"heading": "GPT-6 Astra pricing", "cells": values})
+        header = row(["Model / Tier", "Input", "Output"])
+        old = row(["GPT-6 Astra Data Zone EU / APAC Standard", "$12.00", "$60.00"])
+        new = row(["GPT-6 Astra Data Zone EU / APAC Standard", "$13.00", "$60.00"])
+        edits = review.row_edits({"added_all": [new], "removed_all": [old]}, cell, [header, new])
+        self.assertEqual(len(edits), 1)
+        self.assertEqual(len(build.apply_proven(cell, [dict(edits[0], date="2026-10-11")], "GPT-6 Astra", "Azure")), 1)
+        self.assertEqual(v["in"], 13)
+        v["long_context"] = {"in": 24, "out": 120}
+        edit = {"offer": "variant:" + v["label"] + "/long_context", "field": "in", "old": 24, "new": 26, "date": "2026-10-11"}
+        self.assertEqual(len(build.apply_proven(cell, [edit], "GPT-6 Astra", "Azure")), 1)
+        self.assertEqual(v["long_context"]["in"], 26)
+
+    def test_successful_build_cannot_accept_an_edit_that_did_not_reach_its_target(self):
+        edit = {"model": "m/k3", "platform": "official", "offer": "base", "field": "in", "old": 3, "new": 4}
+        data = {"models": {"m/k3": {"platforms": {"official": {"status": "priced", "in": 3}}}}}
+        self.assertFalse(review.applied_rates_match(data, [edit]))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            maintenance = root / "maintenance"
+            maintenance.mkdir()
+            auto = maintenance / "prices-auto.json"
+            original = {"changes": []}
+            auto.write_text(json.dumps(original))
+            (root / "v2-data.json").write_text(json.dumps(data))
+            with patch.object(review, "HERE", maintenance), patch.object(review, "AUTO_FILE", auto), \
+                    patch.object(review.subprocess, "run", return_value=review.subprocess.CompletedProcess([], 0)):
+                self.assertEqual(review.apply_edits([edit], dt.date(2026, 10, 11)), [])
+            self.assertEqual(json.loads(auto.read_text()), original)
+        data["models"]["m/k3"]["platforms"]["official"]["in"] = 4
+        self.assertTrue(review.applied_rates_match(data, [edit]))
+
     def test_catalog_ignores_navigation_and_script_model_names(self):
         text = '<nav>Endpoint name: databricks-nav</nav><script>Endpoint name: databricks-fake</script><main><p>Endpoint name: <code>databricks-gpt-6-1-sol</code></p></main>'
         records = review.html_records(text, "catalog")

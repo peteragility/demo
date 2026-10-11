@@ -223,6 +223,34 @@ try {
       clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource('2026-10-02')})).identifier;
     }
     if (viewport.name === 'desktop') {
+      // Region updates cannot refresh price verification during a failed price read.
+      const key = await evalJS(`(async () => {
+        const d = await fetch('v2-data.json').then(r => r.json());
+        return ${JSON.stringify(expected.keys)}.find(k => d.models[k].platforms.databricks.status === 'priced');
+      })()`);
+      assert.ok(key, 'a listed Databricks price is available for the verification test');
+      const probe = (await call('Page.addScriptToEvaluateOnNewDocument', {source: `(() => {
+        const originalFetch = window.fetch.bind(window);
+        window.fetch = async (...args) => {
+          const response = await originalFetch(...args), file = String(args[0]).split('?')[0];
+          if (!response.ok || !/v2-(data|checks)\\.json$/.test(file)) return response;
+          const d = await response.json(), key = ${JSON.stringify(key)};
+          if (file.endsWith('v2-data.json')) {
+            d.models[key].platforms.databricks.pricing_checked_at = '2026-10-01';
+            d.models[key].platforms.databricks.endpoints.checked_at = '2026-10-11';
+          } else {
+            d.cells[key + '|databricks'] = {verified:'2026-10-01', unchecked:['dbx-proprietary']};
+          }
+          return new Response(JSON.stringify(d), {headers:{'Content-Type':'application/json'}});
+        };
+      })();`})).identifier;
+      await navigate('2026-10-11');
+      await toggle(key);
+      const checked = await evalJS("document.querySelector('tr.detail .pcard.dbx .chk').textContent");
+      assert.match(checked, /verified 2026-10-01/);
+      assert.match(checked, /regions checked 2026-10-11/);
+      assert.doesNotMatch(checked, /verified 2026-10-11/);
+      await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: probe});
       // Links to the earlier v2.html address land on the default page, keeping the family tab.
       await call('Page.navigate', {url: new URL('v2.html#oss', pageURL).href});
       await waitFor("document.body && document.body.dataset.ready === 'true' && !location.pathname.endsWith('v2.html')");

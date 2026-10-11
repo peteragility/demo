@@ -627,14 +627,15 @@ FIELD_NAMES = {"in": "input", "out": "output", "cache_read": "cache read", "cach
 def find_offer(cell, path):
     """(offer that carries the date, rates dict) for a prices-auto.json path: "base", "variant:<label>",
     either followed by "/long_context"."""
-    head, _, tail = path.partition("/")
+    long_context = path.endswith("/long_context")
+    head = path.removesuffix("/long_context") if long_context else path
     if head == "base":
         offer = cell
     else:
         offer = next((v for v in cell.get("variants", []) if "variant:" + v.get("label", "") == head), None)
     if offer is None:
         return None, None
-    rates = offer.get("long_context") if tail == "long_context" else offer
+    rates = offer.get("long_context") if long_context else offer
     return (offer, rates) if isinstance(rates, dict) else (None, None)
 
 

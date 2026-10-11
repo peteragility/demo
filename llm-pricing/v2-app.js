@@ -284,12 +284,14 @@
 
   const idHtml = s => { const m = /^(\S+)(?: \((.+)\))?$/.exec(s); return `<span class="id">${m ? `<code>${esc(m[1])}</code>${m[2] ? ' ' + esc(m[2]) : ''}` : esc(s)}</span>`; };
 
-  // The newest of the reviewed dates and the daily source check; a changed source says so instead.
+  // Price verification is independent of region checks; a changed source says so instead.
   function checkedText(mk, pl, c) {
     const chk = CHECKS && CHECKS.cells && CHECKS.cells[mk + '|' + pl];
     if (chk && chk.changed_at) return `<span class="chg" title="${esc('Official source changed: ' + (chk.sources || []).join(', ') + '. Prices shown are the last reviewed ones.')}">source changed ${esc(chk.changed_at)} · re-check</span>`;
-    const day = [c.pricing_checked_at, c.endpoints && c.endpoints.checked_at, chk && chk.verified].filter(Boolean).sort().pop();
-    return day ? 'verified ' + esc(day) : '';
+    const day = [c.pricing_checked_at, chk && chk.verified].filter(Boolean).sort().pop();
+    const price = day ? 'verified ' + esc(day) : '';
+    const regions = c.endpoints && c.endpoints.checked_at;
+    return price + (regions ? (price ? ' · ' : '') + 'regions checked ' + esc(regions) : '');
   }
 
   function cardHtml(mk, pl) {
