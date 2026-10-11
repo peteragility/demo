@@ -353,6 +353,26 @@ def dbx_check(data, facts, today, complete=True):
     issues = {}
     resolve = lambda o: {k: v for k, v in o.items() if k in ("in", "out", "cache_read", "cache_write", "cache_write_1h")}
     edit = lambda offer, field, old, new: dict(offer=offer, field=field, old=old, new=dbx_rate(new))
+    def check_offer(offer, table, path, label, long_label):
+        promo = offer.get("promotion") or {}
+        after = promo.get("after") or {}
+        shown = after if promo and today.isoformat() > promo["ends_on"] else offer
+        bands = [(path, label, offer, shown, after,
+                  table.get("") or table.get("short context") or table.get("text tokens") or {}),
+                 (path + "/long_context", long_label, offer.get("long_context") or {},
+                  shown.get("long_context") or {}, after.get("long_context") or {}, table.get("long context") or {})]
+        found = []
+        for target, name, rates, current, future, published in bands:
+            current, future = resolve(current), resolve(future)
+            for field, value in published.items():
+                options = [o[field] for o in (current, future) if field in o]
+                if not any(close(value, o) for o in options):
+                    finding = f"{name} {field}: table ${value:g}, " + (f"page ${options[0]:g}" if options else "page has none")
+                    found.append((finding, edit(target, field, rates[field], value) if field in rates and not promo else None))
+            if complete:
+                for field in sorted((current.keys() | future.keys()) - published.keys()):
+                    found.append((f"{name} {field}: page has a rate but the table has none", None))
+        return found
     for key, model in data["models"].items():
         cell = model["platforms"]["databricks"]
         names = {official.compact(n) for n in (model.get("name"), model.get("short"), DBX_TABLE_NAMES.get(key)) if n}
@@ -374,23 +394,7 @@ def dbx_check(data, facts, today, complete=True):
             if complete:  # only when every DBU table was read
                 issues[key] = [("not found in the Databricks DBU tables", None)]
             continue
-        promo = cell.get("promotion") or {}
-        shown = resolve(cell) if not (promo and today.isoformat() > promo["ends_on"]) else resolve(promo.get("after", {}))
-        after = resolve(promo.get("after", {}))
-        std = row.get("standard", {})
-        short = std.get("") or std.get("short context") or std.get("text tokens") or {}
-        for field, value in short.items():
-            options = [o[field] for o in (shown, after) if field in o]
-            if not any(close(value, o) for o in options):
-                found.append((f"standard {field}: table ${value:g}, page ${options[0]:g}" if options else f"standard {field}: table ${value:g}, page has none",
-                              edit("base", field, cell[field], value) if options and not promo else None))
-        if "long context" in std and cell.get("long_context"):
-            long_after = resolve((promo.get("after") or {}).get("long_context", {}))
-            for field, value in std["long context"].items():
-                options = [o[field] for o in (resolve(cell["long_context"]), long_after) if field in o]
-                if options and not any(close(value, o) for o in options):
-                    found.append((f"long-context {field}: table ${value:g}, page ${options[0]:g}",
-                                  edit("base/long_context", field, cell["long_context"][field], value) if not promo and field in cell["long_context"] else None))
+        found += check_offer(cell, row.get("standard", {}), "base", "standard", "long-context")
         variants = cell.get("variants", [])
         priority = [v for v in variants if v.get("service_tier") == "priority" and v.get("comparison_scope") != "regional"]
         if row.get("priority") and not priority:
@@ -398,14 +402,8 @@ def dbx_check(data, facts, today, complete=True):
         elif priority and not row.get("priority"):
             found.append(("Priority tier on the page but not in the table", None))
         elif priority:
-            p = row["priority"].get("") or row["priority"].get("short context") or {}
             v = priority[0]
-            v_after = resolve((v.get("promotion") or {}).get("after", {}))
-            for field, value in p.items():
-                options = [o[field] for o in (resolve(v), v_after) if field in o]
-                if options and not any(close(value, o) for o in options):
-                    found.append((f"Priority {field}: table ${value:g}, page ${options[0]:g}",
-                                  edit("variant:" + v["label"], field, v[field], value) if not v.get("promotion") and field in v else None))
+            found += check_offer(v, row["priority"], "variant:" + v["label"], "Priority", "Priority long-context")
         regional = any(v.get("comparison_scope") == "regional" for v in variants)
         if row["regional"] != regional:
             found.append(("regional processing (⌖) " + ("listed in the table but missing on the page" if row["regional"] else "on the page but not in the table"), None))
@@ -706,7 +704,7 @@ def unpriced_on_platforms(unpriced, current, skip):
 
 def proven_edits(data, changes, current, dbx, sources):
     """Every edit the live sources prove: Databricks rates from its DBU tables, and table rows where only a
-    price moved. Edits that disagree about the same rate are dropped."""
+    price moved. A source with a conflicting rate keeps its entire change for review."""
     out = [dict(model=key, platform="databricks", source="dbx-prices", **e) for key, edits in dbx.items() for e in edits]
     endpoints = {r.split(": ", 1)[1] for r in (current.get("dbx-models") or {}).get("records", []) if r.startswith("endpoint: ")}
     for e in out:
@@ -724,7 +722,9 @@ def proven_edits(data, changes, current, dbx, sources):
     target = {}
     for e in out:
         target.setdefault((e["model"], e["platform"], e["offer"], e["field"]), set()).add(e["new"])
-    return [e for e in out if len(target[(e["model"], e["platform"], e["offer"], e["field"])]) == 1]
+    blocked = {(e["model"], e["platform"], e["source"]) for e in out
+               if len(target[(e["model"], e["platform"], e["offer"], e["field"])]) != 1}
+    return [e for e in out if (e["model"], e["platform"], e["source"]) not in blocked]
 
 
 def usd(value):

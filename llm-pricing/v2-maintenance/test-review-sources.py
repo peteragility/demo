@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import datetime as dt
+import copy
 import importlib.util
 import io
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 import textwrap
@@ -19,6 +21,148 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    @staticmethod
+    def context_offer():
+        cell = {"status": "priced", "src": "src", "in": 2, "out": 10,
+                "long_context": {"in": 4, "out": 15}, "context_threshold": 272000,
+                "variants": [{"label": "Priority", "service_tier": "priority", "comparison_scope": "global",
+                              "in": 4, "out": 20, "long_context": {"in": 8, "out": 30, "cache_read": 0.4, "cache_write": 10, "cache_write_1h": 16}}]}
+        data = {"models": {"m/x": {"name": "Model X", "platforms": {"databricks": cell}}}}
+        facts = {"Model X": {"regional": False, "standard": {"short context": {"in": 2, "out": 10}, "long context": {"in": 4, "out": 15}},
+                             "priority": {"short context": {"in": 4, "out": 20}, "long context": copy.deepcopy(cell["variants"][0]["long_context"])}}}
+        return data, facts
+
+    def test_priority_long_context_changes_apply_before_verification(self):
+        for field in ("in", "out", "cache_read", "cache_write", "cache_write_1h"):
+            with self.subTest(field=field):
+                data, facts = self.context_offer()
+                cell = data["models"]["m/x"]["platforms"]["databricks"]
+                old = facts["Model X"]["priority"]["long context"][field]
+                facts["Model X"]["priority"]["long context"][field] = old + 1
+                today = dt.date(2026, 10, 11)
+                record = lambda price: 'table: ' + review.packed({"heading": "Model X Priority", "cells": ["Long context", f"${price}"]})
+                config = [{"id": "dbu", "facts": "dbx-prices", "meta": ["src"]}]
+                baseline = {"sources": {"dbu": {"records": [record(old)]}}}
+                current = {"dbu": {"url": "u", "records": [record(old + 1)]}}
+                issues = review.dbx_fact_issues(data, facts, today)
+                self.assertIn("Priority long-context " + field, issues["m/x"][0])
+                cells, changes = review.cell_checks(data, config, baseline, current, {}, issues, None, today)
+                self.assertEqual(changes[0]["risk"], "high")
+                self.assertIn("changed_at", cells["m/x|databricks"])
+                self.assertEqual(review.accept_low_risk(baseline, current, changes, {}, [])["sources"]["dbu"]["records"], [record(old)])
+                edits = review.dbx_edits(data, facts, today)["m/x"]
+                self.assertEqual(edits, [{"offer": "variant:Priority/long_context", "field": field, "old": old, "new": old + 1}])
+                review.build_data.apply_proven(cell, [dict(e, date=today.isoformat()) for e in edits], "Model X", "Databricks")
+                self.assertEqual(review.dbx_fact_issues(data, facts, today), {})
+                done = {("m/x", "databricks", "dbx-prices"): "applied"}
+                cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, today, applied=done)
+                self.assertEqual(cells["m/x|databricks"]["verified"], today.isoformat())
+                self.assertEqual(review.accept_low_risk(baseline, current, changes, {}, [])["sources"], current)
+
+    def test_missing_context_bands_and_rates_stay_for_review(self):
+        for tier, field, side in (("standard", None, "table"), ("priority", None, "table"),
+                                  ("priority", "cache_read", "table"), ("priority", "cache_read", "page"),
+                                  ("standard", None, "page"), ("priority", None, "page")):
+            with self.subTest(tier=tier, field=field, side=side):
+                data, facts = self.context_offer()
+                cell = data["models"]["m/x"]["platforms"]["databricks"]
+                target = facts["Model X"][tier] if side == "table" else cell if tier == "standard" else cell["variants"][0]
+                band = "long context" if side == "table" else "long_context"
+                del (target[band] if field else target)[field or band]
+                today = dt.date(2026, 10, 11)
+                issues = review.dbx_fact_issues(data, facts, today)
+                self.assertTrue(issues["m/x"])
+                self.assertFalse(any(review.dbx_availability(text) for text in issues["m/x"]))
+                self.assertEqual(review.dbx_edits(data, facts, today), {})
+                report = {"checked_at": today.isoformat(), "sources_failed": {}, "lifecycle_due": []}
+                issue, _ = review.issue_markdown(report, {}, [], issues, data, {"m/x"}, failing=[])
+                self.assertIn("Databricks prices that differ from its DBU tables", issue)
+                self.assertIn("**Model X**", issue)
+                if side == "table":
+                    self.assertEqual(review.dbx_fact_issues(data, facts, today, complete=False), {})
+
+    def test_priority_context_promotion_checks_current_and_future_rates(self):
+        data, facts = self.context_offer()
+        priority = data["models"]["m/x"]["platforms"]["databricks"]["variants"][0]
+        after = {"in": 5, "out": 25, "long_context": {field: value * 1.25 for field, value in priority["long_context"].items()}}
+        priority["promotion"] = {"ends_on": "2026-10-11", "after": after}
+        self.assertEqual(review.dbx_fact_issues(data, facts, dt.date(2026, 10, 11)), {})
+        self.assertTrue(review.dbx_fact_issues(data, facts, dt.date(2026, 10, 12)))
+        self.assertEqual(review.dbx_edits(data, facts, dt.date(2026, 10, 12)), {})
+        facts["Model X"]["priority"] = {"short context": {"in": 5, "out": 25}, "long context": after["long_context"]}
+        for day in (11, 12):
+            self.assertEqual(review.dbx_fact_issues(data, facts, dt.date(2026, 10, day)), {})
+
+    def test_conflicting_sources_cannot_resolve_a_partially_applied_change(self):
+        row = lambda cells: 'table: ' + review.packed({"heading": "Model X pricing", "cells": cells})
+        header = row(["Model", "Input", "Output"])
+        old = row(["Model X", "$1", "$2"])
+        data = {"models": {"m/x": {"name": "Model X", "platforms": {"official": {"status": "priced", "src": "src", "in": 1, "out": 2, "cache_read": 0.1}}}}}
+        config = [{"id": sid, "meta": ["src"]} for sid in ("s1", "s2", "cache")]
+        baseline = {"sources": {sid: {"records": [header, old]} for sid in ("s1", "s2")}}
+        baseline["sources"]["cache"] = {"records": [row(["Model X cache read", "$0.1"])]}
+        current = {sid: {"url": "u", "records": [header, row(["Model X", f"${price}", "$4"])]} for sid, price in (("s1", 2), ("s2", 3))}
+        current["cache"] = {"url": "u", "records": [row(["Model X cache read", "$0.2"])]}
+        today = dt.date(2026, 10, 11)
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, today)
+        edits = review.proven_edits(data, changes, current, {}, config)
+        self.assertEqual([(e["source"], e["field"]) for e in edits], [("cache", "cache_read")])
+        cell = data["models"]["m/x"]["platforms"]["official"]
+        review.build_data.apply_proven(cell, [dict(e, date=today.isoformat()) for e in edits], "Model X", "official")
+        done = {(e["model"], e["platform"], e["source"]): "applied" for e in edits}
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, today, applied=done)
+        self.assertEqual(cells["m/x|official"]["sources"], ["s1", "s2"])
+        self.assertEqual([c["risk"] for c in changes if c["source"] != "cache"], ["high", "high"])
+        report = {"checked_at": today.isoformat(), "sources_failed": {}, "lifecycle_due": []}
+        issue, refs = review.issue_markdown(report, cells, changes, {}, data, {"m/x"}, failing=[])
+        self.assertEqual(refs, ["m/x|official"])
+        self.assertIn("$3", issue)
+        updated = review.accept_low_risk(baseline, current, changes, {}, [])
+        for sid in ("s1", "s2"):
+            self.assertCountEqual(updated["sources"][sid]["records"], baseline["sources"][sid]["records"])
+        self.assertEqual(updated["sources"]["cache"], current["cache"])
+        self.assertEqual((cell["in"], cell["out"]), (1, 2))
+        # Once both sources agree, their complete changes can be applied and accepted.
+        current["s2"] = dict(current["s1"])
+        cells, changes = review.cell_checks(data, config, updated, current, {}, {}, None, today)
+        edits = review.proven_edits(data, changes, current, {}, config)
+        self.assertEqual({e["source"] for e in edits}, {"s1", "s2"})
+        review.build_data.apply_proven(cell, [dict(e, date=today.isoformat()) for e in edits], "Model X", "official")
+        done = {(e["model"], e["platform"], e["source"]): "applied" for e in edits}
+        cells, changes = review.cell_checks(data, config, updated, current, {}, {}, None, today, applied=done)
+        self.assertEqual(cells["m/x|official"]["verified"], today.isoformat())
+        self.assertEqual((cell["in"], cell["out"]), (2, 4))
+        self.assertEqual(review.accept_low_risk(updated, current, changes, {}, [])["sources"], current)
+        self.assertEqual(review.issue_markdown(report, cells, changes, {}, data, {"m/x"}, failing=[])[1], [])
+
+    def test_real_automatic_price_updates_keep_daily_calculation_tests_passing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            maintenance = root / "maintenance"
+            maintenance.mkdir()
+            for name in ("v2-data.json", "v2-math.js"):
+                shutil.copy2(HERE.parent / name, root / name)
+            for name in ("build-data.py", "validate-data.py", "seed-data.json", "verified-ids.json", "endpoints.json",
+                         "endpoints-auto.json", "prices-auto.json", "pricing.test.cjs", "pricing-fixtures.json"):
+                shutil.copy2(HERE / name, maintenance / name)
+            data = json.loads((root / "v2-data.json").read_text())
+            kimi = data["models"]["moonshot/kimi-k3"]["platforms"]["databricks"]
+            sol = data["models"]["openai/gpt-6.1-sol"]["platforms"]["databricks"]
+            priority = next(v for v in sol["variants"] if v["service_tier"] == "priority" and v["comparison_scope"] == "global")
+            edits = [{"model": "moonshot/kimi-k3", "platform": "databricks", "source": "dbx-prices", "offer": "base",
+                      "field": "out", "old": kimi["out"], "new": kimi["out"] + 1},
+                     {"model": "openai/gpt-6.1-sol", "platform": "databricks", "source": "dbx-prices",
+                      "offer": "variant:" + priority["label"] + "/long_context", "field": "in",
+                      "old": priority["long_context"]["in"], "new": priority["long_context"]["in"] + 1}]
+            with patch.object(review, "HERE", maintenance), patch.object(review, "AUTO_FILE", maintenance / "prices-auto.json"):
+                self.assertEqual(review.apply_edits(edits, dt.date(2026, 10, 11)), edits)
+            rebuilt = json.loads((root / "v2-data.json").read_text())
+            regional = next(v for v in rebuilt["models"]["openai/gpt-6.1-sol"]["platforms"]["databricks"]["variants"]
+                            if v["service_tier"] == "priority" and v["comparison_scope"] == "regional")
+            self.assertEqual(regional["long_context"]["in"], round(edits[1]["new"] * 1.1, 6))
+            result = subprocess.run(["node", "--test", str(maintenance / "pricing.test.cjs")], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_overdue_tier_findings_stay_due_until_resolved(self):
         cell = {"variants": [{"valid_through": "2026-10-11", "promotion": {"ends_on": "2026-10-11"}}], "retires_on": "2026-10-11"}
         data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": cell}}}}

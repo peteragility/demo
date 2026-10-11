@@ -3,13 +3,16 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const M = require('../v2-math.js');
-const data = JSON.parse(fs.readFileSync(path.join(__dirname, '../v2-data.json'), 'utf8'));
+// Fixed reviewed examples keep arithmetic expectations independent of daily price updates.
+const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'pricing-fixtures.json'), 'utf8'));
+const published = JSON.parse(fs.readFileSync(path.join(__dirname, '../v2-data.json'), 'utf8'));
 const offer = (key, platform = 'databricks') => data.models[key].platforms[platform];
 const date = {asOf: '2026-10-02'};
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `Expected ${b}, got ${a}`);
 const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 // A tier by endpoint and service tier, independent of its display label.
 const tier = (cell, endpoint, service) => cell.variants.find(v => v.endpoint === endpoint && v.service_tier === service).id;
+const priced = (input, output) => ({status: 'priced', in: input, out: output, model_match: 'confirmed', service_tier: 'standard'});
 
 test('monthly cache writes replace uncached input instead of being double-counted', () => {
   const c = offer('moonshot/kimi-k3', 'bedrock');
@@ -176,11 +179,15 @@ test('a cheaper hyperscaler price in any processing scope counts against parity'
 });
 
 test('OSS parity counts every hyperscaler that undercuts Databricks', () => {
-  const oss = Object.values(data.models).filter(m => m.group === 'oss');
+  const oss = [
+    {platforms: {databricks: priced(1, 2), bedrock: priced(2, 4), gcloud: priced(0.5, 1)}},
+    {platforms: {databricks: priced(1, 2), bedrock: priced(1, 2)}},
+    {platforms: {databricks: priced(1, 2), bedrock: {status: 'unavailable'}}}
+  ];
   const result = M.summarize(oss, date);
-  // Inkling left Azure pay-per-token on 25 Sep 2026, so it has no hyperscaler price to compare.
-  assert.equal(result.comparedModels, 14);
-  assert.equal(result.noCheaperModels, 7);
+  assert.equal(result.comparedModels, 2);
+  assert.equal(result.noCheaperModels, 1);
+  assert.equal(result.withoutComparison, 1);
 });
 
 test('a cheaper price for an unconfirmed checkpoint keeps a model out of the parity claim', () => {
@@ -193,14 +200,14 @@ test('a cheaper price for an unconfirmed checkpoint keeps a model out of the par
 });
 
 test('availability gaps count only models Databricks currently prices', () => {
-  const openai = Object.values(data.models).filter(m => m.group === 'openai');
-  // GPT-6.1 Sol has a Databricks price (2026-10-06), so its missing Vertex offer now counts.
-  assert.equal(M.summarize(openai, date).gaps.gcloud, 9);
-  const oss = Object.values(data.models).filter(m => m.group === 'oss');
-  // Qwen3.8 27B, MiniMax M3 and Mistral Medium 3.5 are not on Databricks, so they add no gaps.
-  // Inkling is an Azure gap until it retires on Databricks; GLM 5.3 reached Bedrock on 5 Oct 2026.
-  assert.deepEqual(M.summarize(oss, date).gaps, {bedrock: 8, azure_foundry: 6, gcloud: 11});
-  assert.deepEqual(M.summarize(oss, {asOf: '2026-10-30'}).gaps, {bedrock: 5, azure_foundry: 5, gcloud: 8});
+  const missing = {status: 'unavailable'};
+  const models = [
+    {platforms: {databricks: priced(1, 2), bedrock: missing, azure_foundry: priced(1, 2), gcloud: missing}},
+    {platforms: {databricks: {...priced(1, 2), retires_on: '2026-10-30'}, bedrock: priced(1, 2), azure_foundry: missing, gcloud: missing}},
+    {platforms: {databricks: {status: 'unverified'}, bedrock: missing, azure_foundry: missing, gcloud: missing}}
+  ];
+  assert.deepEqual(M.summarize(models, date).gaps, {bedrock: 1, azure_foundry: 1, gcloud: 2});
+  assert.deepEqual(M.summarize(models, {asOf: '2026-10-30'}).gaps, {bedrock: 1, azure_foundry: 0, gcloud: 1});
 });
 
 test('expired promotions carry their published list-tier labels', () => {
@@ -226,7 +233,7 @@ test('tier cache and long-context rates are the published ones, never inherited 
   close(batch.cache_read, 0.1);
   close(batch.long_context.in, 2);
   // A derived rate names the rule it follows.
-  for (const [key, m] of Object.entries(data.models)) for (const [pl, cell] of Object.entries(m.platforms))
+  for (const [key, m] of Object.entries(published.models)) for (const [pl, cell] of Object.entries(m.platforms))
     for (const v of cell.variants || []) if (v.derived) assert.ok(typeof v.derived === 'string' && v.derived.length > 10, key + ' ' + pl + ' ' + v.label);
 });
 

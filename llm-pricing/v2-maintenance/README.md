@@ -39,6 +39,8 @@ python3 v2-maintenance/test-ranking.py
 node --test v2-maintenance/pricing.test.cjs
 ```
 
+Calculation tests use fixed reviewed examples in `pricing-fixtures.json`, so daily price updates do not invalidate arithmetic expectations. Live offers still pass the data validator. Source-review tests also apply real price updates in a temporary copy and run the calculation tests against the rebuilt data.
+
 Chrome integration checks cover desktop, tablet, 390 px and 320 px viewports: all seven provider columns, rows per screen, the platform cards, filters, copy text, date changes, the read-only page and the `v2.html` redirect. Chrome uses a temporary profile; screenshots and reports go to a temporary directory.
 
 ```sh
@@ -65,6 +67,8 @@ The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/
 New models and tiers never appear automatically; prices change automatically only when the source proves them (above). A run fails (and GitHub emails you) only when the pipeline itself is broken: the rebuilt data fails validation or a test, or more than half the sources cannot be read. An unreadable source keeps its offers' last verified date; it is listed in the issue once it has not been read for two days (a one-off failure or a same-day re-run is not).
 
 Issue updates run whenever the source check produced a complete issue report, including when the check reports widespread source failures or the subsequent publish fails. If the check stops before producing that report, the existing issue is left as it is. Cancelled runs do not update issues.
+
+Databricks checks cover Standard and Priority rates in both context bands, including cache charges and published post-promotion rates. Missing rates or context bands require review. When sources disagree on a rate, each conflicting source's whole change stays for review; applying another rate cannot accept its unresolved lines into the baseline.
 
 ### Resolving a review issue
 
