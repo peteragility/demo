@@ -63,7 +63,7 @@ body.focus .topbar{display:none}
 .bricks i.off{visibility:hidden}
 .bricks i:nth-child(4),.bricks i:nth-child(5){transform:translateX(6px)}
 .wordmark{font:900 21px/1 var(--f-display);letter-spacing:.07em;text-transform:uppercase}
-.tb-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.tb-right{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;min-width:0;gap:8px}
 .chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:999px;border:1px solid var(--line-2);background:var(--panel);font:600 12.5px/1 var(--f-mono);color:var(--muted);white-space:nowrap}
 .chip b{color:var(--text);font-weight:600}
 .chip svg{width:14px;height:14px}
@@ -353,6 +353,20 @@ pre.code.opt-code{margin:0;padding:8px 10px;font-size:12.5px}
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none!important;transition:none!important} }
 </style>
 
+<link rel="canonical" href="https://peteragility.github.io/demo/lakehouse-quest.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Peter’s Demo Lab">
+<meta property="og:title" content="Lakehouse Quest">
+<meta property="og:description" content="Blueprint-aligned practice for the Databricks Data Engineer Associate and Context Engineer Associate exams.">
+<meta property="og:url" content="https://peteragility.github.io/demo/lakehouse-quest.html">
+<meta property="og:image" content="https://peteragility.github.io/demo/assets/demo-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lakehouse Quest — Blueprint-aligned practice for the Databricks Data Engineer Associate and Context Engineer Associate exams.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lakehouse Quest">
+<meta name="twitter:description" content="Blueprint-aligned practice for the Databricks Data Engineer Associate and Context Engineer Associate exams.">
+<meta name="twitter:image" content="https://peteragility.github.io/demo/assets/demo-preview.png">
 </head>
 <body>
 
@@ -364,7 +378,7 @@ pre.code.opt-code{margin:0;padding:8px 10px;font-size:12.5px}
       <span class="wordmark">Lakehouse Quest</span>
     </button>
     <button class="chip trackchip" id="tb-track" data-act="hub" hidden><span class="dot"></span><b id="tb-track-name"></b></button>
-    <div class="tb-right">
+    <div class="tb-right"><a class="chip" href="./">← Demo home</a>
       <span class="chip" id="tb-streak" title="Study streak: days with 10 or more answers"></span>
       <span class="chip" id="tb-level" title="Experience"></span>
       <button class="iconbtn" id="tb-sound" data-act="sound" aria-label="Sound"></button>

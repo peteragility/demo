@@ -95,12 +95,26 @@
     .foot{margin-top:14px}
   }
 </style>
+<link rel="canonical" href="https://peteragility.github.io/demo/aidecide-arena/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Peter’s Demo Lab">
+<meta property="og:title" content="AI Arena — ai_decide vs Jev · Deathmatch">
+<meta property="og:description" content="Two decision models compete head-to-head in Snake Arena and Tic-Tac-Toe — every move is a live model call, tap any log row to inspect the raw input &amp; output.">
+<meta property="og:url" content="https://peteragility.github.io/demo/aidecide-arena/">
+<meta property="og:image" content="https://peteragility.github.io/demo/assets/demo-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AI Arena — ai_decide vs Jev · Deathmatch — Two decision models compete head-to-head in Snake Arena and Tic-Tac-Toe — every move is a live model call, tap any log row to inspect the raw input &amp; output.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Arena — ai_decide vs Jev · Deathmatch">
+<meta name="twitter:description" content="Two decision models compete head-to-head in Snake Arena and Tic-Tac-Toe — every move is a live model call, tap any log row to inspect the raw input &amp; output.">
+<meta name="twitter:image" content="https://peteragility.github.io/demo/assets/demo-preview.png">
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="kicker">Decision Model Deathmatch</div>
-    <h1>🏟️ AI Arena: ai_decide vs Jev</h1>
+    <p style="font-size:12px;margin:0 0 8px"><a href="../" style="color:inherit">← Demo home</a></p><h1>🏟️ AI Arena: ai_decide vs Jev</h1>
     <p class="sub">Two decision models, head-to-head. Every move is a live model call — tap any log row to see the exact input &amp; output.</p>
   </header>
 
@@ -172,7 +186,10 @@ function logRow(panelEl, line1, reqObj, resObj){
   const io=document.createElement('div');io.className='io';
   io.textContent='INPUT  '+JSON.stringify(reqObj)+'\nOUTPUT '+JSON.stringify(resObj);
   const l1=document.createElement('div');l1.className='line1';
-  l1.innerHTML=line1+'<span class="hint">▾ I/O</span>';
+  for (const [className, text] of line1) {
+    const part=document.createElement('span');part.className=className;part.textContent=String(text);l1.appendChild(part);
+  }
+  const hint=document.createElement('span');hint.className='hint';hint.textContent='▾ I/O';l1.appendChild(hint);
   row.appendChild(l1);row.appendChild(io);
   row.onclick=(e)=>{e.stopPropagation();row.classList.toggle('open');};
   panelEl.prepend(row);
@@ -248,7 +265,7 @@ async function moveSnake(s,other,model,panel,barsId,sc,al,mvv,avg){
     const nh={x:h.x+v.x,y:h.y+v.y};
     const conf=Math.round((a.confidence||0)*100)+'%';
     bars(barsId,a.probabilities||{},pick);
-    logRow($(panel),`<span class="ms">${ms}ms</span><span class="pk">${pick}</span><span style="color:var(--mut)">${conf}</span>`,
+    logRow($(panel),[['ms',ms+'ms'],['pk',pick],['',conf]],
       {model,state,questions},{choice:a.choice,confidence:a.confidence,probabilities:a.probabilities});
     s.msSum+=ms;s.moves++;
     $(mvv).textContent=s.moves;$(avg).textContent=Math.round(s.msSum/s.moves);
@@ -259,7 +276,7 @@ async function moveSnake(s,other,model,panel,barsId,sc,al,mvv,avg){
     if(nh.x===food.x&&nh.y===food.y){s.score++;$(sc).textContent=s.score;Object.assign(food,spawnFood([A,B]));}
     else s.body.pop();
   }catch(e){
-    logRow($(panel),`<span class="ms">ERR</span><span class="pk">⚠️</span><span style="color:var(--bad)">${String(e.message).slice(0,40)}</span>`,{model},{error:e.message});
+    logRow($(panel),[['ms','ERR'],['pk','⚠️'],['',String(e.message).slice(0,40)]],{model},{error:e.message});
   }
 }
 const drivers={};
@@ -358,11 +375,11 @@ async function tttMove(side){
     const idx=pick&&pick.startsWith('c')?+pick.slice(1):null;
     if(idx==null||tBoard[idx]!=null)throw new Error('bad cell');
     tBoard[idx]=mark;
-    logRow($(side==='A'?'tlogA':'tlogB'),`<span class="ms">${ms}ms</span><span class="pk">${mark}</span><span style="color:var(--mut)">${POS[idx]}</span>`,
+    logRow($(side==='A'?'tlogA':'tlogB'),[['ms',ms+'ms'],['pk',mark],['',POS[idx]]],
       {model,state,questions},{choice:a.choice,confidence:a.confidence,probabilities:a.probabilities});
   }catch(e){
     const fb=tBoard.findIndex(v=>v==null);if(fb<0)return;tBoard[fb]=mark;
-    logRow($(side==='A'?'tlogA':'tlogB'),`<span class="ms">ERR</span><span class="pk">⚠️</span>`,{model},{error:String(e.message).slice(0,40)});
+    logRow($(side==='A'?'tlogA':'tlogB'),[['ms','ERR'],['pk','⚠️']],{model},{error:String(e.message).slice(0,40)});
   }
   tttRender();
 }

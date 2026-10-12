@@ -88,7 +88,7 @@ try {
         clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource(date)})).identifier;
       }
       await call('Page.navigate', {url: pageURL});
-      await waitFor("document.body.dataset.ready === 'true'");
+      await waitFor("document.body?.dataset.ready === 'true'");
       await evalJS("document.documentElement.dataset.theme='light'");
       await evalJS('document.fonts.ready.then(()=>true)');
     };

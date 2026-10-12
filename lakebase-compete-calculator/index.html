@@ -185,6 +185,20 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 @media (hover:none) and (pointer:coarse){.sel select,.fi input,.fi select{font-size:16px}.fi .vbox{width:96px;height:28px}}
 @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
 </style>
+<link rel="canonical" href="https://peteragility.github.io/demo/lakebase-compete-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Peter’s Demo Lab">
+<meta property="og:title" content="Lakebase Calculator">
+<meta property="og:description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and ClickHouse Managed Postgres: region-aware public list prices, HA, replicas, storage, backups, I/O and commitments.">
+<meta property="og:url" content="https://peteragility.github.io/demo/lakebase-compete-calculator/">
+<meta property="og:image" content="https://peteragility.github.io/demo/assets/lakebase-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lakebase Calculator — Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and ClickHouse Managed Postgres: region-aware public list prices, HA, replicas, storage, backups, I/O and commitments.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lakebase Calculator">
+<meta name="twitter:description" content="Monthly cost of Databricks Lakebase Postgres vs Aurora (provisioned and Serverless v2), Amazon RDS for PostgreSQL, Azure Database for PostgreSQL Flexible Server, Azure SQL Database, Google Cloud SQL and ClickHouse Managed Postgres: region-aware public list prices, HA, replicas, storage, backups, I/O and commitments.">
+<meta name="twitter:image" content="https://peteragility.github.io/demo/assets/lakebase-preview.png">
 </head>
 <body>
 <div class="wrap">
@@ -192,7 +206,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <h1>Lakebase Calculator</h1>
     <span class="intref" title="Built by Peter Chan from Databricks, from providers' official list prices; not an official Databricks publication.">Public list prices · not an official quote</span>
     <p><span class="pl">Estimate Databricks Lakebase monthly cost and compare it with Aurora, RDS, Azure, Cloud SQL and ClickHouse Postgres · </span>USD per month · prices checked <b id="checked">—</b></p>
-    <p><a href="../lakebase-objection-faq/">Lakebase Field Guide: sales plays, technical FAQ &amp; production proof ↗</a></p>
+    <p><a href="../">← Demo home</a> · <a href="../lakebase-objection-faq/">Lakebase Field Guide: sales plays, technical FAQ &amp; production proof ↗</a></p>
   </header>
 
   <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Common scenarios">
@@ -775,8 +789,8 @@ function render() {
     + '<div class="kpi"><b>#' + rank + '<small> of ' + sorted.length + '</small></b><span>' + REG[s.region].name + '<br>' + ({od: 'others on-demand', '1y': 'others 1-yr commit', '3y': 'others 3-yr commit'})[s.commit] + '</span></div>'
     + '<div class="acts"><button class="abtn" id="inpBtn" aria-expanded="' + !$('inputs').hidden + '" aria-controls="inputs">Inputs</button><button class="abtn" id="copyBtn">Copy</button><button class="abtn" id="shareBtn">Share</button></div>';
   $('inpBtn').onclick = () => { $('inputs').hidden = !$('inputs').hidden; render(); };
-  $('copyBtn').onclick = () => navigator.clipboard.writeText(summaryText()).then(() => toast('Summary copied'));
-  $('shareBtn').onclick = () => { writeHash(); navigator.clipboard.writeText(location.href).then(() => toast('Link copied')); };
+  $('copyBtn').onclick = () => copyText(summaryText(), 'Summary copied');
+  $('shareBtn').onclick = () => { writeHash(); copyText(location.href, 'Link copied'); };
 
   const cols = colsFor(), n = cols.length + 1, narrow = cols.length === 2;
   const money = v => v > 0.5 ? fmt(v) : '—';
@@ -814,6 +828,24 @@ function readHash() { if (!location.hash) return false; const p = new URLSearchP
 function markTab() { document.querySelectorAll('#tabs .tab').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === curPreset))); }
 function applyPreset(k) { $('etlOverride').value = '-1'; curPreset = k; if (Object.hasOwn(PRESETS, k)) { const q = PRESETS[k]; $('pat').value = q.pat; $('peak').value = q.peak; $('sto').value = q.sto; $('io').value = q.io; $('ha').value = String(q.ha); $('rep').value = String(q.rep); $('sync').value = q.sync; } markTab(); OPEN.clear(); render(); }
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
+async function copyText(text, message) {
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(text); toast(message); return;
+  } catch { /* Offer selectable text when permissions or browser support block copying. */ }
+  const dialog = document.createElement('dialog');
+  const heading = document.createElement('h2'); heading.textContent = 'Copy manually';
+  const help = document.createElement('p'); help.textContent = 'Clipboard access is unavailable. Select the text below to copy it.';
+  const textBox = document.createElement('textarea'); textBox.value = text; textBox.readOnly = true;
+  textBox.setAttribute('aria-label', 'Text to copy'); textBox.rows = 8; textBox.style.cssText = 'display:block;width:100%;min-width:0;font:inherit';
+  const close = document.createElement('button'); close.type = 'button'; close.textContent = 'Close'; close.className = 'abtn';
+  const previous = document.activeElement;
+  close.onclick = () => dialog.close();
+  dialog.addEventListener('close', () => { dialog.remove(); previous?.focus(); });
+  dialog.style.cssText = 'max-width:min(560px,90vw);width:90vw;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:20px';
+  dialog.append(heading, help, textBox, close); document.body.append(dialog);
+  dialog.showModal(); textBox.focus(); textBox.select();
+}
 function summaryText() {
   const s = state(), all = allRows(s), rows = all.filter(r => !r.na).sort((a, b) => a.total - b.total);
   const L = ['Lakebase Calculator estimate: ' + REG[s.region].name + ', public list prices checked ' + longDate(REG[s.region].checked || CHECKED) + '. Estimate only; verify before use.',

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "lakebase-01",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/compatibility"
+  },
+  {
+    "id": "lakebase-02",
+    "url": "https://www.databricks.com/product/pricing/lakebase"
+  },
+  {
+    "id": "lakebase-03",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/manage-computes"
+  },
+  {
+    "id": "lakebase-04",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/autoscaling"
+  },
+  {
+    "id": "lakebase-05",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero"
+  },
+  {
+    "id": "lakebase-06",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/high-availability"
+  },
+  {
+    "id": "lakebase-07",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/read-replicas"
+  },
+  {
+    "id": "lakebase-08",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/manage-projects"
+  },
+  {
+    "id": "lakebase-09",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore"
+  },
+  {
+    "id": "lakebase-10",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/branches"
+  },
+  {
+    "id": "lakebase-11",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview"
+  },
+  {
+    "id": "lakebase-12",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/connection-pooling"
+  },
+  {
+    "id": "lakebase-13",
+    "url": "https://docs.databricks.com/aws/en/release-notes/lakebase/"
+  },
+  {
+    "id": "lakebase-14",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/lakebase-search"
+  },
+  {
+    "id": "lakebase-15",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/lakebase-cdf"
+  },
+  {
+    "id": "lakebase-16",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery"
+  },
+  {
+    "id": "aws-rds-price-index",
+    "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
+    "kind": "rds-index"
+  },
+  {
+    "id": "azure-postgres-pricing",
+    "url": "https://azure.microsoft.com/en-us/pricing/details/postgresql/flexible-server/"
+  },
+  {
+    "id": "azure-sql-pricing",
+    "url": "https://azure.microsoft.com/en-us/pricing/details/azure-sql-database/single/"
+  },
+  {
+    "id": "cloud-sql-pricing",
+    "url": "https://cloud.google.com/sql/pricing"
+  },
+  {
+    "id": "clickhouse-postgres-pricing",
+    "url": "https://clickhouse.com/docs/cloud/managed-postgres/pricing"
+  },
+  {
+    "id": "lakebase-regional-rates",
+    "url": "https://www.databricks.com/en-pricing-assets/data/pricing/cards.json",
+    "kind": "lakebase-price-feed"
+  }
+]

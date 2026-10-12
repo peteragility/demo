@@ -1,0 +1,32 @@
+[
+  {
+    "name": "demo-preview",
+    "title": "Peter’s Demo Lab",
+    "subtitle": "Pricing tools, technical guides and little games",
+    "brand": "PETER CHAN / DEMO LAB",
+    "background": "#101626",
+    "ink": "#ecf0fa",
+    "accent": "#c1ff84",
+    "footer": "peteragility.github.io/demo"
+  },
+  {
+    "name": "lakebase-preview",
+    "title": "Lakebase Calculator",
+    "subtitle": "Compare monthly cost with assumptions and source dates",
+    "brand": "PETER CHAN / DEMO LAB",
+    "background": "#101626",
+    "ink": "#ecf0fa",
+    "accent": "#c1ff84",
+    "footer": "peteragility.github.io/demo"
+  },
+  {
+    "name": "llm-preview",
+    "title": "LLM Token Pricing",
+    "subtitle": "Compare APIs, cache charges, tiers and cloud regions",
+    "brand": "PETER CHAN / DEMO LAB",
+    "background": "#101626",
+    "ink": "#ecf0fa",
+    "accent": "#c1ff84",
+    "footer": "peteragility.github.io/demo"
+  }
+]

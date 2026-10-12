@@ -1,0 +1,69 @@
+name: Lakebase official source review
+on:
+  schedule:
+    - cron: '47 18 * * *'
+  workflow_dispatch:
+    inputs:
+      record_baseline:
+        description: Record source observations after reviewing every finding
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: lakebase-source-review
+  cancel-in-progress: false
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Test material-change rules
+        run: python3 lakebase-content/test_review_sources.py
+      - name: Record reviewed source observations
+        if: inputs.record_baseline
+        run: python3 lakebase-content/review_sources.py --report-dir "$RUNNER_TEMP/lakebase-baseline" --record-baseline
+      - name: Read official sources
+        run: python3 lakebase-content/review_sources.py --report-dir "$RUNNER_TEMP/lakebase-review"
+      - name: Publish observed baseline
+        if: inputs.record_baseline && success()
+        run: |
+          git add lakebase-content/watch-baseline.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Lakebase: record reviewed source observations'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Reconcile review issue
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          report="$RUNNER_TEMP/lakebase-review/issue.md"
+          if [ ! -f "$report" ]; then exit 0; fi
+          label=lakebase-source-review
+          gh label create "$label" --color FBCA04 --description 'Official Lakebase or competitor sources need review' 2>/dev/null || true
+          number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
+          if [ -s "$report" ]; then
+            if [ -z "$number" ]; then
+              gh issue create --title 'Lakebase: official source changes need review' --label "$label" --body-file "$report"
+            else
+              gh issue edit "$number" --body-file "$report"
+            fi
+          elif [ -n "$number" ]; then
+            gh issue close "$number" --reason completed
+          fi
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: lakebase-source-review
+          path: ${{ runner.temp }}/lakebase-review/
+          retention-days: 14

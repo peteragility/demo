@@ -1,8 +1,10 @@
 #!/bin/bash
 # Regenerate manifest.json from demo/ directory, then push to GitHub Pages.
-# Usage: demo-push "commit message"
+# Usage: ./demo-push.sh "commit message" index.html assets/example.js
 set -e
-cd ~/git/demo
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+message="${1:-demo update $(date +%F\ %H:%M)}"
+if [ "$#" -gt 0 ]; then shift; fi
 
 python3 - <<'PYEOF'
 import os, json, datetime
@@ -52,8 +54,9 @@ with open('manifest.json', 'w') as output:
 print(f'manifest.json: {len(pages)} pages')
 PYEOF
 
-git add -A
-git diff --cached --quiet && echo "nothing to push" && exit 0
-git commit -m "${1:-demo update $(date +%F\ %H:%M)}" --quiet
+git add -- manifest.json
+if [ "$#" -gt 0 ]; then git add -- "$@"; fi
+git diff --cached --quiet && echo "Nothing staged. Pass explicit paths to publish edited files." && exit 0
+git commit -m "$message" --quiet
 git push --quiet
 echo "pushed ✅ → https://peteragility.github.io/demo/"

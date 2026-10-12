@@ -30,6 +30,8 @@ jobs:
           node-version: '24'
       - name: Check shared facts
         run: python3 lakebase-content/render_facts.py --check
+      - name: Check official-source change detection
+        run: python3 lakebase-content/test_review_sources.py
       - name: Check inline JavaScript syntax
         run: |
           node -e 'const fs = require("node:fs"); fs.writeFileSync("/tmp/lakebase-script.js", fs.readFileSync("lakebase-compete-calculator/index.html", "utf8").match(/<script>([\s\S]*?)<\/script>/)[1]);'
