@@ -477,7 +477,7 @@ def risk_tokens(line, rx):
         if prices:
             identity = [official.norm(row.get("heading", "")), [PRICE.sub("#", c) for c in cells]]
             tokens.add("price:assignment:" + packed([identity, prices]))
-        elif any(field_of(c) for c in cells):
+        elif any(field_of(c) and not NON_RATE_COLUMN.search(c) for c in cells):
             # Moving or renaming a rate column changes the meaning of unchanged data rows.
             tokens.add("price:columns:" + packed([official.norm(row.get("heading", "")), cells]))
     elif line.startswith("{"):
@@ -582,6 +582,9 @@ FIELD_WORDS = (("cache_write_1h", r"\b1\s?h(?:our)?\b.*writ|writ.*\b1\s?h(?:our)
 LONG = re.compile(r"long[\s-]context|more than \d+\s?k|over \d+\s?k|>\s?\d+\s?k")
 TIER_WORDS = {"standard", "batch", "flex", "priority", "fast", "ultrafast", "global", "regional", "geo", "cris", "region", "us", "eu"}
 FIELD_NAMES = {"in": "input", "out": "output", "cache_read": "cache read", "cache_write": "cache write", "cache_write_1h": "1-hour cache write"}
+# AWS modality headers and yes/no feature lists mention input/output without naming rates.
+# Numeric prices and context limits are still checked before this header-only exclusion.
+NON_RATE_COLUMN = re.compile(r"^(?:input|output) modalities$|^(?:yes|no)\b.*\bstructured outputs?\b")
 
 
 def field_of(text):
@@ -823,6 +826,7 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     day = today.isoformat()
     applied = applied or {}
     held = {g["source"] for g in general if g["risk"] == "high"}
+    wording = {g["source"] for g in general if g["risk"] == "low"}
     rxs = {key: model_regex(model) for key, model in data["models"].items()}
     meta_index = {}
     for source in config:
@@ -864,8 +868,8 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                     rb, ra = relevant(before, rx), relevant(after, rx)
                 if not rb and not ra:
                     # No line names the model: still not offered, or (for an offered model) only a
-                    # whole-source match can confirm nothing changed.
-                    if offered and set(before) != set(after):
+                    # whole-source match or a low-risk shared diff can confirm nothing changed.
+                    if offered and set(before) != set(after) and sid not in wording:
                         unchecked.append(sid)
                     continue
                 if set(rb) != set(ra):
@@ -940,11 +944,16 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
         if len(shown) > 60:
             lines.append(f"- … and {len(shown) - 60} more (see the run's JSON artifact)")
         lines.append("")
-    pending = [ref for ref in review if cells[ref].get("unchecked")]
+    # A fresh diff was successfully read. Report only earlier findings without a current
+    # diff here, rather than calling them unreadable because another dependency is pending.
+    pending = {ref: sorted(set(cells[ref]["sources"]) -
+                          {c["source"] for c in shown if ref == c["model"] + "|" + c["platform"]})
+               for ref in review if cells[ref].get("unchecked")}
+    pending = {ref: sources for ref, sources in pending.items() if sources}
     if pending:
         lines += ["## Unresolved changes that could not be rechecked", "",
                   "The earlier source-change findings remain open until their sources can be read and the changes resolved.", ""]
-        lines += [f"- **{name(ref.split('|')[0])}** · {ref.split('|')[1]}: " + ", ".join(cells[ref]["sources"]) for ref in pending]
+        lines += [f"- **{name(ref.split('|')[0])}** · {ref.split('|')[1]}: " + ", ".join(sources) for ref, sources in pending.items()]
         lines.append("")
     held = [g for g in general if g["risk"] == "high"]
     if held:

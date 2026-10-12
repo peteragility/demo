@@ -310,6 +310,65 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(review.classify([review.packed({"input": "$3", "output": "$15"})],
                                          [review.packed({"input": "$15", "output": "$3"})], None)[0], "high")
 
+    def test_bedrock_features_and_modality_headers_are_not_price_columns(self):
+        def row(heading, cells):
+            return "table: " + review.packed({"heading": heading, "cells": cells})
+        for heading, cells in (
+            ("Grok 4.6 / Capabilities and Features",
+             ["yes Response streaming yes Implicit Prompt Caching yes Reasoning",
+              "no Server-side tool use no Count tokens no Structured outputs"]),
+            ("Kimi K3 / Capabilities and Features",
+             ["yes Response streaming yes Explicit Prompt Caching yes Structured outputs yes Invocation logs",
+              "no Intelligent prompt routing no Knowledge base"]),
+        ):
+            with self.subTest(heading=heading):
+                self.assertEqual(review.classify([row(heading, cells)],
+                                                [row(heading, [cells[0] + " yes Guardrails", cells[1]])], None)[0], "low")
+        before = row("Claude Opus 4.8 / Model Details", ["Input Modalities", "Output Modalities"])
+        after = row("Claude Opus 4.8 / Model Details / Important", ["Input Modalities", "Output Modalities"])
+        self.assertEqual(review.classify([before], [after], None)[0], "low")
+        # Feature tables still require review when a numeric rate or context limit changes.
+        for old, new in (("$3", "$4"), ("272K", "128K")):
+            self.assertEqual(review.classify([row("Capabilities", ["yes Structured outputs " + old])],
+                                            [row("Capabilities", ["yes Structured outputs " + new])], None)[0], "high")
+
+    def test_low_risk_shared_wording_does_not_block_offer_verification(self):
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"bedrock": {
+            "status": "priced", "src": "src", "endpoints": {"src": ["regions"]}}}}}}
+        config = [{"id": "card", "meta": ["src"], "models": ["m/k3"]},
+                  {"id": "regions", "meta": ["regions"], "kind": "text"}]
+        records = ["text: Kimi K3 input $3, output $15"]
+        baseline = {"sources": {"card": {"records": records},
+                                "regions": {"records": ["text: Endpoints supported by Amazon Bedrock"]}}}
+        current = {"card": {"url": "u", "records": records},
+                   "regions": {"url": "u", "records": ["text: Inference endpoints supported by Amazon Bedrock"]}}
+        general = review.general_changes(data, config, baseline, current, {})
+        self.assertEqual(general[0]["risk"], "low")
+        previous = {"cells": {"m/k3|bedrock": {"verified": "2026-10-11", "changed_at": "2026-10-12",
+                                               "sources": ["card"], "unchecked": ["regions"]}}}
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, previous,
+                                           dt.date(2026, 10, 12), general)
+        self.assertEqual(cells["m/k3|bedrock"], {"verified": "2026-10-12"})
+
+    def test_current_price_diff_is_not_reported_as_unreadable(self):
+        data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"bedrock": {}}}}}
+        ref = "m/k3|bedrock"
+        cells = {ref: {"changed_at": "2026-10-12", "sources": ["prices"], "unchecked": ["regions"]}}
+        changes = [{"model": "m/k3", "name": "Kimi K3", "platform": "bedrock", "source": "prices",
+                    "url": "u", "risk": "high", "reason": "price changed", "added": ["$4"], "removed": ["$3"]}]
+        report = {"checked_at": "2026-10-12", "sources_failed": {"regions": "HTTP 503"}}
+        text, pending = review.issue_markdown(report, cells, changes, {}, data, {"m/k3"}, failing=[])
+        self.assertEqual(pending, [ref])
+        self.assertIn("price changed", text)
+        self.assertNotIn("Unresolved changes that could not be rechecked", text)
+        # An earlier finding from another source must remain visible through a failed read.
+        cells[ref]["sources"].append("old-prices")
+        cells[ref]["unchecked"].append("old-prices")
+        report["sources_failed"]["old-prices"] = "HTTP 503"
+        text, _ = review.issue_markdown(report, cells, changes, {}, data, {"m/k3"}, failing=[])
+        self.assertIn("Unresolved changes that could not be rechecked", text)
+        self.assertIn("old-prices", text)
+
     def test_failed_reads_preserve_findings_until_the_affected_source_recovers(self):
         key = "m/k3|official"
         data = {"models": {"m/k3": {"name": "Kimi K3", "platforms": {"official": {"status": "priced", "src": "src",

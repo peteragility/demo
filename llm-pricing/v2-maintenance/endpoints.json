@@ -6061,6 +6061,10 @@
     [
      "Caching",
      "Explicit caching: 1,024-token minimum per checkpoint (Opus 5: 512), 5-minute or 1-hour TTL."
+    ],
+    [
+     "Thinking",
+     "Extended thinking requires thinking.type: \"adaptive\". thinking.type: \"enabled\" with budget_tokens returns HTTP 400; update requests when migrating from Opus 4.6."
     ]
    ],
    "ids": [
