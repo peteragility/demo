@@ -25,11 +25,30 @@
       const dashboard = 'https://'+code+'.goatcounter.com';
       // Only production page loads count. Preview/localhost requests cannot pollute totals.
       if (location.hostname === 'peteragility.github.io' && base.pathname === '/demo/') {
-        window.goatcounter = {path:pagePath(location.pathname),referrer:() => {
+        window.goatcounter = {no_onload:true,no_events:true,path:pagePath(location.pathname),referrer:() => {
           try {const u=new URL(document.referrer);return u.origin+u.pathname;} catch {return '';}
         }};
         const tracker = document.createElement('script');
         tracker.dataset.goatcounter=dashboard+'/count';tracker.async=true;tracker.src='https://gc.zgo.at/count.js';
+        tracker.onload = () => {
+          const counter = window.goatcounter;
+          const getData = counter.get_data, filter = counter.filter;
+          if (typeof getData !== 'function' || typeof filter !== 'function') return;
+          // count.js includes location.search separately as q, even with a custom path.
+          counter.get_data = vars => { const data = getData(vars); data.q = ''; return data; };
+          // The vendor filter reads localStorage; unavailable storage must not break the page.
+          counter.filter = () => { try { return filter(); } catch { return 'browser storage unavailable'; } };
+          const count = () => counter.count();
+          if (document.visibilityState !== 'hidden') count();
+          else {
+            const visible = () => {
+              if (document.visibilityState !== 'visible') return;
+              document.removeEventListener('visibilitychange',visible);
+              count();
+            };
+            document.addEventListener('visibilitychange',visible);
+          }
+        };
         document.head.append(tracker);
       }
       return {dashboard, async visits(paths) {

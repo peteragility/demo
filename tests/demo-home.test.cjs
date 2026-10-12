@@ -85,3 +85,24 @@ test('every listed page and homepage include the shared tracker at a resolving l
     assert.equal(path.resolve(path.dirname(file),script[1]),path.join(root,'assets/site-analytics.js'));
   }
 });
+test('vendor requests omit their separate query field and guard unavailable storage',async()=>{
+  const a=analytics('demo-test','peteragility.github.io');
+  await a.window.demoAnalytics.ready;
+  const counter=a.window.goatcounter;
+  let request;
+  counter.get_data=()=>({p:counter.path,q:'?private=value'});
+  counter.filter=()=>false;
+  counter.count=()=>{if (!counter.filter()) request=counter.get_data();};
+  a.scripts[0].onload();
+  assert.equal(request.q,'');
+  assert.equal(request.p,'/demo/lakebase-objection-faq/');
+  assert.equal(counter.no_onload,true);
+  assert.equal(counter.no_events,true);
+  const b=analytics('demo-test','peteragility.github.io');
+  await b.window.demoAnalytics.ready;
+  b.window.goatcounter.get_data=()=>({});
+  b.window.goatcounter.filter=()=>{throw new Error('blocked storage');};
+  b.window.goatcounter.count=()=>b.window.goatcounter.filter();
+  assert.doesNotThrow(()=>b.scripts[0].onload());
+  assert.equal(b.window.goatcounter.filter(),'browser storage unavailable');
+});
