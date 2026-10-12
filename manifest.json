@@ -3,8 +3,8 @@
  "pages": [
   {
    "path": "aidecide-arena/",
-   "title": "AI Arena — ai_decide vs Jev",
-   "desc": "Snake + Tic-Tac-Toe deathmatch, live model I/O inspection",
+   "title": "AI Arena",
+   "desc": "Two decision models face off in Snake and Tic-Tac-Toe. Inspect every model move",
    "tag": "AI",
    "color": "#FF3621",
    "category": "Interactive",
@@ -13,7 +13,7 @@
   {
    "path": "lakebase-compete-calculator/",
    "title": "Lakebase Calculator",
-   "desc": "Ballpark Lakebase cost vs Aurora, RDS, Azure PG, Azure SQL, Cloud SQL and ClickHouse Postgres from public list prices: common OLTP scenarios, HA, replicas, I/O",
+   "desc": "Estimate Lakebase monthly costs against Aurora, RDS, Azure, Cloud SQL and ClickHouse",
    "tag": "Featured",
    "color": "#3fb950",
    "category": "Tools",
@@ -22,7 +22,7 @@
   {
    "path": "lakebase-objection-faq/",
    "title": "Lakebase Field Guide",
-   "desc": "Combined sales plays and technical FAQ: architecture, limits, Aurora tradeoffs, pricing and production proof",
+   "desc": "Architecture, objections, tradeoffs and production proof, with linked pricing scenarios",
    "tag": "Work",
    "color": "#f7b731",
    "category": "Guides",
@@ -31,7 +31,7 @@
   {
    "path": "lakehouse-quest.html",
    "title": "Lakehouse Quest",
-   "desc": "Databricks certification practice: questions, quests and exam preparation",
+   "desc": "Databricks exam practice as a quest: questions, traps and revision notes",
    "tag": "Interactive",
    "color": "#4ecdc4",
    "category": "Interactive",
@@ -39,8 +39,8 @@
   },
   {
    "path": "llm-pricing/",
-   "title": "LLM Token Pricing 對比",
-   "desc": "Databricks FMAPI vs Fireworks / Azure / Bedrock / Vertex / Alibaba · 原廠價 · cache · regions · checked daily",
+   "title": "LLM Token Pricing",
+   "desc": "Compare model APIs, cache rates, tiers and regions across providers and cloud platforms",
    "tag": "Featured",
    "color": "#ff6b35",
    "category": "Tools",
@@ -49,7 +49,7 @@
   {
    "path": "neon-orbit.html",
    "title": "Neon Orbit",
-   "desc": "Explore an interactive orbital visualization",
+   "desc": "A one-button gravity game. Jump between orbits and climb as high as you can",
    "tag": "Interactive",
    "color": "#4ecdc4",
    "category": "Interactive",
@@ -57,11 +57,11 @@
   },
   {
    "path": "sandbox-compare/",
-   "title": "Agent Sandbox Isolation Comparison",
-   "desc": "Vendors vs open source — E2B/Modal/Daytona/AWS/Databricks/Monty ranked by isolation tier · 2026",
+   "title": "Agent Sandbox Comparison",
+   "desc": "VMs, containers and isolation boundaries: vendors and open source side by side",
    "tag": "Work",
    "color": "#58a6ff",
-   "category": "Other",
+   "category": "Guides",
    "featured": false
   }
  ]

@@ -8,19 +8,19 @@ python3 - <<'PYEOF'
 import os, json, datetime
 
 META = {
-  'sandbox-compare/':('Agent Sandbox Isolation Comparison','Vendors vs open source — E2B/Modal/Daytona/AWS/Databricks/Monty ranked by isolation tier · 2026','Work','#58a6ff'),
-  'lakebase-compete-calculator/':('Lakebase Calculator','Ballpark Lakebase cost vs Aurora, RDS, Azure PG, Azure SQL, Cloud SQL and ClickHouse Postgres from public list prices: common OLTP scenarios, HA, replicas, I/O','Featured','#3fb950'),
-  'lakebase-objection-faq/':('Lakebase Field Guide','Combined sales plays and technical FAQ: architecture, limits, Aurora tradeoffs, pricing and production proof','Work','#f7b731'),
-  'aidecide-arena/':('AI Arena — ai_decide vs Jev','Snake + Tic-Tac-Toe deathmatch, live model I/O inspection','AI','#FF3621'),
-  'llm-pricing/':      ('LLM Token Pricing 對比','Databricks FMAPI vs Fireworks / Azure / Bedrock / Vertex / Alibaba · 原廠價 · cache · regions · checked daily','Featured','#ff6b35'),
-  'lakehouse-quest.html':('Lakehouse Quest','Databricks certification practice: questions, quests and exam preparation','Interactive','#4ecdc4'),
-  'neon-orbit.html':   ('Neon Orbit','Explore an interactive orbital visualization','Interactive','#4ecdc4'),
+  'sandbox-compare/':('Agent Sandbox Comparison','VMs, containers and isolation boundaries: vendors and open source side by side','Work','#58a6ff'),
+  'lakebase-compete-calculator/':('Lakebase Calculator','Estimate Lakebase monthly costs against Aurora, RDS, Azure, Cloud SQL and ClickHouse','Featured','#3fb950'),
+  'lakebase-objection-faq/':('Lakebase Field Guide','Architecture, objections, tradeoffs and production proof, with linked pricing scenarios','Work','#f7b731'),
+  'aidecide-arena/':('AI Arena','Two decision models face off in Snake and Tic-Tac-Toe. Inspect every model move','AI','#FF3621'),
+  'llm-pricing/':      ('LLM Token Pricing','Compare model APIs, cache rates, tiers and regions across providers and cloud platforms','Featured','#ff6b35'),
+  'lakehouse-quest.html':('Lakehouse Quest','Databricks exam practice as a quest: questions, traps and revision notes','Interactive','#4ecdc4'),
+  'neon-orbit.html':   ('Neon Orbit','A one-button gravity game. Jump between orbits and climb as high as you can','Interactive','#4ecdc4'),
 }
 
 CATEGORIES = {
   'aidecide-arena/': 'Interactive', 'lakebase-compete-calculator/': 'Tools',
   'lakebase-objection-faq/': 'Guides', 'lakehouse-quest.html': 'Interactive',
-  'llm-pricing/': 'Tools', 'neon-orbit.html': 'Interactive',
+  'llm-pricing/': 'Tools', 'neon-orbit.html': 'Interactive', 'sandbox-compare/': 'Guides',
 }
 FEATURED = {'lakebase-compete-calculator/', 'lakebase-objection-faq/', 'llm-pricing/'}
 

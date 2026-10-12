@@ -8,78 +8,42 @@
 <title>Peter's Demo Lab</title>
 <script src="assets/site-analytics.js" defer></script>
 <style>
-:root{color-scheme:dark;--bg:#0d1117;--panel:#161b22;--line:#30363d;--ink:#f0f6fc;--muted:#a1acb8;--accent:#83c5ff}
+:root{color-scheme:dark;--bg:#10121e;--panel:#191d30;--line:#343950;--ink:#f4f5fc;--muted:#abb3cd;--accent:#b4a1ff;--mint:#b5f777}
 *{box-sizing:border-box;margin:0}
-body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;min-height:100vh}
-a{color:var(--accent)}
-button,input,select{font:inherit}
-button,select{cursor:pointer}
-:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-[hidden]{display:none!important}
-.wrap{max-width:1100px;margin:auto;padding:30px 24px 24px}
-.brand{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;letter-spacing:.03em}
-.mark{display:grid;place-items:center;width:32px;height:32px;background:#1e3146;border:1px solid #385470;border-radius:9px;color:#b9dcff;font-size:12px;font-weight:700}
-header{padding:42px 0 32px;border-bottom:1px solid var(--line)}
-.eyebrow{font-size:12px;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;font-weight:650}
-h1{font-size:clamp(32px,5vw,52px);line-height:1.12;letter-spacing:-.035em;max-width:780px;font-weight:720}
-.intro{font-size:17px;max-width:640px;color:var(--muted);margin-top:18px}
-.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:12px;color:var(--muted)}
-.meta b{color:#d9e4ee;font-weight:600}
-.explore{padding-top:28px}
-.tools{display:flex;gap:18px;align-items:end;margin-bottom:18px}
-.search{flex:1;position:relative}
-.tools label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px;font-weight:600}
-input,select{background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--ink);min-height:44px;padding:10px 13px;font-size:14px}
-input{width:100%;padding-right:68px}
-input::placeholder{color:#8b98a7}
-select{min-width:170px}
-.clear{position:absolute;right:8px;bottom:8px;background:transparent;border:0;color:var(--accent);font-size:12px;padding:4px 6px}
-.filters{display:flex;gap:8px;flex-wrap:wrap}
-.filter{background:transparent;border:1px solid var(--line);border-radius:20px;color:var(--muted);padding:7px 14px;font-size:12px;min-height:36px}
-.filter:hover{border-color:#64778a;color:var(--ink)}
-.filter[aria-pressed="true"]{color:#c5e3ff;background:#1b3146;border-color:#45688c}
-.results{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:22px 0 12px}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-a.card{display:flex;flex-direction:column;position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;text-decoration:none;color:inherit;min-height:222px;transition:border-color .15s,transform .15s;overflow-wrap:anywhere}
-a.card:hover{transform:translateY(-3px);border-color:var(--c)}
-a.card.featured{background:linear-gradient(140deg,color-mix(in srgb,var(--c) 8%,var(--panel)),var(--panel));border-top:2px solid var(--c)}
-.cardtop{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}
-.tag{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 65%,#fff);font-weight:650}
-.badge{color:#b6c3d0;border:1px solid #3c4b5a;font-size:10px;padding:2px 7px;border-radius:4px;white-space:nowrap}
-h2{font-size:18px;font-weight:650;line-height:1.35;letter-spacing:-.01em;margin-bottom:9px}
-.d{color:var(--muted);font-size:13px;line-height:1.65;flex:1}
-.cardfoot{display:flex;justify-content:space-between;gap:8px;margin-top:20px;font-size:11px;color:#b7c5d2}
-.arrow{font-size:17px;color:color-mix(in srgb,var(--c) 65%,#fff);line-height:1}
-.empty{color:var(--muted);padding:42px 20px;text-align:center;grid-column:1/-1;border:1px dashed var(--line);border-radius:12px}
-.retry{margin-top:16px;padding:8px 18px;background:#1b3146;border:1px solid #45688c;border-radius:6px;color:var(--ink)}
-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:38px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
-footer a{text-decoration:none}
-noscript p{padding:20px 0}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.wrap{padding:22px 18px}header{padding:32px 0 26px}.intro{font-size:15px}.tools{align-items:stretch;flex-direction:column;gap:12px}.sort{display:flex;align-items:center;justify-content:space-between;gap:12px}.sort label{margin:0}.sort select{flex:1;max-width:240px}.grid{grid-template-columns:1fr}a.card{min-height:205px}input,select{font-size:16px}.results{margin-top:20px}}
-@media(prefers-reduced-motion:reduce){a.card{transition:none}a.card:hover{transform:none}}
+body{background:radial-gradient(ellipse at 85% 0,#272346 0,transparent 40%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;min-height:100vh}
+a{color:var(--accent)}button,input,select{font:inherit}button,select{cursor:pointer}:focus-visible{outline:2px solid var(--mint);outline-offset:4px}[hidden]{display:none!important}
+.wrap{max-width:1280px;margin:auto;padding:22px 24px 20px}.brand{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:12px;letter-spacing:.03em}.mark{display:grid;place-items:center;width:28px;height:28px;background:var(--mint);border-radius:7px;color:#202731;font-size:11px;font-weight:800;transform:rotate(-7deg)}.brand-note{margin-left:auto;font:10px ui-monospace,SFMono-Regular,monospace;color:#a8b4c9;border:1px solid var(--line);padding:4px 8px;border-radius:5px}
+header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:20px;align-items:center;padding:24px 0 22px;border-bottom:1px solid var(--line)}.eyebrow{font-size:10px;color:var(--mint);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;font-weight:700}h1{font-size:clamp(29px,4vw,43px);line-height:1.1;letter-spacing:-.035em;font-weight:750}.intro{font-size:14px;max-width:650px;color:var(--muted);margin-top:11px}.meta{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:13px;font-size:11px;color:var(--muted)}.meta b{color:#e0e7f7;font-weight:600}.hero-art{position:relative;height:120px}.hero-art svg{width:100%;height:100%;overflow:visible}.hero-art .star{transform-origin:175px 25px;animation:spin 24s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.explore{padding-top:18px}.tools{display:flex;gap:12px;align-items:end;margin-bottom:13px}.search{flex:1;position:relative}.tools label{display:block;color:var(--muted);font-size:10px;margin-bottom:5px;font-weight:650}.search label kbd{margin-left:7px;font:10px ui-monospace,monospace;padding:0 4px;border:1px solid #51576b;border-radius:3px;color:#c6cce0}input,select{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--ink);min-height:38px;padding:8px 11px;font-size:13px}input{width:100%;padding-right:65px}input::placeholder{color:#9ba5c1}select{min-width:155px}.clear{position:absolute;right:6px;bottom:6px;background:transparent;border:0;color:var(--accent);font-size:11px;padding:4px 6px}.surprise{height:38px;padding:0 14px;border:1px solid #8bbd5c;border-radius:7px;background:var(--mint);color:#1c2817;font-size:12px;font-weight:750;white-space:nowrap}.surprise:hover{background:#caff99}.surprise:disabled{opacity:.45;cursor:default}.filters{display:flex;gap:6px;flex-wrap:wrap}.filter{background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--muted);padding:5px 11px;font-size:11px;min-height:32px}.filter:hover{border-color:#a59cd7;color:var(--ink)}.filter[aria-pressed="true"]{color:#dfd5ff;background:#342d52;border-color:#7f70b6}.results{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin:13px 0 9px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}a.card{display:flex;flex-direction:column;position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:15px;text-decoration:none;color:inherit;min-height:177px;transition:border-color .15s,transform .15s,box-shadow .15s;overflow-wrap:anywhere}a.card:hover{transform:translateY(-3px) rotate(-.3deg);border-color:var(--c);box-shadow:0 8px 26px #0003}a.card.featured{background:linear-gradient(145deg,color-mix(in srgb,var(--c) 10%,var(--panel)),var(--panel));border-top:2px solid var(--c)}.cardtop{display:flex;justify-content:space-between;align-items:center;gap:7px;margin-bottom:11px}.cardlabel{display:flex;align-items:center;gap:7px}.cardicon{display:grid;place-items:center;width:24px;height:24px;border-radius:6px;background:color-mix(in srgb,var(--c) 15%,transparent);font-size:14px}.tag{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 65%,#fff);font-weight:700}.badge{color:#c3cce2;border:1px solid #505a73;font-size:9px;padding:2px 5px;border-radius:4px;white-space:nowrap}h2{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em;margin-bottom:7px}.d{color:var(--muted);font-size:12px;line-height:1.55;flex:1}.cardfoot{display:flex;justify-content:space-between;gap:8px;margin-top:13px;font-size:10px;color:#c2cce4}.arrow{font-size:17px;color:color-mix(in srgb,var(--c) 65%,#fff);line-height:1}.empty{color:var(--muted);padding:28px 16px;text-align:center;grid-column:1/-1;border:1px dashed var(--line);border-radius:10px}.retry{margin-top:14px;padding:8px 16px;background:#342d52;border:1px solid #7f70b6;border-radius:6px;color:var(--ink)}footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:24px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}footer a{text-decoration:none}noscript p{padding:16px 0}
+@media(max-width:1120px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}header{grid-template-columns:minmax(0,1fr) 160px}.hero-art{height:110px}.surprise{padding:0 10px}}
+@media(max-width:560px){.wrap{padding:18px 16px}.brand-note{display:none}header{display:block;padding:22px 0 17px}.hero-art{display:none}.intro{font-size:13px;margin-top:10px}.tools{display:grid;grid-template-columns:1fr auto;gap:10px}.search{grid-column:1/-1}.sort{min-width:0}.sort select{width:100%;min-width:0}.surprise{align-self:end}.grid{grid-template-columns:1fr;gap:9px}a.card{min-height:148px;padding:14px}.cardtop{margin-bottom:8px}.cardfoot{margin-top:10px}input,select{font-size:16px}.results{margin-top:12px}.meta{gap:6px 12px}.filter{font-size:12px}h2{font-size:17px}}
+@media(prefers-reduced-motion:reduce){a.card{transition:none}a.card:hover{transform:none}.hero-art .star{animation:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="brand"><span class="mark" aria-hidden="true">PC</span><span>Peter Chan / Demo lab</span></div>
-<header>
-<p class="eyebrow">Tools · Field notes · Experiments</p>
-<h1>A place to compare,<br>learn and try things.</h1>
-<p class="intro">Pricing calculators, technical guides and interactive demos. Pick a topic, open a tool, and explore.</p>
-<div class="meta"><span><b id="pageCount">—</b> demos</span><span>Updated <b id="updated">—</b></span></div>
+<div class="brand"><span class="mark" aria-hidden="true">PC</span><span>Peter Chan / Demo lab</span><span class="brand-note">curiosity.exe / running</span></div>
+<header><div>
+<p class="eyebrow">Compare · Learn · Play</p>
+<h1>Pick your next rabbit hole.</h1>
+<p class="intro">Pricing tools, technical field notes and little games. Useful answers, with room to play.</p>
+<div class="meta"><span><b id="pageCount">—</b> things to explore</span><span>Updated <b id="updated">—</b></span><span>Built by Peter · open to everyone</span></div>
+</div><div class="hero-art" aria-hidden="true"><svg viewBox="0 0 230 120" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="111" cy="64" rx="81" ry="35" stroke="#6b6399" stroke-dasharray="4 5" transform="rotate(-20 111 64)"/><ellipse cx="111" cy="64" rx="40" ry="54" stroke="#515d80" transform="rotate(32 111 64)"/><rect x="79" y="42" width="65" height="46" rx="12" fill="#c1ff84" transform="rotate(-8 79 42)"/><path d="m94 57 10 8-10 8m21 0h14" stroke="#25382a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="36" cy="85" r="10" fill="#aa97ff"/><circle cx="188" cy="46" r="7" fill="#ffae80"/><path class="star" d="m175 12 3 10 10 3-10 3-3 10-3-10-10-3 10-3z" fill="#e3bdff"/><path d="m59 17 2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#b5f777"/><circle cx="177" cy="99" r="3" fill="#8597c6"/></svg></div>
 </header>
 <main class="explore" aria-label="Demo collection">
 <div class="tools">
-<div class="search"><label for="search">Find a demo</label><input id="search" type="search" placeholder="Try Lakebase, pricing, agents or games…" autocomplete="off"><button class="clear" id="clearSearch" type="button" hidden>Clear</button></div>
+<div class="search"><label for="search">Find a demo <kbd aria-hidden="true">/</kbd></label><input id="search" type="search" placeholder="Lakebase, pricing, agents…" autocomplete="off"><button class="clear" id="clearSearch" type="button" hidden>Clear</button></div>
 <div class="sort"><label for="sort">Sort by</label><select id="sort"><option value="featured">Featured first</option><option id="popularOption" value="popular" disabled>Most visited</option><option value="az">A–Z</option></select></div>
+<button class="surprise" id="surpriseBtn" type="button" disabled>🎲 Surprise me</button>
 </div>
 <div class="filters" id="filters" role="group" aria-label="Filter demos by category"></div>
 <div class="results"><span id="resultCount" role="status" aria-live="polite">Loading demos…</span><span id="statsStatus">Visit stats not yet available</span></div>
 <div class="grid" id="grid" aria-busy="true"><p class="empty">Loading the collection…</p></div>
 <noscript><p>Open the <a href="lakebase-compete-calculator/">Lakebase Calculator</a>, <a href="lakebase-objection-faq/">Lakebase Field Guide</a> or <a href="llm-pricing/">LLM pricing comparison</a>.</p></noscript>
 </main>
-<footer><span>Built and maintained by Peter Chan</span><a id="analyticsLink" hidden target="_blank" rel="noopener noreferrer">Visit statistics ↗</a><span id="statsNote">A growing collection of useful tools and small experiments.</span></footer>
+<footer><span>Built and maintained by Peter Chan</span><a id="analyticsLink" hidden target="_blank" rel="noopener noreferrer">Visit statistics ↗</a><span id="statsNote">Small tools. Curious experiments. More to come.</span></footer>
 </div>
 <script>
 'use strict';
@@ -115,9 +79,12 @@ function element(tag, className, text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
-function render() {
+function visiblePages() {
   const terms = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-  const matches = pages.filter(p => (category === 'All' || category === p.category) && terms.every(t => (p.title+' '+p.desc+' '+p.category).toLocaleLowerCase().includes(t)));
+  return pages.filter(p => (category === 'All' || category === p.category) && terms.every(t => (p.title+' '+p.desc+' '+p.category).toLocaleLowerCase().includes(t)));
+}
+function render() {
+  const matches = visiblePages();
   const ranked = ordered(pages,'popular').filter(p => p.visits !== null);
   const fragment = document.createDocumentFragment();
   ordered(matches,sort.value).forEach(p => {
@@ -126,7 +93,9 @@ function render() {
     card.style.setProperty('--c',p.color);
     card.dataset.path = p.path;
     const top = element('div','cardtop');
-    top.append(element('span','tag',p.category));
+    const label=element('div','cardlabel');
+    const icon=element('span','cardicon',({Tools:'⚡',Guides:'🧭',Interactive:'🕹️',Other:'✳️'})[p.category] || '✳️');
+    icon.setAttribute('aria-hidden','true');label.append(icon,element('span','tag',p.category));top.append(label);
     if (sort.value === 'popular' && p.visits !== null) top.append(element('span','badge','#'+(ranked.indexOf(p)+1)+' most visited'));
     else if (p.featured) top.append(element('span','badge','Featured'));
     const foot = element('div','cardfoot');
@@ -140,6 +109,7 @@ function render() {
   grid.setAttribute('aria-busy','false');
   document.getElementById('resultCount').textContent = matches.length+' of '+pages.length+' demos';
   document.getElementById('clearSearch').hidden = !search.value;
+  document.getElementById('surpriseBtn').disabled = matches.length === 0;
 }
 function renderFilters() {
   const filters = document.getElementById('filters');
@@ -191,6 +161,15 @@ async function loadPages() {
     document.getElementById('resultCount').textContent = 'Collection unavailable';
   }
 }
+document.getElementById('surpriseBtn').addEventListener('click',() => {
+  const candidates=visiblePages();
+  if (!candidates.length) return;
+  location.href=new URL(candidates[Math.floor(Math.random()*candidates.length)].path,base).href;
+});
+document.addEventListener('keydown',event => {
+  if (event.key !== '/' || event.ctrlKey || event.metaKey || event.altKey || event.target.closest?.('input,textarea,select,[contenteditable="true"]')) return;
+  event.preventDefault();search.focus();
+});
 search.addEventListener('input',render);
 sort.addEventListener('change',() => {sortChosen=true; render();});
 document.getElementById('clearSearch').addEventListener('click',() => {search.value='';render();search.focus();});

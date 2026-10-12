@@ -106,3 +106,12 @@ test('vendor requests omit their separate query field and guard unavailable stor
   assert.doesNotThrow(()=>b.scripts[0].onload());
   assert.equal(b.window.goatcounter.filter(),'browser storage unavailable');
 });
+test('personal reading and travel pages are absent from the public site and registry',()=>{
+  const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.json'),'utf8'));
+  for(const personal of ['tongjian/','penang-trip/']) {
+    assert.equal(manifest.pages.some(p=>p.path.startsWith(personal)),false);
+    assert.equal(fs.existsSync(path.join(root,personal)),false);
+  }
+  assert.equal(manifest.pages.some(p=>['Travel','Reading'].includes(p.category)),false);
+  assert.equal(manifest.pages.filter(p=>p.category==='Guides').length>=2,true);
+});
