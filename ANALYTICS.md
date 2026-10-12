@@ -1,8 +1,10 @@
 # Demo visit statistics
 
-The shared loader in `assets/site-analytics.js` is included in the homepage and all nine listed demos. Tracking is currently disabled: `analytics-config.json` has an empty site code.
+The shared loader in `assets/site-analytics.js` is included in the homepage and all nine listed demos. Production tracking uses `peteragility.goatcounter.com`, configured in `analytics-config.json`.
 
-To activate:
+On 12 Oct 2026 the public counter endpoint returned HTTP 403 because visitor counters were disabled. Enable **Allow adding visitor counts on your website** in GoatCounter settings to make counts and popularity ranking available. Tracking itself does not require public counters. To disable tracking, clear the site code.
+
+To configure another site:
 
 1. Create a [GoatCounter site](https://www.goatcounter.com/signup) for `https://peteragility.github.io/demo/`, or use an existing one.
 2. Enable **Allow adding visitor counts on your website** in GoatCounter settings.
