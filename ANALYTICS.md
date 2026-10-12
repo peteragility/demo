@@ -1,6 +1,6 @@
 # Demo visit statistics
 
-The shared loader in `assets/site-analytics.js` is included in the homepage and all nine listed demos. Production tracking uses `peteragility.goatcounter.com`, configured in `analytics-config.json`.
+The shared loader in `assets/site-analytics.js` is included in the homepage and all seven listed demos. Production tracking uses `peteragility.goatcounter.com`, configured in `analytics-config.json`.
 
 Public visitor counters are enabled (verified 12 Oct 2026). Paths without recorded visits return HTTP 404 until data is available; counts can also be delayed by caching. Tracking itself does not require public counters. To disable tracking, clear the site code.
 
