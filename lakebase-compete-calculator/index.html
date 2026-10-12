@@ -214,13 +214,14 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 
   <section class="summary" id="summary" aria-live="polite"></section>
 
+  <input type="hidden" id="etlOverride" min="-1" max="1000000" step="1" value="-1" data-def="-1">
   <section class="inputs" id="inputs">
     <div class="fi size"><label for="peak">Compute size <output id="peakOut"></output></label><input type="range" id="peak" min="0" max="12" step="1" value="3"><div class="h">Peak RAM needed, e.g. the current instance (1 CU ≈ 2 GB)</div></div>
     <div class="fi size"><label for="stoTxt">Database size <input type="text" id="stoTxt" class="vbox" inputmode="decimal" autocomplete="off" spellcheck="false" aria-describedby="stoHelp"></label><input type="range" id="stoR" min="0" max="25" step="1" aria-label="Database size"><input type="hidden" id="sto" min="1" max="64000" value="200" data-def="200"><div class="h" id="stoHelp">1 GB–64 TB · drag, or type e.g. 750 GB or 2.5 TB</div></div>
     <div class="fi"><label for="pat">Load pattern</label><select id="pat"><option value="daily" selected>Daily peaks, 24×7</option><option value="steady">Steady, always busy</option><option value="biz">Business hours only</option><option value="spiky">Spiky / bursty</option><option value="intermittent">Intermittent (dev / test)</option><option value="peak">Constant at peak (like-for-like)</option></select></div>
     <div class="fi"><label for="io">I/O intensity</label><select id="io"><option value="light">Light (read-mostly)</option><option value="mod" selected>Moderate</option><option value="heavy">Heavy (write-heavy)</option></select></div>
     <div class="fi"><label for="ha">High availability</label><select id="ha"><option value="0" selected>Off</option><option value="1">On (1 standby)</option></select></div>
-    <div class="fi"><label for="sync">Lakehouse sync</label><select id="sync"><option value="none" selected>None</option><option value="snapshot">Daily snapshot</option><option value="triggered">Hourly incremental</option><option value="continuous">Continuous (real-time)</option></select></div>
+    <div class="fi"><label for="sync">Lakehouse sync</label><select id="sync"><option value="none" selected>None</option><option value="snapshot">Daily snapshot</option><option value="triggered">Hourly incremental</option><option value="continuous">Continuous (asynchronous)</option></select></div>
     <div class="fi"><label for="rep">Read replicas</label><select id="rep"><option value="0" selected>None</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
     <div class="pat" id="patNote"></div>
     <details class="adv" id="adv"><summary>Advanced</summary><div class="advg">
@@ -244,20 +245,20 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <div class="tblwrap"><table class="mx tech">
     <thead><tr><th scope="col">Capability</th><th scope="col" class="lb">Lakebase</th><th scope="col">Aurora PG</th><th scope="col">Aurora Serverless v2</th><th scope="col">RDS PG</th><th scope="col">Azure PG Flexible</th><th scope="col">Azure SQL Database</th><th scope="col">Cloud SQL PG</th><th scope="col">ClickHouse Postgres</th></tr></thead>
     <tbody>
-    <tr><td>Engine</td><td class="lb">Postgres 16–18</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres (Beta) + pg_clickhouse</td></tr>
-    <tr><td>Billing unit</td><td class="lb">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>Per instance-hour: CPU + RAM + local NVMe bundled (Basic / Scale / Enterprise tiers)</td></tr>
-    <tr><td>Size range</td><td class="lb">0.5 CU, then integers · autoscale to 64 CU (max−min ≤16); fixed to 112 CU</td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU on supported engine/platform versions; older versions have lower limits</td><td>t4g → r8g.48xlarge</td><td>Burstable → 192 vCores on v6; model prices v5 to 96</td><td>Priced GP standard: 2–80 vCores (~5.2 GB/vCore) · serverless min/max depends on SKU</td><td>Enterprise custom: 1 or even 2–96 vCPU / 3.75–624 GiB; Plus N2 to 128 / 864</td><td>1 vCPU / 8 GB / 59 GB → 96 vCPU / 768 GB / 60 TB</td></tr>
-    <tr><td>Autoscaling</td><td class="lb">Within configured range: no restart; changing min/max may interrupt connections</td><td>No</td><td>Yes</td><td>Storage autogrow; manual compute resize</td><td>Manual compute resize; storage autogrow depends on disk type</td><td>Serverless compute</td><td>Storage autogrow; manual compute resize</td><td>Storage autoscale; replacement cutover drops connections; old + new billed</td></tr>
-    <tr><td>Scale to zero</td><td class="lb">Yes, max ≤32 CU and no HA · timeout 60 s–7 d (default 24 h) · wake in a few hundred ms, before query work</td><td>Manual stop ≤ 7 d</td><td>0-ACU auto-pause on eligible configurations; typical resume ~15 s</td><td>Manual stop ≤ 7 d</td><td>Manual stop</td><td>GP serverless auto-pause on eligible configurations; geo-replication disables it</td><td>Manual stop</td><td>No</td></tr>
-    <tr><td>HA</td><td class="lb">1–3 AZ-separated secondaries, ≥ primary size; reads opt-in; failover disconnects clients</td><td>Needs an Aurora Replica (billed)</td><td>Reader in another AZ (billed)</td><td>Priced Multi-AZ instance: one unreadable standby · Multi-AZ cluster has two readable standbys (not priced)</td><td>Standby: same vCores + storage</td><td>Built in; zone redundancy is an uplift; Business Critical = replicas + readable secondary</td><td>Regional: ×2 CPU, RAM, storage rates</td><td>Standbys, each billed as an instance</td></tr>
-    <tr><td>Read replicas</td><td class="lb">6 standalone / branch · shared storage, separate compute · eventual consistency; not HA candidates</td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases</td><td>Own instance + storage</td><td>Yes · billed as instances</td></tr>
-    <tr><td>Storage</td><td class="lb">Separated · billed on data stored · per-branch quota adjustable</td><td>Auto-grow to 256 TiB (PG 17.5+, 16.9+, 15.13+); earlier versions 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>SSD v2: 1 GiB steps, to 64 TiB · SSD v1: fixed tiers, to 32 TiB · no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Local NVMe; service to 60 TB · priced family to 3,800 GB</td></tr>
-    <tr><td>I/O charges</td><td class="lb">No I/O-request meter; storage/history charged</td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2: 3,000 IOPS free below 400 GiB; 12,000 at ≥400 GiB; extra IOPS/throughput billed</td><td>IOPS limits scale with vCores</td><td>None</td><td>None (local NVMe)</td></tr>
-    <tr><td>PITR / backups</td><td class="lb">2–30 d (default 7) · history at PITR rate</td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS default</td><td>PITR logs: Enterprise 1–7 d, Plus 1–35 d · logs in Cloud Storage free; backups billed</td><td>Free in Beta · 1 d (Basic) / 7 d (Scale) retention</td></tr>
-    <tr><td>Branch / clone</td><td class="lb">Copy-on-write (500 / project) · expiring: changed-data billing; permanent: full-data billing</td><td>Copy-on-write clone, new DB cluster</td><td>Copy-on-write clone, new DB cluster</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>PITR branch: full new deployment from backup + WAL</td></tr>
-    <tr><td>Lakehouse / analytics</td><td class="lb">Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT (Beta) · UC for analytics; PG roles for direct access</td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing</td><td>Native CDC to ClickHouse (free in Beta)</td></tr>
-    <tr><td>Pooling</td><td class="lb">Built-in PgBouncer transaction mode · native password roles only; OAuth direct · 10K clients ≠ running transactions</td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling: Plus only (model prices Enterprise)</td><td>Bundled PgBouncer, enabled in connection settings</td></tr>
-    <tr><td>Status</td><td class="lb">AWS / Azure GA; GCP Beta · individual features have separate status</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
+    <tr><td>Engine</td><td class="lb"><span data-fact="table.engine">Postgres 16–18</span></td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres (Beta) + pg_clickhouse</td></tr>
+    <tr><td>Billing unit</td><td class="lb"><span data-fact="table.billing">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</span></td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>Per instance-hour: CPU + RAM + local NVMe bundled (Basic / Scale / Enterprise tiers)</td></tr>
+    <tr><td>Size range</td><td class="lb"><span data-fact="table.sizes">0.5 CU, then integers · autoscale to 64 CU (max−min ≤16); fixed to 112 CU</span></td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU on supported engine/platform versions; older versions have lower limits</td><td>t4g → r8g.48xlarge</td><td>Burstable → 192 vCores on v6; model prices v5 to 96</td><td>Priced GP standard: 2–80 vCores (~5.2 GB/vCore) · serverless min/max depends on SKU</td><td>Enterprise custom: 1 or even 2–96 vCPU / 3.75–624 GiB; Plus N2 to 128 / 864</td><td>1 vCPU / 8 GB / 59 GB → 96 vCPU / 768 GB / 60 TB</td></tr>
+    <tr><td>Autoscaling</td><td class="lb"><span data-fact="table.autoscale">Within configured range: no restart; changing min/max may interrupt connections</span></td><td>No</td><td>Yes</td><td>Storage autogrow; manual compute resize</td><td>Manual compute resize; storage autogrow depends on disk type</td><td>Serverless compute</td><td>Storage autogrow; manual compute resize</td><td>Storage autoscale; replacement cutover drops connections; old + new billed</td></tr>
+    <tr><td>Scale to zero</td><td class="lb"><span data-fact="table.suspend">Yes, max ≤32 CU and no HA · timeout 60 s–7 d (default 24 h) · wake in a few hundred ms, before query work</span></td><td>Manual stop ≤ 7 d</td><td>0-ACU auto-pause on eligible configurations; typical resume ~15 s</td><td>Manual stop ≤ 7 d</td><td>Manual stop</td><td>GP serverless auto-pause on eligible configurations; geo-replication disables it</td><td>Manual stop</td><td>No</td></tr>
+    <tr><td>HA</td><td class="lb"><span data-fact="table.ha">1–3 AZ-separated secondaries, ≥ primary size; reads opt-in; failover disconnects clients</span></td><td>Needs an Aurora Replica (billed)</td><td>Reader in another AZ (billed)</td><td>Priced Multi-AZ instance: one unreadable standby · Multi-AZ cluster has two readable standbys (not priced)</td><td>Standby: same vCores + storage</td><td>Built in; zone redundancy is an uplift; Business Critical = replicas + readable secondary</td><td>Regional: ×2 CPU, RAM, storage rates</td><td>Standbys, each billed as an instance</td></tr>
+    <tr><td>Read replicas</td><td class="lb"><span data-fact="table.replicas">6 standalone / branch · shared storage, separate compute · eventual consistency; not HA candidates</span></td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases</td><td>Own instance + storage</td><td>Yes · billed as instances</td></tr>
+    <tr><td>Storage</td><td class="lb"><span data-fact="table.storage">Separated · billed on data stored · per-branch quota adjustable</span></td><td>Auto-grow to 256 TiB (PG 17.5+, 16.9+, 15.13+); earlier versions 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>SSD v2: 1 GiB steps, to 64 TiB · SSD v1: fixed tiers, to 32 TiB · no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Local NVMe; service to 60 TB · priced family to 3,800 GB</td></tr>
+    <tr><td>I/O charges</td><td class="lb"><span data-fact="table.io">No I/O-request meter; storage/history charged</span></td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2: 3,000 IOPS free below 400 GiB; 12,000 at ≥400 GiB; extra IOPS/throughput billed</td><td>IOPS limits scale with vCores</td><td>None</td><td>None (local NVMe)</td></tr>
+    <tr><td>PITR / backups</td><td class="lb"><span data-fact="table.history">2–30 d (default 7) · history at PITR rate</span></td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS default</td><td>PITR logs: Enterprise 1–7 d, Plus 1–35 d · logs in Cloud Storage free; backups billed</td><td>Free in Beta · 1 d (Basic) / 7 d (Scale) retention</td></tr>
+    <tr><td>Branch / clone</td><td class="lb"><span data-fact="table.branches">Copy-on-write (500 / project) · expiring: changed-data billing; permanent: full-data billing</span></td><td>Copy-on-write clone, new DB cluster</td><td>Copy-on-write clone, new DB cluster</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>PITR branch: full new deployment from backup + WAL</td></tr>
+    <tr><td>Lakehouse / analytics</td><td class="lb"><span data-fact="table.analytics">Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT (Beta) · UC for analytics; PG roles for direct access</span></td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing</td><td>Native CDC to ClickHouse (free in Beta)</td></tr>
+    <tr><td>Pooling</td><td class="lb"><span data-fact="table.pooling">Built-in PgBouncer transaction mode · native password roles only; OAuth direct · 10K clients ≠ running transactions</span></td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling: Plus only (model prices Enterprise)</td><td>Bundled PgBouncer, enabled in connection settings</td></tr>
+    <tr><td>Status</td><td class="lb"><span data-fact="table.status">AWS / Azure GA; GCP Beta · individual features have separate status</span></td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
     </tbody></table></div>
     <details><summary>Technical sources by provider</summary><ul>
       <li><a href="../lakebase-objection-faq/#sources">Lakebase: dated status and sources beside each answer</a></li>
@@ -301,7 +302,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Daily snapshot:</b> full copy at ~2,000 rows/s per CU.</li>
             <li><b>Hourly incremental:</b> changes at ~150 rows/s per CU, at least 5 min per run (both rates from the Lakebase docs, ~1 KB rows assumed).</li>
             <li><b>Continuous:</b> 730 h/month, billed even when nothing changes.</li>
-            <li><b>Competitors:</b> they need the same data movement (a custom reverse-ETL job, or a tool such as AWS Glue at $0.44/DPU-hour), priced at the same compute. The difference is effort and governance, not compute.</li>
+            <li><b>Competitors:</b> they need the same data movement (a custom reverse-ETL job, or a tool such as AWS Glue at $0.44/DPU-hour), using the same modeled pipeline cost unless a shared link supplies an override. This is a shared modeling assumption, not a claim that integrations have equal cost. Use the <a href="../lakebase-objection-faq/#pricing">guide scenario builder</a> to supply a quoted or measured competitor integration budget.</li>
           </ul></li>
         <li><b>Why these defaults:</b>
           <ul>
@@ -396,7 +397,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
       </ul></details>
       <p>Settings are saved in the link: use <b>Share</b> to send a scenario.</p>
     </div>
-    <p class="disclaimer"><b>Disclaimer.</b> Estimates from public list prices on providers' official sites and price APIs; excludes taxes, data transfer, support and negotiated discounts. Simplified models, and prices may be out of date. Not an official Databricks publication, quote or offer; not affiliated with AWS, Microsoft, Google or ClickHouse. Trademarks belong to their owners.</p>
+    <p class="disclaimer"><b>Disclaimer.</b> Estimates from public list prices on providers' official sites and price APIs; excludes taxes, data transfer, support and negotiated discounts unless explicitly entered. Simplified models, and prices may be out of date. Not an official Databricks publication, quote or offer; not affiliated with AWS, Microsoft, Google or ClickHouse. Trademarks belong to their owners.</p>
     <p class="builtby"><b>Built by</b> Peter Chan from Databricks in Oct 2026</p>
   </footer>
 </div>
@@ -522,10 +523,11 @@ function state() {
 }
 // Lakehouse -> database sync. Pipeline hours from mode, data size and the documented Lakebase write rates
 // (~2,000 rows/s per CU for snapshots, ~150 rows/s per CU incremental; ~1 KB rows assumed), x pipeline DBU/hour x serverless $/DBU.
-// Competitors need the same data movement: an equivalent job on the same lakehouse, priced at the same compute.
+// Competitors need the same data movement: an equivalent job on the same lakehouse, using the same modeled pipeline cost unless a shared link supplies an override.
 function syncCost(P, sto, io) {
-  const mode = $('sync').value, out = {syncMode: mode, sync: 0, etl: 0, syncHrs: 0, syncGB: 0, syncRate: 0, syncDbu: 0, syncWarn: ''};
-  if (mode === 'none') return out;
+  const override = num('etlOverride');
+  const mode = $('sync').value, out = {etlOverride: override, syncMode: mode, sync: 0, etl: 0, syncHrs: 0, syncGB: 0, syncRate: 0, syncDbu: 0, syncWarn: ''};
+  if (mode === 'none') { out.etl = override >= 0 ? override : 0; return out; }
   const reg = $('region').value, cl = SYNCR[reg][$('lbCloud').value] ? $('lbCloud').value : Object.keys(SYNCR[reg])[0], r = SYNCR[reg][cl];
   const rate = cl === 'azure' ? r.x : ($('lbTier').value === 'enterprise' ? r.e : r.p);
   const gb = sto * num('syncShare') / 100, dbu = num('syncDbu');
@@ -537,7 +539,7 @@ function syncCost(P, sto, io) {
   if (mode !== 'snapshot' && chgPerH > incGBh) out.syncWarn = 'Change rate exceeds the documented incremental write rate at ' + P + ' CU; a larger Lakebase compute may be needed.';
   if (mode === 'snapshot' && gb / snapGBh > 20) out.syncWarn = 'A daily full snapshot would run ~' + Math.round(gb / snapGBh) + ' h; consider incremental sync.';
   const disc = 1 - num('disc') / 100, cost = hrs * dbu * rate * disc;
-  return Object.assign(out, {sync: cost, etl: cost, syncHrs: hrs, syncGB: gb, syncRate: rate, syncDbu: dbu});
+  return Object.assign(out, {sync: cost, etl: override >= 0 ? override : cost, syncHrs: hrs, syncGB: gb, syncRate: rate, syncDbu: dbu});
 }
 
 function syncControls() {
@@ -583,7 +585,7 @@ function calcLakebase(s) {
     notes.push(act >= HRS ? '⚠ Never idle, so scale-to-zero only forfeits the Always-On minimum rate. Turn it off.' : 'Assumes the scale-to-zero timeout is shortened from the 24 h default so idle hours actually suspend.');
   } else notes.push('Always-On: the ' + fmtCU(m) + ' minimum bills 730 h at the minimum-usage rate; usage above it at the autoscaling rate.');
   if (haN) notes.push('HA: ' + pl(haN, 'secondary').replace('secondarys', 'secondaries') + (haN === 1 ? ' in another AZ' : ' in other AZs') + ', each ≥ primary size; can serve reads via -ro.');
-  if (s.sto > 8000) notes.push('Over 8 TB: ask Databricks Support to raise the branch storage quota (adjustable on request).');
+  if (s.sto > 8000) notes.push('Large database: confirm the configured project storage quota and request an increase if needed; the threshold is project-specific.');
   if (s.promo) notes.push('After the promo (from 1 Feb 2027): ' + fmt(post) + '/mo at today\'s list.');
   if (CLOUDN[prefCloud] && prefCloud !== cloud && s.region !== 'hk') notes.push('Not offered on ' + CLOUDN[prefCloud] + ' in ' + REG[s.region].name + '; showing ' + r.label + '.');
   if (s.region === 'hk') notes.push('In Hong Kong, Lakebase is priced on Azure East Asia only.');
@@ -737,7 +739,8 @@ function allRows(s) {
   const rows = [calcLakebase(s), calcAurora(s), calcASv2(s), calcRDS(s), calcAzure(s), calcAzureSQL(s), calcCloudSQL(s), calcClickHouse(s)];
   if (s.syncMode !== 'none') rows.forEach(r => { if (r.na) return;
     const base = SYNCM[s.syncMode] + ' of ~' + Math.round(s.syncGB).toLocaleString() + ' GB: ~' + Math.round(s.syncHrs).toLocaleString() + ' pipeline-hours/mo × ' + s.syncDbu + ' DBU/h × ' + fmt2(s.syncRate) + '/DBU = ' + fmt(s.sync) + '/mo';
-    r.notes.push(r.key === 'lb' ? 'Synced tables (managed, no code): ' + base + '. Billed as serverless pipeline DBUs; the Lakebase promo doesn\'t apply.' : 'Lakehouse sync: an equivalent reverse-ETL job you build and run (e.g. a scheduled or streaming job on the same lakehouse writing over JDBC, or AWS Glue at $0.44/DPU-hour), priced at the same compute: ' + base + '.'); });
+    r.notes.push(r.key === 'lb' ? 'Synced tables (managed, no code): ' + base + '. Billed as serverless pipeline DBUs; the Lakebase promo doesn\'t apply.' : (s.etlOverride >= 0 ? 'Competitor integration budget supplied by this shared link: ' + fmt(s.etl) + '/mo; not a vendor quote.' : 'Competitor integration assumption: same modeled pipeline cost, not measured vendor-specific spend. ' + base + '. Override from the Field Guide cost section.')); });
+  if (s.syncMode === 'none' && s.etlOverride >= 0) rows.forEach(r => {if (!r.na && r.key !== 'lb') r.notes.push('Competitor integration budget supplied by this shared link: ' + fmt(s.etl) + '/mo.');});
   return rows;
 }
 function colsFor() { const w = window.innerWidth; return w <= 760 ? ['tot', 'd'] : w <= 1060 ? ['cmp', 'ha', 'rep', 'sto', 'tot', 'd'] : ['cmp', 'ha', 'rep', 'sto', 'bk', 'io', 'tot', 'd']; }
@@ -756,7 +759,8 @@ function render() {
     : 'Lakebase ' + (s.peak > 64 ? 'runs fixed at ' + fmtCU(s.peak) : 'autoscales ' + fmtCU(s.floor) + '–' + fmtCU(s.peak) + ', averaging ' + fmtCU(+(s.floor + (s.peak - s.floor) * s.load).toFixed(1)) + ' when busy') + (s2zOn ? ', with scale-to-zero when idle' : (s.pattern === 'intermittent' ? ' (no scale-to-zero: ' + (s.ha ? 'HA is on' : 'over 32 CU') + ')' : '')) + '. Provisioned databases are sized to peak and billed 24×7' + (s.pattern === 'intermittent' || s.pattern === 'biz' ? '; most can be stopped manually when idle, which would lower their cost.' : '.');
   const notes = [lead + lbTxt];
   notes.push('I/O ' + IOM[s.io].name + ': ~' + Math.round(s.avgIops).toLocaleString() + ' avg / ' + Math.round(s.peakIops).toLocaleString() + ' peak IOPS, ~' + (s.chg < 10 ? s.chg.toFixed(1) : Math.round(s.chg).toLocaleString()) + ' GB changed per day.');
-  if (s.syncMode !== 'none') notes.push('Lakehouse sync ' + SYNCM[s.syncMode] + ': ~' + Math.round(s.syncGB).toLocaleString() + ' GB, ~' + Math.round(s.syncHrs).toLocaleString() + ' pipeline-hours/month at ' + s.syncDbu + ' DBU/h (' + fmt(s.sync) + '/mo). Competitors need an equivalent job, priced the same.' + (s.syncWarn ? ' ⚠ ' + s.syncWarn : ''));
+  if (s.syncMode !== 'none') notes.push('Lakehouse sync ' + SYNCM[s.syncMode] + ': ~' + Math.round(s.syncGB).toLocaleString() + ' GB, ~' + Math.round(s.syncHrs).toLocaleString() + ' pipeline-hours/month at ' + s.syncDbu + ' DBU/h (' + fmt(s.sync) + '/mo). Competitor integration: ' + fmt(s.etl) + '/mo' + (s.etlOverride >= 0 ? ' supplied by this shared link; not a vendor quote.' : ' under the shared pipeline-cost assumption; actual integration costs differ.') + (s.syncWarn ? ' ⚠ ' + s.syncWarn : ''));
+  if (s.syncMode === 'none' && s.etlOverride >= 0) notes.push('Competitor integration budget: ' + fmt(s.etl) + '/mo, supplied by this shared link. Lakebase sync is off.');
   if (s.region === 'hk') notes.push('Hong Kong: Lakebase is priced on Azure East Asia only; ClickHouse Postgres isn\'t offered there.');
   else if (CLOUDN[prefCloud] && prefCloud !== s.cloud) notes.push('Lakebase isn\'t offered on ' + CLOUDN[prefCloud] + ' in ' + REG[s.region].name + ', so ' + CLOUDN[s.cloud] + ' is shown.');
   $('patNote').innerHTML = notes.join(' ');
@@ -796,7 +800,7 @@ function render() {
   writeHash();
 }
 
-const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'peak', 'sto', 'pat', 'io', 'ha', 'rep', 'sync', 'disc', 'ret', 'syncShare', 'syncDbu', 'promo', 'chBeta', 'azsqlAhb'];
+const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'peak', 'sto', 'pat', 'io', 'ha', 'rep', 'sync', 'disc', 'ret', 'syncShare', 'syncDbu', 'promo', 'chBeta', 'azsqlAhb', 'etlOverride'];
 const DEFAULTS = {};
 function getVal(id) { const e = $(id); return e.type === 'checkbox' ? (e.checked ? 1 : 0) : e.value; }
 function setVal(id, v) {
@@ -808,13 +812,14 @@ function setVal(id, v) {
 function writeHash() { const p = new URLSearchParams(); p.set('w', curPreset); IDS.forEach(id => p.set(id, getVal(id))); history.replaceState(null, '', '#' + p.toString()); }
 function readHash() { if (!location.hash) return false; const p = new URLSearchParams(location.hash.slice(1)); if (!p.has('w')) return false; const w = p.get('w'); curPreset = Object.hasOwn(PRESETS, w) ? w : 'custom'; if (Object.hasOwn(OLDPAT, w)) $('pat').value = OLDPAT[w]; IDS.forEach(id => { if (p.has(id)) setVal(id, p.get(id)); }); return true; }
 function markTab() { document.querySelectorAll('#tabs .tab').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === curPreset))); }
-function applyPreset(k) { curPreset = k; if (Object.hasOwn(PRESETS, k)) { const q = PRESETS[k]; $('pat').value = q.pat; $('peak').value = q.peak; $('sto').value = q.sto; $('io').value = q.io; $('ha').value = String(q.ha); $('rep').value = String(q.rep); $('sync').value = q.sync; } markTab(); OPEN.clear(); render(); }
+function applyPreset(k) { $('etlOverride').value = '-1'; curPreset = k; if (Object.hasOwn(PRESETS, k)) { const q = PRESETS[k]; $('pat').value = q.pat; $('peak').value = q.peak; $('sto').value = q.sto; $('io').value = q.io; $('ha').value = String(q.ha); $('rep').value = String(q.rep); $('sync').value = q.sync; } markTab(); OPEN.clear(); render(); }
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; setTimeout(() => e.hidden = true, 1600); }
 function summaryText() {
   const s = state(), all = allRows(s), rows = all.filter(r => !r.na).sort((a, b) => a.total - b.total);
   const L = ['Lakebase Calculator estimate: ' + REG[s.region].name + ', public list prices checked ' + longDate(REG[s.region].checked || CHECKED) + '. Estimate only; verify before use.',
-    'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + fmtSize(s.sto) + ', HA ' + (s.ha ? 'on' : 'off') + ', ' + pl(s.rep, 'replica') + ', I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR' + (s.syncMode !== 'none' ? ', lakehouse sync ' + SYNCM[s.syncMode] + ' (' + fmt(s.sync) + '/mo, same for all)' : ''),
+    'Workload: ' + (s.preset !== 'custom' ? PRESETS[s.preset].name + ', ' : '') + PAT[s.pattern].name + (s.lfl ? ' (Lakebase like-for-like at peak)' : '') + ', ' + s.peak + ' CU (' + 2 * s.peak + ' GB RAM) peak, ' + fmtSize(s.sto) + ', HA ' + (s.ha ? 'on' : 'off') + ', ' + pl(s.rep, 'replica') + ', I/O ' + IOM[s.io].name + ', ' + s.ret + '-day PITR' + (s.syncMode !== 'none' ? ', lakehouse sync ' + SYNCM[s.syncMode] + ' (' + fmt(s.sync) + '/mo; competitor integration ' + fmt(s.etl) + '/mo, ' + (s.etlOverride >= 0 ? 'link-supplied estimate' : 'shared assumption') + ')' : ''),
     'Pricing: Lakebase ' + (s.promo ? '50% promo' : 'list') + (s.disc ? ', -' + s.disc + '%' : '') + '; others ' + ({od: 'on-demand', '1y': '1-yr commit', '3y': '3-yr commit'})[s.commit], ''];
+  if (s.etlOverride >= 0) L.push('Competitor integration override: ' + fmt(s.etl) + '/mo for each competitor; not a vendor quote.');
   rows.forEach(r => L.push(r.name + ': ' + fmt(r.total) + '/mo — ' + r.sub + (r.key === 'lb' && s.promo ? ' [after the promo ends: ' + fmt(r.post) + '/mo]' : '')));
   all.filter(r => r.na).forEach(r => L.push(r.name + ': n/a — ' + r.na));
   L.push('', location.href);

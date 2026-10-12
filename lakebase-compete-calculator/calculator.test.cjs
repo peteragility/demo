@@ -140,3 +140,42 @@ test('field guide production example agrees with the shared calculator scenario'
   run('readHash()');
   close(run('calcLakebase(state()).total'), 6203.64);
 });
+
+test('link-supplied integration budget changes competitors while preserving Lakebase sync', () => {
+  const {run} = calculator('#w=serving&sync=triggered&etlOverride=1234');
+  run('readHash()');
+  assert.equal(run('state().etl'),1234);
+  const sync=run('state().sync');
+  close(run('calcLakebase(state()).c.ext'),sync);
+  assert.ok(run('allRows(state()).filter(r=>!r.na && r.key!=="lb").every(r=>r.c.ext===1234)'));
+  assert.match(run('summaryText()'),/Competitor integration override: \$1,234/);
+});
+test('explicit zero and no-sync integration budgets survive shared links', () => {
+  const {run} = calculator('#w=custom&sync=continuous&etlOverride=0');
+  run('readHash()');
+  assert.equal(run('state().etl'),0);
+  assert.ok(run('state().sync > 0'));
+  run("setVal('sync','none');setVal('etlOverride','500')");
+  close(run('calcLakebase(state()).c.ext'),0);
+  close(run('calcRDS(state()).c.ext'),500);
+});
+test('invalid integration budget falls back and valid budgets clamp to the public bounds', () => {
+  for(const value of ['NaN','Infinity','<img>','']) {
+    const {run} = calculator('#w=custom&sync=continuous&etlOverride='+encodeURIComponent(value));
+    run('readHash()');
+    assert.equal(run('state().etlOverride'),-1);
+    close(run('state().etl'),run('state().sync'));
+  }
+  const {run} = calculator('#w=custom&etlOverride=9000000');run('readHash()');
+  assert.equal(run('state().etlOverride'),1000000);
+});
+test('calculator capacity choices remain consistent with shared documented bounds', () => {
+  const facts=JSON.parse(fs.readFileSync(`${__dirname}/../lakebase-content/facts.json`,'utf8')).parameters;
+  const {run}=calculator();
+  assert.equal(run('Math.max(...PEAKS)'),facts.fixedMax);
+  for (const pattern of ['steady','spiky','intermittent']) for (let peak=0;peak<=12;peak++) {
+    run(`setVal('pat','${pattern}');setVal('peak',${peak})`);
+    assert.ok(run('state().peak - state().floor')<=facts.band);
+    assert.equal(run('state().peak > '+facts.autoMax+' ? state().floor === state().peak : true'),true);
+  }
+});

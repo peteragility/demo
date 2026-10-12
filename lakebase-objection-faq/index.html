@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lakebase Field Guide — Sales Play &amp; Technical FAQ</title>
 <link rel="canonical" href="https://peteragility.github.io/demo/lakebase-objection-faq/">
-<meta name="description" content="One source-backed Lakebase field guide: use cases, qualification, architecture, technical objections, Aurora comparison, pricing, expansion and production proof.">
+<meta name="description" content="Lakebase workload qualification, architecture, technical FAQs, Aurora comparison, linked pricing scenarios and production proof in one navigable field guide.">
 <style>
 :root{
   --orange:#FF3621;
@@ -170,28 +170,66 @@ code{font-size:.85em;overflow-wrap:anywhere}
 :focus-visible{outline:3px solid #1a7f5c;outline-offset:4px}
 @media(max-width:640px){.flow-grid{grid-template-columns:1fr}.find input{flex-basis:100%}.answer{font-size:16px}details{padding:12px}.header-actions{gap:8px}}
 @media print{nav,.find,#noResults,.header-actions{display:none!important}header{background:#fff;color:var(--ink);padding:20px 0}header h1{color:var(--ink)}header p,header .sources{color:var(--body)}main,footer{max-width:none;padding:0}section{padding:24px 0 4px;scroll-margin-top:0}.rule,.proof,details,.honest{break-inside:avoid}.tblwrap{overflow:visible}.tblwrap table{min-width:0;font-size:11px}th,td{padding:6px}pre{white-space:pre-wrap;background:#f7f6f3;color:var(--ink)}.closing{background:#fff;border:1px solid var(--line);padding:16px}.closing p,.closing .line{color:var(--ink)}a{color:inherit}}
+
+/* Compact reference layout: desktop contents, mobile picker, five content groups. */
+:root{--maxw:1120px}
+body{font-size:15px;line-height:1.58}
+header{padding:30px 24px 27px}header h1{font-size:clamp(27px,3.8vw,36px);margin-bottom:8px}header p{font-size:15px}header .sources{margin-top:12px;color:#b1c2c9}.header-actions{margin-top:16px}
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px;max-width:1120px;margin:auto;padding:0 24px}
+main{padding:0;width:100%;min-width:0}.contents{position:sticky;top:62px;align-self:start;max-height:calc(100vh - 78px);overflow:auto;padding:24px 12px 24px 0;font-size:12px}.contents-title{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:12px}.contents-group{margin-bottom:12px}.contents a{display:block;padding:3px 8px;color:var(--body);text-decoration:none;border-left:2px solid transparent}.contents .group-link{font-weight:750;color:var(--obsidian);padding-bottom:6px}.contents a.active{border-left-color:var(--orange);color:#a52a1c;background:var(--orange-soft)}.contents a:hover{text-decoration:underline}.contents-calculator{margin-top:18px;font-weight:700}
+.group-nav .inner{max-width:1120px}.group-nav a{padding:10px 15px;font-size:13px}.group-nav a.active{color:#a52a1c}.group-heading{font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:24px;margin-bottom:3px}.guide-group{scroll-margin-top:55px}
+section{padding:23px 0 17px;scroll-margin-top:60px}section:last-of-type{padding-bottom:22px}section h2{font-size:21px;margin-bottom:12px}.qnum{font-size:10px;letter-spacing:.09em;margin-bottom:5px;color:#a52a1c}section p{margin-bottom:10px}.answer{font-size:15px}.answer:before{content:'Answer';display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:750;color:var(--muted);margin-bottom:4px}section ul{margin-bottom:10px}section li{margin-bottom:6px}.rule{font-size:14px;margin:12px 0;padding-left:12px}.honest{font-size:13px;padding:11px 13px;margin:12px 0}.proof{font-size:13px;margin-top:10px}.refs{font-size:11px;margin-top:12px!important}details{padding:11px 13px;margin:12px 0;font-size:13px}details[open] summary{margin-bottom:10px}summary{font-size:13px}h3{font-size:16px;margin:12px 0 8px}.questions li{margin-bottom:8px}table{font-size:13px;margin:12px 0}td,th{padding:8px 10px}tbody th{font-size:12px}.tblwrap table{min-width:590px}.flow{margin:12px 0;padding:14px}.flow-grid{gap:10px}.flow-grid span{padding:8px}.closing{margin-top:18px;padding:20px}.closing .line{font-size:17px}.closing p{font-size:13px}
+.decision-brief{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;background:var(--bg-alt);border:1px solid var(--line);padding:14px;margin-top:14px;border-radius:8px;font-size:12px}.decision-brief b{color:var(--obsidian)}.decision-brief p{margin-top:4px}.find{padding-top:18px;gap:8px}.find input{font-size:14px;min-width:120px}.find button{padding:8px;border:1px solid var(--line);border-radius:5px;background:#fff;color:#a52a1c;font:inherit;font-size:12px;cursor:pointer}#findStatus{font-size:12px}
+.play-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.play{background:var(--bg-alt);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:12px}.play h3{font-size:15px;margin:0 0 12px}.play a{font-weight:700}.fine{font-size:11px;color:var(--muted);margin-top:9px!important}.play b{color:var(--obsidian)}.mobile-topics{display:none}mark{background:#ffe598;color:var(--ink);border-radius:2px;padding:0 1px}.skip-link{position:absolute;top:-80px;left:12px;padding:10px;background:#fff;z-index:50}.skip-link:focus{top:12px}
+.scenario-builder form{display:grid;grid-template-columns:1fr;gap:7px;max-width:440px}.scenario-builder label{font-weight:650}.scenario-builder select,.scenario-builder input,.scenario-builder button{font:inherit;padding:9px;border:1px solid #a7b3b8;border-radius:5px;background:#fff;color:var(--ink)}.scenario-builder button{background:var(--obsidian);color:#fff;cursor:pointer;margin-top:4px}.scenario-builder #scenarioError{color:#a52a1c}
+@media(max-width:1040px){.play-grid{grid-template-columns:1fr}.play{display:block;font-size:13px}.play h3{font-size:16px}}
+@media(max-width:800px){.layout{display:block;padding:0 20px}.contents{display:none}.mobile-topics{display:flex;align-items:center;gap:10px;padding-top:18px;font-size:12px}.mobile-topics label{font-weight:650}.mobile-topics select{flex:1;min-width:0;padding:9px;border:1px solid #a7b3b8;border-radius:5px;background:#fff;color:var(--ink);font:inherit}.group-nav a{padding:10px;font-size:12px}.group-nav .inner{padding:0 10px}.decision-brief{gap:10px}.header-actions a,.header-actions button{font-size:12px}.find input{font-size:16px}.scenario-builder select,.scenario-builder input{font-size:16px}}
+@media(max-width:480px){header{padding:24px 20px}.layout{padding:0 16px}.decision-brief{grid-template-columns:1fr;gap:8px}.decision-brief div{display:grid;grid-template-columns:83px 1fr;gap:8px}.decision-brief p{margin-top:0}section h2{font-size:19px}.flow-grid{grid-template-columns:1fr}.mobile-topics{align-items:stretch;flex-direction:column;gap:5px}.find input{flex-basis:65%}.find label{width:100%}.find button{font-size:13px}.refs a{padding:3px 0}}
+@media print{.layout{display:block;padding:0;max-width:none}.contents,.mobile-topics,.decision-brief,.scenario-builder,.skip-link{display:none!important}.guide-group{display:block!important}section{padding:18px 0 8px}.group-heading{padding-top:16px}.play-grid{display:block}.play{break-inside:avoid;margin-bottom:12px}mark{background:transparent}details{break-inside:auto}header h1{font-size:24px}.answer:before{display:none}}
+
 </style>
 </head>
-<header>
-  <div class="inner">
-    <div class="kicker">Lakebase Postgres · Sales &amp; technical field guide</div>
-    <h1>Win the right workload.<br>Answer the hard questions.</h1>
-    <p>One guide for account qualification, technical objections, competitive positioning and a measurable production proof.</p>
-    <div class="sources">Product claims checked 12 Oct 2026 · Scope: project-based Lakebase Postgres (Autoscaling), including fixed-size endpoints. The legacy Provisioned product has different limits.</div>
-    <div class="header-actions"><a class="cta" href="../lakebase-compete-calculator/">Open cost calculator ↗</a><a class="secondary" href="#fit">Start with qualification</a><button id="printBtn" type="button">Print / save PDF</button></div>
-  </div>
-</header>
-<nav id="nav" aria-label="Guide sections"><div class="inner">
-  <a href="#fit">Qualify</a><a href="#plays">Use cases</a><a href="#dataflow">Data &amp; governance</a><a href="#q4">Compute</a><a href="#q1">Cache</a><a href="#q3">Performance</a><a href="#q2">Security</a><a href="#q5">Connections</a><a href="#ha">HA &amp; DR</a><a href="#branching">Branches</a><a href="#migrate">Migration</a><a href="#search">Search</a><a href="#aurora">Aurora</a><a href="#pricing">Cost</a><a href="#activation">Expansion</a><a href="#proof">Proof plan</a><a href="#nogo">No-go</a><a href="#sources">Sources</a>
-</div></nav>
-<main id="guide">
-<div class="find"><label for="findInput">Find an answer</label><input id="findInput" type="search" placeholder="Try cache, RPO, pooling, cost, migration…" autocomplete="off"><span id="findStatus" role="status" aria-live="polite"></span></div>
-<p id="noResults" hidden>No matching answer. Try another term or clear the search.</p>
-
-<section id="fit">
-  <span class="qnum">01 · Qualification</span>
+<body><a class="skip-link" href="#guide">Skip to guide</a>
+<header><div class="inner"><div class="kicker">Lakebase Postgres / Field Guide</div><h1>When it fits. How it works.<br>What it costs.</h1><p>Qualify the workload, answer the technical objections and prove the production decision.</p><div class="sources">Checked 12 Oct 2026 · Project-based Lakebase Postgres (Autoscaling), including fixed endpoints. Legacy Provisioned limits differ.</div><div class="header-actions"><a class="cta" href="../lakebase-compete-calculator/">Cost calculator ↗</a>
+<a class="secondary" href="#plays">Three lead plays</a><button id="printBtn" type="button">Print / save PDF</button></div></div></header>
+<nav class="group-nav" aria-label="Main guide groups"><div class="inner"><a href="#fit-group">Fit</a>
+<a href="#architecture-group">Architecture</a>
+<a href="#faq-group">Technical FAQ</a>
+<a href="#compare-group">Compare & cost</a>
+<a href="#production-group">Production proof</a></div></nav><div class="layout"><aside class="contents" aria-label="Guide contents"><p class="contents-title">In this guide</p><div class="contents-group"><a class="group-link" href="#fit-group">01 / Fit</a>
+<a href="#fit">Qualification</a>
+<a href="#nogo">Decision gates</a>
+<a href="#plays">Three lead plays</a></div>
+<div class="contents-group"><a class="group-link" href="#architecture-group">02 / Architecture</a>
+<a href="#dataflow">Data paths & governance</a></div>
+<div class="contents-group"><a class="group-link" href="#faq-group">03 / Technical FAQ</a>
+<a href="#q4">Compute & scale</a>
+<a href="#q1">Cache warmth</a>
+<a href="#q3">Network & throughput</a>
+<a href="#q7">Write performance</a>
+<a href="#q2">Isolation & security</a>
+<a href="#q5">Connections & retries</a>
+<a href="#ha">HA, DR & restore</a>
+<a href="#branching">Branches & promotion</a>
+<a href="#migrate">Migration gates</a>
+<a href="#search">Search & retrieval</a></div>
+<div class="contents-group"><a class="group-link" href="#compare-group">04 / Compare & cost</a>
+<a href="#aurora">Lakebase vs Aurora</a>
+<a href="#pricing">Cost & scenarios</a></div>
+<div class="contents-group"><a class="group-link" href="#production-group">05 / Production proof</a>
+<a href="#proof">Production proof plan</a>
+<a href="#sources">Status & evidence</a>
+<a href="#activation">Internal sales appendix</a></div><a class="contents-calculator" href="../lakebase-compete-calculator/">Open cost calculator ↗</a></aside><main id="guide">
+<div class="mobile-topics"><label for="topic">Jump to an answer</label><select id="topic"><option value="">Select a topic…</option><optgroup label="01 / Fit"><option value="fit">Qualification</option><option value="nogo">Decision gates</option><option value="plays">Three lead plays</option></optgroup>
+<optgroup label="02 / Architecture"><option value="dataflow">Data paths & governance</option></optgroup>
+<optgroup label="03 / Technical FAQ"><option value="q4">Compute & scale</option><option value="q1">Cache warmth</option><option value="q3">Network & throughput</option><option value="q7">Write performance</option><option value="q2">Isolation & security</option><option value="q5">Connections & retries</option><option value="ha">HA, DR & restore</option><option value="branching">Branches & promotion</option><option value="migrate">Migration gates</option><option value="search">Search & retrieval</option></optgroup>
+<optgroup label="04 / Compare & cost"><option value="aurora">Lakebase vs Aurora</option><option value="pricing">Cost & scenarios</option></optgroup>
+<optgroup label="05 / Production proof"><option value="proof">Production proof plan</option><option value="sources">Status & evidence</option><option value="activation">Internal sales appendix</option></optgroup></select></div><div class="find"><label for="findInput">Search</label><input id="findInput" type="search" maxlength="160" placeholder="Cache, OAuth, RPO, cost, migration…" autocomplete="off"><button id="clearFind" type="button" hidden>Clear</button><span id="findStatus" role="status" aria-live="polite"></span></div><p id="noResults" hidden>No matching answer. Try another term or clear the search.</p>
+<div class="decision-brief"><div><b>Lead with</b><p>Agent state, lakehouse serving, short-lived dev/test environments.</p></div><div><b>Qualify early</b><p>App owner, p99 latency, regional recovery, extensions and full bill.</p></div><div><b>Close with</b><p>A benchmark, reconnect/restore drill and a measured production budget.</p></div></div>
+<div class="guide-group" id="fit-group"><p class="group-heading">01 / Fit</p><section id="fit">
+  <span class="qnum">Qualification</span>
   <h2>Where should we lead, and when should we keep the existing database?</h2>
-  <p class="answer"><strong>Lead where Postgres transactions meet lakehouse data, agent state or frequent environment creation.</strong> Make the value specific: faster development, fewer integrations to operate, or better use of idle capacity. A healthy database with no pain is a weak takeout target.</p>
+  <p class="answer" data-label="Answer"><strong>Lead where Postgres transactions meet lakehouse data, agent state or frequent environment creation.</strong> Make the value specific: faster development, fewer integrations to operate, or better use of idle capacity. A healthy database with no pain is a weak takeout target.</p>
   <div class="rule">“Which part of your app lifecycle is expensive today: serving lakehouse data, remembering agent state, creating test environments, or operating a fleet of small databases?”</div>
   <ol class="questions">
     <li><strong>Who owns the app and the production decision?</strong> Bring in the app/platform owner, DBA and security owner alongside the data team. Name the current integration or database budget.</li>
@@ -201,29 +239,35 @@ code{font-size:.85em;overflow-wrap:anywhere}
   <div class="honest"><b>Qualify carefully:</b> a steady, always-hot OLTP system can run on Lakebase. Displacement still needs a demonstrated benefit that exceeds migration risk. Hard regional DR, extension or hardware requirements can close the opportunity before a benchmark.</div>
   <p class="proof"><strong>Next step:</strong> leave with one workload, its owner, its current cost/problem, and a dated proof plan. Use the <a href="#nogo">no-go gates</a> first.</p>
 </section>
+<section id="nogo">
+  <span class="qnum">Decision gates</span>
+  <h2>Which requirements should stop or reshape the opportunity?</h2>
+  <ul>
+    <li><strong>Production regional DR that the current service cannot meet.</strong> The Private Preview is not a substitute for an approved production recovery design.</li>
+    <li><strong>Horizontal write scale-out or capacity beyond the single writer.</strong> Evaluate a purpose-built distributed/sharded database; Aurora Limitless and Aurora DSQL are separate designs, not drop-in extensions of every Aurora PostgreSQL app.</li>
+    <li><strong>Mandatory native logical replication, unsupported extensions, unrestricted superuser/OS access or tablespaces.</strong> Resolve compatibility before promising migration.</li>
+    <li><strong>Physical single-tenancy, residency or compliance requirements without a confirmed supported deployment.</strong> Validate against cloud-specific service documentation and contracts.</li>
+    <li><strong>Unapproved large-data/compute quotas.</strong> The current project documentation lists storage quota as adjustable, not a universal 8 TB or 32 TB ceiling. Confirm the project's actual quota; an increase takes effect on compute start/restart.</li>
+    <li><strong>No measurable reason to replace a healthy existing system.</strong> Start with a new adjacent workload or leave the incumbent in place.</li>
+  </ul>
 
-<section id="plays">
-  <span class="qnum">02 · Use cases</span>
-  <h2>Which use cases create a credible first win?</h2>
-  <div class="tblwrap"><table>
-    <thead><tr><th scope="col">Lead play</th><th scope="col">Technical fit</th><th scope="col">What to prove</th></tr></thead>
-    <tbody>
-      <tr><th scope="row">Agent memory &amp; orchestration</th><td>Persist conversations, task state, approvals and tool results in transactional tables. Use indexes and optional vector/keyword retrieval. Design queue ownership, retries and idempotency explicitly.</td><td>State survives process restarts; concurrent agents cannot double-claim work; retrieval quality and latency meet the app target.</td></tr>
-      <tr><th scope="row">Lakehouse data serving</th><td>Sync curated Unity Catalog data to read-only Postgres serving tables; join it with app-owned operational tables through normal SQL.</td><td>Initial load, incremental freshness, source-key quality, serving latency and pipeline DBUs.</td></tr>
-      <tr><th scope="row">Dev/test &amp; CI branches</th><td>Create isolated environments from current or historical production state. Expiration and scale-to-zero suit temporary preview environments.</td><td>Time to a usable environment, masked-data access, repeatable schema migration and cleanup.</td></tr>
-      <tr><th scope="row">SaaS / Databricks Apps backend</th><td>Postgres for users, tenant configuration and transactional state; size the working set, connection pool and HA posture.</td><td>Peak throughput, noisy-neighbor behavior within the app, tenant authorization and a reconnect drill.</td></tr>
-      <tr><th scope="row">Analytics-adjacent OLTP</th><td>Operational data also feeds reporting, ML or audit. Select an explicit lakehouse access path and its release status.</td><td>Correctness across the data boundary, measured freshness and lower integration effort. For regulated workloads, prove the required controls.</td></tr>
-      <tr><th scope="row">Spiky app portfolios</th><td>Many independently idle workloads can benefit from compute suspension. A short timeout must match real idle periods and session requirements.</td><td>Wake-to-first-result latency, actual suspended hours and cost per active app/tenant.</td></tr>
-    </tbody>
-  </table></div>
-  <div class="honest"><b>Keep the workload boundaries:</b> Postgres can replace a serving database where its access patterns fit. Redis caching, document semantics, a dedicated search service and analytical scans need their own evaluation; they are not automatically interchangeable.</div>
-  <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/use-cases" target="_blank" rel="noopener">Lakebase use cases</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/sync-tables" target="_blank" rel="noopener">Synced tables</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/branches" target="_blank" rel="noopener">Branches</a></p>
 </section>
-
-<section id="dataflow">
-  <span class="qnum">03 · Data &amp; governance</span>
+<section id="plays">
+<span class="qnum">Three lead plays</span><h2>Which three workloads make a credible first win?</h2>
+<p class="answer" data-label="Answer"><strong>Start with a specific app problem and an owner who can take it to production.</strong> SaaS backends and spiky portfolios are deployment shapes for these plays; neither is a separate reason to migrate.</p>
+<div class="play-grid">
+<article class="play"><h3>01 / Agent state &amp; retrieval</h3><p><b>Problem:</b> agents lose progress, forget preferences or double-claim tasks.</p><p><b>Design:</b> transactional state and checkpoints in Postgres; optional keyword/vector indexes for long-term memory. Distinguish thread state from cross-session memory.</p><p><b>Advantage:</b> durable app state and retrieval in the same SQL interface.</p><p><b>Boundary:</b> retries, idempotency, tenant authorization and retrieval relevance remain app responsibilities.</p><p class="proof"><b>Prove:</b> restart recovery, concurrent task ownership, retrieval quality and p99 latency.</p><a href="../lakebase-compete-calculator/#w=agent&amp;pat=spiky&amp;peak=3&amp;sto=50&amp;io=light&amp;ha=0&amp;rep=0&amp;sync=none&amp;ret=7&amp;promo=0&amp;disc=0">Price an agent-state starter ↗</a></article>
+<article class="play"><h3>02 / Lakehouse serving</h3><p><b>Problem:</b> an app needs low-latency SQL access to curated lakehouse data alongside its own writes.</p><p><b>Design:</b> managed synced tables create a read-only Postgres serving copy; keep application-owned writes in separate tables.</p><p><b>Advantage:</b> managed integration, normal Postgres queries and joins with app state.</p><p><b>Boundary:</b> source keys, Delta CDF, additive schema evolution, freshness and pipeline DBUs must be validated.</p><p class="proof"><b>Prove:</b> initial load, incremental lag, serving p99 and full integration cost.</p><a href="../lakebase-compete-calculator/#w=serving&amp;pat=steady&amp;peak=5&amp;sto=300&amp;io=light&amp;ha=0&amp;rep=2&amp;sync=triggered&amp;ret=7&amp;promo=0&amp;disc=0">Price an hourly serving starter ↗</a></article>
+<article class="play"><h3>03 / Dev/test &amp; CI branches</h3><p><b>Problem:</b> fresh test databases take too long to prepare or developers share mutable state.</p><p><b>Design:</b> isolated copy-on-write branches with expiration; scale-to-zero for eligible idle endpoints.</p><p><b>Advantage:</b> repeatable environments from current or retained historical state.</p><p><b>Boundary:</b> no native merge; promote tested schema changes with migrations and business writes through explicit application logic. Protect production data.</p><p class="proof"><b>Prove:</b> environment readiness, reset, masked access, cleanup and active-compute quotas.</p><a href="../lakebase-compete-calculator/#w=dev&amp;pat=intermittent&amp;peak=1&amp;sto=20&amp;io=light&amp;ha=0&amp;rep=0&amp;sync=none&amp;ret=7&amp;promo=0&amp;disc=0">Price one dev endpoint ↗</a><p class="fine">The calculator prices one endpoint, not a branch fleet. Budget active branch compute, expiring/permanent storage and history separately.</p></article>
+</div>
+<div class="honest"><b>Keep the workload boundaries:</b> Postgres can replace a serving database where its access patterns fit. Redis caching, document semantics, dedicated search and analytical scans require separate evaluation.</div>
+<p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/use-cases" target="_blank" rel="noopener">Use cases</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/sync-tables" target="_blank" rel="noopener">Synced tables</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/branches" target="_blank" rel="noopener">Branches</a></p>
+</section>
+</div>
+<div class="guide-group" id="architecture-group"><p class="group-heading">02 / Architecture</p><section id="dataflow">
+  <span class="qnum">Data paths & governance</span>
   <h2>Is this one dataset with no copies or pipelines?</h2>
-  <p class="answer"><strong>The answer depends on the data path.</strong> Synced tables, CDF and Lakehouse//RT solve different problems. Establish which system owns each table's writes before promising an architecture.</p>
+  <p class="answer" data-label="Answer"><strong>The answer depends on the data path.</strong> Synced tables, CDF and Lakehouse//RT solve different problems. Establish which system owns each table's writes before promising an architecture.</p>
   <figure class="flow"><figcaption>Pick the path by source of truth</figcaption><div class="flow-grid">
     <div><strong>Lakehouse owns the data</strong><span>Unity Catalog table</span><b aria-hidden="true">↓ managed sync</b><span>Postgres serving copy</span><small>Snapshot / triggered / continuous</small></div>
     <div><strong>Application owns the data</strong><span>Postgres transactions</span><b aria-hidden="true">↓ native CDF</b><span>Delta change-history tables</span><small>Public Preview · asynchronous</small></div>
@@ -240,28 +284,28 @@ code{font-size:.85em;overflow-wrap:anywhere}
   <div class="rule">“We can reduce the integration work. First choose the supported data path, its freshness target, and the permissions each client actually uses.”</div>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/sync-tables" target="_blank" rel="noopener">Sync behavior &amp; ownership</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/lakebase-cdf" target="_blank" rel="noopener">CDF</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/ltap-overview" target="_blank" rel="noopener">LTAP paths &amp; governance</a> · <a href="https://docs.databricks.com/aws/en/compute/sql-warehouse/real-time" target="_blank" rel="noopener">Lakehouse//RT Beta</a></p>
 </section>
-
-<section id="q4">
-  <span class="qnum">04 · Compute posture</span>
+</div>
+<div class="guide-group" id="faq-group"><p class="group-heading">03 / Technical FAQ</p><section id="q4">
+  <span class="qnum">Compute & scale</span>
   <h2>Is Lakebase only suitable for bursty workloads?</h2>
-  <p class="answer"><strong>No. Fixed size and always-on are supported.</strong> “Autoscaling” is also the product name; it does not force every endpoint to change size or suspend.</p>
+  <p class="answer" data-label="Answer"><strong>No. Fixed size and always-on are supported.</strong> “Autoscaling” is also the product name; it does not force every endpoint to change size or suspend.</p>
   <div class="tblwrap"><table>
     <thead><tr><th scope="col">Setting</th><th scope="col">Verified constraint</th><th scope="col">Deployment implication</th></tr></thead>
     <tbody>
-      <tr><th scope="row">Capacity</th><td>1 CU ≈ 2 GB RAM; minimum 0.5 CU, then integer CU sizes</td><td>RAM is a sizing reference, not a vCPU equivalence or TPS promise.</td></tr>
-      <tr><th scope="row">Autoscaling</th><td>0.5–64 CU; maximum − minimum ≤16 CU</td><td>A 0.5–32 CU range is invalid. Set the minimum from the measured working set.</td></tr>
-      <tr><th scope="row">Fixed size</th><td>Up to 112 CU; sizes above 64 CU are fixed-only</td><td>One primary writer per branch; no horizontal write sharding within a branch.</td></tr>
-      <tr><th scope="row">Scale-to-zero</th><td>Maximum ≤32 CU, no HA; timeout 60 seconds–7 days, default 24 hours</td><td>Suspension loses session state. The documented wake-up is a few hundred milliseconds, before query work.</td></tr>
+      <tr><th scope="row">Capacity</th><td><span data-fact="compute.capacity">1 CU ≈ 2 GB RAM; minimum 0.5 CU, then integer CU sizes</span></td><td>RAM is a sizing reference, not a vCPU equivalence or TPS promise.</td></tr>
+      <tr><th scope="row">Autoscaling</th><td><span data-fact="compute.range">0.5–64 CU; maximum − minimum ≤16 CU</span></td><td>A 0.5–32 CU range is invalid. Set the minimum from the measured working set.</td></tr>
+      <tr><th scope="row">Fixed size</th><td><span data-fact="compute.fixed">Up to 112 CU; sizes above 64 CU are fixed-only</span></td><td>One primary writer per branch; no horizontal write sharding within a branch.</td></tr>
+      <tr><th scope="row">Scale-to-zero</th><td><span data-fact="compute.suspend">Maximum ≤32 CU, no HA; timeout 60 seconds–7 days, default 24 hours</span></td><td>Suspension loses session state. The documented wake-up is a few hundred milliseconds, before query work.</td></tr>
     </tbody>
   </table></div>
-  <div class="rule">“For sustained traffic, start fixed or with a narrow range, keep scale-to-zero off, and configure HA. Earn the sizing decision with your workload.”</div>
+  <p class="proof"><strong>Proof:</strong> benchmark fixed and narrow autoscaling ranges; record peak p99, cache behavior and actual CU-hours before choosing the minimum.</p>
+<div class="rule">“For sustained traffic, start fixed or with a narrow range, keep scale-to-zero off, and configure HA. Earn the sizing decision with your workload.”</div>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-computes" target="_blank" rel="noopener">Compute sizes</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/autoscaling" target="_blank" rel="noopener">Autoscaling</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero" target="_blank" rel="noopener">Suspension &amp; resumption</a></p>
 </section>
-
 <section id="q1">
-  <span class="qnum">05 · Cache warmth</span>
+  <span class="qnum">Cache warmth</span>
   <h2>Does every autoscaling change make the cache cold?</h2>
-  <p class="answer"><strong>Normal scaling within the configured range happens in place, without restarting Postgres or interrupting connections.</strong> Scaling down can still evict pages as memory shrinks. Retaining a running process does not mean retaining every cached page.</p>
+  <p class="answer" data-label="Answer"><strong>Normal scaling within the configured range happens in place, without restarting Postgres or interrupting connections.</strong> Scaling down can still evict pages as memory shrinks. Retaining a running process does not mean retaining every cached page.</p>
   <details><summary>Technical detail: the four-layer read path</summary>
     <div class="layer"><span class="layernum">1</span><span><strong>Shared buffers:</strong> Postgres pages in compute DRAM.</span></div>
     <div class="layer"><span class="layernum">2</span><span><strong>Local file cache (LFC):</strong> a resizable, disk-backed compute cache; Linux page cache can keep its hot pages in RAM.</span></div>
@@ -275,11 +319,10 @@ code{font-size:.85em;overflow-wrap:anywhere}
   <p class="proof"><strong>Proof:</strong> measure compute-cache hit rate, storage reads and p99 latency during downscaling and after suspension. Set minimum CU for the hot working set plus query/session memory, not the entire database size.</p>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/autoscaling" target="_blank" rel="noopener">In-place scaling</a> · <a href="https://neon.com/blog/improving-lakebase-compute-cache-part-1" target="_blank" rel="noopener">Cache engineering, 9 Sep 2026</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero" target="_blank" rel="noopener">Session reset</a></p>
 </section>
-
 <section id="q3">
-  <span class="qnum">06 · Network &amp; throughput</span>
+  <span class="qnum">Network & throughput</span>
   <h2>Does separated storage add latency at high QPS?</h2>
-  <p class="answer"><strong>Cache hits stay local; cache misses and durable commits have network work.</strong> The question is whether the working set, write rate and client topology meet the application's latency target.</p>
+  <p class="answer" data-label="Answer"><strong>Cache hits stay local; cache misses and durable commits have network work.</strong> The question is whether the working set, write rate and client topology meet the application's latency target.</p>
   <details><summary>Technical detail: read and commit paths</summary>
     <pre aria-label="Read and write paths">Read:   shared buffers → LFC → pageserver → object storage
 Commit: Postgres WAL → safekeeper quorum → client acknowledgment
@@ -291,11 +334,10 @@ Commit: Postgres WAL → safekeeper quorum → client acknowledgment
   <p class="proof"><strong>Proof:</strong> run the same schema, indexes, data size, durability configuration and client location. Record committed TPS, p50/p95/p99, errors, cache misses and the monthly cost at the measured capacity.</p>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/architecture" target="_blank" rel="noopener">Read &amp; commit architecture</a> · <a href="https://www.vldb.org/pvldb/vol19/p4385-pandis.pdf" target="_blank" rel="noopener">VLDB paper §§3–5, 7</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.StorageReliability.html" target="_blank" rel="noopener">Aurora storage</a></p>
 </section>
-
 <section id="q7">
-  <span class="qnum">07 · Write-heavy systems</span>
+  <span class="qnum">Write performance</span>
   <h2>Can we claim “5× faster writes than Aurora”?</h2>
-  <p class="answer"><strong>No. The published improvement compares Lakebase's write path before and after full-page-image pushdown.</strong> It is not a competitive speed guarantee.</p>
+  <p class="answer" data-label="Answer"><strong>No. The published improvement compares Lakebase's write path before and after full-page-image pushdown.</strong> It is not a competitive speed guarantee.</p>
   <details><summary>Technical detail: full-page-image pushdown</summary>
     <p>Conventional Postgres includes full-page images in WAL after checkpoints to recover from torn page writes. Lakebase's separated storage can generate those images in the pageserver instead of sending them from compute. This reduces WAL traffic while bounding the amount of redo needed to reconstruct a page.</p>
     <p>The engineering benchmark reports up to about 5× higher throughput and 94% less WAL traffic; its 32-vCPU comparison measured approximately 4.5×. These are results for the tested workloads and previous implementation. They do not remove locking, index maintenance, query or single-writer limits.</p>
@@ -304,11 +346,10 @@ Commit: Postgres WAL → safekeeper quorum → client acknowledgment
   <p class="proof"><strong>Proof:</strong> include WAL-intensive updates, secondary indexes, checkpoint behavior, lock waits and realistic transaction size. Treat the one-writer-per-branch limit as a design constraint.</p>
   <p class="refs">Evidence: <a href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank" rel="noopener">Write-path engineering results</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-computes" target="_blank" rel="noopener">Primary compute</a></p>
 </section>
-
 <section id="q2">
-  <span class="qnum">08 · Isolation &amp; security</span>
+  <span class="qnum">Isolation & security</span>
   <h2>Does shared storage mean shared access to my data?</h2>
-  <p class="answer"><strong>Multi-tenant storage and permission to access another tenant's data are different things.</strong> The architecture uses isolated project tenants/timelines and separate compute VMs; it is not a promise of physically dedicated hosts throughout the stack.</p>
+  <p class="answer" data-label="Answer"><strong>Multi-tenant storage and permission to access another tenant's data are different things.</strong> The architecture uses isolated project tenants/timelines and separate compute VMs; it is not a promise of physically dedicated hosts throughout the stack.</p>
   <details><summary>Technical detail: authorization, CMK and networking</summary>
     <ul>
       <li><strong>Database access:</strong> use least-privilege Postgres roles. Project-management ACLs control infrastructure actions; they do not replace database privileges.</li>
@@ -319,13 +360,14 @@ Commit: Postgres WAL → safekeeper quorum → client acknowledgment
     </ul>
   </details>
   <div class="honest"><b>Hardware requirement:</b> if procurement demands dedicated physical hosts, get an explicit architecture attestation. A dedicated compute VM does not satisfy that requirement by itself.</div>
-  <p class="refs">Evidence: <a href="https://www.vldb.org/pvldb/vol19/p4385-pandis.pdf" target="_blank" rel="noopener">Compute/storage isolation</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/customer-managed-keys" target="_blank" rel="noopener">CMK</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/data-protection" target="_blank" rel="noopener">Network &amp; compliance</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">Project vs database permissions</a></p>
+  <p class="proof"><strong>Proof:</strong> run permission tests through both PG and lakehouse clients, verify private routes, and rehearse CMK loss/recovery with the security owner.</p>
+<p class="refs">Evidence: <a href="https://www.vldb.org/pvldb/vol19/p4385-pandis.pdf" target="_blank" rel="noopener">Compute/storage isolation</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/customer-managed-keys" target="_blank" rel="noopener">CMK</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/data-protection" target="_blank" rel="noopener">Network &amp; compliance</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">Project vs database permissions</a></p>
 </section>
-
 <section id="q5">
-  <span class="qnum">09 · Connections</span>
+  <span class="qnum">Connections & retries</span>
   <h2>Is pooling built in, and which clients need direct connections?</h2>
-  <p class="answer"><strong>Built-in PgBouncer uses transaction pooling for native password roles.</strong> Up to 10,000 client connections share a smaller server pool; that is not 10,000 concurrent running transactions. OAuth roles use direct connections.</p>
+<p class="fine"><span data-fact="table.pooling">Built-in PgBouncer transaction mode · native password roles only; OAuth direct · 10K clients ≠ running transactions</span></p>
+  <p class="answer" data-label="Answer"><strong>Built-in PgBouncer uses transaction pooling for native password roles.</strong> Up to 10,000 client connections share a smaller server pool; that is not 10,000 concurrent running transactions. OAuth roles use direct connections.</p>
   <details><summary>Technical detail: pooling configuration and session semantics</summary>
     <pre>pool_mode = transaction
 max_client_conn = 10000
@@ -345,11 +387,10 @@ query_wait_timeout = 120 seconds</pre>
   <p class="proof"><strong>App responsibilities:</strong> bound connect/query/transaction timeouts, keep transactions short and retry with backoff. A lost commit acknowledgment can leave an unknown outcome; use an idempotency key or reconcile before repeating business writes.</p>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/connection-pooling" target="_blank" rel="noopener">PgBouncer &amp; restrictions</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">Scheduled updates</a> · <a href="https://docs.databricks.com/aws/en/release-notes/lakebase/#postgres-password-authentication-is-now-disabled-by-default-for-new-lakebase-projects" target="_blank" rel="noopener">Password defaults</a></p>
 </section>
-
 <section id="ha">
-  <span class="qnum">10 · HA &amp; regional DR</span>
+  <span class="qnum">HA, DR & restore</span>
   <h2>What survives a compute failure, an AZ outage, or a region outage?</h2>
-  <p class="answer"><strong>Separate durable storage, in-region compute HA, and regional DR.</strong> Each protects a different failure domain. PITR recovers data history; it is not regional failover.</p>
+  <p class="answer" data-label="Answer"><strong>Separate durable storage, in-region compute HA, and regional DR.</strong> Each protects a different failure domain. PITR recovers data history; it is not regional failover.</p>
   <div class="tblwrap"><table>
     <thead><tr><th scope="col">Layer</th><th scope="col">Behavior</th><th scope="col">Boundary</th></tr></thead><tbody>
       <tr><th scope="row">Storage redundancy</th><td>Committed WAL/data outlive the compute; managed independently of compute HA.</td><td>Durability does not mean queries remain available without a healthy compute.</td></tr>
@@ -365,11 +406,11 @@ query_wait_timeout = 120 seconds</pre>
   <div class="rule">“We can prove in-region failover today. If production regional recovery is mandatory, resolve that requirement before positioning the DR preview as an answer.”</div>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/storage-architecture" target="_blank" rel="noopener">Storage durability</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/high-availability" target="_blank" rel="noopener">HA</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery" target="_blank" rel="noopener">DR preview</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore" target="_blank" rel="noopener">PITR</a> · <a href="https://www.databricks.com/legal/sla/lakebase-sla" target="_blank" rel="noopener">Databricks SLA terms</a> · <a href="https://learn.microsoft.com/en-us/azure/databricks/release-notes/lakebase/" target="_blank" rel="noopener">Azure SLA announcement</a></p>
 </section>
-
 <section id="branching">
-  <span class="qnum">11 · Branching</span>
+  <span class="qnum">Branches & promotion</span>
   <h2>Are branches instant, free, and automatically merged?</h2>
-  <p class="answer"><strong>Branches share storage through copy-on-write; their cost and lifecycle still matter.</strong> Parent changes do not automatically flow to children, and child writes do not merge into production.</p>
+<p class="fine"><span data-fact="table.branches">Copy-on-write (500 / project) · expiring: changed-data billing; permanent: full-data billing</span></p>
+  <p class="answer" data-label="Answer"><strong>Branches share storage through copy-on-write; their cost and lifecycle still matter.</strong> Parent changes do not automatically flow to children, and child writes do not merge into production.</p>
   <details><summary>Technical detail: isolation, reset and billing</summary>
     <ul>
       <li>Branch from current data or retained history. The child has isolated database/role state. Reset refreshes child from parent; apply tested schema changes to production through migration tools.</li>
@@ -381,11 +422,10 @@ query_wait_timeout = 120 seconds</pre>
   <p class="proof"><strong>Proof:</strong> create an expiring branch, run a schema test, reset it, and inspect its usage. Compare with Aurora's supported copy-on-write clone workflow rather than assuming Aurora needs a full dump/restore.</p>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/branches" target="_blank" rel="noopener">Branch isolation &amp; billing</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects" target="_blank" rel="noopener">Quotas</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html" target="_blank" rel="noopener">Aurora cloning</a></p>
 </section>
-
 <section id="migrate">
-  <span class="qnum">12 · Migration</span>
+  <span class="qnum">Migration gates</span>
   <h2>Can an RDS, Aurora or Azure SQL app move unchanged?</h2>
-  <p class="answer"><strong>Postgres is the closest starting point; compatibility still requires an inventory.</strong> MySQL and SQL Server involve an engine/schema/application migration. Lead with new workloads where a takeout adds little value.</p>
+  <p class="answer" data-label="Answer"><strong>Postgres is the closest starting point; compatibility still requires an inventory.</strong> MySQL and SQL Server involve an engine/schema/application migration. Lead with new workloads where a takeout adds little value.</p>
   <details><summary>Technical detail: migration gates</summary>
     <ul>
       <li>Lakebase supports Postgres 16, 17 and 18 (17 default). Check extension names/versions, managed-role permissions, SQL behavior, collation, job scheduling and session dependencies.</li>
@@ -398,11 +438,10 @@ query_wait_timeout = 120 seconds</pre>
   <p class="proof"><strong>Exit criteria:</strong> a rehearsed cutover, row/count checks and application reconciliation, tested rollback, validated permissions, and an agreed recovery plan.</p>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/compatibility" target="_blank" rel="noopener">Compatibility &amp; replication limits</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects#region-availability" target="_blank" rel="noopener">AWS regions</a> · <a href="https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects#region-availability" target="_blank" rel="noopener">Azure regions</a></p>
 </section>
-
 <section id="search">
-  <span class="qnum">13 · Agent retrieval</span>
+  <span class="qnum">Search & retrieval</span>
   <h2>Can memory, vector search and keyword retrieval live in Postgres?</h2>
-  <p class="answer"><strong>Yes, where the workload fits the supported search extensions.</strong> Lakebase Search is GA: enable it for the project, then install the needed extensions.</p>
+  <p class="answer" data-label="Answer"><strong>Yes, where the workload fits the supported search extensions.</strong> Lakebase Search is GA: enable it for the project, then install the needed extensions.</p>
   <details><summary>Technical detail: search choices and correctness</summary>
     <ul>
       <li><code>lakebase_vector</code> adds the <code>lakebase_ann</code> vector index with pgvector-compatible types/operators. Embedding generation remains an application/model concern.</li>
@@ -411,14 +450,15 @@ query_wait_timeout = 120 seconds</pre>
       <li>Transactional consistency of memory does not guarantee retrieval relevance. Measure recall, ranking quality, index-build/maintenance cost and p99 under concurrent writes. Apply tenant access controls to every retrieval path.</li>
     </ul>
   </details>
-  <div class="rule">“Use one Postgres where that simplifies the app, then prove search quality and isolation. A second search system is a workload decision, not a default requirement.”</div>
+  <p class="proof"><strong>Proof:</strong> compare recall/ranking, tenant authorization, vacuum maintenance and p99 with representative concurrent updates.</p>
+<div class="rule">“Use one Postgres where that simplifies the app, then prove search quality and isolation. A second search system is a workload decision, not a default requirement.”</div>
   <p class="refs">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/lakebase-search" target="_blank" rel="noopener">Search</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/lakebase-text" target="_blank" rel="noopener">BM25 maintenance</a> · <a href="https://docs.databricks.com/aws/en/release-notes/lakebase/#lakebase-search-is-generally-available" target="_blank" rel="noopener">GA release</a></p>
 </section>
-
-<section id="aurora">
-  <span class="qnum">14 · Competitive positioning</span>
+</div>
+<div class="guide-group" id="compare-group"><p class="group-heading">04 / Compare & cost</p><section id="aurora">
+  <span class="qnum">Lakebase vs Aurora</span>
   <h2>Where does Lakebase win against Aurora, and where should we concede?</h2>
-  <p class="answer"><strong>Sell the workload fit and prove the result.</strong> Fast branch workflows, Databricks integration and independently managed compute/storage are relevant advantages; Aurora has real cloning, auto-pause and regional recovery capabilities.</p>
+  <p class="answer" data-label="Answer"><strong>Sell the workload fit and prove the result.</strong> Fast branch workflows, Databricks integration and independently managed compute/storage are relevant advantages; Aurora has real cloning, auto-pause and regional recovery capabilities.</p>
   <div class="tblwrap"><table>
     <thead><tr><th scope="col">Decision</th><th scope="col">Lakebase</th><th scope="col">Aurora PostgreSQL</th></tr></thead><tbody>
       <tr><th scope="row">Environment lifecycle</th><td>Branch hierarchy, reset, history-based restore and expiration in a project.</td><td>Copy-on-write database clones; each clone is a DB cluster. Compare the usable workflow and its cost.</td></tr>
@@ -431,11 +471,10 @@ query_wait_timeout = 120 seconds</pre>
   <div class="honest"><b>Avoid unsupported shortcuts:</b> “always cheaper,” “all engines read Postgres pages,” “one governance policy everywhere,” and “5× faster than Aurora.” Historical fleet statistics and one partner benchmark are not production guarantees for this service.</div>
   <p class="refs">Evidence: <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html" target="_blank" rel="noopener">Aurora clones</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2-auto-pause.html" target="_blank" rel="noopener">Auto-pause</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html" target="_blank" rel="noopener">Global Database</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Replication.html" target="_blank" rel="noopener">Replication</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/zero-etl.html" target="_blank" rel="noopener">Zero-ETL</a></p>
 </section>
-
 <section id="pricing">
-  <span class="qnum">15 · Cost</span>
+  <span class="qnum">Cost & scenarios</span>
   <h2>Is Lakebase cheaper, and what belongs in the estimate?</h2>
-  <p class="answer"><strong>Calculate the actual scenario; there is no universal winner.</strong> Separate database spend, data movement and the operational work you expect to reduce. Equal RAM is not equal performance.</p>
+  <p class="answer" data-label="Answer"><strong>Calculate the actual scenario; there is no universal winner.</strong> Separate database spend, data movement and the operational work you expect to reduce. Equal RAM is not equal performance.</p>
   <details><summary>Technical detail: Lakebase billing and comparison boundaries</summary>
     <ul>
       <li>Compute bills CU-hours for the primary, HA secondaries and read replicas. Always-On minimum pricing requires scale-to-zero to be disabled for more than 24 consecutive hours; usage above the eligible baseline uses the autoscaling rate.</li>
@@ -448,30 +487,22 @@ query_wait_timeout = 120 seconds</pre>
   <div class="rule">“Let's price the production shape, including HA and data movement, then compare measured performance at that cost.”</div>
   <p class="proof"><a class="inline-cta" href="../lakebase-compete-calculator/">Build and share a scenario in the calculator ↗</a></p>
   <p class="refs">Evidence: <a href="https://www.databricks.com/product/pricing/lakebase" target="_blank" rel="noopener">Lakebase rates &amp; billing rules</a> · <a href="https://aws.amazon.com/rds/aurora/pricing/" target="_blank" rel="noopener">Aurora pricing</a> · <a href="#branching">Branch billing</a></p>
-</section>
-
-<section id="activation">
-  <span class="qnum">16 · Expansion</span>
-  <h2>How does a first workload become sustained production use?</h2>
-  <p class="answer"><strong>Expand validated workloads, not artificial consumption.</strong> The two natural shapes are more production apps/teams or more demand on a useful customer-facing service. HA is a reliability decision, not a spend lever.</p>
-  <ol class="questions">
-    <li><strong>Land:</strong> one app, agent-state store, serving dataset or CI branch workflow. Agree on latency/correctness/cost and the owner who can take it to production.</li>
-    <li><strong>Production:</strong> validate access, recovery, observability and capacity; choose HA according to the service requirement.</li>
-    <li><strong>Expand:</strong> repeat across teams or scale proven traffic. Track active usage and production adoption rather than the number of created databases.</li>
-    <li><strong>Standardize:</strong> shared templates, connection/retry practices, branch policies, budgets and an incident runbook. Reassess cost after the promotion.</li>
-  </ol>
-  <details><summary>Illustrative $5K+ production shape — a calculator scenario, not a forecast</summary>
+  <details><summary>Worked production estimate: fixed writer, HA and read capacity</summary>
     <p><strong>$6,203.64/month</strong> at the calculator's checked AWS US East Enterprise list rates: fixed 32 CU primary + one equal HA secondary + two 16 CU read replicas, 1,000 GB data, 7-day PITR and 30 GB/day modeled changes. No promo or contract discount; Always-On minimum rates assumed after the qualifying 24 hours. No sync, snapshots, support or network charges.</p>
     <p>Compute: <code>(32 + 32 + 16 + 16) × 730 × $0.083 = $5,816.64</code>. Data: <code>1,000 × $0.345 = $345</code>. History estimate: <code>30 × 7 × $0.200 = $42</code>. Replicas are an illustrative capacity choice; verify whether readable HA secondaries already satisfy the read workload.</p>
     <p><a href="../lakebase-compete-calculator/#w=custom&amp;region=us&amp;lbCloud=aws&amp;lbTier=enterprise&amp;commit=od&amp;pat=peak&amp;peak=7&amp;sto=1000&amp;ha=1&amp;rep=2&amp;io=mod&amp;ret=7&amp;promo=0&amp;disc=0&amp;sync=none">Open the exact scenario ↗</a></p>
   </details>
-  <div class="honest"><b>Sales-planning target:</b> $5K/month is an account-planning milestone here, not a vendor product threshold, a minimum bill, or a promise that a PoC will grow to that spend.</div>
+<details class="scenario-builder"><summary>Set an alternative competitor integration budget</summary>
+<p>The calculator initially uses the same modeled pipeline spend for all vendors. That isolates database costs; it is not a vendor-specific integration quote. Use a measured or quoted competitor integration cost when you have one.</p>
+<form id="scenarioForm"><label for="scenario">Starting scenario</label><select id="scenario"><option value="serving">Lakehouse serving</option><option value="agent">Agent state</option><option value="dev">One dev endpoint</option></select><label for="etlBudget">Competitor integration / month (USD)</label><input id="etlBudget" type="number" min="0" max="1000000" step="1" placeholder="Leave blank for the shared assumption"><button type="submit">Open calculator ↗</button><p id="scenarioError" role="alert" hidden>Enter a whole-dollar amount from 0 to 1,000,000, or leave it blank.</p></form>
+<p class="fine">This amount applies to each competitor; Lakebase retains its modeled sync cost. Use separate shared links for different vendor estimates. Zero explicitly removes competitor integration spend.</p>
+</details>
 </section>
-
-<section id="proof">
-  <span class="qnum">17 · Technical close</span>
+</div>
+<div class="guide-group" id="production-group"><p class="group-heading">05 / Production proof</p><section id="proof">
+  <span class="qnum">Production proof plan</span>
   <h2>What evidence is enough to recommend production?</h2>
-  <p class="answer"><strong>A representative workload, agreed success criteria and a rehearsed failure path.</strong> Branch creation speed or a benchmark headline is an entry point; the app's operating behavior is the close.</p>
+  <p class="answer" data-label="Answer"><strong>A representative workload, agreed success criteria and a rehearsed failure path.</strong> Branch creation speed or a benchmark headline is an entry point; the app's operating behavior is the close.</p>
   <div class="tblwrap"><table><thead><tr><th scope="col">Test</th><th scope="col">Evidence to bring back</th></tr></thead><tbody>
     <tr><th scope="row">Performance</th><td>Customer-sized data/indexes and realistic SQL; read/write mix, concurrency, warm/cold p95/p99, commit rate and errors. Same client region and durability for competitor runs.</td></tr>
     <tr><th scope="row">Scaling &amp; sessions</th><td>Scale-up/down trace; cache/storage-read behavior; direct vs pooled driver tests; suspend/resume with bounded reconnect and idempotent write recovery.</td></tr>
@@ -481,92 +512,175 @@ query_wait_timeout = 120 seconds</pre>
     <tr><th scope="row">Delivery</th><td>Named app owner, rollout/rollback steps, operations owner, quotas/region confirmed, and a dated production decision.</td></tr>
   </tbody></table></div>
   <div class="rule">“If the latency, recovery and full bill pass, we have an evidence-backed production recommendation. If a hard requirement fails, we have a clear reason to choose a different design.”</div>
-</section>
-
-<section id="nogo">
-  <span class="qnum">18 · Decision gates</span>
-  <h2>Which requirements should stop or reshape the opportunity?</h2>
-  <ul>
-    <li><strong>Production regional DR that the current service cannot meet.</strong> The Private Preview is not a substitute for an approved production recovery design.</li>
-    <li><strong>Horizontal write scale-out or capacity beyond the single writer.</strong> Evaluate a purpose-built distributed/sharded database; Aurora Limitless and Aurora DSQL are separate designs, not drop-in extensions of every Aurora PostgreSQL app.</li>
-    <li><strong>Mandatory native logical replication, unsupported extensions, unrestricted superuser/OS access or tablespaces.</strong> Resolve compatibility before promising migration.</li>
-    <li><strong>Physical single-tenancy, residency or compliance requirements without a confirmed supported deployment.</strong> Validate against cloud-specific service documentation and contracts.</li>
-    <li><strong>Unapproved large-data/compute quotas.</strong> The current project documentation lists storage quota as adjustable, not a universal 8 TB or 32 TB ceiling. Confirm the project's actual quota; an increase takes effect on compute start/restart.</li>
-    <li><strong>No measurable reason to replace a healthy existing system.</strong> Start with a new adjacent workload or leave the incumbent in place.</li>
-  </ul>
   <div class="closing"><p class="line">Qualify sharply. Prove the architecture. <em>Price the whole workload.</em></p><p>Lead with a concrete app problem, answer objections with a documented boundary, and close on the customer's measured production criteria.</p></div>
 </section>
-
 <section id="sources">
-  <span class="qnum">19 · Evidence &amp; status</span>
+  <span class="qnum">Status & evidence</span>
   <h2>What is available today, and what must be rechecked?</h2>
+<p class="fine"><span data-fact="table.status">AWS / Azure GA; GCP Beta · individual features have separate status</span></p>
   <p>Claims above were checked against primary documentation on <strong>12 Oct 2026</strong>. Cloud, region, project version and preview enrollment can change availability; engineering measurements describe the tested implementation, not a contract.</p>
   <div class="tblwrap"><table><thead><tr><th scope="col">Capability</th><th scope="col">Status used in this guide</th><th scope="col">Primary source</th></tr></thead><tbody>
-    <tr><th scope="row">Project-based Lakebase</th><td>AWS / Azure GA; Google Cloud Beta</td><td><a href="https://docs.databricks.com/aws/en/release-notes/lakebase/" target="_blank" rel="noopener">AWS release notes</a> · <a href="https://learn.microsoft.com/en-us/azure/databricks/release-notes/lakebase/" target="_blank" rel="noopener">Azure release notes</a> · <a href="https://docs.databricks.com/gcp/en/oltp/projects/" target="_blank" rel="noopener">GCP status</a></td></tr>
-    <tr><th scope="row">Synced tables / UC registration</th><td>GA; LTAP Direct Writes is Beta</td><td><a href="https://docs.databricks.com/aws/en/oltp/projects/ltap-overview#capabilities-that-implement-ltap" target="_blank" rel="noopener">LTAP status matrix</a></td></tr>
-    <tr><th scope="row">Lakebase Search</th><td>GA, 18 Sep 2026</td><td><a href="https://docs.databricks.com/aws/en/release-notes/lakebase/#lakebase-search-is-generally-available" target="_blank" rel="noopener">GA announcement</a></td></tr>
-    <tr><th scope="row">Lakehouse//RT over Lakebase</th><td>Beta; cloud/region eligibility must be confirmed</td><td><a href="https://docs.databricks.com/aws/en/compute/sql-warehouse/real-time" target="_blank" rel="noopener">Real-Time requirements</a></td></tr>
-    <tr><th scope="row">Lakebase CDF</th><td>Public Preview</td><td><a href="https://docs.databricks.com/aws/en/oltp/projects/lakebase-cdf" target="_blank" rel="noopener">CDF requirements</a></td></tr>
-    <tr><th scope="row">Cross-region DR</th><td>Private Preview; not intended for production</td><td><a href="https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery" target="_blank" rel="noopener">DR requirements</a></td></tr>
+    <tr><th scope="row">Project-based Lakebase</th><td><span data-fact="status.platform">AWS / Azure GA; Google Cloud Beta</span></td><td><a href="https://docs.databricks.com/aws/en/release-notes/lakebase/" target="_blank" rel="noopener">AWS release notes</a> · <a href="https://learn.microsoft.com/en-us/azure/databricks/release-notes/lakebase/" target="_blank" rel="noopener">Azure release notes</a> · <a href="https://docs.databricks.com/gcp/en/oltp/projects/" target="_blank" rel="noopener">GCP status</a></td></tr>
+    <tr><th scope="row">Synced tables / UC registration</th><td><span data-fact="status.ltap">GA; LTAP Direct Writes is Beta</span></td><td><a href="https://docs.databricks.com/aws/en/oltp/projects/ltap-overview#capabilities-that-implement-ltap" target="_blank" rel="noopener">LTAP status matrix</a></td></tr>
+    <tr><th scope="row">Lakebase Search</th><td><span data-fact="status.search">GA, 18 Sep 2026</span></td><td><a href="https://docs.databricks.com/aws/en/release-notes/lakebase/#lakebase-search-is-generally-available" target="_blank" rel="noopener">GA announcement</a></td></tr>
+    <tr><th scope="row">Lakehouse//RT over Lakebase</th><td><span data-fact="status.rt">Beta; cloud/region eligibility must be confirmed</span></td><td><a href="https://docs.databricks.com/aws/en/compute/sql-warehouse/real-time" target="_blank" rel="noopener">Real-Time requirements</a></td></tr>
+    <tr><th scope="row">Lakebase CDF</th><td><span data-fact="status.cdf">Public Preview</span></td><td><a href="https://docs.databricks.com/aws/en/oltp/projects/lakebase-cdf" target="_blank" rel="noopener">CDF requirements</a></td></tr>
+    <tr><th scope="row">Cross-region DR</th><td><span data-fact="status.dr">Private Preview; not intended for production</span></td><td><a href="https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery" target="_blank" rel="noopener">DR requirements</a></td></tr>
   </tbody></table></div>
   <p class="refs">Engineering references: <a href="https://www.vldb.org/pvldb/vol19/p4385-pandis.pdf" target="_blank" rel="noopener">Lakebase VLDB 2026</a> · <a href="https://neon.com/blog/improving-lakebase-compute-cache-part-1" target="_blank" rel="noopener">Fixed-compute cache</a> · <a href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank" rel="noopener">Full-page-image pushdown</a>. Source links also sit beside each technical answer.</p>
 </section>
-</main>
-<footer>Lakebase Field Guide · Combined sales play &amp; technical FAQ · Maintained by Peter Chan · Independent enablement material, not an official product commitment or quote. <a href="../lakebase-compete-calculator/">Cost calculator</a> · <a href="../">All demos</a></footer>
-<script>
-const sections = [...document.querySelectorAll('main > section')];
-const links = [...document.querySelectorAll('nav a[href^="#"]')];
+<section id="activation">
+  <span class="qnum">Internal sales appendix</span>
+  <h2>Internal sales appendix</h2>
+<details><summary>Optional: adoption and account-planning targets</summary><h3>How does a first workload become sustained production use?</h3>
+  <p class="answer" data-label="Answer"><strong>Expand validated workloads, not artificial consumption.</strong> The two natural shapes are more production apps/teams or more demand on a useful customer-facing service. HA is a reliability decision, not a spend lever.</p>
+  <ol class="questions">
+    <li><strong>Land:</strong> one app, agent-state store, serving dataset or CI branch workflow. Agree on latency/correctness/cost and the owner who can take it to production.</li>
+    <li><strong>Production:</strong> validate access, recovery, observability and capacity; choose HA according to the service requirement.</li>
+    <li><strong>Expand:</strong> repeat across teams or scale proven traffic. Track active usage and production adoption rather than the number of created databases.</li>
+    <li><strong>Standardize:</strong> shared templates, connection/retry practices, branch policies, budgets and an incident runbook. Reassess cost after the promotion.</li>
+  </ol>
+
+  <div class="honest"><b>Sales-planning target:</b> $5K/month is an account-planning milestone here, not a vendor product threshold, a minimum bill, or a promise that a PoC will grow to that spend.</div>
+</details>
+</section>
+</div>
+</main></div><footer>Lakebase Field Guide · Maintained by Peter Chan · Independent enablement material, not an official product commitment or quote. <a href="../lakebase-compete-calculator/">Cost calculator</a> · <a href="../">All demos</a></footer><script>
+'use strict';
+const guide = document.getElementById('guide');
+const sections = [...guide.querySelectorAll('section')];
+const groups = [...guide.querySelectorAll('.guide-group')];
+const links = [...document.querySelectorAll('.group-nav a[href^="#"], .contents a[href^="#"]')];
 const input = document.getElementById('findInput');
-function filterGuide() {
-  const terms = input.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
-  let count = 0;
-  sections.forEach(section => {
-    const text = section.textContent.toLowerCase();
-    section.hidden = !terms.every(term => text.includes(term));
-    if (!section.hidden) count++;
+const details = [...guide.querySelectorAll('details')];
+let searchState = null;
+function clearHighlights() {
+  guide.querySelectorAll('mark[data-search]').forEach(mark => {
+    const parent = mark.parentNode;
+    mark.replaceWith(document.createTextNode(mark.textContent));
+    parent.normalize();
   });
-  document.getElementById('findStatus').textContent = terms.length ? count + ' matching sections' : '';
-  document.getElementById('noResults').hidden = count !== 0;
 }
-input.addEventListener('input', filterGuide);
-function revealAnchor() {
-  // Only existing IDs are used; the fragment is never inserted into HTML or a selector.
-  let id;
-  try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
-  const target = document.getElementById(id);
-  if (!target || !document.getElementById('guide').contains(target)) return;
-  input.value = ''; filterGuide();
-  const detail = target.closest('details');
-  if (detail) detail.open = true;
+function highlight(section, terms) {
+  const walker = document.createTreeWalker(section,NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (!node.parentElement.closest('script,style,option,button,textarea,mark') && node.textContent.trim()) nodes.push(node);
+  }
+  // Literal matching only; user terms never become HTML or a regular expression.
+  nodes.forEach(node => {
+    const original = node.textContent, lower = original.toLowerCase();
+    let cursor=0, changed=false;
+    const fragment = document.createDocumentFragment();
+    while (cursor < original.length) {
+      let start=-1, length=0;
+      terms.forEach(term => {
+        const at=lower.indexOf(term,cursor);
+        if (at !== -1 && (start === -1 || at < start || (at === start && term.length > length))) {start=at;length=term.length;}
+      });
+      if (start === -1) {fragment.append(document.createTextNode(original.slice(cursor)));break;}
+      fragment.append(document.createTextNode(original.slice(cursor,start)));
+      const mark=document.createElement('mark'); mark.dataset.search=''; mark.textContent=original.slice(start,start+length);
+      fragment.append(mark); cursor=start+length; changed=true;
+    }
+    if (changed) node.replaceWith(fragment);
+  });
+}
+function filterGuide() {
+  clearHighlights();
+  const terms = [...new Set(input.value.toLowerCase().trim().split(/\s+/).filter(Boolean))];
+  if (terms.length && !searchState) searchState = new Map(details.map(d => [d,d.open]));
+  if (searchState) searchState.forEach((open,d) => d.open=open);
+  let count=0;
+  sections.forEach(section => {
+    const text=section.textContent.toLowerCase();
+    section.hidden = !terms.every(term => text.includes(term));
+    if (!section.hidden) {
+      count++;
+      if (terms.length) {
+        section.querySelectorAll('details').forEach(d => {
+          if (terms.some(t => d.textContent.toLowerCase().includes(t))) d.open=true;
+        });
+        highlight(section,terms);
+      }
+    }
+  });
+  groups.forEach(group => group.hidden = [...group.querySelectorAll('section')].every(s => s.hidden));
+  if (!terms.length) searchState=null;
+  document.getElementById('findStatus').textContent=terms.length ? count+' matching answers' : '';
+  document.getElementById('noResults').hidden=count !== 0;
+  document.getElementById('clearFind').hidden=!input.value;
+  document.querySelector('.decision-brief').hidden=terms.length > 0;
+}
+function clearSearch() {input.value='';filterGuide();}
+input.addEventListener('input',filterGuide);
+document.getElementById('clearFind').addEventListener('click',() => {clearSearch();input.focus();});
+function revealAnchor(id) {
+  if (id === undefined) {try {id=decodeURIComponent(location.hash.slice(1));} catch {return;}}
+  const target=document.getElementById(id);
+  if (!target || !guide.contains(target)) return;
+  clearSearch();
+  let parent=target.closest('details');
+  while (parent) {parent.open=true;parent=parent.parentElement.closest('details');}
   target.scrollIntoView();
 }
-links.forEach(link => link.addEventListener('click', () => { input.value = ''; filterGuide(); }));
-window.addEventListener('hashchange', revealAnchor);
+document.addEventListener('click',event => {
+  const link=event.target.closest('a[href^="#"]');
+  if (!link) return;
+  let id;try {id=decodeURIComponent(link.hash.slice(1));} catch {return;}
+  if (!guide.contains(document.getElementById(id))) return;
+  event.preventDefault();revealAnchor(id);
+  if (location.hash !== link.hash) location.hash=link.hash;
+});
+document.getElementById('topic').addEventListener('change',event => {
+  const id=event.target.value;
+  if (!id || !document.getElementById(id)) return;
+  revealAnchor(id); location.hash=id;
+});
+window.addEventListener('hashchange',() => revealAnchor());
 if (location.hash) revealAnchor();
 if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if (entry.isIntersecting) links.forEach(link => {
-      const active = link.hash === '#' + entry.target.id;
-      link.classList.toggle('active', active);
-      if (active) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current');
-    }); });
-  }, {rootMargin:'-15% 0px -65% 0px'});
-  sections.forEach(section => observer.observe(section));
+  const observer=new IntersectionObserver(entries => {
+    const entry=entries.find(e => e.isIntersecting);
+    if (!entry) return;
+    const sectionId='#'+entry.target.id, groupId='#'+entry.target.closest('.guide-group').id;
+    links.forEach(link => {
+      const active=link.hash === sectionId || (link.closest('.group-nav') && link.hash === groupId);
+      link.classList.toggle('active',Boolean(active));
+      if (active) link.setAttribute('aria-current','location'); else link.removeAttribute('aria-current');
+    });
+  },{rootMargin:'-10% 0px -65% 0px'});
+  sections.forEach(s => observer.observe(s));
 }
+const scenarios={
+  agent:{w:'agent',pat:'spiky',peak:'3',sto:'50',io:'light',ha:'0',rep:'0',sync:'none'},
+  serving:{w:'serving',pat:'steady',peak:'5',sto:'300',io:'light',ha:'0',rep:'2',sync:'triggered'},
+  dev:{w:'dev',pat:'intermittent',peak:'1',sto:'20',io:'light',ha:'0',rep:'0',sync:'none'}
+};
+document.getElementById('scenarioForm').addEventListener('submit',event => {
+  event.preventDefault();
+  const raw=document.getElementById('etlBudget').value.trim(), amount=Number(raw);
+  const valid=!raw || (Number.isInteger(amount) && amount >= 0 && amount <= 1000000);
+  document.getElementById('scenarioError').hidden=valid;
+  if (!valid) return;
+  const preset=scenarios[document.getElementById('scenario').value];
+  if (!preset) return;
+  const params=new URLSearchParams({...preset,ret:'7',promo:'0',disc:'0',etlOverride:raw ? String(amount) : '-1'});
+  location.href='../lakebase-compete-calculator/#'+params.toString();
+});
 let printState;
-window.addEventListener('beforeprint', () => {
+window.addEventListener('beforeprint',() => {
   if (printState) return;
-  printState = {hidden: sections.map(s => s.hidden), details: [...document.querySelectorAll('details')].map(d => [d, d.open])};
-  sections.forEach(s => s.hidden = false);
-  printState.details.forEach(([d]) => d.open = true);
+  printState={hidden:[...groups,...sections].map(s => [s,s.hidden]),details:details.map(d => [d,d.open])};
+  [...groups,...sections].forEach(s => s.hidden=false); details.forEach(d => d.open=true);
 });
-window.addEventListener('afterprint', () => {
+window.addEventListener('afterprint',() => {
   if (!printState) return;
-  sections.forEach((s, i) => s.hidden = printState.hidden[i]);
-  printState.details.forEach(([d, open]) => d.open = open);
-  printState = null;
+  printState.hidden.forEach(([s,hidden]) => s.hidden=hidden);
+  printState.details.forEach(([d,open]) => d.open=open);printState=null;
 });
-document.getElementById('printBtn').addEventListener('click', () => window.print());
+document.getElementById('printBtn').addEventListener('click',() => window.print());
 </script>
 </body>
 </html>

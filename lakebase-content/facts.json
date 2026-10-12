@@ -1,0 +1,135 @@
+{
+  "facts": {
+    "table.engine": {
+      "value": "Postgres 16–18",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/compatibility",
+      "checked": "2026-10-12"
+    },
+    "table.billing": {
+      "source": "https://www.databricks.com/product/pricing/lakebase",
+      "checked": "2026-10-12",
+      "template": "CU-hours (≈{ramGB} GB RAM + CPU + local SSD) · storage per GB-mo"
+    },
+    "table.sizes": {
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/manage-computes",
+      "checked": "2026-10-12",
+      "template": "{minCU} CU, then integers · autoscale to {autoMax} CU (max−min ≤{band}); fixed to {fixedMax} CU"
+    },
+    "table.autoscale": {
+      "value": "Within configured range: no restart; changing min/max may interrupt connections",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/autoscaling",
+      "checked": "2026-10-12"
+    },
+    "table.suspend": {
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero",
+      "checked": "2026-10-12",
+      "template": "Yes, max ≤{suspendMax} CU and no HA · timeout {idleMin} s–{idleMaxDays} d (default {idleDefaultHours} h) · wake in a few hundred ms, before query work"
+    },
+    "table.ha": {
+      "value": "1–3 AZ-separated secondaries, ≥ primary size; reads opt-in; failover disconnects clients",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/high-availability",
+      "checked": "2026-10-12"
+    },
+    "table.replicas": {
+      "value": "6 standalone / branch · shared storage, separate compute · eventual consistency; not HA candidates",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/read-replicas",
+      "checked": "2026-10-12"
+    },
+    "table.storage": {
+      "value": "Separated · billed on data stored · per-branch quota adjustable",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/manage-projects",
+      "checked": "2026-10-12"
+    },
+    "table.io": {
+      "value": "No I/O-request meter; storage/history charged",
+      "source": "https://www.databricks.com/product/pricing/lakebase",
+      "checked": "2026-10-12"
+    },
+    "table.history": {
+      "value": "2–30 d (default 7) · history at PITR rate",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore",
+      "checked": "2026-10-12"
+    },
+    "table.branches": {
+      "value": "Copy-on-write (500 / project) · expiring: changed-data billing; permanent: full-data billing",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/branches",
+      "checked": "2026-10-12"
+    },
+    "table.analytics": {
+      "value": "Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT (Beta) · UC for analytics; PG roles for direct access",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview",
+      "checked": "2026-10-12"
+    },
+    "table.pooling": {
+      "value": "Built-in PgBouncer transaction mode · native password roles only; OAuth direct · 10K clients ≠ running transactions",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/connection-pooling",
+      "checked": "2026-10-12"
+    },
+    "table.status": {
+      "value": "AWS / Azure GA; GCP Beta · individual features have separate status",
+      "source": "https://docs.databricks.com/aws/en/release-notes/lakebase/",
+      "checked": "2026-10-12"
+    },
+    "compute.capacity": {
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/manage-computes",
+      "checked": "2026-10-12",
+      "template": "1 CU ≈ {ramGB} GB RAM; minimum {minCU} CU, then integer CU sizes"
+    },
+    "compute.range": {
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/manage-computes",
+      "checked": "2026-10-12",
+      "template": "{minCU}–{autoMax} CU; maximum − minimum ≤{band} CU"
+    },
+    "compute.fixed": {
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/manage-computes",
+      "checked": "2026-10-12",
+      "template": "Up to {fixedMax} CU; sizes above {autoMax} CU are fixed-only"
+    },
+    "compute.suspend": {
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero",
+      "checked": "2026-10-12",
+      "template": "Maximum ≤{suspendMax} CU, no HA; timeout {idleMin} seconds–{idleMaxDays} days, default {idleDefaultHours} hours"
+    },
+    "status.platform": {
+      "value": "AWS / Azure GA; Google Cloud Beta",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/manage-projects",
+      "checked": "2026-10-12"
+    },
+    "status.ltap": {
+      "value": "GA; LTAP Direct Writes is Beta",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview",
+      "checked": "2026-10-12"
+    },
+    "status.search": {
+      "value": "GA, 18 Sep 2026",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/lakebase-search",
+      "checked": "2026-10-12"
+    },
+    "status.rt": {
+      "value": "Beta; cloud/region eligibility must be confirmed",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview",
+      "checked": "2026-10-12"
+    },
+    "status.cdf": {
+      "value": "Public Preview",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/lakebase-cdf",
+      "checked": "2026-10-12"
+    },
+    "status.dr": {
+      "value": "Private Preview; not intended for production",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery",
+      "checked": "2026-10-12"
+    }
+  },
+  "parameters": {
+    "ramGB": 2,
+    "minCU": "0.5",
+    "autoMax": 64,
+    "band": 16,
+    "fixedMax": 112,
+    "suspendMax": 32,
+    "idleMin": 60,
+    "idleMaxDays": 7,
+    "idleDefaultHours": 24
+  }
+}

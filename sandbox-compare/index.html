@@ -119,7 +119,7 @@ table{min-width:640px}
 <h4>Two things nobody else combines</h4>
 <p><b>1. Downscoped UC credentials.</b> Agents in the sandbox don't carry your token — they get dynamically-issued, task-scoped Unity Catalog credentials. Novee's finding was that credentials escape every architecture; Databricks' answer is to hand out less credential in the first place, not hide it better.</p>
 <p><b>2. Governance inheritance.</b> Code inside the sandbox queries data through Unity Catalog: row/column permissions, lineage and audit apply automatically. "What data did the agent touch" has a built-in answer — other platforms require you to build that audit layer yourself.</p>
-<p style="margin-bottom:0">Plus <b>Lakebase instant branching</b>: agent writes go to a zero-copy DB branch, validated, then merged — database-level isolation matching the compute-level isolation.</p>
+<p style="margin-bottom:0">Plus <b>Lakebase instant branching</b>: agents can test writes in an isolated copy-on-write branch. Validation and promotion are separate: use migrations for schema changes and explicit application logic to apply approved business writes; branches do not merge natively. <a href="../lakebase-objection-faq/#branching">Lakebase branch behavior and billing ↗</a></p>
 </div>
 <p class="muted">Announced at DAIS 2026 as part of the Agent Bricks platform (alongside Agent Bricks memory, MCP support, and the Unity AI Gateway for runtime spend/policy control). Trade-off: it lives inside the Databricks ecosystem — the isolation is excellent but the blast radius of the option is your lakehouse estate, not the open internet.</p>
 
