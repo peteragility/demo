@@ -11734,7 +11734,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-07",
+            "checked_at": "2026-10-14",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -11769,13 +11769,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Sydney · Azure Australia East"
+                "AWS Mumbai, Sydney · Azure Central India, Australia East · GCP Mumbai"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Tokyo, Seoul, Mumbai, Singapore · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India · GCP Mumbai, Singapore"
+                "AWS Tokyo, Seoul, Singapore · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central · GCP Singapore"
               ]
             ],
             "hk": [
@@ -12434,7 +12434,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-14",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -12452,6 +12452,12 @@
                 "global",
                 "Cross-geo",
                 "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+              ],
+              [
+                "APAC",
+                "in-region",
+                "In-region",
+                "AWS Mumbai · Azure Central India · GCP Mumbai"
               ],
               [
                 "APAC",
@@ -13327,7 +13333,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-14",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -13362,13 +13368,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Seoul, Singapore, Sydney · Azure Japan East, Australia East · GCP Singapore"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure Japan East, Central India, Australia East · GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai"
+                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central"
               ]
             ],
             "hk": [
@@ -18592,7 +18598,7 @@
           "has_long_context": true,
           "endpoint": "In-region",
           "endpoints": {
-            "checked_at": "2026-10-10",
+            "checked_at": "2026-10-14",
             "src": [
               "aws_card_gpt_5_5",
               "aws_endpoint_regions"
@@ -18603,6 +18609,30 @@
                 "in-region",
                 "In-region",
                 "N. Virginia, Ohio"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+              ],
+              [
+                "Americas",
+                "global",
+                "Global CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global CRIS",
+                "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global CRIS",
+                "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
               ]
             ],
             "hk": [
@@ -18610,8 +18640,8 @@
               "No Bedrock endpoint in Hong Kong (ap-east-1)"
             ],
             "tw": [
-              "none",
-              "No access from Taipei (ap-east-2) for this model"
+              "routed",
+              "Taipei (ap-east-2) through global cross-region inference only"
             ],
             "notes": [
               [
@@ -23365,7 +23395,7 @@
           "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html",
           "endpoint": "In-region",
           "endpoints": {
-            "checked_at": "2026-10-10",
+            "checked_at": "2026-10-14",
             "src": [
               "aws_card_gpt_5_4",
               "aws_endpoint_regions"
@@ -23376,6 +23406,30 @@
                 "in-region",
                 "In-region",
                 "N. Virginia, Ohio, Oregon"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+              ],
+              [
+                "Americas",
+                "global",
+                "Global CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global CRIS",
+                "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global CRIS",
+                "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
               ]
             ],
             "hk": [
@@ -23383,8 +23437,8 @@
               "No Bedrock endpoint in Hong Kong (ap-east-1)"
             ],
             "tw": [
-              "none",
-              "No access from Taipei (ap-east-2) for this model"
+              "routed",
+              "Taipei (ap-east-2) through global cross-region inference only"
             ],
             "notes": [
               [
