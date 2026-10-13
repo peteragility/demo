@@ -2363,7 +2363,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-13",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -2374,13 +2374,13 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
@@ -2398,13 +2398,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Seoul, Singapore, Sydney · Azure Japan East, Australia East · GCP Singapore"
+                "AWS Tokyo, Singapore, Sydney · Azure Japan East, Australia East · GCP Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai"
+                "AWS Seoul, Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai"
               ]
             ],
             "hk": [
