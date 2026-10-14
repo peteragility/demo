@@ -708,9 +708,10 @@ def check_cache_reads(data):
 
 def make_variant(v, day):
     v = dict(v)
+    price_day = v.pop("pricing_checked_at", day)
     out = variant(v.pop("label"), v.pop("in"), v.pop("out"), v.pop("cache_read", None), v.pop("cache_write", None), v.pop("cache_write_1h", None),
                   scope=v.pop("scope", "global"), service=v.pop("service", "standard"), **v)
-    out["pricing_checked_at"] = day
+    out["pricing_checked_at"] = price_day
     return out
 
 
@@ -861,6 +862,9 @@ def enrich_context_and_promotions(data):
                 if key in ("google/gemini-3.8-flash", "google/gemini-3.7-flash", "google/gemini-3.6-flash"):
                     list_tier = "Standard pay-per-token" if pl == "databricks" else c["tier"].split(" · intro")[0]
                     promo(c, "2026-12-31", rates(1.5, 7.5, 0.15), "Flash introductory promotion", list_tier)
+                    if key == "google/gemini-3.8-flash" and pl == "official":
+                        # Gemini API pricing, reviewed 2026-10-15: storage also changes on Jan 1.
+                        c["promotion"]["after"]["cache_storage"] = 1
                     for v in variants:
                         if "From 1 Jan" in v["label"]:
                             v["future_only"] = True
@@ -957,14 +961,18 @@ def add_gemini4(data):
             notes=[["Context", "Unified input and output limit: 1,048,576 tokens. Synchronous output up to 65,536; long decode can extend output within the unified limit. No separate long-context price band is listed."],
                    ["Caching", "Implicit caching only; explicit cache writes and storage are not supported."],
                    ["Promotion", "Introductory rates end 30 Nov 2026; published list rates apply from 1 Dec 2026."],
-                   ["Version", "gemini-4-argon; publicly available GA from 13 Oct 2026. Cyber Permissive is a separate allowlisted model."]],
+                   ["Version", "gemini-4-argon; publicly available GA from 13 Oct 2026. Cyber Permissive is a separate allowlisted model."],
+                   ["Tiers", "Gemini API Contributor is an invite-only private preview with data contribution; its discounted prices are excluded from the general-access comparison."]],
             ids=["gemini-4-argon"], cache_write="input-rate")
         if pl == "gcloud":
             cell["promotion"]["label"] = "50% credits back on net spend"
             cell["endpoints"]["regions"] += [
                 ["Americas", "geo", "US multi-region", "US endpoint; processing stays in the US (+10%)"],
                 ["Europe", "geo", "EU multi-region", "EU endpoint; processing stays in the EU (+10%)"]]
-            cell["endpoints"]["notes"] += [["Caching", "Implicit caching requires at least 6,144 tokens; durable caching is enabled by default."],
+            cell["endpoints"]["notes"] = [n for n in cell["endpoints"]["notes"] if n[0] != "Tiers"]
+            cell["endpoints"]["notes"] += [["Lifecycle", "Agent Platform retirement is October 13, 2027 or later; this is a lower bound, not an exact shutdown date, and does not set the Gemini API retirement date."],
+                                            ["Product", "AlphaEvolve is a separate product. Its table lists Gemini model input / output at $4 / $20 per 1M tokens and AlphaEvolve agent input / output at $8 / $40; these are product columns, not context bands."],
+                                            ["Caching", "Implicit caching requires at least 6,144 tokens; durable caching is enabled by default."],
                                             ["Tiers", "Standard, Priority and Batch; Flex is not listed as supported on this model card."]]
         platforms[pl] = checked(cell, day)
     for cell in platforms.values():

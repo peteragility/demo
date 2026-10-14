@@ -1047,7 +1047,7 @@
    "short": "learn claude quotas"
   },
   "az_learn_fireworks": {
-   "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models",
+   "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/fireworks-model-catalog",
    "label": "Learn: Fireworks models on Microsoft Foundry (catalog, offers, regions)",
    "short": "Fireworks on Foundry"
   },
@@ -1340,10 +1340,11 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
-    "endpoint": "Global Standard"
+    "endpoint": "Global Standard",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-15"
    },
    "variants": [
     {
@@ -1353,7 +1354,8 @@
      "cache_read": 0.33,
      "scope": "geographic",
      "service": "standard",
-     "endpoint": "Data Zone US"
+     "endpoint": "Data Zone US",
+     "pricing_checked_at": "2026-10-04"
     }
    ],
    "src": [
@@ -1364,27 +1366,21 @@
    ],
    "regions": [
     [
-     "Americas",
+     "Global",
      "global",
      "Global Standard",
-     "Central US, East US, East US 2, South Central US, West Central US, West US, West US 2, West US 3"
+     "All commercial Azure regions; inference runs on Fireworks infrastructure"
     ],
     [
      "Americas",
      "geo",
      "Data Zone US",
-     "Central US, East US, East US 2, North Central US, West US, West US 3"
-    ],
-    [
-     "Europe",
-     "global",
-     "Global Standard",
-     "France Central, Germany West Central, Italy North, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, Switzerland West, UK South, UK West, West Europe"
+     "Central US, East US 2, North Central US, South Central US, West US 3"
     ]
    ],
    "hk": [
-    "none",
-    "No Hong Kong (East Asia) deployment"
+    "routed",
+    "Catalog lists Global Standard in all commercial Azure regions; processing is outside Microsoft facilities"
    ],
    "tw": [
     "none",
@@ -4516,11 +4512,12 @@
    ]
   },
   "gcloud": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
     "endpoint": "Global",
-    "cache_storage": 1.0
+    "cache_storage": 1.0,
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-04"
    },
    "variants": [
     {
@@ -4540,7 +4537,8 @@
        "cache_read": 0.165,
        "tier": "US / EU multi-region endpoint · Standard PayGo ('Non-global' rate) - introductory price through 2026-12-31"
       }
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     },
     {
      "label": "Global · Priority",
@@ -4559,7 +4557,8 @@
        "cache_read": 0.27,
        "tier": "Global endpoint · Priority PayGo - introductory price through 2026-12-31"
       }
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     },
     {
      "label": "US / EU multi-region · Priority",
@@ -4578,7 +4577,8 @@
        "cache_read": 0.297,
        "tier": "US / EU multi-region endpoint · Priority PayGo ('Non-global' rate) - introductory price through 2026-12-31"
       }
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     },
     {
      "label": "Global · Flex",
@@ -4597,7 +4597,8 @@
        "cache_read": 0.075,
        "tier": "Global endpoint · Flex PayGo (Preview; global endpoint only) - introductory price through 2026-12-31"
       }
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     },
     {
      "label": "Global · Batch",
@@ -4616,7 +4617,8 @@
        "cache_read": 0.075,
        "tier": "Global endpoint · Batch inference - introductory price through 2026-12-31"
       }
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     },
     {
      "label": "US / EU multi-region · Batch",
@@ -4635,7 +4637,8 @@
        "cache_read": 0.0825,
        "tier": "US / EU multi-region endpoint · Batch inference ('Non-global' Flex/Batch rate; Flex is global-only) - introductory price through 2026-12-31"
       }
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     }
    ],
    "src": [
@@ -4688,6 +4691,10 @@
     [
      "Residency",
      "US/EU multi-region endpoints keep ML processing in-jurisdiction at +10%; no single-region or APAC endpoint exists."
+    ],
+    [
+     "Lifecycle",
+     "Agent Platform retirement is September 2, 2027 or later; this is a lower bound, not an exact shutdown date, and does not set the Gemini API retirement date."
     ]
    ],
    "ids": [
@@ -9136,23 +9143,18 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
-    "endpoint": "Data Zone US"
+    "endpoint": "Data Zone US",
+    "retires_on": "2026-10-08",
+    "replacement": [
+     "GLM 5.3"
+    ],
+    "retirement_src": "az_learn_fireworks",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-15"
    },
-   "variants": [
-    {
-     "label": "Data Zone US · Fast",
-     "in": 2.31,
-     "out": 7.26,
-     "cache_read": 0.231,
-     "scope": "geographic",
-     "service": "priority",
-     "endpoint": "Data Zone US",
-     "tier_label": "Fast"
-    }
-   ],
+   "variants": [],
    "src": [
     "az_learn_fireworks",
     "az_learn_fireworks_faq",
@@ -9163,8 +9165,8 @@
     [
      "Americas",
      "geo",
-     "Data Zone US",
-     "Central US, East US, East US 2, North Central US, West US, West US 3"
+     "Data Zone Provisioned",
+     "Central US, East US 2, North Central US, South Central US, West US 3"
     ]
    ],
    "hk": [
@@ -9178,16 +9180,16 @@
    "cache_write": "input-rate",
    "notes": [
     [
-     "Tiers",
-     "Data Zone (US) only; 'GLM-5.2 Fast' is a separate deployment at 1.5× the standard price."
-    ],
-    [
      "Access",
      "Admin must register the 'Fireworks.EnableDeploy' preview feature; pay-per-token models get 15 days' retirement notice."
     ],
     [
      "Residency",
      "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary."
+    ],
+    [
+     "Retirement",
+     "FW-GLM-5.2 pay-per-token retired 8 Oct 2026; PTU remains available. FW-GLM-5.2-Fast is a separate model, available in Data Zone Standard until 29 Oct 2026, and is not a tier of GLM-5.2."
     ]
    ],
    "ids": [
@@ -10135,34 +10137,36 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
-    "endpoint": "Global Standard"
+    "endpoint": "Global Standard",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-15"
    },
    "variants": [],
    "src": [
+    "az_learn_fireworks",
     "az_learn_fireworks_faq",
     "az_learn_region_support",
     "az_retail"
    ],
    "regions": [
     [
-     "Americas",
+     "Global",
      "global",
      "Global Standard",
-     "Central US, East US, East US 2, South Central US, West Central US, West US, West US 2, West US 3"
+     "All commercial Azure regions; inference runs on Fireworks infrastructure"
     ],
     [
-     "Europe",
-     "global",
-     "Global Standard",
-     "France Central, Germany West Central, Italy North, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, Switzerland West, UK South, UK West, West Europe"
+     "Americas",
+     "geo",
+     "Data Zone US",
+     "Central US, East US 2, North Central US, South Central US, West US 3"
     ]
    ],
    "hk": [
-    "none",
-    "No Hong Kong (East Asia) deployment"
+    "routed",
+    "Catalog lists Global Standard in all commercial Azure regions; processing is outside Microsoft facilities"
    ],
    "tw": [
     "none",
@@ -10181,6 +10185,10 @@
     [
      "Residency",
      "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary."
+    ],
+    [
+     "Tiers",
+     "Catalog supports Data Zone Standard (US); its per-token rates have not been verified and are not compared."
     ]
    ],
    "ids": [
@@ -10734,10 +10742,11 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
-    "endpoint": "Global Standard"
+    "endpoint": "Global Standard",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-15"
    },
    "variants": [
     {
@@ -10747,7 +10756,8 @@
      "cache_read": 0.39,
      "scope": "geographic",
      "service": "standard",
-     "endpoint": "Data Zone US"
+     "endpoint": "Data Zone US",
+     "pricing_checked_at": "2026-10-04"
     }
    ],
    "src": [
@@ -10758,33 +10768,21 @@
    ],
    "regions": [
     [
-     "Americas",
+     "Global",
      "global",
      "Global Standard",
-     "Brazil South, Canada Central, Canada East, Central US, East US, East US 2, North Central US, South Central US, West Central US, West US, West US 2, West US 3"
+     "All commercial Azure regions; inference runs on Fireworks infrastructure"
     ],
     [
      "Americas",
      "geo",
      "Data Zone US",
-     "Central US, East US, East US 2, North Central US, West US, West US 3"
-    ],
-    [
-     "Europe",
-     "global",
-     "Global Standard",
-     "France Central, Germany West Central, Italy North, North Europe, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, Switzerland West, UK South, UK West, West Europe"
-    ],
-    [
-     "APAC",
-     "global",
-     "Global Standard",
-     "Australia East, Japan East, Japan West, Korea Central, Southeast Asia (Singapore), South India, Indonesia Central, Malaysia West"
+     "Central US, East US 2, North Central US, South Central US, West US 3"
     ]
    ],
    "hk": [
-    "none",
-    "No Hong Kong (East Asia) deployment"
+    "routed",
+    "Catalog lists Global Standard in all commercial Azure regions; processing is outside Microsoft facilities"
    ],
    "tw": [
     "none",
@@ -11117,10 +11115,11 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
-    "endpoint": "Global Standard"
+    "endpoint": "Global Standard",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-15"
    },
    "variants": [
     {
@@ -11130,16 +11129,8 @@
      "cache_read": 0.16,
      "scope": "geographic",
      "service": "standard",
-     "endpoint": "Data Zone US"
-    },
-    {
-     "label": "FW-DeepSeek-V4-Pro · Data Zone US · Standard",
-     "in": 1.925,
-     "out": 3.828,
-     "cache_read": 0.165,
-     "scope": "geographic",
-     "service": "standard",
-     "endpoint": "FW-DeepSeek-V4-Pro · Data Zone US"
+     "endpoint": "Data Zone US",
+     "pricing_checked_at": "2026-10-04"
     }
    ],
    "src": [
@@ -11162,12 +11153,6 @@
      "geo",
      "Data Zone US",
      "Central US, East US, East US 2, North Central US, South Central US, West Central US, West US, West US 2, West US 3"
-    ],
-    [
-     "Americas",
-     "geo",
-     "Data Zone US",
-     "Central US, East US, East US 2, North Central US, West US, West US 3"
     ],
     [
      "Europe",
@@ -11203,6 +11188,10 @@
     [
      "Billing",
      "Only US Gov regions cost +20% (excluded here); commercial regions have one price."
+    ],
+    [
+     "Retirement",
+     "FW-DeepSeek-V4-Pro pay-per-token retired 8 Oct 2026; PTU remains available. This retirement does not apply to the separately Azure-sold DeepSeek-V4-Pro endpoint."
     ]
    ],
    "ids": [
@@ -12060,34 +12049,30 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
-    "endpoint": "Global Standard"
+    "endpoint": "Global Standard",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-15"
    },
    "variants": [],
    "src": [
+    "az_learn_fireworks",
     "az_learn_fireworks_faq",
     "az_learn_region_support",
     "az_retail"
    ],
    "regions": [
     [
-     "Americas",
+     "Global",
      "global",
      "Global Standard",
-     "Central US, East US, East US 2, South Central US, West Central US, West US, West US 2, West US 3"
-    ],
-    [
-     "Europe",
-     "global",
-     "Global Standard",
-     "France Central, Germany West Central, Italy North, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, Switzerland West, UK South, UK West, West Europe"
+     "All commercial Azure regions; inference runs on Fireworks infrastructure"
     ]
    ],
    "hk": [
-    "none",
-    "No Hong Kong (East Asia) deployment"
+    "routed",
+    "Catalog lists Global Standard in all commercial Azure regions; processing is outside Microsoft facilities"
    ],
    "tw": [
     "none",
@@ -12240,10 +12225,11 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
+   "checked_at": "2026-10-15",
    "base": {
-    "endpoint": "Data Zone US"
+    "endpoint": "Data Zone US",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-15"
    },
    "variants": [],
    "src": [
@@ -12257,7 +12243,7 @@
      "Americas",
      "geo",
      "Data Zone US",
-     "Central US, East US, East US 2, North Central US, West US, West US 3"
+     "Central US, East US 2, North Central US, South Central US, West US 3"
     ]
    ],
    "hk": [

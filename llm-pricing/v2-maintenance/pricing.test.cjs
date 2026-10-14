@@ -14,6 +14,32 @@ const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 const tier = (cell, endpoint, service) => cell.variants.find(v => v.endpoint === endpoint && v.service_tier === service).id;
 const priced = (input, output) => ({status: 'priced', in: input, out: output, model_match: 'confirmed', service_tier: 'standard'});
 
+test('retired Fireworks offers cannot supply a current Azure comparison or estimate', () => {
+  const c = published.models['zai/glm-5.2'].platforms.azure_foundry;
+  assert.equal(M.status(c, '2026-10-07'), 'priced');
+  assert.equal(M.status(c, '2026-10-08'), 'retired');
+  assert.equal(M.comparable(M.cheapest(c, {asOf: '2026-10-15'})), false);
+  assert.equal(M.calculate(c, {asOf: '2026-10-15', inputM: 3, outputM: 1}).total, null);
+  const pro = published.models['deepseek/deepseek-v4-pro'].platforms.azure_foundry;
+  assert.equal(M.status(pro, '2026-10-15'), 'priced');
+  assert.ok(M.offers(pro, {asOf: '2026-10-15'}).every(o => !o.endpoint.startsWith('FW-DeepSeek-V4-Pro')));
+});
+
+test('availability review preserves the last verified Azure token prices', () => {
+  const c = published.models['moonshot/kimi-k3'].platforms.azure_foundry;
+  assert.equal(c.endpoints.checked_at, '2026-10-15');
+  assert.equal(c.pricing_checked_at, '2026-10-04');
+  assert.equal(c.variants[0].pricing_checked_at, '2026-10-04');
+});
+
+test('Gemini 3.8 API storage switches on the published promotion boundary', () => {
+  const c = published.models['google/gemini-3.8-flash'].platforms.official;
+  const before = M.calculate(c, {asOf: '2026-12-31', inputM: 0, outputM: 0, storedM: 2, storageHours: 10});
+  const after = M.calculate(c, {asOf: '2027-01-01', inputM: 0, outputM: 0, storedM: 2, storageHours: 10});
+  close(before.total, 10);
+  close(after.total, 20);
+});
+
 test('monthly cache writes replace uncached input instead of being double-counted', () => {
   const c = offer('moonshot/kimi-k3', 'bedrock');
   const ordinary = M.calculate(c, {...date, inputM: 3, outputM: 1});
