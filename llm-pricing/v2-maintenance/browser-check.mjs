@@ -240,11 +240,14 @@ try {
             d.models[key].platforms.databricks.endpoints.checked_at = '2026-10-11';
           } else {
             d.cells[key + '|databricks'] = {verified:'2026-10-01', unchecked:['dbx-proprietary']};
+            d.ranking = {last_successful_read:'2026-10-09', error:'HTTP 403 "><img src=x onerror=window.rankingInjection=true>'};
           }
           return new Response(JSON.stringify(d), {headers:{'Content-Type':'application/json'}});
         };
       })();`})).identifier;
       await navigate('2026-10-11');
+      assert.match(await evalJS("document.querySelector('[role=status]').textContent"), /Ranking unavailable · last read 2026-10-09/);
+      assert.equal(await evalJS("Boolean(window.rankingInjection) || !!document.querySelector('[role=status] img')"), false, 'ranking error text is escaped');
       await toggle(key);
       const checked = await evalJS("document.querySelector('tr.detail .pcard.dbx .chk').textContent");
       assert.match(checked, /verified 2026-10-01/);

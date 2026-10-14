@@ -1,0 +1,258 @@
+{
+ "schema": 1,
+ "checked_at": "2026-10-14",
+ "source": "https://arena.ai/leaderboard/code/webdev",
+ "board_id": "webdev",
+ "entries": [
+  {
+   "rank": 1,
+   "modelDisplayName": "claude-opus-5.5-max",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 2,
+   "modelDisplayName": "gpt-6-astra-max",
+   "modelOrganization": "OpenAI"
+  },
+  {
+   "rank": 3,
+   "modelDisplayName": "claude-sonnet-5.5-xhigh",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 4,
+   "modelDisplayName": "gpt-6.1-sol-max",
+   "modelOrganization": "OpenAI"
+  },
+  {
+   "rank": 5,
+   "modelDisplayName": "claude-fable-5.1-max",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 6,
+   "modelDisplayName": "claude-sonnet-5.5-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 7,
+   "modelDisplayName": "claude-opus-5-max",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 8,
+   "modelDisplayName": "gpt-6-sol-max",
+   "modelOrganization": "OpenAI"
+  },
+  {
+   "rank": 9,
+   "modelDisplayName": "gemini-4-argon-high",
+   "modelOrganization": "Google"
+  },
+  {
+   "rank": 10,
+   "modelDisplayName": "qwen3.8-max-0902",
+   "modelOrganization": "Alibaba"
+  },
+  {
+   "rank": 11,
+   "modelDisplayName": "qwen3.8-max",
+   "modelOrganization": "Alibaba"
+  },
+  {
+   "rank": 12,
+   "modelDisplayName": "muse-spark-1.3-max",
+   "modelOrganization": "Meta"
+  },
+  {
+   "rank": 13,
+   "modelDisplayName": "claude-opus-5-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 14,
+   "modelDisplayName": "kimi-k3-max",
+   "modelOrganization": "Moonshot"
+  },
+  {
+   "rank": 15,
+   "modelDisplayName": "muse-wonder-max",
+   "modelOrganization": "Meta"
+  },
+  {
+   "rank": 16,
+   "modelDisplayName": "grok-4.7-xhigh",
+   "modelOrganization": "SpaceXAI"
+  },
+  {
+   "rank": 17,
+   "modelDisplayName": "mimo-v2.6-flash",
+   "modelOrganization": "Xiaomi"
+  },
+  {
+   "rank": 18,
+   "modelDisplayName": "qwen3.8-flash-next",
+   "modelOrganization": "Alibaba"
+  },
+  {
+   "rank": 19,
+   "modelDisplayName": "hy4-preview",
+   "modelOrganization": "Tencent"
+  },
+  {
+   "rank": 20,
+   "modelDisplayName": "mimo-v2.6-pro",
+   "modelOrganization": "Xiaomi"
+  },
+  {
+   "rank": 21,
+   "modelDisplayName": "claude-fable-5-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 22,
+   "modelDisplayName": "muse-spark-1.3 (xHigh)",
+   "modelOrganization": "Meta"
+  },
+  {
+   "rank": 23,
+   "modelDisplayName": "glm-5.3-max",
+   "modelOrganization": "Z.ai"
+  },
+  {
+   "rank": 24,
+   "modelDisplayName": "deepseek-v4.1-flash-max",
+   "modelOrganization": "DeepSeek"
+  },
+  {
+   "rank": 25,
+   "modelDisplayName": "grok-4.6-high",
+   "modelOrganization": "SpaceXAI"
+  },
+  {
+   "rank": 26,
+   "modelDisplayName": "gpt-5.6-sol-xhigh (codex-harness)",
+   "modelOrganization": "OpenAI"
+  },
+  {
+   "rank": 27,
+   "modelDisplayName": "glm-5.3-flash",
+   "modelOrganization": "Z.ai"
+  },
+  {
+   "rank": 28,
+   "modelDisplayName": "glm-5.2-max",
+   "modelOrganization": "Z.ai"
+  },
+  {
+   "rank": 29,
+   "modelDisplayName": "qwen3.8-27b",
+   "modelOrganization": "Alibaba"
+  },
+  {
+   "rank": 30,
+   "modelDisplayName": "gemini-3.7-flash-high",
+   "modelOrganization": "Google"
+  },
+  {
+   "rank": 31,
+   "modelDisplayName": "claude-haiku-5.5-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 32,
+   "modelDisplayName": "gemini-3.8-flash-high",
+   "modelOrganization": "Google"
+  },
+  {
+   "rank": 33,
+   "modelDisplayName": "deepseek-v4-pro-high-20260813",
+   "modelOrganization": "DeepSeek"
+  },
+  {
+   "rank": 34,
+   "modelDisplayName": "gpt-6-luna-max",
+   "modelOrganization": "OpenAI"
+  },
+  {
+   "rank": 35,
+   "modelDisplayName": "deepseek-v4-flash-high",
+   "modelOrganization": "DeepSeek"
+  },
+  {
+   "rank": 36,
+   "modelDisplayName": "step-5-preview-high",
+   "modelOrganization": "StepFun"
+  },
+  {
+   "rank": 37,
+   "modelDisplayName": "claude-opus-4-7-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 38,
+   "modelDisplayName": "claude-opus-4-8-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 39,
+   "modelDisplayName": "claude-opus-4-7",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 40,
+   "modelDisplayName": "grok-4.5",
+   "modelOrganization": "SpaceXAI"
+  },
+  {
+   "rank": 41,
+   "modelDisplayName": "claude-opus-4-6-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 42,
+   "modelDisplayName": "mistral-large-4",
+   "modelOrganization": "Mistral"
+  },
+  {
+   "rank": 43,
+   "modelDisplayName": "muse-spark-1.1",
+   "modelOrganization": "Meta"
+  },
+  {
+   "rank": 44,
+   "modelDisplayName": "claude-sonnet-5-high",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 45,
+   "modelDisplayName": "gemini-3.6-flash-high",
+   "modelOrganization": "Google"
+  },
+  {
+   "rank": 46,
+   "modelDisplayName": "claude-opus-4-6",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 47,
+   "modelDisplayName": "claude-opus-4-8",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 48,
+   "modelDisplayName": "muse-spark-1.2 (xHigh)",
+   "modelOrganization": "Meta"
+  },
+  {
+   "rank": 49,
+   "modelDisplayName": "claude-sonnet-4-6",
+   "modelOrganization": "Anthropic"
+  },
+  {
+   "rank": 50,
+   "modelDisplayName": "gpt-5.6-terra-xhigh (codex-harness)",
+   "modelOrganization": "OpenAI"
+  }
+ ]
+}

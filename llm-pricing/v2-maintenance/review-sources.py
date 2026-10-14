@@ -724,6 +724,24 @@ def unpriced_on_platforms(unpriced, current, skip):
     return found
 
 
+def ranking_discovery(path, today):
+    if path is None:
+        return [], {}
+    try:
+        status = json.loads(path.read_text())
+        if not isinstance(status, dict) or status.get("schema") != 1:
+            raise ValueError("Invalid Arena discovery report.")
+        models = status.get("models", [])
+        if not isinstance(models, list) or any(not isinstance(m, dict) or not isinstance(m.get("name"), str)
+                                              or type(m.get("rank")) is not int for m in models):
+            raise ValueError("Invalid Arena candidate list.")
+        if status.get("checked_at") != today.isoformat() or status.get("last_successful_read") != today.isoformat():
+            status.setdefault("error", "Arena ranking was not successfully read today; last read: " + str(status.get("last_successful_read")))
+        return models, {k: v for k, v in status.items() if k != "models"}
+    except (OSError, ValueError) as error:
+        return [], dict(error="Arena discovery report unavailable: " + str(error), last_successful_read=None)
+
+
 def proven_edits(data, changes, current, dbx, sources):
     """Every edit the live sources prove: Databricks rates from its DBU tables, and table rows where only a
     price moved. A source with a conflicting rate keeps its entire change for review."""
@@ -945,7 +963,8 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
              f"{done} price changes applied and {low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
     if report.get("ranking_error"):
         lines += ["## Arena ranking could not be checked", "",
-                  "New top-50 models could not be detected. The published ranking keeps its last reviewed order.", "",
+                  "The published order is unchanged. Platform sources are still checked against the last observed top 50; newer Arena entries cannot be detected until access is restored.", "",
+                  "Last successful Arena read: " + str(report.get("ranking", {}).get("last_successful_read") or "unknown"), "",
                   report["ranking_error"], ""]
     if new_models:
         lines += ["## New top-50 models a platform seems to sell", "",
@@ -1136,11 +1155,10 @@ def main():
                 done.setdefault((e["model"], e["platform"], e["source"]), []).append(describe(e, data))
             done = {k: "applied automatically: " + "; ".join(v) for k, v in done.items()}
             cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, done, auto_regions)
-    unpriced = json.loads(args.unpriced.read_text()) if args.unpriced and args.unpriced.exists() else []
-    if args.unpriced and (not args.unpriced.exists() or isinstance(unpriced, dict)):
-        report["ranking_error"] = (unpriced.get("error", "Invalid ranking report") if isinstance(unpriced, dict)
-                                   else "Arena did not produce a ranking report.")
-        unpriced = []
+    unpriced, ranking_status = ranking_discovery(args.unpriced, today)
+    report["ranking"] = ranking_status
+    if ranking_status.get("error"):
+        report["ranking_error"] = ranking_status["error"]
     new_models = unpriced_on_platforms(unpriced, current, json.loads((HERE / "ranking-config.json").read_text()).get("not_sold", []))
     last_read = sources_read(previous, sources, current, today)
     failing = stale(errors, last_read, today)
@@ -1184,7 +1202,7 @@ def main():
         repo = os.environ.get("GITHUB_REPOSITORY")
         names = lambda ref: data["models"][ref.split("|")[0]].get("name", ref) + " · " + ref.split("|")[1]
         checks = dict(schema=1, checked_at=today.isoformat(), sources_checked=len(current), sources_failed=sorted(errors), sources_read=last_read,
-                      pending_general=pending_general,
+                      pending_general=pending_general, ranking=ranking_status,
                       review=[names(ref) for ref in review],
                       issue_url=f"https://github.com/{repo}/issues?q=is%3Aopen+label%3Allm-pricing-review" if repo else None,
                       cells=dict(sorted(cells.items())))

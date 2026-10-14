@@ -92,7 +92,9 @@ jobs:
         with:
           node-version: '24'
       - name: Model order (arena.ai Best Overall)
-        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" --unpriced "$RUNNER_TEMP/llm-pricing-v2-unpriced.json" || echo "::warning title=Ranking::arena.ai could not be read; the model order is unchanged today."
+        id: ranking
+        continue-on-error: true
+        run: python v2-maintenance/update-ranking.py --summary "$GITHUB_STEP_SUMMARY" --unpriced "$RUNNER_TEMP/llm-pricing-v2-unpriced.json"
       - name: Databricks regions (official region tables)
         run: python v2-maintenance/update-endpoints.py --summary "$GITHUB_STEP_SUMMARY" || echo "::warning title=Regions::A Databricks region table could not be read; regions are unchanged today."
       - name: Rebuild and validate
@@ -105,7 +107,7 @@ jobs:
           node --test v2-maintenance/pricing.test.cjs
       # A person who resolved the review issue accepts today's sources as the reviewed baseline.
       - name: Record the reviewed baseline
-        if: inputs.record_baseline
+        if: inputs.record_baseline && steps.ranking.outcome == 'success'
         run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-baseline" --record-baseline
       - name: Check every official source
         run: >-
@@ -118,12 +120,14 @@ jobs:
           issue="$RUNNER_TEMP/llm-pricing-v2-issue.md"
           applied="$RUNNER_TEMP/llm-pricing-v2-applied.txt"
           if [ -s "$applied" ]; then { echo "## Price changes applied automatically"; echo; sed 's/^/- /' "$applied"; echo; } >> "$GITHUB_STEP_SUMMARY"; fi
-          if [ -s "$issue" ]; then cat "$issue" >> "$GITHUB_STEP_SUMMARY"; else echo "Nothing to review today." >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -s "$issue" ]; then cat "$issue" >> "$GITHUB_STEP_SUMMARY";
+          elif [ -f "$issue" ]; then echo "Nothing to review today." >> "$GITHUB_STEP_SUMMARY";
+          else echo "Source review did not complete; prior findings remain open." >> "$GITHUB_STEP_SUMMARY"; fi
       - name: Publish order, regions, proven prices and verified dates
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/endpoints-auto.json v2-maintenance/source-baseline.json v2-maintenance/prices-auto.json
+          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/ranking-observed.json v2-maintenance/endpoints-auto.json v2-maintenance/source-baseline.json v2-maintenance/prices-auto.json
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -174,3 +178,25 @@ jobs:
           path: ${{ runner.temp }}/llm-pricing-v2-review/
           retention-days: 7
           if-no-files-found: warn
+      # Run after publishing verified prices and updating the issue, so an Arena outage
+      # cannot hide the report or leave an apparently successful refresh.
+      - name: Require a successful Arena ranking check
+        if: ${{ !cancelled() }}
+        env:
+          RANKING_OUTCOME: ${{ steps.ranking.outcome }}
+        run: |
+          if [ "$RANKING_OUTCOME" != success ]; then
+            echo "::error title=Arena ranking unavailable::Model discovery is incomplete. See the review issue and retained report."
+            exit 1
+          fi
+          python - <<'PY'
+          import datetime as dt
+          import os
+          from pathlib import Path
+          import runpy
+          from zoneinfo import ZoneInfo
+          review = runpy.run_path("v2-maintenance/review-sources.py")
+          _, status = review["ranking_discovery"](Path(os.environ["RUNNER_TEMP"]) / "llm-pricing-v2-unpriced.json", dt.datetime.now(ZoneInfo("Asia/Hong_Kong")).date())
+          if status.get("error"):
+              raise SystemExit(status["error"])
+          PY

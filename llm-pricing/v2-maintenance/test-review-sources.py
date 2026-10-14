@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import textwrap
 import unittest
@@ -21,6 +22,56 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_arena_outage_keeps_cached_new_model_discovery(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "discovery.json"
+            path.write_text(json.dumps(dict(schema=1, checked_at="2026-10-14", last_successful_read="2026-10-13",
+                error="HTTP 403", models=[dict(rank=9, name="gemini-4-argon-high", maker="Google")])))
+            models, status = review.ranking_discovery(path, dt.date(2026, 10, 14))
+            self.assertEqual(status["last_successful_read"], "2026-10-13")
+            self.assertEqual(status["error"], "HTTP 403")
+            current = {"vertex-pricing": {"records": ["Gemini 4 Argon input $2, output $10"]},
+                       "google-pricing": {"records": ["Gemini 4 Argon input $2, output $10"]}}
+            found = review.unpriced_on_platforms(models, current, [])
+            self.assertEqual(found[0]["sources"], ["vertex-pricing"])
+            report = {"checked_at": "2026-10-14", "sources_failed": {}, "lifecycle_due": [],
+                      "ranking": status, "ranking_error": status["error"]}
+            issue, _ = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=[], new_models=found)
+            self.assertIn("gemini-4-argon-high", issue)
+            self.assertIn("HTTP 403", issue)
+
+    def test_missing_corrupt_or_stale_discovery_report_requires_review(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "discovery.json"
+            self.assertIn("error", review.ranking_discovery(path, dt.date(2026, 10, 14))[1])
+            for text in ("{", "[]", json.dumps(dict(schema=1, checked_at="2026-10-13", last_successful_read="2026-10-13", models=[])),
+                         json.dumps(dict(schema=1, checked_at="2026-10-14", last_successful_read="2026-10-14", models=["invalid"]))):
+                path.write_text(text)
+                self.assertIn("error", review.ranking_discovery(path, dt.date(2026, 10, 14))[1])
+            path.write_text(json.dumps(dict(schema=1, checked_at="2026-10-14", last_successful_read="2026-10-14", models=[])))
+            self.assertNotIn("error", review.ranking_discovery(path, dt.date(2026, 10, 14))[1])
+
+    def test_workflow_fails_after_reporting_an_arena_outage(self):
+        workflow = (HERE.parent.parent / ".github/workflows/llm-pricing-v2-review.yml").read_text()
+        self.assertIn("if: inputs.record_baseline && steps.ranking.outcome == 'success'", workflow)
+        step = workflow.split("      - name: Require a successful Arena ranking check\n", 1)[1]
+        script = textwrap.dedent(step.split("        run: |\n", 1)[1])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "llm-pricing-v2-unpriced.json"
+            (Path(tmp) / "python").symlink_to(sys.executable)
+            env = dict(os.environ, RUNNER_TEMP=tmp, PATH=tmp + os.pathsep + os.environ.get("PATH", ""))
+            day = dt.datetime.now(review.HKT).date().isoformat()
+            path.write_text(json.dumps(dict(schema=1, checked_at=day, last_successful_read=day, models=[])))
+            for outcome, code in (("success", 0), ("failure", 1), ("skipped", 1), ("", 1)):
+                result = subprocess.run(["bash", "-e", "-c", script], cwd=HERE.parent,
+                    env=dict(env, RANKING_OUTCOME=outcome), capture_output=True)
+                self.assertEqual(result.returncode, code, result.stderr)
+            path.unlink()
+            result = subprocess.run(["bash", "-e", "-c", script], cwd=HERE.parent,
+                env=dict(env, RANKING_OUTCOME="success"), capture_output=True)
+            self.assertNotEqual(result.returncode, 0, "A missing report cannot finish green")
+        self.assertLess(workflow.index("- name: Open, update or close the review issue"), workflow.index("- name: Require a successful Arena ranking check"))
+
     def test_failed_arena_read_is_in_the_review_issue(self):
         report = {"checked_at": "2026-10-14", "sources_failed": {}, "lifecycle_due": [],
                   "ranking_error": "HTTP Error 403: Forbidden"}

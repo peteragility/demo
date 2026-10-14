@@ -18,6 +18,7 @@ from zoneinfo import ZoneInfo
 
 HERE = Path(__file__).resolve().parent
 TARGET = HERE.parent / "v2-ranking.json"
+OBSERVED = HERE / "ranking-observed.json"
 CHUNK = re.compile(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)</script>', re.S)
 
 
@@ -63,6 +64,9 @@ def build(config, html, today, previous=None):
     if len(entries) < config.get("minimum_entries", 1):
         raise ValueError(f"Only {len(entries)} leaderboard entries; refusing to reorder the page.")
     entries = [e for e in entries if e["rank"] <= config.get("top", len(entries))]
+    top = config.get("top")
+    if top and (len(entries) != top or {e["rank"] for e in entries} != set(range(1, top + 1))):
+        raise ValueError("Incomplete or duplicate top-50 ranks; refusing to reorder the page.")
     models, unmatched = rank_models(entries, config["models"])
     if not models:
         raise ValueError("No priced model is ranked; refusing to empty the page.")
@@ -73,6 +77,17 @@ def build(config, html, today, previous=None):
             {k: v for k, v in ranking.items() if k not in ("ranked_at", "entries")}:
         ranking["ranked_at"], ranking["entries"] = previous["ranked_at"], previous["entries"]
     return ranking, unmatched
+
+
+def discovery(config, today, entries, last_read, error=None):
+    """Always check platform sources against the last observed top 50, even during an Arena outage."""
+    _, unmatched = rank_models(entries, config["models"])
+    result = dict(schema=1, checked_at=today, last_successful_read=last_read,
+                  source=config["source"], board_id=config["board_id"],
+                  models=[dict(rank=e["rank"], name=e["modelDisplayName"], maker=e.get("modelOrganization", "")) for e in unmatched])
+    if error:
+        result["error"] = error
+    return result
 
 
 def report(ranking, previous, unmatched, config):
@@ -146,8 +161,10 @@ def main():
                 html = response.read(30 * 1024 * 1024).decode("utf-8")
         ranking, unmatched = build(config, html, args.as_of, previous)
     except (ValueError, OSError) as error:
+        observed = json.loads(OBSERVED.read_text()) if OBSERVED.exists() else {}
+        entries = observed.get("entries", []) if observed.get("board_id") == config["board_id"] else []
         if args.unpriced:
-            args.unpriced.write_text(json.dumps({"error": str(error), "source": config["source"]}) + "\n")
+            args.unpriced.write_text(json.dumps(discovery(config, args.as_of, entries, observed.get("checked_at"), str(error)), ensure_ascii=False, indent=1) + "\n")
         if args.summary:
             with args.summary.open("a") as summary:
                 summary.write("\n## Arena ranking could not be checked\n\n" + str(error) + "\n")
@@ -155,9 +172,11 @@ def main():
         sys.exit(1)
     text = report(ranking, previous, unmatched, config)
     print(text)
+    entries = [e for e in board_entries(html, config["board_id"]) if e["rank"] <= config["top"]]
+    OBSERVED.write_text(json.dumps(dict(schema=1, checked_at=args.as_of, source=config["source"],
+                                       board_id=config["board_id"], entries=entries), ensure_ascii=False, indent=1) + "\n")
     if args.unpriced:
-        args.unpriced.write_text(json.dumps([dict(rank=e["rank"], name=e["modelDisplayName"], maker=e.get("modelOrganization", "")) for e in unmatched],
-                                            ensure_ascii=False, indent=1) + "\n")
+        args.unpriced.write_text(json.dumps(discovery(config, args.as_of, entries, args.as_of), ensure_ascii=False, indent=1) + "\n")
     if args.summary:
         with open(args.summary, "a") as summary:
             summary.write(text + "\n")
