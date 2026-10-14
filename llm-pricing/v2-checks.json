@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "checked_at": "2026-10-14",
- "sources_checked": 111,
+ "sources_checked": 113,
  "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-10-14",
@@ -114,7 +114,9 @@
   "gcp-locations": "2026-10-14",
   "aws-model-cards": "2026-10-14",
   "aws-card-glm-5-3": "2026-10-14",
-  "aws-pricing-page": "2026-10-14"
+  "aws-pricing-page": "2026-10-14",
+  "gcp-gemini-4-argon": "2026-10-14",
+  "api-google-gemini-4-argon": "2026-10-14"
  },
  "pending_general": [],
  "review": [],
@@ -561,6 +563,27 @@
   "google/gemini-3.8-flash|official": {
    "verified": "2026-10-14"
   },
+  "google/gemini-4-argon|alicloud": {
+   "verified": "2026-10-14"
+  },
+  "google/gemini-4-argon|azure_foundry": {
+   "verified": "2026-10-14"
+  },
+  "google/gemini-4-argon|bedrock": {
+   "verified": "2026-10-14"
+  },
+  "google/gemini-4-argon|databricks": {
+   "verified": "2026-10-14"
+  },
+  "google/gemini-4-argon|fireworks": {
+   "verified": "2026-10-14"
+  },
+  "google/gemini-4-argon|gcloud": {
+   "verified": "2026-10-14"
+  },
+  "google/gemini-4-argon|official": {
+   "verified": "2026-10-14"
+  },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-10-14"
   },
@@ -961,7 +984,10 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-14"
+   "verified": "2026-10-14",
+   "unchecked": [
+    "dbx-models"
+   ]
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-14"
