@@ -1,5 +1,5 @@
 {
-  "observed": "2026-10-12",
+  "observed": "2026-10-15",
   "sources": {
     "aws-rds-price-index": {
       "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
@@ -595,6 +595,8 @@
         "price:assignment:[[\"serverless compute / general purpose / standard series (gen 5) zone redundant\",[\"#\",\"80\",\"#\",\"240\",\"$ /vcore second ($ /vcore hour)\",\"$ /vcore second ($ /vcore hour)\"]],[[0,[\"0.5\"]],[2,[\"2.02\"]]]]",
         "price:assignment:[[\"serverless compute / general purpose / standard series (gen 5)\",[\"#\",\"80\",\"#\",\"240\",\"$ /vcore second ($ /vcore hour)\",\"$ /vcore second ($ /vcore hour)\"]],[[0,[\"0.5\"]],[2,[\"2.02\"]]]]",
         "price:assignment:[[\"serverless compute / hyperscale / standard series (gen 5)\",[\"#\",\"80\",\"#\",\"240\",\"$ /vcore second ($ /vcore hour)\",\"$ /vcore second ($ /vcore hour)\"]],[[0,[\"0.5\"]],[2,[\"2.05\"]]]]",
+        "price:cache-duration:1",
+        "price:cache-duration:56",
         "price:sequence:[\"$200\"]",
         "price:sequence:[\"0.5\",\"2.02\"]",
         "price:sequence:[\"0.5\",\"2.05\"]",
@@ -836,6 +838,7 @@
         "price:assignment:[[\"sql server pricing / enterprise edition general purpose machine series\",[\"ha vcpus\",\"# / 1 hour\",\"# / 1 hour\",\"# / 1 hour\"]],[[1,[\"$0.0826\"]],[2,[\"$0.06195\"]],[3,[\"$0.039648\"]]]]",
         "price:assignment:[[\"sql server pricing / enterprise edition general purpose machine series\",[\"memory\",\"# / 1 gibibyte hour\",\"# / 1 gibibyte hour\",\"# / 1 gibibyte hour\"]],[[1,[\"$0.007\"]],[2,[\"$0.00525\"]],[3,[\"$0.00336\"]]]]",
         "price:assignment:[[\"sql server pricing / enterprise edition general purpose machine series\",[\"vcpus\",\"# / 1 hour\",\"# / 1 hour\",\"# / 1 hour\"]],[[1,[\"$0.0413\"]],[2,[\"$0.030975\"]],[3,[\"$0.019824\"]]]]",
+        "price:cache-duration:1",
         "price:sequence:[\"$0\"]",
         "price:sequence:[\"$0.000027397\"]",
         "price:sequence:[\"$0.000054795\"]",
@@ -1039,7 +1042,9 @@
         "limit:32 cu",
         "limit:60 seconds",
         "limit:7 day",
-        "limit:7 days"
+        "limit:7 days",
+        "price:cache-duration:1",
+        "price:cache-duration:30"
       ]
     },
     "lakebase-06": {
@@ -1155,6 +1160,7 @@
         "price:90%",
         "price:assignment:[[\"how connection pooling works ​ / connection limits ​\",[\"pool size (default pool size)\",\"~# of max connections\",\"active server connections per (user, database) pair\"]],[[1,[\"90%\"]]]]",
         "price:assignment:[[\"pgbouncer configuration ​\",[\"default pool size=# max connections\",\"active server connections per (user, database) pair. varies by compute size.\"]],[[0,[\"0.9\"]]]]",
+        "price:cache-duration:2",
         "price:sequence:[\"0.9\"]",
         "price:sequence:[\"90%\"]"
       ]
