@@ -35,7 +35,8 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+/* Avoid accidental double-tap zoom; keep scrolling and pinch zoom available. */
+html{-webkit-text-size-adjust:100%;touch-action:manipulation}
 body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.4 var(--f);font-variant-numeric:tabular-nums}
 a{color:inherit}
 button,select,input{font:inherit;color:inherit}
