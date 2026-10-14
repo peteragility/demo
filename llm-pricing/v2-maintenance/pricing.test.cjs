@@ -25,13 +25,6 @@ test('retired Fireworks offers cannot supply a current Azure comparison or estim
   assert.ok(M.offers(pro, {asOf: '2026-10-15'}).every(o => !o.endpoint.startsWith('FW-DeepSeek-V4-Pro')));
 });
 
-test('availability review preserves the last verified Azure token prices', () => {
-  const c = published.models['moonshot/kimi-k3'].platforms.azure_foundry;
-  assert.equal(c.endpoints.checked_at, '2026-10-15');
-  assert.equal(c.pricing_checked_at, '2026-10-04');
-  assert.equal(c.variants[0].pricing_checked_at, '2026-10-04');
-});
-
 test('Gemini 3.8 API storage switches on the published promotion boundary', () => {
   const c = published.models['google/gemini-3.8-flash'].platforms.official;
   const before = M.calculate(c, {asOf: '2026-12-31', inputM: 0, outputM: 0, storedM: 2, storageHours: 10});

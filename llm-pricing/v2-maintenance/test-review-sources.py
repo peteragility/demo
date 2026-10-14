@@ -22,6 +22,12 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_region_review_preserves_an_explicit_variant_price_date(self):
+        offer = dict(label="Data Zone US", **{"in": 3, "out": 15}, pricing_checked_at="2026-10-04")
+        self.assertEqual(review.build_data.make_variant(offer, "2026-10-15")["pricing_checked_at"], "2026-10-04")
+        offer.pop("pricing_checked_at")
+        self.assertEqual(review.build_data.make_variant(offer, "2026-10-15")["pricing_checked_at"], "2026-10-15")
+
     def test_arena_outage_keeps_cached_new_model_discovery(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "discovery.json"
