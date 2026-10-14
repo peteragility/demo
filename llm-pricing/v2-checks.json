@@ -119,6 +119,14 @@
   "api-google-gemini-4-argon": "2026-10-14"
  },
  "pending_general": [],
+ "ranking": {
+  "schema": 1,
+  "checked_at": "2026-10-14",
+  "last_successful_read": "2026-10-14",
+  "source": "https://arena.ai/leaderboard/",
+  "board_id": "webdev",
+  "error": "HTTP Error 403: Forbidden"
+ },
  "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
@@ -984,10 +992,7 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "dbx-models"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-14"
