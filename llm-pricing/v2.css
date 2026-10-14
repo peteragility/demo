@@ -46,7 +46,7 @@ button,select,input{font:inherit;color:inherit}
 
 /* page: header · family tabs + tools · summary · matrix · footer */
 .wrap{max-width:1240px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));
-  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top top" "tabs tools" "sum sum" "tbl tbl" "foot foot"}
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top top" "tabs tools" "sum sum" "hint hint" "tbl tbl" "foot foot"}
 .top{grid-area:top}
 .bar{grid-area:tabs}
 .tools{grid-area:tools}
@@ -116,9 +116,9 @@ tr.row{cursor:pointer}
 tr.row:hover th.m,tr.row.open th.m{background:var(--panel-2)}
 tr.row .chev{display:inline-block;margin-left:4px;color:var(--ink-3);font-size:10px;transition:transform .15s}
 tr.row.open .chev{transform:rotate(90deg)}
-.rowhint{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 8px;padding:7px 12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--ink-2);box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.rowhint[hidden]{display:none}
-.rowhint button{appearance:none;border:0;background:none;color:var(--ink-3);font-size:13px;cursor:pointer;padding:2px 4px}
+.rowhint{grid-area:hint;margin:0 0 5px;font-size:12px;line-height:1.4;color:var(--ink-3)}
+.rowhint .chev{color:var(--ink-3);font-weight:600}
+.rowhint .ht,.rowhint .hs{display:none}
 td.c{font-size:13px;line-height:18px;white-space:nowrap;text-overflow:ellipsis}
 .io .sl{color:var(--ink-3);margin:0 3px}
 .io .o{color:var(--ink-2)}
@@ -222,7 +222,7 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
 
 /* tablet: tabs stick alone; input over output with Δ beside it */
 @media (max-width:1060px){
-  .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tabs" "tools" "sum" "tbl" "foot"}
+  .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tabs" "tools" "sum" "hint" "tbl" "foot"}
   .bar{padding:6px 0}
   .tools{position:static;padding:0 0 6px;justify-content:stretch}
   .search{flex:1 1 auto}
@@ -331,5 +331,6 @@ tr.detail>td{padding:0;background:var(--panel-2);text-align:left;white-space:nor
   .kpi b{font-size:13.5px}
   .kpi span{font-size:9.5px}
 }
-@media (hover:none) and (pointer:coarse){ .search input,.sel select{font-size:16px} }
+@media (hover:none) and (pointer:coarse){ .search input,.sel select{font-size:16px} .rowhint .hc{display:none} .rowhint .ht{display:inline} }
+@media (hover:none) and (pointer:coarse) and (max-width:720px){ .rowhint .hl{display:none} .rowhint .hs{display:inline} }
 @media (prefers-reduced-motion:reduce){ *{transition:none!important} }

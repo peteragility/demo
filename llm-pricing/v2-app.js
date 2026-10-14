@@ -31,17 +31,6 @@
   // The page is read-only: drop personal prices saved by its earlier editable version.
   store.del('llm-pricing-v2-overrides');
   if (prefs.theme === 'light' || prefs.theme === 'dark') document.documentElement.dataset.theme = prefs.theme;
-  // One-time expand hint: show until the user expands any row or dismisses it.
-  const HINT_KEY = PREF_KEY + '.rowHintSeen';
-  try {
-    const hint = document.getElementById('rowhint');
-    if (hint && !store.get(HINT_KEY)) {
-      hint.hidden = false;
-      const dismiss = () => { hint.hidden = true; store.set(HINT_KEY, true); };
-      document.getElementById('rowhintX').addEventListener('click', dismiss);
-      $('#mx').addEventListener('click', e => { if (e.target.closest('tr.row')) dismiss(); }, { once: true });
-    }
-  } catch (e) {}
 
   const savePrefs = () => { prefs.sort = S.sort; prefs.blend = S.blend; if (S.talk != null) prefs.talk = S.talk; store.set(PREF_KEY, prefs); };
   // Assign markup only when it changed, so unchanged regions keep focus and screen readers stay quiet.

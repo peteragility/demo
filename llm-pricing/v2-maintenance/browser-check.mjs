@@ -80,6 +80,8 @@ try {
     await call('Page.enable'); await call('Runtime.enable');
     await call('Emulation.setDeviceMetricsOverride', {width: viewport.width, height: viewport.height, deviceScaleFactor: 1, mobile: viewport.mobile});
     await call('Emulation.setTouchEmulationEnabled', {enabled: viewport.mobile, maxTouchPoints: 1});
+    // Phones report no hover and a coarse pointer, which picks the tap wording and touch-sized inputs.
+    await call('Emulation.setEmulatedMedia', {features: viewport.mobile ? [{name: 'hover', value: 'none'}, {name: 'pointer', value: 'coarse'}] : []});
     const clockSource = date => `(() => {const NativeDate=Date;const reference=NativeDate.parse(${JSON.stringify(date+'T12:00:00Z')});window.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[reference]));}static now(){return reference;}};})();`;
     let clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource('2026-10-02')})).identifier;
     const navigate = async date => {
@@ -126,6 +128,10 @@ try {
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','FW','Azure','AWS','GCP','Ali']);
     assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','Δ vs Databricks']);
     assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /arena\.ai Best \w+/);
+    // The expand hint is a plain line directly above the table, always shown, never floating.
+    const hint = await evalJS("(()=>{const h=document.querySelector('#rowhint'),r=h.getBoundingClientRect(),t=document.querySelector('.tblwrap').getBoundingClientRect(),s=document.querySelector('#summary').getBoundingClientRect();return {text:h.innerText.replace(/\\s+/g,' ').trim(),position:getComputedStyle(h).position,gap:Math.round(t.top-r.bottom),belowSummary:r.top>=s.bottom-1,button:!!h.querySelector('button')};})()");
+    assert.equal(hint.text, viewport.mobile ? '› Tap a row for full details' : '› Click any row for every endpoint, tier, cache price and region', viewport.name + ': hint wording');
+    assert.ok(hint.position === 'static' && hint.belowSummary && hint.gap >= 0 && hint.gap <= 12 && !hint.button, viewport.name + ': hint sits above the table ' + JSON.stringify(hint));
     assert.equal(await evalJS("(()=>{const tab=document.querySelector('[data-g=all]').getBoundingClientRect(),tabs=document.querySelector('#tabs').getBoundingClientRect();return tab.left>=tabs.left-1&&tab.right<=tabs.right+1;})()"), true, 'Selected family tab is visible');
     await saveScreenshot(viewport.name);
 
