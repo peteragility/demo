@@ -118,6 +118,45 @@
  },
  "pending_general": [
   {
+   "source": "anthropic-pricing",
+   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.428\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.58\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
+   ],
+   "removed": [
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.525\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.705\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
+   ],
+   "added_all": [
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.428\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.58\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
+   ],
+   "removed_all": [
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.525\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Total\",\"\",\"$0.705\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
+   ],
+   "baseline_digest": "022ed6111f03935ce7b81b7c11b4ed8fa7c8ac023cdfd197b433a4ec20dcbe5a"
+  },
+  {
    "source": "vertex-pricing",
    "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
    "risk": "high",
@@ -137,63 +176,43 @@
    "baseline_digest": "c93532b6ebe15fbc85c76de323120eabb4ed95c5400dfff321363ad13070fb71"
   },
   {
-   "source": "alibaba-pricing",
-   "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+   "source": "api-west-anthropic-pricing",
+   "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
    "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a region or its availability changed",
+   "reason": "a price, rate, multiplier or context limit changed",
    "added": [
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.24/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input unit price (per million tokens)\",\"Output unit price (per million tokens)\",\"Free quota (note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input unit price (per million tokens)\",\"Output unit price (per million tokens)\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"International\",\"720P\",\"$0.14/second\",\"10 seconds\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}"
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.428**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.58**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Worked example\"}"
    ],
    "removed": [
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.24/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"International\",\"720P\",\"List price $0.14/second (Limited-time 20% off)\",\"10 seconds\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}"
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.525**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.705**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Worked example\"}"
    ],
    "added_all": [
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.220034/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.24/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input unit price (per million tokens)\",\"Output unit price (per million tokens)\",\"Free quota (note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input unit price (per million tokens)\",\"Output unit price (per million tokens)\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"$0.123769/second\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"International\",\"720P\",\"$0.14/second\",\"10 seconds\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}"
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.428**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.58**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Worked example\"}"
    ],
    "removed_all": [
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.220034/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"1080P\",\"List price $0.24/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / China (Beijing)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Germany (Frankfurt)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / Japan (Tokyo)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"Global\",\"720P\",\"List price $0.123769/second (Limited-time 20% off)\"],\"heading\":\"Video generation / HappyHorse-Video editing / US (Virginia)\"}",
-    "table: {\"cells\":[\"happyhorse-1.0-video-edit\",\"International\",\"720P\",\"List price $0.14/second (Limited-time 20% off)\",\"10 seconds\"],\"heading\":\"Video generation / HappyHorse-Video editing / Singapore\"}"
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.525**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.705**\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Worked example\"}",
+    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Worked example\"}"
    ],
-   "baseline_digest": "f92f3041e43d8ca92ff294ede2f74326a58c0abbce935e3aab4551f6e15bb895"
+   "baseline_digest": "b7f7761e8fb44c032e1661a5e02057c0e667b8f4b96353123cccf366f33d0c53"
   },
   {
    "source": "aws-pricing-page",
@@ -214,24 +233,18 @@
  "review": [
   "Claude Opus 4.6 · gcloud",
   "Claude Sonnet 4.6 · gcloud",
-  "Gemini 3.6 Flash · gcloud",
-  "Gemini 3.7 Flash · gcloud",
-  "Gemini 3.8 Flash · gcloud",
-  "GPT-5.6 Sol · bedrock",
-  "GPT-5.6 Terra · bedrock",
-  "GPT-6 Astra · bedrock",
-  "GPT-6.1 Sol · bedrock"
+  "Gemini 3.8 Flash · gcloud"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-10-14"
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-fable-5.1|bedrock": {
    "verified": "2026-10-14"
@@ -249,16 +262,20 @@
    ]
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-10-14"
-  },
-  "anthropic/claude-fable-5|alicloud": {
-   "verified": "2026-10-12",
+   "verified": "2026-10-14",
    "unchecked": [
-    "alibaba-pricing"
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
    ]
   },
-  "anthropic/claude-fable-5|azure_foundry": {
+  "anthropic/claude-fable-5|alicloud": {
    "verified": "2026-10-14"
+  },
+  "anthropic/claude-fable-5|azure_foundry": {
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-fable-5|bedrock": {
    "verified": "2026-10-14"
@@ -276,13 +293,14 @@
    ]
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-10-14"
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-haiku-4.5|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-4.5|azure_foundry": {
    "verified": "2026-10-14"
@@ -307,13 +325,13 @@
    ]
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-10-14"
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-haiku-5.5|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-5.5|azure_foundry": {
    "verified": "2026-10-14"
@@ -334,16 +352,19 @@
    ]
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-10-14"
-  },
-  "anthropic/claude-opus-4.6|alicloud": {
-   "verified": "2026-10-12",
+   "verified": "2026-10-14",
    "unchecked": [
-    "alibaba-pricing"
+    "anthropic-pricing"
    ]
   },
-  "anthropic/claude-opus-4.6|azure_foundry": {
+  "anthropic/claude-opus-4.6|alicloud": {
    "verified": "2026-10-14"
+  },
+  "anthropic/claude-opus-4.6|azure_foundry": {
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.6|bedrock": {
    "verified": "2026-10-14"
@@ -365,16 +386,20 @@
    ]
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-10-14"
-  },
-  "anthropic/claude-opus-4.7|alicloud": {
-   "verified": "2026-10-12",
+   "verified": "2026-10-14",
    "unchecked": [
-    "alibaba-pricing"
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
    ]
   },
-  "anthropic/claude-opus-4.7|azure_foundry": {
+  "anthropic/claude-opus-4.7|alicloud": {
    "verified": "2026-10-14"
+  },
+  "anthropic/claude-opus-4.7|azure_foundry": {
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.7|bedrock": {
    "verified": "2026-10-14"
@@ -392,22 +417,23 @@
    ]
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-10-14"
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.8|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
-  },
-  "anthropic/claude-opus-4.8|azure_foundry": {
    "verified": "2026-10-14"
   },
-  "anthropic/claude-opus-4.8|bedrock": {
+  "anthropic/claude-opus-4.8|azure_foundry": {
    "verified": "2026-10-14",
-   "accepted": [
-    "aws-card-claude-opus-4-8"
+   "unchecked": [
+    "anthropic-pricing"
    ]
+  },
+  "anthropic/claude-opus-4.8|bedrock": {
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.8|databricks": {
    "verified": "2026-10-14"
@@ -422,16 +448,20 @@
    ]
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-14"
-  },
-  "anthropic/claude-opus-5.5|alicloud": {
-   "verified": "2026-10-12",
+   "verified": "2026-10-14",
    "unchecked": [
-    "alibaba-pricing"
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
    ]
   },
-  "anthropic/claude-opus-5.5|azure_foundry": {
+  "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-10-14"
+  },
+  "anthropic/claude-opus-5.5|azure_foundry": {
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-5.5|bedrock": {
    "verified": "2026-10-14"
@@ -449,16 +479,20 @@
    ]
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-14"
-  },
-  "anthropic/claude-opus-5|alicloud": {
-   "verified": "2026-10-12",
+   "verified": "2026-10-14",
    "unchecked": [
-    "alibaba-pricing"
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
    ]
   },
-  "anthropic/claude-opus-5|azure_foundry": {
+  "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-10-14"
+  },
+  "anthropic/claude-opus-5|azure_foundry": {
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-5|bedrock": {
    "verified": "2026-10-14"
@@ -476,13 +510,14 @@
    ]
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-14"
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-4.6|azure_foundry": {
    "verified": "2026-10-14"
@@ -507,16 +542,19 @@
    ]
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-10-14"
-  },
-  "anthropic/claude-sonnet-5.5|alicloud": {
-   "verified": "2026-10-12",
+   "verified": "2026-10-14",
    "unchecked": [
-    "alibaba-pricing"
+    "anthropic-pricing"
    ]
   },
-  "anthropic/claude-sonnet-5.5|azure_foundry": {
+  "anthropic/claude-sonnet-5.5|alicloud": {
    "verified": "2026-10-14"
+  },
+  "anthropic/claude-sonnet-5.5|azure_foundry": {
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
    "verified": "2026-10-14"
@@ -534,16 +572,20 @@
    ]
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-10-14"
-  },
-  "anthropic/claude-sonnet-5|alicloud": {
-   "verified": "2026-10-12",
+   "verified": "2026-10-14",
    "unchecked": [
-    "alibaba-pricing"
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
    ]
   },
-  "anthropic/claude-sonnet-5|azure_foundry": {
+  "anthropic/claude-sonnet-5|alicloud": {
    "verified": "2026-10-14"
+  },
+  "anthropic/claude-sonnet-5|azure_foundry": {
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5|bedrock": {
    "verified": "2026-10-14"
@@ -561,7 +603,11 @@
    ]
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-10-14"
+   "verified": "2026-10-14",
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "deepseek/deepseek-v4-flash|alicloud": {
    "verified": "2026-10-11",
@@ -621,7 +667,6 @@
   "deepseek/deepseek-v4.1-flash|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -647,10 +692,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.1-flash-lite|azure_foundry": {
    "verified": "2026-10-14"
@@ -674,10 +716,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.1-pro|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.1-pro|azure_foundry": {
    "verified": "2026-10-14"
@@ -693,26 +732,15 @@
   },
   "google/gemini-3.1-pro|gcloud": {
    "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
-    "gcp-gemini-3-1-pro"
-   ],
    "unchecked": [
-    "gcp-locations",
     "vertex-pricing"
    ]
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.5-flash-lite|azure_foundry": {
    "verified": "2026-10-14"
@@ -736,10 +764,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.6-flash|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.6-flash|azure_foundry": {
    "verified": "2026-10-14"
@@ -755,10 +780,6 @@
   },
   "google/gemini-3.6-flash|gcloud": {
    "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
-    "gcp-gemini-3-6-flash"
-   ],
    "unchecked": [
     "vertex-pricing"
    ]
@@ -767,10 +788,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.7-flash|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.7-flash|azure_foundry": {
    "verified": "2026-10-14"
@@ -786,25 +804,15 @@
   },
   "google/gemini-3.7-flash|gcloud": {
    "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
-    "gcp-gemini-3-7-flash"
-   ],
    "unchecked": [
     "vertex-pricing"
    ]
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.8-flash|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.8-flash|azure_foundry": {
    "verified": "2026-10-14"
@@ -822,7 +830,6 @@
    "verified": "2026-10-13",
    "changed_at": "2026-10-14",
    "sources": [
-    "gcp-gemini-3-8-flash",
     "vertex-pricing"
    ],
    "unchecked": [
@@ -833,10 +840,7 @@
    "verified": "2026-10-14"
   },
   "google/gemma-3-12b|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemma-3-12b|azure_foundry": {
    "verified": "2026-10-14"
@@ -854,10 +858,7 @@
    ]
   },
   "meta/llama-3.1-8b|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "meta/llama-3.1-8b|azure_foundry": {
    "verified": "2026-10-14"
@@ -875,10 +876,7 @@
    ]
   },
   "meta/llama-3.3-70b|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "meta/llama-3.3-70b|azure_foundry": {
    "verified": "2026-10-14"
@@ -896,10 +894,7 @@
    ]
   },
   "meta/llama-4-maverick|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "meta/llama-4-maverick|azure_foundry": {
    "verified": "2026-10-14"
@@ -917,10 +912,7 @@
    ]
   },
   "minimax/minimax-m3|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "minimax/minimax-m3|azure_foundry": {
    "verified": "2026-10-14"
@@ -944,10 +936,7 @@
    "verified": "2026-10-14"
   },
   "mistral/mistral-medium-3.5|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
    "verified": "2026-10-14"
@@ -971,10 +960,7 @@
    "verified": "2026-10-14"
   },
   "moonshot/kimi-k2.7|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "moonshot/kimi-k2.7|azure_foundry": {
    "verified": "2026-10-14"
@@ -1000,7 +986,6 @@
   "moonshot/kimi-k3|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -1026,18 +1011,14 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.4|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.4|azure_foundry": {
    "verified": "2026-10-14"
   },
   "openai/gpt-5.4|bedrock": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
+   "verified": "2026-10-14",
+   "accepted": [
     "aws-card-gpt-5-4"
    ]
   },
@@ -1057,18 +1038,14 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.5|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.5|azure_foundry": {
    "verified": "2026-10-14"
   },
   "openai/gpt-5.5|bedrock": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
+   "verified": "2026-10-14",
+   "accepted": [
     "aws-card-gpt-5-5"
    ]
   },
@@ -1088,18 +1065,14 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-luna|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-luna|bedrock": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
+   "verified": "2026-10-14",
+   "accepted": [
     "aws-card-gpt-5-6-luna"
    ]
   },
@@ -1119,18 +1092,14 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-sol|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-sol|bedrock": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
+   "verified": "2026-10-14",
+   "accepted": [
     "aws-card-gpt-5-6-sol"
    ]
   },
@@ -1150,18 +1119,14 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-terra|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-terra|bedrock": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
+   "verified": "2026-10-14",
+   "accepted": [
     "aws-card-gpt-5-6-terra"
    ]
   },
@@ -1181,18 +1146,14 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6-astra|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6-astra|azure_foundry": {
    "verified": "2026-10-14"
   },
   "openai/gpt-6-astra|bedrock": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
+   "verified": "2026-10-14",
+   "accepted": [
     "aws-card-gpt-6-astra"
    ]
   },
@@ -1212,10 +1173,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6-luna|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6-luna|azure_foundry": {
    "verified": "2026-10-14"
@@ -1239,10 +1197,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6-sol|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6-sol|azure_foundry": {
    "verified": "2026-10-14"
@@ -1266,18 +1221,14 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6.1-sol|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
    "verified": "2026-10-14"
   },
   "openai/gpt-6.1-sol|bedrock": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
+   "verified": "2026-10-14",
+   "accepted": [
     "aws-gpt61"
    ]
   },
@@ -1297,10 +1248,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-oss-120b|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-oss-120b|azure_foundry": {
    "verified": "2026-10-14"
@@ -1324,10 +1272,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-oss-20b|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-oss-20b|azure_foundry": {
    "verified": "2026-10-14"
@@ -1353,10 +1298,7 @@
    "sources": [
     "alibaba-pricing"
    ],
-   "quiet": true,
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "quiet": true
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
    "verified": "2026-10-14"
@@ -1379,16 +1321,10 @@
    "sources": [
     "alibaba-pricing"
    ],
-   "quiet": true,
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "quiet": true
   },
   "qwen/qwen3.5-122b|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.5-122b|azure_foundry": {
    "verified": "2026-10-14"
@@ -1406,15 +1342,11 @@
    ]
   },
   "qwen/qwen3.5-122b|official": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.7-max|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -1439,14 +1371,12 @@
   "qwen/qwen3.7-max|official": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
   "qwen/qwen3.7-plus|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -1471,14 +1401,12 @@
   "qwen/qwen3.7-plus|official": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
   "qwen/qwen3.8-27b|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -1503,14 +1431,12 @@
   "qwen/qwen3.8-27b|official": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
   "qwen/qwen3.8-flash|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -1535,14 +1461,12 @@
   "qwen/qwen3.8-flash|official": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
   "qwen/qwen3.8-max|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -1567,15 +1491,11 @@
   "qwen/qwen3.8-max|official": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
   "tml/inkling|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "tml/inkling|azure_foundry": {
    "verified": "2026-10-14"
@@ -1599,10 +1519,7 @@
    "verified": "2026-10-14"
   },
   "xai/grok-4.6|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "xai/grok-4.6|azure_foundry": {
    "verified": "2026-10-14"
@@ -1623,10 +1540,7 @@
    "verified": "2026-10-14"
   },
   "xai/grok-4.7|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "xai/grok-4.7|azure_foundry": {
    "verified": "2026-10-14"
@@ -1649,7 +1563,6 @@
   "zai/glm-5.2|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
@@ -1675,10 +1588,7 @@
    "verified": "2026-10-14"
   },
   "zai/glm-5.3-flash|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "zai/glm-5.3-flash|azure_foundry": {
    "verified": "2026-10-14"
@@ -1704,7 +1614,6 @@
   "zai/glm-5.3|alicloud": {
    "verified": "2026-10-12",
    "unchecked": [
-    "alibaba-pricing",
     "alibaba-regions"
    ]
   },
