@@ -302,7 +302,7 @@ def make_report(baseline, current, errors, data, today):
 
 # ---- Per-offer checks ------------------------------------------------------------------------
 
-SIBLINGS = r"flash|lite|mini|nano|pro|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use"
+SIBLINGS = r"flash|lite|mini|nano|pro|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber"
 
 
 def model_regex(model):
@@ -447,20 +447,26 @@ PLACE = re.compile(r"(?<![\w-])(?:" + "|".join(sorted({re.escape(official.norm(x
 OTHER_MODEL = re.compile(r"(?<![\w-])(?:(?:claude|opus|sonnet|haiku|fable|mythos|gpt|codex|gemini|gemma|imagen|veo|lyria|chirp|llama|mistral|mixtral|"
                          r"ministral|magistral|codestral|devstral|pixtral|voxtral|qwen|qwq|deepseek|kimi|glm|grok|nova|titan|jamba|phi|minimax|nemotron|"
                          r"granite|olmo|ernie|hunyuan|whisper|dall e|sora|flux|cohere|command|palmyra|marengo|pegasus|seedream|seedance|wan)"
-                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc)\b)")
+                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|happyhorse\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc|audio)\b)")
 # Documents whose lines that name no model (a residency multiplier, a batch discount, a region list) can
 # apply to every model they cover; structured price lists and model indexes have one line per model.
 DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
 
 
+def rate_text(text):
+    # In a cache-write label, m means minutes; elsewhere it can mean million tokens.
+    return re.sub(r"\b(\d+)\s?m\b(?=\s+cache write)", r"\1 minute", official.norm(text))
+
+
 def risk_tokens(line, rx):
     """What a wording-only change keeps: prices, rates, multipliers, context limits and dates, plus the places a
     line names with any short marks beside them (a Bedrock region row: "us-east-1 (N. Virginia) | no | yes")."""
-    text = official.norm(line)
+    text = rate_text(line)
     if rx:
         text = rx.sub(" ", text)
     text = OTHER_MODEL.sub(" ", text)  # another model's version number is not a price
     tokens = {"price:" + re.sub(r"[\s,]", "", t) for t in PRICE.findall(text) + LIMIT.findall(text)}
+    tokens |= {"price:cache-duration:" + n for n in re.findall(r"\b(\d+)[ -]minutes?\b", text)}
     prices = []
     for token in PRICE.findall(text):
         token = re.sub(r"[\s,]", "", token)
@@ -472,12 +478,14 @@ def risk_tokens(line, rx):
     # or two tiers without introducing a new number. Ambiguous price-row renames need review.
     if line.startswith("table: {"):
         row = json.loads(line[len("table: "):])
-        cells = [official.norm(c) for c in row.get("cells", [])]
-        prices = [(i, PRICE.findall(c)) for i, c in enumerate(cells) if PRICE.search(c)]
+        cells = [rate_text(c) for c in row.get("cells", [])]
+        # Endpoint IDs also contain decimal model versions; those are not numeric rates.
+        values = [PRICE.findall(OTHER_MODEL.sub(" ", rx.sub(" ", c) if rx else c)) for c in cells]
+        prices = [(i, value) for i, value in enumerate(values) if value]
         if prices:
             identity = [official.norm(row.get("heading", "")), [PRICE.sub("#", c) for c in cells]]
             tokens.add("price:assignment:" + packed([identity, prices]))
-        elif any(field_of(c) and not NON_RATE_COLUMN.search(c) for c in cells):
+        elif cells[:1] != ["capabilities"] and any(field_of(c) and not NON_RATE_COLUMN.search(c) for c in cells):
             # Moving or renaming a rate column changes the meaning of unchanged data rows.
             tokens.add("price:columns:" + packed([official.norm(row.get("heading", "")), cells]))
     elif line.startswith("{"):

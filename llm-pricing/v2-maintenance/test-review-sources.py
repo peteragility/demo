@@ -310,6 +310,43 @@ class SourceReviewTests(unittest.TestCase):
         self.assertEqual(review.classify([review.packed({"input": "$3", "output": "$15"})],
                                          [review.packed({"input": "$15", "output": "$3"})], None)[0], "high")
 
+    def test_cache_retention_wording_keeps_duration_and_rate_assignment(self):
+        def row(duration):
+            return "table: " + review.packed({"heading": "GPT-6.1 Sol / Pricing / short context (272K)",
+                                              "cells": ["Input", f"Input — {duration} cache write", "Output"]})
+        notice = "notice: The Input — 30-minute cache write column is the price per 1 million tokens written to the prompt cache."
+        self.assertEqual(review.compare([row("30m")], [row("30-minute"), notice], None)[0], "low")
+        self.assertEqual(review.compare([row("30-minute")], [row("60-minute")], None)[0], "high")
+        self.assertEqual(review.compare(["text: Context limit 30m tokens"], ["text: Context limit 60m tokens"], None)[0], "high")
+
+    def test_capability_tables_do_not_assign_output_prices(self):
+        def row(status):
+            return "table: " + review.packed({"heading": "Gemini 3.8 Flash", "cells": ["Capabilities",
+                "Structured output Supported Context caching Supported Agentic video understanding " + status]})
+        self.assertEqual(review.compare([row("preview Preview feature Not supported")], [row("Supported")], None)[0], "low")
+        for old, new in (("$3", "$4"), ("272K", "128K")):
+            self.assertEqual(review.compare([row(old)], [row(new)], None)[0], "high")
+
+    def test_cyber_and_non_text_model_prices_are_scoped_separately(self):
+        rx = review.model_regex({"name": "Gemini 3.8 Flash"})
+        self.assertFalse(rx.search("gemini 3.8 flash cyber"))
+        self.assertTrue(rx.search("gemini 3.8 flash *"))
+        for name in ("HappyHorse-Video editing", "happyhorse-1.0-video-edit", "Qwen-Audio-TTS"):
+            self.assertTrue(review.names_a_model(name, []), name)
+        config = [{"id": "p", "kind": "tables"}]
+        row = lambda price: "table: " + review.packed({"heading": "Video generation / HappyHorse-Video editing / Japan (Tokyo)",
+                                                     "cells": ["1080P", price]})
+        before, after = [row("$0.22/second (20% off)")], [row("$0.22/second")]
+        self.assertEqual(review.general_changes({"models": {}}, config,
+            {"sources": {"p": {"records": before}}}, {"p": {"url": "u", "records": after}}, {}), [])
+
+    def test_endpoint_model_versions_are_not_decimal_rates(self):
+        record = "table: " + review.packed({"heading": "GPT-5.5 / Programmatic access",
+            "cells": ["bedrock-runtime", "openai.gpt-5.5", "us.openai.gpt-5.5", "global.openai.gpt-5.5"]})
+        self.assertEqual(review.risk_tokens(record, review.model_regex({"name": "GPT-5.5"})), set())
+        rate = "table: " + review.packed({"heading": "GPT-5.5 / Pricing", "cells": ["Input", "$5.50"]})
+        self.assertTrue(any(t.startswith("price:assignment:") for t in review.risk_tokens(rate, review.model_regex({"name": "GPT-5.5"}))))
+
     def test_bedrock_features_and_modality_headers_are_not_price_columns(self):
         def row(heading, cells):
             return "table: " + review.packed({"heading": heading, "cells": cells})
