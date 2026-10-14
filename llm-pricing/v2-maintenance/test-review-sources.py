@@ -347,6 +347,16 @@ class SourceReviewTests(unittest.TestCase):
         rate = "table: " + review.packed({"heading": "GPT-5.5 / Pricing", "cells": ["Input", "$5.50"]})
         self.assertTrue(any(t.startswith("price:assignment:") for t in review.risk_tokens(rate, review.model_regex({"name": "GPT-5.5"}))))
 
+    def test_empty_trailing_table_columns_are_layout_only(self):
+        def row(cells):
+            return "table: " + review.packed({"heading": "Claude Opus 4.6 / Pricing", "cells": cells})
+        before = [row(["Input", "$5.50", "$5.50"]), row(["Output", "$27.50", "$27.50"])]
+        # Responsive tabs can retain an old row and add its padded duplicate.
+        after = before + [row(["Input", "$5.50", "$5.50", "", ""]), row(["Output", "$27.50", "$27.50", "", ""])]
+        self.assertEqual(review.classify(before, after, None)[0], "low")
+        for changed in (["Input", "$5.50", "$6", "", ""], ["Input", "", "$5.50", "$5.50"]):
+            self.assertEqual(review.classify(before, [row(changed), before[1]], None)[0], "high")
+
     def test_bedrock_features_and_modality_headers_are_not_price_columns(self):
         def row(heading, cells):
             return "table: " + review.packed({"heading": heading, "cells": cells})

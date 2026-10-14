@@ -533,6 +533,17 @@ def classify(before, after, rx):
         return "high", APPEARS
     if not after:
         return "high", VANISHES
+    def layout_record(record):
+        if record.startswith("table: {"):
+            row = json.loads(record[len("table: "):])
+            cells = row.get("cells", [])
+            while cells and not cells[-1]:
+                cells.pop()
+            return "table: " + packed(row)
+        return record
+    # Empty padding at the right edge cannot move a rate into another column.
+    # Keep internal blanks and every nonempty context/tier header unchanged.
+    before, after = map(lambda rows: set(map(layout_record, rows)), (before, after))
     return compare(sorted(set(before) - set(after)), sorted(set(after) - set(before)), rx)
 
 
