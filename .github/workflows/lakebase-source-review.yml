@@ -1,7 +1,8 @@
 name: Lakebase official source review
 on:
+  # Daily at 01:47 Hong Kong time (17:47 UTC on the preceding day).
   schedule:
-    - cron: '47 18 * * *'
+    - cron: '47 17 * * *'
   workflow_dispatch:
     inputs:
       record_baseline:

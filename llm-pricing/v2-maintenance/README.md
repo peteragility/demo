@@ -58,7 +58,7 @@ Set `CHROME_PATH` if Chrome is installed at a different path. Set `LLM_PRICING_B
 
 ## How the data stays current
 
-The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs every day, scheduled for **18:17 UTC (02:17 HKT)**, and on demand from the Actions tab. GitHub often starts scheduled runs a few hours late when busy (2.7–4.1 h in early October 2026), so the early slot usually lands the refresh around 6am HKT. Run dates (verified, checked) follow Hong Kong time:
+The [workflow](https://github.com/peteragility/demo/blob/main/.github/workflows/llm-pricing-v2-review.yml) runs every day, scheduled for **17:17 UTC (01:17 HKT on the following day)**, and on demand from the Actions tab. The requested daily start is within 01:00–02:00 Hong Kong time; GitHub may delay scheduled runs. Run dates (verified, checked) follow Hong Kong time:
 
 | Step | What it does | Published automatically? |
 |---|---|---|

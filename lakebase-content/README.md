@@ -22,7 +22,7 @@ The guide's cost scenario builder passes `etlOverride` in the calculator's share
 
 `review_sources.py` compares observed numeric prices, numeric constraints, feature status and scoped price-list versions with `watch-baseline.json`. Wording-only changes without changed material records do not create an issue. Failed or empty reads never replace a baseline. An observed baseline does **not** certify calculator rates or advance their verified dates.
 
-The **Lakebase official source review** workflow runs daily at 18:47 UTC (02:47 Hong Kong time, subject to GitHub scheduling delay) and maintains one issue labelled `lakebase-source-review`. These issues are picked up by the existing 07:30 Hong Kong Omnigent issue-repair task.
+The **Lakebase official source review** workflow runs daily at 17:47 UTC (01:47 Hong Kong time on the following day, subject to GitHub scheduling delay) and maintains one issue labelled `lakebase-source-review`. These issues are picked up by the existing 07:00 Hong Kong Omnigent issue-repair task.
 
 To resolve a finding, read its exact source and diff, verify the affected feature or supported SKU/region/tier/units, update the facts or calculator only when the source proves a change, and run the checks. After all findings are reviewed, dispatch the workflow with **Record source observations** enabled. Recording is refused if any source fails. The next comparison closes the issue only when no findings remain.
 
