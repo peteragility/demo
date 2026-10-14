@@ -3,6 +3,9 @@ import importlib.util
 import json
 from pathlib import Path
 import unittest
+import tempfile
+import urllib.error
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location("update_ranking", HERE / "update-ranking.py")
@@ -26,6 +29,22 @@ def entry(rank, name):
 
 
 class RankingTests(unittest.TestCase):
+    def test_failed_read_keeps_ranking_and_reports_detection_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target, unpriced, summary = root / "ranking.json", root / "unpriced.json", root / "summary.md"
+            target.write_text('{"ranked_at":"2026-10-09","models":{}}')
+            original = target.read_text()
+            with patch.object(ranking, "TARGET", target), patch.object(ranking.sys, "argv", [
+                "update-ranking.py", "--unpriced", str(unpriced), "--summary", str(summary)]), patch.object(
+                    ranking.urllib.request, "urlopen", side_effect=urllib.error.HTTPError(CONFIG["source"], 403, "Forbidden", {}, None)):
+                with self.assertRaises(SystemExit) as stopped:
+                    ranking.main()
+                self.assertEqual(stopped.exception.code, 1)
+            self.assertEqual(target.read_text(), original)
+            self.assertIn("403", json.loads(unpriced.read_text())["error"])
+            self.assertIn("Arena ranking could not be checked", summary.read_text())
+
     def test_entries_are_read_from_split_flight_data(self):
         entries = ranking.board_entries(page([entry(1, "Claude Fable 5.1 (Max)")]), CONFIG["board_id"])
         self.assertEqual(entries[0]["modelDisplayName"], "Claude Fable 5.1 (Max)")

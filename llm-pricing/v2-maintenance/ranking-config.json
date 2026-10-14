@@ -58,7 +58,8 @@
     "mistral/mistral-medium-3.5": "^mistral medium 3[. ]5\\b",
     "qwen/qwen3.8-flash": "^qwen ?3[. ]8 flash(?: next)?(?![\\w.])",
     "anthropic/claude-opus-4.7": "^claude opus 4[. ]7(?![\\d.]| \\d)",
-    "anthropic/claude-opus-4.6": "^claude opus 4[. ]6(?![\\d.]| \\d)"
+    "anthropic/claude-opus-4.6": "^claude opus 4[. ]6(?![\\d.]| \\d)",
+    "google/gemini-4-argon": "^gemini 4 argon\\b(?! cyber)"
   },
   "top": 50,
   "not_sold_note": "Top-50 models that a compared platform's page names but that it does not sell with general access (a gated or on-request preview). Any other top-50 model with no reviewed prices that a platform page names opens the review issue.",

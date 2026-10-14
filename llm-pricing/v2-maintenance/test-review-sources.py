@@ -21,6 +21,14 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_failed_arena_read_is_in_the_review_issue(self):
+        report = {"checked_at": "2026-10-14", "sources_failed": {}, "lifecycle_due": [],
+                  "ranking_error": "HTTP Error 403: Forbidden"}
+        issue, refs = review.issue_markdown(report, {}, [], {}, {"models": {}}, set(), failing=[])
+        self.assertIn("Arena ranking could not be checked", issue)
+        self.assertIn("403", issue)
+        self.assertEqual(refs, [])
+
     @staticmethod
     def context_offer():
         cell = {"status": "priced", "src": "src", "in": 2, "out": 10,

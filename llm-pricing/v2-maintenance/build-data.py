@@ -371,7 +371,7 @@ def add_top50_models(data):
     """arena.ai Best Overall top-50 models that at least one compared platform hosts (reviewed 2026-10-03).
 
     Models sold only through their maker's API (Muse Spark, Grok 4.5, Step 5, Hy3 / Hy4, MiMo,
-    Gemini 4 Argon, Inkling Small, Qwen3.8 Flash Next) are not listed.
+    Inkling Small) are not listed. Gemini 4 Argon was added after its public Agent Platform launch.
     """
     m = data["models"]
     data["source_meta"].update({
@@ -913,6 +913,66 @@ def lifecycle_notices(data):
         m["notices"] = [dict(text=warn, until=min(ends))]
 
 
+def add_gemini4(data):
+    """Public GA Gemini 4 Argon, official prices and model cards reviewed 2026-10-14."""
+    day = "2026-10-14"
+    model_source = "gcp_gemini_4_argon"
+    data["source_meta"][model_source] = dict(
+        url="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon",
+        label="Gemini 4 Argon model, caching and regions")
+    data["source_meta"]["api_google_gemini_4_argon"] = dict(
+        url="https://ai.google.dev/gemini-api/docs/models/gemini-4-argon", label="Gemini API 4 Argon model")
+    platforms = {pl: pending("No verified Gemini 4 Argon offer in the reviewed platform sources.",
+                            data["models"]["google/gemini-3.8-flash"]["platforms"][pl].get("src"))
+                 for pl in PLATFORMS}
+    for pl, src in (("official", "google"), ("gcloud", "vertex")):
+        cell = offer(2, 10, 0.1, src=src, tier="Standard · introductory pricing", model_id="gemini-4-argon")
+        promo(cell, "2026-11-30", rates(4, 20, 0.2), "Introductory pricing", "Standard")
+        variants = []
+        tiers = [("priority", 3.6, 18, 0.18), ("batch", 1, 5, 0.05)]
+        if pl == "official":
+            tiers.append(("flex", 1, 5, 0.05))
+        else:
+            v = variant("US / EU multi-region · Standard", 2.2, 11, 0.11, scope="geographic", endpoint="US / EU multi-region")
+            promo(v, "2026-11-30", rates(4.4, 22, 0.22), "50% credits back on net spend", "US / EU multi-region · Standard")
+            variants.append(v)
+        for service, i, o, cr in tiers:
+            v = variant("Global · " + service.title(), i, o, cr, service=service, endpoint="Global")
+            promo(v, "2026-11-30", rates(i * 2, o * 2, cr * 2), "Introductory pricing", "Global · " + service.title())
+            variants.append(v)
+            if pl == "gcloud":
+                v = variant("US / EU multi-region · " + service.title(), round(i * 1.1, 6), round(o * 1.1, 6),
+                            round(cr * 1.1, 6), service=service, scope="geographic", endpoint="US / EU multi-region")
+                promo(v, "2026-11-30", rates(round(i * 2.2, 6), round(o * 2.2, 6), round(cr * 2.2, 6)),
+                      "50% credits back on net spend", "US / EU multi-region · " + service.title())
+                variants.append(v)
+        cell["variants"] = variants
+        cell["model_id_source"] = model_source if pl == "gcloud" else "api_google_gemini_4_argon"
+        cell["model_id_checked_at"] = day
+        cell["endpoints"] = dict(checked_at=day,
+            src=[model_source, "gcp_pricing"] if pl == "gcloud" else ["api_google_gemini_4_argon", "google"],
+            regions=[["Global", "global" if pl == "gcloud" else "unknown", "Global", "Public Gemini 4 Argon endpoint"]],
+            hk=["none", "No single-region Hong Kong endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            tw=["none", "No single-region Taiwan endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            notes=[["Context", "Unified input and output limit: 1,048,576 tokens. Synchronous output up to 65,536; long decode can extend output within the unified limit. No separate long-context price band is listed."],
+                   ["Caching", "Implicit caching only; explicit cache writes and storage are not supported."],
+                   ["Promotion", "Introductory rates end 30 Nov 2026; published list rates apply from 1 Dec 2026."],
+                   ["Version", "gemini-4-argon; publicly available GA from 13 Oct 2026. Cyber Permissive is a separate allowlisted model."]],
+            ids=["gemini-4-argon"], cache_write="input-rate")
+        if pl == "gcloud":
+            cell["promotion"]["label"] = "50% credits back on net spend"
+            cell["endpoints"]["regions"] += [
+                ["Americas", "geo", "US multi-region", "US endpoint; processing stays in the US (+10%)"],
+                ["Europe", "geo", "EU multi-region", "EU endpoint; processing stays in the EU (+10%)"]]
+            cell["endpoints"]["notes"] += [["Caching", "Implicit caching requires at least 6,144 tokens; durable caching is enabled by default."],
+                                            ["Tiers", "Standard, Priority and Batch; Flex is not listed as supported on this model card."]]
+        platforms[pl] = checked(cell, day)
+    for cell in platforms.values():
+        cell["availability_checked_at"] = day
+    data["models"]["google/gemini-4-argon"] = dict(name="Gemini 4 Argon", short="Gemini 4 Argon", maker="Google",
+        group="google", oss=False, model_key="google/gemini-4-argon", ctx="1M unified", badges=["Added"], platforms=platforms)
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -937,6 +997,7 @@ def build():
     add_top50_models(data)
     corrections(data)
     enrich_context_and_promotions(data)
+    add_gemini4(data)
     apply_endpoints(data)
     finish_variants(data)
     check_cache_reads(data)

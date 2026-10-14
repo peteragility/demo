@@ -943,6 +943,10 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
     done = sum(1 for c in changes if c.get("risk") == "applied" and c["model"] in listed)
     lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified today; {len(review)} need review; "
              f"{done} price changes applied and {low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
+    if report.get("ranking_error"):
+        lines += ["## Arena ranking could not be checked", "",
+                  "New top-50 models could not be detected. The published ranking keeps its last reviewed order.", "",
+                  report["ranking_error"], ""]
     if new_models:
         lines += ["## New top-50 models a platform seems to sell", "",
                   "Each has no prices on the page yet. Ask Claude to add it; if no platform sells it with general access, add its name to "
@@ -1133,6 +1137,10 @@ def main():
             done = {k: "applied automatically: " + "; ".join(v) for k, v in done.items()}
             cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, done, auto_regions)
     unpriced = json.loads(args.unpriced.read_text()) if args.unpriced and args.unpriced.exists() else []
+    if args.unpriced and (not args.unpriced.exists() or isinstance(unpriced, dict)):
+        report["ranking_error"] = (unpriced.get("error", "Invalid ranking report") if isinstance(unpriced, dict)
+                                   else "Arena did not produce a ranking report.")
+        unpriced = []
     new_models = unpriced_on_platforms(unpriced, current, json.loads((HERE / "ranking-config.json").read_text()).get("not_sold", []))
     last_read = sources_read(previous, sources, current, today)
     failing = stale(errors, last_read, today)
@@ -1141,7 +1149,7 @@ def main():
     listed_facts = {k: v for k, v in fact_issues.items() if k in listed and not all(dbx_availability(t) for t in v)}
     held = [g for g in general if g["risk"] == "high"]
     action = [a for a in report["lifecycle_due"] if needs_action(a)]
-    needs_review = bool(review or listed_facts or failing or held or unrecorded or action or new_models)
+    needs_review = bool(review or listed_facts or failing or held or unrecorded or action or new_models or report.get("ranking_error"))
     pending_general = [dict(g) for g in held]
     quiet = [c for c in changes if c["risk"] == "quiet"] + [g for g in general if g["risk"] == "quiet"]
     accepted = [c for c in changes if c["risk"] == "low"] + [g for g in general if g["risk"] == "low"]

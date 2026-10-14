@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import urllib.error
 import urllib.request
 from zoneinfo import ZoneInfo
 
@@ -135,16 +136,21 @@ def main():
             raise SystemExit("\n".join(problems))
         print("v2-ranking.json matches the priced models.")
         return
-    if args.html:
-        html = args.html.read_text()
-    else:
-        request = urllib.request.Request(config["source"], headers={"User-Agent": "LLM-Pricing-Ranking/1.0 (+https://github.com/peteragility/demo)"})
-        with urllib.request.urlopen(request, timeout=30) as response:
-            html = response.read(30 * 1024 * 1024).decode("utf-8")
     previous = json.loads(TARGET.read_text()) if TARGET.exists() else None
     try:
+        if args.html:
+            html = args.html.read_text()
+        else:
+            request = urllib.request.Request(config["source"], headers={"User-Agent": "LLM-Pricing-Ranking/1.0 (+https://github.com/peteragility/demo)"})
+            with urllib.request.urlopen(request, timeout=30) as response:
+                html = response.read(30 * 1024 * 1024).decode("utf-8")
         ranking, unmatched = build(config, html, args.as_of, previous)
-    except ValueError as error:
+    except (ValueError, OSError) as error:
+        if args.unpriced:
+            args.unpriced.write_text(json.dumps({"error": str(error), "source": config["source"]}) + "\n")
+        if args.summary:
+            with args.summary.open("a") as summary:
+                summary.write("\n## Arena ranking could not be checked\n\n" + str(error) + "\n")
         print("Ranking not updated: " + str(error), file=sys.stderr)
         sys.exit(1)
     text = report(ranking, previous, unmatched, config)

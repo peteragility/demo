@@ -12,6 +12,7 @@
     "https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash",
     "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash",
     "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+    "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
     "https://ai.google.dev/gemini-api/docs/pricing",
     "https://ai.google.dev/gemini-api/docs/priority-inference",
     "https://api-docs.deepseek.com/guides/kv_cache",
@@ -81,6 +82,7 @@
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-6-flash",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-7-flash",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-8-flash",
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/maas/deepseek",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/maas/kimi",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/maas/minimax",
@@ -363,6 +365,14 @@
     "mistral": {
       "url": "https://docs.mistral.ai/models/model-cards/mistral-medium-3-5-26-04",
       "label": "Mistral Medium 3.5 model card"
+    },
+    "gcp_gemini_4_argon": {
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon",
+      "label": "Gemini 4 Argon model, caching and regions"
+    },
+    "api_google_gemini_4_argon": {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+      "label": "Gemini API 4 Argon model"
     },
     "dbx_region_azure": {
       "url": "https://learn.microsoft.com/en-us/azure/databricks/unity-gateway/model-region-availability",
@@ -27062,6 +27072,447 @@
         }
       },
       "model_key": "mistral/mistral-medium-3.5"
+    },
+    "google/gemini-4-argon": {
+      "name": "Gemini 4 Argon",
+      "short": "Gemini 4 Argon",
+      "maker": "Google",
+      "group": "google",
+      "oss": false,
+      "model_key": "google/gemini-4-argon",
+      "ctx": "1M unified",
+      "badges": [
+        "Added"
+      ],
+      "platforms": {
+        "databricks": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Argon offer in the reviewed platform sources.",
+          "src": "dbx_prop",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-14",
+          "endpoints": {
+            "checked_at": "2026-10-09",
+            "src": [
+              "dbx_region",
+              "dbx_region_azure",
+              "dbx_region_gcp"
+            ],
+            "regions": [],
+            "hk": [
+              "unknown",
+              "Not in Databricks' region tables yet"
+            ],
+            "tw": [
+              "unknown",
+              "Not in Databricks' region tables yet"
+            ],
+            "notes": [
+              [
+                "Regions",
+                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
+              ],
+              [
+                "Billing",
+                "DBU list rate $0.07 per DBU; committed-use discounts lower it."
+              ]
+            ],
+            "ids": [],
+            "cache_write": "not-listed"
+          },
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "official": {
+          "in": 2,
+          "out": 10,
+          "cache_read": 0.1,
+          "src": "google",
+          "tier": "Standard · introductory pricing",
+          "model_id": "gemini-4-argon",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-14",
+          "availability_checked_at": "2026-10-14",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "promotion": {
+            "ends_on": "2026-11-30",
+            "after": {
+              "in": 4,
+              "out": 20,
+              "cache_read": 0.2,
+              "tier": "Standard"
+            },
+            "label": "Introductory pricing"
+          },
+          "variants": [
+            {
+              "in": 3.6,
+              "out": 18,
+              "cache_read": 0.18,
+              "label": "Global · Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "Global",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 7.2,
+                  "out": 36,
+                  "cache_read": 0.36,
+                  "tier": "Global · Priority"
+                },
+                "label": "Introductory pricing"
+              },
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1,
+              "out": 5,
+              "cache_read": 0.05,
+              "label": "Global · Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "Global",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 2,
+                  "out": 10,
+                  "cache_read": 0.1,
+                  "tier": "Global · Batch"
+                },
+                "label": "Introductory pricing"
+              },
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1,
+              "out": 5,
+              "cache_read": 0.05,
+              "label": "Global · Flex",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "Global",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 2,
+                  "out": 10,
+                  "cache_read": 0.1,
+                  "tier": "Global · Flex"
+                },
+                "label": "Introductory pricing"
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_source": "api_google_gemini_4_argon",
+          "model_id_checked_at": "2026-10-14",
+          "endpoints": {
+            "checked_at": "2026-10-14",
+            "src": [
+              "api_google_gemini_4_argon",
+              "google"
+            ],
+            "regions": [
+              [
+                "Global",
+                "unknown",
+                "Global",
+                "Public Gemini 4 Argon endpoint"
+              ]
+            ],
+            "hk": [
+              "unknown",
+              "No verified processing residency"
+            ],
+            "tw": [
+              "unknown",
+              "No verified processing residency"
+            ],
+            "notes": [
+              [
+                "Context",
+                "Unified input and output limit: 1,048,576 tokens. Synchronous output up to 65,536; long decode can extend output within the unified limit. No separate long-context price band is listed."
+              ],
+              [
+                "Caching",
+                "Implicit caching only; explicit cache writes and storage are not supported."
+              ],
+              [
+                "Promotion",
+                "Introductory rates end 30 Nov 2026; published list rates apply from 1 Dec 2026."
+              ],
+              [
+                "Version",
+                "gemini-4-argon; publicly available GA from 13 Oct 2026. Cyber Permissive is a separate allowlisted model."
+              ]
+            ],
+            "ids": [
+              "gemini-4-argon"
+            ],
+            "cache_write": "input-rate"
+          },
+          "url": "https://ai.google.dev/gemini-api/docs/pricing"
+        },
+        "bedrock": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Argon offer in the reviewed platform sources.",
+          "src": "aws",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-14",
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Argon offer in the reviewed platform sources.",
+          "src": "azure",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-14",
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "fireworks": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Argon offer in the reviewed platform sources.",
+          "src": "fireworks_nexus",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-14",
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "gcloud": {
+          "in": 2,
+          "out": 10,
+          "cache_read": 0.1,
+          "src": "vertex",
+          "tier": "Standard · introductory pricing",
+          "model_id": "gemini-4-argon",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-14",
+          "availability_checked_at": "2026-10-14",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "promotion": {
+            "ends_on": "2026-11-30",
+            "after": {
+              "in": 4,
+              "out": 20,
+              "cache_read": 0.2,
+              "tier": "Standard"
+            },
+            "label": "50% credits back on net spend"
+          },
+          "variants": [
+            {
+              "in": 2.2,
+              "out": 11,
+              "cache_read": 0.11,
+              "label": "US / EU multi-region · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "US / EU multi-region",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 4.4,
+                  "out": 22,
+                  "cache_read": 0.22,
+                  "tier": "US / EU multi-region · Standard"
+                },
+                "label": "50% credits back on net spend"
+              },
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 3.6,
+              "out": 18,
+              "cache_read": 0.18,
+              "label": "Global · Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "Global",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 7.2,
+                  "out": 36,
+                  "cache_read": 0.36,
+                  "tier": "Global · Priority"
+                },
+                "label": "Introductory pricing"
+              },
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 3.96,
+              "out": 19.8,
+              "cache_read": 0.198,
+              "label": "US / EU multi-region · Priority",
+              "comparison_scope": "geographic",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "US / EU multi-region",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 7.92,
+                  "out": 39.6,
+                  "cache_read": 0.396,
+                  "tier": "US / EU multi-region · Priority"
+                },
+                "label": "50% credits back on net spend"
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1,
+              "out": 5,
+              "cache_read": 0.05,
+              "label": "Global · Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "Global",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 2,
+                  "out": 10,
+                  "cache_read": 0.1,
+                  "tier": "Global · Batch"
+                },
+                "label": "Introductory pricing"
+              },
+              "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.1,
+              "out": 5.5,
+              "cache_read": 0.055,
+              "label": "US / EU multi-region · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-14",
+              "endpoint": "US / EU multi-region",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 2.2,
+                  "out": 11.0,
+                  "cache_read": 0.11,
+                  "tier": "US / EU multi-region · Batch"
+                },
+                "label": "50% credits back on net spend"
+              },
+              "id": "variant-4",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_source": "gcp_gemini_4_argon",
+          "model_id_checked_at": "2026-10-14",
+          "endpoints": {
+            "checked_at": "2026-10-14",
+            "src": [
+              "gcp_gemini_4_argon",
+              "gcp_pricing"
+            ],
+            "regions": [
+              [
+                "Global",
+                "global",
+                "Global",
+                "Public Gemini 4 Argon endpoint"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US multi-region",
+                "US endpoint; processing stays in the US (+10%)"
+              ],
+              [
+                "Europe",
+                "geo",
+                "EU multi-region",
+                "EU endpoint; processing stays in the EU (+10%)"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No single-region Hong Kong endpoint"
+            ],
+            "tw": [
+              "none",
+              "No single-region Taiwan endpoint"
+            ],
+            "notes": [
+              [
+                "Context",
+                "Unified input and output limit: 1,048,576 tokens. Synchronous output up to 65,536; long decode can extend output within the unified limit. No separate long-context price band is listed."
+              ],
+              [
+                "Caching",
+                "Implicit caching only; explicit cache writes and storage are not supported."
+              ],
+              [
+                "Promotion",
+                "Introductory rates end 30 Nov 2026; published list rates apply from 1 Dec 2026."
+              ],
+              [
+                "Version",
+                "gemini-4-argon; publicly available GA from 13 Oct 2026. Cyber Permissive is a separate allowlisted model."
+              ],
+              [
+                "Caching",
+                "Implicit caching requires at least 6,144 tokens; durable caching is enabled by default."
+              ],
+              [
+                "Tiers",
+                "Standard, Priority and Batch; Flex is not listed as supported on this model card."
+              ]
+            ],
+            "ids": [
+              "gemini-4-argon"
+            ],
+            "cache_write": "input-rate"
+          },
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
+        },
+        "alicloud": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Argon offer in the reviewed platform sources.",
+          "src": "ali",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-14",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      }
     }
   },
   "reviewed_at": "2026-10-09",
