@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from zoneinfo import ZoneInfo
 
@@ -59,8 +60,7 @@ def rank_models(entries, patterns):
     return models, unmatched
 
 
-def build(config, html, today, previous=None):
-    entries = board_entries(html, config["board_id"])
+def build_entries(config, entries, today, previous=None):
     if len(entries) < config.get("minimum_entries", 1):
         raise ValueError(f"Only {len(entries)} leaderboard entries; refusing to reorder the page.")
     entries = [e for e in entries if e["rank"] <= config.get("top", len(entries))]
@@ -77,6 +77,69 @@ def build(config, html, today, previous=None):
             {k: v for k, v in ranking.items() if k not in ("ranked_at", "entries")}:
         ranking["ranked_at"], ranking["entries"] = previous["ranked_at"], previous["entries"]
     return ranking, unmatched
+
+
+def build(config, html, today, previous=None):
+    return build_entries(config, board_entries(html, config["board_id"]), today, previous)
+
+
+def read_url(address):
+    request = urllib.request.Request(address, headers={"User-Agent": "LLM-Pricing-Ranking/1.0 (+https://github.com/peteragility/demo)"})
+    with urllib.request.urlopen(request, timeout=30) as response:
+        text = response.read(30 * 1024 * 1024 + 1)
+        if len(text) > 30 * 1024 * 1024:
+            raise ValueError("Ranking source exceeded the 30 MB limit.")
+        return text.decode("utf-8")
+
+
+def dataset_entries(config, today):
+    """Arena's own export: webdev/latest, overall only, through the public Dataset Viewer API."""
+    if config["board_id"] != "webdev":
+        raise ValueError("The official dataset reader is scoped to the WebDev board.")
+    base = config["dataset_source"]
+    parsed = urllib.parse.urlparse(base)
+    query = urllib.parse.parse_qs(parsed.query)
+    if (parsed.scheme != "https" or parsed.netloc != "datasets-server.huggingface.co" or parsed.path != "/rows"
+            or any(query.get(key) != [value] for key, value in
+                   (("dataset", "lmarena-ai/leaderboard-dataset"), ("config", "webdev"), ("split", "latest")))):
+        raise ValueError("Unexpected official leaderboard dataset URL.")
+    entries, dates, offset = [], set(), 0
+    for _ in range(20):
+        page = json.loads(read_url(base + "&" + urllib.parse.urlencode(dict(offset=offset, length=100))))
+        if not isinstance(page, dict):
+            raise ValueError("Invalid official dataset response.")
+        rows = page.get("rows")
+        total = page.get("num_rows_total")
+        if page.get("partial") is not False or not isinstance(rows, list) or not rows or type(total) is not int:
+            raise ValueError("Incomplete official dataset response.")
+        for i, wrapper in enumerate(rows):
+            if not isinstance(wrapper, dict) or wrapper.get("row_idx") != offset + i or wrapper.get("truncated_cells"):
+                raise ValueError("Missing or truncated official dataset rows.")
+            row = wrapper.get("row", {})
+            if not isinstance(row, dict):
+                raise ValueError("Invalid official dataset row.")
+            if row.get("category") != "overall":
+                continue
+            if type(row.get("rank")) is not int or row["rank"] < 1 or not isinstance(row.get("model_name"), str) or not row["model_name"]:
+                raise ValueError("Unexpected official dataset model or rank.")
+            if row["rank"] <= config["top"]:
+                dates.add(row.get("leaderboard_publish_date"))
+                entries.append(dict(rank=row["rank"], modelDisplayName=row["model_name"], modelOrganization=row.get("organization", "")))
+        if len(entries) >= config["top"] or offset + len(rows) >= total:
+            break
+        offset += len(rows)
+    if len(dates) != 1:
+        raise ValueError("Official WebDev export has missing or mixed publication dates.")
+    published = dates.pop()
+    try:
+        age = (dt.date.fromisoformat(today) - dt.date.fromisoformat(published)).days
+    except (ValueError, TypeError) as error:
+        raise ValueError("Invalid official leaderboard publication date.") from error
+    if not 0 <= age <= config.get("dataset_max_age_days", 2):
+        raise ValueError("Official WebDev export is stale or future-dated: " + published)
+    # Includes the same complete, unique top-50 and model-matching checks as the website.
+    build_entries(config, entries, today)
+    return entries, published
 
 
 def discovery(config, today, entries, last_read, error=None):
@@ -152,14 +215,23 @@ def main():
         print("v2-ranking.json matches the priced models.")
         return
     previous = json.loads(TARGET.read_text()) if TARGET.exists() else None
+    source, published = config["source"], None
     try:
         if args.html:
-            html = args.html.read_text()
+            entries = board_entries(args.html.read_text(), config["board_id"])
         else:
-            request = urllib.request.Request(config["source"], headers={"User-Agent": "LLM-Pricing-Ranking/1.0 (+https://github.com/peteragility/demo)"})
-            with urllib.request.urlopen(request, timeout=30) as response:
-                html = response.read(30 * 1024 * 1024).decode("utf-8")
-        ranking, unmatched = build(config, html, args.as_of, previous)
+            try:
+                entries, published = dataset_entries(config, args.as_of)
+                observed = json.loads(OBSERVED.read_text()) if OBSERVED.exists() else {}
+                if observed.get("board_id") == config["board_id"] and observed.get("published_at") and published < observed["published_at"]:
+                    raise ValueError("Official WebDev export is older than the last observed publication.")
+                source = config["dataset_source"]
+            except (ValueError, OSError) as dataset_error:
+                try:
+                    entries = board_entries(read_url(config["source"]), config["board_id"])
+                except (ValueError, OSError) as website_error:
+                    raise ValueError(f"Official dataset: {dataset_error}; Arena website: {website_error}") from website_error
+        ranking, unmatched = build_entries(config, entries, args.as_of, previous)
     except (ValueError, OSError) as error:
         observed = json.loads(OBSERVED.read_text()) if OBSERVED.exists() else {}
         entries = observed.get("entries", []) if observed.get("board_id") == config["board_id"] else []
@@ -171,12 +243,15 @@ def main():
         print("Ranking not updated: " + str(error), file=sys.stderr)
         sys.exit(1)
     text = report(ranking, previous, unmatched, config)
+    text += f"\nRead from: {source}" + (f" (published {published})" if published else "") + "\n"
     print(text)
-    entries = [e for e in board_entries(html, config["board_id"]) if e["rank"] <= config["top"]]
-    OBSERVED.write_text(json.dumps(dict(schema=1, checked_at=args.as_of, source=config["source"],
+    entries = [e for e in entries if e["rank"] <= config["top"]]
+    OBSERVED.write_text(json.dumps(dict(schema=1, checked_at=args.as_of, source=source, published_at=published,
                                        board_id=config["board_id"], entries=entries), ensure_ascii=False, indent=1) + "\n")
     if args.unpriced:
-        args.unpriced.write_text(json.dumps(discovery(config, args.as_of, entries, args.as_of), ensure_ascii=False, indent=1) + "\n")
+        status = discovery(config, args.as_of, entries, args.as_of)
+        status.update(source=source, published_at=published)
+        args.unpriced.write_text(json.dumps(status, ensure_ascii=False, indent=1) + "\n")
     if args.summary:
         with open(args.summary, "a") as summary:
             summary.write(text + "\n")

@@ -1,258 +1,259 @@
 {
  "schema": 1,
  "checked_at": "2026-10-14",
- "source": "https://arena.ai/leaderboard/code/webdev",
+ "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
+ "published_at": "2026-10-13",
  "board_id": "webdev",
  "entries": [
   {
    "rank": 1,
    "modelDisplayName": "claude-opus-5.5-max",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 2,
    "modelDisplayName": "gpt-6-astra-max",
-   "modelOrganization": "OpenAI"
+   "modelOrganization": "openai"
   },
   {
    "rank": 3,
    "modelDisplayName": "claude-sonnet-5.5-xhigh",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 4,
    "modelDisplayName": "gpt-6.1-sol-max",
-   "modelOrganization": "OpenAI"
+   "modelOrganization": "openai"
   },
   {
    "rank": 5,
    "modelDisplayName": "claude-fable-5.1-max",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 6,
    "modelDisplayName": "claude-sonnet-5.5-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 7,
    "modelDisplayName": "claude-opus-5-max",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 8,
    "modelDisplayName": "gpt-6-sol-max",
-   "modelOrganization": "OpenAI"
+   "modelOrganization": "openai"
   },
   {
    "rank": 9,
    "modelDisplayName": "gemini-4-argon-high",
-   "modelOrganization": "Google"
+   "modelOrganization": "google"
   },
   {
    "rank": 10,
    "modelDisplayName": "qwen3.8-max-0902",
-   "modelOrganization": "Alibaba"
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 11,
    "modelDisplayName": "qwen3.8-max",
-   "modelOrganization": "Alibaba"
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 12,
    "modelDisplayName": "muse-spark-1.3-max",
-   "modelOrganization": "Meta"
+   "modelOrganization": "meta"
   },
   {
    "rank": 13,
    "modelDisplayName": "claude-opus-5-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 14,
    "modelDisplayName": "kimi-k3-max",
-   "modelOrganization": "Moonshot"
+   "modelOrganization": "moonshot"
   },
   {
    "rank": 15,
    "modelDisplayName": "muse-wonder-max",
-   "modelOrganization": "Meta"
+   "modelOrganization": "meta"
   },
   {
    "rank": 16,
    "modelDisplayName": "grok-4.7-xhigh",
-   "modelOrganization": "SpaceXAI"
+   "modelOrganization": "xai"
   },
   {
    "rank": 17,
    "modelDisplayName": "mimo-v2.6-flash",
-   "modelOrganization": "Xiaomi"
+   "modelOrganization": "xiaomi"
   },
   {
    "rank": 18,
    "modelDisplayName": "qwen3.8-flash-next",
-   "modelOrganization": "Alibaba"
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 19,
    "modelDisplayName": "hy4-preview",
-   "modelOrganization": "Tencent"
+   "modelOrganization": "tencent"
   },
   {
    "rank": 20,
    "modelDisplayName": "mimo-v2.6-pro",
-   "modelOrganization": "Xiaomi"
+   "modelOrganization": "xiaomi"
   },
   {
    "rank": 21,
    "modelDisplayName": "claude-fable-5-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 22,
    "modelDisplayName": "muse-spark-1.3 (xHigh)",
-   "modelOrganization": "Meta"
+   "modelOrganization": "meta"
   },
   {
    "rank": 23,
    "modelDisplayName": "glm-5.3-max",
-   "modelOrganization": "Z.ai"
+   "modelOrganization": "zai"
   },
   {
    "rank": 24,
    "modelDisplayName": "deepseek-v4.1-flash-max",
-   "modelOrganization": "DeepSeek"
+   "modelOrganization": "deepseek"
   },
   {
    "rank": 25,
    "modelDisplayName": "grok-4.6-high",
-   "modelOrganization": "SpaceXAI"
+   "modelOrganization": "xai"
   },
   {
    "rank": 26,
    "modelDisplayName": "gpt-5.6-sol-xhigh (codex-harness)",
-   "modelOrganization": "OpenAI"
+   "modelOrganization": "openai"
   },
   {
    "rank": 27,
    "modelDisplayName": "glm-5.3-flash",
-   "modelOrganization": "Z.ai"
+   "modelOrganization": "zai"
   },
   {
    "rank": 28,
    "modelDisplayName": "glm-5.2-max",
-   "modelOrganization": "Z.ai"
+   "modelOrganization": "zai"
   },
   {
    "rank": 29,
    "modelDisplayName": "qwen3.8-27b",
-   "modelOrganization": "Alibaba"
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 30,
    "modelDisplayName": "gemini-3.7-flash-high",
-   "modelOrganization": "Google"
+   "modelOrganization": "google"
   },
   {
    "rank": 31,
    "modelDisplayName": "claude-haiku-5.5-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 32,
    "modelDisplayName": "gemini-3.8-flash-high",
-   "modelOrganization": "Google"
+   "modelOrganization": "google"
   },
   {
    "rank": 33,
    "modelDisplayName": "deepseek-v4-pro-high-20260813",
-   "modelOrganization": "DeepSeek"
+   "modelOrganization": "deepseek"
   },
   {
    "rank": 34,
    "modelDisplayName": "gpt-6-luna-max",
-   "modelOrganization": "OpenAI"
+   "modelOrganization": "openai"
   },
   {
    "rank": 35,
    "modelDisplayName": "deepseek-v4-flash-high",
-   "modelOrganization": "DeepSeek"
+   "modelOrganization": "deepseek"
   },
   {
    "rank": 36,
    "modelDisplayName": "step-5-preview-high",
-   "modelOrganization": "StepFun"
+   "modelOrganization": "stepfun"
   },
   {
    "rank": 37,
    "modelDisplayName": "claude-opus-4-7-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 38,
    "modelDisplayName": "claude-opus-4-8-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 39,
    "modelDisplayName": "claude-opus-4-7",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 40,
    "modelDisplayName": "grok-4.5",
-   "modelOrganization": "SpaceXAI"
+   "modelOrganization": "xai"
   },
   {
    "rank": 41,
    "modelDisplayName": "claude-opus-4-6-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 42,
    "modelDisplayName": "mistral-large-4",
-   "modelOrganization": "Mistral"
+   "modelOrganization": "mistral"
   },
   {
    "rank": 43,
    "modelDisplayName": "muse-spark-1.1",
-   "modelOrganization": "Meta"
+   "modelOrganization": "meta"
   },
   {
    "rank": 44,
    "modelDisplayName": "claude-sonnet-5-high",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 45,
    "modelDisplayName": "gemini-3.6-flash-high",
-   "modelOrganization": "Google"
+   "modelOrganization": "google"
   },
   {
    "rank": 46,
    "modelDisplayName": "claude-opus-4-6",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 47,
    "modelDisplayName": "claude-opus-4-8",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 48,
    "modelDisplayName": "muse-spark-1.2 (xHigh)",
-   "modelOrganization": "Meta"
+   "modelOrganization": "meta"
   },
   {
    "rank": 49,
    "modelDisplayName": "claude-sonnet-4-6",
-   "modelOrganization": "Anthropic"
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 50,
    "modelDisplayName": "gpt-5.6-terra-xhigh (codex-harness)",
-   "modelOrganization": "OpenAI"
+   "modelOrganization": "openai"
   }
  ]
 }

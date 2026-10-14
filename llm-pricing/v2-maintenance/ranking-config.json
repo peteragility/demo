@@ -1,5 +1,7 @@
 {
   "source": "https://arena.ai/leaderboard/",
+  "dataset_source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
+  "dataset_max_age_days": 2,
   "board_id": "webdev",
   "board": "Best WebDev (Code | Overall)",
   "board_url": "https://arena.ai/leaderboard/code/webdev",
