@@ -116,135 +116,15 @@
   "aws-card-glm-5-3": "2026-10-14",
   "aws-pricing-page": "2026-10-14"
  },
- "pending_general": [
-  {
-   "source": "anthropic-pricing",
-   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.428\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.58\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.525\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.705\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.428\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.58\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.525\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.705\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}"
-   ],
-   "baseline_digest": "022ed6111f03935ce7b81b7c11b4ed8fa7c8ac023cdfd197b433a4ec20dcbe5a"
-  },
-  {
-   "source": "vertex-pricing",
-   "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a date changed",
-   "added": [
-    "notice: * Promotional pricing provided through 50% credits back on net spend on select models within a given period (promotion period for CodeMender using these models is same as the promotion period on select models)",
-    "notice: through November 30, 2026",
-    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens\",\"Price (/1M tokens) > 200K input tokens\",\"Price (/1M tokens) =< 100K input tokens **\",\"Price (/1M tokens) > 100K input tokens **\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "notice: * Promotional pricing provided through 50% credits back on net spend on select models within a given period (promotion period for CodeMender using these models is same as the promotion period on select models)",
-    "notice: through November 30, 2026",
-    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens\",\"Price (/1M tokens) > 200K input tokens\",\"Price (/1M tokens) =< 100K input tokens **\",\"Price (/1M tokens) > 100K input tokens **\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "c93532b6ebe15fbc85c76de323120eabb4ed95c5400dfff321363ad13070fb71"
-  },
-  {
-   "source": "api-west-anthropic-pricing",
-   "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.428**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.58**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Worked example\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.525**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.705**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Worked example\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.428**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.58**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04\"],\"heading\":\"Worked example\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.525**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"**Total**\",\"\",\"**$0.705**\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $5 × 0.1 / 1,000,000\",\"$0.02\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $5 / 1,000,000\",\"$0.25\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $25 / 1,000,000\",\"$0.375\"],\"heading\":\"Worked example\"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $5 / 1,000,000\",\"$0.05\"],\"heading\":\"Worked example\"}"
-   ],
-   "baseline_digest": "b7f7761e8fb44c032e1661a5e02057c0e667b8f4b96353123cccf366f33d0c53"
-  },
-  {
-   "source": "aws-pricing-page",
-   "url": "https://aws.amazon.com/bedrock/pricing/",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [],
-   "removed": [
-    "table: {\"cells\":[\"Provider\",\"Model Name\",\"Regions\",\"Price per 1M input tokens\",\"Price per 1M output tokens\",\"Price per 1M input tokens (batch)\",\"Price per 1M output tokens (batch)\",\"Price per 1M input tokens (cache write)\",\"Price per 1M input tokens (cache read)\"],\"heading\":\"Amazon Bedrock pricing / Anthropic / Long Context Pricing\"}"
-   ],
-   "added_all": [],
-   "removed_all": [
-    "table: {\"cells\":[\"Provider\",\"Model Name\",\"Regions\",\"Price per 1M input tokens\",\"Price per 1M output tokens\",\"Price per 1M input tokens (batch)\",\"Price per 1M output tokens (batch)\",\"Price per 1M input tokens (cache write)\",\"Price per 1M input tokens (cache read)\"],\"heading\":\"Amazon Bedrock pricing / Anthropic / Long Context Pricing\"}"
-   ],
-   "baseline_digest": "331ccf14b3c66acf9a09d24a9998307fec663ecace9ac750f1902faec337fe14"
-  }
- ],
- "review": [
-  "Claude Opus 4.6 · gcloud",
-  "Claude Sonnet 4.6 · gcloud",
-  "Gemini 3.8 Flash · gcloud"
- ],
+ "pending_general": [],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5.1|bedrock": {
    "verified": "2026-10-14"
@@ -256,26 +136,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5|bedrock": {
    "verified": "2026-10-14"
@@ -287,17 +157,10 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
    "verified": "2026-10-14"
@@ -315,20 +178,10 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-5.5|alicloud": {
    "verified": "2026-10-14"
@@ -346,25 +199,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.6|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.6|bedrock": {
    "verified": "2026-10-14"
@@ -376,30 +220,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.7|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.7|bedrock": {
    "verified": "2026-10-14"
@@ -411,26 +241,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.8|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.8|bedrock": {
    "verified": "2026-10-14"
@@ -442,26 +262,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5.5|bedrock": {
    "verified": "2026-10-14"
@@ -473,26 +283,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5|bedrock": {
    "verified": "2026-10-14"
@@ -504,17 +304,10 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-10-14"
@@ -532,29 +325,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
    "verified": "2026-10-14"
@@ -566,26 +346,16 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5|alicloud": {
    "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5|bedrock": {
    "verified": "2026-10-14"
@@ -597,23 +367,13 @@
    "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-10-11",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
    "verified": "2026-10-14"
@@ -628,20 +388,13 @@
    "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-flash|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-flash|official": {
    "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-10-11",
-   "unchecked": [
-    "alibaba-pricing",
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
    "verified": "2026-10-14"
@@ -656,19 +409,13 @@
    "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-pro|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4-pro|official": {
    "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
    "verified": "2026-10-14"
@@ -683,10 +430,7 @@
    "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "deepseek/deepseek-v4.1-flash|official": {
    "verified": "2026-10-14"
@@ -707,10 +451,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.1-flash-lite|official": {
    "verified": "2026-10-14"
@@ -731,10 +472,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.1-pro|official": {
    "verified": "2026-10-14"
@@ -755,10 +493,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.5-flash-lite|official": {
    "verified": "2026-10-14"
@@ -779,10 +514,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.6-flash|official": {
    "verified": "2026-10-14"
@@ -803,10 +535,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.7-flash|official": {
    "verified": "2026-10-14"
@@ -827,14 +556,7 @@
    "verified": "2026-10-14"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-13",
-   "changed_at": "2026-10-14",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "google/gemini-3.8-flash|official": {
    "verified": "2026-10-14"
@@ -852,10 +574,7 @@
    "verified": "2026-10-14"
   },
   "google/gemma-3-12b|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "meta/llama-3.1-8b|alicloud": {
    "verified": "2026-10-14"
@@ -870,10 +589,7 @@
    "verified": "2026-10-14"
   },
   "meta/llama-3.1-8b|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "meta/llama-3.3-70b|alicloud": {
    "verified": "2026-10-14"
@@ -888,10 +604,7 @@
    "verified": "2026-10-14"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "meta/llama-4-maverick|alicloud": {
    "verified": "2026-10-14"
@@ -906,10 +619,7 @@
    "verified": "2026-10-14"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-10-14"
@@ -927,10 +637,7 @@
    "verified": "2026-10-14"
   },
   "minimax/minimax-m3|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "minimax/minimax-m3|official": {
    "verified": "2026-10-14"
@@ -951,10 +658,7 @@
    "verified": "2026-10-14"
   },
   "mistral/mistral-medium-3.5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "mistral/mistral-medium-3.5|official": {
    "verified": "2026-10-14"
@@ -975,19 +679,13 @@
    "verified": "2026-10-14"
   },
   "moonshot/kimi-k2.7|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "moonshot/kimi-k2.7|official": {
    "verified": "2026-10-14"
   },
   "moonshot/kimi-k3|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "moonshot/kimi-k3|azure_foundry": {
    "verified": "2026-10-14"
@@ -1002,10 +700,7 @@
    "verified": "2026-10-14"
   },
   "moonshot/kimi-k3|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "moonshot/kimi-k3|official": {
    "verified": "2026-10-14"
@@ -1026,10 +721,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.4|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.4|official": {
    "verified": "2026-10-14"
@@ -1050,10 +742,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.5|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.5|official": {
    "verified": "2026-10-14"
@@ -1074,10 +763,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-luna|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.6-luna|official": {
    "verified": "2026-10-14"
@@ -1098,10 +784,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-sol|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.6-sol|official": {
    "verified": "2026-10-14"
@@ -1122,10 +805,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-5.6-terra|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-5.6-terra|official": {
    "verified": "2026-10-14"
@@ -1146,10 +826,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6-astra|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6-astra|official": {
    "verified": "2026-10-14"
@@ -1170,10 +847,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6-luna|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6-luna|official": {
    "verified": "2026-10-14"
@@ -1194,10 +868,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6-sol|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6-sol|official": {
    "verified": "2026-10-14"
@@ -1218,10 +889,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-6.1-sol|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-6.1-sol|official": {
    "verified": "2026-10-14"
@@ -1242,10 +910,7 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-oss-120b|official": {
    "verified": "2026-10-14"
@@ -1263,21 +928,13 @@
    "verified": "2026-10-14"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "openai/gpt-oss-20b|official": {
    "verified": "2026-10-14"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-10-11",
-   "changed_at": "2026-10-12",
-   "sources": [
-    "alibaba-pricing"
-   ],
-   "quiet": true
+   "verified": "2026-10-14"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
    "verified": "2026-10-14"
@@ -1289,18 +946,10 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-10-11",
-   "changed_at": "2026-10-12",
-   "sources": [
-    "alibaba-pricing"
-   ],
-   "quiet": true
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.5-122b|alicloud": {
    "verified": "2026-10-14"
@@ -1315,19 +964,13 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.5-122b|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.5-122b|official": {
    "verified": "2026-10-14"
   },
   "qwen/qwen3.7-max|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.7-max|azure_foundry": {
    "verified": "2026-10-14"
@@ -1342,22 +985,13 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.7-max|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.7-max|official": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.7-plus|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.7-plus|azure_foundry": {
    "verified": "2026-10-14"
@@ -1372,22 +1006,13 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.7-plus|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.7-plus|official": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-27b|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-27b|azure_foundry": {
    "verified": "2026-10-14"
@@ -1402,22 +1027,13 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.8-27b|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-27b|official": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-flash|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-flash|azure_foundry": {
    "verified": "2026-10-14"
@@ -1432,22 +1048,13 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.8-flash|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-flash|official": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-max|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-max|azure_foundry": {
    "verified": "2026-10-14"
@@ -1462,16 +1069,10 @@
    "verified": "2026-10-14"
   },
   "qwen/qwen3.8-max|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "qwen/qwen3.8-max|official": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "tml/inkling|alicloud": {
    "verified": "2026-10-14"
@@ -1489,10 +1090,7 @@
    "verified": "2026-10-14"
   },
   "tml/inkling|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "tml/inkling|official": {
    "verified": "2026-10-14"
@@ -1510,10 +1108,7 @@
    "verified": "2026-10-14"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "xai/grok-4.6|official": {
    "verified": "2026-10-14"
@@ -1531,19 +1126,13 @@
    "verified": "2026-10-14"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "xai/grok-4.7|official": {
    "verified": "2026-10-14"
   },
   "zai/glm-5.2|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "zai/glm-5.2|azure_foundry": {
    "verified": "2026-10-14"
@@ -1558,10 +1147,7 @@
    "verified": "2026-10-14"
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "zai/glm-5.2|official": {
    "verified": "2026-10-14"
@@ -1582,28 +1168,19 @@
    "verified": "2026-10-14"
   },
   "zai/glm-5.3-flash|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "zai/glm-5.3-flash|official": {
    "verified": "2026-10-14"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "alibaba-regions"
-   ]
+   "verified": "2026-10-14"
   },
   "zai/glm-5.3|azure_foundry": {
    "verified": "2026-10-14"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-10-12",
-   "unchecked": [
-    "aws-pricing-page"
-   ]
+   "verified": "2026-10-14"
   },
   "zai/glm-5.3|databricks": {
    "verified": "2026-10-14"
@@ -1612,10 +1189,7 @@
    "verified": "2026-10-14"
   },
   "zai/glm-5.3|gcloud": {
-   "verified": "2026-10-13",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-14"
   },
   "zai/glm-5.3|official": {
    "verified": "2026-10-14"
