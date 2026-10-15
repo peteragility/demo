@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "checked_at": "2026-10-15",
- "sources_checked": 113,
+ "sources_checked": 114,
  "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-10-15",
@@ -116,7 +116,8 @@
   "aws-card-glm-5-3": "2026-10-15",
   "aws-pricing-page": "2026-10-15",
   "gcp-gemini-4-argon": "2026-10-15",
-  "api-google-gemini-4-argon": "2026-10-15"
+  "api-google-gemini-4-argon": "2026-10-15",
+  "gcp-deepseek-v4-1-flash": "2026-10-15"
  },
  "pending_general": [
   {
@@ -323,6 +324,31 @@
     "text: While Fireworks on Foundry is generally available, an administrator must enable the service within your Azure subscription. The Azure Preview features portal enables customers to turn on the service by using the following steps."
    ],
    "baseline_digest": "810f2577a1fddf3d0df0f617dcf86a82809a5ef24acae2c0a4152f41cda20ae8"
+  },
+  {
+   "source": "az-learn-regions",
+   "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure-region-availability",
+   "risk": "high",
+   "reason": "a date changed",
+   "added": [
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}"
+   ],
+   "removed": [],
+   "added_all": [
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}"
+   ],
+   "removed_all": [],
+   "baseline_digest": "77ae1f2460e63240c4e3197e2103e1437509220c4f1fb0961302ef5d29a9c401"
   }
  ],
  "ranking": {
@@ -667,7 +693,8 @@
   "deepseek/deepseek-v4-pro|azure_foundry": {
    "verified": "2026-10-14",
    "unchecked": [
-    "az-learn-fireworks"
+    "az-learn-fireworks",
+    "az-learn-regions"
    ]
   },
   "deepseek/deepseek-v4-pro|bedrock": {
@@ -712,13 +739,14 @@
    "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-10-14",
+   "verified": "2026-10-15",
    "changed_at": "2026-10-15",
    "sources": [
     "vertex-pricing"
    ],
    "quiet": true,
    "unchecked": [
+    "gcp-deepseek-v4-1-flash",
     "vertex-pricing"
    ]
   },
@@ -1027,7 +1055,10 @@
    "verified": "2026-10-15"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "mistral/mistral-medium-3.5|bedrock": {
    "verified": "2026-10-15"
@@ -1106,7 +1137,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-5.4|bedrock": {
    "verified": "2026-10-15"
@@ -1130,7 +1164,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-5.5|bedrock": {
    "verified": "2026-10-15"
@@ -1154,7 +1191,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-5.6-luna|bedrock": {
    "verified": "2026-10-15"
@@ -1178,7 +1218,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-5.6-sol|bedrock": {
    "verified": "2026-10-15"
@@ -1202,7 +1245,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-5.6-terra|bedrock": {
    "verified": "2026-10-15"
@@ -1226,7 +1272,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-6-astra|bedrock": {
    "verified": "2026-10-15"
@@ -1250,7 +1299,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-luna|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-6-luna|bedrock": {
    "verified": "2026-10-15"
@@ -1274,7 +1326,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-6-sol|bedrock": {
    "verified": "2026-10-15"
@@ -1298,7 +1353,10 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "openai/gpt-6.1-sol|bedrock": {
    "verified": "2026-10-15"
@@ -1553,7 +1611,10 @@
    "verified": "2026-10-15"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-10-15"
+   "verified": "2026-10-15",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "xai/grok-4.6|bedrock": {
    "verified": "2026-10-15"

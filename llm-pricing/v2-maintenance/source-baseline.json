@@ -2,6 +2,7 @@
  "schema": 1,
  "checked_at": "2026-10-15",
  "acknowledged_lifecycle": [
+  "deepseek/deepseek-v4.1-flash|gcloud|promotion end|2026-10-16",
   "zai/glm-5.2|azure_foundry|retirement|2026-10-08"
  ],
  "sources": {
