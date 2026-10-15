@@ -8651,7 +8651,7 @@
   "az-learn-partners": {
    "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-from-partners",
    "kind": "text",
-   "digest": "507e9455b178dd30ee37fbab0efb9fd422fe350e4502bf8d53b80f7c5ee92a6e",
+   "digest": "d5101cebc603054c7a5601cdd492c83f37a9a3af19b3442598ebdc1644201cd8",
    "records": [
     "notice: Microsoft Foundry Models in the model catalog comprise two main categories, namely Foundry Models sold by Azure and Foundry Models from partners and community. This article lists a selection of Foundry Models from partners and community, along with their capabilities, deployment types, and regions of availability, excluding deprecated and retired models. Most Foundry Model providers are trusted third-party organizations, partners, research labs, and community contributors.",
     "notice: To use Claude models in Microsoft Foundry, you must have a paid Azure subscription with a billing account in a country or region where Anthropic offers the models for purchase. For a list of common subscription-related errors, see Common error messages and solutions. The following subscription types are currently not supported:",
@@ -8740,6 +8740,10 @@
     "table: {\"cells\":[\"claude-opus-5-5\",\"2\",\"-\",\"-\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
     "table: {\"cells\":[\"claude-opus-5-5\",\"2\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Data Zone Standard\"}",
     "table: {\"cells\":[\"claude-opus-5-5\",\"Messages\",\"- Input: text, image, and code - Output: text, image, and code (128,000 max tokens) - Context window: 1,000,000 - Languages: en, fr, ar, zh, ja, ko, es, hi - Tool calling: Yes (file search and code execution) - Response formats: Text in various formats (e.g., prose, lists, Markdown tables, JSON, HTML, code in various programming languages) - Key parameters: top_k, temperature, and thinking={\\\"type\\\":\\\"enabled\\\"} are not supported. When thinking={\\\"type\\\":\\\"disabled\\\"}, effort is capped at high. top_p must be 0.99; when omitted, the default (0.99) is used.\",\"Microsoft Managed Countries/Regions (except Belarus and Russia) US (Hosted on Azure for Data Zone Standard)\"],\"heading\":\"Foundry Models from partners and community / Anthropic / Subscription type and region support\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"2\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"2\",\"-\",\"-\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"2\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Data Zone Standard\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"Messages\",\"- Input: text, image, and code - Output: text, image, and code (128,000 max tokens) - Context window: 1,000,000 - Languages: en, fr, ar, zh, ja, ko, es, hi - Tool calling: Yes (file search and code execution) - Response formats: Text in various formats (e.g., prose, lists, Markdown tables, JSON, HTML, code in various programming languages) - Key parameters: top_k, temperature, and thinking={\\\"type\\\":\\\"enabled\\\"} are not supported. When thinking={\\\"type\\\":\\\"disabled\\\"}, effort is capped at high. top_p must be 0.99; when omitted, the default (0.99) is used.\",\"Microsoft Managed Countries/Regions (except Belarus and Russia) US (Hosted on Azure for Data Zone Standard)\"],\"heading\":\"Foundry Models from partners and community / Anthropic / Subscription type and region support\"}",
     "table: {\"cells\":[\"claude-sonnet-4-5\",\"1\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
     "table: {\"cells\":[\"claude-sonnet-4-5\",\"1\",\"-\",\"-\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
     "table: {\"cells\":[\"claude-sonnet-4-5\",\"Messages\",\"- Input: text, image, and code - Output: text (64,000 max tokens) - Context window: 200,000 - Languages: en, fr, ar, zh, ja, ko, es, hi - Tool calling: Yes (file search and code execution) - Response formats: Text in various formats (e.g., prose, lists, Markdown tables, JSON, HTML, code in various programming languages)\",\"Microsoft Managed Countries/Regions (except Belarus and Russia)\"],\"heading\":\"Foundry Models from partners and community / Anthropic / Subscription type and region support\"}",
@@ -9880,7 +9884,7 @@
   "azure-partners": {
    "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
    "kind": "text",
-   "digest": "507e9455b178dd30ee37fbab0efb9fd422fe350e4502bf8d53b80f7c5ee92a6e",
+   "digest": "d5101cebc603054c7a5601cdd492c83f37a9a3af19b3442598ebdc1644201cd8",
    "records": [
     "notice: Microsoft Foundry Models in the model catalog comprise two main categories, namely Foundry Models sold by Azure and Foundry Models from partners and community. This article lists a selection of Foundry Models from partners and community, along with their capabilities, deployment types, and regions of availability, excluding deprecated and retired models. Most Foundry Model providers are trusted third-party organizations, partners, research labs, and community contributors.",
     "notice: To use Claude models in Microsoft Foundry, you must have a paid Azure subscription with a billing account in a country or region where Anthropic offers the models for purchase. For a list of common subscription-related errors, see Common error messages and solutions. The following subscription types are currently not supported:",
@@ -9969,6 +9973,10 @@
     "table: {\"cells\":[\"claude-opus-5-5\",\"2\",\"-\",\"-\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
     "table: {\"cells\":[\"claude-opus-5-5\",\"2\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Data Zone Standard\"}",
     "table: {\"cells\":[\"claude-opus-5-5\",\"Messages\",\"- Input: text, image, and code - Output: text, image, and code (128,000 max tokens) - Context window: 1,000,000 - Languages: en, fr, ar, zh, ja, ko, es, hi - Tool calling: Yes (file search and code execution) - Response formats: Text in various formats (e.g., prose, lists, Markdown tables, JSON, HTML, code in various programming languages) - Key parameters: top_k, temperature, and thinking={\\\"type\\\":\\\"enabled\\\"} are not supported. When thinking={\\\"type\\\":\\\"disabled\\\"}, effort is capped at high. top_p must be 0.99; when omitted, the default (0.99) is used.\",\"Microsoft Managed Countries/Regions (except Belarus and Russia) US (Hosted on Azure for Data Zone Standard)\"],\"heading\":\"Foundry Models from partners and community / Anthropic / Subscription type and region support\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"2\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"2\",\"-\",\"-\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"2\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Data Zone Standard\"}",
+    "table: {\"cells\":[\"claude-opus-5-5-fast\",\"Messages\",\"- Input: text, image, and code - Output: text, image, and code (128,000 max tokens) - Context window: 1,000,000 - Languages: en, fr, ar, zh, ja, ko, es, hi - Tool calling: Yes (file search and code execution) - Response formats: Text in various formats (e.g., prose, lists, Markdown tables, JSON, HTML, code in various programming languages) - Key parameters: top_k, temperature, and thinking={\\\"type\\\":\\\"enabled\\\"} are not supported. When thinking={\\\"type\\\":\\\"disabled\\\"}, effort is capped at high. top_p must be 0.99; when omitted, the default (0.99) is used.\",\"Microsoft Managed Countries/Regions (except Belarus and Russia) US (Hosted on Azure for Data Zone Standard)\"],\"heading\":\"Foundry Models from partners and community / Anthropic / Subscription type and region support\"}",
     "table: {\"cells\":[\"claude-sonnet-4-5\",\"1\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
     "table: {\"cells\":[\"claude-sonnet-4-5\",\"1\",\"-\",\"-\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\"],\"heading\":\"Foundry Models from partners and community / Region availability by deployment type / Global standard\"}",
     "table: {\"cells\":[\"claude-sonnet-4-5\",\"Messages\",\"- Input: text, image, and code - Output: text (64,000 max tokens) - Context window: 200,000 - Languages: en, fr, ar, zh, ja, ko, es, hi - Tool calling: Yes (file search and code execution) - Response formats: Text in various formats (e.g., prose, lists, Markdown tables, JSON, HTML, code in various programming languages)\",\"Microsoft Managed Countries/Regions (except Belarus and Russia)\"],\"heading\":\"Foundry Models from partners and community / Anthropic / Subscription type and region support\"}",
@@ -12439,13 +12447,14 @@
   "fireworks-us": {
    "url": "https://docs.fireworks.ai/serverless/us-only-serverless",
    "kind": "text",
-   "digest": "3230ac333c932c37c4c030bd48b9086e2b6d24bf5fa389d9c09be4bf470cf759",
+   "digest": "fbf150e2b0817ba2ccaf786a03dd8694722f5acd89d3853dd2fbde211bcf7160",
    "records": [
     "table: {\"cells\":[\"DeepSeek V4.1 Flash\",\"accounts/fireworks/routers/deepseek-v4p1-flash-us\"],\"heading\":\"​ Available models\"}",
     "table: {\"cells\":[\"GLM 5.3 Flash\",\"accounts/fireworks/routers/glm-5p3-flash-us\"],\"heading\":\"​ Available models\"}",
     "table: {\"cells\":[\"GLM 5.3\",\"accounts/fireworks/routers/glm-5p3-us\"],\"heading\":\"​ Available models\"}",
     "table: {\"cells\":[\"Kimi K3\",\"accounts/fireworks/routers/kimi-k3-us\"],\"heading\":\"​ Available models\"}",
     "table: {\"cells\":[\"Model\",\"model ID\"],\"heading\":\"​ Available models\"}",
+    "table: {\"cells\":[\"Muse Spark Open\",\"accounts/fireworks/models/muse-spark-open\"],\"heading\":\"​ Available models\"}",
     "text: Documentation Index Fetch the complete documentation index at: /llms.txt Use this file to discover all available pages before exploring further.",
     "text: Fetch the complete documentation index at: /llms.txt",
     "text: Use this file to discover all available pages before exploring further.",
@@ -15478,7 +15487,7 @@
   "vertex-pricing": {
    "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
    "kind": "tables",
-   "digest": "7ed22a880182630c3acd9bcf15f6d3925310eebb1cbd89082bb45775f0244640",
+   "digest": "31f41c33e595708c0b0395641f0f92c5dd27a41e5fabb46a7c1a6d8109677624",
    "records": [
     "notice: * Available at no charge until Oct 16, 2026.",
     "notice: * Gemini models are available in batch mode at 50% discount.",
@@ -16133,7 +16142,7 @@
     "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"\",\"Non-global\",\"$2.97\",\"$2.97\",\"$0.297\",\"$0.297\"],\"heading\":\"Google models / Gemini 3\"}",
     "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"\",\"Non-global\",\"$4.125\",\"$4.125\",\"N/A\",\"N/A\"],\"heading\":\"Google models / Gemini 3\"}",
     "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"\",\"Non-global\",\"$8.25\",\"$8.25\",\"N/A\",\"N/A\"],\"heading\":\"Google models / Gemini 3\"}",
-    "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"Cache tokens\",\"$0.15\",\"$0.15\"],\"heading\":\"Google models / CodeMender\"}",
+    "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"Cached tokens\",\"$0.15\",\"$0.15\"],\"heading\":\"Google models / CodeMender\"}",
     "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"Input (text, image, video, audio)\",\"Global\",\"$0.75\",\"$0.75\",\"$0.075\",\"$0.075\"],\"heading\":\"Google models / Gemini 3\"}",
     "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"Input (text, image, video, audio)\",\"Global\",\"$1.50\",\"$1.50\",\"$0.15\",\"$0.15\"],\"heading\":\"Google models / Gemini 3\"}",
     "table: {\"cells\":[\"Gemini 3.8 Flash Cyber\",\"Input (text, image, video, audio)\",\"Global\",\"$2.70\",\"$2.70\",\"$0.27\",\"$0.27\"],\"heading\":\"Google models / Gemini 3\"}",
