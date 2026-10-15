@@ -7294,21 +7294,78 @@
           }
         },
         "gcloud": {
-          "alt": {
-            "name": "DeepSeek V3.2",
-            "in": 0.56,
-            "out": 1.68
-          },
-          "note": "No DeepSeek V4 on Vertex MaaS.",
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
           "src": "vertex",
-          "status": "unavailable",
-          "model_id": null,
-          "model_match": "unverified",
+          "tier": "Global · no-charge introduction",
+          "model_id": "deepseek-v4.1-flash-maas",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-15",
+          "availability_checked_at": "2026-10-15",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-09-28",
-          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
+          "model_match": "confirmed",
+          "model_id_source": "gcp_deepseek",
+          "model_id_checked_at": "2026-10-15",
+          "endpoint": "Global",
+          "promotion": {
+            "ends_on": "2026-10-16",
+            "label": "Available at no charge until Oct 16, 2026",
+            "after": {
+              "in": 0.3,
+              "out": 1.2,
+              "cache_read": 0.03,
+              "tier": "Global · Standard"
+            }
+          },
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+          "endpoints": {
+            "checked_at": "2026-10-15",
+            "src": [
+              "vertex",
+              "gcp_deepseek"
+            ],
+            "regions": [
+              [
+                "Global",
+                "global",
+                "Global",
+                "Managed API global endpoint; no single-region residency listed"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No single-region Hong Kong endpoint listed"
+            ],
+            "tw": [
+              "none",
+              "No single-region Taiwan endpoint listed"
+            ],
+            "notes": [
+              [
+                "Version",
+                "DeepSeek-V4.1-Flash managed API; text and image input, up to 1M context."
+              ],
+              [
+                "Billing",
+                "USD per million tokens: input $0.30, output $1.20, cache hits $0.03 after the no-charge introduction ending 16 Oct 2026. No separate context price band is listed."
+              ],
+              [
+                "Caching",
+                "Cache-write and storage charges are not listed and remain unverified."
+              ],
+              [
+                "Tiers",
+                "Only the published managed-API on-demand rates are modeled; no Batch or Priority rates are listed for V4.1 Flash."
+              ]
+            ],
+            "ids": [
+              "deepseek-v4.1-flash-maas (managed API model name)"
+            ],
+            "cache_write": "not-listed"
+          }
         },
         "fireworks": {
           "in": 0.3,

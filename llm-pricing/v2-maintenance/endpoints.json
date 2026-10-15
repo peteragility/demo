@@ -10195,6 +10195,72 @@
     "FW-DeepSeek-V4.1-Flash (Fireworks on Foundry model ID)",
     "Meters: 'FW DS-V4.1-Flash Gl Inp|Cd Inp|Opt' (Azure Fireworks Models)"
    ]
+  },
+  "gcloud": {
+   "checked_at": "2026-10-15",
+   "offer": {
+    "in": 0,
+    "out": 0,
+    "cache_read": 0,
+    "src": "vertex",
+    "tier": "Global · no-charge introduction",
+    "model_id": "deepseek-v4.1-flash-maas",
+    "model_id_source": "gcp_deepseek",
+    "model_id_checked_at": "2026-10-15",
+    "endpoint": "Global",
+    "promotion": {
+     "ends_on": "2026-10-16",
+     "label": "Available at no charge until Oct 16, 2026",
+     "after": {
+      "in": 0.3,
+      "out": 1.2,
+      "cache_read": 0.03,
+      "tier": "Global · Standard"
+     }
+    }
+   },
+   "src": [
+    "vertex",
+    "gcp_deepseek"
+   ],
+   "regions": [
+    [
+     "Global",
+     "global",
+     "Global",
+     "Managed API global endpoint; no single-region residency listed"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No single-region Hong Kong endpoint listed"
+   ],
+   "tw": [
+    "none",
+    "No single-region Taiwan endpoint listed"
+   ],
+   "cache_write": "not-listed",
+   "notes": [
+    [
+     "Version",
+     "DeepSeek-V4.1-Flash managed API; text and image input, up to 1M context."
+    ],
+    [
+     "Billing",
+     "USD per million tokens: input $0.30, output $1.20, cache hits $0.03 after the no-charge introduction ending 16 Oct 2026. No separate context price band is listed."
+    ],
+    [
+     "Caching",
+     "Cache-write and storage charges are not listed and remain unverified."
+    ],
+    [
+     "Tiers",
+     "Only the published managed-API on-demand rates are modeled; no Batch or Priority rates are listed for V4.1 Flash."
+    ]
+   ],
+   "ids": [
+    "deepseek-v4.1-flash-maas (managed API model name)"
+   ]
   }
  },
  "qwen/qwen3.8-max": {

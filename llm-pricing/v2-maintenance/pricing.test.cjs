@@ -289,3 +289,14 @@ test('invalid volumes, cache percentages, dates and DBU rates are rejected', () 
   }
 });
 
+
+test('Google DeepSeek V4.1 Flash introduction switches to its own verified list prices', () => {
+  const c = published.models['deepseek/deepseek-v4.1-flash'].platforms.gcloud;
+  const free = M.calculate(c, {asOf: '2026-10-16', inputM: 3, outputM: 1, cacheHit: 50});
+  const paid = M.calculate(c, {asOf: '2026-10-17', inputM: 3, outputM: 1, cacheHit: 50});
+  close(free.total, 0);
+  close(paid.total, 1.695);
+  assert.equal(paid.offer.model_id, 'deepseek-v4.1-flash-maas');
+  assert.equal(c.endpoints.cache_write, 'not-listed');
+  assert.equal(M.calculate(c, {asOf: '2026-10-17', writeM: 1}).complete, false);
+});

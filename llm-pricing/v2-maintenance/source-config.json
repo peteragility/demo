@@ -111,5 +111,6 @@
   {"id": "aws-card-glm-5-3", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-zai-glm-5-3.html", "kind": "text", "cache_file": "aws-card-glm-5-3.html", "meta": ["aws_card_glm_5_3"], "models": ["zai/glm-5.3"]},
   {"id": "aws-pricing-page", "url": "https://aws.amazon.com/bedrock/pricing/", "kind": "tables", "cache_file": "aws-pricing-page.html", "meta": ["aws_pricing_page"]},
   {"id": "gcp-gemini-4-argon", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon", "kind": "text", "cache_file": "gcp_gemini_4_argon.html", "meta": ["gcp_gemini_4_argon"], "models": ["google/gemini-4-argon"]},
-  {"id": "api-google-gemini-4-argon", "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon", "kind": "text", "cache_file": "api_google_gemini_4_argon.html", "meta": ["api_google_gemini_4_argon"], "models": ["google/gemini-4-argon"]}
+  {"id": "api-google-gemini-4-argon", "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon", "kind": "text", "cache_file": "api_google_gemini_4_argon.html", "meta": ["api_google_gemini_4_argon"], "models": ["google/gemini-4-argon"]},
+  {"id": "gcp-deepseek-v4-1-flash", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/maas/deepseek", "kind": "text", "cache_file": "gcp_deepseek_v4_1_flash.html", "meta": ["gcp_deepseek"], "models": ["deepseek/deepseek-v4.1-flash"]}
 ]
