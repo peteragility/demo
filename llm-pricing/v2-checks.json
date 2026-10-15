@@ -123,10 +123,10 @@
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-16",
-  "last_successful_read": "2026-10-15",
-  "source": "https://arena.ai/leaderboard/",
+  "last_successful_read": "2026-10-16",
+  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
   "board_id": "webdev",
-  "error": "Official dataset: Official WebDev export is stale or future-dated: 2026-10-13; Arena website: HTTP Error 403: Forbidden"
+  "published_at": "2026-10-13"
  },
  "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
