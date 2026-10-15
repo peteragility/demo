@@ -49,9 +49,9 @@ class RankingTests(unittest.TestCase):
         self.assertEqual(entries[29]["modelDisplayName"], "Kimi K3")
         self.assertIn("offset=50", read.call_args_list[1].args[0])
 
-    def test_stale_future_partial_or_ambiguous_exports_are_rejected(self):
+    def test_future_invalid_partial_or_ambiguous_exports_are_rejected(self):
         valid = dataset_page()
-        bad = [dataset_page(published="2026-10-11"), dataset_page(published="2026-10-15"),
+        bad = [dataset_page(published="not-a-date"), dataset_page(published="2026-10-15"),
                dataset_page(category="coding"), dict(valid, partial=True), []]
         mixed = copy.deepcopy(valid); mixed["rows"][0]["row"]["leaderboard_publish_date"] = "2026-10-12"; bad.append(mixed)
         truncated = copy.deepcopy(valid); truncated["rows"][0]["truncated_cells"] = ["model_name"]; bad.append(truncated)
@@ -64,6 +64,29 @@ class RankingTests(unittest.TestCase):
         wrong = dict(CONFIG, dataset_source=CONFIG["dataset_source"].replace("config=webdev", "config=agent"))
         with self.assertRaisesRegex(ValueError, "Unexpected official"):
             ranking.dataset_entries(wrong, "2026-10-14")
+
+    def test_latest_publication_does_not_expire_between_publisher_updates(self):
+        # Arena's live WebDev page and latest export both still published Oct 13
+        # on Oct 16. A successful daily read must not become an outage on day 3.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target, observed, unpriced = [root/n for n in ("ranking.json", "observed.json", "unpriced.json")]
+            entries = [entry(n, "Kimi K3" if n == 30 else f"Unpriced model {n}") for n in range(1, 51)]
+            previous, _ = ranking.build_entries(CONFIG, entries, "2026-10-14")
+            target.write_text(json.dumps(previous))
+            observed.write_text(json.dumps(dict(board_id="webdev", published_at="2026-10-13",
+                                               checked_at="2026-10-15", entries=entries)))
+            with patch.object(ranking, "TARGET", target), patch.object(ranking, "OBSERVED", observed), patch.object(
+                ranking, "read_url", return_value=json.dumps(dataset_page())) as read, patch.object(ranking.sys, "argv", [
+                    "update-ranking.py", "--unpriced", str(unpriced), "--as-of", "2026-10-16"]), redirect_stdout(io.StringIO()):
+                ranking.main()
+            self.assertEqual(read.call_count, 1, "A valid latest export does not require the blocked website")
+            status = json.loads(unpriced.read_text())
+            self.assertNotIn("error", status)
+            self.assertEqual(status["published_at"], "2026-10-13")
+            self.assertEqual(status["last_successful_read"], "2026-10-16")
+            self.assertEqual(json.loads(observed.read_text())["checked_at"], "2026-10-16")
+            self.assertEqual(json.loads(target.read_text()), previous, "Unchanged ranks retain their order-change date")
 
     def test_export_restores_fresh_discovery_without_using_blocked_website(self):
         with tempfile.TemporaryDirectory() as tmp:

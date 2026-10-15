@@ -135,8 +135,11 @@ def dataset_entries(config, today):
         age = (dt.date.fromisoformat(today) - dt.date.fromisoformat(published)).days
     except (ValueError, TypeError) as error:
         raise ValueError("Invalid official leaderboard publication date.") from error
-    if not 0 <= age <= config.get("dataset_max_age_days", 2):
-        raise ValueError("Official WebDev export is stale or future-dated: " + published)
+    # A leaderboard publication is not a daily heartbeat. The official `latest`
+    # export can remain unchanged for several days; successful reads are dated
+    # separately in the observation. Never accept a future publication or rollback.
+    if age < 0:
+        raise ValueError("Official WebDev export is future-dated: " + published)
     # Includes the same complete, unique top-50 and model-matching checks as the website.
     build_entries(config, entries, today)
     return entries, published

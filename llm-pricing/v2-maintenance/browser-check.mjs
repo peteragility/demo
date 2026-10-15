@@ -252,7 +252,7 @@ try {
         };
       })();`})).identifier;
       await navigate('2026-10-11');
-      assert.match(await evalJS("document.querySelector('[role=status]').textContent"), /Ranking unavailable · last read 2026-10-09/);
+      assert.match(await evalJS("document.querySelector('[role=status]').textContent"), /Ranking update unavailable · showing saved order · last checked 2026-10-09/);
       assert.equal(await evalJS("Boolean(window.rankingInjection) || !!document.querySelector('[role=status] img')"), false, 'ranking error text is escaped');
       await toggle(key);
       const checked = await evalJS("document.querySelector('tr.detail .pcard.dbx .chk').textContent");
@@ -260,6 +260,20 @@ try {
       assert.match(checked, /regions checked 2026-10-11/);
       assert.doesNotMatch(checked, /verified 2026-10-11/);
       await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: probe});
+      const healthy = (await call('Page.addScriptToEvaluateOnNewDocument', {source: `(() => {
+        const originalFetch = window.fetch.bind(window);
+        window.fetch = async (...args) => {
+          const response = await originalFetch(...args);
+          if (!response.ok || !/v2-checks\\.json$/.test(String(args[0]).split('?')[0])) return response;
+          const d = await response.json();
+          d.ranking = {last_successful_read:'2026-10-16', published_at:'2026-10-13'};
+          return new Response(JSON.stringify(d), {headers:{'Content-Type':'application/json'}});
+        };
+      })();`})).identifier;
+      await navigate('2026-10-16');
+      assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /Ranking last checked 16 Oct 2026; Arena published 13 Oct 2026/);
+      assert.equal(await evalJS("Boolean(document.querySelector('.rev[role=status]'))"), false, 'an older publication is available after a successful read');
+      await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: healthy});
       // Links to the earlier v2.html address land on the default page, keeping the family tab.
       await call('Page.navigate', {url: new URL('v2.html#oss', pageURL).href});
       await waitFor("document.body && document.body.dataset.ready === 'true' && !location.pathname.endsWith('v2.html')");

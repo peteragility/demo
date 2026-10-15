@@ -515,7 +515,10 @@
     $('#verified').textContent = long(day); $('#srcDate').textContent = '· checked ' + long(day);
     if (CHECKS && CHECKS.ranking && CHECKS.ranking.error) {
       const last = CHECKS.ranking.last_successful_read || 'unknown';
-      $('#verified').insertAdjacentHTML('afterend', ` · <span class="rev" role="status" title="${esc(CHECKS.ranking.error)}">Ranking unavailable · last read ${esc(last)}</span>`);
+      $('#verified').insertAdjacentHTML('afterend', ` · <span class="rev" role="status" title="${esc(CHECKS.ranking.error)}">Ranking update unavailable · showing saved order · last checked ${esc(last)}</span>`);
+    } else if (CHECKS && CHECKS.ranking && CHECKS.ranking.last_successful_read) {
+      const status = CHECKS.ranking;
+      $('#rankNote').append(document.createTextNode(` Ranking last checked ${long(status.last_successful_read)}${status.published_at ? '; Arena published ' + long(status.published_at) : ''}.`));
     }
     if (CHECKS && Array.isArray(CHECKS.review) && CHECKS.review.length) {
       const n = CHECKS.review.length, link = CHECKS.issue_url ? ` href="${esc(CHECKS.issue_url)}" target="_blank" rel="noopener"` : '';
