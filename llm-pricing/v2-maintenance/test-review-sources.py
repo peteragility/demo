@@ -640,7 +640,8 @@ class SourceReviewTests(unittest.TestCase):
         rx = review.model_regex({"name": "Claude Opus 5.5"})
         for line in ["Claude Opus 5.5 | $4", "claude-opus-5-5", "Opus 5.5 (global)"]:
             self.assertTrue(rx.search(review.official.norm(line)), line)
-        for line in ["Claude Opus 5 | $5", "Claude Opus 5.5 Pro", "Claude Opus 4.5, 4.6, 5"]:
+        for line in ["Claude Opus 5 | $5", "Claude Opus 5.5 Pro", "Claude Opus 4.5, 4.6, 5",
+                     "claude-opus-5-5-fast", "Claude Opus 5.5 Fast | $8"]:
             self.assertFalse(rx.search(review.official.norm(line)), line)
         glm = review.model_regex({"name": "GLM 5.3"})
         self.assertTrue(glm.search(review.official.norm("glm-5.3 | $1.40")))
@@ -655,6 +656,32 @@ class SourceReviewTests(unittest.TestCase):
         self.assertTrue(flash.search(review.official.norm("Gemini 3.8 Flash | $0.75")))
         gemini_tts = review.model_regex({"name": "Gemini 3.8 Flash TTS"})
         self.assertTrue(gemini_tts.search(review.official.norm("Gemini 3.8 Flash TTS / Standard | $0.125")))
+
+    def test_fast_endpoint_does_not_change_base_offer_review(self):
+        row = lambda name, context: 'table: ' + review.packed({
+            "heading": "Anthropic / Subscription type and region support",
+            "cells": [name, "Messages", f"Context window: {context}"]})
+        base = row("claude-opus-5-5", "1M")
+        fast = row("claude-opus-5-5-fast", "1M")
+        config = [{"id": "azure-partners", "kind": "tables", "meta": ["azure"]}]
+        data = {"models": {"opus": {"name": "Claude Opus 5.5", "platforms": {
+            "azure_foundry": {"status": "priced", "src": "azure"}}}}}
+        baseline = {"sources": {"azure-partners": {"records": [base]}}}
+        current = {"azure-partners": {"url": "https://learn.microsoft.com/", "records": [base, fast]}}
+        today = dt.date(2026, 10, 16)
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, today)
+        self.assertEqual(changes, [])
+        self.assertEqual(cells["opus|azure_foundry"], {"verified": today.isoformat()})
+        self.assertEqual(review.general_changes(data, config, baseline, current, {}), [])
+        # The same source must still flag a real change to the base model's context.
+        current["azure-partners"]["records"] = [row("claude-opus-5-5", "2M"), fast]
+        _, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, today)
+        self.assertEqual(changes[0]["risk"], "high")
+        fast_rx = review.model_regex({"name": "Grok 4.1 Fast"})
+        self.assertTrue(fast_rx.search(review.official.norm("grok-4-1-fast | $0.20")))
+        # A service-tier heading before the base name remains monitored.
+        self.assertTrue(review.model_regex({"name": "Claude Opus 5.5"}).search(
+            review.official.norm("Fast mode pricing / Claude Opus 5.5 | $8 / MTok")))
 
     def test_an_unchanged_model_line_is_verified_today_and_a_changed_one_needs_review(self):
         config = [{"id": "prices", "url": "https://example.com", "meta": ["src"]}]
