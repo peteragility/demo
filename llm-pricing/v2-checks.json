@@ -119,238 +119,7 @@
   "api-google-gemini-4-argon": "2026-10-15",
   "gcp-deepseek-v4-1-flash": "2026-10-15"
  },
- "pending_general": [
-  {
-   "source": "vertex-pricing",
-   "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a date changed",
-   "added": [
-    "notice: * Available at no charge until Oct 16, 2026."
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens\",\"Price (/1M tokens) > 200K input tokens\",\"Price (/1M tokens) =< 100K input tokens **\",\"Price (/1M tokens) > 100K input tokens **\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}"
-   ],
-   "added_all": [
-    "notice: * Available at no charge until Oct 16, 2026."
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens\",\"Price (/1M tokens) > 200K input tokens\",\"Price (/1M tokens) =< 100K input tokens **\",\"Price (/1M tokens) > 100K input tokens **\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}"
-   ],
-   "baseline_digest": "f046c608880a38ad2e49dfe422b32df464397d0d8c00e19dc7e5a58f3155ad9b"
-  },
-  {
-   "source": "api-west-xai-pricing",
-   "url": "https://docs.x.ai/developers/pricing.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [],
-   "removed": [
-    "table: {\"cells\":[\"Speech to Speech (grok-voice-think-fast-2.0)\",\"$0.08 / min ($4.80 / hr)<br />$0.004 / text input\"],\"heading\":\"Voice Pricing\"}"
-   ],
-   "added_all": [],
-   "removed_all": [
-    "table: {\"cells\":[\"Speech to Speech (grok-voice-think-fast-2.0)\",\"$0.08 / min ($4.80 / hr)<br />$0.004 / text input\"],\"heading\":\"Voice Pricing\"}"
-   ],
-   "baseline_digest": "b5267a52a42b96448c0eaf6c7d9ea3b2a4433d293baf8fee4c5d2e3e67c3dcc2"
-  },
-  {
-   "source": "az-learn-fireworks",
-   "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/fireworks-model-catalog",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a date and a region or its availability changed",
-   "added": [
-    "notice: Customers receive 12 months' advance notice before a Fireworks PTU offering retires. The pay-per-token retirement dates in the previous section don't apply to PTU offerings.",
-    "notice: Fireworks models on Standard (pay-per-token) inference offerings have a 15-day notice period before model retirement. Monitor retirement notifications and migrate before the listed retirement date.",
-    "notice: Fireworks models support pay-per-token and provisioned throughput offerings, depending on the model. Availability and retirement dates apply separately to each offering. For current prices, see Fireworks on Foundry pricing.",
-    "notice: GA means generally available. A check mark (✅) indicates that the deployment type is currently available; a blank cell indicates that it isn't available. Retired models have no available Standard deployment type. A dash (—) indicates that a retirement date or replacement isn't specified in this table.",
-    "notice: Retirement dates in this table apply only to pay-per-token deployments. A model can remain available with provisioned throughput after its pay-per-token offering retires.",
-    "notice: The pay-per-token offering, also called pay-as-you-go, supports Global Standard and Data Zone Standard deployments. The following table lists the supported deployment types for each model and the retirement dates for pay-per-token offerings.",
-    "notice: Use this reference to compare Fireworks catalog models in Microsoft Foundry by deployment type, region availability, and retirement date. For deployment instructions, see Enable and deploy Fireworks models.",
-    "table: {\"cells\":[\"Meta\",\"FW-Muse-Glimmer-30B\",\"✅\",\"✅\",\"90\",\"45\",\"4,500\",\"99% > 50 TPS\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Provisioned throughput units (PTU)\"}",
-    "table: {\"cells\":[\"Model name\",\"Life cycle\",\"Global Standard\",\"Data Zone Standard\",\"Retirement date\",\"Replacement\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Pay-per-token\"}",
-    "table: {\"cells\":[\"Model provider\",\"Model name\",\"Global Provisioned\",\"Data Zone Provisioned\",\"Minimum deployment\",\"Scale increment\",\"Input TPM per PTU\",\"Latency target value 1\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Provisioned throughput units (PTU)\"}",
-    "table: {\"cells\":[\"PaddlePaddle\",\"FW-PaddleOCR-VL-1.6\",\"✅\",\"✅\",\"180\",\"90\",\"75,889\",\"99% > 50 TPS\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Provisioned throughput units (PTU)\"}",
-    "text: 1 Calculated as the average request latency on a per-minute basis across the month. TPS = tokens per second."
-   ],
-   "removed": [
-    "notice: Fireworks models on Standard (Per-Token) inference offerings are subject to a 15-day notice period prior to model retirement. Plan your deployments accordingly and monitor notifications for upcoming retirement dates.",
-    "table: {\"cells\":[\"Deployment fails with a quota error\",\"Use the quota request form to request added capacity for Fireworks on Foundry.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Fireworks models don't appear in the model catalog\",\"Confirm that the preview feature state shows Registered for your subscription. Verify you're working in a supported region.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Issue\",\"Resolution\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Model endpoint returns errors after deployment\",\"Confirm the deployment status shows Succeeded on the project's Deployments page. Verify you're using the correct Target URI and Key from the deployment details.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Model provider\",\"Model name\",\"Model ID\",\"Type\",\"Supported offers\",\"Description\"],\"heading\":\"Fireworks models on Microsoft Foundry / Available catalog models\"}",
-    "table: {\"cells\":[\"PaddlePaddle\",\"PaddleOCR VL 1.6\",\"FW-PaddleOCR-VL-1.6\",\"Chat completions\",\"PTU\",\"Compact vision-language model for document parsing, including OCR, tables, formulas, and charts.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Available catalog models\"}",
-    "table: {\"cells\":[\"Preview registration stays in \\\"Registering\\\" state\",\"Registration can take up to 30 minutes. Refresh the Preview features page to check the current status. If the state doesn't change after 30 minutes, try unregistering and re-registering the feature.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"\\\"Forbidden\\\" or access denied during deployment\",\"Verify that your identity has the Azure AI Developer role or higher on the Foundry project. Subscription-level roles alone aren't sufficient for deployment.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "text: A Foundry resource with a Foundry project.",
-    "text: After deployment completes, use the provided endpoint and key to send inference requests to the model. To quickly test the deployment, use the Playground in your Foundry project.",
-    "text: After deployment completes, use the provided endpoint and key to send inference requests to the model. To quickly test the deployment, use the Playground in your Foundry project. Tip To verify the deployment, navigate to your project's Deployments page and confirm the deployment Status shows Succeeded."
-   ],
-   "added_all": [
-    "notice: Customers receive 12 months' advance notice before a Fireworks PTU offering retires. The pay-per-token retirement dates in the previous section don't apply to PTU offerings.",
-    "notice: Fireworks models on Standard (pay-per-token) inference offerings have a 15-day notice period before model retirement. Monitor retirement notifications and migrate before the listed retirement date.",
-    "notice: Fireworks models support pay-per-token and provisioned throughput offerings, depending on the model. Availability and retirement dates apply separately to each offering. For current prices, see Fireworks on Foundry pricing.",
-    "notice: GA means generally available. A check mark (✅) indicates that the deployment type is currently available; a blank cell indicates that it isn't available. Retired models have no available Standard deployment type. A dash (—) indicates that a retirement date or replacement isn't specified in this table.",
-    "notice: Retirement dates in this table apply only to pay-per-token deployments. A model can remain available with provisioned throughput after its pay-per-token offering retires.",
-    "notice: The pay-per-token offering, also called pay-as-you-go, supports Global Standard and Data Zone Standard deployments. The following table lists the supported deployment types for each model and the retirement dates for pay-per-token offerings.",
-    "notice: Use this reference to compare Fireworks catalog models in Microsoft Foundry by deployment type, region availability, and retirement date. For deployment instructions, see Enable and deploy Fireworks models.",
-    "table: {\"cells\":[\"Meta\",\"FW-Muse-Glimmer-30B\",\"✅\",\"✅\",\"90\",\"45\",\"4,500\",\"99% > 50 TPS\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Provisioned throughput units (PTU)\"}",
-    "table: {\"cells\":[\"Model name\",\"Life cycle\",\"Global Standard\",\"Data Zone Standard\",\"Retirement date\",\"Replacement\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Pay-per-token\"}",
-    "table: {\"cells\":[\"Model provider\",\"Model name\",\"Global Provisioned\",\"Data Zone Provisioned\",\"Minimum deployment\",\"Scale increment\",\"Input TPM per PTU\",\"Latency target value 1\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Provisioned throughput units (PTU)\"}",
-    "table: {\"cells\":[\"PaddlePaddle\",\"FW-PaddleOCR-VL-1.6\",\"✅\",\"✅\",\"180\",\"90\",\"75,889\",\"99% > 50 TPS\"],\"heading\":\"Fireworks model catalog, deployment types, and regions in Microsoft Foundry / Provisioned throughput units (PTU)\"}",
-    "text: 1 Calculated as the average request latency on a per-minute basis across the month. TPS = tokens per second.",
-    "text: Central US (centralus).",
-    "text: Customers receive 12 months' advance notice before a Fireworks PTU offering retires. The pay-per-token retirement dates in the previous section don't apply to PTU offerings.",
-    "text: Data Zone Standard and Data Zone Provisioned currently support only the US data zone. These deployments are available in the following Azure regions:",
-    "text: East US 2 (eastus2).",
-    "text: Fireworks models on Standard (pay-per-token) inference offerings have a 15-day notice period before model retirement. Monitor retirement notifications and migrate before the listed retirement date.",
-    "text: Fireworks models support pay-per-token and provisioned throughput offerings, depending on the model. Availability and retirement dates apply separately to each offering. For current prices, see Fireworks on Foundry pricing.",
-    "text: For quota and rate-limit information, see Fireworks quotas and rate limits. For data handling and compliance information, see Fireworks privacy and compliance FAQ.",
-    "text: GA means generally available. A check mark (✅) indicates that the deployment type is currently available; a blank cell indicates that it isn't available. Retired models have no available Standard deployment type. A dash (—) indicates that a retirement date or replacement isn't specified in this table.",
-    "text: Global Provisioned deployments of custom models have the same region availability as catalog models.",
-    "text: Global Standard and Global Provisioned deployments are available in all global Azure regions, except Azure Government cloud environments.",
-    "text: Last updated on 2026-10-14",
-    "text: Minimum PTU counts and scale increments vary by model. For some base models, Global Provisioned optimizations reduce these requirements. These optimizations apply only to base models.",
-    "text: Minimum deployment and scale increment are measured in PTUs. Input TPM per PTU is the number of input tokens per minute supported by one PTU. For parameter definitions and workload sizing guidance, see Determine PTU sizing for a workload.",
-    "text: Model availability varies by deployment type. Check the model tables below before selecting a region.",
-    "text: North Central US (northcentralus).",
-    "text: Retirement dates in this table apply only to pay-per-token deployments. A model can remain available with provisioned throughput after its pay-per-token offering retires.",
-    "text: South Central US (southcentralus).",
-    "text: The pay-per-token offering, also called pay-as-you-go, supports Global Standard and Data Zone Standard deployments. The following table lists the supported deployment types for each model and the retirement dates for pay-per-token offerings.",
-    "text: The table lists supported deployment types and default parameters, with one row per model. A check mark (✅) indicates that the deployment type is available; a blank cell indicates that it isn't available.",
-    "text: To estimate capacity for your traffic pattern, use the guidance and calculator in Determine PTU sizing for a workload. Benchmark your deployment with representative traffic before selecting its final size.",
-    "text: Use this reference to compare Fireworks catalog models in Microsoft Foundry by deployment type, region availability, and retirement date. For deployment instructions, see Enable and deploy Fireworks models.",
-    "text: West US 3 (westus3)."
-   ],
-   "removed_all": [
-    "notice: Fireworks models on Standard (Per-Token) inference offerings are subject to a 15-day notice period prior to model retirement. Plan your deployments accordingly and monitor notifications for upcoming retirement dates.",
-    "table: {\"cells\":[\"Deployment fails with a quota error\",\"Use the quota request form to request added capacity for Fireworks on Foundry.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Fireworks models don't appear in the model catalog\",\"Confirm that the preview feature state shows Registered for your subscription. Verify you're working in a supported region.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Issue\",\"Resolution\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Model endpoint returns errors after deployment\",\"Confirm the deployment status shows Succeeded on the project's Deployments page. Verify you're using the correct Target URI and Key from the deployment details.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"Model provider\",\"Model name\",\"Model ID\",\"Type\",\"Supported offers\",\"Description\"],\"heading\":\"Fireworks models on Microsoft Foundry / Available catalog models\"}",
-    "table: {\"cells\":[\"PaddlePaddle\",\"PaddleOCR VL 1.6\",\"FW-PaddleOCR-VL-1.6\",\"Chat completions\",\"PTU\",\"Compact vision-language model for document parsing, including OCR, tables, formulas, and charts.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Available catalog models\"}",
-    "table: {\"cells\":[\"Preview registration stays in \\\"Registering\\\" state\",\"Registration can take up to 30 minutes. Refresh the Preview features page to check the current status. If the state doesn't change after 30 minutes, try unregistering and re-registering the feature.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "table: {\"cells\":[\"\\\"Forbidden\\\" or access denied during deployment\",\"Verify that your identity has the Azure AI Developer role or higher on the Foundry project. Subscription-level roles alone aren't sufficient for deployment.\"],\"heading\":\"Fireworks models on Microsoft Foundry / Troubleshoot Fireworks on Foundry\"}",
-    "text: A Foundry resource with a Foundry project.",
-    "text: After deployment completes, use the provided endpoint and key to send inference requests to the model. To quickly test the deployment, use the Playground in your Foundry project.",
-    "text: After deployment completes, use the provided endpoint and key to send inference requests to the model. To quickly test the deployment, use the Playground in your Foundry project. Tip To verify the deployment, navigate to your project's Deployments page and confirm the deployment Status shows Succeeded.",
-    "text: After the feature is enabled, you can deploy Fireworks models from the Foundry model catalog. Complete these steps to get a live endpoint for chat completions. Browse available models in the Available catalog models section, or import your own custom model.",
-    "text: All catalog models support the OpenAI/v1 API for Chat Completions API and the Foundry SDK and endpoint for accessing the Responses API.",
-    "text: All customers can submit a quota increase request for more quota.",
-    "text: All of these capabilities are available directly within your Foundry project, with Azure governance, access controls, and project management built in.",
-    "text: An Azure identity with the Subscription Owner or Subscription Contributor role to enable the feature.",
-    "text: An Azure subscription. If you don't have one, create a free account.",
-    "text: Azure built-in roles",
-    "text: Azure preview features",
-    "text: CLI-first workflow. The import process uses the Azure Developer CLI (azd). The Foundry portal supports registering, viewing, and deploying models after upload.",
-    "text: Central US (centralus)",
-    "text: Custom model import uses a CLI-first workflow with the Azure Developer CLI. For step-by-step instructions, see Import custom models into Foundry.",
-    "text: Custom models must be based on one of the following supported architectures:",
-    "text: Customers are solely responsible for assessing the suitability of any model for their intended use, including performing any required safety, compliance, and Responsible AI evaluations, before deploying models in production or customer-facing applications.",
-    "text: Data Zone Standard and Data Zone Provisioned deployments of models via Fireworks on Foundry are available in the following Azure regions:",
-    "text: Deploy Foundry Models in the portal",
-    "text: Deploy fine-tuned models with Fireworks on Foundry (preview)",
-    "text: Deployment name: Keep the default name or enter a custom name to identify the deployment.",
-    "text: Experiment with the latest open-source models often before they're available directly from Azure.",
-    "text: FedRAMP isn't achieved for Fireworks on Foundry. If your organization requires FedRAMP, before use, consult with your Authorization Official to determine if use of Fireworks on Foundry is allowed.",
-    "text: Fine-tuning overview",
-    "text: Fireworks AI Trust Center",
-    "text: Fireworks Agents and Agent Builder workflows aren't currently supported.",
-    "text: Fireworks can be disabled at the Azure subscription level. Follow the steps to unregister preview features in your Azure subscription.",
-    "text: Fireworks directly enforces adaptive rate limits within your quota. Your effective limits can be lower than the full quota and adjust automatically as your usage grows.",
-    "text: Fireworks models deployed through Foundry support both pay-per-token and provisioned throughput offers.",
-    "text: Fireworks models on Standard (Per-Token) inference offerings are subject to a 15-day notice period prior to model retirement. Plan your deployments accordingly and monitor notifications for upcoming retirement dates.",
-    "text: Fireworks on Foundry allows customers to deploy and operate third-party and open-weight AI models using Microsoft Foundry platform services.",
-    "text: Fireworks on Foundry is currently excluded from EU Data Boundary commitments.",
-    "text: For more information, see Prompt caching in the Fireworks AI documentation.",
-    "text: For other queries, see the frequently asked questions section.",
-    "text: For pay-per-token deployments, Global Standard and Data Zone Standard have separate quota pools. Enterprise customers have a default quota of 10 million tokens per minute (TPM) per region, per subscription, in each pool. Each pool is shared across all Fireworks models, and you can allocate quota to individual model deployments.",
-    "text: For step-by-step instructions, see Import custom models into Foundry.",
-    "text: Foundry Models from partners and community",
-    "text: Foundry model catalog overview",
-    "text: Foundry provides the tools and best practices for performing your own risk and safety evaluations of models.",
-    "text: From the left menu, under Settings, select Preview features.",
-    "text: From the portal homepage, select Discover in the upper-right navigation.",
-    "text: Global Provisioned throughput deployments of base and custom models are available in all global Azure regions except for Azure Government cloud environments. All catalog models that support Global Provisioned throughput also support Data Zone Provisioned throughput.",
-    "text: Guardrails: Select DefaultV2 or Default guardrail configuration. Models use the Microsoft.DefaultV2 guardrail unless a different one is specified. For more information, see Use guardrails to set boundaries on model outputs.",
-    "text: If you don't agree to the terms, select Close and don't continue. Otherwise, select Register.",
-    "text: Import and deploy custom model weights (bring your own model, or BYOM) onto Fireworks' on-demand GPU-backed infrastructure. For more information, see Import custom models on Microsoft Foundry with Fireworks.",
-    "text: Import custom models into Foundry",
-    "text: In addition to the catalog models, Fireworks on Foundry supports importing and deploying your own custom model weights. This BYOM capability lets you run proprietary or fine-tuned open-weight models within the Foundry ecosystem, with inference provided by the optimized Fireworks cloud.",
-    "text: In the deployment window, configure the following settings:",
-    "text: In the left pane, select Models to open the Model catalog.",
-    "text: In the search box, enter subscriptions and select Subscriptions.",
-    "text: Kimi (K2, K2.5, K2.6)",
-    "text: Last updated on 2026-10-01",
-    "text: LoRA support is in public preview. See import custom Fireworks models for details. For compatible adapters trained in Foundry, see Deploy fine-tuned models with Fireworks on Foundry (preview); use the import guide for adapters trained elsewhere.",
-    "text: Microsoft doesn't develop, train, fine-tune, or evaluate the safety, security, or Responsible AI characteristics of models deployed through Fireworks on Foundry.",
-    "text: Microsoft makes no representations regarding the behavior, performance, or risk profile of these models.",
-    "text: Model version settings: Select the model version for the deployment.",
-    "text: No, currently the Fireworks on Foundry service isn't available for Azure Government cloud users.",
-    "text: No, you need to create new deployments in Foundry. If you'd like to shift consumption to Azure, contact your Fireworks account team to assist.",
-    "text: North Central US (northcentralus)",
-    "text: On the model page, select Deploy. For more information on deployment options, see Deploy Foundry Models in the portal.",
-    "text: Payment Card Industry (PCI) Data Security Standard (DSS) isn't applicable to Fireworks on Foundry. You shouldn't use Fireworks on Foundry to store, process, or transmit payment and cardholder data.",
-    "text: Prompt caching reuses processing for requests that share the same prompt prefix. To improve the prompt cache hit rate, set a stable identifier for each user or session, and reuse the same value for related requests. Use one of these options:",
-    "text: Provisioned throughput concepts",
-    "text: Ramp up traffic gradually, and use exponential backoff when retrying HTTP 429 (Too Many Requests) responses. For more information, see Fireworks adaptive rate limits.",
-    "text: Review the terms provided in the Description and the data privacy section in this documentation.",
-    "text: Scale up using Provisioned throughput.",
-    "text: Search for and select the Fireworks.EnableDeploy preview feature.",
-    "text: Select Deploy. The deployment process can take up to 30 minutes.",
-    "text: Select OK. The Preview features screen refreshes and the preview feature's State is displayed. It might take up to 30 minutes for the feature to enable for your subscription.",
-    "text: Select OK. The Preview features screen refreshes and the preview feature's State is displayed. It might take up to 30 minutes for the feature to enable for your subscription. Tip To verify registration, refresh the Preview features page and confirm the State column shows Registered for the Fireworks on Foundry feature.",
-    "text: Select the link for your subscription's name.",
-    "text: Select your desired Fireworks model to view its details on the model page:",
-    "text: Set the prompt_cache_key request parameter. This parameter takes priority over user when both are present.",
-    "text: Set the user request parameter.",
-    "text: Set the x-session-affinity HTTP header.",
-    "text: Sign in to the Azure portal.",
-    "text: The Foundry RBAC roles were recently renamed. Foundry User, Foundry Owner, Foundry Account Owner, and Foundry Project Manager were previously named Azure AI User, Azure AI Owner, Azure AI Account Owner, and Azure AI Project Manager. You might still see the previous names in some places while the rename rolls out. The role IDs and core permissions are unchanged by the rename.",
-    "text: The Responses API is supported via the Foundry Projects API and SDK. Make sure to point your client to your project's API endpoint or use the Foundry SDK.",
-    "text: The following Fireworks models are available in the Foundry model catalog. In the Supported offers column, PTU includes both Global Provisioned throughput and Data Zone Provisioned throughput.",
-    "text: Through integration with Fireworks AI, Microsoft Foundry customers can:",
-    "text: To deploy models, you need the Foundry Owner role on the Foundry project. For more information, see Azure built-in roles.",
-    "text: To deploy models, you need the Foundry Owner role on the Foundry project. For more information, see Azure built-in roles. Important The Foundry RBAC roles were recently renamed. Foundry User, Foundry Owner, Foundry Account Owner, and Foundry Project Manager were previously named Azure AI User, Azure AI Owner, Azure AI Account Owner, and Azure AI Project Manager. You might still see the previous names in some places while the rename rolls out. The role IDs and core permissions are unchanged by the rename.",
-    "text: To verify registration, refresh the Preview features page and confirm the State column shows Registered for the Fireworks on Foundry feature.",
-    "text: To verify the deployment, navigate to your project's Deployments page and confirm the deployment Status shows Succeeded.",
-    "text: Token Plan: Select Pay-per-token -> Datazone Standard or Global Standard, depending on the model, or Provisioned Throughput -> Datazone or Global. For more information, see Deployment types.",
-    "text: Tokens per Minute Rate Limit: Set a custom tokens-per-minute limit to manage costs and control usage. For pay-per-token deployments, see Quotas and rate limits.",
-    "text: Use the following guidance to resolve common issues with Fireworks on Foundry.",
-    "text: Use the quota request form to request added quota for Fireworks on Foundry.",
-    "text: When you use Fireworks on Foundry, data is shared between Microsoft and Fireworks AI, and different compliance and data handling rules will apply. See below for details. Customers are responsible for evaluating whether data sharing between Microsoft and Fireworks is appropriate for their organizations compliance requirements.",
-    "text: While Fireworks on Foundry is generally available, an administrator must enable the service within your Azure subscription. The Azure Preview features portal enables customers to turn on the service by using the following steps."
-   ],
-   "baseline_digest": "810f2577a1fddf3d0df0f617dcf86a82809a5ef24acae2c0a4152f41cda20ae8"
-  },
-  {
-   "source": "az-learn-regions",
-   "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure-region-availability",
-   "risk": "high",
-   "reason": "a date changed",
-   "added": [
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-chat-latest\",\"2026-10-07\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "77ae1f2460e63240c4e3197e2103e1437509220c4f1fb0961302ef5d29a9c401"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-15",
@@ -359,16 +128,7 @@
   "board_id": "webdev",
   "published_at": "2026-10-13"
  },
- "review": [
-  "Claude Haiku 5.5 · gcloud",
-  "Gemini 3.8 Flash · gcloud",
-  "Gemini 3.8 Flash · official",
-  "Gemini 4 Argon · gcloud",
-  "Gemini 4 Argon · official",
-  "Kimi K3 · azure_foundry",
-  "GLM 5.2 · azure_foundry",
-  "GLM 5.3 · azure_foundry"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -387,10 +147,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-fable-5.1|official": {
    "verified": "2026-10-15"
@@ -411,10 +168,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-fable-5|official": {
    "verified": "2026-10-15"
@@ -435,10 +189,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-haiku-4.5|official": {
    "verified": "2026-10-15"
@@ -459,14 +210,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-haiku-5.5|official": {
    "verified": "2026-10-15"
@@ -487,10 +231,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-opus-4.6|official": {
    "verified": "2026-10-15"
@@ -511,10 +252,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-opus-4.7|official": {
    "verified": "2026-10-15"
@@ -535,10 +273,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-opus-4.8|official": {
    "verified": "2026-10-15"
@@ -559,10 +294,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-opus-5.5|official": {
    "verified": "2026-10-15"
@@ -583,10 +315,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-opus-5|official": {
    "verified": "2026-10-15"
@@ -607,10 +336,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-sonnet-4.6|official": {
    "verified": "2026-10-15"
@@ -631,10 +357,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-sonnet-5.5|official": {
    "verified": "2026-10-15"
@@ -655,10 +378,7 @@
    "verified": "2026-10-15"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "anthropic/claude-sonnet-5|official": {
    "verified": "2026-10-15"
@@ -679,10 +399,7 @@
    "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4-flash|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4-flash|official": {
    "verified": "2026-10-15"
@@ -691,11 +408,7 @@
    "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "az-learn-fireworks",
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-10-15"
@@ -707,10 +420,7 @@
    "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4-pro|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4-pro|official": {
    "verified": "2026-10-15"
@@ -719,15 +429,7 @@
    "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-10-15",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
    "verified": "2026-10-15"
@@ -739,16 +441,7 @@
    "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-10-15",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "gcp-deepseek-v4-1-flash",
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "deepseek/deepseek-v4.1-flash|official": {
    "verified": "2026-10-15"
@@ -769,10 +462,7 @@
    "verified": "2026-10-15"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.1-flash-lite|official": {
    "verified": "2026-10-15"
@@ -793,16 +483,10 @@
    "verified": "2026-10-15"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
    "verified": "2026-10-15"
@@ -820,17 +504,10 @@
    "verified": "2026-10-15"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.6-flash|alicloud": {
    "verified": "2026-10-15"
@@ -848,10 +525,7 @@
    "verified": "2026-10-15"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.6-flash|official": {
    "verified": "2026-10-15"
@@ -872,16 +546,10 @@
    "verified": "2026-10-15"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.8-flash|alicloud": {
    "verified": "2026-10-15"
@@ -899,21 +567,10 @@
    "verified": "2026-10-15"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-15",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "gcp-gemini-3-8-flash"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-4-argon|alicloud": {
    "verified": "2026-10-15"
@@ -931,22 +588,10 @@
    "verified": "2026-10-15"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "gcp-gemini-4-argon",
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-10-15"
@@ -961,10 +606,7 @@
    "verified": "2026-10-15"
   },
   "google/gemma-3-12b|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "meta/llama-3.1-8b|alicloud": {
    "verified": "2026-10-15"
@@ -979,10 +621,7 @@
    "verified": "2026-10-15"
   },
   "meta/llama-3.1-8b|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "meta/llama-3.3-70b|alicloud": {
    "verified": "2026-10-15"
@@ -997,10 +636,7 @@
    "verified": "2026-10-15"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "meta/llama-4-maverick|alicloud": {
    "verified": "2026-10-15"
@@ -1015,23 +651,13 @@
    "verified": "2026-10-15"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-10-15"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-10-15"
   },
   "minimax/minimax-m3|bedrock": {
    "verified": "2026-10-15"
@@ -1043,10 +669,7 @@
    "verified": "2026-10-15"
   },
   "minimax/minimax-m3|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "minimax/minimax-m3|official": {
    "verified": "2026-10-15"
@@ -1055,10 +678,7 @@
    "verified": "2026-10-15"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "mistral/mistral-medium-3.5|bedrock": {
    "verified": "2026-10-15"
@@ -1070,10 +690,7 @@
    "verified": "2026-10-15"
   },
   "mistral/mistral-medium-3.5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "mistral/mistral-medium-3.5|official": {
    "verified": "2026-10-15"
@@ -1094,10 +711,7 @@
    "verified": "2026-10-15"
   },
   "moonshot/kimi-k2.7|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "moonshot/kimi-k2.7|official": {
    "verified": "2026-10-15"
@@ -1106,14 +720,7 @@
    "verified": "2026-10-15"
   },
   "moonshot/kimi-k3|azure_foundry": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-10-15"
   },
   "moonshot/kimi-k3|bedrock": {
    "verified": "2026-10-15"
@@ -1125,10 +732,7 @@
    "verified": "2026-10-15"
   },
   "moonshot/kimi-k3|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "moonshot/kimi-k3|official": {
    "verified": "2026-10-15"
@@ -1137,10 +741,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.4|bedrock": {
    "verified": "2026-10-15"
@@ -1152,10 +753,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.4|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.4|official": {
    "verified": "2026-10-15"
@@ -1164,10 +762,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.5|bedrock": {
    "verified": "2026-10-15"
@@ -1179,10 +774,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.5|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.5|official": {
    "verified": "2026-10-15"
@@ -1191,10 +783,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.6-luna|bedrock": {
    "verified": "2026-10-15"
@@ -1206,10 +795,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-luna|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.6-luna|official": {
    "verified": "2026-10-15"
@@ -1218,10 +804,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.6-sol|bedrock": {
    "verified": "2026-10-15"
@@ -1233,10 +816,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-sol|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.6-sol|official": {
    "verified": "2026-10-15"
@@ -1245,10 +825,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.6-terra|bedrock": {
    "verified": "2026-10-15"
@@ -1260,10 +837,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-5.6-terra|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-5.6-terra|official": {
    "verified": "2026-10-15"
@@ -1272,10 +846,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6-astra|bedrock": {
    "verified": "2026-10-15"
@@ -1287,10 +858,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-astra|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6-astra|official": {
    "verified": "2026-10-15"
@@ -1299,10 +867,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-luna|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6-luna|bedrock": {
    "verified": "2026-10-15"
@@ -1314,10 +879,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-luna|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6-luna|official": {
    "verified": "2026-10-15"
@@ -1326,10 +888,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6-sol|bedrock": {
    "verified": "2026-10-15"
@@ -1341,10 +900,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6-sol|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6-sol|official": {
    "verified": "2026-10-15"
@@ -1353,10 +909,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6.1-sol|bedrock": {
    "verified": "2026-10-15"
@@ -1368,10 +921,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-6.1-sol|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-6.1-sol|official": {
    "verified": "2026-10-15"
@@ -1392,10 +942,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-oss-120b|official": {
    "verified": "2026-10-15"
@@ -1413,10 +960,7 @@
    "verified": "2026-10-15"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "openai/gpt-oss-20b|official": {
    "verified": "2026-10-15"
@@ -1434,10 +978,7 @@
    "verified": "2026-10-15"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "qwen/qwen3-next-80b-instruct|official": {
    "verified": "2026-10-15"
@@ -1455,10 +996,7 @@
    "verified": "2026-10-15"
   },
   "qwen/qwen3.5-122b|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "qwen/qwen3.5-122b|official": {
    "verified": "2026-10-15"
@@ -1479,10 +1017,7 @@
    "verified": "2026-10-15"
   },
   "qwen/qwen3.7-max|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "qwen/qwen3.7-max|official": {
    "verified": "2026-10-15"
@@ -1503,10 +1038,7 @@
    "verified": "2026-10-15"
   },
   "qwen/qwen3.7-plus|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "qwen/qwen3.7-plus|official": {
    "verified": "2026-10-15"
@@ -1527,10 +1059,7 @@
    "verified": "2026-10-15"
   },
   "qwen/qwen3.8-27b|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "qwen/qwen3.8-27b|official": {
    "verified": "2026-10-15"
@@ -1551,10 +1080,7 @@
    "verified": "2026-10-15"
   },
   "qwen/qwen3.8-flash|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "qwen/qwen3.8-flash|official": {
    "verified": "2026-10-15"
@@ -1575,10 +1101,7 @@
    "verified": "2026-10-15"
   },
   "qwen/qwen3.8-max|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "qwen/qwen3.8-max|official": {
    "verified": "2026-10-15"
@@ -1599,10 +1122,7 @@
    "verified": "2026-10-15"
   },
   "tml/inkling|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "tml/inkling|official": {
    "verified": "2026-10-15"
@@ -1611,10 +1131,7 @@
    "verified": "2026-10-15"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-10-15",
-   "unchecked": [
-    "az-learn-regions"
-   ]
+   "verified": "2026-10-15"
   },
   "xai/grok-4.6|bedrock": {
    "verified": "2026-10-15"
@@ -1623,16 +1140,10 @@
    "verified": "2026-10-15"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "xai/grok-4.6|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "api-west-xai-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "xai/grok-4.7|alicloud": {
    "verified": "2026-10-15"
@@ -1647,29 +1158,16 @@
    "verified": "2026-10-15"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "xai/grok-4.7|official": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "api-west-xai-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "zai/glm-5.2|alicloud": {
    "verified": "2026-10-15"
   },
   "zai/glm-5.2|azure_foundry": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-10-15"
   },
   "zai/glm-5.2|bedrock": {
    "verified": "2026-10-15"
@@ -1681,10 +1179,7 @@
    "verified": "2026-10-15"
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "zai/glm-5.2|official": {
    "verified": "2026-10-15"
@@ -1693,15 +1188,7 @@
    "verified": "2026-10-15"
   },
   "zai/glm-5.3-flash|azure_foundry": {
-   "verified": "2026-10-15",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-10-15"
   },
   "zai/glm-5.3-flash|bedrock": {
    "verified": "2026-10-15"
@@ -1713,10 +1200,7 @@
    "verified": "2026-10-15"
   },
   "zai/glm-5.3-flash|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "zai/glm-5.3-flash|official": {
    "verified": "2026-10-15"
@@ -1725,14 +1209,7 @@
    "verified": "2026-10-15"
   },
   "zai/glm-5.3|azure_foundry": {
-   "verified": "2026-10-14",
-   "changed_at": "2026-10-15",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-10-15"
   },
   "zai/glm-5.3|bedrock": {
    "verified": "2026-10-15"
@@ -1744,10 +1221,7 @@
    "verified": "2026-10-15"
   },
   "zai/glm-5.3|gcloud": {
-   "verified": "2026-10-14",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-15"
   },
   "zai/glm-5.3|official": {
    "verified": "2026-10-15"
