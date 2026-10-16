@@ -234,6 +234,10 @@ def collect_one(source, cache_dir=None):
         records = markdown_records(text)
     else:
         records = html_records(text, kind)
+    # Standalone APIs billed per request do not price the modeled text-token offers.
+    excluded = set(source.get("exclude_table_headings", []))
+    records = [r for r in records if not (r.startswith("table: {") and
+               json.loads(r[len("table: "):]).get("heading", "").strip(" \u200b") in excluded)]
     if len(records) < source.get("minimum_records", 1):
         raise ValueError("Too few source records; verify the document and parser before treating it as current.")
     snapshot = dict(url=source["url"], kind=kind, digest=hashlib.sha256(packed(records).encode()).hexdigest(), records=records)
@@ -455,7 +459,8 @@ DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
 
 def rate_text(text):
     # In a cache-write label, m means minutes; elsewhere it can mean million tokens.
-    return re.sub(r"\b(\d+)\s?m\b(?=\s+cache write)", r"\1 minute", official.norm(text))
+    text = re.sub(r"(\$\s?\d[\d,]*(?:\.\d+)?)\s+usd\b", r"\1", official.norm(text))
+    return re.sub(r"\b(\d+)\s?m\b(?=\s+cache write)", r"\1 minute", text)
 
 
 def risk_tokens(line, rx):

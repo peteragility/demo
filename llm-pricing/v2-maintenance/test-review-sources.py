@@ -22,6 +22,38 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_explicit_usd_label_keeps_rates_units_and_assignments(self):
+        def row(cells):
+            return "table: " + review.packed(dict(heading="Fast mode pricing", cells=cells))
+        before = row(["Claude Opus 5.5", "$8 / MTok", "$40 / MTok"])
+        after = row(["Claude Opus 5.5", "$8 USD / MTok", "$40 USD / MTok"])
+        self.assertEqual(review.classify([before], [after], None)[0], "low")
+        for cells in (["Claude Opus 5.5", "$9 USD / MTok", "$40 USD / MTok"],
+                      ["Claude Opus 5.5", "$40 USD / MTok", "$8 USD / MTok"],
+                      ["Claude Opus 5.5", "$8 EUR / MTok", "$40 EUR / MTok"],
+                      ["Claude Opus 5.5", "$8 USD / 1K tokens", "$40 USD / 1K tokens"]):
+            self.assertEqual(review.classify([before], [row(cells)], None)[0], "high")
+
+    def test_deepseek_standalone_request_table_does_not_change_token_review(self):
+        config = json.loads((HERE / "source-config.json").read_text())
+        source = next(s for s in config if s["id"] == "deepseek-pricing")
+        def page(token_price, request_price):
+            return (f'<h2>Models &amp; Pricing</h2><h3>Model Details</h3>'
+                    f'<table><tr><td>DeepSeek-V4.1-Flash input</td><td>${token_price}</td></tr></table>'
+                    f'<h3>Search &amp; Fetch Pricing \u200b</h3>'
+                    f'<table><tr><td>Search</td><td>Per 1,000 successful requests</td><td>${request_price}</td></tr></table>')
+        snapshots = []
+        for token, request in (("0.3", "0.75"), ("0.3", "1.00"), ("0.4", "1.00")):
+            with patch.object(review, "fetch", return_value=page(token, request)):
+                snapshots.append(review.collect_one(source))
+        self.assertEqual(snapshots[0], snapshots[1])
+        self.assertEqual(len(snapshots[0]["records"]), 1)
+        self.assertEqual(review.classify(snapshots[0]["records"], snapshots[2]["records"], None)[0], "high")
+        with patch.object(review, "fetch", return_value=page("0.3", "0.75").split('<h3>Model Details</h3>')[0] +
+                          '<h3>Search &amp; Fetch Pricing</h3><table><tr><td>Search</td><td>$0.75</td></tr></table>'):
+            with self.assertRaises(ValueError):
+                review.collect_one(source)
+
     def test_region_review_preserves_an_explicit_variant_price_date(self):
         offer = dict(label="Data Zone US", **{"in": 3, "out": 15}, pricing_checked_at="2026-10-04")
         self.assertEqual(review.build_data.make_variant(offer, "2026-10-15")["pricing_checked_at"], "2026-10-04")
