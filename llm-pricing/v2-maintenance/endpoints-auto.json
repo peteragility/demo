@@ -346,13 +346,13 @@
      "APAC",
      "in-region",
      "In-region",
-     "AWS Mumbai, Sydney · Azure Central India, Australia East · GCP Mumbai"
+     "AWS Seoul, Mumbai, Singapore, Sydney · Azure Central India, Australia East · GCP Mumbai, Singapore"
     ],
     [
      "APAC",
      "global",
      "Cross-geo",
-     "AWS Tokyo, Seoul, Singapore · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central · GCP Singapore"
+     "AWS Tokyo · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central"
     ]
    ],
    "hk": [
@@ -364,7 +364,7 @@
     "No Taiwan region in Databricks' model-serving tables"
    ],
    "adi": false,
-   "changed_at": "2026-10-14"
+   "changed_at": "2026-10-17"
   },
   "anthropic/claude-opus-5.5": {
    "regions": [
@@ -484,13 +484,13 @@
      "APAC",
      "in-region",
      "In-region",
-     "AWS Mumbai · Azure Central India, Australia East · GCP Mumbai"
+     "AWS Seoul, Mumbai, Singapore · Azure Central India, Australia East · GCP Mumbai, Singapore"
     ],
     [
      "APAC",
      "global",
      "Cross-geo",
-     "AWS Tokyo, Seoul, Singapore, Sydney · Azure Japan East · GCP Singapore"
+     "AWS Tokyo, Sydney · Azure Japan East"
     ]
    ],
    "hk": [

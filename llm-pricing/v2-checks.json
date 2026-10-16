@@ -119,27 +119,7 @@
   "api-google-gemini-4-argon": "2026-10-17",
   "gcp-deepseek-v4-1-flash": "2026-10-17"
  },
- "pending_general": [
-  {
-   "source": "deepseek-pricing",
-   "url": "https://api-docs.deepseek.com/quick_start/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"API\",\"Unit\",\"Price\"],\"heading\":\"Models & Pricing / Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Fetch\",\"Per 1,000 successful requests\",\"$0.75\"],\"heading\":\"Models & Pricing / Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Search\",\"Per 1,000 successful requests\",\"$0.75\"],\"heading\":\"Models & Pricing / Search & Fetch Pricing ​\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "table: {\"cells\":[\"API\",\"Unit\",\"Price\"],\"heading\":\"Models & Pricing / Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Fetch\",\"Per 1,000 successful requests\",\"$0.75\"],\"heading\":\"Models & Pricing / Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Search\",\"Per 1,000 successful requests\",\"$0.75\"],\"heading\":\"Models & Pricing / Search & Fetch Pricing ​\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "ad3a6ad582a0389e9cdf2b8c402e3d1a830d67e8afc3b69631eff1c22602d393"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-17",
@@ -149,12 +129,10 @@
   "published_at": "2026-10-13"
  },
  "review": [
-  "Claude Opus 4.8 · azure_foundry",
-  "Claude Opus 4.8 · official",
-  "Claude Opus 5.5 · azure_foundry",
-  "Claude Opus 5.5 · official",
-  "Claude Opus 5 · azure_foundry",
-  "Claude Opus 5 · official"
+  "Gemini 3.6 Flash · gcloud",
+  "Gemini 3.7 Flash · gcloud",
+  "Gemini 3.8 Flash · gcloud",
+  "Gemini 4 Argon · gcloud"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
@@ -288,9 +266,8 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-10-16",
-   "changed_at": "2026-10-17",
-   "sources": [
+   "verified": "2026-10-17",
+   "accepted": [
     "anthropic-pricing"
    ]
   },
@@ -307,9 +284,8 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-16",
-   "changed_at": "2026-10-17",
-   "sources": [
+   "verified": "2026-10-17",
+   "accepted": [
     "anthropic-pricing",
     "api-west-anthropic-pricing"
    ]
@@ -318,9 +294,8 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-10-16",
-   "changed_at": "2026-10-17",
-   "sources": [
+   "verified": "2026-10-17",
+   "accepted": [
     "anthropic-pricing"
    ]
   },
@@ -337,9 +312,8 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-16",
-   "changed_at": "2026-10-17",
-   "sources": [
+   "verified": "2026-10-17",
+   "accepted": [
     "anthropic-pricing",
     "api-west-anthropic-pricing"
    ]
@@ -348,9 +322,8 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-10-16",
-   "changed_at": "2026-10-17",
-   "sources": [
+   "verified": "2026-10-17",
+   "accepted": [
     "anthropic-pricing"
    ]
   },
@@ -367,9 +340,8 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-16",
-   "changed_at": "2026-10-17",
-   "sources": [
+   "verified": "2026-10-17",
+   "accepted": [
     "anthropic-pricing",
     "api-west-anthropic-pricing"
    ]
@@ -456,10 +428,7 @@
    "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4-flash|official": {
-   "verified": "2026-10-16",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
    "verified": "2026-10-17"
@@ -480,10 +449,7 @@
    "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4-pro|official": {
-   "verified": "2026-10-16",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
    "verified": "2026-10-17"
@@ -504,10 +470,7 @@
    "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4.1-flash|official": {
-   "verified": "2026-10-16",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
    "verified": "2026-10-17"
@@ -546,10 +509,7 @@
    "verified": "2026-10-17"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-17",
-   "accepted": [
-    "gcp-gemini-3-1-pro"
-   ]
+   "verified": "2026-10-17"
   },
   "google/gemini-3.1-pro|official": {
    "verified": "2026-10-17"
@@ -592,8 +552,9 @@
   },
   "google/gemini-3.6-flash|gcloud": {
    "verified": "2026-10-17",
-   "accepted": [
-    "gcp-gemini-3-6-flash"
+   "changed_at": "2026-10-17",
+   "sources": [
+    "vertex-pricing"
    ]
   },
   "google/gemini-3.6-flash|official": {
@@ -616,8 +577,9 @@
   },
   "google/gemini-3.7-flash|gcloud": {
    "verified": "2026-10-17",
-   "accepted": [
-    "gcp-gemini-3-7-flash"
+   "changed_at": "2026-10-17",
+   "sources": [
+    "vertex-pricing"
    ]
   },
   "google/gemini-3.7-flash|official": {
@@ -640,8 +602,9 @@
   },
   "google/gemini-3.8-flash|gcloud": {
    "verified": "2026-10-17",
-   "accepted": [
-    "gcp-gemini-3-8-flash"
+   "changed_at": "2026-10-17",
+   "sources": [
+    "vertex-pricing"
    ]
   },
   "google/gemini-3.8-flash|official": {
@@ -664,8 +627,9 @@
   },
   "google/gemini-4-argon|gcloud": {
    "verified": "2026-10-17",
-   "accepted": [
-    "gcp-gemini-4-argon"
+   "changed_at": "2026-10-17",
+   "sources": [
+    "vertex-pricing"
    ]
   },
   "google/gemini-4-argon|official": {
@@ -1071,7 +1035,10 @@
    "verified": "2026-10-17"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-17"
+   "verified": "2026-10-17",
+   "unchecked": [
+    "dbx-models"
+   ]
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-17"
