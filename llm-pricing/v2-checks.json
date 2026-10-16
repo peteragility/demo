@@ -128,12 +128,7 @@
   "board_id": "webdev",
   "published_at": "2026-10-13"
  },
- "review": [
-  "Gemini 3.6 Flash · gcloud",
-  "Gemini 3.7 Flash · gcloud",
-  "Gemini 3.8 Flash · gcloud",
-  "Gemini 4 Argon · gcloud"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -266,10 +261,7 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-10-17",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "anthropic/claude-opus-4.8|bedrock": {
    "verified": "2026-10-17"
@@ -284,20 +276,13 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-17",
-   "accepted": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-10-17",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5.5|bedrock": {
    "verified": "2026-10-17"
@@ -312,20 +297,13 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-17",
-   "accepted": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-10-17",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5|bedrock": {
    "verified": "2026-10-17"
@@ -340,11 +318,7 @@
    "verified": "2026-10-17"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-17",
-   "accepted": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-10-17"
@@ -551,11 +525,7 @@
    "verified": "2026-10-17"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-17",
-   "changed_at": "2026-10-17",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "google/gemini-3.6-flash|official": {
    "verified": "2026-10-17"
@@ -576,11 +546,7 @@
    "verified": "2026-10-17"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-17",
-   "changed_at": "2026-10-17",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "google/gemini-3.7-flash|official": {
    "verified": "2026-10-17"
@@ -601,11 +567,7 @@
    "verified": "2026-10-17"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-17",
-   "changed_at": "2026-10-17",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "google/gemini-3.8-flash|official": {
    "verified": "2026-10-17"
@@ -626,11 +588,7 @@
    "verified": "2026-10-17"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-10-17",
-   "changed_at": "2026-10-17",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-17"
   },
   "google/gemini-4-argon|official": {
    "verified": "2026-10-17"
@@ -1035,10 +993,7 @@
    "verified": "2026-10-17"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-17",
-   "unchecked": [
-    "dbx-models"
-   ]
+   "verified": "2026-10-17"
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-17"
