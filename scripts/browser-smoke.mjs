@@ -1,16 +1,22 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {withBrowser} from './browser-kit.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const pageCount = JSON.parse(readFileSync(path.join(root,'manifest.json'),'utf8')).pages.length;
 const blockedStorage = `Object.defineProperty(window,'localStorage',{get(){throw new Error('Storage disabled for review')}});`;
 const fakeAPI = `const nativeFetch=window.fetch.bind(window);window.fetch=async(input,options)=>new URL(input,location.href).hostname.endsWith('execute-api.us-east-1.amazonaws.com')?new Response(JSON.stringify({ok:false,error:'<img src=x onerror=window.x=1>'}),{headers:{'Content-Type':'application/json'}}):nativeFetch(input,options);`;
 await withBrowser(root,async b=>{
   for(const width of [1440,390,320]) {
     await b.viewport(width,900);
-    for(const url of ['/','/aidecide-arena/','/lakehouse-quest.html','/neon-orbit.html']) {
+    for(const url of ['/','/databricks-sizing/','/aidecide-arena/','/lakehouse-quest.html','/neon-orbit.html']) {
       await b.navigate(url,blockedStorage+fakeAPI);
-      if(url==='/') await b.waitFor('document.querySelectorAll("a.card").length===7');
+      if(url==='/') await b.waitFor('document.querySelectorAll("a.card").length==='+pageCount);
+      if(url==='/databricks-sizing/') {
+        await b.waitFor('!!window.sizingDesk');
+        assert.equal(await b.evaluate('sizingDesk.getEstimate().complete'),true);
+      }
       assert.ok(await b.evaluate('document.documentElement.scrollWidth<=innerWidth'),url+' overflows at '+width);
       if(url!=='/') assert.ok(await b.evaluate('[...document.querySelectorAll("a")].some(a=>a.textContent.includes("Demo home"))'),url+' needs a home link');
     }

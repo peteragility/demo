@@ -10,6 +10,7 @@ python3 - <<'PYEOF'
 import os, json, datetime
 
 META = {
+  'databricks-sizing/':('Databricks Sizing Desk','Size data, analytics and AI workloads from a few inputs, with regional prices across AWS, Azure and Google Cloud','Featured','#ee684e'),
   'sandbox-compare/':('Agent Sandbox Comparison','VMs, containers and isolation boundaries: vendors and open source side by side','Work','#58a6ff'),
   'lakebase-compete-calculator/':('Lakebase Calculator','Estimate Lakebase monthly costs against Aurora, RDS, Azure, Cloud SQL and ClickHouse','Featured','#3fb950'),
   'lakebase-objection-faq/':('Lakebase Field Guide','Architecture, objections, tradeoffs and production proof, with linked pricing scenarios','Work','#f7b731'),
@@ -20,11 +21,11 @@ META = {
 }
 
 CATEGORIES = {
-  'aidecide-arena/': 'Interactive', 'lakebase-compete-calculator/': 'Tools',
+  'databricks-sizing/': 'Tools', 'aidecide-arena/': 'Interactive', 'lakebase-compete-calculator/': 'Tools',
   'lakebase-objection-faq/': 'Guides', 'lakehouse-quest.html': 'Interactive',
   'llm-pricing/': 'Tools', 'neon-orbit.html': 'Interactive', 'sandbox-compare/': 'Guides',
 }
-FEATURED = {'lakebase-compete-calculator/', 'lakebase-objection-faq/', 'llm-pricing/'}
+FEATURED = {'databricks-sizing/', 'lakebase-compete-calculator/', 'lakebase-objection-faq/', 'llm-pricing/'}
 
 pages = []
 for name in sorted(os.listdir('.')):

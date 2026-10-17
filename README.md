@@ -2,6 +2,8 @@
 
 Public pricing tools, technical guides and interactive games at [peteragility.github.io/demo](https://peteragility.github.io/demo/). Personal reading and travel projects are in the separate [Fun repository](https://github.com/peteragility/fun).
 
+[Databricks Sizing Desk](https://peteragility.github.io/demo/databricks-sizing/) turns high-level requirements into a regional cost estimate across AWS, Azure and Google Cloud. See its [pricing sources and assumptions](databricks-sizing/README.md).
+
 ## Edit and validate
 
 The site uses static HTML, JavaScript and JSON, with Python/Node standard-library maintenance scripts. No new package installation is needed.
@@ -10,6 +12,7 @@ The site uses static HTML, JavaScript and JSON, with Python/Node standard-librar
 node scripts/check-site.mjs
 node scripts/browser-smoke.mjs
 node --test tests/demo-home.test.cjs tests/publish-helper.test.cjs lakebase-compete-calculator/calculator.test.cjs
+node --test databricks-sizing/calculator.test.cjs
 python3 lakebase-content/render_facts.py --check
 python3 lakebase-content/test_review_sources.py
 ```

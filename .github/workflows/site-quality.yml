@@ -1,9 +1,9 @@
 name: Site navigation and browser checks
 on:
   push:
-    paths: ['**/*.html', 'assets/**', 'scripts/**', 'manifest.json', '.github/workflows/site-quality.yml']
+    paths: ['**/*.html', 'assets/**', 'scripts/**', 'databricks-sizing/**', 'manifest.json', '.github/workflows/site-quality.yml']
   pull_request:
-    paths: ['**/*.html', 'assets/**', 'scripts/**', 'manifest.json', '.github/workflows/site-quality.yml']
+    paths: ['**/*.html', 'assets/**', 'scripts/**', 'databricks-sizing/**', 'manifest.json', '.github/workflows/site-quality.yml']
 permissions:
   contents: read
 jobs:
@@ -19,5 +19,10 @@ jobs:
         run: node scripts/check-site.mjs
       - name: Check scoped publishing
         run: node --test tests/publish-helper.test.cjs
+      - name: Check Databricks sizing and regional pricing fallback
+        run: |
+          node --check databricks-sizing/engine.js
+          node --check databricks-sizing/app.js
+          node --test databricks-sizing/calculator.test.cjs
       - name: Check games, navigation and security regressions
         run: node scripts/browser-smoke.mjs

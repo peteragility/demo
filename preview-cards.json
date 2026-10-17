@@ -28,5 +28,15 @@
     "ink": "#ecf0fa",
     "accent": "#c1ff84",
     "footer": "peteragility.github.io/demo"
+  },
+  {
+    "name": "databricks-sizing-preview",
+    "title": "Databricks Sizing Desk",
+    "subtitle": "Size workloads. Compare cloud regions. Explain every cost.",
+    "brand": "PETER CHAN / DEMO LAB",
+    "background": "#102b33",
+    "ink": "#ecf0fa",
+    "accent": "#ee684e",
+    "footer": "peteragility.github.io/demo/databricks-sizing"
   }
 ]

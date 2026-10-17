@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-12",
+ "generated": "2026-10-17",
  "pages": [
   {
    "path": "aidecide-arena/",
@@ -9,6 +9,15 @@
    "color": "#FF3621",
    "category": "Interactive",
    "featured": false
+  },
+  {
+   "path": "databricks-sizing/",
+   "title": "Databricks Sizing Desk",
+   "desc": "Size data, analytics and AI workloads from a few inputs, with regional prices across AWS, Azure and Google Cloud",
+   "tag": "Featured",
+   "color": "#ee684e",
+   "category": "Tools",
+   "featured": true
   },
   {
    "path": "lakebase-compete-calculator/",
