@@ -129,7 +129,9 @@
   "published_at": "2026-10-16"
  },
  "databricks_coverage": [],
- "review": [],
+ "review": [
+  "DeepSeek V4.1 Flash · official"
+ ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -455,8 +457,7 @@
    "changed_at": "2026-10-17",
    "sources": [
     "deepseek-pricing"
-   ],
-   "quiet": true
+   ]
   },
   "google/gemini-3.1-flash-lite|alicloud": {
    "verified": "2026-10-17"
