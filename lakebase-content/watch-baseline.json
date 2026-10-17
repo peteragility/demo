@@ -1,5 +1,5 @@
 {
-  "observed": "2026-10-15",
+  "observed": "2026-10-18",
   "sources": {
     "aws-rds-price-index": {
       "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
@@ -1135,7 +1135,7 @@
         "feature-status-table:[\"capabilities that implement ltap ​\",[\"lakebase change data feed\",\"public preview\",\"store row level changes from lakebase postgres tables as unity catalog delta tables for downstream pipelines and audit.\"]]",
         "feature-status-table:[\"capabilities that implement ltap ​\",[\"lakehouse//rt querying lakebase\",\"beta\",\"run transactionally consistent olap queries on live postgres data, without impacting lakebase oltp performance.\"]]",
         "feature-status-table:[\"capabilities that implement ltap ​\",[\"register lakebase in unity catalog\",\"ga\",\"govern analytical access to lakebase data and run cross source queries from the lakehouse.\"]]",
-        "feature-status-table:[\"capabilities that implement ltap ​\",[\"serve data with synced tables\",\"ga\",\"serve unity catalog table data in lakebase for low latency oltp reads. ltap direct writes (beta) accelerates the initial load in every sync mode, plus full refreshes.\"]]",
+        "feature-status-table:[\"capabilities that implement ltap ​\",[\"serve data with synced tables\",\"ga (ltap direct writes: beta)\",\"serve unity catalog table data in lakebase for low latency oltp reads. optionally enable ltap direct writes for faster initial loads and full refreshes.\"]]",
         "status:change data feed:public preview",
         "status:direct writes:beta",
         "status:direct writes:ga",
@@ -1168,10 +1168,10 @@
     "lakebase-13": {
       "url": "https://docs.databricks.com/aws/en/release-notes/lakebase/",
       "records": [
+        "engine-versions:[\"16\",\"17\",\"18\"]",
         "engine-versions:[\"16\",\"17\"]",
         "engine-versions:[\"16.15\",\"17.11\"]",
         "engine-versions:[\"17\",\"18\"]",
-        "engine-versions:[\"17\"]",
         "engine-versions:[\"18\"]",
         "limit:128 gb",
         "limit:3 days",
