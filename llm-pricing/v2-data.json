@@ -7152,9 +7152,9 @@
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
-          "snapshot": "DeepSeek-V4.1-Flash",
+          "snapshot": "DeepSeek-V4.1-Flash-1017",
           "model_id_source": "deepseek",
-          "model_id_checked_at": "2026-10-09",
+          "model_id_checked_at": "2026-10-18",
           "url": "https://api-docs.deepseek.com/quick_start/pricing",
           "endpoint": "DeepSeek API",
           "endpoints": {
@@ -7186,7 +7186,7 @@
               ],
               [
                 "IDs",
-                "Call as deepseek-flash; legacy deepseek-v4-flash and deepseek-v4-flash-vision-exp names are served by V4.1 Flash and billed at the Flash price."
+                "Call as deepseek-flash; legacy deepseek-v4-flash and deepseek-v4-flash-vision-exp names are served by DeepSeek-V4.1-Flash-1017 and billed at the Flash price."
               ],
               [
                 "Residency",
@@ -7198,9 +7198,9 @@
               ]
             ],
             "ids": [
-              "deepseek-flash (model name; MODEL VERSION DeepSeek-V4.1-Flash)",
-              "deepseek-v4-flash (legacy name, served by V4.1 Flash)",
-              "deepseek-v4-flash-vision-exp (legacy name, served by V4.1 Flash)"
+              "deepseek-flash (model name; MODEL VERSION DeepSeek-V4.1-Flash-1017)",
+              "deepseek-v4-flash (legacy name, served by DeepSeek-V4.1-Flash-1017)",
+              "deepseek-v4-flash-vision-exp (legacy name, served by DeepSeek-V4.1-Flash-1017)"
             ],
             "cache_write": "input-rate"
           }

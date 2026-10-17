@@ -112,9 +112,9 @@ def normalize(data):
                 c["model_id_checked_at"] = REVIEWED
             if pl == "official" and key == "deepseek/deepseek-v4.1-flash":
                 c["model_id"] = "deepseek-flash"
-                c["snapshot"] = "DeepSeek-V4.1-Flash"
+                c["snapshot"] = "DeepSeek-V4.1-Flash-1017"
                 c["model_id_source"] = "deepseek"
-                c["model_id_checked_at"] = REVIEWED
+                c["model_id_checked_at"] = "2026-10-18"
             if pl == "official" and key in ("moonshot/kimi-k3", "moonshot/kimi-k2.7"):
                 c["model_id"] = "kimi-k3" if key.endswith("k3") else "kimi-k2.7-code"
                 c["model_id_source"] = "moonshot"

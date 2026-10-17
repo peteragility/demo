@@ -34,3 +34,7 @@ python3 lakebase-content/review_sources.py --report-dir /tmp/lakebase-review --r
 ```
 
 The full JSON report is retained as a workflow artifact. No rates, facts or verified dates are updated automatically by this watcher.
+
+### Source review, 18 October 2026
+
+The LTAP overview now puts “LTAP Direct Writes: Beta” in the synced-table status cell; synced tables remain GA. The release notes now describe Direct Writes on Postgres 16, 17 and 18, matching the current compatibility and synced-table documentation. Direct Writes remains an opt-in setting at synced-table creation, accelerating initial loads in all sync modes and full refreshes. The existing shared facts already represent these statuses and engine versions. All 22 watched sources were readable and only these two sources differed; no rate, SKU, region, tier or billing-unit records changed. This review records source observations only and does not advance calculator rate verification dates.
