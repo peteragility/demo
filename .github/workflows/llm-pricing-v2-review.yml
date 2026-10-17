@@ -13,6 +13,8 @@ name: LLM pricing v2 daily refresh
 #      card only. A price change it cannot prove, a new top-50 model a platform page names but the page
 #      has no prices for, or a source unreadable for two days opens or updates one issue labelled
 #      llm-pricing-review. Other models joining or leaving the top 50 change the page by themselves.
+# Current Databricks catalog/region/DBU entries are also checked against the dataset, independent of
+# source diffs: missing availability or published pricing keeps the review issue open until corrected.
 # Run dates follow Hong Kong time.
 on:
   schedule:
@@ -109,7 +111,8 @@ jobs:
       - name: Record the reviewed baseline
         if: inputs.record_baseline && steps.ranking.outcome == 'success'
         run: python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-baseline" --record-baseline
-      - name: Check every official source
+      # Coverage compares current catalog/region/DBU listings with the dataset, independently of baseline diffs.
+      - name: Check official sources and Databricks catalog coverage
         run: >-
           python v2-maintenance/review-sources.py --report-dir "$RUNNER_TEMP/llm-pricing-v2-review" --checks v2-checks.json
           --issue "$RUNNER_TEMP/llm-pricing-v2-issue.md" --accept-low-risk --apply-proven --unpriced "$RUNNER_TEMP/llm-pricing-v2-unpriced.json"

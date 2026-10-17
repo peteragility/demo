@@ -76,6 +76,8 @@ New models and tiers never appear automatically; prices change automatically onl
 
 Issue updates run whenever the source check produced a complete issue report, including when the check reports widespread source failures or the subsequent publish fails. If the check stops before producing that report, the existing issue is left as it is. Cancelled runs do not update issues.
 
+The daily source check also compares current Databricks catalog endpoints, pay-per-token region listings and DBU price rows with every tracked model, including offers with no endpoint ID or availability flag. Missing availability and newly published pricing stay in the review issue and full report until the dataset is corrected; recording an unchanged source baseline cannot clear these gaps. Failed reads retain prior coverage findings. This audit reports findings without changing model availability or prices.
+
 Databricks checks cover Standard and Priority rates in both context bands, including cache charges and published post-promotion rates. Missing rates or context bands require review. When sources disagree on a rate, each conflicting source's whole change stays for review; applying another rate cannot accept its unresolved lines into the baseline.
 
 ### Resolving a review issue

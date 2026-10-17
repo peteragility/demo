@@ -416,6 +416,71 @@ def dbx_check(data, facts, today, complete=True):
     return issues
 
 
+def dbx_coverage(data, current, facts, complete, previous=None):
+    """Compare current official listings with the dataset, independently of source diffs and availability flags.
+    Exact endpoint names are candidates only: a live catalog or pay-per-token region row must name them.
+    This audit reports gaps; it never supplies a new offer or changes prices."""
+    endpoints = {}
+    for sid, snapshot in current.items():
+        found = set()
+        if sid == "dbx-models":
+            found = {r.removeprefix("endpoint: ") for r in snapshot["records"] if r.startswith("endpoint: ")}
+        elif sid.startswith("dbx-region-"):
+            for record in snapshot["records"]:
+                if not record.startswith("table: {"):
+                    continue
+                cells = json.loads(record[len("table: "):]).get("cells", [])
+                # The second column is pay-per-token; batch/provisioned columns do not establish it.
+                regions = official.AZURE if sid.endswith("azure") else official.GCP if sid.endswith("gcp") else official.AWS
+                if len(cells) >= 2 and cells[0] in regions:
+                    found.update(re.findall(r"databricks-[a-z0-9-]+", cells[1]))
+        for endpoint in found:
+            endpoints.setdefault(endpoint, []).append(dict(id=sid, url=snapshot["url"]))
+    findings = {}
+    for key, model in data["models"].items():
+        cell = model["platforms"].get("databricks", {})
+        if cell.get("status") == "priced":
+            continue  # Existing priced offers already pass the number-by-number DBU check.
+        candidates = {"databricks-" + re.sub(r"[^a-z0-9]+", "-", n.lower()).strip("-")
+                      for n in (model.get("name"), model.get("short")) if n}
+        if cell.get("model_id"):
+            candidates.add(cell["model_id"])
+        matches = sorted(candidates & endpoints.keys())
+        names = {official.compact(n) for n in (model.get("name"), model.get("short"), DBX_TABLE_NAMES.get(key)) if n}
+        row = next((r for name, r in facts.items() if official.compact(name) in names), None)
+        missing = matches and (not cell.get("available") or cell.get("model_id") not in matches)
+        if not missing and not row:
+            continue
+        sources = {source["id"]: source for endpoint in matches for source in endpoints[endpoint]}
+        if row:
+            sources.update({sid: dict(id=sid, url=snapshot["url"]) for sid, snapshot in current.items()
+                            if sid in ("dbx-proprietary", "dbx-oss")})
+        findings[key] = dict(model=key, name=model.get("name", key), endpoints=matches,
+                             reason="official listing is missing from dataset availability" if missing else "published DBU pricing is not priced in the dataset",
+                             pricing="published" if row else "not published in checked DBU tables" if complete else "unverified: DBU source unreadable",
+                             sources=list(sources.values()))
+    # A transient failed read cannot erase an unresolved finding from the preceding run.
+    for old in (previous or {}).get("databricks_coverage", []):
+        key = old["model"]
+        cell = data["models"].get(key, {}).get("platforms", {}).get("databricks", {})
+        if key not in findings and cell and cell.get("status") != "priced" and any(s["id"] not in current for s in old["sources"]):
+            findings[key] = dict(old, unchecked=True)
+    return [findings[key] for key in sorted(findings)]
+
+
+def coverage_markdown(findings):
+    if not findings:
+        return []
+    lines = ["## Databricks catalog / pricing gaps in the dataset", "",
+             "Current official listings are compared with the dataset on every run, even when the reviewed baseline is unchanged. "
+             "Availability and pricing are separate; no prices are inferred. Resolve the dataset gap to clear this finding.", ""]
+    for item in findings:
+        links = ", ".join(f"[{s['id']}]({s['url']})" for s in item["sources"])
+        lines.append(f"- **{item['name']}**: {item['reason']}; endpoints: {', '.join(item['endpoints']) or 'not confirmed'}; "
+                     f"pricing: {item['pricing']}" + ("; previous finding retained because a source could not be read" if item.get("unchecked") else "") + f". {links}")
+    return lines + [""]
+
+
 def dbx_availability(text):
     """A DBU-table finding about which models or tiers Databricks sells, not about a rate: quiet."""
     return text.startswith(("now priced", "not found", "Priority tier", "regional processing"))
@@ -965,7 +1030,9 @@ def issue_markdown(report, cells, changes, fact_issues, data, listed, failing=No
     low = sum(1 for c in changes if c.get("risk") == "low" and c["model"] in listed) + sum(1 for g in general if g["risk"] == "low")
     done = sum(1 for c in changes if c.get("risk") == "applied" and c["model"] in listed)
     lines = [f"Daily check {report['checked_at']}: {verified} listed offers verified today; {len(review)} need review; "
-             f"{done} price changes applied and {low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read.", ""]
+             f"{done} price changes applied and {low} low-risk changes accepted automatically; {len(report['sources_failed'])} sources could not be read; "
+             f"{len(report.get('databricks_coverage', []))} Databricks catalog/pricing gaps.", ""]
+    lines += coverage_markdown(report.get("databricks_coverage", []))
     if report.get("ranking_error"):
         lines += ["## Arena ranking could not be checked", "",
                   "The published order is unchanged. Platform sources are still checked against the last observed top 50; newer Arena entries cannot be detected until access is restored.", "",
@@ -1040,6 +1107,7 @@ def markdown_report(report):
     lines = ["# LLM pricing v2 source review", "", report["checked_at"], "",
              f"{report['sources_checked']} official sources checked; {len(report['changes'])} changed; {len(report['sources_failed'])} failed.",
              "", "This report flags source changes for human review. It does not publish prices or infer new model rates.", ""]
+    lines += coverage_markdown(report.get("databricks_coverage", []))
     if report["sources_failed"]:
         lines.extend(["## Sources requiring attention", ""])
         for sid, error in report["sources_failed"].items():
@@ -1160,6 +1228,7 @@ def main():
                 done.setdefault((e["model"], e["platform"], e["source"]), []).append(describe(e, data))
             done = {k: "applied automatically: " + "; ".join(v) for k, v in done.items()}
             cells, changes = cell_checks(data, sources, baseline, current, errors, fact_issues, previous, today, general, gone, done, auto_regions)
+    report["databricks_coverage"] = dbx_coverage(data, current, facts, complete, previous)
     unpriced, ranking_status = ranking_discovery(args.unpriced, today)
     report["ranking"] = ranking_status
     if ranking_status.get("error"):
@@ -1172,7 +1241,7 @@ def main():
     listed_facts = {k: v for k, v in fact_issues.items() if k in listed and not all(dbx_availability(t) for t in v)}
     held = [g for g in general if g["risk"] == "high"]
     action = [a for a in report["lifecycle_due"] if needs_action(a)]
-    needs_review = bool(review or listed_facts or failing or held or unrecorded or action or new_models or report.get("ranking_error"))
+    needs_review = bool(review or listed_facts or failing or held or unrecorded or action or new_models or report.get("ranking_error") or report["databricks_coverage"])
     pending_general = [dict(g) for g in held]
     quiet = [c for c in changes if c["risk"] == "quiet"] + [g for g in general if g["risk"] == "quiet"]
     accepted = [c for c in changes if c["risk"] == "low"] + [g for g in general if g["risk"] == "low"]
@@ -1207,7 +1276,7 @@ def main():
         repo = os.environ.get("GITHUB_REPOSITORY")
         names = lambda ref: data["models"][ref.split("|")[0]].get("name", ref) + " · " + ref.split("|")[1]
         checks = dict(schema=1, checked_at=today.isoformat(), sources_checked=len(current), sources_failed=sorted(errors), sources_read=last_read,
-                      pending_general=pending_general, ranking=ranking_status,
+                      pending_general=pending_general, ranking=ranking_status, databricks_coverage=report["databricks_coverage"],
                       review=[names(ref) for ref in review],
                       issue_url=f"https://github.com/{repo}/issues?q=is%3Aopen+label%3Allm-pricing-review" if repo else None,
                       cells=dict(sorted(cells.items())))

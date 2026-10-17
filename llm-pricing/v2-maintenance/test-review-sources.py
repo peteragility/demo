@@ -774,6 +774,77 @@ class SourceReviewTests(unittest.TestCase):
         page = "<main><p>GLM 5.3 costs $1.40 per million input tokens.</p><p>Last updated 2026-10-05 UTC.</p></main>"
         self.assertEqual(review.html_records(page, "text"), ["text: GLM 5.3 costs $1.40 per million input tokens."])
 
+    def test_catalog_coverage_survives_unchanged_baseline_and_failed_reads(self):
+        data = {"models": {"g/argon": {"name": "Gemini 4 Argon", "platforms": {
+            "databricks": dict(status="unverified", available=None, model_id=None)}}}}
+        snapshot = dict(url="https://example.test/catalog", kind="catalog", digest="same",
+                        records=["endpoint: databricks-gemini-4-argon"])
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            maintenance = root / "maintenance"
+            maintenance.mkdir()
+            (maintenance / "source-config.json").write_text(json.dumps([
+                dict(id="dbx-models", kind="catalog", meta=["dbx_models"])]))
+            (maintenance / "source-baseline.json").write_text(json.dumps({"sources": {"dbx-models": snapshot}}))
+            (maintenance / "ranking-config.json").write_text(json.dumps({"not_sold": []}))
+            data_path = root / "v2-data.json"
+            data_path.write_text(json.dumps(data))
+            checks, issue = root / "checks.json", root / "issue.md"
+            def run(record=False, failed=False):
+                argv = ["review-sources.py", "--as-of", "2026-10-17", "--report-dir", str(root / "report"),
+                        "--checks", str(checks), "--issue", str(issue), "--fail-on-change"]
+                if record:
+                    argv.append("--record-baseline")
+                with patch.object(review, "HERE", maintenance), patch.object(review.sys, "argv", argv), \
+                        patch.object(review, "ranking_discovery", return_value=([], {})), \
+                        patch.object(review, "collect_one", return_value=copy.deepcopy(snapshot),
+                                     side_effect=ValueError("HTTP 503") if failed else None), redirect_stdout(io.StringIO()):
+                    if record:
+                        review.main()
+                    else:
+                        with self.assertRaises(SystemExit) as stopped:
+                            review.main()
+                        self.assertEqual(stopped.exception.code, 1 if failed else 2)
+            run()
+            self.assertIn("Gemini 4 Argon", issue.read_text())
+            self.assertEqual(json.loads(next((root / "report").glob("*.json")).read_text())["changes"], [])
+            run(record=True)
+            run()  # A newly recorded baseline cannot acknowledge away the dataset mismatch.
+            self.assertIn("catalog / pricing gaps", issue.read_text())
+            run(failed=True)
+            self.assertTrue(json.loads(checks.read_text())["databricks_coverage"][0]["unchecked"])
+            self.assertIn("previous finding retained", issue.read_text())
+            self.assertEqual(json.loads(data_path.read_text()), data)  # Report-only audit.
+
+    def test_catalog_coverage_checks_pending_prices_without_available_flag(self):
+        data = {"models": {"g/argon": {"name": "Gemini 4 Argon", "platforms": {
+            "databricks": dict(status="unverified", available=None, model_id=None)}}}}
+        current = {"dbx-proprietary": dict(url="https://example.test/prices", records=[])}
+        facts = {"gemini 4 argon": dict(standard={"": dict(**{"in": 4, "out": 20})})}
+        found = review.dbx_coverage(data, current, facts, True)
+        self.assertEqual(len(found), 1)
+        self.assertEqual(found[0]["pricing"], "published")
+        self.assertIn("DBU pricing", found[0]["reason"])
+        data["models"]["g/argon"]["platforms"]["databricks"]["status"] = "priced"
+        self.assertEqual(review.dbx_coverage(data, current, facts, True), [])
+
+    def test_catalog_coverage_uses_exact_models_and_pay_per_token_regions(self):
+        data = {"models": {"g/argon": {"name": "Gemini 4 Argon", "platforms": {
+            "databricks": dict(status="unverified", available=None, model_id=None)}}}}
+        endpoint = "databricks-gemini-4-argon"
+        def snapshot(cells):
+            return {"dbx-region-aws": dict(url="https://example.test/regions", records=[
+                "table: " + review.packed(dict(cells=cells))])}
+        self.assertEqual(review.dbx_coverage(data, snapshot(["us-east-1", "Not supported", endpoint]), {}, True), [])
+        found = review.dbx_coverage(data, snapshot(["us-east-1", endpoint + " ⥂"]), {}, False)
+        self.assertEqual(found[0]["endpoints"], [endpoint])
+        self.assertIn("unreadable", found[0]["pricing"])
+        current = {"dbx-models": dict(url="https://example.test/catalog", records=["endpoint: " + endpoint + "-cyber-permissive"])}
+        self.assertEqual(review.dbx_coverage(data, current, {}, True), [])
+        cell = data["models"]["g/argon"]["platforms"]["databricks"]
+        cell.update(available=True, model_id=endpoint)
+        self.assertEqual(review.dbx_coverage(data, snapshot(["us-east-1", endpoint]), {}, True), [])
+
     def test_a_price_published_for_a_pending_databricks_offer_is_reported(self):
         rows = {"gpt 6.1 sol": {"label": "GPT-6.1 Sol ⌖", "regional": True, "standard": {"short context": {"in": 2.0, "out": 10.0}}}}
         data = {"models": {"o/gpt-6.1-sol": {"name": "GPT-6.1 Sol", "platforms": {"databricks": {"status": "unverified", "available": True}}}}}
