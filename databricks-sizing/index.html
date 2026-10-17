@@ -20,7 +20,7 @@
   <meta name="description" content="Turn high-level customer requirements into a transparent Databricks sizing and cost estimate. Compare AWS, Azure and Google Cloud with regional prices and clear assumptions.">
   <title>Databricks Sizing Desk — Workload & Cost Calculator</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23102a32'/%3E%3Cpath d='m5 11 11-6 11 6-11 6zm0 6 11 6 11-6M5 23l11 6 11-6' stroke='%23ff7059' stroke-width='2' fill='none'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=3dbc0cd8de5a">
+  <link rel="stylesheet" href="styles.css?v=687bc1ed6f5a">
   <script defer src="engine.js?v=6c9cddcf881c"></script>
   <script defer src="app.js?v=d3d05ffac354"></script>
 </head>
@@ -33,7 +33,7 @@
     </header>
     <div class="view-bar">
       <nav class="tabs" aria-label="Calculator views"><button class="tab active" data-tab="estimate" aria-selected="true">Estimate</button><button class="tab" data-tab="rates" aria-selected="false">Pricing &amp; coverage</button><button class="tab" data-tab="method" aria-selected="false">Methodology</button></nav>
-      <div class="intro-actions"><button class="button" id="reset">Reset</button><button class="button" id="share">Share</button><button class="button" id="export">Export CSV</button><button class="button" id="print">Print</button></div>
+      <div class="intro-actions" role="group" aria-label="Estimate actions"><button class="button" id="reset">Reset</button><button class="button" id="share">Share</button><button class="button" id="export">Export CSV</button><button class="button" id="print">Print</button></div>
     </div>
     <div id="loading" class="loading">Loading official regional pricing…</div>
     <div id="app" hidden>

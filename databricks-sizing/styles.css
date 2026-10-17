@@ -197,14 +197,18 @@ footer b{color:var(--ink-2)}
   h1{font-size:19px}
   .intref{font-size:10px}
   .intro p,.intro-links{font-size:11px}
-  .view-bar{flex-wrap:wrap;gap:5px;padding-block:7px 5px}
-  .tabs{flex-wrap:wrap}
-  .tab,.button{height:27px;padding-inline:8px;font-size:12px}
-  .intro-actions{margin-left:auto}
-  .preset{font-size:12px;padding-inline:8px;height:28px}
-  .workload-line{gap:4px 8px;margin-block:5px}
-  .workload-list{gap:4px 10px}
-  .workload-item{font-size:11.5px}
+  .view-bar{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;padding-block:8px}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .tab{height:32px;padding-inline:4px;font-size:12px;white-space:normal;line-height:1.15}
+  .intro-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+  .intro-actions .button{height:28px;padding-inline:4px;font-size:12px}
+  .presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+  .preset{min-width:0;height:30px;padding-inline:3px;font-size:12px}
+  .preset[data-scenario="lakehouse"]{grid-column:span 2}
+  .workload-line{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:8px;margin-block:7px}
+  .workload-line>span{line-height:24px}
+  .workload-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 6px}
+  .workload-item{min-width:0;min-height:24px;gap:4px;font-size:11.5px}
   .estimate-card{grid-template-columns:1fr 1fr;gap:5px}
   .kpi{display:flex;padding:4px 7px;gap:7px}
   .kpi strong{font-size:16px;flex:none;max-width:65%}
