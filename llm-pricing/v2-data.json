@@ -27107,39 +27107,67 @@
       "platforms": {
         "databricks": {
           "status": "unverified",
-          "note": "No verified Gemini 4 Argon offer in the reviewed platform sources.",
+          "note": "Available through pay-per-token with cross-geography routing enabled; no Gemini 4 Argon rates are published in the checked Databricks DBU tables.",
           "src": "dbx_prop",
-          "model_id": null,
-          "available": null,
+          "model_id": "databricks-gemini-4-argon",
+          "available": true,
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-14",
+          "availability_checked_at": "2026-10-17",
+          "model_id_source": "dbx_models",
+          "model_id_checked_at": "2026-10-17",
+          "model_match": "confirmed",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-17",
             "src": [
               "dbx_region",
               "dbx_region_azure",
               "dbx_region_gcp"
             ],
-            "regions": [],
+            "regions": [
+              [
+                "Americas",
+                "global",
+                "Cross-geo",
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+              ],
+              [
+                "Europe",
+                "global",
+                "Cross-geo",
+                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+              ],
+              [
+                "APAC",
+                "global",
+                "Cross-geo",
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
+              ]
+            ],
             "hk": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "routed",
+              "Azure East Asia (Hong Kong) through cross-geo routing"
             ],
             "tw": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "none",
+              "No Taiwan region in Databricks' model-serving tables"
             ],
             "notes": [
               [
-                "Regions",
-                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
+                "Residency",
+                "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
+              ],
+              [
+                "Azure",
+                "Azure Databricks provides access through ADI Services, provided by Databricks (†)."
               ],
               [
                 "Billing",
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
               ]
             ],
-            "ids": [],
+            "ids": [
+              "databricks-gemini-4-argon"
+            ],
             "cache_write": "not-listed"
           },
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"

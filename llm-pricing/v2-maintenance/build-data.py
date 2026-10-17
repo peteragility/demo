@@ -977,6 +977,13 @@ def add_gemini4(data):
         platforms[pl] = checked(cell, day)
     for cell in platforms.values():
         cell["availability_checked_at"] = day
+    # Availability is confirmed independently of pricing: neither DBU table lists Argon yet.
+    platforms["databricks"] = dict(
+        pending("Available through pay-per-token with cross-geography routing enabled; "
+                "no Gemini 4 Argon rates are published in the checked Databricks DBU tables.",
+                "dbx_prop", model_id="databricks-gemini-4-argon", available=True),
+        model_id_source="dbx_models", model_id_checked_at="2026-10-17",
+        availability_checked_at="2026-10-17", model_match="confirmed")
     data["models"]["google/gemini-4-argon"] = dict(name="Gemini 4 Argon", short="Gemini 4 Argon", maker="Google",
         group="google", oss=False, model_key="google/gemini-4-argon", ctx="1M unified", badges=["Added"], platforms=platforms)
 

@@ -878,6 +878,38 @@
    "adi": false,
    "changed_at": "2026-10-04"
   },
+  "google/gemini-4-argon": {
+   "regions": [
+    [
+     "Americas",
+     "global",
+     "Cross-geo",
+     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+    ],
+    [
+     "Europe",
+     "global",
+     "Cross-geo",
+     "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+    ],
+    [
+     "APAC",
+     "global",
+     "Cross-geo",
+     "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Azure East Asia (Hong Kong) through cross-geo routing"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region in Databricks' model-serving tables"
+   ],
+   "adi": true,
+   "changed_at": "2026-10-17"
+  },
   "google/gemma-3-12b": {
    "regions": [
     [

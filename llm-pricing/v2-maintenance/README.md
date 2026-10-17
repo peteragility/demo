@@ -4,6 +4,8 @@ The LLM Token Pricing page at [`../index.html`](../index.html) (https://peteragi
 
 The 2026-10-14 review adds publicly available Gemini 4 Argon on the Gemini API and Google Cloud. Its introductory text-token rates end on 30 November 2026; the published list rates apply from 1 December. Cyber Permissive is a separate allowlisted model and is not included. Databricks Gemini 4 pricing remains unverified.
 
+The 2026-10-17 review confirms Databricks' `databricks-gemini-4-argon` pay-per-token endpoint and its AWS, Azure and GCP cross-geography regions, including routed access from Azure Hong Kong. Neither checked DBU pricing table lists Argon, so the dataset records availability and regions without rates or a price comparison; the page shows price pending verification.
+
 The 2026-10-15 review follows Microsoft's relocated Fireworks catalog: FW-GLM-5.2 and FW-DeepSeek-V4-Pro pay-per-token retired on 8 October; their PTU offers remain, and the separately Azure-sold DeepSeek-V4-Pro endpoint is unaffected. FW-GLM-5.2-Fast is a separate model, not a GLM-5.2 service tier. Data Zone availability follows the catalog's current US regions. Google's Contributor pricing is an invite-only private preview with data contribution, so it is excluded from the general-access comparison. AlphaEvolve prices describe a separate product, with model and agent columns rather than context bands. The new Gemini 3.8 Flash and 4 Argon Agent Platform retirement dates are lower bounds, not exact shutdown dates.
 
 ## Data and calculations

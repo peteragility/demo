@@ -14,6 +14,23 @@ const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 const tier = (cell, endpoint, service) => cell.variants.find(v => v.endpoint === endpoint && v.service_tier === service).id;
 const priced = (input, output) => ({status: 'priced', in: input, out: output, model_match: 'confirmed', service_tier: 'standard'});
 
+test('Databricks Argon availability never supplies unverified rates or a comparison', () => {
+  const c = published.models['google/gemini-4-argon'].platforms.databricks;
+  assert.equal(c.available, true);
+  assert.equal(c.model_id, 'databricks-gemini-4-argon');
+  assert.equal(c.status, 'unverified');
+  assert.equal(c.pricing_checked_at, null);
+  for (const field of ['in', 'out', 'cache_read', 'cache_write', 'cache_write_1h']) {
+    assert.equal(c[field], undefined);
+  }
+  assert.equal(M.comparable(M.cheapest(c, {asOf: '2026-10-17'})), false);
+  assert.equal(M.calculate(c, {asOf: '2026-10-17', inputM: 3, outputM: 1}).total, null);
+  assert.equal(c.endpoints.hk[0], 'routed');
+  assert.equal(c.endpoints.tw[0], 'none');
+  assert.ok(c.endpoints.regions.length > 0);
+  assert.ok(c.endpoints.regions.every(row => row[1] === 'global'));
+});
+
 test('retired Fireworks offers cannot supply a current Azure comparison or estimate', () => {
   const c = published.models['zai/glm-5.2'].platforms.azure_foundry;
   assert.equal(M.status(c, '2026-10-07'), 'priced');
