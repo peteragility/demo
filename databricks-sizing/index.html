@@ -12,72 +12,73 @@
   <meta property="og:image" content="https://peteragility.github.io/demo/assets/databricks-sizing-preview.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://peteragility.github.io/demo/assets/databricks-sizing-preview.png">
-  <meta name="theme-color" content="#102a32">
+  <meta name="theme-color" content="#f3f4f6">
+  <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
   <meta name="description" content="Turn high-level customer requirements into a transparent Databricks sizing and cost estimate. Compare AWS, Azure and Google Cloud with regional prices and clear assumptions.">
   <title>Databricks Sizing Desk — Workload & Cost Calculator</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23102a32'/%3E%3Cpath d='m5 11 11-6 11 6-11 6zm0 6 11 6 11-6M5 23l11 6 11-6' stroke='%23ff7059' stroke-width='2' fill='none'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=0a33cd741424">
   <script defer src="engine.js"></script>
-  <script defer src="app.js"></script>
+  <script defer src="app.js?v=ad153d1477d3"></script>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="Sizing Desk home"><svg width="29" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m3 9 13-6 13 6-13 6L3 9Zm0 7 13 6 13-6M3 23l13 6 13-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><b>databricks</b><span class="brand-divider"></span><span>Sizing Desk</span></a>
-    <div class="top-meta"><span class="status-dot"></span> SOLUTION PLANNING <span class="version">V1.0</span></div>
-  </header>
   <div class="page">
-    <section class="intro">
-      <div><div class="eyebrow">FROM CUSTOMER REQUIREMENTS TO A FIRST ESTIMATE</div><h1>Size the workload.<br class="mobile-only"> See the cost.</h1><p>A few inputs. Regional pricing. Every assumption in the open.</p></div>
-      <div class="intro-actions"><button class="button subtle" id="reset">↺ Reset</button><button class="button" id="share">↗ Share estimate</button><button class="button primary" id="export">↓ Export estimate</button></div>
-    </section>
-    <nav class="tabs" aria-label="Calculator views"><button class="tab active" data-tab="estimate" aria-selected="true"><span>01</span> Estimate builder</button><button class="tab" data-tab="rates" aria-selected="false"><span>02</span> Pricing & coverage</button><button class="tab" data-tab="method" aria-selected="false"><span>03</span> Methodology</button><div id="feed-label" class="feed-label">Loading pricing snapshot…</div></nav>
+    <header class="intro">
+      <div class="heading-line"><h1>Databricks Pricing &amp; Sizing</h1><span class="intref">Public list prices · not an official quote</span></div>
+      <p>Size data, analytics and AI workloads from a few requirements · USD per month · <span id="feed-label">Loading pricing snapshot…</span></p>
+      <div class="intro-links"><a href="../">← Demo home</a><a href="../lakebase-compete-calculator/">Lakebase Calculator ↗</a><a href="../llm-pricing/">LLM Token Pricing ↗</a></div>
+    </header>
+    <div class="view-bar">
+      <nav class="tabs" aria-label="Calculator views"><button class="tab active" data-tab="estimate" aria-selected="true">Estimate</button><button class="tab" data-tab="rates" aria-selected="false">Pricing &amp; coverage</button><button class="tab" data-tab="method" aria-selected="false">Methodology</button></nav>
+      <div class="intro-actions"><button class="button" id="reset">Reset</button><button class="button" id="share">Share</button><button class="button" id="export">Export CSV</button><button class="button" id="print">Print</button></div>
+    </div>
     <div id="loading" class="loading">Loading official regional pricing…</div>
     <div id="app" hidden>
       <section id="estimate-view" class="view">
         <div class="workspace">
-          <aside class="sidebar">
-            <div class="section-label">01 / START WITH A SCENARIO</div>
-            <div id="presets" class="presets"></div>
-            <div class="sidebar-note"><span class="note-icon">↳</span><div><b>A starting point, yours to refine.</b><p>Presets choose the services and sensible defaults. Combine workloads below.</p></div></div>
-            <div class="section-label workload-label">INCLUDED WORKLOADS</div><div id="workloads" class="workload-list"></div>
-            <div class="local-note"><span>◈</span> No account or API key needed.<br>Estimates stay in your browser.</div>
-          </aside>
+          <section class="scenario-bar" aria-label="Workload scenarios">
+            <div id="presets" class="presets" role="group" aria-label="Scenario"></div>
+            <div class="workload-line"><span>Include</span><div id="workloads" class="workload-list"></div></div>
+          </section>
+          <section class="estimate-card" aria-label="Estimate summary" aria-live="polite" aria-atomic="true">
+            <div class="kpi kpi-total"><strong id="monthly">—</strong><div><span>Monthly estimate</span><small id="annual"></small></div></div>
+            <div class="kpi"><strong id="range">—</strong><div><span>Planning range</span><small id="range-caption"></small></div></div>
+            <div class="kpi"><strong id="metric-dbu">—</strong><div><span>Compute / month</span><small>Serverless DBU usage</small></div></div>
+            <div class="kpi"><strong id="metric-storage">—</strong><div><span>Retained storage</span><small>Steady-state estimate</small></div></div>
+          </section>
+          <div id="summary-notes" class="summary-notes" aria-live="polite"></div>
           <main class="builder">
             <section class="panel environment-panel">
-              <div class="panel-heading"><h2><span class="step">02</span> Deployment</h2><span class="tag neutral">USD · PAY AS YOU GO</span></div>
+              <div class="panel-heading"><h2>Deployment</h2><span class="tag neutral">USD · PAY AS YOU GO</span></div>
               <div class="deployment-grid">
-                <div class="field"><label>Cloud provider</label><div class="segmented" id="clouds"><button data-cloud="AWS">AWS</button><button data-cloud="Azure">Azure</button><button data-cloud="GCP">Google Cloud</button></div></div>
+                <div class="field"><label>Cloud provider</label><div class="segmented" id="clouds"><button data-cloud="AWS">AWS</button><button data-cloud="Azure">Azure</button><button data-cloud="GCP" aria-label="Google Cloud">GCP</button></div></div>
                 <div class="field"><label for="region">Region</label><select id="region"></select></div>
                 <div class="field"><label for="tier">Plan</label><select id="tier"><option value="premium">Premium</option><option value="enterprise">Enterprise</option></select></div>
               </div>
               <div class="coverage-line"><span id="coverage-icon" class="status-dot"></span><span id="coverage-text"></span><a href="#rates" id="coverage-link">View rates ↗</a></div>
             </section>
             <section class="panel requirements-panel">
-              <div class="panel-heading"><h2><span class="step">03</span> Customer requirements</h2><span class="muted" id="input-count"></span></div>
+              <div class="panel-heading"><h2>Customer requirements</h2><span class="muted" id="input-count"></span></div>
               <p class="panel-description" id="scenario-description"></p>
               <div class="requirements" id="requirements"></div>
-              <div class="scale-strip"><div><span class="tiny-caps">QUICK SCALE</span><span class="muted">Try a conversation starter</span></div><div class="scale-options"><button data-scale="small">Small</button><button data-scale="medium" class="selected">Medium</button><button data-scale="large">Large</button></div></div>
+              <div class="scale-strip"><div><span class="tiny-caps">Quick scale</span></div><div class="scale-options"><button data-scale="small">Small</button><button data-scale="medium" class="selected">Medium</button><button data-scale="large">Large</button></div></div>
             </section>
             <section class="panel breakdown-panel">
-              <div class="panel-heading"><h2><span class="step">04</span> Sized workload & cost</h2><button class="text-button" id="toggle-usage">Adjust usage & rates ↗</button></div>
-              <div class="table-scroll"><table class="cost-table"><thead><tr><th>PRODUCT / CONFIGURATION</th><th>MONTHLY USAGE</th><th>UNIT RATE</th><th>COST / MO</th></tr></thead><tbody id="cost-rows"></tbody><tfoot><tr><th colspan="3">Estimated monthly total <span class="muted">USD</span></th><td id="table-total"></td></tr></tfoot></table></div>
+              <div class="table-context"><span id="summary-location"></span><span id="summary-tier"></span><span>Monthly usage × unit rate</span></div>
+              <div class="panel-heading"><h2>Workload cost breakdown</h2><button class="text-button" id="toggle-usage">Adjust usage & rates ↗</button></div>
+              <div class="table-scroll"><table class="cost-table"><thead><tr><th>Product / configuration</th><th>Monthly usage</th><th>USD / unit</th><th class="dbx">Monthly</th></tr></thead><tbody id="cost-rows"></tbody><tfoot><tr><th colspan="3">Estimated monthly total <span class="muted">USD</span></th><td id="table-total"></td></tr></tfoot></table></div>
+              <div class="cost-composition"><div id="cost-bars" class="cost-bars"></div><div id="cost-legend" class="cost-legend"></div></div>
               <div class="table-footnote">Serverless compute infrastructure is included. Storage is itemized separately. <button class="text-button" data-open-tab="method">How we size ↗</button></div>
             </section>
-            <details class="panel advanced" id="advanced"><summary><span>⌘ &nbsp; Fine-tune assumptions</span><span class="muted">Optional controls <span class="chevron">⌄</span></span></summary><div class="advanced-body"><p class="muted">These are planning assumptions. Replace them with measured usage after a proof of concept.</p><div id="advanced-fields" class="advanced-grid"></div><button class="text-button" id="clear-overrides">Clear usage and rate overrides</button></div></details>
-            <section class="panel comparison-panel"><div class="panel-heading"><h2>Across the clouds</h2><select id="compare-geo" aria-label="Comparison geography"><option value="singapore">Singapore</option><option value="us">US baseline</option><option value="europe">Frankfurt</option><option value="sydney">Sydney</option><option value="tokyo">Tokyo</option></select></div><p class="panel-description">Same requirements, local PAYG rates. AWS/GCP use your selected tier; Azure uses Premium.</p><div class="cloud-comparison" id="comparison"></div><p class="small-note">Price coverage does not confirm service availability. Check availability before proposing a region.</p></section>
+            <details class="panel advanced" id="advanced"><summary>Advanced assumptions <span class="muted">Headroom, discounts, retention &amp; usage</span></summary><div class="advanced-body"><p class="muted">These are planning assumptions. Replace them with measured usage after a proof of concept.</p><div id="advanced-fields" class="advanced-grid"></div><button class="text-button" id="clear-overrides">Clear usage and rate overrides</button></div></details>
+            <section class="panel comparison-panel"><div class="panel-heading"><h2>Cloud comparison</h2><select id="compare-geo" aria-label="Comparison geography"><option value="singapore">Singapore</option><option value="us">US baseline</option><option value="europe">Frankfurt</option><option value="sydney">Sydney</option><option value="tokyo">Tokyo</option></select></div><p class="panel-description">Same requirements and comparison region · AWS/GCP use your selected tier; Azure uses Premium · Δ vs selected cloud · manual rate overrides excluded.</p><div class="cloud-comparison" id="comparison"></div><p class="small-note">Price coverage does not confirm service availability. Check availability before proposing a region.</p></section>
           </main>
           <aside class="summary-column">
-            <section class="estimate-card" aria-live="polite" aria-atomic="true">
-              <div class="estimate-title"><span>YOUR ESTIMATE</span><span class="estimate-live"><span class="status-dot"></span> UPDATES AS YOU TYPE</span></div>
-              <div class="total-line"><strong id="monthly">—</strong><span>/ month</span></div><div id="annual" class="annual"></div>
-              <div class="budget-range"><div><span>Planning range</span><b id="range"></b></div><div class="range-track"><span></span><i></i></div><small id="range-caption"></small></div>
-              <div id="cost-bars" class="cost-bars"></div><div id="cost-legend" class="cost-legend"></div>
-              <div class="estimate-metrics"><div><span>COMPUTE USAGE</span><b id="metric-dbu"></b></div><div><span>RETAINED STORAGE</span><b id="metric-storage"></b></div></div>
-              <div class="estimate-bottom"><span id="summary-location"></span><span id="summary-tier"></span></div>
-            </section>
-            <section class="confidence-card"><div class="confidence-heading"><span class="mini-icon">≈</span><b>Built for the first conversation</b></div><p>Directional sizing from requirements. Confirm performance and actual consumption with a representative workload.</p><div id="summary-notes"></div><button class="text-button" data-open-tab="method">See assumptions & exclusions ↗</button></section>
-            <section class="source-card"><div class="section-label">PRICING PROVENANCE</div><div class="source-title"><span class="status-dot"></span><b id="source-mode">Official pricing snapshot</b></div><p id="snapshot-date"></p><p>Exact region → same-cloud baseline → AWS benchmark. Every fallback is labelled.</p><button class="button refresh" id="refresh">↻ Refresh official rates</button><div id="refresh-status" class="small-note" role="status"></div></section>
-            <button class="print-button" id="print">↗ Print customer summary</button>
+            <details class="confidence-card"><summary>Assumptions &amp; exclusions</summary><p>Usage is a planning estimate. Confirm performance and consumption with a representative workload.</p><p>Taxes, networking, private connectivity, support, implementation and unlisted services are excluded. Add a monthly allowance where needed.</p><button class="text-button" data-open-tab="method">Full sizing methodology ↗</button></details>
+            <details class="source-card"><summary>Pricing sources &amp; refresh</summary><div class="source-title"><span class="status-dot"></span><b id="source-mode">Official pricing snapshot</b></div><p id="snapshot-date"></p><p>Exact region → same-cloud baseline → AWS benchmark. Every fallback is labelled.</p><button class="button refresh" id="refresh">Refresh official rates</button><div id="refresh-status" class="small-note" role="status"></div></details>
           </aside>
         </div>
       </section>
@@ -95,7 +96,7 @@
         <article class="panel method-card"><h3>References</h3><div class="reference-links"><a href="https://www.databricks.com/product/pricing" target="_blank" rel="noopener noreferrer">Databricks regional pricing ↗</a><a href="https://www.databricks.com/product/pricing/product-pricing/instance-types" target="_blank" rel="noopener noreferrer">Warehouse DBU rates ↗</a><a href="https://www.databricks.com/product/pricing/lakebase" target="_blank" rel="noopener noreferrer">Lakebase pricing ↗</a><a href="https://docs.databricks.com/aws/en/oltp/projects/autoscaling" target="_blank" rel="noopener noreferrer">Lakebase compute units ↗</a><a href="https://www.databricks.com/product/pricing/ai-search" target="_blank" rel="noopener noreferrer">AI Search sizing & prices ↗</a><a href="https://docs.databricks.com/aws/en/compute/sql-warehouse/warehouse-behavior" target="_blank" rel="noopener noreferrer">SQL sizing guidance ↗</a></div></article>
       </section>
     </div>
-    <footer><a href="../">← Demo home</a><span><span class="footer-mark">◈</span> SIZING DESK <span class="footer-divider">/</span> An independent planning tool for Databricks</span><span>USD · indicative estimates · verify before quoting</span></footer>
+    <footer><p><b>Disclaimer.</b> Public list prices and editable sizing assumptions. Not an official Databricks publication, quote or offer; confirm rates and service availability before quoting.</p><p><a href="../">← Demo home</a> · <a href="../lakebase-compete-calculator/">Lakebase Calculator</a> · <a href="../llm-pricing/">LLM Token Pricing</a></p></footer>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>

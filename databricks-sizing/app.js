@@ -8,9 +8,9 @@
   function node(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
   function button(text,fn,cls='text-button'){const b=node('button',text,cls);b.type='button';b.addEventListener('click',fn);return b;}
   function toast(text){$('toast').textContent=text;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),4000);}
-  const icons={lakehouse:'▱',batch:'⇥',streaming:'≋',ai:'✧',science:'⌘',lakebase:'▤'};
+  const scenarioNames={lakehouse:'Lakehouse + BI',batch:'Batch ETL',streaming:'Streaming',ai:'GenAI / RAG',science:'Data science',lakebase:'Lakebase'};
   const subs={lakehouse:'Ingest · transform · query',batch:'Scheduled ETL pipelines',streaming:'Always-on data pipelines',ai:'Inference · retrieval',science:'Notebooks · experiments',lakebase:'Operational Postgres'};
-  function tab(name){if(!['estimate','rates','method'].includes(name))return;for(const view of document.querySelectorAll('.view'))view.hidden=view.id!==name+'-view';for(const b of document.querySelectorAll('[data-tab]')){const on=b.dataset.tab===name;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on));}if(name!=='estimate')window.scrollTo({top:140,behavior:'smooth'});}
+  function tab(name){if(!['estimate','rates','method'].includes(name))return;for(const view of document.querySelectorAll('.view'))view.hidden=view.id!==name+'-view';for(const b of document.querySelectorAll('[data-tab]')){const on=b.dataset.tab===name;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on));}window.scrollTo({top:0,behavior:'smooth'});}
   function regionOptions(){
     const options=data.regions[state.cloud]??[];
     if(!options.includes(state.region))state.region=E.GEOS[geo][state.cloud]??E.ANCHORS[state.cloud];
@@ -22,7 +22,7 @@
     $('presets').replaceChildren(...Object.entries(E.PRESETS).map(([id,p])=>{
       const b=button('',()=>{state=E.preset(state,id);editUsage=false;renderSidebar();renderRequirements();renderAdvanced();render();},'preset'+(state.scenario===id?' selected':''));
       b.dataset.scenario=id;b.setAttribute('aria-pressed',String(state.scenario===id));
-      const text=node('span');text.append(node('strong',p.name),node('small',subs[id]));b.append(node('span',icons[id],'preset-icon'),text,node('span','↗','arrow'));return b;
+      b.textContent=scenarioNames[id];b.title=p.name+' · '+subs[id];return b;
     }));
     $('workloads').replaceChildren(...Object.entries(E.WORKLOADS).map(([id,name])=>{
       const label=node('label',undefined,'workload-item'),input=node('input');input.type='checkbox';input.checked=state.workloads.includes(id);input.dataset.workload=id;input.addEventListener('change',()=>{
@@ -97,16 +97,16 @@
     }));$('table-total').textContent=current.complete?money(current.total,2):'Incomplete';
   }
   function renderSummary(){
-    $('monthly').textContent=current.complete?money(current.total):'Incomplete';$('monthly').style.fontSize=current.complete?'':'29px';
-    $('annual').textContent=current.complete?money(current.total*12)+' / year · annualized run rate':'Known costs: '+money(current.subtotal)+' / month';
+    $('monthly').textContent=current.complete?money(current.total):'Incomplete';
+    $('annual').textContent=current.complete?money(current.total*12)+' / year':'Known costs: '+money(current.subtotal)+' / month';
     $('range').textContent=current.complete?money(current.low)+' – '+money(current.high):'Missing unit rates';
     $('range-caption').textContent='±'+state.uncertainty+'% planning sensitivity · not a quote';
-    const groups={compute:{name:'Compute',color:'#8db6a3',cost:0},ai:{name:'AI & retrieval',color:'#efab80',cost:0},storage:{name:'Storage',color:'#d1d6af',cost:0},other:{name:'Other costs',color:'#9cacc5',cost:0}};
+    const groups={compute:{name:'Compute',color:'var(--dbx)',cost:0},ai:{name:'AI & retrieval',color:'var(--up)',cost:0},storage:{name:'Storage',color:'var(--geo)',cost:0},other:{name:'Other costs',color:'var(--par)',cost:0}};
     for(const r of current.rows)groups[r.group].cost+=r.cost??0;
     const active=Object.values(groups).filter(g=>g.cost>0);
     $('cost-bars').replaceChildren(...active.map(g=>{const n=node('span');n.style.backgroundColor=g.color;n.style.width=(g.cost/current.subtotal*100)+'%';n.title=g.name+': '+money(g.cost,2);return n;}));
     $('cost-legend').replaceChildren(...active.map(g=>{const line=node('div',undefined,'legend-line'),label=node('span',undefined,'legend-name'),i=node('i');i.style.backgroundColor=g.color;label.append(i,node('span',g.name));line.append(label,node('b',money(g.cost,2)));return line;}));
-    $('metric-dbu').textContent=number(current.dbus)+' DBU / mo';$('metric-storage').textContent=current.storageGB>=1000?number(current.storageGB/1000,1)+' TB':number(current.storageGB,1)+' GB';
+    $('metric-dbu').textContent=number(current.dbus)+' DBU';$('metric-storage').textContent=current.storageGB>=1000?number(current.storageGB/1000,1)+' TB':number(current.storageGB,1)+' GB';
     $('summary-location').textContent=state.cloud+' · '+state.region;$('summary-tier').textContent=state.tier.charAt(0).toUpperCase()+state.tier.slice(1);
     const notes=[];
     if(current.fallback.length)notes.push(node('div',current.fallback.length+' line(s) use fallback or missing prices. Treat the total as provisional.','summary-note warning'));
@@ -120,12 +120,21 @@
     $('coverage-text').textContent=current.fallback.length?current.fallback.length+' fallback / missing rate(s) · review before quoting':current.rows.filter(r=>r.status==='exact').length+' exact regional rate(s) · compute infrastructure included';
   }
   function renderComparison(){
-    $('comparison').replaceChildren(...['AWS','Azure','GCP'].map(cloud=>{
+    const table=node('table',undefined,'cloud-table'),head=node('thead'),header=node('tr'),body=node('tbody');
+    for(const label of ['Cloud','Region / plan','Monthly','Δ vs selected','Pricing','']){const th=node('th',label);th.scope='col';header.append(th);}head.append(header);
+    const base=E.estimate({...state,region:E.GEOS[geo][state.cloud],overrides:{}},data);
+    for(const cloud of ['AWS','Azure','GCP']){
       const region=E.GEOS[geo][cloud];const comparisonState={...state,cloud,region,tier:cloud==='Azure'?'premium':state.tier,overrides:{}};
-      const est=E.estimate(comparisonState,data),card=node('article',undefined,'compare-card'+(state.cloud===cloud?' active-cloud':''));
-      card.append(node('b',cloud==='GCP'?'Google Cloud':cloud),node('span',est.complete?money(est.total):'Incomplete','compare-price'),node('small',region+' · '+(est.fallback.length?est.fallback.length+' fallback(s)':'regional rates')));
-      card.append(button('Use this region ↗',()=>{state=E.normalise(comparisonState);regionOptions();render();toast('Deployment changed to '+cloud+' · '+region);}));return card;
-    }));
+      const est=E.estimate(comparisonState,data),tr=node('tr',undefined,cloud===state.cloud?'active-cloud':'');
+      const platform=node('th',cloud==='GCP'?'Google Cloud':cloud);platform.scope='row';
+      const price=node('td',undefined,'compare-price');price.append(node('b',est.complete?money(est.total):'Incomplete'),node('small',est.complete?money(est.total*12)+' / yr':''));
+      const delta=node('td',undefined,'delta');
+      if(!base.complete||!est.complete)delta.textContent='—';else if(cloud===state.cloud)delta.textContent='base';else if(base.total===0)delta.textContent=est.total===0?'=':'—';else{const pct=(est.total/base.total-1)*100;delta.textContent=Math.abs(pct)<0.05?'=':(pct>0?'▲':'▼')+number(Math.abs(pct),1)+'%';if(Math.abs(pct)>=0.05)delta.classList.add(pct>0?'pricier':'cheaper');}
+      const pricing=node('td');pricing.append(node('span',est.fallback.length?est.fallback.length+' fallback(s)':'Regional rates','tag '+(est.fallback.length?'fallback':'exact')));
+      const action=node('td');action.append(button('Use region ↗',()=>{state=E.normalise(comparisonState);regionOptions();render();toast('Deployment changed to '+cloud+' · '+region);}));
+      tr.append(platform,node('td',region+' · '+(cloud==='Azure'?'Premium':state.tier==='premium'?'Premium':'Enterprise')),price,delta,pricing,action);body.append(tr);
+    }
+    table.append(head,body);$('comparison').replaceChildren(table);
   }
   function renderRates(){
     $('rates-location').textContent=state.cloud+' / '+state.region+' / '+state.tier;
