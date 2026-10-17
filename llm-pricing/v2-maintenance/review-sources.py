@@ -318,7 +318,7 @@ def model_regex(model):
         own = {t for t in tokens if re.fullmatch(SIBLINGS, t)}
         tail = "|".join(x for x in SIBLINGS.split("|") if x not in own)
         # A digit right after the version, directly or after one separator, is another version ("5.3", "5-3").
-        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?![._ -]?\d)(?!" + sep + "(?:" + tail + r")\b)"
+        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![._ -]?\d)(?!" + sep + "(?:" + tail + r")\b)"
     tokens = official.norm(model.get("name") or "").split()
     options = [phrase(tokens)] if tokens else []
     if len(tokens) > 2 and tokens[0] in ("claude", "gemini", "grok", "gpt", "kimi"):
@@ -532,10 +532,14 @@ def risk_tokens(line, rx):
     """What a wording-only change keeps: prices, rates, multipliers, context limits and dates, plus the places a
     line names with any short marks beside them (a Bedrock region row: "us-east-1 (N. Virginia) | no | yes")."""
     text = rate_text(line)
+    # A dated checkpoint still belongs to its model family, but is not interchangeable
+    # with that family's previous checkpoint even when its API alias and prices stay put.
+    versions = {"version:" + re.sub(r"[\s._/-]+", "-", m.group())
+                for m in rx.finditer(text) if re.search(r"[._ -]\d{4,8}$", m.group())} if rx else set()
     if rx:
         text = rx.sub(" ", text)
     text = OTHER_MODEL.sub(" ", text)  # another model's version number is not a price
-    tokens = {"price:" + re.sub(r"[\s,]", "", t) for t in PRICE.findall(text) + LIMIT.findall(text)}
+    tokens = versions | {"price:" + re.sub(r"[\s,]", "", t) for t in PRICE.findall(text) + LIMIT.findall(text)}
     tokens |= {"price:cache-duration:" + n for n in re.findall(r"\b(\d+)[ -]minutes?\b", text)}
     prices = []
     for token in PRICE.findall(text):
@@ -584,7 +588,7 @@ def compare(removed, added, rx):
     moved = {t.split(":", 1)[0] for t in old ^ new}
     if not moved:
         return "low", "wording or layout only; no price, rate, limit, date or region changed"
-    what = [text for kind, text in (("price", "a price, rate, multiplier or context limit"), ("date", "a date"),
+    what = [text for kind, text in (("version", "a model checkpoint/version"), ("price", "a price, rate, multiplier or context limit"), ("date", "a date"),
                                     ("place", "a region or its availability")) if kind in moved]
     return "high", " and ".join(what) + " changed"
 
@@ -823,7 +827,7 @@ def proven_edits(data, changes, current, dbx, sources):
             if slug in endpoints:
                 e["model_id"] = slug
     for c in changes:
-        if c["risk"] != "high" or c["platform"] == "databricks" or c["source"] not in current:
+        if c["risk"] != "high" or "model checkpoint/version" in c.get("reason", "") or c["platform"] == "databricks" or c["source"] not in current:
             continue
         parts = next((s.get("price_parts") for s in sources if s["id"] == c["source"]), None)
         edits = row_edits(c, data["models"][c["model"]]["platforms"][c["platform"]], current[c["source"]]["records"], parts)
@@ -979,20 +983,31 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
                     if offered and set(before) != set(after) and sid not in wording:
                         unchecked.append(sid)
                     continue
-                if set(rb) != set(ra):
-                    risk, reason = classify(rb, ra, rx)
+                observed_versions = {token for record in ra for token in risk_tokens(record, rx) if token.startswith("version:")}
+                reviewed_versions = {token for token in risk_tokens("text: " + cell.get("snapshot", ""), rx) if token.startswith("version:")}
+                # Check against the actual published snapshot too. A mixed or already accepted
+                # source baseline must not hide a checkpoint that the dataset has not reviewed.
+                snapshot_changed = bool(cell.get("snapshot") and observed_versions and observed_versions != reviewed_versions)
+                if set(rb) != set(ra) or snapshot_changed:
+                    risk, reason = ("high", "a model checkpoint/version changed from the reviewed dataset snapshot") if snapshot_changed else classify(rb, ra, rx)
                     proof = (key, pl, "dbx-prices" if by_id[sid].get("facts") == "dbx-prices" else sid)
-                    if risk == "high" and proof in applied:
+                    version_change = "model checkpoint/version" in reason
+                    if risk == "high" and proof in applied and not version_change:
                         risk, reason = "applied", applied[proof]
-                    if risk == "high" and pl == "databricks" and by_id[sid].get("facts") == "dbx-prices" and key not in fact_issues:
+                    if risk == "high" and not version_change and pl == "databricks" and by_id[sid].get("facts") == "dbx-prices" and key not in fact_issues:
                         risk, reason = "low", "every rate still matches the DBU table"
                     if risk == "high" and reason == PLACE_ONLY and (key, sid) in auto_regions:
                         risk, reason = "applied", "regions updated from the model card"
                     risk = "quiet" if risk == "high" and reason in QUIET else risk
                     (changed if risk == "high" else quiet if risk == "quiet" else accepted).append(sid)
                     added, removed = sorted(set(ra) - set(rb)), sorted(set(rb) - set(ra))
+                    added_all, removed_all = added, removed
+                    if snapshot_changed and not added:
+                        added = [record for record in ra if any(t.startswith("version:") for t in risk_tokens(record, rx))]
+                    if snapshot_changed and not removed:
+                        removed = ["dataset snapshot: " + cell["snapshot"]]
                     changes.append(dict(model=key, name=model.get("name", key), platform=pl, source=sid, url=current[sid]["url"],
-                                        risk=risk, reason=reason, added=added[:12], removed=removed[:12], added_all=added, removed_all=removed))
+                                        risk=risk, reason=reason, added=added[:12], removed=removed[:12], added_all=added_all, removed_all=removed_all))
             if pl == "databricks" and key in fact_issues:
                 (quiet if all(dbx_availability(t) for t in fact_issues[key]) else changed).append("dbx-prices")
             if pl == "databricks" and key in gone:

@@ -22,6 +22,53 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_checkpoint_upgrade_requires_review_even_with_unchanged_alias_and_prices(self):
+        model = {"name": "DeepSeek V4.1 Flash", "platforms": {"official": {"status": "priced", "src": "src", "in": 0.3, "out": 1.2}}}
+        rx = review.model_regex(model)
+        row = lambda version: 'table: ' + review.packed({"heading": "Models & Pricing", "cells": ["MODEL VERSION", version, "DeepSeek-V4-Pro-0813"]})
+        original = row("DeepSeek-V4.1-Flash")
+        for checkpoint in ("1017", "20261017"):
+            after = row("DeepSeek-V4.1-Flash-" + checkpoint)
+            self.assertTrue(rx.search(review.official.norm(after)))
+            risk, reason = review.classify([original], [after], rx)
+            self.assertEqual(risk, "high")
+            self.assertIn("model checkpoint/version", reason)
+            config = [{"id": "prices", "meta": ["src"]}]
+            data = {"models": {"d/flash": model}}
+            baseline = {"sources": {"prices": {"records": [original]}}}
+            current = {"prices": {"url": "u", "records": [after]}}
+            cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, dt.date(2026, 10, 17))
+            self.assertEqual(cells["d/flash|official"]["sources"], ["prices"])
+            self.assertNotIn("quiet", cells["d/flash|official"])
+            accepted = review.accept_low_risk(baseline, current, changes, {}, [])
+            self.assertEqual(accepted["sources"]["prices"]["records"], [original])
+            self.assertEqual(review.proven_edits(data, changes, current, {}, config), [])
+
+    def test_checkpoint_changes_removals_and_other_model_wording(self):
+        rx = review.model_regex({"name": "DeepSeek V4.1 Flash"})
+        self.assertEqual(review.classify(["text: DeepSeek-V4.1-Flash-1001"], ["text: DeepSeek-V4.1-Flash-1017"], rx)[0], "high")
+        self.assertEqual(review.classify(["text: DeepSeek-V4.1-Flash-1017"], ["text: DeepSeek-V4.1-Flash"], rx)[0], "high")
+        self.assertEqual(review.classify(["text: DeepSeek-V4.1-Flash-1017 is available"], ["text: DeepSeek V4.1 Flash 1017 is now available"], rx)[0], "low")
+        self.assertFalse(rx.search("deepseek-v4.1-flash-2"))
+        self.assertFalse(rx.search("deepseek-v4.1-flash-lite"))
+        self.assertEqual(review.classify(["text: DeepSeek V4.1 Flash replaces DeepSeek V4 Pro 0813"], ["text: DeepSeek V4.1 Flash replaces DeepSeek V4 Pro 1017"], rx)[0], "low")
+
+    def test_checkpoint_dataset_mismatch_survives_an_already_recorded_baseline(self):
+        data = {"models": {"d/flash": {"name": "DeepSeek V4.1 Flash", "platforms": {"official": {
+            "status": "priced", "src": "src", "snapshot": "DeepSeek-V4.1-Flash"}}}}}
+        config = [{"id": "prices", "meta": ["src"]}]
+        records = ['table: ' + review.packed({"cells": ["MODEL VERSION", "DeepSeek-V4.1-Flash-1017"]})]
+        current = {"prices": {"url": "u", "records": records}}
+        baseline = {"sources": current}
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, dt.date(2026, 10, 17))
+        self.assertEqual(changes[0]["risk"], "high")
+        self.assertIn("dataset snapshot", changes[0]["reason"])
+        self.assertIn("changed_at", cells["d/flash|official"])
+        data["models"]["d/flash"]["platforms"]["official"]["snapshot"] += "-1017"
+        cells, changes = review.cell_checks(data, config, baseline, current, {}, {}, None, dt.date(2026, 10, 17))
+        self.assertEqual(changes, [])
+        self.assertEqual(cells["d/flash|official"]["verified"], "2026-10-17")
+
     def test_explicit_usd_label_keeps_rates_units_and_assignments(self):
         def row(cells):
             return "table: " + review.packed(dict(heading="Fast mode pricing", cells=cells))

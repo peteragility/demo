@@ -13,6 +13,7 @@ name: LLM pricing v2 daily refresh
 #      card only. A price change it cannot prove, a new top-50 model a platform page names but the page
 #      has no prices for, or a source unreadable for two days opens or updates one issue labelled
 #      llm-pricing-review. Other models joining or leaving the top 50 change the page by themselves.
+# Checkpoint/version changes require review even when API aliases and prices are unchanged.
 # Current Databricks catalog/region/DBU entries are also checked against the dataset, independent of
 # source diffs: missing availability or published pricing keeps the review issue open until corrected.
 # Run dates follow Hong Kong time.
