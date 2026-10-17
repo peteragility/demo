@@ -12318,9 +12318,10 @@
   "deepseek-pricing": {
    "url": "https://api-docs.deepseek.com/quick_start/pricing",
    "kind": "tables",
-   "digest": "4c38a91e241a0ddfe340f08e9981485ccef030be6bb74d42c8f08b256c187b5e",
+   "digest": "a7b5c2c62e16be833f0bf7d25614624787f88436ba7c3c80aa5d978d01982e7f",
    "records": [
     "notice: (1) Use deepseek-flash as the model name. The legacy names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash model and billed at the Flash price.",
+    "notice: (1) Use deepseek-flash as the model name. The legacy names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash-1017 model and billed at the Flash price.",
     "table: {\"cells\":[\"1M INPUT TOKENS (CACHE MISS)\",\"OFF-PEAK\",\"$0.15\",\"$0.66\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"1M OUTPUT TOKENS\",\"OFF-PEAK\",\"$0.6\",\"$1.98\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"Anthropic API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
@@ -12333,6 +12334,7 @@
     "table: {\"cells\":[\"FIM Completion（Beta）\",\"Non-thinking mode only\",\"Non-thinking mode only\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"MAX OUTPUT\",\"MAXIMUM: 384K\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"MODEL VERSION\",\"DeepSeek-V4.1-Flash\",\"DeepSeek-V4-Pro-0813\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
+    "table: {\"cells\":[\"MODEL VERSION\",\"DeepSeek-V4.1-Flash-1017\",\"DeepSeek-V4-Pro-0813\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"MODEL\",\"deepseek-flash (1)\",\"deepseek-v4-pro\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$0.006\",\"$0.044\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$0.3\",\"$1.32\"],\"heading\":\"Models & Pricing / Model Details ​\"}",

@@ -128,35 +128,7 @@
   "board_id": "webdev",
   "published_at": "2026-10-16"
  },
- "databricks_coverage": [
-  {
-   "model": "google/gemini-4-argon",
-   "name": "Gemini 4 Argon",
-   "endpoints": [
-    "databricks-gemini-4-argon"
-   ],
-   "reason": "official listing is missing from dataset availability",
-   "pricing": "not published in checked DBU tables",
-   "sources": [
-    {
-     "id": "dbx-models",
-     "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
-    },
-    {
-     "id": "dbx-region-aws",
-     "url": "https://docs.databricks.com/aws/en/unity-gateway/model-region-availability"
-    },
-    {
-     "id": "dbx-region-azure",
-     "url": "https://learn.microsoft.com/en-us/azure/databricks/unity-gateway/model-region-availability"
-    },
-    {
-     "id": "dbx-region-gcp",
-     "url": "https://docs.databricks.com/gcp/en/unity-gateway/model-region-availability"
-    }
-   ]
-  }
- ],
+ "databricks_coverage": [],
  "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
@@ -437,7 +409,10 @@
    "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-10-17"
+   "verified": "2026-10-17",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-10-17"
@@ -452,7 +427,10 @@
    "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4-pro|official": {
-   "verified": "2026-10-17"
+   "verified": "2026-10-17",
+   "unchecked": [
+    "deepseek-pricing"
+   ]
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
    "verified": "2026-10-17"
@@ -473,7 +451,12 @@
    "verified": "2026-10-17"
   },
   "deepseek/deepseek-v4.1-flash|official": {
-   "verified": "2026-10-17"
+   "verified": "2026-10-17",
+   "changed_at": "2026-10-17",
+   "sources": [
+    "deepseek-pricing"
+   ],
+   "quiet": true
   },
   "google/gemini-3.1-flash-lite|alicloud": {
    "verified": "2026-10-17"
