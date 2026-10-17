@@ -140,6 +140,12 @@ thead th{font-size:11.5px;font-weight:600;color:var(--ink-2);border-bottom-color
 .cloud-table thead th:nth-child(3){color:var(--dbx)}
 .cloud-table tbody .active-cloud{background:var(--dbx-soft)}
 .cloud-table tbody .active-cloud th:first-child{box-shadow:inset 2px 0 var(--dbx);color:var(--dbx)}
+.cloud-table tr>:first-child{position:sticky;left:0;z-index:1;background:var(--panel);border-right:1px solid var(--line)}
+.cloud-table thead tr>:first-child{background:var(--panel-2);z-index:2}
+.cloud-table tbody .active-cloud>:first-child{background:var(--dbx-soft)}
+.cloud-comparison:focus-visible{outline:2px solid var(--dbx);outline-offset:-2px}
+.scroll-hint{display:none;margin:0;padding:4px 10px;font-size:11px;color:var(--ink-3);background:var(--panel-2)}
+.text-button:disabled{opacity:.5;cursor:not-allowed}
 .compare-price b{display:block;font-size:14px;font-weight:600}
 .compare-price small{display:block;font-size:11px;color:var(--ink-3)}
 .delta{font-size:11px!important;font-weight:600;color:var(--ink-3)}
@@ -185,6 +191,7 @@ footer b{color:var(--ink-2)}
   .advanced-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 @media(max-width:720px){
+  .scroll-hint{display:block}
   .page{padding-inline:10px}
   .intro{padding-top:9px}
   h1{font-size:19px}

@@ -26,3 +26,5 @@ jobs:
           node --test databricks-sizing/calculator.test.cjs
       - name: Check games, navigation and security regressions
         run: node scripts/browser-smoke.mjs
+      - name: Check Databricks sizing, sharing and mobile comparison
+        run: node databricks-sizing/browser.test.mjs

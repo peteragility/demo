@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-17",
+  "lakebase": {
+    "AWS": {
+      "status": "available",
+      "source": "https://docs.databricks.com/aws/en/oltp/projects/manage-projects#region-availability",
+      "regions": ["US East (N. Virginia)", "US East (Ohio)", "US West (Oregon)", "Canada", "SA (Brazil)", "Europe (Frankfurt)", "Europe (Ireland)", "Europe (London)", "AP (Mumbai)", "AP (Singapore)", "AP (Sydney)", "AP (Tokyo)"]
+    },
+    "Azure": {
+      "status": "available",
+      "source": "https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects#region-availability",
+      "regions": ["US East", "US East 2", "US Central", "US North Central", "US South Central", "US West", "US West 2", "Canada Central", "Brazil South", "North Europe", "UK South", "West Europe", "France Central", "Germany West Central", "Australia East", "India Central", "Asia Southeast", "Asia East", "Japan East"]
+    },
+    "GCP": {
+      "status": "beta",
+      "source": "https://docs.databricks.com/gcp/en/oltp/projects/manage-projects#region-availability",
+      "regions": ["US (Virginia)", "US (Iowa)", "Europe (Frankfurt)"]
+    }
+  }
+}
