@@ -7419,6 +7419,40 @@
               "endpoint": "Batch API",
               "id": "variant-3",
               "model_match": "confirmed"
+            },
+            {
+              "in": 0.3,
+              "out": 1.2,
+              "cache_read": 0.006,
+              "label": "Serverless 1017 · Standard",
+              "comparison_scope": "unverified",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-19",
+              "endpoint": "Serverless 1017",
+              "model_id": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
+              "snapshot": "DeepSeek-V4.1-Flash-1017",
+              "model_match": "unverified",
+              "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+              "availability_checked_at": "2026-10-19",
+              "url": "https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017",
+              "id": "variant-4"
+            },
+            {
+              "in": 0.375,
+              "out": 1.5,
+              "cache_read": 0.0075,
+              "label": "Serverless 1017 · Priority",
+              "comparison_scope": "unverified",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-19",
+              "endpoint": "Serverless 1017",
+              "model_id": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
+              "snapshot": "DeepSeek-V4.1-Flash-1017",
+              "model_match": "unverified",
+              "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+              "availability_checked_at": "2026-10-19",
+              "url": "https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017",
+              "id": "variant-5"
             }
           ],
           "src": "fireworks",
@@ -7427,8 +7461,8 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-09-28",
+          "availability_checked_at": "2026-09-28",
           "url": "https://docs.fireworks.ai/serverless/pricing",
           "endpoint": "Serverless",
           "endpoints": {
@@ -7479,11 +7513,16 @@
               [
                 "Input limits",
                 "1,040K-token context on serverless; image input supported."
+              ],
+              [
+                "Checkpoint review · 19 Oct 2026",
+                "1017 is a separate serverless model ID with its own Standard and Priority prices, a published 1M-token context and image input. The original and US-only IDs remain listed separately; no 1017 US-only rate is published. Its exact checkpoint match to Databricks is unconfirmed, so it is excluded from same-model comparisons."
               ]
             ],
             "ids": [
               "accounts/fireworks/models/deepseek-v4p1-flash (serverless)",
-              "accounts/fireworks/routers/deepseek-v4p1-flash-us (US-only)"
+              "accounts/fireworks/routers/deepseek-v4p1-flash-us (US-only)",
+              "accounts/fireworks/models/deepseek-v4p1-flash-1017 (separate 1017 checkpoint; reviewed 2026-10-19)"
             ],
             "cache_write": "input-rate"
           }
