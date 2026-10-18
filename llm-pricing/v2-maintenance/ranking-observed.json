@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-10-18",
+ "checked_at": "2026-10-19",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
  "published_at": "2026-10-16",
  "board_id": "webdev",
