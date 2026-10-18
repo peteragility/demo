@@ -129,9 +129,7 @@
   "published_at": "2026-10-16"
  },
  "databricks_coverage": [],
- "review": [
-  "DeepSeek V4.1 Flash · fireworks"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -288,10 +286,7 @@
    "verified": "2026-10-19"
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-10-19",
-   "accepted": [
-    "aws-card-claude-opus-5-5"
-   ]
+   "verified": "2026-10-19"
   },
   "anthropic/claude-opus-5.5|databricks": {
    "verified": "2026-10-19"
@@ -393,10 +388,7 @@
    "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4-flash|bedrock": {
    "verified": "2026-10-19"
@@ -417,11 +409,7 @@
    "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-10-17",
-   "unchecked": [
-    "az-learn-regions",
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-10-19"
@@ -442,10 +430,7 @@
    "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
    "verified": "2026-10-19"
@@ -454,11 +439,7 @@
    "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
-   "verified": "2026-10-18",
-   "changed_at": "2026-10-19",
-   "sources": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-19"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
    "verified": "2026-10-19"
@@ -662,10 +643,7 @@
    "verified": "2026-10-19"
   },
   "meta/llama-4-maverick|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "meta/llama-4-maverick|bedrock": {
    "verified": "2026-10-19"
@@ -680,10 +658,7 @@
    "verified": "2026-10-19"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "minimax/minimax-m3|bedrock": {
    "verified": "2026-10-19"
@@ -704,10 +679,7 @@
    "verified": "2026-10-19"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "mistral/mistral-medium-3.5|bedrock": {
    "verified": "2026-10-19"
@@ -752,10 +724,7 @@
    "verified": "2026-10-19"
   },
   "moonshot/kimi-k3|bedrock": {
-   "verified": "2026-10-19",
-   "accepted": [
-    "aws-kimi-k3"
-   ]
+   "verified": "2026-10-19"
   },
   "moonshot/kimi-k3|databricks": {
    "verified": "2026-10-19"
@@ -773,10 +742,7 @@
    "verified": "2026-10-19"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "openai/gpt-5.4|bedrock": {
    "verified": "2026-10-19"
@@ -797,10 +763,7 @@
    "verified": "2026-10-19"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "openai/gpt-5.5|bedrock": {
    "verified": "2026-10-19"
@@ -887,10 +850,7 @@
    "verified": "2026-10-19"
   },
   "openai/gpt-6-astra|bedrock": {
-   "verified": "2026-10-19",
-   "accepted": [
-    "aws-card-gpt-6-astra"
-   ]
+   "verified": "2026-10-19"
   },
   "openai/gpt-6-astra|databricks": {
    "verified": "2026-10-19"
@@ -971,11 +931,7 @@
    "verified": "2026-10-19"
   },
   "openai/gpt-oss-120b|azure_foundry": {
-   "verified": "2026-10-18",
-   "changed_at": "2026-10-19",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "openai/gpt-oss-120b|bedrock": {
    "verified": "2026-10-19"
@@ -1143,10 +1099,7 @@
    "verified": "2026-10-19"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-19"
   },
   "qwen/qwen3.8-max|gcloud": {
    "verified": "2026-10-19"
@@ -1179,10 +1132,7 @@
    "verified": "2026-10-19"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-10-18",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-10-19"
   },
   "xai/grok-4.6|bedrock": {
    "verified": "2026-10-19"
@@ -1203,12 +1153,7 @@
    "verified": "2026-10-19"
   },
   "xai/grok-4.7|bedrock": {
-   "verified": "2026-10-18",
-   "changed_at": "2026-10-19",
-   "sources": [
-    "aws-grok47"
-   ],
-   "quiet": true
+   "verified": "2026-10-19"
   },
   "xai/grok-4.7|databricks": {
    "verified": "2026-10-19"
@@ -1268,10 +1213,7 @@
    "verified": "2026-10-19"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-10-19",
-   "accepted": [
-    "aws-card-glm-5-3"
-   ]
+   "verified": "2026-10-19"
   },
   "zai/glm-5.3|databricks": {
    "verified": "2026-10-19"

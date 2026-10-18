@@ -5951,10 +5951,11 @@
   "aws-grok47": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-xai-grok-4-7.html",
    "kind": "tables",
-   "digest": "5421d56e9396f4197af9d52a099bf7c617dac694d1604c8af716256524660f39",
+   "digest": "3cdd4c5379d74d5a4aced938a5a99e91666f64aa3cdcf94ed6e97ae89a8b468e",
    "records": [
     "notice: Application inference profiles (Invoke and Converse APIs only; not supported with Responses or Chat Completions APIs)",
-    "notice: Priority and Flex tier support: In addition to Standard, Grok 4.7 supports the Priority and Flex service tiers. Priority is billed at 1.75 times the Standard per-token rate (a 75% premium) and Flex at 0.5 times the Standard rate (a 50% discount). Apply these multipliers to the Standard rates shown above. For details on each service tier, see service tiers.",
+    "notice: Model evaluation (base model ID xai.grok-4.7 only; inference parameters are not supported)",
+    "notice: Priority and Flex tier support: In addition to Standard, Grok 4.7 supports the Priority and Flex service tiers on the Responses, Chat Completions, and Invoke APIs. The Converse API supports the Standard tier only for this model; requesting priority or flex through Converse returns a validation error. Priority is billed at 1.75 times the Standard per-token rate (a 75% premium) and Flex at 0.5 times the Standard rate (a 50% discount). Apply these multipliers to the Standard rates shown above. For details on each service tier, see service tiers.",
     "table: {\"cells\":[\"Endpoint\",\"Model ID\",\"In-Region endpoint URL\",\"Geo inference ID\",\"Global inference ID\"],\"heading\":\"Grok 4.7 / Programmatic Access\"}",
     "table: {\"cells\":[\"Geo CRIS\",\"$2.20\",\"$6.60\",\"$0.55\"],\"heading\":\"Grok 4.7 / Pricing\"}",
     "table: {\"cells\":[\"Global CRIS\",\"$2.00\",\"$6.00\",\"$0.50\"],\"heading\":\"Grok 4.7 / Pricing\"}",
@@ -5980,7 +5981,7 @@
     "table: {\"cells\":[\"ca-central-1 (Canada)\",\"ca-central-1 (Canada), us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"ca-central-1 (Canada)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"ca-west-1 (Calgary)\",\"ca-west-1 (Calgary), us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
-    "table: {\"cells\":[\"ca-west-1 (Calgary)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
+    "table: {\"cells\":[\"ca-west-1 (Calgary)\",\"no\",\"yes\",\"no\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"eu-central-1 (Frankfurt)\",\"no\",\"no\",\"yes\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"eu-central-2 (Zurich)\",\"no\",\"no\",\"yes\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"eu-north-1 (Stockholm)\",\"no\",\"no\",\"yes\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
@@ -6004,7 +6005,7 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Grok 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\",\"yes Chat Completions\",\"no bedrock-mantle\"],\"heading\":\"Grok 4.7 / Model Details\"}",
-    "table: {\"cells\":[\"yes Projects (default project only) yes Invocation logs yes Response streaming yes Application inference profiles (Invoke and Converse APIs only; not supported with Responses or Chat Completions APIs) yes Implicit Prompt Caching yes Reasoning yes Structured outputs yes Guardrails\",\"no Server-side tool use no Intelligent prompt routing no Count tokens\"],\"heading\":\"Grok 4.7 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Projects (default project only) yes Invocation logs yes Response streaming yes Application inference profiles (Invoke and Converse APIs only; not supported with Responses or Chat Completions APIs) yes Implicit Prompt Caching yes Reasoning yes Structured outputs yes Guardrails yes Client-side tool calling yes Flows yes Prompt management yes Prompt optimization (base model ID xai.grok-4.7 only) yes Model evaluation (base model ID xai.grok-4.7 only; inference parameters are not supported)\",\"no Server-side tool use no Intelligent prompt routing no Count tokens no Explicit Prompt Caching\"],\"heading\":\"Grok 4.7 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\",\"yes Invoke\",\"\"],\"heading\":\"Grok 4.7 / Model Details\"}",
     "table: {\"cells\":[\"yes\",\"yes\",\"yes\",\"no\"],\"heading\":\"Grok 4.7 / Service Tiers\"}"
    ]
@@ -8949,7 +8950,7 @@
   "az-learn-regions": {
    "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure-region-availability",
    "kind": "text",
-   "digest": "d2d97a09f2ef5fa1f35a538db0f76cd12cdc6fecc86a7337b8b22d1be3759370",
+   "digest": "7941f2051064cad96d7b4f386f0073ee52656446d9dd196f02d33e31ed7fb7eb",
    "records": [
     "notice: Model retirement schedule",
     "table: {\"cells\":[\"Cohere-command-a-plus-05-2026\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for other Foundry Models sold by Azure\"}",
@@ -9068,11 +9069,13 @@
     "table: {\"cells\":[\"Microsoft-Decision-1\",\"1\",\"✅\",\"✅\",\"✅\",\"-\",\"✅\",\"✅\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Microsoft-Decision-1\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Microsoft-Decision-1\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for other Foundry Models sold by Azure\"}",
+    "table: {\"cells\":[\"Microsoft-Decision-1\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Mistral-Large-3\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Mistral-Large-3\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Mistral-Large-3\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Mistral-Large-3\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Mistral-Large-3\",\"1\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for other Foundry Models sold by Azure\"}",
+    "table: {\"cells\":[\"Model\",\"Version\",\"australiaeast\",\"japaneast\",\"japanwest\",\"koreacentral\",\"southeastasia\",\"southindia\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Model\",\"Version\",\"australiaeast\",\"japaneast\",\"japanwest\",\"koreacentral\",\"southindia\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Provisioned Managed / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Model\",\"Version\",\"australiaeast\",\"japaneast\",\"japanwest\",\"koreacentral\",\"southindia\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for other Foundry Models sold by Azure\"}",
     "table: {\"cells\":[\"Model\",\"Version\",\"australiaeast\",\"japaneast\",\"koreacentral\",\"southeastasia\",\"southindia\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Provisioned Managed / Availability for Azure OpenAI in Foundry Models\"}",
@@ -10113,7 +10116,7 @@
   "azure-prices": {
    "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27%20and%20armRegionName%20eq%20%27eastus%27",
    "kind": "azure",
-   "digest": "539131d8dc625fa250fea8eda29032367139450e82c689254a2cc660bb6fef6f",
+   "digest": "90cf9044bbb679b03e66e90e1a5c04a171dbfa2899361f6905c074f06077727e",
    "records": [
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"3.3 70b FT DZ Deployment Hosting Unit\",\"productName\":\"Azure Llama Models\",\"retailPrice\":0.33,\"skuName\":\"3.3 70b FT DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1/Hour\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"3.3 70b FT DZ Tokens\",\"productName\":\"Azure Llama Models\",\"retailPrice\":0.00495,\"skuName\":\"3.3 70b FT DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
@@ -10863,6 +10866,10 @@
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT 5.2 pro inp Gl 1M Tokens\",\"productName\":\"Azure OpenAI GPT5\",\"retailPrice\":21.0,\"skuName\":\"GPT 5.2 pro inp Gl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT 5.2 pro opt Dz 1M Tokens\",\"productName\":\"Azure OpenAI GPT5\",\"retailPrice\":184.8,\"skuName\":\"GPT 5.2 pro opt Dz\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT 5.2 pro opt Gl 1M Tokens\",\"productName\":\"Azure OpenAI GPT5\",\"retailPrice\":168.0,\"skuName\":\"GPT 5.2 pro opt Gl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT OSS 120b RFT Dz Unit\",\"productName\":\"Azure OpenAI OSS Models\",\"retailPrice\":88.0,\"skuName\":\"GPT OSS 120b RFT Dz\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1 Hour\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT OSS 120b RFT Gl Unit\",\"productName\":\"Azure OpenAI OSS Models\",\"retailPrice\":80.0,\"skuName\":\"GPT OSS 120b RFT Gl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1 Hour\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT OSS 120b SFT Dz 1M Tokens\",\"productName\":\"Azure OpenAI OSS Models\",\"retailPrice\":6.6,\"skuName\":\"GPT OSS 120b SFT Dz\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT OSS 120b SFT Gl 1M Tokens\",\"productName\":\"Azure OpenAI OSS Models\",\"retailPrice\":6.0,\"skuName\":\"GPT OSS 120b SFT Gl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT-OSS-20b-IN-FT Tokens\",\"productName\":\"Azure OpenAI OSS Models\",\"retailPrice\":7e-05,\"skuName\":\"GPT-OSS-20b-IN-FT\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"GPT-OSS-20b-Out-FT Tokens\",\"productName\":\"Azure OpenAI OSS Models\",\"retailPrice\":0.0003,\"skuName\":\"GPT-OSS-20b-Out-FT\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Grok 4.1 Inp DZone Tokens\",\"productName\":\"Azure Grok Models\",\"retailPrice\":0.00022,\"skuName\":\"Grok 4.1 Inp DZone\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
@@ -12502,12 +12509,13 @@
   "fireworks-pricing": {
    "url": "https://docs.fireworks.ai/serverless/pricing",
    "kind": "tables",
-   "digest": "fc2ae7918bd569c2e30f4e65446bc534788eedee50e3d25258bdde68dcfb1add",
+   "digest": "666ffc91203680eda769c5a82d3043bf3efee9f3ed904b07f7f41607afc2742c",
    "records": [
     "table: {\"cells\":[\"150M – 350M\",\"$0.016\"],\"heading\":\"​ Embeddings\"}",
     "table: {\"cells\":[\"4B – 16B parameters\",\"$0.20\"],\"heading\":\"​ Other base models — by size and architecture\"}",
     "table: {\"cells\":[\"Base model parameter count\",\"$ / 1M input tokens\"],\"heading\":\"​ Embeddings\"}",
     "table: {\"cells\":[\"DeepSeek V4.1 Flash (US)\",\"$0.45 / $0.009 / $1.80\",\"$0.5625 / $0.01125 / $2.25\"],\"heading\":\"​ Text and vision models\"}",
+    "table: {\"cells\":[\"DeepSeek V4.1 Flash 1017\",\"$0.30 / $0.006 / $1.20\",\"$0.375 / $0.0075 / $1.50\"],\"heading\":\"​ Text and vision models\"}",
     "table: {\"cells\":[\"DeepSeek V4.1 Flash\",\"$0.30 / $0.006 / $1.20\",\"$0.375 / $0.0075 / $1.50\"],\"heading\":\"​ Text and vision models\"}",
     "table: {\"cells\":[\"Ember-1\",\"$3.00 / $0.30 / $15.00\",\"$3.75 / $0.375 / $18.75\"],\"heading\":\"​ Text and vision models\"}",
     "table: {\"cells\":[\"GLM 5.3 (US)\",\"$2.10 / $0.39 / $6.60\",\"$2.625 / $0.4875 / $8.25\"],\"heading\":\"​ Text and vision models\"}",
