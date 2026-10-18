@@ -9980,7 +9980,9 @@
   "fireworks": {
    "checked_at": "2026-10-04",
    "base": {
-    "endpoint": "Serverless"
+    "endpoint": "Serverless",
+    "pricing_checked_at": "2026-10-04",
+    "availability_checked_at": "2026-10-04"
    },
    "variants": [
     {

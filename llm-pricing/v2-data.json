@@ -7461,8 +7461,8 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-09-28",
-          "availability_checked_at": "2026-09-28",
+          "pricing_checked_at": "2026-10-04",
+          "availability_checked_at": "2026-10-04",
           "url": "https://docs.fireworks.ai/serverless/pricing",
           "endpoint": "Serverless",
           "endpoints": {

@@ -333,6 +333,8 @@ test('Fireworks 1017 prices remain separate from original and US-only checkpoint
   }
   assert.equal(c.snapshot, undefined);
   assert.equal(c.endpoint, 'Serverless');
+  assert.equal(c.pricing_checked_at, '2026-10-04');
+  assert.equal(c.availability_checked_at, '2026-10-04');
   assert.deepEqual([c.in, c.cache_read, c.out], [0.30, 0.006, 1.20]);
   const us = c.variants.filter(v => v.endpoint === 'US-only serverless');
   assert.equal(us.length, 2);
