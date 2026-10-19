@@ -11808,7 +11808,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-17",
+            "checked_at": "2026-10-20",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -11843,13 +11843,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Seoul, Mumbai, Singapore, Sydney · Azure Central India, Australia East · GCP Mumbai, Singapore"
+                "AWS Seoul, Mumbai, Singapore, Sydney · Azure Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Tokyo · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central"
+                "AWS Tokyo · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East"
               ]
             ],
             "hk": [
@@ -12508,7 +12508,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-17",
+            "checked_at": "2026-10-20",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -12531,7 +12531,7 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Seoul, Mumbai, Singapore · Azure Central India, Australia East · GCP Mumbai, Singapore"
+                "AWS Seoul, Mumbai, Singapore · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
@@ -12541,8 +12541,8 @@
               ]
             ],
             "hk": [
-              "none",
-              "No Hong Kong region in Databricks' model-serving tables"
+              "in-region",
+              "Azure East Asia (Hong Kong), in-region"
             ],
             "tw": [
               "none",
