@@ -258,7 +258,7 @@ def bedrock_hk_tw(marks):
 
 def norm(name):
     """Comparable model name: lowercase, '-' and '_' as spaces, footnote and region marks removed."""
-    name = re.sub(r"[*⌖†⥂]", " ", name.lower())
+    name = re.sub(r"[*⌖†⥂]", " ", name.lower().replace("\x00", ""))
     return re.sub(r"\s+", " ", re.sub(r"[-_]", " ", name)).strip()
 
 

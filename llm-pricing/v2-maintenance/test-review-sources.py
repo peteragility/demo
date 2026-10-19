@@ -805,6 +805,22 @@ class SourceReviewTests(unittest.TestCase):
         cell["in"] = 3.3
         self.assertIn("standard in", review.dbx_fact_issues(data, rows, dt.date(2026, 10, 5))["m/kimi-k3"][0])
 
+    def test_null_in_model_label_does_not_drop_priority_rates_or_hide_a_rate_change(self):
+        filler = "".join(f"<tr><td>Model {n}</td><td>1</td><td>2</td></tr>" for n in range(10))
+        def table(tier, label, input_rate):
+            return (f"<table><tr><th>Model</th><th>{tier} Pay Per Token</th></tr>"
+                    "<tr><td>Input</td><td>Output</td></tr>"
+                    f"<tr><td>{label}</td><td>{input_rate}</td><td>20</td></tr>{filler}</table>")
+        html = table("Standard", "GPT-5.6 Luna *", 1) + table("Priority", "GPT-5.6 Luna \x00*", 2)
+        rows = review.official.dbx_price_rows(html, 0.07)
+        self.assertEqual(rows["gpt 5.6 luna"]["priority"][""]["in"], 0.14)
+        cell = dict(status="priced", **{"in": 0.07, "out": 1.4}, variants=[
+            dict(label="Priority", service_tier="priority", comparison_scope="global", **{"in": 0.14, "out": 1.4})])
+        data = {"models": {"o/luna": {"name": "GPT-5.6 Luna", "platforms": {"databricks": cell}}}}
+        self.assertEqual(review.dbx_fact_issues(data, rows, dt.date(2026, 10, 20)), {})
+        rows = review.official.dbx_price_rows(html.replace("<td>2</td><td>20</td>", "<td>3</td><td>20</td>"), 0.07)
+        self.assertIn("Priority in", review.dbx_fact_issues(data, rows, dt.date(2026, 10, 20))["o/luna"][0])
+
     def test_databricks_region_tables_give_in_region_and_cross_geo_lists(self):
         html = """<table><tr><th>Region</th><th>Foundation Model APIs pay-per-token</th><th>x</th><th>y</th></tr>""" + "".join(
             f"<tr><td>{r}</td><td>The following models are supported: databricks-kimi-k3{m} " + " ".join(f"databricks-m{n}" for n in range(12)) + "</td><td></td><td></td></tr>"
