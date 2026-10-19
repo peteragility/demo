@@ -20,6 +20,16 @@
     "footer": "peteragility.github.io/demo"
   },
   {
+    "name": "lakebase-guide-preview",
+    "title": "Lakebase Field Guide",
+    "subtitle": "Simple answers for AEs. Full technical depth for SAs.",
+    "brand": "PETER CHAN / DEMO LAB",
+    "background": "#1b3139",
+    "ink": "#ecf0fa",
+    "accent": "#ff3621",
+    "footer": "peteragility.github.io/demo/lakebase-field-guide"
+  },
+  {
     "name": "llm-preview",
     "title": "LLM Token Pricing",
     "subtitle": "Compare APIs, cache charges, tiers and cloud regions",

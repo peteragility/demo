@@ -1,6 +1,8 @@
 # Shared Lakebase facts
 
-The two pages keep separate URLs and homepage entries. The Field Guide explains decisions and evidence; the Calculator estimates costs in its existing UI.
+The two pages keep separate URLs and homepage entries. The Field Guide (`lakebase-field-guide/`) explains decisions and evidence in a Simple view for AEs and a Comprehensive view for SAs (`?view=full`); the Calculator estimates costs in its existing UI.
+
+The guide moved from `lakebase-objection-faq/` on 19 October 2026. The old path is a redirect stub that keeps query strings and anchors; `demo-push.sh` keeps it off the homepage and lists it under the guide's manifest `aliases`, so the homepage adds its recorded visits to the new path.
 
 `facts.json` owns concise Lakebase capabilities, release status and shared compute parameters. Each fact records a primary source and verification date. The HTML contains `data-fact` spans rendered at maintenance time, so facts remain available without JavaScript or a network request.
 
@@ -38,3 +40,7 @@ The full JSON report is retained as a workflow artifact. No rates, facts or veri
 ### Source review, 18 October 2026
 
 The LTAP overview now puts “LTAP Direct Writes: Beta” in the synced-table status cell; synced tables remain GA. The release notes now describe Direct Writes on Postgres 16, 17 and 18, matching the current compatibility and synced-table documentation. Direct Writes remains an opt-in setting at synced-table creation, accelerating initial loads in all sync modes and full refreshes. The existing shared facts already represent these statuses and engine versions. All 22 watched sources were readable and only these two sources differed; no rate, SKU, region, tier or billing-unit records changed. This review records source observations only and does not advance calculator rate verification dates.
+
+### Source review, 19 October 2026
+
+The 15 October release notes added native Postgres logical replication into and out of Lakebase (AWS and Azure; public networking only, without Private Link; data but not schema; primary compute only; Lakebase-to-Lakebase only across regions), and Chinese, Japanese and Korean keyword search in `lakebase_tokenizer` 0.2.0. The compatibility page now links to logical replication instead of listing it as unsupported. Neither change altered a number, unit or status token, so the 18 October observation did not flag it. The Field Guide's decision gates and its migration, HA/DR, data-path, search and Aurora answers were corrected by hand, and `status.logrep` was added. Every other shared fact was re-read against its source and its checked date advanced to 19 October; calculator rates and their verified dates are unchanged. Capability wording such as “not supported” still needs a manual read of the release notes.

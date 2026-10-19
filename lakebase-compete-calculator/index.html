@@ -206,7 +206,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <h1>Lakebase Calculator</h1>
     <span class="intref" title="Built by Peter Chan from Databricks, from providers' official list prices; not an official Databricks publication.">Public list prices · not an official quote</span>
     <p><span class="pl">Estimate Databricks Lakebase monthly cost and compare it with Aurora, RDS, Azure, Cloud SQL and ClickHouse Postgres · </span>USD per month · prices checked <b id="checked">—</b></p>
-    <p><a href="../lakebase-objection-faq/">Lakebase Field Guide: sales plays, technical FAQ &amp; production proof ↗</a></p>
+    <p><a href="../lakebase-field-guide/">Lakebase Field Guide: sales plays, technical FAQ &amp; production proof ↗</a></p>
   </header>
 
   <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Common scenarios">
@@ -255,7 +255,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
 
   <section class="techsec">
     <h2 id="technical-comparison">Technical comparison</h2>
-    <p>Features checked 12 Oct 2026. Service capabilities depend on version, region and tier. The estimates above price selected configurations: RDS Multi-AZ instance, Azure PG v5 + SSD v2, Azure SQL General Purpose standard-series, Cloud SQL Enterprise and ClickHouse Scale memory-optimized. <a href="../lakebase-objection-faq/#aurora">Read the technical tradeoffs ↗</a></p>
+    <p>Features checked 12 Oct 2026. Service capabilities depend on version, region and tier. The estimates above price selected configurations: RDS Multi-AZ instance, Azure PG v5 + SSD v2, Azure SQL General Purpose standard-series, Cloud SQL Enterprise and ClickHouse Scale memory-optimized. <a href="../lakebase-field-guide/?view=full#aurora">Read the technical tradeoffs ↗</a></p>
     <div class="tblwrap"><table class="mx tech">
     <thead><tr><th scope="col">Capability</th><th scope="col" class="lb">Lakebase</th><th scope="col">Aurora PG</th><th scope="col">Aurora Serverless v2</th><th scope="col">RDS PG</th><th scope="col">Azure PG Flexible</th><th scope="col">Azure SQL Database</th><th scope="col">Cloud SQL PG</th><th scope="col">ClickHouse Postgres</th></tr></thead>
     <tbody>
@@ -275,7 +275,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <tr><td>Status</td><td class="lb"><span data-fact="table.status">AWS / Azure GA; GCP Beta · individual features have separate status</span></td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
     </tbody></table></div>
     <details><summary>Technical sources by provider</summary><ul>
-      <li><a href="../lakebase-objection-faq/#sources">Lakebase: dated status and sources beside each answer</a></li>
+      <li><a href="../lakebase-field-guide/?view=full#sources">Lakebase: dated status and sources beside each answer</a></li>
       <li>AWS: <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_Limits.html" target="_blank" rel="noopener">Aurora limits</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2-auto-pause.html" target="_blank" rel="noopener">Auto-pause</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html" target="_blank" rel="noopener">Cloning</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html" target="_blank" rel="noopener">RDS HA deployments</a></li>
       <li>Azure PG: <a href="https://learn.microsoft.com/en-us/azure/postgresql/compute-storage/concepts-compute" target="_blank" rel="noopener">Compute</a> · <a href="https://learn.microsoft.com/en-us/azure/postgresql/compute-storage/concepts-storage" target="_blank" rel="noopener">Storage</a> · <a href="https://azure.microsoft.com/en-us/pricing/details/postgresql/flexible-server/" target="_blank" rel="noopener">SSD v2 included IOPS</a></li>
       <li>Azure SQL: <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-vcore-single-databases" target="_blank" rel="noopener">SKU limits</a> · <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/serverless-tier-overview" target="_blank" rel="noopener">Serverless &amp; auto-pause</a></li>
@@ -316,7 +316,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Daily snapshot:</b> full copy at ~2,000 rows/s per CU.</li>
             <li><b>Hourly incremental:</b> changes at ~150 rows/s per CU, at least 5 min per run (both rates from the Lakebase docs, ~1 KB rows assumed).</li>
             <li><b>Continuous:</b> 730 h/month, billed even when nothing changes.</li>
-            <li><b>Competitors:</b> they need the same data movement (a custom reverse-ETL job, or a tool such as AWS Glue at $0.44/DPU-hour), using the same modeled pipeline cost unless a shared link supplies an override. This is a shared modeling assumption, not a claim that integrations have equal cost. Use the <a href="../lakebase-objection-faq/#pricing">guide scenario builder</a> to supply a quoted or measured competitor integration budget.</li>
+            <li><b>Competitors:</b> they need the same data movement (a custom reverse-ETL job, or a tool such as AWS Glue at $0.44/DPU-hour), using the same modeled pipeline cost unless a shared link supplies an override. This is a shared modeling assumption, not a claim that integrations have equal cost. Use the <a href="../lakebase-field-guide/?view=full#pricing">guide scenario builder</a> to supply a quoted or measured competitor integration budget.</li>
           </ul></li>
         <li><b>Why these defaults:</b>
           <ul>

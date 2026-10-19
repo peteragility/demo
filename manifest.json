@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17",
+ "generated": "2026-10-19",
  "pages": [
   {
    "path": "aidecide-arena/",
@@ -29,13 +29,16 @@
    "featured": true
   },
   {
-   "path": "lakebase-objection-faq/",
+   "path": "lakebase-field-guide/",
    "title": "Lakebase Field Guide",
-   "desc": "Architecture, objections, tradeoffs and production proof, with linked pricing scenarios",
+   "desc": "Where Lakebase fits, what to say and how to prove it: simple view for AEs, comprehensive view for SAs",
    "tag": "Work",
    "color": "#f7b731",
    "category": "Guides",
-   "featured": true
+   "featured": true,
+   "aliases": [
+    "lakebase-objection-faq/"
+   ]
   },
   {
    "path": "lakehouse-quest.html",

@@ -58,7 +58,7 @@ header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:20px;align-ite
 <div class="filters" id="filters" role="group" aria-label="Filter demos by category"></div>
 <div class="results"><span id="resultCount" role="status" aria-live="polite">Loading demos…</span><span id="statsStatus">Visit stats not yet available</span></div>
 <div class="grid" id="grid" aria-busy="true"><p class="empty">Loading the collection…</p></div>
-<noscript><p>Open the <a href="lakebase-compete-calculator/">Lakebase Calculator</a>, <a href="lakebase-objection-faq/">Lakebase Field Guide</a> or <a href="llm-pricing/">LLM pricing comparison</a>.</p></noscript>
+<noscript><p>Open the <a href="lakebase-compete-calculator/">Lakebase Calculator</a>, <a href="lakebase-field-guide/">Lakebase Field Guide</a> or <a href="llm-pricing/">LLM pricing comparison</a>.</p></noscript>
 </main>
 <footer><span>Built and maintained by Peter Chan</span><a id="analyticsLink" hidden target="_blank" rel="noopener noreferrer">Visit statistics ↗</a><span id="statsNote">Small tools. Curious experiments. More to come.</span></footer>
 </div>
@@ -72,13 +72,20 @@ const collator = new Intl.Collator('en', {numeric:true, sensitivity:'base'});
 let pages = [], category = 'All', sortChosen = false, loadVersion = 0;
 const categories = ['All', 'Tools', 'Guides', 'Interactive', 'Other'];
 
+// Accept local HTML pages/directories only. Reject protocols, traversal and encoded delimiters.
+const pagePath = /^[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*(?:\/|\.html)$/;
 function validPage(raw) {
   if (!raw || typeof raw !== 'object' || typeof raw.path !== 'string' || typeof raw.title !== 'string' || !raw.title.trim()) return null;
-  // Accept local HTML pages/directories only. Reject protocols, traversal and encoded delimiters.
-  if (!/^[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*(?:\/|\.html)$/.test(raw.path)) return null;
-  return {path:raw.path, title:raw.title, desc:typeof raw.desc === 'string' ? raw.desc : '',
+  if (!pagePath.test(raw.path)) return null;
+  // Earlier paths of a renamed page, so its recorded visits carry over.
+  const aliases = Array.isArray(raw.aliases) ? [...new Set(raw.aliases.filter(a => typeof a === 'string' && pagePath.test(a) && a !== raw.path))].slice(0,4) : [];
+  return {path:raw.path, aliases, title:raw.title, desc:typeof raw.desc === 'string' ? raw.desc : '',
     category:categories.includes(raw.category) && raw.category !== 'All' ? raw.category : 'Other',
     featured:raw.featured === true, color:/^#[0-9a-f]{6}$/i.test(raw.color) ? raw.color : '#83c5ff', visits:null};
+}
+function totalVisits(page, counts) {
+  const known = [page.path, ...page.aliases].map(p => counts.get(p)).filter(n => typeof n === 'number');
+  return known.length ? known.reduce((sum, n) => sum + n, 0) : null;
 }
 function ordered(list, mode) {
   return [...list].sort((a,b) => {
@@ -143,9 +150,9 @@ async function loadStats(version) {
     const analytics = await window.demoAnalytics.ready;
     if (version !== loadVersion || !analytics) return;
     document.getElementById('statsStatus').textContent = 'Loading visit stats…';
-    const counts = await analytics.visits(pages.map(p => p.path));
+    const counts = await analytics.visits(pages.flatMap(p => [p.path, ...p.aliases]));
     if (version !== loadVersion) return;
-    pages.forEach(p => p.visits = counts.get(p.path) ?? null);
+    pages.forEach(p => p.visits = totalVisits(p, counts));
     const known = pages.filter(p => p.visits !== null).length;
     if (!known) { document.getElementById('statsStatus').textContent='Visit stats temporarily unavailable'; return; }
     document.getElementById('popularOption').disabled = false;

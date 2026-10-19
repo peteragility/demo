@@ -15,7 +15,7 @@ function analytics(code,hostname='localhost',counts={}) {
   const requests=[],scripts=[];
   const window={};
   const origin='https://'+hostname;
-  const context=vm.createContext({URL,Map,Object,AbortSignal,location:{hostname,pathname:'/demo/lakebase-objection-faq/index.html'},window,
+  const context=vm.createContext({URL,Map,Object,AbortSignal,location:{hostname,pathname:'/demo/lakebase-field-guide/index.html'},window,
     document:{currentScript:{src:origin+'/demo/assets/site-analytics.js'},referrer:'https://example.test/a?token=private#secret',head:{append:s=>scripts.push(s)},createElement:()=>({dataset:{}})},
     fetch:async url=>{
       requests.push(String(url));
@@ -43,6 +43,16 @@ test('popularity ranks real counts descending, preserves zero, and keeps unavail
   const rows=[{path:'z/',title:'Z',visits:100},{path:'a/',title:'A',visits:100},{path:'n/',title:'N',visits:null},{path:'b/',title:'B',visits:0}];
   assert.deepEqual(JSON.parse(run(`JSON.stringify(ordered(${JSON.stringify(rows)},'popular').map(p=>p.path))`)),['a/','z/','b/','n/']);
 });
+test('renamed pages keep visits recorded under earlier paths',()=>{
+  const run=homepage();
+  assert.equal(run(`JSON.stringify(validPage(${JSON.stringify({path:'new/',title:'New',aliases:['old/','old/','new/','../x.html',7]})}).aliases)`),'["old/"]');
+  assert.equal(run(`validPage(${JSON.stringify({path:'plain/',title:'Plain'})}).aliases.length`),0);
+  const page={path:'new/',aliases:['old/']};
+  assert.equal(run(`totalVisits(${JSON.stringify(page)},new Map([['new/',3],['old/',40]]))`),43);
+  assert.equal(run(`totalVisits(${JSON.stringify(page)},new Map([['new/',null],['old/',40]]))`),40);
+  assert.equal(run(`totalVisits(${JSON.stringify(page)},new Map([['new/',0],['old/',null]]))`),0);
+  assert.equal(run(`totalVisits(${JSON.stringify(page)},new Map([['new/',null],['old/',null]]))`),null);
+});
 test('featured ordering is editorial and alphabetical sorting stays independent of counts',()=>{
   const run=homepage(),rows=[{path:'z/',title:'Z',featured:true,visits:0},{path:'a/',title:'A',featured:false,visits:100}];
   assert.equal(run(`ordered(${JSON.stringify(rows)},'featured')[0].path`),'z/');
@@ -62,7 +72,7 @@ test('tracking normalizes index paths and removes query/fragment data from refer
   assert.equal(client.dashboard,'https://demo-test.goatcounter.com');
   assert.equal(a.scripts.length,1);
   assert.equal(a.scripts[0].dataset.goatcounter,client.dashboard+'/count');
-  assert.equal(a.window.goatcounter.path,'/demo/lakebase-objection-faq/');
+  assert.equal(a.window.goatcounter.path,'/demo/lakebase-field-guide/');
   assert.equal(a.window.goatcounter.referrer(),'https://example.test/a');
 });
 test('public counters parse formatted counts; absent and malformed counts remain unavailable',async()=>{
@@ -95,7 +105,7 @@ test('vendor requests omit their separate query field and guard unavailable stor
   counter.count=()=>{if (!counter.filter()) request=counter.get_data();};
   a.scripts[0].onload();
   assert.equal(request.q,'');
-  assert.equal(request.p,'/demo/lakebase-objection-faq/');
+  assert.equal(request.p,'/demo/lakebase-field-guide/');
   assert.equal(counter.no_onload,true);
   assert.equal(counter.no_events,true);
   const b=analytics('demo-test','peteragility.github.io');

@@ -4,14 +4,14 @@ on:
   push:
     paths:
       - 'lakebase-compete-calculator/**'
-      - 'lakebase-objection-faq/**'
+      - 'lakebase-field-guide/**'
       - 'lakebase-content/**'
       - 'sandbox-compare/index.html'
       - '.github/workflows/lakebase-calculator.yml'
   pull_request:
     paths:
       - 'lakebase-compete-calculator/**'
-      - 'lakebase-objection-faq/**'
+      - 'lakebase-field-guide/**'
       - 'lakebase-content/**'
       - 'sandbox-compare/index.html'
       - '.github/workflows/lakebase-calculator.yml'
@@ -36,7 +36,7 @@ jobs:
         run: |
           node -e 'const fs = require("node:fs"); fs.writeFileSync("/tmp/lakebase-script.js", fs.readFileSync("lakebase-compete-calculator/index.html", "utf8").match(/<script>([\s\S]*?)<\/script>/)[1]);'
           node --check /tmp/lakebase-script.js
-          node -e 'const fs = require("node:fs"); fs.writeFileSync("/tmp/lakebase-guide.js", fs.readFileSync("lakebase-objection-faq/index.html", "utf8").match(/<script>([\s\S]*?)<\/script>/)[1]);'
+          node -e 'const fs = require("node:fs"); fs.writeFileSync("/tmp/lakebase-guide.js", fs.readFileSync("lakebase-field-guide/index.html", "utf8").match(/<script>([\s\S]*?)<\/script>/)[1]);'
           node --check /tmp/lakebase-guide.js
       - name: Check calculator regressions
         run: node --test lakebase-compete-calculator/calculator.test.cjs
