@@ -121,6 +121,7 @@ tbody th{background:var(--bg-alt);color:var(--obsidian);font-size:12.5px;border-
 .qa td:first-child{font-weight:650;color:var(--obsidian);width:31%}
 .qa td:last-child{white-space:nowrap;width:1%}
 .words td:last-child{color:var(--muted)}
+tbody th .dim{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:2px}
 pre{background:var(--obsidian);color:#d8e4e9;border-radius:var(--radius);padding:14px 18px;font-size:12.5px;line-height:1.6;overflow-x:auto;margin:12px 0}
 details{border:1px solid var(--line);border-radius:var(--radius);padding:11px 13px;margin:12px 0;font-size:13.5px}
 summary{font-weight:650;color:var(--obsidian);cursor:pointer}
@@ -212,18 +213,19 @@ footer{max-width:var(--maxw);margin:0 auto;padding:26px 24px 40px;font-size:13px
 </div></header>
 <nav class="group-nav" aria-label="Guide sections"><div class="inner">
 <div class="viewswitch" role="group" aria-label="Guide view"><div class="seg"><button type="button" data-set-view="simple" aria-pressed="true">Simple</button><button type="button" data-set-view="full" aria-pressed="false">Comprehensive</button></div></div>
-<div class="links"><a href="#start-group">Start here</a><a href="#fit-group">Fit</a><a href="#faq-group">Technical FAQ</a><a href="#compare-group">Compare &amp; cost</a><a href="#production-group">Production</a></div>
+<div class="links"><a href="#start-group">Start here</a><a href="#fit-group">Fit</a><a href="#estate-group">Big bet</a><a href="#faq-group">Technical FAQ</a><a href="#compare-group">Compare &amp; cost</a><a href="#production-group">Production</a></div>
 </div></nav>
 <div class="layout"><aside class="contents" aria-label="Guide contents"><p class="contents-title">In this guide</p>
 <div class="contents-group"><a class="group-link" href="#start-group">01 / Start here</a><a href="#brief">Lakebase in 60 seconds</a><a href="#objections">Quick answers</a><a href="#handoff">Working with your SA</a></div>
 <div class="contents-group"><a class="group-link" href="#fit-group">02 / Fit</a><a href="#fit">Discovery</a><a href="#nogo">Decision gates</a><a href="#plays">Lead plays</a></div>
-<div class="contents-group"><a class="group-link" href="#faq-group">03 / Technical FAQ</a><a href="#dataflow">Data paths &amp; governance</a><a href="#q4">Compute &amp; scale</a><a href="#q1">Cache warmth</a><a href="#q3">Network &amp; latency</a><a href="#q7">Write performance</a><a href="#q2">Isolation &amp; security</a><a href="#q5">Connections &amp; retries</a><a href="#ha">HA, DR &amp; restore</a><a href="#branching">Branches</a><a href="#migrate">Migration</a><a href="#search">Search &amp; retrieval</a><a href="#ops">Operations</a></div>
-<div class="contents-group"><a class="group-link" href="#compare-group">04 / Compare &amp; cost</a><a href="#aurora">Lakebase vs Aurora</a><a href="#pricing">Cost &amp; scenarios</a></div>
-<div class="contents-group"><a class="group-link" href="#production-group">05 / Production</a><a href="#proof">Proof plan</a><a href="#activation">First app to platform</a><a href="#sources">Status &amp; sources</a></div>
+<div class="contents-group"><a class="group-link" href="#estate-group">03 / Big bet</a><a href="#estate">Why move the estate</a><a href="#estate-paths">Paths by engine</a><a href="#estate-motion">Pitch &amp; penetrate</a></div>
+<div class="contents-group"><a class="group-link" href="#faq-group">04 / Technical FAQ</a><a href="#dataflow">Data paths &amp; governance</a><a href="#q4">Compute &amp; scale</a><a href="#q1">Cache warmth</a><a href="#q3">Network &amp; latency</a><a href="#q7">Write performance</a><a href="#q2">Isolation &amp; security</a><a href="#q5">Connections &amp; retries</a><a href="#ha">HA, DR &amp; restore</a><a href="#branching">Branches</a><a href="#migrate">Migration</a><a href="#search">Search &amp; retrieval</a><a href="#ops">Operations</a></div>
+<div class="contents-group"><a class="group-link" href="#compare-group">05 / Compare &amp; cost</a><a href="#aurora">Lakebase vs Aurora</a><a href="#pricing">Cost &amp; scenarios</a></div>
+<div class="contents-group"><a class="group-link" href="#production-group">06 / Production</a><a href="#proof">Proof plan</a><a href="#activation">First app to platform</a><a href="#sources">Status &amp; sources</a></div>
 <a class="contents-calculator" href="../lakebase-compete-calculator/">Open cost calculator ↗</a></aside>
 <main id="guide">
-<div class="mobile-topics"><label for="topic">Jump to an answer</label><select id="topic"><option value="">Select a topic…</option><optgroup label="01 / Start here"><option value="brief">Lakebase in 60 seconds</option><option value="objections">Quick answers</option><option value="handoff">Working with your SA</option></optgroup><optgroup label="02 / Fit"><option value="fit">Discovery</option><option value="nogo">Decision gates</option><option value="plays">Lead plays</option></optgroup><optgroup label="03 / Technical FAQ"><option value="dataflow">Data paths &amp; governance</option><option value="q4">Compute &amp; scale</option><option value="q1">Cache warmth</option><option value="q3">Network &amp; latency</option><option value="q7">Write performance</option><option value="q2">Isolation &amp; security</option><option value="q5">Connections &amp; retries</option><option value="ha">HA, DR &amp; restore</option><option value="branching">Branches</option><option value="migrate">Migration</option><option value="search">Search &amp; retrieval</option><option value="ops">Operations</option></optgroup><optgroup label="04 / Compare &amp; cost"><option value="aurora">Lakebase vs Aurora</option><option value="pricing">Cost &amp; scenarios</option></optgroup><optgroup label="05 / Production"><option value="proof">Proof plan</option><option value="activation">First app to platform</option><option value="sources">Status &amp; sources</option></optgroup></select></div>
-<div class="find"><label for="findInput">Search</label><input id="findInput" type="search" maxlength="160" placeholder="Replication, OAuth, RPO, cost, Chinese…" autocomplete="off"><button id="clearFind" type="button" hidden>Clear</button><span id="findStatus" role="status" aria-live="polite"></span><button id="searchDeeper" type="button" hidden>More in Comprehensive view</button></div><p id="noResults" hidden>No matching answer. Try another term, clear the search, or switch to the Comprehensive view.</p>
+<div class="mobile-topics"><label for="topic">Jump to an answer</label><select id="topic"><option value="">Select a topic…</option><optgroup label="01 / Start here"><option value="brief">Lakebase in 60 seconds</option><option value="objections">Quick answers</option><option value="handoff">Working with your SA</option></optgroup><optgroup label="02 / Fit"><option value="fit">Discovery</option><option value="nogo">Decision gates</option><option value="plays">Lead plays</option></optgroup><optgroup label="03 / Big bet"><option value="estate">Why move the estate</option><option value="estate-paths">Paths by engine</option><option value="estate-motion">Pitch &amp; penetrate</option></optgroup><optgroup label="04 / Technical FAQ"><option value="dataflow">Data paths &amp; governance</option><option value="q4">Compute &amp; scale</option><option value="q1">Cache warmth</option><option value="q3">Network &amp; latency</option><option value="q7">Write performance</option><option value="q2">Isolation &amp; security</option><option value="q5">Connections &amp; retries</option><option value="ha">HA, DR &amp; restore</option><option value="branching">Branches</option><option value="migrate">Migration</option><option value="search">Search &amp; retrieval</option><option value="ops">Operations</option></optgroup><optgroup label="05 / Compare &amp; cost"><option value="aurora">Lakebase vs Aurora</option><option value="pricing">Cost &amp; scenarios</option></optgroup><optgroup label="06 / Production"><option value="proof">Proof plan</option><option value="activation">First app to platform</option><option value="sources">Status &amp; sources</option></optgroup></select></div>
+<div class="find"><label for="findInput">Search</label><input id="findInput" type="search" maxlength="160" placeholder="Oracle, replication, RPO, cost, Chinese…" autocomplete="off"><button id="clearFind" type="button" hidden>Clear</button><span id="findStatus" role="status" aria-live="polite"></span><button id="searchDeeper" type="button" hidden>More in Comprehensive view</button></div><p id="noResults" hidden>No matching answer. Try another term, clear the search, or switch to the Comprehensive view.</p>
 
 <div class="guide-group" id="start-group"><p class="group-heading">01 / Start here</p>
 <section id="brief">
@@ -232,7 +234,7 @@ footer{max-width:var(--maxw);margin:0 auto;padding:26px 24px 40px;font-size:13px
   <p class="answer"><strong>Lakebase is fully managed Postgres inside Databricks.</strong> Developers get a standard Postgres database (versions 16, 17 or 18). The data team gets that operational data next to the lakehouse, with supported paths in and out.</p>
   <div class="cards">
     <div class="card"><h3>Why it wins</h3><ul><li>Apps and agents read curated lakehouse data through managed synced tables, not custom reverse-ETL jobs.</li><li>Copy-on-write branches give every developer or CI run an isolated, production-shaped database in seconds.</li><li>No database servers to run: autoscaling, optional scale-to-zero, zone-redundant HA, point-in-time restore and no I/O meter.</li></ul></div>
-    <div class="card"><h3>Lead with</h3><ul><li>Agent state and memory</li><li>Serving lakehouse data to an app</li><li>Dev/test and CI environments</li><li>New apps on Databricks, and Postgres apps ready to move</li></ul></div>
+    <div class="card"><h3>Lead with</h3><ul><li>Agent state and memory</li><li>Serving lakehouse data to an app</li><li>Dev/test and CI environments</li><li>New apps on Databricks, and Postgres apps ready to move</li><li>Long term: the <a href="#estate">database estate</a>, wave by wave</li></ul></div>
     <div class="card"><h3>Slow down when</h3><ul><li>Production cross-region DR is mandatory today</li><li>One writer must exceed 112 CU, or writes must shard</li><li>Must-have extensions aren't supported, or superuser access or Private Link-only replication is required</li><li>The current database is healthy and nobody owns a reason to change</li></ul></div>
   </div>
   <p class="say">“Lakebase is the Postgres your developers already know, with branching, autoscaling and lakehouse data a sync away, and no database servers to run.”</p>
@@ -255,6 +257,7 @@ footer{max-width:var(--maxw);margin:0 auto;padding:26px 24px 40px;font-size:13px
     <tr><td>“We'd still need a vector or search engine.”</td><td>Often not. Lakebase Search (GA) adds vector, BM25 keyword and hybrid search in Postgres, including Chinese, Japanese and Korean text.</td><td><a href="#search">Search</a></td></tr>
     <tr><td>“So it's zero-ETL with one copy of the data?”</td><td>It depends who owns the writes. Synced tables copy lakehouse data in; CDF writes changes out to Delta; Lakehouse//RT (Beta) queries live data.</td><td><a href="#dataflow">Data paths</a></td></tr>
     <tr><td>“Will Unity Catalog govern the Postgres tables?”</td><td>Unity Catalog governs analytical access. Apps that connect to Postgres use Postgres roles and grants. Design both.</td><td><a href="#dataflow">Governance</a></td></tr>
+    <tr><td>“We're an Oracle and SQL Server shop.”</td><td>That's the long-term bet. Move Postgres and MySQL apps first, then SQL Server and Oracle apps with light procedural code. Keep Tier-1 cores out of the first waves.</td><td><a href="#estate">Big bet</a></td></tr>
     <tr><td>“Is it cheaper than Aurora or RDS?”</td><td>Sometimes. Price the production shape, including HA, replicas and data movement. Lakebase compute is 50% off until 31 Jan 2027.</td><td><a href="#pricing">Cost</a></td></tr>
     <tr><td>“How do our DBAs monitor and patch it?”</td><td>Databricks patches and runs the servers. Telemetry lands in system tables and exports through OpenTelemetry (both Beta). No host access.</td><td><a href="#ops">Operations</a></td></tr>
     <tr><td>“Is it available in our region?”</td><td>In APJ: AWS Singapore, Tokyo, Sydney and Mumbai; Azure East Asia (Hong Kong), Southeast Asia, Japan East, Australia East and Central India. Lakebase isn't offered in AWS Hong Kong.</td><td><a href="#migrate">Regions</a></td></tr>
@@ -278,7 +281,7 @@ footer{max-width:var(--maxw);margin:0 auto;padding:26px 24px 40px;font-size:13px
     <div class="card"><h3>The AE brings</h3><ol><li>The app, its owner and the decision date.</li><li>The current database: engine, version, size, cloud, region, and what hurts.</li><li>Load: peak transactions or queries per second, connections, and the p95/p99 latency target.</li><li>Availability: HA, RPO/RTO, any cross-region requirement.</li><li>Security: Private Link, customer-managed keys, compliance standard.</li><li>Budget: today's database and integration spend.</li></ol></div>
     <div class="card"><h3>The SA returns</h3><ul><li>The data path and architecture: synced tables, CDF or logical replication.</li><li>Sizing and a shared calculator scenario.</li><li>A proof plan with pass/fail criteria.</li><li>A migration and rollback plan.</li><li>Gates and risks, in writing.</li></ul></div>
   </div>
-  <p class="watch">Escalate together on hard regional DR, more than 112 CU on one writer, unsupported extensions, replication that must use Private Link, or a compliance standard the target region doesn't support.</p>
+  <p class="watch">Escalate together on hard regional DR, more than 112 CU on one writer, unsupported extensions, replication that must use Private Link, or a compliance standard the target region doesn't support. For a database-estate program, bring a migration partner in early.</p>
   <p class="next">Agree a dated proof plan with the customer: one workload, success criteria, owners and a decision date.</p>
 </section>
 </div>
@@ -325,14 +328,122 @@ footer{max-width:var(--maxw);margin:0 auto;padding:26px 24px 40px;font-size:13px
     <article class="play"><h3>01 / Agent state &amp; memory</h3><p><b>Problem:</b> agents lose progress, forget preferences or double-claim tasks.</p><p><b>Pitch:</b> durable state, checkpoints and retrieval in one Postgres, next to the data the agent reasons over.</p><p><b>Talk to:</b> the team building the agent or app.</p><p class="deep"><b>Design:</b> transactional state and checkpoints in Postgres, with optional vector and keyword indexes for long-term memory. Keep thread state separate from cross-session memory.</p><p class="deep"><b>Boundary:</b> retries, idempotency, tenant authorization and retrieval relevance remain app responsibilities.</p><p class="deep"><b>Prove:</b> restart recovery, concurrent task ownership, retrieval quality and p99 latency.</p><a href="../lakebase-compete-calculator/#w=agent&amp;pat=spiky&amp;peak=3&amp;sto=50&amp;io=light&amp;ha=0&amp;rep=0&amp;sync=none&amp;ret=7&amp;promo=0&amp;disc=0">Price an agent-state starter ↗</a></article>
     <article class="play"><h3>02 / Lakehouse serving</h3><p><b>Problem:</b> an app needs low-latency SQL on curated lakehouse data alongside its own writes.</p><p><b>Pitch:</b> managed synced tables keep a Postgres serving copy current, with no reverse-ETL jobs to run.</p><p><b>Talk to:</b> the app team and the data team that owns the tables.</p><p class="deep"><b>Design:</b> synced tables create a read-only serving copy; application writes go to separate tables.</p><p class="deep"><b>Boundary:</b> validate source keys, Delta CDF for triggered and continuous modes, additive schema evolution, freshness and pipeline DBUs.</p><p class="deep"><b>Prove:</b> initial load, incremental lag, serving p99 and the full integration cost.</p><a href="../lakebase-compete-calculator/#w=serving&amp;pat=steady&amp;peak=5&amp;sto=300&amp;io=light&amp;ha=0&amp;rep=2&amp;sync=triggered&amp;ret=7&amp;promo=0&amp;disc=0">Price an hourly serving starter ↗</a></article>
     <article class="play"><h3>03 / Dev/test &amp; CI branches</h3><p><b>Problem:</b> test databases take too long to prepare, or developers share mutable state.</p><p><b>Pitch:</b> an isolated, production-shaped branch per developer or CI run in seconds, expiring automatically.</p><p><b>Talk to:</b> platform engineering, DevOps and the DBA.</p><p class="deep"><b>Design:</b> copy-on-write branches with expiration, and scale-to-zero for idle endpoints.</p><p class="deep"><b>Boundary:</b> branches don't merge. Promote tested schema changes with migrations and protect production data with masking and access rules.</p><p class="deep"><b>Prove:</b> environment readiness, reset, masked access, cleanup and active-compute quotas.</p><a href="../lakebase-compete-calculator/#w=dev&amp;pat=intermittent&amp;peak=1&amp;sto=20&amp;io=light&amp;ha=0&amp;rep=0&amp;sync=none&amp;ret=7&amp;promo=0&amp;disc=0">Price one dev endpoint ↗</a><p class="fine deep">The calculator prices one endpoint, not a branch fleet. Budget active branch compute, expiring or permanent storage and history separately.</p></article>
-    <article class="play"><h3>04 / Postgres app migration</h3><p><b>Problem:</b> Postgres apps on RDS, Aurora or self-managed servers, with lakehouse data moved in and out by custom jobs.</p><p><b>Pitch:</b> replicate into Lakebase with native logical replication, run in parallel, and cut over when the numbers pass.</p><p><b>Talk to:</b> the app owner and the DBA.</p><p class="deep"><b>Design:</b> load the schema, subscribe from Lakebase, then replace custom pipelines with synced tables or CDF.</p><p class="deep"><b>Boundary:</b> the source needs a public endpoint; replication doesn't use Private Link, copies data but not schema, and sequences must be reset at cutover.</p><p class="deep"><b>Prove:</b> replication lag, a rehearsed cutover, the rollback path and p99 after cutover.</p><a href="../lakebase-compete-calculator/#w=web&amp;pat=daily&amp;peak=3&amp;sto=200&amp;io=mod&amp;ha=1&amp;rep=0&amp;sync=none&amp;ret=7&amp;promo=0&amp;disc=0">Price a production app with HA ↗</a></article>
+    <article class="play"><h3>04 / Postgres app migration</h3><p><b>Problem:</b> Postgres apps on RDS, Aurora or self-managed servers, with lakehouse data moved in and out by custom jobs.</p><p><b>Pitch:</b> replicate into Lakebase with native logical replication, run in parallel, and cut over when the numbers pass.</p><p><b>Talk to:</b> the app owner and the DBA.</p><p class="deep"><b>Design:</b> load the schema, subscribe from Lakebase, then replace custom pipelines with synced tables or CDF.</p><p class="deep"><b>Boundary:</b> the source needs a public endpoint; replication doesn't use Private Link, copies data but not schema, and sequences must be reset at cutover.</p><p class="deep"><b>Prove:</b> replication lag, a rehearsed cutover, the rollback path and p99 after cutover.</p><a href="../lakebase-compete-calculator/#w=web&amp;pat=daily&amp;peak=3&amp;sto=200&amp;io=mod&amp;ha=1&amp;rep=0&amp;sync=none&amp;ret=7&amp;promo=0&amp;disc=0">Price a production app with HA ↗</a><p class="fine">This is wave 1 of the <a href="#estate">database-estate big bet</a>.</p></article>
   </div>
   <p class="watch">Postgres can replace a serving database where its access patterns fit. Redis caching, document semantics, dedicated search and analytical scans each need their own evaluation.</p>
   <p class="refs deep">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/use-cases" target="_blank" rel="noopener">Use cases</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/sync-tables" target="_blank" rel="noopener">Synced tables</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/branches" target="_blank" rel="noopener">Branches</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/logical-replication" target="_blank" rel="noopener">Logical replication</a></p>
 </section>
 </div>
 
-<div class="guide-group" id="faq-group"><p class="group-heading">03 / Technical FAQ</p><span id="architecture-group"></span>
+<div class="guide-group" id="estate-group"><p class="group-heading">03 / Big bet</p>
+<section id="estate">
+  <a class="qnum" href="#estate">Big bet · Database estate</a>
+  <h2>Why move the database estate to Lakebase, and why now?</h2>
+  <p class="answer"><strong>Over two to three years, move the long tail of application databases onto Lakebase, wave by wave: Postgres and MySQL first, then SQL Server and Oracle apps.</strong> Don't open with the Tier-1 core system. Win the many smaller databases around it; every app that moves lands next to the lakehouse and AI.</p>
+  <div class="cards">
+    <div class="card"><h3>Cost and risk</h3><ul><li>Stop paying to keep old versions alive: license and support renewals, extended-support surcharges and like-for-like upgrade projects.</li><li>No database servers, patching or HA plumbing to run.</li></ul></div>
+    <div class="card"><h3>Speed</h3><ul><li>A production-shaped branch for every developer, test run and migration rehearsal.</li><li>Standard Postgres skills, drivers and tools.</li></ul></div>
+    <div class="card"><h3>Data and AI</h3><ul><li>Operational data is a sync away from the lakehouse: synced tables in, change data feed out.</li><li>Apps and agents get state and context on one governed platform, without reverse-ETL glue.</li></ul></div>
+  </div>
+  <h3>Why now: dated triggers to look for</h3>
+  <ul>
+    <li><strong>SQL Server:</strong> 2016 extended support ended on 14 Jul 2026; 2017 ends on 12 Oct 2027.</li>
+    <li><strong>MySQL:</strong> 8.0 reached community end of life on 30 Apr 2026. Amazon RDS for MySQL 8.0 left standard support on 31 Jul 2026, so databases still on it pay Extended Support charges.</li>
+    <li><strong>PostgreSQL:</strong> 13 is past end of life, with RDS Extended Support charges since 1 Mar 2026. 14 reaches end of life on 12 Nov 2026 and leaves RDS standard support on 28 Feb 2027.</li>
+    <li><strong>Oracle:</strong> support renewals, license audits and data-center exits. Time each wave to a renewal date.</li>
+  </ul>
+  <p class="say">“Let's stop paying to keep old databases alive. Move them app by app onto Postgres you don't have to run, right next to your data and AI.”</p>
+  <p class="avoid">“We'll lift and shift your Oracle core,” or “no code changes.” Engine migrations rewrite schema, procedures and some application code.</p>
+  <p class="watch">Lakebase fits application databases, not every high-end Tier-1 system. Keep high-volume cores with heavy PL/SQL or T-SQL, writes beyond one primary, or mandatory cross-region failover out of the first waves, and possibly out of scope.</p>
+  <p class="next">Ask for two documents: the database inventory and the license and support renewal calendar. Then book an <a href="#estate-motion">estate triage</a>.</p>
+  <button type="button" class="go-deep simple-only" data-deep="estate">Sources for the dates ▸</button>
+  <p class="refs deep">Evidence (checked 19 Oct 2026): <a href="https://learn.microsoft.com/en-us/lifecycle/products/sql-server-2016" target="_blank" rel="noopener">SQL Server 2016 lifecycle</a> · <a href="https://learn.microsoft.com/en-us/lifecycle/products/sql-server-2017" target="_blank" rel="noopener">SQL Server 2017 lifecycle</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Concepts.VersionMgmt.html" target="_blank" rel="noopener">RDS for MySQL versions</a> · <a href="https://www.postgresql.org/support/versioning/" target="_blank" rel="noopener">PostgreSQL versioning policy</a> · <a href="https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-release-calendar.html" target="_blank" rel="noopener">RDS for PostgreSQL calendar</a></p>
+</section>
+<section id="estate-paths">
+  <a class="qnum" href="#estate-paths">Big bet · Migration paths</a>
+  <h2>How does each source engine get to Lakebase?</h2>
+  <p class="answer"><strong>Postgres moves with native logical replication. MySQL needs schema and SQL conversion. SQL Server and Oracle need schema, procedural-code and some application changes</strong>, so treat them as app-modernization projects, usually with a partner.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th scope="col">Source</th><th scope="col">Path to Lakebase</th><th scope="col">What drives the effort</th><th scope="col">Wave</th></tr></thead><tbody>
+      <tr><th scope="row">PostgreSQL<br><span class="dim">RDS, Aurora, Cloud SQL, self-managed</span></th><td>Load the schema, replicate with native logical replication, then cut over.</td><td>Extensions, roles and session features; a public endpoint on the source for replication.</td><td>1</td></tr>
+      <tr><th scope="row">MySQL / MariaDB</th><td>Convert schema and SQL, bulk-load, then sync changes with a CDC tool that targets Postgres.</td><td>Type, auto-increment and collation differences; MySQL-specific SQL and stored routines.</td><td>1–2</td></tr>
+      <tr><th scope="row">SQL Server / Azure SQL</th><td>Convert schema and T-SQL, bulk-load and sync changes, then update the app.</td><td>Stored procedures, triggers, SQL Agent jobs, SSIS/SSRS and linked servers. Lakebase has no T-SQL compatibility layer.</td><td>2</td></tr>
+      <tr><th scope="row">Oracle</th><td>Convert schema and PL/SQL, bulk-load and sync changes, then update the app.</td><td>PL/SQL packages and Oracle-specific types and features. Lakebase has no Oracle compatibility extension.</td><td>3</td></tr>
+    </tbody></table></div>
+  <p class="say">“Postgres apps can move now with a short cutover, then MySQL. SQL Server and Oracle apps move one at a time, starting with those that have the least procedural code.”</p>
+  <p class="avoid">“Automatic conversion.” Tools and AI-assisted accelerators speed conversion up; people still review, test and reconcile it.</p>
+  <p class="next">Your SA assesses a sample of databases from each engine to size the conversion effort before anyone promises a wave plan.</p>
+  <button type="button" class="go-deep simple-only" data-deep="estate-paths">Reads-first pattern, target checks and tools ▸</button>
+  <details class="deep"><summary>Technical detail: move the read side first</summary>
+    <p>For an app that can't move in one cutover, start with its reads. Lakeflow Connect lands the legacy database in Delta: CDC connectors for SQL Server, MySQL and PostgreSQL (the last two in Public Preview), and query-based connectors for Oracle and other sources. Synced tables then serve curated tables or views over that data from Lakebase to new or rewritten modules, and reporting moves to the lakehouse on day one. Write paths move module by module; retire the legacy database when the last one has moved.</p>
+  </details>
+  <details class="deep"><summary>Technical detail: target checks</summary>
+    <ul>
+      <li><strong>Capacity:</strong> one writer per branch, up to 112 CU fixed; the storage quota is adjustable on request. Bulk-load at a larger size, then scale back.</li>
+      <li><strong>Authentication:</strong> migration and CDC tools need a native Postgres password role, because OAuth tokens expire hourly. Enable password connections on the project.</li>
+      <li><strong>Network:</strong> tools that write into Lakebase connect inbound like any client, so inbound Private Link works. Only logical replication with Lakebase as the subscriber needs the source on a public endpoint.</li>
+      <li><strong>Extensions:</strong> orafce, oracle_fdw, tds_fdw, mysql_fdw, postgres_fdw, dblink, pg_cron and pg_partman are not on the supported list. There is no in-database pull from the source, and scheduled jobs move to Lakeflow Jobs or the app.</li>
+      <li><strong>Procedural code:</strong> PL/pgSQL is available. Keep transactional logic in Postgres or the app, and move batch and reporting logic to the lakehouse.</li>
+      <li><strong>Rehearsal:</strong> run each conversion and cutover rehearsal on a branch, then reset and repeat until reconciliation (row counts, checksums) and p99 pass.</li>
+    </ul>
+  </details>
+  <details class="deep"><summary>Tools and accelerators</summary>
+    <ul>
+      <li><strong>Conversion:</strong> open-source ora2pg (Oracle, MySQL) and pgloader (MySQL, SQL Server), the AWS Schema Conversion Tool, and partner AI-assisted converters for PL/SQL and T-SQL.</li>
+      <li><strong>Data and CDC:</strong> tools that support a Postgres target, such as AWS DMS, Debezium with a JDBC sink, Oracle GoldenGate or commercial CDC. Validate Lakebase as the target: Postgres 16–18, a password role, the network path and throughput.</li>
+      <li><strong>Lakebase Express:</strong> an open-source Databricks Solutions app that assesses, sizes, converts and loads SQL Server and Azure SQL databases into Lakebase. It is not an official Databricks product and has no support or SLA, so run it on non-production data first.</li>
+      <li><strong>Partners:</strong> Databricks lists partner accelerators that automate assessment, schema conversion and code migration from Oracle and SQL Server, using Lakebase branching to rehearse cutovers.</li>
+    </ul>
+  </details>
+  <p class="refs deep">Evidence: <a href="https://docs.databricks.com/aws/en/oltp/projects/logical-replication-subscription" target="_blank" rel="noopener">Replicate into Lakebase</a> · <a href="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/query-based-overview" target="_blank" rel="noopener">Query-based connectors</a> · <a href="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/mysql" target="_blank" rel="noopener">MySQL connector</a> · <a href="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql" target="_blank" rel="noopener">PostgreSQL connector</a> · <a href="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/sql-server-overview" target="_blank" rel="noopener">SQL Server connector</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/sync-tables" target="_blank" rel="noopener">Synced table sources</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/extensions" target="_blank" rel="noopener">Extensions</a> · <a href="https://docs.databricks.com/aws/en/oltp/projects/authentication" target="_blank" rel="noopener">Authentication</a> · <a href="https://www.databricks.com/blog/foundational-context-cross-industry-function-specific-accelerators-lakebase" target="_blank" rel="noopener">Partner accelerators</a> · <a href="https://github.com/databricks-solutions/lakebase-express" target="_blank" rel="noopener">Lakebase Express</a></p>
+</section>
+<section id="estate-motion">
+  <a class="qnum" href="#estate-motion">Big bet · Pitch &amp; penetrate</a>
+  <h2>How do we pitch and penetrate the estate?</h2>
+  <p class="answer"><strong>Sell a program, prove it on one app, then industrialize.</strong> Open with the CIO's cost and risk agenda, land one lighthouse app within a quarter, then run a partner-led migration factory in waves timed to renewal dates.</p>
+  <ol>
+    <li><strong>Executive narrative (AE):</strong> cost and risk, speed, data and AI. The sponsor is the CIO or CTO, with the heads of infrastructure and data.</li>
+    <li><strong>Estate triage (SA with the DBA lead):</strong> inventory each database's engine, version, size, support date, license, app owner and procedural-code footprint. Score them and shortlist 10–20 for wave 1.</li>
+    <li><strong>Lighthouse app (SA and partner):</strong> take one wave-1 app end to end: assess, convert, rehearse on branches, cut over and retire the old database. Publish the before-and-after cost, downtime and p99.</li>
+    <li><strong>Migration factory (partner-led):</strong> a repeatable runbook, tooling and a quarterly wave plan, with the SA as design authority.</li>
+    <li><strong>Platform default (customer platform team):</strong> new apps start on Lakebase through a golden path of templates, connection and retry standards, and branch policies.</li>
+    <li><strong>Expand and report:</strong> each quarter, review databases retired, license and support spend avoided, and apps moved with the sponsor.</li>
+  </ol>
+  <div class="tblwrap"><table>
+    <thead><tr><th scope="col">Entry point</th><th scope="col">Opening line</th></tr></thead><tbody>
+      <tr><th scope="row">Data team (existing champion)</th><td>“The reporting copies and reverse-ETL jobs feeding your apps are the first things to retire.”</td></tr>
+      <tr><th scope="row">Platform engineering</th><td>“Make Postgres on Databricks the default for every new app, with branches built in.”</td></tr>
+      <tr><th scope="row">Infrastructure and DBAs</th><td>“Retire end-of-support MySQL, PostgreSQL and SQL Server versions instead of upgrading them like for like.”</td></tr>
+      <tr><th scope="row">Finance and procurement</th><td>“Line up the migration waves with your license and support renewal dates.”</td></tr>
+      <tr><th scope="row">App and AI teams</th><td>“Your agents need operational state next to the data they reason over.”</td></tr>
+    </tbody></table></div>
+  <p class="say">“Give us your database inventory and renewal calendar. We'll show you which databases can move first, what that costs, and what you stop paying for.”</p>
+  <p class="avoid">“Let's start with the core banking system.” Start where success is fast and visible.</p>
+  <p class="next">Book a two-hour estate triage with the DBA lead and the enterprise architect. Leave with a wave-1 shortlist, a lighthouse app and a sponsor.</p>
+  <button type="button" class="go-deep simple-only" data-deep="estate-motion">Wave scoring, three-year plan and KPIs ▸</button>
+  <div class="tblwrap deep"><table>
+    <thead><tr><th scope="col">Score each database</th><th scope="col">Move it earlier when…</th><th scope="col">Move it later, or not at all, when…</th></tr></thead><tbody>
+      <tr><th scope="row">Engine and code</th><td>Postgres or MySQL; an ORM-based app; little procedural code.</td><td>Thousands of lines of PL/SQL or T-SQL; vendor-specific features.</td></tr>
+      <tr><th scope="row">Criticality</th><td>An internal or departmental app with maintenance windows.</td><td>Tier-1, zero-downtime, or mandatory cross-region failover.</td></tr>
+      <tr><th scope="row">Size and load</th><td>Fits comfortably on one writer.</td><td>Needs write scale-out beyond 112 CU.</td></tr>
+      <tr><th scope="row">Business pull</th><td>A support or renewal date is due; the app owner wants to modernize; there's a lakehouse or AI reason.</td><td>No owner, no deadline, and no data or AI reason.</td></tr>
+      <tr><th scope="row">Constraints</th><td>Extensions and network paths check out.</td><td>Unsupported extensions, or logical replication that must use Private Link.</td></tr>
+    </tbody></table></div>
+  <details class="deep"><summary>A three-year shape for the mutual plan</summary>
+    <ul>
+      <li><strong>Quarter 1:</strong> sponsor, inventory and triage; lighthouse app chosen and assessed; partner engaged.</li>
+      <li><strong>Quarters 2–4:</strong> lighthouse in production; wave 1 (PostgreSQL and MySQL apps); new apps default to Lakebase.</li>
+      <li><strong>Year 2:</strong> wave 2, ORM-based SQL Server apps with light T-SQL, plus the reads-first pattern for larger apps.</li>
+      <li><strong>Year 3:</strong> wave 3, Oracle and the remaining SQL Server apps, app by app, retiring licenses at renewal.</li>
+    </ul>
+    <p><strong>KPIs:</strong> databases retired, license and support spend avoided, apps on Lakebase, time to provision an environment, effort per migrated database (it should fall with each wave) and post-cutover incidents.</p>
+    <p><strong>Size the bet:</strong> price each wave's databases in the <a href="../lakebase-compete-calculator/">calculator</a> (target CU, HA, storage) and add them up by quarter. Keep migration services, partner fees and dual-running costs in the business case.</p>
+  </details>
+  <p class="refs deep">Related: <a href="#plays">Play 04</a> lands the first app · <a href="#activation">First app to platform</a> · <a href="#proof">Production proof plan</a></p>
+</section>
+</div>
+
+<div class="guide-group" id="faq-group"><p class="group-heading">04 / Technical FAQ</p><span id="architecture-group"></span>
 <section id="dataflow">
   <a class="qnum" href="#dataflow">Data paths &amp; governance</a>
   <h2>Is it one copy of the data, with no pipelines?</h2>
@@ -519,7 +630,7 @@ query_wait_timeout = 120 seconds</pre>
 <section id="migrate">
   <a class="qnum" href="#migrate">Migration</a>
   <h2>Can an RDS, Aurora or self-managed Postgres app move with little downtime?</h2>
-  <p class="answer"><strong>Yes, for Postgres sources.</strong> Since 15 Oct 2026, Lakebase supports native Postgres logical replication: it copies the source and keeps it in sync until cutover. MySQL, SQL Server, Oracle and MongoDB apps need an engine migration, so lead with new workloads there.</p>
+  <p class="answer"><strong>Yes, for Postgres sources.</strong> Since 15 Oct 2026, Lakebase supports native Postgres logical replication: it copies the source and keeps it in sync until cutover. MySQL, SQL Server, Oracle and MongoDB apps need an engine migration: plan those as waves in the <a href="#estate-paths">database-estate big bet</a>.</p>
   <p class="say">“Start with one Postgres app: replicate it into Lakebase, run both in parallel, and cut over when the numbers pass.”</p>
   <p class="avoid">“It moves unchanged.” Check extensions, roles and session features first, and confirm the source can expose a public endpoint for replication.</p>
   <p class="next simple-only">Your SA runs a compatibility inventory and a replication rehearsal against a copy of the source.</p>
@@ -591,7 +702,7 @@ query_wait_timeout = 120 seconds</pre>
 </section>
 </div>
 
-<div class="guide-group" id="compare-group"><p class="group-heading">04 / Compare &amp; cost</p>
+<div class="guide-group" id="compare-group"><p class="group-heading">05 / Compare &amp; cost</p>
 <section id="aurora">
   <a class="qnum" href="#aurora">Lakebase vs Aurora</a>
   <h2>Where does Lakebase win against Aurora, and where should we concede?</h2>
@@ -649,7 +760,7 @@ query_wait_timeout = 120 seconds</pre>
 </section>
 </div>
 
-<div class="guide-group" id="production-group"><p class="group-heading">05 / Production</p>
+<div class="guide-group" id="production-group"><p class="group-heading">06 / Production</p>
 <section id="proof">
   <a class="qnum" href="#proof">Production proof plan</a>
   <h2>What evidence is enough to recommend production?</h2>
@@ -682,6 +793,7 @@ query_wait_timeout = 120 seconds</pre>
     <li><strong>Production:</strong> validate access, recovery, observability and capacity; choose HA by the service requirement, not as a spend lever.</li>
     <li><strong>Expand:</strong> repeat across teams or scale proven traffic. Track active production use, not the number of databases created.</li>
     <li><strong>Standardize:</strong> shared templates, connection and retry practices, branch policies, budgets and an incident runbook. Reassess cost after the promotion ends.</li>
+    <li><strong>Migrate the estate:</strong> once new apps default to Lakebase, retire legacy databases in waves. See the <a href="#estate">big bet</a>.</li>
   </ol>
   <div class="card"><h3>What production adoption usually looks like</h3><ul><li>The database decision sits with the app or platform engineering team; the data team sponsors.</li><li>Platform-default plays, where every new internal app gets a Postgres database, grow by count rather than through one large database.</li><li>Production apps run always-on, with HA where the service needs it and the minimum sized to the working set rather than padded.</li><li>Regulated teams check customer-managed keys and private networking early, so raise both in the first meeting.</li></ul></div>
 </section>
@@ -700,7 +812,7 @@ query_wait_timeout = 120 seconds</pre>
     <tr><th scope="row">Cross-region DR</th><td><span data-fact="status.dr">Private Preview; not intended for production</span></td><td><a href="https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery" target="_blank" rel="noopener">DR requirements</a></td></tr>
     <tr><th scope="row">Telemetry, export &amp; backup APIs</th><td>Beta: system-table telemetry, OpenTelemetry export, snapshot and backup-schedule APIs</td><td><a href="https://docs.databricks.com/aws/en/release-notes/lakebase/" target="_blank" rel="noopener">Release notes</a></td></tr>
   </tbody></table></div>
-  <p class="changes"><strong>Changed since the 12 Oct check:</strong> native logical replication arrived on 15 Oct, so the decision gates, migration, HA/DR, data-path and Aurora answers now reflect it; replication that must use Private Link is the remaining gate. Chinese, Japanese and Korean keyword search (also 15 Oct) is now in the search answer.</p>
+  <p class="changes"><strong>Changed since the 12 Oct check:</strong> native logical replication arrived on 15 Oct, so the decision gates, migration, HA/DR, data-path and Aurora answers now reflect it; replication that must use Private Link is the remaining gate. Chinese, Japanese and Korean keyword search (also 15 Oct) is now in the search answer. The database-estate big bet (Postgres, MySQL, SQL Server and Oracle) was added on 19 Oct.</p>
   <p class="refs deep">Engineering references: <a href="https://www.vldb.org/pvldb/vol19/p4385-pandis.pdf" target="_blank" rel="noopener">Lakebase VLDB 2026</a> · <a href="https://neon.com/blog/improving-lakebase-compute-cache-part-1" target="_blank" rel="noopener">Fixed-compute cache</a> · <a href="https://www.databricks.com/blog/how-lakebase-architecture-delivers-5x-faster-postgres-writes" target="_blank" rel="noopener">Full-page-image pushdown</a>. Source links also sit beside each technical answer.</p>
 </section>
 </div>
