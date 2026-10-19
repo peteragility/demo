@@ -157,10 +157,7 @@
    "verified": "2026-10-20"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-10-20",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-10-20"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-10-20"
@@ -181,10 +178,7 @@
    "verified": "2026-10-20"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-10-20",
-   "accepted": [
-    "aws-card-claude-fable-5"
-   ]
+   "verified": "2026-10-20"
   },
   "anthropic/claude-fable-5|databricks": {
    "verified": "2026-10-20"
@@ -310,10 +304,7 @@
    "verified": "2026-10-20"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-20",
-   "accepted": [
-    "api-west-anthropic-fast"
-   ]
+   "verified": "2026-10-20"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-10-20"
@@ -322,10 +313,7 @@
    "verified": "2026-10-20"
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-10-20",
-   "accepted": [
-    "aws-card-claude-opus-5-5"
-   ]
+   "verified": "2026-10-20"
   },
   "anthropic/claude-opus-5.5|databricks": {
    "verified": "2026-10-20"
@@ -337,10 +325,7 @@
    "verified": "2026-10-20"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-20",
-   "accepted": [
-    "api-west-anthropic-fast"
-   ]
+   "verified": "2026-10-20"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-10-20"
@@ -364,10 +349,7 @@
    "verified": "2026-10-20"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-20",
-   "accepted": [
-    "api-west-anthropic-fast"
-   ]
+   "verified": "2026-10-20"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-10-20"

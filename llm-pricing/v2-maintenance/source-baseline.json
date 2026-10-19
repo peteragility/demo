@@ -2144,13 +2144,14 @@
   "api-other-tml-tinker-pricing": {
    "url": "https://tinker-docs.thinkingmachines.ai/tinker/models/models_and_pricing/",
    "kind": "text",
-   "digest": "d2eb5f237d0005b0fb3a66bf08e85a562bddf42855dd9a047bae02b6d4aefbed",
+   "digest": "d04c2cb03b46d5ae3a05c4256b460c2c23684e9f02d389bd91a81a8b3048937b",
    "records": [
     "notice: These models have been retired and can no longer be used for training or inference, grouped by retirement date. See Model deprecations for the recommended replacement for each.",
     "notice: We provide an 80% discount on cached prefill tokens.",
     "notice: models.json: the Training table. One object per model with name, tinker_id, context, size, params, arch, type, url, and per-million-token prices prefill, cached_prefill, sample, train (strings like \"$0.374\"). params and active_params are the total and per-token parameter counts as integers, as stated by the model's publisher (the Size and Active columns show them abbreviated); they are equal for dense models. size is the coarse bucket the Size filter uses, set by params (the filter lists each bucket's range). Temporarily discounted models also carry original_* price fields and a note.",
     "table: {\"cells\":[\"DeepSeek-V3.1 Retiring October 23\",\"32K\",\"671B\",\"37B\",\"MoE\",\"Hybrid\",\"deepseek-ai/DeepSeek-V3.1\",\"$1.695 $0.339 (cached)\",\"$4.215\",\"$3.718\"],\"heading\":\"Models & Pricing / Training\"}",
     "table: {\"cells\":[\"DeepSeek-V4.1-Flash (256K)\",\"256K\",\"552B\",\"16B\",\"MoE\",\"Hybrid\",\"deepseek-ai/DeepSeek-V4.1-Flash:peft:262144\",\"$0.60 $0.12 (cached)\",\"$3.60\",\"$4.98\"],\"heading\":\"Models & Pricing / Training\"}",
+    "table: {\"cells\":[\"DeepSeek-V4.1-Flash-1017 (256K)\",\"256K\",\"552B\",\"16B\",\"MoE\",\"Hybrid\",\"deepseek-ai/DeepSeek-V4.1-Flash-1017:peft:262144\",\"$0.60 $0.12 (cached)\",\"$3.60\",\"$4.98\"],\"heading\":\"Models & Pricing / Training\"}",
     "table: {\"cells\":[\"GLM-5.3 (256K)\",\"256K\",\"753B\",\"40B\",\"MoE\",\"Reasoning\",\"zai-org/GLM-5.3:peft:262144\",\"$3.78 $0.756 (cached)\",\"$12.15\",\"$14.58\"],\"heading\":\"Models & Pricing / Training\"}",
     "table: {\"cells\":[\"GLM-5.3-Flash (256K)\",\"256K\",\"320B\",\"18B\",\"MoE\",\"Reasoning\",\"zai-org/GLM-5.3-Flash:peft:262144\",\"$0.84 $0.168 (cached)\",\"$2.11\",\"$5.58\"],\"heading\":\"Models & Pricing / Training\"}",
     "table: {\"cells\":[\"GPT-OSS-120B (128K)\",\"128K\",\"117B\",\"5B\",\"MoE\",\"Reasoning\",\"openai/gpt-oss-120b:peft:131072\",\"$0.33 $0.066 (cached)\",\"$0.84\",\"$2.33\"],\"heading\":\"Models & Pricing / Training\"}",
