@@ -22,6 +22,18 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_temporary_preview_exclusion_expires_without_hiding_discovery(self):
+        models = [dict(name="Muse Spark Open (Max)", rank=50)]
+        current = {"fireworks-us": {"records": ["Muse Spark Open (Max)"]}}
+        skip = [dict(name=models[0]["name"], through="2026-10-29")]
+        self.assertEqual(review.unpriced_on_platforms(models, current, skip, dt.date(2026, 10, 29)), [])
+        found = review.unpriced_on_platforms(models, current, skip, dt.date(2026, 10, 30))
+        self.assertEqual(found, [dict(models[0], sources=["fireworks-us"])])
+        for deadline in (None, "", "tomorrow", "2026-02-30"):
+            with self.subTest(deadline=deadline):
+                skip[0]["through"] = deadline
+                self.assertEqual(review.unpriced_on_platforms(models, current, skip, dt.date(2026, 10, 20)), found)
+
     def test_checkpoint_upgrade_requires_review_even_with_unchanged_alias_and_prices(self):
         model = {"name": "DeepSeek V4.1 Flash", "platforms": {"official": {"status": "priced", "src": "src", "in": 0.3, "out": 1.2}}}
         rx = review.model_regex(model)

@@ -14,6 +14,25 @@ const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 const tier = (cell, endpoint, service) => cell.variants.find(v => v.endpoint === endpoint && v.service_tier === service).id;
 const priced = (input, output) => ({status: 'priced', in: input, out: output, model_match: 'confirmed', service_tier: 'standard'});
 
+test('Alibaba Flash 1017 retains regional and off-peak billing without a checkpoint comparison', () => {
+  const c = published.models['deepseek/deepseek-v4.1-flash'].platforms.alicloud;
+  const tiers = c.variants.filter(v => v.model_id === 'deepseek-v4.1-flash-1017');
+  assert.equal(tiers.length, 6);
+  for (const v of tiers) {
+    const singapore = v.endpoint.startsWith('International');
+    const offPeak = v.service_tier === 'off-peak';
+    // Reviewed USD / million input, output and cached tokens, independent of predecessor rates.
+    const expected = singapore ? (offPeak ? [0.15, 0.6, 0.015] : [0.3, 1.2, 0.03]) :
+      (offPeak ? [0.141, 0.565, 0.0141] : [0.283, 1.131, 0.0283]);
+    const result = M.calculate(c, {asOf: '2026-10-20', variantId: v.id, inputM: 3, outputM: 1, cacheHit: 80});
+    close(result.total, 0.6 * expected[0] + expected[1] + 2.4 * expected[2]);
+    assert.equal(result.offer.model_id, 'deepseek-v4.1-flash-1017');
+    assert.equal(M.comparable(result.offer), false);
+  }
+  assert.equal(c.pricing_checked_at, '2026-10-04');
+  assert.equal(c.variants.filter(v => !v.model_id?.endsWith('-1017')).length, 5);
+});
+
 test('Databricks Argon availability never supplies unverified rates or a comparison', () => {
   const c = published.models['google/gemini-4-argon'].platforms.databricks;
   assert.equal(c.available, true);

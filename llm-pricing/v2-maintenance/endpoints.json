@@ -9971,10 +9971,113 @@
     [
      "Batch",
      "No batch inference: Beijing's batch list names only deepseek-r1, deepseek-v3.2 and deepseek-v3 among DeepSeek models."
+    ],
+    [
+     "Checkpoint",
+     "The separate deepseek-v4.1-flash-1017 model ID is priced in Singapore, Beijing, Hong Kong, Frankfurt, Tokyo and Virginia. The original alias remains listed; neither is confirmed as the Databricks checkpoint."
     ]
    ],
    "ids": [
-    "deepseek-v4.1-flash (model ID)"
+    "deepseek-v4.1-flash (model ID)",
+    "deepseek-v4.1-flash-1017 (separate 1017 checkpoint; reviewed 2026-10-20)"
+   ],
+   "add": [
+    {
+     "label": "Global 1017 · Standard",
+     "in": 0.283,
+     "out": 1.131,
+     "cache_read": 0.0283,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "Global 1017",
+     "model_id": "deepseek-v4.1-flash-1017",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-20",
+     "availability_checked_at": "2026-10-20",
+     "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+    },
+    {
+     "label": "Global 1017 · Off-peak",
+     "in": 0.141,
+     "out": 0.565,
+     "cache_read": 0.0141,
+     "scope": "global",
+     "service": "off-peak",
+     "endpoint": "Global 1017",
+     "model_id": "deepseek-v4.1-flash-1017",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-20",
+     "availability_checked_at": "2026-10-20",
+     "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+    },
+    {
+     "label": "International (Singapore) 1017 · Standard",
+     "in": 0.3,
+     "out": 1.2,
+     "cache_read": 0.03,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "International (Singapore) 1017",
+     "model_id": "deepseek-v4.1-flash-1017",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-20",
+     "availability_checked_at": "2026-10-20",
+     "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+    },
+    {
+     "label": "International (Singapore) 1017 · Off-peak",
+     "in": 0.15,
+     "out": 0.6,
+     "cache_read": 0.015,
+     "scope": "global",
+     "service": "off-peak",
+     "endpoint": "International (Singapore) 1017",
+     "model_id": "deepseek-v4.1-flash-1017",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-20",
+     "availability_checked_at": "2026-10-20",
+     "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+    },
+    {
+     "label": "Chinese mainland (Beijing) 1017 · Standard",
+     "in": 0.283,
+     "out": 1.131,
+     "cache_read": 0.0283,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Chinese mainland (Beijing) 1017",
+     "model_id": "deepseek-v4.1-flash-1017",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-20",
+     "availability_checked_at": "2026-10-20",
+     "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+    },
+    {
+     "label": "Chinese mainland (Beijing) 1017 · Off-peak",
+     "in": 0.141,
+     "out": 0.565,
+     "cache_read": 0.0141,
+     "scope": "geographic",
+     "service": "off-peak",
+     "endpoint": "Chinese mainland (Beijing) 1017",
+     "model_id": "deepseek-v4.1-flash-1017",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-20",
+     "availability_checked_at": "2026-10-20",
+     "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+    }
    ]
   },
   "fireworks": {
@@ -12308,8 +12411,8 @@
    "cache_write": "input-rate",
    "notes": [
     [
-     "Discount",
-     "Prices carry a 'Permanent 50% off' badge; list price is $0.60 / $2.40 / $0.12 cached for ≤512k input."
+     "Pricing",
+     "Published Standard rates are $0.30 / $1.20 / $0.06 cached per million tokens through 512k input; Priority costs 1.5x. Reviewed 2026-10-20; the former discount badge and struck-through list rates are no longer shown."
     ],
     [
      "Long context",

@@ -63,6 +63,11 @@
     "google/gemini-4-argon": "^gemini 4 argon\\b(?! cyber)"
   },
   "top": 50,
-  "not_sold_note": "Top-50 models that a compared platform's page names but that it does not sell with general access (a gated or on-request preview). Any other top-50 model with no reviewed prices that a platform page names opens the review issue.",
-  "not_sold": []
+  "not_sold_note": "Top-50 models that a compared platform's page names but that it does not sell with general access (a gated or on-request preview). Any other top-50 model with no reviewed prices that a platform page names opens the review issue. Reviewed 2026-10-20: Muse Spark Open is a limited serverless preview through 2026-10-29 on US-only capacity; production uses dedicated capacity, not a general-access per-token offer (https://fireworks.ai/models/fireworks/muse-spark-open). Recheck after the preview ends.",
+  "not_sold": [
+    {
+      "name": "Muse Spark Open (Max)",
+      "through": "2026-10-29"
+    }
+  ]
 }

@@ -782,14 +782,25 @@ def name_pattern(name):
     return re.compile(r"(?<![a-z0-9])" + r"[\s._-]*".join(parts) + r"(?![a-z0-9]|[._-]?\d)") if parts else None
 
 
-def unpriced_on_platforms(unpriced, current, skip):
+def unpriced_on_platforms(unpriced, current, skip, today=None):
     """Top-50 models with no reviewed prices whose name appears on a compared platform's page: each probably
     needs adding. skip = names a platform shows but does not sell with general access (not_sold)."""
-    skip = {official.norm(n) for n in skip}
+    today = today or dt.datetime.now(HKT).date()
+    excluded = set()
+    for entry in skip:
+        if isinstance(entry, str):
+            excluded.add(official.norm(entry))
+        elif isinstance(entry, dict) and isinstance(entry.get("name"), str):
+            try:
+                through = dt.date.fromisoformat(entry.get("through", ""))
+            except (TypeError, ValueError):
+                continue  # Invalid deadlines cannot suppress discovery.
+            if today <= through:
+                excluded.add(official.norm(entry["name"]))
     found = []
     for model in unpriced:
         rx = name_pattern(model["name"])
-        if not rx or official.norm(model["name"]) in skip:
+        if not rx or official.norm(model["name"]) in excluded:
             continue
         where = sorted(sid for sid, snap in current.items() if sid.startswith(PLATFORM_SOURCES)
                        and any(rx.search(official.norm(r)) for r in snap["records"]))
@@ -1248,7 +1259,7 @@ def main():
     report["ranking"] = ranking_status
     if ranking_status.get("error"):
         report["ranking_error"] = ranking_status["error"]
-    new_models = unpriced_on_platforms(unpriced, current, json.loads((HERE / "ranking-config.json").read_text()).get("not_sold", []))
+    new_models = unpriced_on_platforms(unpriced, current, json.loads((HERE / "ranking-config.json").read_text()).get("not_sold", []), today)
     last_read = sources_read(previous, sources, current, today)
     failing = stale(errors, last_read, today)
     unrecorded = sorted(sid for sid in current if sid not in baseline.get("sources", {}))
