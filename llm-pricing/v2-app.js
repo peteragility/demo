@@ -201,11 +201,11 @@
   }
 
   // Input, output, cache read, cache write (and 1-hour write) cells for one offer.
-  function rateCells(o, policy, has1h) {
+  function rateCells(o, policy, has1h, has12h) {
     const read = M.validRate(o.cache_read) ? fx(o.cache_read) : '—';
     const write = M.validRate(o.cache_write) ? fx(o.cache_write)
       : policy === 'input-rate' && M.validRate(o.cache_read) ? '<span class="ci" title="No cache-write charge: tokens written to the cache cost only the normal input price">0.00</span>' : '—';
-    return `<td>${fx(o.in)}</td><td>${fx(o.out)}</td><td>${read}</td><td>${write}</td>${has1h ? `<td>${M.validRate(o.cache_write_1h) ? fx(o.cache_write_1h) : '—'}</td>` : ''}`;
+    return `<td>${fx(o.in)}</td><td>${fx(o.out)}</td><td>${read}</td><td>${write}</td>${has1h ? `<td>${M.validRate(o.cache_write_1h) ? fx(o.cache_write_1h) : '—'}</td>` : ''}${has12h ? `<td>${M.validRate(o.cache_write_12h) ? fx(o.cache_write_12h) : '—'}</td>` : ''}`;
   }
 
   function priceTable(mk, pl) {
@@ -227,7 +227,9 @@
     if (!groups.size) return '';
     const offers = [...groups.values()].flatMap(g => g.rows.map(r => r.offer));
     const has1h = offers.some(o => M.validRate(o.cache_write_1h));
-    const policy = c.endpoints && c.endpoints.cache_write, cols = has1h ? 6 : 5;
+    const has12h = offers.some(o => M.validRate(o.cache_write_12h));
+    const policy = c.endpoints && c.endpoints.cache_write, cols = 5 + Number(has1h) + Number(has12h);
+    const writeTTL = c.endpoints && c.endpoints.cache_write_ttl;
     const isPick = o => pick && !o.problems.length && (pick.variant_id || 'base') === (o.variant_id || 'base');
     const lc = c.context_threshold ? (c.context_threshold_inclusive ? '≥' : '>') + c.context_threshold / 1000 + 'K' : '';
     const body = [...groups].sort((a, b) => a[1].rank - b[1].rank).map(([name, g]) =>
@@ -235,11 +237,11 @@
       g.rows.sort((a, b) => TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map(({offer: o, label, head}) => {
         if (o.status !== 'priced' || o.problems.length) return `<tr title="${esc(label)}"><th scope="row">${esc(head)}</th><td class="none" colspan="${cols - 1}">not verified</td></tr>`;
         const p = isPick(o);
-        const row = `<tr${p ? ' class="pick"' : ''} title="${esc(label + (p ? ' · the price the table compares' : ''))}"><th scope="row">${esc(head)}</th>${rateCells(o, policy, has1h)}</tr>`;
-        const long = o.long_context && M.validRate(o.long_context.in) ? `<tr class="lc" title="${esc('Rates for the whole request when its input is ' + lc + ' tokens')}"><th scope="row">↳ ${esc(lc)}</th>${rateCells(o.long_context, policy, has1h)}</tr>` : '';
+        const row = `<tr${p ? ' class="pick"' : ''} title="${esc(label + (p ? ' · the price the table compares' : ''))}"><th scope="row">${esc(head)}</th>${rateCells(o, policy, has1h, has12h)}</tr>`;
+        const long = o.long_context && M.validRate(o.long_context.in) ? `<tr class="lc" title="${esc('Rates for the whole request when its input is ' + lc + ' tokens')}"><th scope="row">↳ ${esc(lc)}</th>${rateCells(o.long_context, policy, has1h, has12h)}</tr>` : '';
         return row + long;
       }).join('')).join('');
-    return `<div class="ptw"><table class="pt"><thead><tr><th scope="col"><span class="sr">Endpoint and tier</span></th><th scope="col">Input</th><th scope="col">Output</th><th scope="col"><span class="lg">Cache read</span><span class="sh">Cache rd</span></th><th scope="col"><span class="lg">Cache write</span><span class="sh">Cache wr</span></th>${has1h ? '<th scope="col"><span class="lg">1h write</span><span class="sh">1h wr</span></th>' : ''}</tr></thead><tbody>${body}</tbody></table></div>`;
+    return `<div class="ptw"><table class="pt"><thead><tr><th scope="col"><span class="sr">Endpoint and tier</span></th><th scope="col">Input</th><th scope="col">Output</th><th scope="col"><span class="lg">Cache read</span><span class="sh">Cache rd</span></th><th scope="col"><span class="lg">${writeTTL ? esc(writeTTL) + ' write' : 'Cache write'}</span><span class="sh">${writeTTL ? esc(writeTTL) + ' wr' : 'Cache wr'}</span></th>${has1h ? '<th scope="col"><span class="lg">1h write</span><span class="sh">1h wr</span></th>' : ''}${has12h ? '<th scope="col"><span class="lg">12h write</span><span class="sh">12h wr</span></th>' : ''}</tr></thead><tbody>${body}</tbody></table></div>`;
   }
 
   // Where the platform runs the model: one line per geography and processing level, then HK and Taiwan.

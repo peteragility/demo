@@ -10,6 +10,32 @@ const offer = (key, platform = 'databricks') => data.models[key].platforms[platf
 const date = {asOf: '2026-10-02'};
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `Expected ${b}, got ${a}`);
 const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
+
+test('OpenAI 12h writes use each tier and context rate without leaking to other providers', () => {
+  const c = published.models['openai/gpt-6.1-sol'].platforms.official;
+  const base = M.calculate(c, {asOf: '2026-10-21', inputM: 1, outputM: 0, writeM: 1, writeTTL: '12h'});
+  close(base.total, 5);
+  close(M.calculate(c, {asOf: '2026-10-21', inputM: 1, outputM: 0, writeM: 1, writeTTL: '12h', promptTokens: 272001}).total, 10);
+  const batch = c.variants.find(v => v.service_tier === 'batch' && v.comparison_scope === 'global');
+  close(M.resolveOffer(c, {asOf: '2026-10-21', variantId: batch.id}).cache_write_12h, 2.5);
+  const regional = c.variants.find(v => v.service_tier === 'standard' && v.comparison_scope === 'geographic');
+  close(M.resolveOffer(c, {asOf: '2026-10-21', variantId: regional.id, promptTokens: 272001}).cache_write_12h, 11);
+  const dbx = published.models['openai/gpt-6.1-sol'].platforms.databricks;
+  assert.equal(dbx.cache_write_12h, undefined);
+  assert.equal(M.calculate(dbx, {asOf: '2026-10-21', inputM: 1, writeM: 1, writeTTL: '12h'}).total, null);
+});
+
+test('unpublished maker post-promotion prices and new Databricks checkpoints are not inferred', () => {
+  const c = published.models['openai/gpt-5.6-sol'].platforms.official;
+  close(M.resolveOffer(c, {asOf: '2026-11-21'}).in, 4);
+  assert.equal(c.promotion, undefined);
+  assert.equal(M.resolveOffer(c, {asOf: '2026-11-22'}).status, 'unverified');
+  assert.equal(M.calculate(c, {asOf: '2026-11-22', inputM: 1}).total, null);
+  const dbx = published.models['deepseek/deepseek-v4.1-flash'].platforms.databricks;
+  assert.equal(dbx.model_id, 'databricks-deepseek-v4-1-flash');
+  assert.equal(M.status(dbx, '2026-11-19'), 'retired');
+  assert.ok(dbx.endpoints.ids.some(id => /1017.*price unverified/.test(id)));
+});
 // A tier by endpoint and service tier, independent of its display label.
 const tier = (cell, endpoint, service) => cell.variants.find(v => v.endpoint === endpoint && v.service_tier === service).id;
 const priced = (input, output) => ({status: 'priced', in: input, out: output, model_match: 'confirmed', service_tier: 'standard'});

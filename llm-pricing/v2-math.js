@@ -5,7 +5,7 @@
   else root.LLMPricingMath = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const RATE_FIELDS = ['in', 'out', 'cache_read', 'cache_write', 'cache_write_1h', 'cache_storage'];
+  const RATE_FIELDS = ['in', 'out', 'cache_read', 'cache_write', 'cache_write_1h', 'cache_storage', 'cache_write_12h'];
   const HYPERSCALERS = ['bedrock', 'azure_foundry', 'gcloud'];
   const PARITY = 0.01; // within 1% counts as the same price
   const validRate = v => typeof v === 'number' && Number.isFinite(v) && v >= 0;
@@ -64,6 +64,11 @@
       if (!result.promotion.after.long_context) delete result.long_context;
       Object.assign(result, clone(result.promotion.after));
       result.promotion_expired = true;
+    }
+    if (result.valid_through && asOf > result.valid_through) {
+      result.status = 'unverified';
+      result.problems.push('This tier has no verified rates after ' + result.valid_through + '.');
+      return result;
     }
     const promptTokens = options.promptTokens == null ? 1000 : Number(options.promptTokens);
     if (!Number.isFinite(promptTokens) || promptTokens < 0) {
@@ -183,11 +188,11 @@
     // rate instead of the ordinary input rate. Storage is an additional charge.
     append('Regular input', Math.max(0, uncachedM - numeric.writeM), offer.in, 'M tokens');
     append('Cached input', cachedM, offer.cache_read, 'M tokens');
-    const writeField = workload.writeTTL === '1h' ? 'cache_write_1h' : 'cache_write';
+    const writeField = workload.writeTTL === '12h' ? 'cache_write_12h' : workload.writeTTL === '1h' ? 'cache_write_1h' : 'cache_write';
     // Where the platform has no cache-write charge, written tokens cost the ordinary input rate.
     const policy = offer.cache_write_policy || (offer.endpoints || {}).cache_write;
     const writeRate = policy === 'input-rate' && !validRate(offer[writeField]) ? offer.in : offer[writeField];
-    append('Cache writes (' + (workload.writeTTL === '1h' ? '1h' : 'base TTL') + ')', numeric.writeM, writeRate, 'M tokens');
+    append('Cache writes (' + (['1h', '12h'].includes(workload.writeTTL) ? workload.writeTTL : 'base TTL') + ')', numeric.writeM, writeRate, 'M tokens');
     append('Output', numeric.outputM, offer.out, 'M tokens');
     append('Cache storage', numeric.storedM * numeric.storageHours, offer.cache_storage, 'M token-hours');
     const subtotal = parts.reduce((sum, part) => sum + (part.cost ?? 0), 0);

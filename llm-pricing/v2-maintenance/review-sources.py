@@ -196,6 +196,33 @@ def read_url(address, attempts=4):
             time.sleep(5 * 3 ** attempt)
 
 
+def kimi_html_tables(text):
+    """Read literal DocTable data from Kimi's HTML when its Markdown export loses tables.
+
+    Decode JSON and literal strings only; never evaluate the publisher's JavaScript.
+    Unknown component syntax or incomplete rows are failed reads.
+    """
+    tables = []
+    for script in re.findall(r"<script[^>]*>(.*?)</script>", text, re.S):
+        if not script.startswith("self.__next_f.push(") or "rows:[[`kimi-" not in script:
+            continue
+        payload = json.loads(script[len("self.__next_f.push("):-1])
+        code = payload[1]
+        for columns, rows in re.findall(r"DocTable,\{columns:\[(.*?)\],rows:(\[\[.*?\]\])\}", code, re.S):
+            headers = re.findall(r"title:`([^`]+)`", columns)
+            rows = re.sub(r'_jsxs\(_Fragment,\{children:\[`\$`,`(\d+(?:\.\d+)?)`\]\}\)',
+                          lambda m: json.dumps("$" + m[1]), rows)
+            rows = re.sub(r"`([^`\\$]*)`", lambda m: json.dumps(m[1]), rows)
+            values = json.loads(rows)
+            if not headers or not values or any(len(row) != len(headers) or
+                    not all(isinstance(c, str) for c in row) for row in values):
+                raise ValueError("Incomplete Kimi pricing table")
+            tables.extend("| " + " | ".join(row) + " |" for row in [headers, *values])
+    if not any("kimi-k3" in row and "$" in row for row in tables):
+        raise ValueError("Kimi pricing table unavailable in Markdown and HTML")
+    return "\n".join(tables)
+
+
 def fetch(source):
     address = source["url"]
     if urllib.parse.urlparse(address).scheme != "https":
@@ -203,6 +230,10 @@ def fetch(source):
     items = []
     for _ in range(30):
         text = read_url(address)
+        if source["id"] == "kimi-pricing" and not re.search(r'\["kimi-k3"', text):
+            # The current Markdown exporter emits empty <tbody /> elements.
+            # Preserve its billing notes and supplement them with official literal table data.
+            text += "\n" + kimi_html_tables(read_url(address.removesuffix(".md")))
         if source["kind"] != "azure":
             return text
         page = json.loads(text)
@@ -255,7 +286,8 @@ def time_alerts(data, today):
     found = {}
     for key, model in data["models"].items():
         for platform, cell in model["platforms"].items():
-            events = [("retirement", cell.get("retires_on")), ("promotion end", (cell.get("promotion") or {}).get("ends_on"))]
+            events = [("retirement", cell.get("retires_on")), ("promotion end", (cell.get("promotion") or {}).get("ends_on")),
+                      ("tier rates verified through", cell.get("valid_through"))]
             for variant in cell.get("variants", []):
                 events += [("tier promotion end", (variant.get("promotion") or {}).get("ends_on")),
                            ("tier rates verified through", variant.get("valid_through"))]
@@ -321,7 +353,7 @@ def model_regex(model):
         return r"(?<![a-z0-9])" + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![._ -]?\d)(?!" + sep + "(?:" + tail + r")\b)"
     tokens = official.norm(model.get("name") or "").split()
     options = [phrase(tokens)] if tokens else []
-    if len(tokens) > 2 and tokens[0] in ("claude", "gemini", "grok", "gpt", "kimi"):
+    if len(tokens) > 2 and tokens[0] in ("claude", "gemini", "grok", "kimi"):
         options.append(phrase(tokens[1:]))
     return re.compile("|".join(options)) if options else None
 
@@ -516,7 +548,7 @@ PLACE = re.compile(r"(?<![\w-])(?:" + "|".join(sorted({re.escape(official.norm(x
 OTHER_MODEL = re.compile(r"(?<![\w-])(?:(?:claude|opus|sonnet|haiku|fable|mythos|gpt|codex|gemini|gemma|imagen|veo|lyria|chirp|llama|mistral|mixtral|"
                          r"ministral|magistral|codestral|devstral|pixtral|voxtral|qwen|qwq|deepseek|kimi|glm|grok|nova|titan|jamba|phi|minimax|nemotron|"
                          r"granite|olmo|ernie|hunyuan|whisper|dall e|sora|flux|cohere|command|palmyra|marengo|pegasus|seedream|seedance|wan)"
-                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|happyhorse\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc|audio)\b)")
+                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|happyhorse\b|muse[\s-]+spark[\s-]+open\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc|audio)\b)")
 # Documents whose lines that name no model (a residency multiplier, a batch discount, a region list) can
 # apply to every model they cover; structured price lists and model indexes have one line per model.
 DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
@@ -559,7 +591,8 @@ def risk_tokens(line, rx):
         if prices:
             identity = [official.norm(row.get("heading", "")), [PRICE.sub("#", c) for c in cells]]
             tokens.add("price:assignment:" + packed([identity, prices]))
-        elif cells[:1] != ["capabilities"] and any(field_of(c) and not NON_RATE_COLUMN.search(c) for c in cells):
+        elif (cells[:1] != ["capabilities"] and not official.norm(row.get("heading", "")).endswith("/ capabilities and features")
+              and any(field_of(c) and not NON_RATE_COLUMN.search(c) for c in cells)):
             # Moving or renaming a rate column changes the meaning of unchanged data rows.
             tokens.add("price:columns:" + packed([official.norm(row.get("heading", "")), cells]))
     elif line.startswith("{"):
@@ -670,11 +703,12 @@ def general_changes(data, config, baseline, current, errors, previous=None):
 # ---- Changes the daily check applies itself ----------------------------------------------------------
 
 AUTO_FILE = HERE / "prices-auto.json"
-FIELD_WORDS = (("cache_write_1h", r"\b1\s?h(?:our)?\b.*writ|writ.*\b1\s?h(?:our)?\b"), ("cache_write", r"writ"),
+FIELD_WORDS = (("cache_write_12h", r"\b12\s?h(?:our)?\b.*writ|writ.*\b12\s?h(?:our)?\b"),
+               ("cache_write_1h", r"\b1\s?h(?:our)?\b.*writ|writ.*\b1\s?h(?:our)?\b"), ("cache_write", r"writ"),
                ("cache_read", r"cache[ds]?\s?(?:hit|read)|cached"), ("out", r"\boutput"), ("in", r"\binput"))
 LONG = re.compile(r"long[\s-]context|more than \d+\s?k|over \d+\s?k|>\s?\d+\s?k")
 TIER_WORDS = {"standard", "batch", "flex", "priority", "fast", "ultrafast", "global", "regional", "geo", "cris", "region", "us", "eu"}
-FIELD_NAMES = {"in": "input", "out": "output", "cache_read": "cache read", "cache_write": "cache write", "cache_write_1h": "1-hour cache write"}
+FIELD_NAMES = {"in": "input", "out": "output", "cache_read": "cache read", "cache_write": "cache write", "cache_write_1h": "1-hour cache write", "cache_write_12h": "12-hour cache write"}
 # AWS modality headers and yes/no feature lists mention input/output without naming rates.
 # Numeric prices and context limits are still checked before this header-only exclusion.
 NON_RATE_COLUMN = re.compile(r"^(?:input|output) modalities$|^(?:yes|no)\b.*\bstructured outputs?\b")

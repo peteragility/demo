@@ -2033,7 +2033,8 @@
      "out": 75.0,
      "cache_read": 2.0,
      "cache_write": 25.0
-    }
+    },
+    "availability_checked_at": "2026-10-21"
    },
    "variants": [
     {
@@ -2050,7 +2051,8 @@
       "out": 82.5,
       "cache_read": 2.2,
       "cache_write": 27.5
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     },
     {
      "label": "Data Zone EU / APAC · Standard",
@@ -2066,7 +2068,8 @@
       "out": 90.0,
       "cache_read": 2.4,
       "cache_write": 30.0
-     }
+     },
+     "pricing_checked_at": "2026-10-04"
     },
     {
      "label": "Global Flex",
@@ -2076,7 +2079,8 @@
      "cache_write": 6.25,
      "scope": "global",
      "service": "flex",
-     "endpoint": "Global Flex"
+     "endpoint": "Global Flex",
+     "pricing_checked_at": "2026-10-04"
     }
    ],
    "src": [
@@ -2107,7 +2111,7 @@
      "Europe",
      "geo",
      "Data Zone EU",
-     "France Central, Germany West Central, Italy North, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, Switzerland West, West Europe"
+     "France Central, Germany West Central, Italy North, North Europe, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, West Europe"
     ],
     [
      "APAC",
@@ -2143,6 +2147,10 @@
     [
      "Caching",
      "GPT-5.6+ bill cache writes (1.25× input); cached prefixes kept at least 30 minutes; 1,024-token minimum prefix."
+    ],
+    [
+     "Region review · 21 Oct 2026",
+     "Data Zone Standard version 2026-09-03 is listed in North Europe. Switzerland West is not in the current EU Data Zone table. Provisioned Managed availability is a separate deployment type and supplies no pay-per-token rate."
     ]
    ],
    "ids": [

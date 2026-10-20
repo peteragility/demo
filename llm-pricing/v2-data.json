@@ -2849,7 +2849,7 @@
           "model_id": "gpt-6.1-sol",
           "note": null,
           "status": "priced",
-          "pricing_checked_at": "2026-10-09",
+          "pricing_checked_at": "2026-10-21",
           "availability_checked_at": "2026-10-09",
           "comparison_scope": "global",
           "service_tier": "standard",
@@ -2859,7 +2859,8 @@
             "in": 4,
             "out": 15,
             "cache_read": 0.2,
-            "cache_write": 5
+            "cache_write": 5,
+            "cache_write_12h": 10
           },
           "cache_storage": 0,
           "variants": [
@@ -2871,16 +2872,18 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
                 "out": 7.5,
                 "cache_read": 0.1,
-                "cache_write": 2.5
+                "cache_write": 2.5,
+                "cache_write_12h": 5.0
               },
               "id": "variant-0",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.5
             },
             {
               "in": 1.0,
@@ -2890,16 +2893,18 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
                 "out": 7.5,
                 "cache_read": 0.1,
-                "cache_write": 2.5
+                "cache_write": 2.5,
+                "cache_write_12h": 5.0
               },
               "id": "variant-1",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.5
             },
             {
               "in": 4.0,
@@ -2909,17 +2914,19 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 8.0,
                 "out": 30.0,
                 "cache_read": 0.4,
-                "cache_write": 10.0
+                "cache_write": 10.0,
+                "cache_write_12h": 20.0
               },
               "id": "variant-2",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 10.0
             },
             {
               "in": 12.0,
@@ -2929,17 +2936,19 @@
               "label": "Global (api.openai.com) · Ultrafast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Ultrafast",
               "long_context": {
                 "in": 24.0,
                 "out": 90.0,
                 "cache_read": 1.2,
-                "cache_write": 30.0
+                "cache_write": 30.0,
+                "cache_write_12h": 60.0
               },
               "id": "variant-3",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 30.0
             },
             {
               "in": 2.2,
@@ -2949,16 +2958,18 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 4.4,
                 "out": 16.5,
                 "cache_read": 0.22,
-                "cache_write": 5.5
+                "cache_write": 5.5,
+                "cache_write_12h": 11.0
               },
               "id": "variant-4",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 5.5
             },
             {
               "in": 1.1,
@@ -2968,16 +2979,18 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 2.2,
                 "out": 8.25,
                 "cache_read": 0.11,
-                "cache_write": 2.75
+                "cache_write": 2.75,
+                "cache_write_12h": 5.5
               },
               "id": "variant-5",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.75
             },
             {
               "in": 1.1,
@@ -2987,16 +3000,18 @@
               "label": "Regional processing (US / EU) · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 2.2,
                 "out": 8.25,
                 "cache_read": 0.11,
-                "cache_write": 2.75
+                "cache_write": 2.75,
+                "cache_write_12h": 5.5
               },
               "id": "variant-6",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.75
             },
             {
               "in": 4.4,
@@ -3006,17 +3021,19 @@
               "label": "Regional processing (US / EU) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 8.8,
                 "out": 33.0,
                 "cache_read": 0.44,
-                "cache_write": 11.0
+                "cache_write": 11.0,
+                "cache_write_12h": 22.0
               },
               "id": "variant-7",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 11.0
             },
             {
               "in": 13.2,
@@ -3026,17 +3043,19 @@
               "label": "Regional processing (US / EU) · Ultrafast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "tier_label": "Ultrafast",
               "long_context": {
                 "in": 26.4,
                 "out": 99.0,
                 "cache_read": 1.32,
-                "cache_write": 33.0
+                "cache_write": 33.0,
+                "cache_write_12h": 66.0
               },
               "id": "variant-8",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 33.0
             }
           ],
           "url": "https://developers.openai.com/api/docs/pricing",
@@ -3079,10 +3098,6 @@
             ],
             "notes": [
               [
-                "Caching",
-                "Cached input costs 5% of uncached input ($0.10), half the usual 10%; cache writes 1.25x."
-              ],
-              [
                 "Residency",
                 "US and EU data residency, including Fast and Ultrafast modes (+10%)."
               ],
@@ -3097,13 +3112,19 @@
               [
                 "Tiers",
                 "Ultrafast (service_tier \"ultrafast\") costs 6x Standard, Fast 2x; Batch and Flex are 50% off."
+              ],
+              [
+                "Caching",
+                "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."
               ]
             ],
             "ids": [
               "gpt-6.1-sol (model ID; only snapshot)"
             ],
-            "cache_write": "priced"
+            "cache_write": "priced",
+            "cache_write_ttl": "30m"
           },
+          "cache_write_12h": 5.0,
           "model_id_checked_at": "2026-10-09"
         },
         "bedrock": {
@@ -6608,13 +6629,13 @@
           "comparison_scope": "regional",
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-09",
-          "availability_checked_at": "2026-10-09",
+          "availability_checked_at": "2026-10-21",
           "model_id_source": "dbx_models",
           "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "retires_on": "2026-10-30",
           "replacement": [
-            "DeepSeek V4.1 Flash"
+            "DeepSeek V4.1 Flash (1017)"
           ],
           "retirement_src": "dbx_retirement",
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
@@ -7021,11 +7042,11 @@
       "model_key": "deepseek/deepseek-v4-pro",
       "notices": [
         {
-          "text": "Retires on Databricks 30 Oct 2026 · use DeepSeek V4.1 Flash",
+          "text": "Retires on Databricks 30 Oct 2026 · use DeepSeek V4.1 Flash (1017)",
           "until": "2026-10-29"
         },
         {
-          "text": "Retired on Databricks 30 Oct 2026 · use DeepSeek V4.1 Flash",
+          "text": "Retired on Databricks 30 Oct 2026 · use DeepSeek V4.1 Flash (1017)",
           "from": "2026-10-30"
         }
       ]
@@ -7058,10 +7079,15 @@
           "comparison_scope": "global",
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-09",
-          "availability_checked_at": "2026-09-28",
+          "availability_checked_at": "2026-10-21",
           "model_id_source": "dbx_models",
           "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
+          "retires_on": "2026-11-19",
+          "replacement": [
+            "DeepSeek V4.1 Flash (1017)"
+          ],
+          "retirement_src": "dbx_retirement",
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
@@ -7117,10 +7143,15 @@
               [
                 "Billing",
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
+              ],
+              [
+                "Checkpoint review · 21 Oct 2026",
+                "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Neither checked DBU table explicitly prices 1017; its rates remain unverified and are not copied from the original endpoint. The original retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."
               ]
             ],
             "ids": [
-              "databricks-deepseek-v4-1-flash"
+              "databricks-deepseek-v4-1-flash",
+              "databricks-deepseek-v4-1-flash-1017 (separate checkpoint; price unverified)"
             ],
             "cache_write": "input-rate"
           }
@@ -7777,7 +7808,17 @@
           }
         }
       },
-      "model_key": "deepseek/deepseek-v4.1-flash"
+      "model_key": "deepseek/deepseek-v4.1-flash",
+      "notices": [
+        {
+          "text": "Retires on Databricks 19 Nov 2026 · use DeepSeek V4.1 Flash (1017)",
+          "until": "2026-11-18"
+        },
+        {
+          "text": "Retired on Databricks 19 Nov 2026 · use DeepSeek V4.1 Flash (1017)",
+          "from": "2026-11-19"
+        }
+      ]
     },
     "deepseek/deepseek-v4-flash": {
       "name": "DeepSeek V4 Flash (0731)",
@@ -7807,13 +7848,13 @@
           "comparison_scope": "regional",
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-09",
-          "availability_checked_at": "2026-10-07",
+          "availability_checked_at": "2026-10-21",
           "model_id_source": "dbx_models",
           "model_id_checked_at": "2026-10-09",
           "dbu_rate_basis": 0.07,
           "retires_on": "2026-11-05",
           "replacement": [
-            "DeepSeek V4.1 Flash"
+            "DeepSeek V4.1 Flash (1017)"
           ],
           "retirement_src": "dbx_retirement",
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
@@ -8034,11 +8075,11 @@
       "model_key": "deepseek/deepseek-v4-flash",
       "notices": [
         {
-          "text": "Retires on Databricks 5 Nov 2026 · use DeepSeek V4.1 Flash",
+          "text": "Retires on Databricks 5 Nov 2026 · use DeepSeek V4.1 Flash (1017)",
           "until": "2026-11-04"
         },
         {
-          "text": "Retired on Databricks 5 Nov 2026 · use DeepSeek V4.1 Flash",
+          "text": "Retired on Databricks 5 Nov 2026 · use DeepSeek V4.1 Flash (1017)",
           "from": "2026-11-05"
         }
       ]
@@ -13923,16 +13964,18 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 10.0,
                 "out": 37.5,
                 "cache_read": 1.0,
-                "cache_write": 12.5
+                "cache_write": 12.5,
+                "cache_write_12h": 25.0
               },
               "id": "variant-0",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 12.5
             },
             {
               "in": 5.0,
@@ -13942,16 +13985,18 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 10.0,
                 "out": 37.5,
                 "cache_read": 1.0,
-                "cache_write": 12.5
+                "cache_write": 12.5,
+                "cache_write_12h": 25.0
               },
               "id": "variant-1",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 12.5
             },
             {
               "in": 20.0,
@@ -13961,17 +14006,19 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 40.0,
                 "out": 150.0,
                 "cache_read": 4.0,
-                "cache_write": 50.0
+                "cache_write": 50.0,
+                "cache_write_12h": 100.0
               },
               "id": "variant-2",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 50.0
             },
             {
               "in": 60.0,
@@ -13981,17 +14028,19 @@
               "label": "Global (api.openai.com) · Ultrafast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Ultrafast",
               "long_context": {
                 "in": 120.0,
                 "out": 450.0,
                 "cache_read": 12.0,
-                "cache_write": 150.0
+                "cache_write": 150.0,
+                "cache_write_12h": 300.0
               },
               "id": "variant-3",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 150.0
             },
             {
               "in": 11.0,
@@ -14001,16 +14050,18 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 22.0,
                 "out": 82.5,
                 "cache_read": 2.2,
-                "cache_write": 27.5
+                "cache_write": 27.5,
+                "cache_write_12h": 55.0
               },
               "id": "variant-4",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 27.5
             },
             {
               "in": 5.5,
@@ -14020,16 +14071,18 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 11.0,
                 "out": 41.25,
                 "cache_read": 1.1,
-                "cache_write": 13.75
+                "cache_write": 13.75,
+                "cache_write_12h": 27.5
               },
               "id": "variant-5",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 13.75
             },
             {
               "in": 22.0,
@@ -14039,17 +14092,19 @@
               "label": "Regional processing (US) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 44.0,
                 "out": 165.0,
                 "cache_read": 4.4,
-                "cache_write": 55.0
+                "cache_write": 55.0,
+                "cache_write_12h": 110.0
               },
               "id": "variant-6",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 55.0
             },
             {
               "in": 66.0,
@@ -14059,17 +14114,19 @@
               "label": "Regional processing (US) · Ultrafast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US)",
               "tier_label": "Ultrafast",
               "long_context": {
                 "in": 132.0,
                 "out": 495.0,
                 "cache_read": 13.2,
-                "cache_write": 165.0
+                "cache_write": 165.0,
+                "cache_write_12h": 330.0
               },
               "id": "variant-7",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 165.0
             },
             {
               "in": 11.0,
@@ -14079,16 +14136,18 @@
               "label": "Data residency, storage only · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Data residency, storage only",
               "long_context": {
                 "in": 22.0,
                 "out": 82.5,
                 "cache_read": 2.2,
-                "cache_write": 27.5
+                "cache_write": 27.5,
+                "cache_write_12h": 55.0
               },
               "id": "variant-8",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 27.5
             }
           ],
           "src": "openai",
@@ -14097,7 +14156,7 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-21",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "openai",
           "model_id_checked_at": "2026-10-09",
@@ -14106,7 +14165,8 @@
             "in": 20.0,
             "out": 75.0,
             "cache_read": 2.0,
-            "cache_write": 25.0
+            "cache_write": 25.0,
+            "cache_write_12h": 50.0
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing",
@@ -14168,19 +14228,21 @@
                 "Prompts over 272K input tokens cost 2x input and cache rates and 1.5x output for the full request. Max input 922K tokens."
               ],
               [
-                "Caching",
-                "Cache writes 1.25x input, reads 0.1x; 30-minute minimum TTL; minimum cacheable prefix 1,024 tokens."
-              ],
-              [
                 "Residency",
                 "Fast mode is unavailable with EU data residency; Fast mode for Astra carries no latency SLA."
+              ],
+              [
+                "Caching",
+                "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."
               ]
             ],
             "ids": [
               "gpt-6-astra (model ID; only snapshot)"
             ],
-            "cache_write": "priced"
-          }
+            "cache_write": "priced",
+            "cache_write_ttl": "30m"
+          },
+          "cache_write_12h": 25.0
         },
         "bedrock": {
           "in": 10.0,
@@ -14482,7 +14544,7 @@
                 "Europe",
                 "geo",
                 "Data Zone EU",
-                "France Central, Germany West Central, Italy North, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, Switzerland West, West Europe"
+                "France Central, Germany West Central, Italy North, North Europe, Norway East, Poland Central, Spain Central, Sweden Central, Switzerland North, West Europe"
               ],
               [
                 "APAC",
@@ -14517,6 +14579,10 @@
               [
                 "Caching",
                 "GPT-5.6+ bill cache writes (1.25× input); cached prefixes kept at least 30 minutes; 1,024-token minimum prefix."
+              ],
+              [
+                "Region review · 21 Oct 2026",
+                "Data Zone Standard version 2026-09-03 is listed in North Europe. Switzerland West is not in the current EU Data Zone table. Provisioned Managed availability is a separate deployment type and supplies no pay-per-token rate."
               ]
             ],
             "ids": [
@@ -14766,16 +14832,18 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
                 "out": 7.5,
                 "cache_read": 0.2,
-                "cache_write": 2.5
+                "cache_write": 2.5,
+                "cache_write_12h": 5.0
               },
               "id": "variant-0",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.5
             },
             {
               "in": 1.0,
@@ -14785,16 +14853,18 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 2.0,
                 "out": 7.5,
                 "cache_read": 0.2,
-                "cache_write": 2.5
+                "cache_write": 2.5,
+                "cache_write_12h": 5.0
               },
               "id": "variant-1",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.5
             },
             {
               "in": 4.0,
@@ -14804,17 +14874,19 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 8.0,
                 "out": 30.0,
                 "cache_read": 0.8,
-                "cache_write": 10.0
+                "cache_write": 10.0,
+                "cache_write_12h": 20.0
               },
               "id": "variant-2",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 10.0
             },
             {
               "in": 2.2,
@@ -14824,16 +14896,18 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 4.4,
                 "out": 16.5,
                 "cache_read": 0.44,
-                "cache_write": 5.5
+                "cache_write": 5.5,
+                "cache_write_12h": 11.0
               },
               "id": "variant-3",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 5.5
             },
             {
               "in": 1.1,
@@ -14843,16 +14917,18 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 2.2,
                 "out": 8.25,
                 "cache_read": 0.22,
-                "cache_write": 2.75
+                "cache_write": 2.75,
+                "cache_write_12h": 5.5
               },
               "id": "variant-4",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.75
             },
             {
               "in": 1.1,
@@ -14862,16 +14938,18 @@
               "label": "Regional processing (US / EU) · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 2.2,
                 "out": 8.25,
                 "cache_read": 0.22,
-                "cache_write": 2.75
+                "cache_write": 2.75,
+                "cache_write_12h": 5.5
               },
               "id": "variant-5",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 2.75
             },
             {
               "in": 4.4,
@@ -14881,17 +14959,19 @@
               "label": "Regional processing (US / EU) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 8.8,
                 "out": 33.0,
                 "cache_read": 0.88,
-                "cache_write": 11.0
+                "cache_write": 11.0,
+                "cache_write_12h": 22.0
               },
               "id": "variant-6",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 11.0
             },
             {
               "in": 2.2,
@@ -14901,16 +14981,18 @@
               "label": "Data residency, storage only · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Data residency, storage only",
               "long_context": {
                 "in": 4.4,
                 "out": 16.5,
                 "cache_read": 0.44,
-                "cache_write": 5.5
+                "cache_write": 5.5,
+                "cache_write_12h": 11.0
               },
               "id": "variant-7",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 5.5
             }
           ],
           "src": "openai",
@@ -14919,7 +15001,7 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-09",
+          "pricing_checked_at": "2026-10-21",
           "availability_checked_at": "2026-10-09",
           "model_id_source": "openai",
           "model_id_checked_at": "2026-10-09",
@@ -14928,7 +15010,8 @@
             "in": 4.0,
             "out": 15.0,
             "cache_read": 0.4,
-            "cache_write": 5.0
+            "cache_write": 5.0,
+            "cache_write_12h": 10.0
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing",
@@ -14990,19 +15073,21 @@
                 "Prompts over 272K input tokens cost 2x input and cache rates and 1.5x output for the full request."
               ],
               [
-                "Caching",
-                "Cache writes 1.25x input, reads 0.1x; 30-minute minimum TTL; minimum cacheable prefix 1,024 tokens."
-              ],
-              [
                 "Status",
                 "GPT-6.1 Sol is the newer Sol: same input/output price, half the cached-input rate."
+              ],
+              [
+                "Caching",
+                "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."
               ]
             ],
             "ids": [
               "gpt-6-sol (model ID; only snapshot)"
             ],
-            "cache_write": "priced"
-          }
+            "cache_write": "priced",
+            "cache_write_ttl": "30m"
+          },
+          "cache_write_12h": 5.0
         },
         "bedrock": {
           "in": 2.0,
@@ -15565,16 +15650,18 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 0.1,
                 "out": 0.375,
                 "cache_read": 0.01,
-                "cache_write": 0.125
+                "cache_write": 0.125,
+                "cache_write_12h": 0.25
               },
               "id": "variant-0",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.125
             },
             {
               "in": 0.05,
@@ -15584,16 +15671,18 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 0.1,
                 "out": 0.375,
                 "cache_read": 0.01,
-                "cache_write": 0.125
+                "cache_write": 0.125,
+                "cache_write_12h": 0.25
               },
               "id": "variant-1",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.125
             },
             {
               "in": 0.2,
@@ -15603,17 +15692,19 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 0.4,
                 "out": 1.5,
                 "cache_read": 0.04,
-                "cache_write": 0.5
+                "cache_write": 0.5,
+                "cache_write_12h": 1.0
               },
               "id": "variant-2",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.5
             },
             {
               "in": 0.11,
@@ -15623,16 +15714,18 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 0.22,
                 "out": 0.825,
                 "cache_read": 0.022,
-                "cache_write": 0.275
+                "cache_write": 0.275,
+                "cache_write_12h": 0.55
               },
               "id": "variant-3",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.275
             },
             {
               "in": 0.055,
@@ -15642,16 +15735,18 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 0.11,
                 "out": 0.4125,
                 "cache_read": 0.011,
-                "cache_write": 0.1375
+                "cache_write": 0.1375,
+                "cache_write_12h": 0.275
               },
               "id": "variant-4",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.1375
             },
             {
               "in": 0.055,
@@ -15661,16 +15756,18 @@
               "label": "Regional processing (US / EU) · Flex",
               "comparison_scope": "geographic",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 0.11,
                 "out": 0.4125,
                 "cache_read": 0.011,
-                "cache_write": 0.1375
+                "cache_write": 0.1375,
+                "cache_write_12h": 0.275
               },
               "id": "variant-5",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.1375
             },
             {
               "in": 0.22,
@@ -15680,17 +15777,19 @@
               "label": "Regional processing (US / EU) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 0.44,
                 "out": 1.65,
                 "cache_read": 0.044,
-                "cache_write": 0.55
+                "cache_write": 0.55,
+                "cache_write_12h": 1.1
               },
               "id": "variant-6",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.55
             },
             {
               "in": 0.11,
@@ -15700,16 +15799,18 @@
               "label": "Data residency, storage only · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-09",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Data residency, storage only",
               "long_context": {
                 "in": 0.22,
                 "out": 0.825,
                 "cache_read": 0.022,
-                "cache_write": 0.275
+                "cache_write": 0.275,
+                "cache_write_12h": 0.55
               },
               "id": "variant-7",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "cache_write_12h": 0.275
             }
           ],
           "src": "openai",
@@ -15718,7 +15819,7 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-09",
+          "pricing_checked_at": "2026-10-21",
           "availability_checked_at": "2026-10-09",
           "model_id_source": "openai",
           "model_id_checked_at": "2026-10-09",
@@ -15727,7 +15828,8 @@
             "in": 0.2,
             "out": 0.75,
             "cache_read": 0.02,
-            "cache_write": 0.25
+            "cache_write": 0.25,
+            "cache_write_12h": 0.5
           },
           "cache_storage": 0,
           "url": "https://developers.openai.com/api/docs/pricing",
@@ -15790,14 +15892,16 @@
               ],
               [
                 "Caching",
-                "Cache writes 1.25x input, reads 0.1x; 30-minute minimum TTL; minimum cacheable prefix 1,024 tokens."
+                "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."
               ]
             ],
             "ids": [
               "gpt-6-luna (model ID; only snapshot)"
             ],
-            "cache_write": "priced"
-          }
+            "cache_write": "priced",
+            "cache_write_ttl": "30m"
+          },
+          "cache_write_12h": 0.25
         },
         "bedrock": {
           "in": 0.1,
@@ -16328,17 +16432,19 @@
               "label": "Global (api.openai.com) · Batch",
               "comparison_scope": "global",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 4.0,
                 "out": 15.0,
                 "cache_read": 0.4,
-                "cache_write": 5.0
+                "cache_write": 5.0,
+                "cache_write_12h": 10.0
               },
               "id": "variant-0",
               "model_match": "confirmed",
-              "valid_through": "2026-11-21"
+              "valid_through": "2026-11-21",
+              "cache_write_12h": 5.0
             },
             {
               "in": 2.0,
@@ -16348,17 +16454,19 @@
               "label": "Global (api.openai.com) · Flex",
               "comparison_scope": "global",
               "service_tier": "flex",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "long_context": {
                 "in": 4.0,
                 "out": 15.0,
                 "cache_read": 0.4,
-                "cache_write": 5.0
+                "cache_write": 5.0,
+                "cache_write_12h": 10.0
               },
               "id": "variant-1",
               "model_match": "confirmed",
-              "valid_through": "2026-11-21"
+              "valid_through": "2026-11-21",
+              "cache_write_12h": 5.0
             },
             {
               "in": 8.0,
@@ -16368,18 +16476,20 @@
               "label": "Global (api.openai.com) · Fast",
               "comparison_scope": "global",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Global (api.openai.com)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 16.0,
                 "out": 60.0,
                 "cache_read": 1.6,
-                "cache_write": 20.0
+                "cache_write": 20.0,
+                "cache_write_12h": 40.0
               },
               "id": "variant-2",
               "model_match": "confirmed",
-              "valid_through": "2026-11-21"
+              "valid_through": "2026-11-21",
+              "cache_write_12h": 20.0
             },
             {
               "in": 4.4,
@@ -16389,17 +16499,19 @@
               "label": "Regional processing (US / EU) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 8.8,
                 "out": 33.0,
                 "cache_read": 0.88,
-                "cache_write": 11.0
+                "cache_write": 11.0,
+                "cache_write_12h": 22.0
               },
               "id": "variant-3",
               "model_match": "confirmed",
-              "valid_through": "2026-11-21"
+              "valid_through": "2026-11-21",
+              "cache_write_12h": 11.0
             },
             {
               "in": 2.2,
@@ -16409,17 +16521,19 @@
               "label": "Regional processing (US / EU) · Batch",
               "comparison_scope": "geographic",
               "service_tier": "batch",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "long_context": {
                 "in": 4.4,
                 "out": 16.5,
                 "cache_read": 0.44,
-                "cache_write": 5.5
+                "cache_write": 5.5,
+                "cache_write_12h": 11.0
               },
               "id": "variant-4",
               "model_match": "confirmed",
-              "valid_through": "2026-11-21"
+              "valid_through": "2026-11-21",
+              "cache_write_12h": 5.5
             },
             {
               "in": 8.8,
@@ -16429,18 +16543,20 @@
               "label": "Regional processing (US / EU) · Fast",
               "comparison_scope": "geographic",
               "service_tier": "priority",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Regional processing (US / EU)",
               "tier_label": "Fast",
               "long_context": {
                 "in": 17.6,
                 "out": 66.0,
                 "cache_read": 1.76,
-                "cache_write": 22.0
+                "cache_write": 22.0,
+                "cache_write_12h": 44.0
               },
               "id": "variant-5",
               "model_match": "confirmed",
-              "valid_through": "2026-11-21"
+              "valid_through": "2026-11-21",
+              "cache_write_12h": 22.0
             },
             {
               "in": 4.4,
@@ -16450,17 +16566,19 @@
               "label": "Data residency, storage only · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-21",
               "endpoint": "Data residency, storage only",
               "long_context": {
                 "in": 8.8,
                 "out": 33.0,
                 "cache_read": 0.88,
-                "cache_write": 11.0
+                "cache_write": 11.0,
+                "cache_write_12h": 22.0
               },
               "id": "variant-6",
               "model_match": "confirmed",
-              "valid_through": "2026-11-21"
+              "valid_through": "2026-11-21",
+              "cache_write_12h": 11.0
             }
           ],
           "src": "openai",
@@ -16469,7 +16587,7 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-21",
           "availability_checked_at": "2026-10-04",
           "model_id_source": "openai",
           "model_id_checked_at": "2026-10-09",
@@ -16478,26 +16596,10 @@
             "in": 8.0,
             "out": 30.0,
             "cache_read": 0.8,
-            "cache_write": 10.0
+            "cache_write": 10.0,
+            "cache_write_12h": 20.0
           },
           "cache_storage": 0,
-          "promotion": {
-            "ends_on": "2026-11-21",
-            "after": {
-              "in": 5,
-              "out": 30,
-              "cache_read": 0.5,
-              "cache_write": 6.25,
-              "long_context": {
-                "in": 10,
-                "out": 45,
-                "cache_read": 1,
-                "cache_write": 12.5
-              },
-              "tier": "Standard · short context"
-            },
-            "label": "GPT-5.6 Sol promotion"
-          },
           "url": "https://developers.openai.com/api/docs/pricing",
           "endpoint": "Global (api.openai.com)",
           "endpoints": {
@@ -16562,15 +16664,18 @@
               ],
               [
                 "Caching",
-                "Cache writes 1.25x input, reads 0.1x; 30-minute minimum TTL; minimum cacheable prefix 1,024 tokens."
+                "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."
               ]
             ],
             "ids": [
               "gpt-5.6-sol (model ID)",
               "gpt-5.6 (alias that routes to gpt-5.6-sol)"
             ],
-            "cache_write": "priced"
-          }
+            "cache_write": "priced",
+            "cache_write_ttl": "30m"
+          },
+          "valid_through": "2026-11-21",
+          "cache_write_12h": 10.0
         },
         "bedrock": {
           "in": 4.0,
@@ -27505,7 +27610,7 @@
           "note": null,
           "status": "priced",
           "pricing_checked_at": "2026-10-14",
-          "availability_checked_at": "2026-10-14",
+          "availability_checked_at": "2026-10-21",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -27634,7 +27739,7 @@
           "model_id_source": "gcp_gemini_4_argon",
           "model_id_checked_at": "2026-10-14",
           "endpoints": {
-            "checked_at": "2026-10-14",
+            "checked_at": "2026-10-21",
             "src": [
               "gcp_gemini_4_argon",
               "gcp_pricing"
@@ -27699,6 +27804,10 @@
               [
                 "Tiers",
                 "Standard, Priority and Batch; Flex is not listed as supported on this model card."
+              ],
+              [
+                "Region review · 21 Oct 2026",
+                "The model card also lists London (europe-west2) and Singapore (asia-southeast1) for ML processing and Provisioned Throughput. Separate single-region per-token rates have not been verified; these endpoints are not added to price comparisons."
               ]
             ],
             "ids": [

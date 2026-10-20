@@ -22,6 +22,42 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_gpt_version_suffix_cannot_match_a_predecessor(self):
+        for name, own, other in [('GPT-6 Sol', 'gpt-6-sol', 'gpt-5.6-sol'),
+                                 ('GPT-6 Luna', 'gpt-6-luna', 'gpt-5.6-luna')]:
+            rx = review.model_regex(dict(name=name))
+            self.assertTrue(rx.search(own))
+            self.assertFalse(rx.search(other))
+        self.assertTrue(review.names_a_model('Muse Spark Open $1.25 / $4.25', []))
+
+    def test_base_verification_expiry_remains_due_without_published_future_rates(self):
+        data = dict(models={'m': dict(name='GPT-5.6 Sol', platforms={'official': dict(valid_through='2026-11-21')})})
+        alerts = review.time_alerts(data, dt.date(2027, 1, 1))
+        self.assertEqual(len(alerts), 1)
+        self.assertEqual(len(review.due_alerts(alerts, [])), 1)
+
+    def test_kimi_empty_markdown_uses_literal_official_html_table(self):
+        code = ('DocTable,{columns:[{title:`Model`},{title:`Unit`},{title:`Input`}],'
+                'rows:[[ `kimi-k3`,`1M tokens`,_jsxs(_Fragment,{children:[`$`,`3.00`]})]]}')
+        code = code.replace('[[ `', '[[`')
+        html = '<script>self.__next_f.push(' + json.dumps([1, code]) + ')</script>'
+        source = dict(id="kimi-pricing", url="https://platform.kimi.ai/docs/pricing/chat.md", kind="markdown")
+        with patch.object(review, "read_url", side_effect=['# Pricing\n<tbody />', html]) as read:
+            records = review.markdown_records(review.fetch(source))
+        self.assertIn('$3.00', ' '.join(records))
+        self.assertEqual(read.call_args_list[1].args[0], source['url'].removesuffix('.md'))
+        for bad in ('<html>Unavailable</html>', html.replace('1M tokens', '1M tokens`,`extra'),
+                    html.replace('3.00', '${process.env.SECRET}')):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                review.kimi_html_tables(bad)
+
+    def test_bedrock_unprefixed_feature_lists_are_not_price_headers(self):
+        row = lambda cells: 'table: ' + review.packed(dict(heading='Claude Fable 5.1 / Capabilities and Features', cells=cells))
+        before = row(['Response streaming Prompt caching Count tokens', 'Guardrails Agents'])
+        after = row(['Response streaming Prompt caching Count tokens', 'Guardrails Agents Structured outputs'])
+        self.assertEqual(review.classify([before], [after], None)[0], 'low')
+        self.assertEqual(review.classify([before], [row(['Input $3', 'Output $15'])], None)[0], 'high')
+
     def test_temporary_preview_exclusion_expires_without_hiding_discovery(self):
         models = [dict(name="Muse Spark Open (Max)", rank=50)]
         current = {"fireworks-us": {"records": ["Muse Spark Open (Max)"]}}

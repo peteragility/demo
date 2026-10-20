@@ -152,6 +152,15 @@ try {
     }
     await evalJS("document.querySelector('[data-g=all]').click()");
 
+    if (listed('openai/gpt-6.1-sol')) {
+      await toggle('openai/gpt-6.1-sol');
+      const cache = await evalJS(`(()=>{const c=[...document.querySelectorAll('tr.detail .pcard')].find(c=>c.querySelector('h3>b').textContent==='原廠 API');return {headers:[...c.querySelectorAll('.pt thead th')].map(x=>x.innerText.trim()),base:[...c.querySelector('.pt tr.pick').querySelectorAll('td')].map(x=>x.textContent),overflow:document.documentElement.scrollWidth>innerWidth};})()`);
+      assert.deepEqual(cache.headers.slice(-2), viewport.width <= 720 ? ['30m wr','12h wr'] : ['30m write','12h write']);
+      assert.deepEqual(cache.base, ['2.00','10.00','0.10','2.50','5.00']);
+      assert.equal(cache.overflow, false, viewport.name + ': expanded cache columns fit');
+      await toggle('openai/gpt-6.1-sol');
+    }
+
     // One row is open at a time: opening a second row closes the first.
     {
       const [first, second] = expected.keys.slice(0, 2);

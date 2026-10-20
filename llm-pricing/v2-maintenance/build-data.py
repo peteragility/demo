@@ -13,7 +13,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REVIEWED = "2026-10-09"
-RATE_FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_storage")
+RATE_FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_storage", "cache_write_12h")
 PLATFORMS = ("databricks", "official", "bedrock", "azure_foundry", "fireworks", "gcloud", "alicloud")
 # Share of the same tier's input price that Anthropic charges for a cache hit (pricing page, 2026-10-08):
 # 2.5% on Fable 5.1, 5% on Opus 5.5 and Sonnet 5.5, 10% on every other Claude model. Databricks bills
@@ -621,7 +621,7 @@ def finish_variants(data):
                 v.setdefault("service_tier", "standard")
 
 
-FIELD_NAMES = {"in": "input", "out": "output", "cache_read": "cache read", "cache_write": "cache write", "cache_write_1h": "1-hour cache write"}
+FIELD_NAMES = {"in": "input", "out": "output", "cache_read": "cache read", "cache_write": "cache write", "cache_write_1h": "1-hour cache write", "cache_write_12h": "12-hour cache write"}
 
 
 def find_offer(cell, path):
@@ -802,7 +802,11 @@ def corrections(data):
         "deepseek/deepseek-v4-pro": ("2026-10-30", ["DeepSeek V4.1 Flash"], REVIEWED),
         "moonshot/kimi-k2.7": ("2026-10-30", ["Kimi K3"], REVIEWED),
         "deepseek/deepseek-v4-flash": ("2026-11-05", ["DeepSeek V4.1 Flash"], "2026-10-07"),
+        "deepseek/deepseek-v4.1-flash": ("2026-11-19", ["DeepSeek V4.1 Flash (1017)"], "2026-10-21"),
     }
+    for key in ("deepseek/deepseek-v4-pro", "deepseek/deepseek-v4-flash"):
+        day, _, _ = retirement[key]
+        retirement[key] = (day, ["DeepSeek V4.1 Flash (1017)"], "2026-10-21")
     for key, (day, replacements, seen) in retirement.items():
         c = m[key]["platforms"]["databricks"]
         c["retires_on"] = day
@@ -988,6 +992,40 @@ def add_gemini4(data):
         group="google", oss=False, model_key="google/gemini-4-argon", ctx="1M unified", badges=["Added"], platforms=platforms)
 
 
+def review_october21(data):
+    """Official pricing and prompt-caching guide, reviewed 2026-10-21.
+
+    OpenAI's 12h writes cost 2.5x input (twice the published 30m write rate),
+    including the existing tier, context and regional multipliers. Other platforms
+    have independent cache policies and must not inherit this TTL or its rates.
+    """
+    for key in ("openai/gpt-6.1-sol", "openai/gpt-6-astra", "openai/gpt-6-sol",
+                "openai/gpt-6-luna", "openai/gpt-5.6-sol"):
+        c = data["models"][key]["platforms"]["official"]
+        if key == "openai/gpt-5.6-sol":
+            # The maker publishes only the promotional rates through this date.
+            # Databricks' independently published post-promotion rates remain separate.
+            c.pop("promotion", None)
+            c["valid_through"] = "2026-11-21"
+        for o in [c, *c.get("variants", [])]:
+            o["cache_write_12h"] = round(o["cache_write"] * 2, 6)
+            o["pricing_checked_at"] = "2026-10-21"
+            if o.get("long_context"):
+                o["long_context"]["cache_write_12h"] = round(o["long_context"]["cache_write"] * 2, 6)
+        c["endpoints"]["cache_write_ttl"] = "30m"
+        c["endpoints"]["notes"] = [n for n in c["endpoints"]["notes"] if n[0] != "Caching"] + [
+            ["Caching", "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."]]
+    c = data["models"]["deepseek/deepseek-v4.1-flash"]["platforms"]["databricks"]
+    c["endpoints"]["ids"].append("databricks-deepseek-v4-1-flash-1017 (separate checkpoint; price unverified)")
+    c["endpoints"]["notes"].append(["Checkpoint review · 21 Oct 2026",
+        "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Neither checked DBU table explicitly prices 1017; its rates remain unverified and are not copied from the original endpoint. The original retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."])
+    c = data["models"]["google/gemini-4-argon"]["platforms"]["gcloud"]
+    c["availability_checked_at"] = "2026-10-21"
+    c["endpoints"]["checked_at"] = "2026-10-21"
+    c["endpoints"]["notes"].append(["Region review · 21 Oct 2026",
+        "The model card also lists London (europe-west2) and Singapore (asia-southeast1) for ML processing and Provisioned Throughput. Separate single-region per-token rates have not been verified; these endpoints are not added to price comparisons."])
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1015,6 +1053,7 @@ def build():
     add_gemini4(data)
     apply_endpoints(data)
     finish_variants(data)
+    review_october21(data)
     check_cache_reads(data)
     lifecycle_notices(data)
     # Highlights: neutral, dated facts re-checked against the v2 offers.

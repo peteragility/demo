@@ -7,7 +7,7 @@ from pathlib import Path
 import sys
 
 HERE = Path(__file__).resolve().parent
-FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_storage")
+FIELDS = ("in", "out", "cache_read", "cache_write", "cache_write_1h", "cache_storage", "cache_write_12h")
 PLATFORMS = {"databricks", "official", "bedrock", "azure_foundry", "fireworks", "gcloud", "alicloud"}
 SCOPES = {"global", "regional", "data-zone", "geographic", "unverified"}
 SERVICE_TIERS = {"standard", "priority", "batch", "flex", "off-peak"}
@@ -110,6 +110,8 @@ def validate(data):
                     if v.get("future_only"):
                         check(date(v.get("effective_from")), vat + ": scheduled price without a start date.")
                 for offer in [cell, *variants]:
+                    if "valid_through" in offer:
+                        check(date(offer["valid_through"]), at + ": invalid verified-through date.")
                     if offer.get("promotion"):
                         promotion = offer["promotion"]
                         check(date(promotion.get("ends_on")), at + ": promotion end missing.")
