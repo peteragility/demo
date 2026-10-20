@@ -8700,7 +8700,8 @@
    "checked_at": "2026-10-04",
    "reverified": true,
    "base": {
-    "endpoint": "Global (api.x.ai)"
+    "endpoint": "Global (api.x.ai)",
+    "availability_checked_at": "2026-10-21"
    },
    "variants": [
     {
@@ -8724,6 +8725,21 @@
       "in": 4.4,
       "out": 13.2,
       "cache_read": 1.1
+     }
+    },
+    {
+     "label": "Global (api.x.ai) · Batch",
+     "in": 1.6,
+     "out": 4.8,
+     "cache_read": 0.4,
+     "scope": "global",
+     "service": "batch",
+     "endpoint": "Global (api.x.ai)",
+     "pricing_checked_at": "2026-10-21",
+     "long_context": {
+      "in": 3.2,
+      "out": 9.6,
+      "cache_read": 0.8
      }
     }
    ],
@@ -8756,6 +8772,12 @@
      "global",
      "Global (api.x.ai)",
      "No APAC region or endpoint listed"
+    ],
+    [
+     "Americas",
+     "unknown",
+     "Batch API",
+     "Supported in us-east-1 and us-west-2; separate US regional-endpoint Batch terms are not verified"
     ]
    ],
    "hk": [
@@ -8774,7 +8796,7 @@
     ],
     [
      "Tiers",
-     "No Batch API for this model; Priority costs 2x on all token types, billed only when the response confirms priority."
+     "Batch is supported in us-east-1 and us-west-2 at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint."
     ],
     [
      "Residency",
@@ -9296,7 +9318,8 @@
    "checked_at": "2026-10-04",
    "reverified": true,
    "base": {
-    "endpoint": "Global (api.x.ai)"
+    "endpoint": "Global (api.x.ai)",
+    "availability_checked_at": "2026-10-21"
    },
    "variants": [
     {
@@ -9320,6 +9343,21 @@
       "in": 4.4,
       "out": 13.2,
       "cache_read": 1.1
+     }
+    },
+    {
+     "label": "Global (api.x.ai) · Batch",
+     "in": 1.6,
+     "out": 4.8,
+     "cache_read": 0.4,
+     "scope": "global",
+     "service": "batch",
+     "endpoint": "Global (api.x.ai)",
+     "pricing_checked_at": "2026-10-21",
+     "long_context": {
+      "in": 3.2,
+      "out": 9.6,
+      "cache_read": 0.8
      }
     }
    ],
@@ -9352,6 +9390,12 @@
      "global",
      "Global (api.x.ai)",
      "No APAC region or endpoint listed"
+    ],
+    [
+     "Americas",
+     "unknown",
+     "Batch API",
+     "Supported in us-east-1 and us-west-2; separate US regional-endpoint Batch terms are not verified"
     ]
    ],
    "hk": [
@@ -9370,7 +9414,7 @@
     ],
     [
      "Tiers",
-     "No Batch API for this model; Priority costs 2x on all token types, billed only when the response confirms priority."
+     "Batch is supported in us-east-1 and us-west-2 at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint."
     ],
     [
      "Residency",

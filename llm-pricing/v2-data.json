@@ -4272,6 +4272,23 @@
               },
               "id": "variant-1",
               "model_match": "confirmed"
+            },
+            {
+              "in": 1.6,
+              "out": 4.8,
+              "cache_read": 0.4,
+              "label": "Global (api.x.ai) · Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-04",
+              "endpoint": "Global (api.x.ai)",
+              "long_context": {
+                "in": 3.2,
+                "out": 9.6,
+                "cache_read": 0.8
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
             }
           ],
           "endpoints": {
@@ -4305,6 +4322,12 @@
                 "global",
                 "Global (api.x.ai)",
                 "No APAC region or endpoint listed"
+              ],
+              [
+                "Americas",
+                "unknown",
+                "Batch API",
+                "Supported in us-east-1 and us-west-2; separate US regional-endpoint Batch terms are not verified"
               ]
             ],
             "hk": [
@@ -4322,7 +4345,7 @@
               ],
               [
                 "Tiers",
-                "No Batch API for this model; Priority costs 2x on all token types, billed only when the response confirms priority."
+                "Batch is supported in us-east-1 and us-west-2 at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint."
               ],
               [
                 "Residency",
@@ -4788,6 +4811,23 @@
               },
               "id": "variant-1",
               "model_match": "confirmed"
+            },
+            {
+              "in": 1.6,
+              "out": 4.8,
+              "cache_read": 0.4,
+              "label": "Global (api.x.ai) · Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-04",
+              "endpoint": "Global (api.x.ai)",
+              "long_context": {
+                "in": 3.2,
+                "out": 9.6,
+                "cache_read": 0.8
+              },
+              "id": "variant-2",
+              "model_match": "confirmed"
             }
           ],
           "endpoints": {
@@ -4821,6 +4861,12 @@
                 "global",
                 "Global (api.x.ai)",
                 "No APAC region or endpoint listed"
+              ],
+              [
+                "Americas",
+                "unknown",
+                "Batch API",
+                "Supported in us-east-1 and us-west-2; separate US regional-endpoint Batch terms are not verified"
               ]
             ],
             "hk": [
@@ -4838,7 +4884,7 @@
               ],
               [
                 "Tiers",
-                "No Batch API for this model; Priority costs 2x on all token types, billed only when the response confirms priority."
+                "Batch is supported in us-east-1 and us-west-2 at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint."
               ],
               [
                 "Residency",
@@ -27799,7 +27845,7 @@
               ],
               [
                 "Caching",
-                "Implicit caching requires at least 6,144 tokens; durable caching is enabled by default."
+                "Implicit caching requires at least 4,096 tokens (model card reviewed 21 Oct 2026); durable caching is enabled by default."
               ],
               [
                 "Tiers",

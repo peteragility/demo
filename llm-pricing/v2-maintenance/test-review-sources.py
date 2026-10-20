@@ -22,6 +22,16 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_claude_maker_title_is_wording_but_rates_and_integer_limits_are_not(self):
+        def row(title, price):
+            return 'table: ' + review.packed(dict(heading=title, cells=['Input', price]))
+        before = row('Claude Fable 5.1 / Pricing', '$3')
+        self.assertEqual(review.classify([before], [row("Anthropic's Claude Fable 5.1 / Pricing", '$3')], None)[0], 'low')
+        self.assertEqual(review.classify([before], [row("Anthropic's Claude Fable 5.1 / Pricing", '$4')], None)[0], 'high')
+        self.assertEqual(review.classify(['text: Implicit caching (6,144-token minimum)'],
+                                        ['text: Implicit caching (4,096-token minimum)'], None)[0], 'high')
+        self.assertTrue(review.names_a_model('gpt-live-transcribe 2026-07-28', []))
+
     def test_gpt_version_suffix_cannot_match_a_predecessor(self):
         for name, own, other in [('GPT-6 Sol', 'gpt-6-sol', 'gpt-5.6-sol'),
                                  ('GPT-6 Luna', 'gpt-6-luna', 'gpt-5.6-luna')]:

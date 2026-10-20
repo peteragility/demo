@@ -11,6 +11,19 @@ const date = {asOf: '2026-10-02'};
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `Expected ${b}, got ${a}`);
 const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 
+test('Grok maker Batch discounts cache hits and the full request at the 200K boundary', () => {
+  for (const version of ['4.6', '4.7']) {
+    const c = published.models['xai/grok-' + version].platforms.official;
+    const batch = c.variants.find(v => v.service_tier === 'batch');
+    const short = M.resolveOffer(c, {asOf: '2026-10-21', variantId: batch.id, promptTokens: 199999});
+    const long = M.resolveOffer(c, {asOf: '2026-10-21', variantId: batch.id, promptTokens: 200000});
+    close(short.in, 1.6); close(short.out, 4.8); close(short.cache_read, 0.4);
+    close(long.in, 3.2); close(long.out, 9.6); close(long.cache_read, 0.8);
+    assert.equal(short.endpoint, 'Global (api.x.ai)');
+    assert.equal(M.cheapest(c, {asOf: '2026-10-21'}).service_tier, 'standard');
+  }
+});
+
 test('OpenAI 12h writes use each tier and context rate without leaking to other providers', () => {
   const c = published.models['openai/gpt-6.1-sol'].platforms.official;
   const base = M.calculate(c, {asOf: '2026-10-21', inputM: 1, outputM: 0, writeM: 1, writeTTL: '12h'});

@@ -536,6 +536,7 @@ def cell_sources(cell, meta_index):
 
 PRICE = re.compile(r"\$\s?\d[\d,]*(?:\.\d+)?|\d+(?:\.\d+)?\s?%|\d+(?:\.\d+)?\s?[x×](?![a-z])|(?<![\w.])\d+\.\d+(?![\w.])")
 LIMIT = re.compile(r"(?<![\w.$])\d+(?:\.\d+)?\s?[km](?![a-z])")  # context limits and thresholds: 272k, 1m
+TOKEN_COUNT = re.compile(r"\b\d[\d,]*(?:\.\d+)?[- ]+(?:(?:input|output)[- ]+)?tokens?\b", re.I)
 MONTH = r"(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?"
 # Dates, but not those inside identifiers such as a beta header compact-2026-09-04.
 DATE = re.compile(rf"\b{MONTH}\s+\d{{1,2}},?\s+\d{{4}}|\b\d{{1,2}}\s+{MONTH}\s+\d{{4}}|(?<![\w-])\d{{4}}-\d{{2}}-\d{{2}}(?![\w-])|"
@@ -548,7 +549,7 @@ PLACE = re.compile(r"(?<![\w-])(?:" + "|".join(sorted({re.escape(official.norm(x
 OTHER_MODEL = re.compile(r"(?<![\w-])(?:(?:claude|opus|sonnet|haiku|fable|mythos|gpt|codex|gemini|gemma|imagen|veo|lyria|chirp|llama|mistral|mixtral|"
                          r"ministral|magistral|codestral|devstral|pixtral|voxtral|qwen|qwq|deepseek|kimi|glm|grok|nova|titan|jamba|phi|minimax|nemotron|"
                          r"granite|olmo|ernie|hunyuan|whisper|dall e|sora|flux|cohere|command|palmyra|marengo|pegasus|seedream|seedance|wan)"
-                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|happyhorse\b|muse[\s-]+spark[\s-]+open\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc|audio)\b)")
+                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|happyhorse\b|muse[\s-]+spark[\s-]+open\b|gpt[\s-]+(?:live[\s-]+transcribe|realtime)\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc|audio)\b)")
 # Documents whose lines that name no model (a residency multiplier, a batch discount, a region list) can
 # apply to every model they cover; structured price lists and model indexes have one line per model.
 DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
@@ -572,6 +573,7 @@ def risk_tokens(line, rx):
         text = rx.sub(" ", text)
     text = OTHER_MODEL.sub(" ", text)  # another model's version number is not a price
     tokens = versions | {"price:" + re.sub(r"[\s,]", "", t) for t in PRICE.findall(text) + LIMIT.findall(text)}
+    tokens |= {"price:token-count:" + re.sub(r"[\s,-]", "", t) for t in TOKEN_COUNT.findall(text)}
     tokens |= {"price:cache-duration:" + n for n in re.findall(r"\b(\d+)[ -]minutes?\b", text)}
     prices = []
     for token in PRICE.findall(text):
@@ -643,6 +645,11 @@ def classify(before, after, rx):
     def layout_record(record):
         if record.startswith("table: {"):
             row = json.loads(record[len("table: "):])
+            # Google added a maker possessive to otherwise identical Claude card titles.
+            # Keep every tier, rate, context band and regional table assignment intact.
+            strip_maker = lambda text: re.sub(r"^Anthropic['’]s (?=Claude\b)", "", text, flags=re.I)
+            row["heading"] = strip_maker(row.get("heading", ""))
+            row["cells"] = [strip_maker(c) for c in row.get("cells", [])]
             cells = row.get("cells", [])
             while cells and not cells[-1]:
                 cells.pop()

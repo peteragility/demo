@@ -976,7 +976,7 @@ def add_gemini4(data):
             cell["endpoints"]["notes"] = [n for n in cell["endpoints"]["notes"] if n[0] != "Tiers"]
             cell["endpoints"]["notes"] += [["Lifecycle", "Agent Platform retirement is October 13, 2027 or later; this is a lower bound, not an exact shutdown date, and does not set the Gemini API retirement date."],
                                             ["Product", "AlphaEvolve is a separate product. Its table lists Gemini model input / output at $4 / $20 per 1M tokens and AlphaEvolve agent input / output at $8 / $40; these are product columns, not context bands."],
-                                            ["Caching", "Implicit caching requires at least 6,144 tokens; durable caching is enabled by default."],
+                                            ["Caching", "Implicit caching requires at least 4,096 tokens (model card reviewed 21 Oct 2026); durable caching is enabled by default."],
                                             ["Tiers", "Standard, Priority and Batch; Flex is not listed as supported on this model card."]]
         platforms[pl] = checked(cell, day)
     for cell in platforms.values():
