@@ -1,14 +1,14 @@
 {
-  "observed": "2026-10-18",
+  "observed": "2026-10-21",
   "sources": {
     "aws-rds-price-index": {
       "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
       "records": [
-        "RDS price-list version · ap-east-1 · /offers/v1.0/aws/AmazonRDS/20261006224050/ap-east-1/index.json",
-        "RDS price-list version · ap-northeast-1 · /offers/v1.0/aws/AmazonRDS/20261006224050/ap-northeast-1/index.json",
-        "RDS price-list version · ap-southeast-1 · /offers/v1.0/aws/AmazonRDS/20261006224050/ap-southeast-1/index.json",
-        "RDS price-list version · us-east-1 · /offers/v1.0/aws/AmazonRDS/20261006224050/us-east-1/index.json",
-        "RDS price-list version · us-west-2 · /offers/v1.0/aws/AmazonRDS/20261006224050/us-west-2/index.json"
+        "RDS price-list version · ap-east-1 · /offers/v1.0/aws/AmazonRDS/20261020003232/ap-east-1/index.json",
+        "RDS price-list version · ap-northeast-1 · /offers/v1.0/aws/AmazonRDS/20261020003232/ap-northeast-1/index.json",
+        "RDS price-list version · ap-southeast-1 · /offers/v1.0/aws/AmazonRDS/20261020003232/ap-southeast-1/index.json",
+        "RDS price-list version · us-east-1 · /offers/v1.0/aws/AmazonRDS/20261020003232/us-east-1/index.json",
+        "RDS price-list version · us-west-2 · /offers/v1.0/aws/AmazonRDS/20261020003232/us-west-2/index.json"
       ]
     },
     "azure-postgres-pricing": {
