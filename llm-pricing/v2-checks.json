@@ -181,12 +181,6 @@
     "table: {\"cells\":[\"gpt-audio\",\"Text\",\"$2.50\",\"$10.00\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-audio-mini\",\"Audio\",\"$10.00\",\"$20.00\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-audio-mini\",\"Text\",\"$0.60\",\"$2.40\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"Audio\",\"$32.00\",\"$64.00\",\"$0.40\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"Image\",\"$5.00\",\"-\",\"$0.50\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"Text\",\"$4.00\",\"$16.00\",\"$0.40\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"Audio\",\"$10.00\",\"$20.00\",\"$0.30\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"Image\",\"$0.80\",\"-\",\"$0.08\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"Text\",\"$0.60\",\"$2.40\",\"$0.06\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-rosalind-discovery\",\"$5.00\",\"$25.00\",\"$0.50\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-rosalind-research\",\"$5.00\",\"$25.00\",\"$0.50\"],\"heading\":\"Grouped Pricing Table data\"}"
    ],
@@ -219,16 +213,10 @@
     "table: {\"cells\":[\"gpt-audio\",\"Text\",\"$2.50\",\"-\",\"$10.00\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-audio-mini\",\"Audio\",\"$10.00\",\"-\",\"$20.00\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-audio-mini\",\"Text\",\"$0.60\",\"-\",\"$2.40\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"Audio\",\"$32.00\",\"$0.40\",\"$64.00\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"Image\",\"$5.00\",\"$0.50\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"Text\",\"$4.00\",\"$0.40\",\"$16.00\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"Audio\",\"$10.00\",\"$0.30\",\"$20.00\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"Image\",\"$0.80\",\"$0.08\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"Text\",\"$0.60\",\"$0.06\",\"$2.40\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-rosalind-discovery\",\"$5.00\",\"$0.50\",\"$25.00\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-rosalind-research\",\"$5.00\",\"$0.50\",\"$25.00\"],\"heading\":\"Grouped Pricing Table data\"}"
    ],
-   "baseline_digest": "0e4762aff4583ca90df18c74ecf745492dffc3a37fcb273467eb082e40314c59"
+   "baseline_digest": "89bb3b629f23b0e38c9013672aa71401c8bafc5225b267568e1daf06e23edcc2"
   },
   {
    "source": "kimi-pricing",
@@ -259,31 +247,16 @@
    "risk": "high",
    "reason": "a date changed",
    "added": [
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"-\",\"-\",\"-\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"2025-08-28\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"2025-10-06\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"2025-12-15\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-translate\",\"2026-05-06\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-translate\",\"2026-05-06\",\"✅\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-whisper\",\"2026-05-06\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
     "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"-\",\"-\",\"-\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}"
+    "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"text-embedding-3-large\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"text-embedding-3-small\",\"1\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
+    "table: {\"cells\":[\"text-embedding-ada-002\",\"2\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}"
    ],
    "removed": [],
    "added_all": [
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"-\",\"-\",\"-\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-live-transcribe\",\"2026-07-28\",\"✅\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime\",\"2025-08-28\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"2025-10-06\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-mini\",\"2025-12-15\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-translate\",\"2026-05-06\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-translate\",\"2026-05-06\",\"✅\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}",
-    "table: {\"cells\":[\"gpt-realtime-whisper\",\"2026-05-06\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
     "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"-\",\"-\",\"-\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
     "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"✅\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
     "table: {\"cells\":[\"gpt-transcribe\",\"2026-07-28\",\"-\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Global Standard / Availability for Azure OpenAI in Foundry Models\"}",
@@ -293,7 +266,7 @@
     "table: {\"cells\":[\"text-embedding-ada-002\",\"2\",\"✅\",\"✅\",\"✅\",\"✅\",\"✅\"],\"heading\":\"Region availability for Foundry Models sold by Azure / Data Zone Standard / Availability for Azure OpenAI in Foundry Models\"}"
    ],
    "removed_all": [],
-   "baseline_digest": "7c16e54df572d336b85f804f761e8cb28b8b5f335a102bc270dbfa3ec4c1a9f7"
+   "baseline_digest": "9adede1ccd92528e1698ca961566b7af10ef5b4fc7a04f23b774671d514d9dc7"
   }
  ],
  "ranking": {
@@ -306,16 +279,8 @@
  },
  "databricks_coverage": [],
  "review": [
-  "Claude Fable 5.1 · gcloud",
-  "Claude Fable 5 · gcloud",
-  "Claude Opus 4.6 · gcloud",
-  "Claude Opus 4.7 · gcloud",
-  "Claude Opus 4.8 · gcloud",
-  "Claude Opus 5.5 · gcloud",
-  "Claude Opus 5 · gcloud",
-  "Claude Sonnet 5.5 · gcloud",
-  "Claude Sonnet 5 · gcloud",
   "DeepSeek V4.1 Flash · databricks",
+  "Gemini 4 Argon · gcloud",
   "Kimi K3 · official",
   "GPT-5.6 Sol · azure_foundry",
   "GPT-5.6 Sol · official",
@@ -338,10 +303,7 @@
    "verified": "2026-10-21"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-10-21",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-10-21"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-10-21"
@@ -351,8 +313,7 @@
   },
   "anthropic/claude-fable-5.1|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-fable-5-1"
    ]
   },
@@ -366,10 +327,7 @@
    "verified": "2026-10-21"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-10-21",
-   "accepted": [
-    "aws-card-claude-fable-5"
-   ]
+   "verified": "2026-10-21"
   },
   "anthropic/claude-fable-5|databricks": {
    "verified": "2026-10-21"
@@ -379,8 +337,7 @@
   },
   "anthropic/claude-fable-5|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-fable-5"
    ]
   },
@@ -446,8 +403,7 @@
   },
   "anthropic/claude-opus-4.6|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-opus-4-6"
    ]
   },
@@ -471,8 +427,7 @@
   },
   "anthropic/claude-opus-4.7|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-opus-4-7"
    ]
   },
@@ -496,8 +451,7 @@
   },
   "anthropic/claude-opus-4.8|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-opus-4-8"
    ]
   },
@@ -521,8 +475,7 @@
   },
   "anthropic/claude-opus-5.5|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-opus-5-5"
    ]
   },
@@ -546,8 +499,7 @@
   },
   "anthropic/claude-opus-5|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-opus-5"
    ]
   },
@@ -592,8 +544,7 @@
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-sonnet-5-5"
    ]
   },
@@ -617,8 +568,7 @@
   },
   "anthropic/claude-sonnet-5|gcloud": {
    "verified": "2026-10-21",
-   "changed_at": "2026-10-21",
-   "sources": [
+   "accepted": [
     "gcp-claude-sonnet-5"
    ]
   },
@@ -732,10 +682,7 @@
    "verified": "2026-10-21"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-20",
-   "unchecked": [
-    "gcp-locations"
-   ]
+   "verified": "2026-10-21"
   },
   "google/gemini-3.1-pro|official": {
    "verified": "2026-10-21"
@@ -844,8 +791,7 @@
    "changed_at": "2026-10-21",
    "sources": [
     "gcp-gemini-4-argon"
-   ],
-   "quiet": true
+   ]
   },
   "google/gemini-4-argon|official": {
    "verified": "2026-10-21"
@@ -1495,10 +1441,7 @@
    "verified": "2026-10-21"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-10-20",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-21"
   },
   "qwen/qwen3.8-max|gcloud": {
    "verified": "2026-10-21"
