@@ -25,6 +25,8 @@ test('Grok maker Batch discounts cache hits and the full request at the 200K bou
 });
 
 test('OpenAI 12h writes use each tier and context rate without leaking to other providers', () => {
+  close(published.models['openai/gpt-5.6-terra'].platforms.official.cache_write_12h, 5);
+  close(published.models['openai/gpt-5.6-luna'].platforms.official.cache_write_12h, 0.5);
   const c = published.models['openai/gpt-6.1-sol'].platforms.official;
   const base = M.calculate(c, {asOf: '2026-10-21', inputM: 1, outputM: 0, writeM: 1, writeTTL: '12h'});
   close(base.total, 5);

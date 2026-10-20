@@ -1000,7 +1000,7 @@ def review_october21(data):
     have independent cache policies and must not inherit this TTL or its rates.
     """
     for key in ("openai/gpt-6.1-sol", "openai/gpt-6-astra", "openai/gpt-6-sol",
-                "openai/gpt-6-luna", "openai/gpt-5.6-sol"):
+                "openai/gpt-6-luna", "openai/gpt-5.6-sol", "openai/gpt-5.6-terra", "openai/gpt-5.6-luna"):
         c = data["models"][key]["platforms"]["official"]
         if key == "openai/gpt-5.6-sol":
             # The maker publishes only the promotional rates through this date.
