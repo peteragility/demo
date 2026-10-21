@@ -1,5 +1,5 @@
 {
-  "observed": "2026-10-21",
+  "observed": "2026-10-22",
   "sources": {
     "aws-rds-price-index": {
       "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
@@ -238,11 +238,14 @@
         "price:$200",
         "price:100%",
         "price:2x",
+        "price:47%",
         "price:60%",
+        "price:64%",
         "price:assignment:[[\"azure database for postgresql pricing / memory optimized / backup storage\",[\"gib/month\",\"$\",\"grs requires twice the amount of storage capacity because it creates a replica. if you have configured the backup storage to be geo redundant (grs), the price will be # this price. price per gib remains the same.\"]],[[2,[\"2x\"]]]]",
         "price:sequence:[\"$200\"]",
         "price:sequence:[\"100%\"]",
         "price:sequence:[\"2x\"]",
+        "price:sequence:[\"47%\",\"64%\"]",
         "price:sequence:[\"60%\"]"
       ]
     },
@@ -509,7 +512,7 @@
         "price:843.7",
         "price:91.8",
         "price:93.4",
-        "price:99.99",
+        "price:99.99%",
         "price:assignment:[[\"provisioned compute / business critical / standard series (gen 5)\",[\"12\",\"#\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\"]],[[1,[\"61.2\"]]]]",
         "price:assignment:[[\"provisioned compute / business critical / standard series (gen 5)\",[\"14\",\"#\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\"]],[[1,[\"71.4\"]]]]",
         "price:assignment:[[\"provisioned compute / business critical / standard series (gen 5)\",[\"16\",\"#\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\",\"$\"]],[[1,[\"81.6\"]]]]",
@@ -652,7 +655,7 @@
         "price:sequence:[\"843.7\"]",
         "price:sequence:[\"91.8\"]",
         "price:sequence:[\"93.4\"]",
-        "price:sequence:[\"99.99\"]"
+        "price:sequence:[\"99.99%\"]"
       ]
     },
     "clickhouse-postgres-pricing": {
@@ -1133,7 +1136,7 @@
       "url": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview",
       "records": [
         "feature-status-table:[\"capabilities that implement ltap ​\",[\"lakebase change data feed\",\"public preview\",\"store row level changes from lakebase postgres tables as unity catalog delta tables for downstream pipelines and audit.\"]]",
-        "feature-status-table:[\"capabilities that implement ltap ​\",[\"lakehouse//rt querying lakebase\",\"beta\",\"run transactionally consistent olap queries on live postgres data, without impacting lakebase oltp performance.\"]]",
+        "feature-status-table:[\"capabilities that implement ltap ​\",[\"lakehouse//rt querying lakebase\",\"private preview\",\"run transactionally consistent olap queries on live postgres data, without impacting lakebase oltp performance.\"]]",
         "feature-status-table:[\"capabilities that implement ltap ​\",[\"register lakebase in unity catalog\",\"ga\",\"govern analytical access to lakebase data and run cross source queries from the lakehouse.\"]]",
         "feature-status-table:[\"capabilities that implement ltap ​\",[\"serve data with synced tables\",\"ga (ltap direct writes: beta)\",\"serve unity catalog table data in lakebase for low latency oltp reads. optionally enable ltap direct writes for faster initial loads and full refreshes.\"]]",
         "status:change data feed:public preview",
@@ -1141,8 +1144,9 @@
         "status:direct writes:ga",
         "status:lakebase:beta",
         "status:lakebase:ga",
+        "status:lakebase:private preview",
         "status:lakebase:public preview",
-        "status:lakehouse//rt:beta"
+        "status:lakehouse//rt:private preview"
       ]
     },
     "lakebase-12": {
