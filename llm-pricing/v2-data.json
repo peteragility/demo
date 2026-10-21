@@ -25215,18 +25215,6 @@
               "endpoint": "Chinese mainland (Beijing)",
               "id": "variant-3",
               "model_match": "confirmed"
-            },
-            {
-              "in": 3.301,
-              "out": 9.902,
-              "label": "Chinese mainland (Beijing) · Fast",
-              "comparison_scope": "geographic",
-              "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
-              "endpoint": "Chinese mainland (Beijing)",
-              "tier_label": "Fast",
-              "id": "variant-4",
-              "model_match": "confirmed"
             }
           ],
           "model_id_checked_at": "2026-10-03",
@@ -25293,12 +25281,15 @@
               [
                 "IDs",
                 "Snapshot qwen3.8-max-0902 is priced identically in every scope."
+              ],
+              [
+                "Fast mode",
+                "22 Oct 2026: qwen3.8-max-prime is no longer listed in the official pricing or Fast mode tables; no current Fast rate is verified."
               ]
             ],
             "ids": [
               "qwen3.8-max (model ID)",
-              "qwen3.8-max-0902 (snapshot)",
-              "qwen3.8-max-prime (Fast mode, Beijing)"
+              "qwen3.8-max-0902 (snapshot)"
             ],
             "cache_write": "priced"
           }
@@ -25363,18 +25354,6 @@
               "endpoint": "Chinese mainland (Beijing)",
               "id": "variant-3",
               "model_match": "confirmed"
-            },
-            {
-              "in": 3.301,
-              "out": 9.902,
-              "label": "Chinese mainland (Beijing) · Fast",
-              "comparison_scope": "geographic",
-              "service_tier": "priority",
-              "pricing_checked_at": "2026-10-09",
-              "endpoint": "Chinese mainland (Beijing)",
-              "tier_label": "Fast",
-              "id": "variant-4",
-              "model_match": "confirmed"
             }
           ],
           "model_id_checked_at": "2026-10-03",
@@ -25441,12 +25420,15 @@
               [
                 "IDs",
                 "Snapshot qwen3.8-max-0902 is priced identically in every scope."
+              ],
+              [
+                "Fast mode",
+                "22 Oct 2026: qwen3.8-max-prime is no longer listed in the official pricing or Fast mode tables; no current Fast rate is verified."
               ]
             ],
             "ids": [
               "qwen3.8-max (model ID)",
-              "qwen3.8-max-0902 (snapshot)",
-              "qwen3.8-max-prime (Fast mode, Beijing)"
+              "qwen3.8-max-0902 (snapshot)"
             ],
             "cache_write": "priced"
           }

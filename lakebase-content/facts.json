@@ -56,9 +56,9 @@
       "checked": "2026-10-19"
     },
     "table.analytics": {
-      "value": "Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT (Beta) · UC for analytics; PG roles for direct access",
+      "value": "Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT over Lakebase (Private Preview) · UC for analytics; PG roles for direct access",
       "source": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview",
-      "checked": "2026-10-19"
+      "checked": "2026-10-22"
     },
     "table.pooling": {
       "value": "Built-in PgBouncer transaction mode · native password roles only; OAuth direct · 10K clients ≠ running transactions",
@@ -111,9 +111,9 @@
       "checked": "2026-10-19"
     },
     "status.rt": {
-      "value": "Beta; cloud/region eligibility must be confirmed",
+      "value": "Private Preview; access and cloud/region eligibility must be confirmed",
       "source": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview",
-      "checked": "2026-10-19"
+      "checked": "2026-10-22"
     },
     "status.cdf": {
       "value": "Public Preview",

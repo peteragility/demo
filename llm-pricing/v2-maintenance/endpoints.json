@@ -10498,15 +10498,6 @@
      "scope": "geographic",
      "service": "batch",
      "endpoint": "Chinese mainland (Beijing)"
-    },
-    {
-     "label": "Chinese mainland (Beijing) · Fast",
-     "in": 3.301,
-     "out": 9.902,
-     "scope": "geographic",
-     "service": "priority",
-     "endpoint": "Chinese mainland (Beijing)",
-     "tier_label": "Fast"
     }
    ],
    "src": [
@@ -10569,12 +10560,15 @@
     [
      "IDs",
      "Snapshot qwen3.8-max-0902 is priced identically in every scope."
+    ],
+    [
+     "Fast mode",
+     "22 Oct 2026: qwen3.8-max-prime is no longer listed in the official pricing or Fast mode tables; no current Fast rate is verified."
     ]
    ],
    "ids": [
     "qwen3.8-max (model ID)",
-    "qwen3.8-max-0902 (snapshot)",
-    "qwen3.8-max-prime (Fast mode, Beijing)"
+    "qwen3.8-max-0902 (snapshot)"
    ]
   },
   "fireworks": {
@@ -10685,15 +10679,6 @@
      "scope": "geographic",
      "service": "batch",
      "endpoint": "Chinese mainland (Beijing)"
-    },
-    {
-     "label": "Chinese mainland (Beijing) · Fast",
-     "in": 3.301,
-     "out": 9.902,
-     "scope": "geographic",
-     "service": "priority",
-     "endpoint": "Chinese mainland (Beijing)",
-     "tier_label": "Fast"
     }
    ],
    "src": [
@@ -10756,12 +10741,15 @@
     [
      "IDs",
      "Snapshot qwen3.8-max-0902 is priced identically in every scope."
+    ],
+    [
+     "Fast mode",
+     "22 Oct 2026: qwen3.8-max-prime is no longer listed in the official pricing or Fast mode tables; no current Fast rate is verified."
     ]
    ],
    "ids": [
     "qwen3.8-max (model ID)",
-    "qwen3.8-max-0902 (snapshot)",
-    "qwen3.8-max-prime (Fast mode, Beijing)"
+    "qwen3.8-max-0902 (snapshot)"
    ]
   }
  },

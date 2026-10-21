@@ -22,6 +22,24 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_flashx_legal_does_not_change_glm_base_or_flash_prices(self):
+        legal = 'table: ' + review.packed(dict(heading='Text Models', cells=['GLM-5.3-FlashX-Legal', '$0.37', '$1.25']))
+        for name, own in [('GLM 5.3', 'GLM-5.3'), ('GLM 5.3 Flash', 'GLM-5.3-Flash')]:
+            rx = review.model_regex(dict(name=name))
+            self.assertFalse(rx.search(review.official.norm(legal)))
+            self.assertTrue(rx.search(review.official.norm(own)))
+            self.assertTrue(rx.search(review.official.norm(own + '-1017')))
+            self.assertFalse(rx.search(review.official.norm(own + 'X')))
+
+    def test_percent_wording_keeps_discounts_and_regional_premiums(self):
+        for old, new in [('Batch discount 50%', 'Batch discount 50 percent'),
+                         ('Regional premium 10%', 'Regional premium 10 percent')]:
+            self.assertEqual(review.classify(['notice: ' + old], ['notice: ' + new], None)[0], 'low')
+            self.assertEqual(review.classify(['notice: ' + old], ['notice: ' + new.replace('0 percent', '1 percent')], None)[0], 'high')
+        row = lambda price: 'table: ' + review.packed(dict(heading='Pricing', cells=['Input', price]))
+        self.assertEqual(review.classify([row('50%')], [row('50 percent')], None)[0], 'low')
+        self.assertEqual(review.classify([row('50%')], [row('60 percent')], None)[0], 'high')
+
     def test_claude_maker_title_is_wording_but_rates_and_integer_limits_are_not(self):
         def row(title, price):
             return 'table: ' + review.packed(dict(heading=title, cells=['Input', price]))

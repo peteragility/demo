@@ -338,7 +338,7 @@ def make_report(baseline, current, errors, data, today):
 
 # ---- Per-offer checks ------------------------------------------------------------------------
 
-SIBLINGS = r"flash|fast|lite|mini|nano|pro|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber"
+SIBLINGS = r"flash|flashx|fast|lite|mini|nano|pro|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber"
 
 
 def model_regex(model):
@@ -350,7 +350,7 @@ def model_regex(model):
         own = {t for t in tokens if re.fullmatch(SIBLINGS, t)}
         tail = "|".join(x for x in SIBLINGS.split("|") if x not in own)
         # A digit right after the version, directly or after one separator, is another version ("5.3", "5-3").
-        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![._ -]?\d)(?!" + sep + "(?:" + tail + r")\b)"
+        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![a-z0-9])(?![._ -]?\d)(?!" + sep + "(?:" + tail + r")\b)"
     tokens = official.norm(model.get("name") or "").split()
     options = [phrase(tokens)] if tokens else []
     if len(tokens) > 2 and tokens[0] in ("claude", "gemini", "grok", "kimi"):
@@ -558,6 +558,7 @@ DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
 def rate_text(text):
     # In a cache-write label, m means minutes; elsewhere it can mean million tokens.
     text = re.sub(r"(\$\s?\d[\d,]*(?:\.\d+)?)\s+usd\b", r"\1", official.norm(text))
+    text = re.sub(r"\b(\d+(?:\.\d+)?)\s+percent\b", r"\1%", text)
     return re.sub(r"\b(\d+)\s?m\b(?=\s+cache write)", r"\1 minute", text)
 
 
