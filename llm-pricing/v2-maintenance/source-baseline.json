@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-10-21",
+ "checked_at": "2026-10-22",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4.1-flash|gcloud|promotion end|2026-10-16",
   "zai/glm-5.2|azure_foundry|retirement|2026-10-08"
@@ -306,7 +306,7 @@
   "alibaba-pricing": {
    "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
    "kind": "tables",
-   "digest": "718dfb2801c0d8830dc0b07dd30979a08e4827b739e40647386e450e18409dfc",
+   "digest": "4a2e272cd76b7a958572b31bb676ee1b92d31c21f700cd0c3524eb883b5e18a6",
    "records": [
     "notice: 50% batch inference discount",
     "notice: Context Cache context caching discount",
@@ -788,8 +788,8 @@
     "table: {\"cells\":[\"Model ID\",\"Output video type\",\"Output video resolution\",\"Output price\"],\"heading\":\"Video generation / Wanx-Image-to-Video / China (Beijing)\"}",
     "table: {\"cells\":[\"Model ID\",\"Output video type\",\"Output video resolution\",\"Output price\"],\"heading\":\"Video generation / Wanx-Image-to-Video-First-Frame / China (Beijing)\"}",
     "table: {\"cells\":[\"Model ID\",\"Price (per voice clone)\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS Voice cloning / China (Beijing)\"}",
+    "table: {\"cells\":[\"Model ID\",\"Service deployment scope\",\"Input unit price (per 10,000 characters)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
     "table: {\"cells\":[\"Model ID\",\"Service deployment scope\",\"Input unit price (per 10,000 characters)\",\"Free quota (note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Service deployment scope\",\"Input unit price (per 10,000 characters)\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
     "table: {\"cells\":[\"Model ID\",\"Service deployment scope\",\"Output image resolution\",\"Input unit price\",\"Output unit price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Singapore\"}",
     "table: {\"cells\":[\"Model ID\",\"Service deployment scope\",\"Output image resolution\",\"Input unit price\",\"Output unit price\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Germany (Frankfurt)\"}",
     "table: {\"cells\":[\"Model ID\",\"Service deployment scope\",\"Output image resolution\",\"Input unit price\",\"Output unit price\"],\"heading\":\"Image generation / Qwen Image Generation and Editing / Hong Kong (China)\"}",
@@ -998,9 +998,9 @@
     "table: {\"cells\":[\"qwen-audio-3.0-realtime-plus\",\"China (mainland)\",\"$0.688\",\"$5.501\",\"$5.501\",\"$20.628\"],\"heading\":\"Voice Chat / Real-time Voice Chat / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-audio-3.0-realtime-plus\",\"International\",\"$0.8\",\"$6.4\",\"$6.4\",\"$24\",\"1,000,000 tokens\"],\"heading\":\"Voice Chat / Real-time Voice Chat / Singapore\"}",
     "table: {\"cells\":[\"qwen-audio-3.0-tts-flash\",\"International\",\"$0.15\",\"10,000 characters\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / Singapore\"}",
-    "table: {\"cells\":[\"qwen-audio-3.0-tts-flash\",\"Mainland China\",\"$0.137521\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
+    "table: {\"cells\":[\"qwen-audio-3.0-tts-flash\",\"Mainland China\",\"$0.137521\",\"\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-audio-3.0-tts-plus\",\"International\",\"$0.2\",\"10,000 characters\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / Singapore\"}",
-    "table: {\"cells\":[\"qwen-audio-3.0-tts-plus\",\"Mainland China\",\"$0.19253\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
+    "table: {\"cells\":[\"qwen-audio-3.0-tts-plus\",\"Mainland China\",\"$0.19253\",\"\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-audio-3.1-asr-flash\",\"0.113 USD/million tokens\",\"0.382 USD/million tokens\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-Audio-3.x-ASR-Flash / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-audio-3.1-asr-flash\",\"International\",\"0.15 USD/million tokens\",\"0.47 USD/million tokens\",\"1,000,000 tokens\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-Audio-3.x-ASR-Flash / Singapore\"}",
     "table: {\"cells\":[\"qwen-audio-3.1-asr-flash-filetrans\",\"0.113 USD/million tokens\",\"0.382 USD/million tokens\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-Audio-3.x-ASR-Flash-Filetrans / China (Beijing)\"}",
@@ -1014,6 +1014,8 @@
     "table: {\"cells\":[\"qwen-audio-3.1-tts-flash\",\"USD 0.212\",\"USD 1.696\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-audio-3.1-tts-flash\",\"USD 0.23\",\"USD 1.87\",\"1,000,000 tokens\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / Singapore\"}",
     "table: {\"cells\":[\"qwen-audio-3.1-tts-next\",\"0.848\",\"1.696\"],\"heading\":\"Audio generation / China (Beijing)\"}",
+    "table: {\"cells\":[\"qwen-audio-3.1-tts-plus\",\"International\",\"$0.3\",\"10,000 characters\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / Singapore\"}",
+    "table: {\"cells\":[\"qwen-audio-3.1-tts-plus\",\"Mainland China\",\"$0.2\",\"\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-Audio-TTS / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-deep-research\",\"$7.742\",\"$23.367\",\"None\"],\"heading\":\"Text generation - Qwen / Qwen Deep Research / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-doc-turbo\",\"$0.087\",\"$0.144\",\"No free quota\"],\"heading\":\"Text generation - Qwen / Qwen Data Mining / China (Beijing)\"}",
     "table: {\"cells\":[\"qwen-flash Currently equivalent to qwen-flash-2025-07-28 50% batch inference discount context caching discount\",\"International\",\"0<Token≤256K\",\"$0.05\",\"$0.4\",\"1 million tokens\"],\"heading\":\"Text generation - Qwen / Qwen-Flash / Singapore\"}",
@@ -1580,13 +1582,13 @@
   "anthropic-pricing": {
    "url": "https://platform.claude.com/docs/en/about-claude/pricing",
    "kind": "tables",
-   "digest": "e6a94cd375b53fd43fccd1fa65273fafa00f77e037d8d88c4d35be2553e9175d",
+   "digest": "d0ad64cc4fe2111fe4db5f1d812643e29db965131fd21ae99cc50cf6d6c1e220",
    "records": [
     "notice: Academic and research discounts may be available",
     "notice: Batch API and prompt caching discounts can be combined. For example, using both features together provides significant cost savings compared to standard API calls. See prompt caching pricing for how the multipliers interact.",
     "notice: Cache write tokens are charged when content is first stored. Cache read tokens are charged when a subsequent request retrieves the cached content. A cache hit costs 10% of the standard input price, which means caching pays off after one cache read for the 5-minute duration (1.25x write), or after two cache reads for the 1-hour duration (2x write). On Claude Fable 5.1 and Claude Mythos 5.1, a cache hit costs 2.5% of the standard input price ($0.25 USD per million tokens). On Claude Opus 5.5 and Claude Sonnet 5.5, a cache hit costs 5% of the standard input price ($0.20 USD per million tokens on Claude Opus 5.5, $0.10 USD on Claude Sonnet 5.5).",
     "notice: Claude 4.6 and later models (except Claude Haiku 5.5) and Claude Mythos Preview include the full 1M token context window at standard pricing. (A 900k-token request is billed at the same per-token rate as a 9k-token request.) Prompt caching and batch processing discounts apply at standard rates across the full context window.",
-    "notice: Claude Haiku 5.5 is priced by prompt length: a request whose prompt is over 100,000 tokens pays higher prices. A request's prompt length counts all of its input tokens, including cache reads and cache writes. Each request is priced on its own: a request over the threshold pays the higher prices even when part of its prompt is a cache hit, and earlier requests keep the prices they were billed at. Model pricing and Batch processing list both sets of prices.",
+    "notice: Claude Haiku 5.5 is priced by prompt length: a request whose prompt is over 100,000 tokens pays higher prices. A request's prompt length counts all of its input tokens, including cache reads and cache writes. Each request is priced on its own: a request over the threshold pays the higher prices even when part of its prompt is a cache hit, and earlier requests keep the prices they were billed at. The model pricing and batch processing pricing sections list both sets of prices.",
     "notice: Claude Platform on AWS bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
     "notice: Claude in Microsoft Foundry bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item.",
     "notice: For Claude 4.6 and later models, specifying US-only inference through the inference_geo parameter incurs a 1.1x multiplier on all token pricing categories, including input tokens, output tokens, cache writes, and cache reads. On Claude Haiku 5.5, the multiplier also applies to the higher prices for prompts over 100,000 tokens (see Long context pricing). Global routing (the default) uses standard pricing.",
@@ -1928,7 +1930,7 @@
   "api-other-mistral-pricing": {
    "url": "https://docs.mistral.ai/inference/pricing",
    "kind": "text",
-   "digest": "1858f90b8aaca8ff39820347cdea1e689411bc3ea2e52f8c24c7f2d3b4ea85cd",
+   "digest": "bda9c652de43ab0f5c4d2ba3613490ca20bb695d9fa9e5b7293ad6f0ce327fc2",
    "records": [
     "table: {\"cells\":[\"Codestral Embed ↗\",\"$0.15\",\"$0.015\",\"—\"],\"heading\":\"API pricing / Code models\"}",
     "table: {\"cells\":[\"Codestral ↗\",\"$0.3\",\"$0.03\",\"$0.9\"],\"heading\":\"API pricing / Code models\"}",
@@ -1940,6 +1942,7 @@
     "table: {\"cells\":[\"Mistral Medium 3.5 ↗\",\"$1.5\",\"$0.15\",\"$7.5\"],\"heading\":\"API pricing / Flagship models\"}",
     "table: {\"cells\":[\"Mistral Moderation 2 ↗\",\"Free\",\"Free\",\"Free\"],\"heading\":\"API pricing / Specialized models\"}",
     "table: {\"cells\":[\"Mistral Small 4 ↗\",\"$0.15\",\"$0.015\",\"$0.6\"],\"heading\":\"API pricing / Flagship models\"}",
+    "table: {\"cells\":[\"Mistral Small 4\",\"$0.04/min\"],\"heading\":\"API pricing / Voice agents\"}",
     "table: {\"cells\":[\"Model\",\"Input\",\"Cached input\",\"Output\"],\"heading\":\"API pricing / Code models\"}",
     "table: {\"cells\":[\"Model\",\"Input\",\"Cached input\",\"Output\"],\"heading\":\"API pricing / Flagship models\"}",
     "table: {\"cells\":[\"Model\",\"Input\",\"Cached input\",\"Output\"],\"heading\":\"API pricing / Specialized models\"}",
@@ -2492,7 +2495,7 @@
   "api-west-anthropic-pricing": {
    "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
    "kind": "markdown",
-   "digest": "41c76adf680e10607857e46955e93055d9243959e4e635cd294eda3257b9e375",
+   "digest": "139c1b923560c409b0e288b1499e80de00aa8536fe254403e9bd198d8ba2cf6b",
    "records": [
     "item: {\"heading\":\"Bash tool\",\"text\":\"Command outputs (stdout/stderr)\"}",
     "item: {\"heading\":\"Bash tool\",\"text\":\"Error messages\"}",
@@ -2557,7 +2560,7 @@
     "notice: Batch API and prompt caching discounts can be combined. For example, using both features together provides significant cost savings compared to standard API calls. See [prompt caching pricing](https://platform.claude.com/docs/en/about-claude/pricing#prompt-caching) for how the multipliers interact.",
     "notice: Cache write tokens are charged when content is first stored. Cache read tokens are charged when a subsequent request retrieves the cached content. A cache hit costs 10% of the standard input price, which means caching pays off after one cache read for the 5-minute duration (1.25x write), or after two cache reads for the 1-hour duration (2x write). On Claude Fable 5.1 and Claude Mythos 5.1, a cache hit costs 2.5% of the standard input price ($0.25 USD per million tokens). On Claude Opus 5.5 and Claude Sonnet 5.5, a cache hit costs 5% of the standard input price ($0.20 USD per million tokens on Claude Opus 5.5, $0.10 USD on Claude Sonnet 5.5).",
     "notice: Claude 4.6 and later models (except Claude Haiku 5.5) and [Claude Mythos Preview](https://anthropic.com/glasswing) include the full [1M token context window](https://platform.claude.com/docs/en/build-with-claude/context-windows) at standard pricing. (A 900k-token request is billed at the same per-token rate as a 9k-token request.) Prompt caching and batch processing discounts apply at standard rates across the full context window.",
-    "notice: Claude Haiku 5.5 is priced by prompt length: a request whose prompt is over 100,000 tokens pays higher prices. A request's prompt length counts all of its input tokens, including cache reads and cache writes. Each request is priced on its own: a request over the threshold pays the higher prices even when part of its prompt is a cache hit, and earlier requests keep the prices they were billed at. [Model pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing) and [Batch processing](https://platform.claude.com/docs/en/about-claude/pricing#batch-processing) list both sets of prices.",
+    "notice: Claude Haiku 5.5 is priced by prompt length: a request whose prompt is over 100,000 tokens pays higher prices. A request's prompt length counts all of its input tokens, including cache reads and cache writes. Each request is priced on its own: a request over the threshold pays the higher prices even when part of its prompt is a cache hit, and earlier requests keep the prices they were billed at. The [model pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing) and [batch processing pricing](https://platform.claude.com/docs/en/about-claude/pricing#batch-processing) sections list both sets of prices.",
     "notice: For Claude 4.6 and later models, specifying US-only inference through the `inference_geo` parameter incurs a 1.1x multiplier on all token pricing categories, including input tokens, output tokens, cache writes, and cache reads. On Claude Haiku 5.5, the multiplier also applies to the higher prices for prompts over 100,000 tokens (see [Long context pricing](https://platform.claude.com/docs/en/about-claude/pricing#long-context-pricing)). Global routing (the default) uses standard pricing.",
     "notice: If you have an existing Amazon Bedrock private offer, contact your Anthropic or AWS account representative before getting started with Claude Platform on AWS to ensure your discounts are applied correctly. Discounts cannot be applied retroactively to usage incurred before your private offer is accepted.",
     "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50% discount on both input and output tokens.",
@@ -2675,15 +2678,15 @@
   "api-west-anthropic-residency": {
    "url": "https://platform.claude.com/docs/en/manage-claude/data-residency.md",
    "kind": "markdown",
-   "digest": "588e9d1cf52c1826d8340ab1a60f44c8bac3b7ba79aa35037edc0a0f62e73386",
+   "digest": "1b181b7189558a7c704e80fd9d3e02a833d648eab2ec7503d2dc2aee90fe34ba",
    "records": [
     "item: {\"heading\":\"\",\"text\":\"**Inference geo:** Controls where model inference runs, on a per-request basis. Set through the `inference_geo` API parameter or as a workspace default.\"}",
-    "item: {\"heading\":\"\",\"text\":\"**Workspace geo:** Controls where data is stored at rest and where endpoint processing (such as image transcoding and code execution) happens. Configured at the workspace level in the [Claude Console](https://platform.claude.com).\"}",
+    "item: {\"heading\":\"\",\"text\":\"**Workspace geo:** Controls where data is stored at rest and where endpoint processing (such as image transcoding and code execution) occurs. Configured at the workspace level in the [Claude Console](https://platform.claude.com).\"}",
     "item: {\"heading\":\"Current limitations\",\"text\":\"**Inference geo:** Only `\\\"us\\\"` and `\\\"global\\\"` are available.\"}",
     "item: {\"heading\":\"Current limitations\",\"text\":\"**Shared rate limits:** Rate limits are shared across all geos.\"}",
     "item: {\"heading\":\"Current limitations\",\"text\":\"**Workspace geo:** Only `\\\"us\\\"` is currently available. Workspace geo can't be changed after workspace creation.\"}",
-    "item: {\"heading\":\"Pricing\",\"text\":\"**Global routing** (`inference_geo: \\\"global\\\"`): Standard pricing applies.\"}",
-    "item: {\"heading\":\"Pricing\",\"text\":\"**Older models:** Don't support `inference_geo` (see [Model availability](https://platform.claude.com/docs/en/manage-claude/data-residency#model-availability)); standard pricing applies. Requests that include the parameter return a 400 error.\"}",
+    "item: {\"heading\":\"Pricing\",\"text\":\"**Global routing (`inference_geo: \\\"global\\\"`):** Standard pricing applies.\"}",
+    "item: {\"heading\":\"Pricing\",\"text\":\"**Older models:** Don't support `inference_geo` (see [Model availability](https://platform.claude.com/docs/en/manage-claude/data-residency#model-availability)). Standard pricing applies. Requests that include the parameter return a 400 error.\"}",
     "item: {\"heading\":\"What changed\",\"text\":\"**Per-request control:** The `inference_geo` parameter lets you specify `\\\"us\\\"` or `\\\"global\\\"` on each API call, giving you request-level flexibility.\"}",
     "item: {\"heading\":\"What changed\",\"text\":\"**Workspace controls:** The `default_inference_geo` and `allowed_inference_geos` settings in the Console let you enforce geo policies across all keys in a workspace.\"}",
     "item: {\"heading\":\"Workspace-level restrictions\",\"text\":\"**`allowed_inference_geos`:** Restricts which geos a workspace can use. If a request specifies an `inference_geo` not in this list, the API returns an error.\"}",
@@ -12509,11 +12512,13 @@
   "fireworks-modes": {
    "url": "https://docs.fireworks.ai/serverless/serverless-modes",
    "kind": "text",
-   "digest": "ddad1c3f470903f6b0bb4aee15739eafbb69d21f20b1ccf5715370cf9e7bd6f5",
+   "digest": "1dc7a820bb4e7b5e7d882a4e1fe17a1778427010ef9e1c8c6afcd851f0c2f021",
    "records": [
+    "table: {\"cells\":[\"Deepseek V4.1 Flash 1017\",\"accounts/fireworks/models/deepseek-v4p1-flash-ultrafast\"],\"heading\":\"​ Ultrafast (Private Preview)\"}",
     "table: {\"cells\":[\"GLM 5.3 Fast\",\"accounts/fireworks/routers/glm-5p3-fast\"],\"heading\":\"​ Fast\"}",
     "table: {\"cells\":[\"Kimi K3 Fast\",\"accounts/fireworks/routers/kimi-k3-fast\"],\"heading\":\"​ Fast\"}",
     "table: {\"cells\":[\"Model\",\"model ID\"],\"heading\":\"​ Fast\"}",
+    "table: {\"cells\":[\"Model\",\"model ID\"],\"heading\":\"​ Ultrafast (Private Preview)\"}",
     "text: Anthropic compatibility — service_tier is supported on both OpenAI-compatible chat completions and the Anthropic messages API.",
     "text: Documentation Index Fetch the complete documentation index at: /llms.txt Use this file to discover all available pages before exploring further.",
     "text: Fast is for workloads that require higher speeds.",
@@ -12521,6 +12526,7 @@
     "text: Priority tier is for workloads that require higher reliability during peak traffic.",
     "text: Serverless quickstart",
     "text: Standard is the default mode. No service_tier parameter is needed.",
+    "text: Ultrafast (Private Preview) for workloads requiring extremely fast end-to-end generation speeds.",
     "text: Use this file to discover all available pages before exploring further.",
     "text: Was this page helpful?"
    ]
@@ -12528,7 +12534,7 @@
   "fireworks-nexus": {
    "url": "https://docs.fireworks.ai/nexus/provider-keys",
    "kind": "text",
-   "digest": "6cda81bdccbaa4cef8d0616458e6657059704dea66e2ddbae7c5ec6b9983d4d4",
+   "digest": "f8985130686aa0b7de49cd661c2f6d9c6287f210cf50dbe4e4f9da7e76794c5a",
    "records": [
     "table: {\"cells\":[\"Action\",\"Step\",\"Command\"],\"heading\":\"​ Manage keys with firectl\"}",
     "table: {\"cells\":[\"Amazon Bedrock\",\"Yes\",\"Yes\",\"API key or IAM role\"],\"heading\":\"​ Check provider support and connection states\"}",
@@ -12539,7 +12545,7 @@
     "table: {\"cells\":[\"Connect or replace\",\"Upload a key\",\"firectl provider-key upload --provider-type PROVIDER --api-key $PROVIDER_KEY / --from-file PATH\"],\"heading\":\"​ Manage keys with firectl\"}",
     "table: {\"cells\":[\"Connect or replace\",\"Use a Bedrock key\",\"firectl provider-key-binding bind bedrock KEY_ID --routes-file=./routes.json\"],\"heading\":\"​ Manage keys with firectl\"}",
     "table: {\"cells\":[\"Connect or replace\",\"Use the key\",\"firectl provider-key-binding bind PROVIDER KEY_ID\"],\"heading\":\"​ Manage keys with firectl\"}",
-    "table: {\"cells\":[\"Connected\",\"The key is active for router requests to that provider\"],\"heading\":\"​ Check provider support and connection states\"}",
+    "table: {\"cells\":[\"Connected\",\"The key is active for Nexus Auto requests to that provider\"],\"heading\":\"​ Check provider support and connection states\"}",
     "table: {\"cells\":[\"Connecting\",\"A new binding is propagating\"],\"heading\":\"​ Check provider support and connection states\"}",
     "table: {\"cells\":[\"Disconnecting\",\"A binding removal is propagating\"],\"heading\":\"​ Check provider support and connection states\"}",
     "table: {\"cells\":[\"Grok\",\"No\",\"When enabled for your account\",\"API key\"],\"heading\":\"​ Check provider support and connection states\"}",
@@ -12710,7 +12716,7 @@
   "fw-fw-residency": {
    "url": "https://docs.fireworks.ai/accounts/data-residency",
    "kind": "text",
-   "digest": "eb971115ccd022ff08611710d1054c8f013db85c72c98894f79546b8c0bdfd04",
+   "digest": "cfd0632415146302034a53ddbbab2a909d0a465a128887a914c5b8dc8c25e1cd",
    "records": [
     "table: {\"cells\":[\"None\",\"api.fireworks.ai\",\"Any model\",\"Any region\"],\"heading\":\"​ Available regional restrictions\"}",
     "table: {\"cells\":[\"Regional restrictions\",\"API endpoint\",\"Serverless\",\"Dedicated deployments\"],\"heading\":\"​ Available regional restrictions\"}",
@@ -12722,8 +12728,8 @@
     "text: Existing deployments are not checked, moved, or stopped when you switch the setting on. One outside the region keeps running and keeps costing you money, but requests to it are rejected. Replace it first.",
     "text: Fetch the complete documentation index at: /llms.txt",
     "text: Managing users — account roles and permissions",
-    "text: Model routers. A firerouter/... id can pass a request through to a third-party provider, which Fireworks cannot constrain to a region. See APIs and SDKs.",
     "text: New deployments outside the region are rejected when you create them.",
+    "text: Nexus Auto. The auto model ID can pass a request through to a third-party provider, which Fireworks cannot constrain to a region. See Nexus Auto.",
     "text: Training. Fine-tuning and training jobs are blocked. Support is coming soon.",
     "text: US-only Serverless — endpoint and model IDs for the US region",
     "text: Use this file to discover all available pages before exploring further.",
@@ -13862,7 +13868,7 @@
   "gcp-locations": {
    "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations",
    "kind": "text",
-   "digest": "3b8e3db234bf201ad78aa7d92d95c8dac039be20fe4d1f2e6d50298690ea67d8",
+   "digest": "5effbdc4e898ec1eaa567dde5ebb83f4868342096629d83f5ab450862813353a",
    "records": [
     "table: {\"cells\":[\"\",\"Global (global)\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud open model endpoint locations / Global\"}",
     "table: {\"cells\":[\"\",\"Global (global)\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Global\"}",
@@ -14588,20 +14594,6 @@
     "table: {\"cells\":[\"Speech-to-Text and Text-to-Speech models\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Multi-region\"}",
     "table: {\"cells\":[\"Speech-to-Text and Text-to-Speech models\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / United States\"}",
     "table: {\"cells\":[\"United States\",\"us\",\"https://aiplatform.us.rep.googleapis.com\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Specify an endpoint / Multi-region endpoints\"}",
-    "table: {\"cells\":[\"Veo 3 Fast Generate (veo-3.0-fast-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Europe\"}",
-    "table: {\"cells\":[\"Veo 3 Fast Generate (veo-3.0-fast-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Asia Pacific\"}",
-    "table: {\"cells\":[\"Veo 3 Fast Generate (veo-3.0-fast-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / United States\"}",
-    "table: {\"cells\":[\"Veo 3 Fast Generate (veo-3.0-fast-generate-001)\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Middle East\"}",
-    "table: {\"cells\":[\"Veo 3 Fast Generate (veo-3.0-fast-generate-001)\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Americas\"}",
-    "table: {\"cells\":[\"Veo 3 Fast Generate (veo-3.0-fast-generate-001)\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Multi-region\"}",
-    "table: {\"cells\":[\"Veo 3 Fast Generate (veo-3.0-fast-generate-001)\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Global\"}",
-    "table: {\"cells\":[\"Veo 3 Generate (veo-3.0-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Europe\"}",
-    "table: {\"cells\":[\"Veo 3 Generate (veo-3.0-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Asia Pacific\"}",
-    "table: {\"cells\":[\"Veo 3 Generate (veo-3.0-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / United States\"}",
-    "table: {\"cells\":[\"Veo 3 Generate (veo-3.0-generate-001)\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Middle East\"}",
-    "table: {\"cells\":[\"Veo 3 Generate (veo-3.0-generate-001)\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Americas\"}",
-    "table: {\"cells\":[\"Veo 3 Generate (veo-3.0-generate-001)\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Multi-region\"}",
-    "table: {\"cells\":[\"Veo 3 Generate (veo-3.0-generate-001)\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Global\"}",
     "table: {\"cells\":[\"Veo 3.1 Fast Generate (veo-3.1-fast-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Europe\"}",
     "table: {\"cells\":[\"Veo 3.1 Fast Generate (veo-3.1-fast-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / Asia Pacific\"}",
     "table: {\"cells\":[\"Veo 3.1 Fast Generate (veo-3.1-fast-generate-001)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google model endpoint locations / United States\"}",
@@ -15230,7 +15222,7 @@
   "minimax-pricing": {
    "url": "https://platform.minimax.io/docs/pricing/overview",
    "kind": "text",
-   "digest": "658fb214afa92e703194ed12215bc4f217d4c3aefc283c98760edf2b31d18082",
+   "digest": "fc2f466a10be7262ccf1db4e948aa03a7c0409f059317bdc9dc4b01968b0a5ad",
    "records": [
     "notice: Resource pack remaining quantity is not inherited; it will automatically reset to zero when expired.",
     "notice: What happens to unused video points when my package expires?",
@@ -15283,7 +15275,7 @@
     "table: {\"cells\":[\"MiniMax-M3 > 512k input tokens*\",\"$0.60 / M tokens\",\"$2.40 / M tokens\",\"$0.12 / M tokens\"],\"heading\":\"​ LLM\"}",
     "table: {\"cells\":[\"MiniMax-M3 ≤ 512k input tokens\",\"$0.30 / M tokens\",\"$1.20 / M tokens\",\"$0.06 / M tokens\"],\"heading\":\"​ LLM\"}",
     "table: {\"cells\":[\"MiniMax-M3 ≤ 512k input tokens\",\"$0.45 / M tokens\",\"$1.80 / M tokens\",\"$0.09 / M tokens\"],\"heading\":\"​ LLM\"}",
-    "table: {\"cells\":[\"MiniMax-M3.1-Flash\",\"$0.15 / M tokens\",\"$0.60 / M tokens\",\"$0.015 / M tokens\"],\"heading\":\"​ LLM\"}",
+    "table: {\"cells\":[\"MiniMax-M3.1-Flash\",\"$0.15\",\"$0.60\",\"$0.015\"],\"heading\":\"​ LLM\"}",
     "table: {\"cells\":[\"Model / API\",\"Input Price\",\"Output Price\"],\"heading\":\"​ Video\"}",
     "table: {\"cells\":[\"Model / API\",\"Material Type\",\"Billing Rules\"],\"heading\":\"​ Video\"}",
     "table: {\"cells\":[\"Model / API\",\"Resolution\",\"Billing Rules\",\"List Price\"],\"heading\":\"​ Video\"}",
