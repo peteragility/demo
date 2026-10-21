@@ -121,41 +121,6 @@
  },
  "pending_general": [
   {
-   "source": "anthropic-pricing",
-   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "notice: Academic and research discounts might be available",
-    "notice: Claude Platform on AWS bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
-    "notice: Claude in Microsoft Foundry bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item.",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50 percent discount on both input and output tokens.",
-    "notice: Volume discounts might be available for high-volume users. These are negotiated on a case-by-case basis."
-   ],
-   "removed": [
-    "notice: Academic and research discounts may be available",
-    "notice: Claude Platform on AWS bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
-    "notice: Claude in Microsoft Foundry bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item.",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50% discount on both input and output tokens.",
-    "notice: Volume discounts may be available for high-volume users. These are negotiated on a case-by-case basis."
-   ],
-   "added_all": [
-    "notice: Academic and research discounts might be available",
-    "notice: Claude Platform on AWS bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
-    "notice: Claude in Microsoft Foundry bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item.",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50 percent discount on both input and output tokens.",
-    "notice: Volume discounts might be available for high-volume users. These are negotiated on a case-by-case basis."
-   ],
-   "removed_all": [
-    "notice: Academic and research discounts may be available",
-    "notice: Claude Platform on AWS bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
-    "notice: Claude in Microsoft Foundry bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item.",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50% discount on both input and output tokens.",
-    "notice: Volume discounts may be available for high-volume users. These are negotiated on a case-by-case basis."
-   ],
-   "baseline_digest": "8c3f508c7a6e31861517cf50fbbbbd1b24dc094d1a99e625fd4bde35181e7317"
-  },
-  {
    "source": "minimax-pricing",
    "url": "https://platform.minimax.io/docs/pricing/overview",
    "risk": "high",
@@ -173,71 +138,6 @@
     "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Prompt caching Read\"],\"heading\":\"​ LLM\"}"
    ],
    "baseline_digest": "11b72b9d26f3beb0a1006fe825a61daf962b461a481a837e0c8dafdf8ad489a3"
-  },
-  {
-   "source": "api-west-anthropic-pricing",
-   "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking available in the Claude Console at [platform.claude.com](https://platform.claude.com/)\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Additional usage beyond 1,550 hours is billed at **$0.05 USD per hour, per container**.\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Each organization receives **1,550 free hours** of usage per month.\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Execution time has a minimum of 5 minutes.\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"If files are included in the request, execution time is billed even if the tool is not called, because files are preloaded onto the container.\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Data residency](https://platform.claude.com/docs/en/manage-claude/data-residency) multipliers apply on top of fast mode pricing.\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Prompt caching multipliers](https://platform.claude.com/docs/en/about-claude/pricing#prompt-caching) apply on top of fast mode pricing.\"}",
-    "item: {\"heading\":\"Web fetch tool\",\"text\":\"Average webpage (10 kB): \\\\~2,500 tokens\"}",
-    "notice: * Academic and research discounts might be available",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50 percent discount on both input and output tokens.",
-    "notice: Volume discounts might be available for high-volume users. These are negotiated on a case-by-case basis.",
-    "notice: [Claude Platform on AWS](https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws) bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item."
-   ],
-   "removed": [
-    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking available in the [Claude Console](https://platform.claude.com/)\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Additional usage beyond 1,550 hours is billed at **$0.05 USD per hour, per container**\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Each organization receives **1,550 free hours** of usage per month\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Execution time has a minimum of 5 minutes\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"If files are included in the request, execution time is billed even if the tool is not called, because files are preloaded onto the container\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Data residency](https://platform.claude.com/docs/en/manage-claude/data-residency) multipliers apply on top of fast mode pricing\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Prompt caching multipliers](https://platform.claude.com/docs/en/about-claude/pricing#prompt-caching) apply on top of fast mode pricing\"}",
-    "item: {\"heading\":\"Web fetch tool\",\"text\":\"Average web page (10 kB): \\\\~2,500 tokens\"}",
-    "notice: * Academic and research discounts may be available",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50% discount on both input and output tokens.",
-    "notice: Volume discounts may be available for high-volume users. These are negotiated on a case-by-case basis.",
-    "notice: [Claude Platform on AWS](https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws) bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item."
-   ],
-   "added_all": [
-    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking available in the Claude Console at [platform.claude.com](https://platform.claude.com/)\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Additional usage beyond 1,550 hours is billed at **$0.05 USD per hour, per container**.\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Each organization receives **1,550 free hours** of usage per month.\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Execution time has a minimum of 5 minutes.\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"If files are included in the request, execution time is billed even if the tool is not called, because files are preloaded onto the container.\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Data residency](https://platform.claude.com/docs/en/manage-claude/data-residency) multipliers apply on top of fast mode pricing.\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Prompt caching multipliers](https://platform.claude.com/docs/en/about-claude/pricing#prompt-caching) apply on top of fast mode pricing.\"}",
-    "item: {\"heading\":\"Web fetch tool\",\"text\":\"Average webpage (10 kB): \\\\~2,500 tokens\"}",
-    "notice: * Academic and research discounts might be available",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50 percent discount on both input and output tokens.",
-    "notice: Volume discounts might be available for high-volume users. These are negotiated on a case-by-case basis.",
-    "notice: [Claude Platform on AWS](https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws) bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
-    "notice: [Claude in Microsoft Foundry](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item."
-   ],
-   "removed_all": [
-    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking available in the [Claude Console](https://platform.claude.com/)\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Additional usage beyond 1,550 hours is billed at **$0.05 USD per hour, per container**\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Each organization receives **1,550 free hours** of usage per month\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"Execution time has a minimum of 5 minutes\"}",
-    "item: {\"heading\":\"Code execution tool\",\"text\":\"If files are included in the request, execution time is billed even if the tool is not called, because files are preloaded onto the container\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Data residency](https://platform.claude.com/docs/en/manage-claude/data-residency) multipliers apply on top of fast mode pricing\"}",
-    "item: {\"heading\":\"Fast mode pricing\",\"text\":\"[Prompt caching multipliers](https://platform.claude.com/docs/en/about-claude/pricing#prompt-caching) apply on top of fast mode pricing\"}",
-    "item: {\"heading\":\"Web fetch tool\",\"text\":\"Average web page (10 kB): \\\\~2,500 tokens\"}",
-    "notice: * Academic and research discounts may be available",
-    "notice: The Batch API allows asynchronous processing of large volumes of requests with a 50% discount on both input and output tokens.",
-    "notice: Volume discounts may be available for high-volume users. These are negotiated on a case-by-case basis.",
-    "notice: [Claude Platform on AWS](https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws) bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
-    "notice: [Claude in Microsoft Foundry](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item."
-   ],
-   "baseline_digest": "4c411600f69ae4e7907ab3f6db3329d30f29b28c02138642c1cf8331aed154a2"
   }
  ],
  "ranking": {
@@ -250,14 +150,10 @@
  },
  "databricks_coverage": [],
  "review": [
-  "Claude Opus 4.7 · azure_foundry",
-  "Claude Opus 4.7 · official",
   "MiniMax M3 · official",
   "Qwen3.8 Max · alicloud",
   "Qwen3.8 Max · official",
-  "GLM 5.2 · official",
-  "GLM 5.3 Flash · official",
-  "GLM 5.3 · official"
+  "GLM 5.2 · official"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
@@ -265,10 +161,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-fable-5.1|bedrock": {
    "verified": "2026-10-22"
@@ -283,20 +176,13 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-fable-5|alicloud": {
    "verified": "2026-10-22"
   },
   "anthropic/claude-fable-5|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-fable-5|bedrock": {
    "verified": "2026-10-22"
@@ -311,11 +197,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
    "verified": "2026-10-22"
@@ -336,12 +218,8 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
+   "verified": "2026-10-22",
+   "accepted": [
     "anthropic-pricing"
    ]
   },
@@ -364,19 +242,13 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.6|alicloud": {
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.6|bedrock": {
    "verified": "2026-10-22"
@@ -391,22 +263,14 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.7|alicloud": {
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
+   "verified": "2026-10-22",
+   "accepted": [
     "anthropic-pricing"
    ]
   },
@@ -423,24 +287,16 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
+   "verified": "2026-10-22",
+   "accepted": [
     "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
    ]
   },
   "anthropic/claude-opus-4.8|alicloud": {
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.8|bedrock": {
    "verified": "2026-10-22"
@@ -455,20 +311,13 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5.5|bedrock": {
    "verified": "2026-10-22"
@@ -483,20 +332,13 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5|bedrock": {
    "verified": "2026-10-22"
@@ -511,11 +353,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-10-22"
@@ -536,12 +374,8 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
+   "verified": "2026-10-22",
+   "accepted": [
     "anthropic-pricing"
    ]
   },
@@ -549,10 +383,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
    "verified": "2026-10-22"
@@ -567,20 +398,13 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5|alicloud": {
    "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5|bedrock": {
    "verified": "2026-10-22"
@@ -595,11 +419,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
    "verified": "2026-10-21",
@@ -707,10 +527,7 @@
    "verified": "2026-10-22"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "gcp-locations"
-   ]
+   "verified": "2026-10-22"
   },
   "google/gemini-3.1-pro|official": {
    "verified": "2026-10-22"
@@ -1459,11 +1276,7 @@
    "verified": "2026-10-22"
   },
   "zai/glm-5.3-flash|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "zai-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "zai/glm-5.3|alicloud": {
    "verified": "2026-10-22"
@@ -1484,11 +1297,7 @@
    "verified": "2026-10-22"
   },
   "zai/glm-5.3|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "zai-pricing"
-   ]
+   "verified": "2026-10-22"
   }
  }
 }
