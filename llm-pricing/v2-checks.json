@@ -119,27 +119,7 @@
   "api-google-gemini-4-argon": "2026-10-22",
   "gcp-deepseek-v4-1-flash": "2026-10-22"
  },
- "pending_general": [
-  {
-   "source": "minimax-pricing",
-   "url": "https://platform.minimax.io/docs/pricing/overview",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Model\",\"Input $ / M tokens\",\"Output $ / M tokens\",\"Prompt caching Read $ / M tokens\"],\"heading\":\"​ LLM\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Prompt caching Read\"],\"heading\":\"​ LLM\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Model\",\"Input $ / M tokens\",\"Output $ / M tokens\",\"Prompt caching Read $ / M tokens\"],\"heading\":\"​ LLM\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Prompt caching Read\"],\"heading\":\"​ LLM\"}"
-   ],
-   "baseline_digest": "11b72b9d26f3beb0a1006fe825a61daf962b461a481a837e0c8dafdf8ad489a3"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-22",
@@ -149,12 +129,7 @@
   "published_at": "2026-10-19"
  },
  "databricks_coverage": [],
- "review": [
-  "MiniMax M3 · official",
-  "Qwen3.8 Max · alicloud",
-  "Qwen3.8 Max · official",
-  "GLM 5.2 · official"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -218,10 +193,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-10-22",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-haiku-5.5|alicloud": {
    "verified": "2026-10-22"
@@ -269,10 +241,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-10-22",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.7|bedrock": {
    "verified": "2026-10-22"
@@ -287,10 +256,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-10-22",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-opus-4.8|alicloud": {
    "verified": "2026-10-22"
@@ -374,10 +340,7 @@
    "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-10-22",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
    "verified": "2026-10-22"
@@ -422,10 +385,7 @@
    "verified": "2026-10-22"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
    "verified": "2026-10-22"
@@ -446,10 +406,7 @@
    "verified": "2026-10-22"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
    "verified": "2026-10-22"
@@ -716,14 +673,7 @@
    "verified": "2026-10-22"
   },
   "minimax/minimax-m3|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "minimax-pricing"
-   ],
-   "unchecked": [
-    "minimax-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "mistral/mistral-medium-3.5|alicloud": {
    "verified": "2026-10-22"
@@ -744,11 +694,7 @@
    "verified": "2026-10-22"
   },
   "mistral/mistral-medium-3.5|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "api-other-mistral-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "moonshot/kimi-k2.7|alicloud": {
    "verified": "2026-10-22"
@@ -1021,10 +967,7 @@
    "verified": "2026-10-22"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
    "verified": "2026-10-22"
@@ -1039,10 +982,7 @@
    "verified": "2026-10-22"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-10-21",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "qwen/qwen3.5-122b|alicloud": {
    "verified": "2026-10-22"
@@ -1147,11 +1087,7 @@
    "verified": "2026-10-22"
   },
   "qwen/qwen3.8-max|alicloud": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "qwen/qwen3.8-max|azure_foundry": {
    "verified": "2026-10-22"
@@ -1169,11 +1105,7 @@
    "verified": "2026-10-22"
   },
   "qwen/qwen3.8-max|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "tml/inkling|alicloud": {
    "verified": "2026-10-22"
@@ -1251,11 +1183,7 @@
    "verified": "2026-10-22"
   },
   "zai/glm-5.2|official": {
-   "verified": "2026-10-21",
-   "changed_at": "2026-10-22",
-   "sources": [
-    "zai-pricing"
-   ]
+   "verified": "2026-10-22"
   },
   "zai/glm-5.3-flash|alicloud": {
    "verified": "2026-10-22"
