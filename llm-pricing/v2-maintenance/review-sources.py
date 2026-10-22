@@ -338,7 +338,7 @@ def make_report(baseline, current, errors, data, today):
 
 # ---- Per-offer checks ------------------------------------------------------------------------
 
-SIBLINGS = r"flash|flashx|fast|lite|mini|nano|pro|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber"
+SIBLINGS = r"flash|flashx|fast|lite|mini|nano|pro|prime|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber"
 
 
 def model_regex(model):
@@ -549,7 +549,7 @@ PLACE = re.compile(r"(?<![\w-])(?:" + "|".join(sorted({re.escape(official.norm(x
 OTHER_MODEL = re.compile(r"(?<![\w-])(?:(?:claude|opus|sonnet|haiku|fable|mythos|gpt|codex|gemini|gemma|imagen|veo|lyria|chirp|llama|mistral|mixtral|"
                          r"ministral|magistral|codestral|devstral|pixtral|voxtral|qwen|qwq|deepseek|kimi|glm|grok|nova|titan|jamba|phi|minimax|nemotron|"
                          r"granite|olmo|ernie|hunyuan|whisper|dall e|sora|flux|cohere|command|palmyra|marengo|pegasus|seedream|seedance|wan)"
-                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|happyhorse\b|muse[\s-]+spark[\s-]+open\b|gpt[\s-]+(?:live[\s-]+transcribe|realtime)\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc|audio)\b)")
+                         r"(?:[\s._-]+[a-z]+){0,2}[\s._-]*v?\d+(?:\.\d+)*|o\d\b|happyhorse\b|pixverse\b|gemini[\s-]+omni[\s-]+flash[\s-]+preview\b|muse[\s-]+spark[\s-]+open\b|gpt[\s-]+(?:live[\s-]+transcribe|realtime)\b|qwen[\s-]?(?:max|plus|flash|turbo|long|coder|omni|vl|mt|math|doc|audio)\b)")
 # Documents whose lines that name no model (a residency multiplier, a batch discount, a region list) can
 # apply to every model they cover; structured price lists and model indexes have one line per model.
 DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
@@ -559,6 +559,11 @@ def rate_text(text):
     # In a cache-write label, m means minutes; elsewhere it can mean million tokens.
     text = re.sub(r"(\$\s?\d[\d,]*(?:\.\d+)?)\s+usd\b", r"\1", official.norm(text))
     text = re.sub(r"\b(\d+(?:\.\d+)?)\s+percent\b", r"\1%", text)
+    # These are throughput quotas, not billable input/output rates. Keep context
+    # limits and any prices elsewhere in the same line under normal review.
+    text = re.sub(r"\b(?:(?:input|output)\s+)?(?:tpm|qpm)\s*:\s*\d[\d,]*", "throughput quota", text)
+    text = re.sub(r"\bthe burndown rate for [a-z0-9 ._-]+ on the bedrock runtime endpoint is \d+(?:\.\d+)?x for output tokens "
+                  r"\(1 output token consumes \d+ tokens from your quotas\)\.", "quota accounting", text)
     return re.sub(r"\b(\d+)\s?m\b(?=\s+cache write)", r"\1 minute", text)
 
 
@@ -575,6 +580,7 @@ def risk_tokens(line, rx):
     text = OTHER_MODEL.sub(" ", text)  # another model's version number is not a price
     tokens = versions | {"price:" + re.sub(r"[\s,]", "", t) for t in PRICE.findall(text) + LIMIT.findall(text)}
     tokens |= {"price:token-count:" + re.sub(r"[\s,-]", "", t) for t in TOKEN_COUNT.findall(text)}
+    tokens |= {"price:context-length:" + n.replace(",", "") for n in re.findall(r"\bcontext length:\s*(\d[\d,]*)", text)}
     tokens |= {"price:cache-duration:" + n for n in re.findall(r"\b(\d+)[ -]minutes?\b", text)}
     prices = []
     for token in PRICE.findall(text):

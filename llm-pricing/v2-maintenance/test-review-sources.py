@@ -22,6 +22,43 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_throughput_changes_preserve_context_and_billing_review(self):
+        def row(qpm, tpm, context='524,288', extra=''):
+            return 'table: ' + review.packed(dict(heading='Grok 4.7', cells=['Quota limits',
+                f'Multi-region: QPM: {qpm} Input TPM: {tpm} Output TPM: 21,000 Context length: {context}' + extra]))
+        before = [row(13, '188,000')]
+        after = [row(20, '2,270,000'), 'text: Input TPM: 2,270,000']
+        self.assertEqual(review.classify(before, after, None)[0], 'low')
+        self.assertEqual(review.classify(before, [row(20, '2,270,000', '262,144')], None)[0], 'high')
+        self.assertEqual(review.classify(before, [row(20, '2,270,000', extra=' Input price $2')], None)[0], 'high')
+        base = ['text: GLM 5.3']
+        quota = 'text: The burndown rate for Z.AI GLM 5.3 on the bedrock-runtime endpoint is 10x for output tokens (1 output token consumes 10 tokens from your quotas).'
+        self.assertEqual(review.classify(base, base + [quota], None)[0], 'low')
+        self.assertEqual(review.classify(base, base + [quota + ' Billing multiplier 10x.'], None)[0], 'high')
+
+    def test_untracked_product_rows_are_not_shared_pricing_rules(self):
+        for heading in ('Gemini Developer API pricing / Gemini Omni Flash Preview / Standard',
+                        'Video generation / PixVerse-Text-to-video / Singapore'):
+            record = 'table: ' + review.packed(dict(heading=heading, cells=['Input price', '$1.50']))
+            self.assertTrue(review.names_a_model(record, []))
+        shared = 'notice: Batch discount 50% applies to all models'
+        self.assertFalse(review.names_a_model(shared, []))
+        self.assertEqual(review.compare([], [shared], None)[0], 'high')
+        rx = review.model_regex(dict(name='GLM 5.3'))
+        self.assertFalse(rx.search('glm-5.3-prime'))
+        self.assertTrue(rx.search('glm-5.3-1017'))
+
+    def test_alibaba_audio_header_exclusion_keeps_text_token_prices(self):
+        source = next(s for s in json.loads((HERE / 'source-config.json').read_text()) if s['id'] == 'alibaba-pricing')
+        html = ('<h2>Audio generation</h2><h3>Singapore</h3><table><tr><td>Input price</td><td>$0.93</td></tr></table>'
+                '<h2>Text generation - third-party models</h2><h3>GLM</h3><h4>Singapore</h4>'
+                '<table><tr><td>glm-5.3</td><td>$1.40</td><td>$4.40</td></tr></table>')
+        with patch.object(review, 'fetch', return_value=html):
+            records = review.collect_one(source)['records']
+        self.assertEqual(len(records), 1)
+        self.assertIn('glm-5.3', records[0])
+        self.assertIn('$1.40', records[0])
+
     def test_flashx_legal_does_not_change_glm_base_or_flash_prices(self):
         legal = 'table: ' + review.packed(dict(heading='Text Models', cells=['GLM-5.3-FlashX-Legal', '$0.37', '$1.25']))
         for name, own in [('GLM 5.3', 'GLM-5.3'), ('GLM 5.3 Flash', 'GLM-5.3-Flash')]:

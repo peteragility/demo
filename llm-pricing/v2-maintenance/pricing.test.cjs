@@ -399,4 +399,16 @@ test('Fireworks 1017 prices remain separate from original and US-only checkpoint
   const us = c.variants.filter(v => v.endpoint === 'US-only serverless');
   assert.equal(us.length, 2);
   assert.ok(us.every(v => !v.snapshot && !v.model_id?.endsWith('-1017')));
+  const us1017 = c.variants.filter(v => v.endpoint === 'US-only serverless 1017');
+  assert.equal(us1017.length, 2);
+  for (const [service, rates] of [['standard', [0.45, 0.009, 1.80]], ['priority', [0.5625, 0.01125, 2.25]]]) {
+    const row = us1017.find(v => v.service_tier === service);
+    assert.deepEqual([row.in, row.cache_read, row.out], rates);
+    assert.equal(row.model_id, 'accounts/fireworks/routers/deepseek-v4p1-flash-1017-us');
+    assert.equal(row.comparison_scope, 'geographic');
+    assert.equal(row.snapshot, 'DeepSeek-V4.1-Flash-1017');
+    assert.equal(M.comparable(row), false);
+    const result = M.calculate(c, {asOf: '2026-10-23', inputM: 1, outputM: 1, cacheHit: 50, variantId: row.id});
+    close(result.total, rates[0] * 0.5 + rates[1] * 0.5 + rates[2]);
+  }
 });

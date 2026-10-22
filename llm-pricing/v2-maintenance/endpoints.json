@@ -10206,6 +10206,38 @@
      "pricing_checked_at": "2026-10-19",
      "availability_checked_at": "2026-10-19",
      "url": "https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017"
+    },
+    {
+     "label": "US-only serverless 1017 · Standard",
+     "in": 0.45,
+     "out": 1.8,
+     "cache_read": 0.009,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US-only serverless 1017",
+     "model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-us",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-23",
+     "availability_checked_at": "2026-10-23",
+     "url": "https://docs.fireworks.ai/serverless/us-only-serverless"
+    },
+    {
+     "label": "US-only serverless 1017 · Priority",
+     "in": 0.5625,
+     "out": 2.25,
+     "cache_read": 0.01125,
+     "scope": "geographic",
+     "service": "priority",
+     "endpoint": "US-only serverless 1017",
+     "model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-us",
+     "snapshot": "DeepSeek-V4.1-Flash-1017",
+     "model_match": "unverified",
+     "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+     "pricing_checked_at": "2026-10-23",
+     "availability_checked_at": "2026-10-23",
+     "url": "https://docs.fireworks.ai/serverless/us-only-serverless"
     }
    ],
    "src": [
@@ -10257,14 +10289,15 @@
      "1,040K-token context on serverless; image input supported."
     ],
     [
-     "Checkpoint review · 19 Oct 2026",
-     "1017 is a separate serverless model ID with its own Standard and Priority prices, a published 1M-token context and image input. The original and US-only IDs remain listed separately; no 1017 US-only rate is published. Its exact checkpoint match to Databricks is unconfirmed, so it is excluded from same-model comparisons."
+     "Checkpoint review · 23 Oct 2026",
+     "1017 has separate default and US-only model IDs, each with published Standard and Priority prices. The US-only router serves inference exclusively in the United States. The original IDs remain listed separately. Its exact checkpoint match to Databricks is unconfirmed, so 1017 offers are excluded from same-model comparisons."
     ]
    ],
    "ids": [
     "accounts/fireworks/models/deepseek-v4p1-flash (serverless)",
     "accounts/fireworks/routers/deepseek-v4p1-flash-us (US-only)",
-    "accounts/fireworks/models/deepseek-v4p1-flash-1017 (separate 1017 checkpoint; reviewed 2026-10-19)"
+    "accounts/fireworks/models/deepseek-v4p1-flash-1017 (separate 1017 checkpoint; reviewed 2026-10-19)",
+    "accounts/fireworks/routers/deepseek-v4p1-flash-1017-us (US-only 1017 checkpoint; reviewed 2026-10-23)"
    ]
   },
   "official": {
@@ -10831,6 +10864,10 @@
     [
      "Caching",
      "Implicit cache supported in all six regions; no published cache-hit rate for this model."
+    ],
+    [
+     "Separate model · 23 Oct 2026",
+     "Alibaba lists glm-5.3-prime as a separate model ID in Singapore (International), with flat-rate input/output pricing of $2.80/$8.80 per million tokens in thinking and non-thinking modes. It is not treated as a GLM 5.3 service tier or compared with Databricks; checkpoint equivalence and cache rates are unverified."
     ]
    ],
    "ids": [
