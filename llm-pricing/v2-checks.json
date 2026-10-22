@@ -119,91 +119,7 @@
   "api-google-gemini-4-argon": "2026-10-23",
   "gcp-deepseek-v4-1-flash": "2026-10-23"
  },
- "pending_general": [
-  {
-   "source": "google-pricing",
-   "url": "https://ai.google.dev/gemini-api/docs/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [],
-   "removed": [
-    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}",
-    "table: {\"cells\":[\"Input price\",\"Not available\",\"$1.50 (text / image / video / audio)\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}",
-    "table: {\"cells\":[\"Output price (including thinking tokens)\",\"Not available\",\"$9.00 (text) $17.50 (video) *\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}"
-   ],
-   "added_all": [],
-   "removed_all": [
-    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}",
-    "table: {\"cells\":[\"Input price\",\"Not available\",\"$1.50 (text / image / video / audio)\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}",
-    "table: {\"cells\":[\"Output price (including thinking tokens)\",\"Not available\",\"$9.00 (text) $17.50 (video) *\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash Preview / Standard\"}"
-   ],
-   "baseline_digest": "251e7229d768a15f9b05610ec361e2a52c7cd3e35ae06c9c07baddef93ae5c73"
-  },
-  {
-   "source": "alibaba-pricing",
-   "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a region or its availability changed",
-   "added": [
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.08/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"1080P\",\"$0.103/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.032/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"540P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.04/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.054/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.054/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.054/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"720P\",\"$0.054/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (USD/million tokens)\",\"Output price (USD/million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Audio generation / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Output video type\",\"Output video resolution\",\"Output price\",\"Free quota (Note)\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Output video type\",\"Output video resolution\",\"Output price\",\"Free quota (Note)\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Output video type\",\"Output video resolution\",\"Output price\",\"Free quota (Note)\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Output video type\",\"Output video resolution\",\"Output price\",\"Free quota (Note)\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"Silent video audio=false\",\"360P\",\"$0.023/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"Silent video audio=false\",\"360P\",\"$0.023/second\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"Silent video audio=false\",\"360P\",\"$0.023/second\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"Silent video audio=false\",\"360P\",\"$0.023/second\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}",
-    "table: {\"cells\":[\"pixverse/pixverse-v6-it2v\",\"Audio video audio=true\",\"360P\",\"$0.032/second\",\"No free quota\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first frame / Singapore\"}",
-    "table: {\"cells\":[\"pixverse/pixverse-v6-kf2v\",\"Audio video audio=true\",\"360P\",\"$0.032/second\",\"No free quota\"],\"heading\":\"Video generation / PixVerse-Image-to-video - first and last frames / Singapore\"}",
-    "table: {\"cells\":[\"pixverse/pixverse-v6-r2v\",\"Audio video audio=true\",\"360P\",\"$0.032/second\",\"No free quota\"],\"heading\":\"Video generation / PixVerse-Reference-to-video / Singapore\"}",
-    "table: {\"cells\":[\"pixverse/pixverse-v6-t2v\",\"Audio video audio=true\",\"360P\",\"$0.032/second\",\"No free quota\"],\"heading\":\"Video generation / PixVerse-Text-to-video / Singapore\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "4ca1706127325366312ebf625d5780feb49883a04c528468c2dd084bb1dcc767"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-23",
@@ -214,27 +130,18 @@
  },
  "databricks_coverage": [],
  "review": [
-  "DeepSeek V4.1 Flash · fireworks",
-  "Grok 4.7 · gcloud",
-  "GLM 5.3 · alicloud",
-  "GLM 5.3 · bedrock"
+  "DeepSeek V4.1 Flash · fireworks"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
    "verified": "2026-10-23"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-10-23",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-10-23"
@@ -249,10 +156,7 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-fable-5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-fable-5|azure_foundry": {
    "verified": "2026-10-23"
@@ -273,10 +177,7 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-haiku-4.5|azure_foundry": {
    "verified": "2026-10-23"
@@ -294,13 +195,13 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "accepted": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-haiku-5.5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-haiku-5.5|azure_foundry": {
    "verified": "2026-10-23"
@@ -321,10 +222,7 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-opus-4.6|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
    "verified": "2026-10-23"
@@ -345,13 +243,13 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-opus-4.7|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "accepted": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.7|bedrock": {
    "verified": "2026-10-23"
@@ -366,13 +264,13 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "accepted": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.8|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
    "verified": "2026-10-23"
@@ -393,10 +291,7 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-opus-5.5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
    "verified": "2026-10-23"
@@ -417,10 +312,7 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-opus-5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-opus-5|azure_foundry": {
    "verified": "2026-10-23"
@@ -441,10 +333,7 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-4.6|azure_foundry": {
    "verified": "2026-10-23"
@@ -462,22 +351,19 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "accepted": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
    "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-10-23",
-   "accepted": [
-    "aws-card-claude-sonnet-5-5"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
    "verified": "2026-10-23"
@@ -492,10 +378,7 @@
    "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
    "verified": "2026-10-23"
@@ -522,7 +405,10 @@
    ]
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "deepseek/deepseek-v4-flash|bedrock": {
    "verified": "2026-10-23"
@@ -546,7 +432,10 @@
    ]
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-10-23"
@@ -564,13 +453,13 @@
    "verified": "2026-10-23"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
    "verified": "2026-10-23"
@@ -593,10 +482,7 @@
    "verified": "2026-10-23"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.1-flash-lite|azure_foundry": {
    "verified": "2026-10-23"
@@ -614,16 +500,10 @@
    "verified": "2026-10-23"
   },
   "google/gemini-3.1-flash-lite|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.1-pro|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.1-pro|azure_foundry": {
    "verified": "2026-10-23"
@@ -647,10 +527,7 @@
    ]
   },
   "google/gemini-3.5-flash-lite|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.5-flash-lite|azure_foundry": {
    "verified": "2026-10-23"
@@ -668,16 +545,10 @@
    "verified": "2026-10-23"
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.6-flash|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.6-flash|azure_foundry": {
    "verified": "2026-10-23"
@@ -695,16 +566,10 @@
    "verified": "2026-10-23"
   },
   "google/gemini-3.6-flash|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.7-flash|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.7-flash|azure_foundry": {
    "verified": "2026-10-23"
@@ -728,10 +593,7 @@
    ]
   },
   "google/gemini-3.8-flash|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-3.8-flash|azure_foundry": {
    "verified": "2026-10-23"
@@ -749,16 +611,10 @@
    "verified": "2026-10-23"
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-4-argon|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemini-4-argon|azure_foundry": {
    "verified": "2026-10-23"
@@ -776,16 +632,10 @@
    "verified": "2026-10-23"
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemma-3-12b|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "google/gemma-3-12b|azure_foundry": {
    "verified": "2026-10-23"
@@ -800,10 +650,7 @@
    "verified": "2026-10-23"
   },
   "meta/llama-3.1-8b|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "meta/llama-3.1-8b|azure_foundry": {
    "verified": "2026-10-23"
@@ -818,10 +665,7 @@
    "verified": "2026-10-23"
   },
   "meta/llama-3.3-70b|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "meta/llama-3.3-70b|azure_foundry": {
    "verified": "2026-10-23"
@@ -836,13 +680,13 @@
    "verified": "2026-10-23"
   },
   "meta/llama-4-maverick|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "meta/llama-4-maverick|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "meta/llama-4-maverick|bedrock": {
    "verified": "2026-10-23"
@@ -854,13 +698,13 @@
    "verified": "2026-10-23"
   },
   "minimax/minimax-m3|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "minimax/minimax-m3|bedrock": {
    "verified": "2026-10-23"
@@ -878,13 +722,13 @@
    "verified": "2026-10-23"
   },
   "mistral/mistral-medium-3.5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "mistral/mistral-medium-3.5|bedrock": {
    "verified": "2026-10-23"
@@ -906,10 +750,7 @@
    ]
   },
   "moonshot/kimi-k2.7|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "moonshot/kimi-k2.7|azure_foundry": {
    "verified": "2026-10-23"
@@ -927,16 +768,10 @@
    "verified": "2026-10-23"
   },
   "moonshot/kimi-k2.7|official": {
-   "verified": "2026-10-23",
-   "accepted": [
-    "kimi-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "moonshot/kimi-k3|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "moonshot/kimi-k3|azure_foundry": {
    "verified": "2026-10-23"
@@ -954,19 +789,16 @@
    "verified": "2026-10-23"
   },
   "moonshot/kimi-k3|official": {
-   "verified": "2026-10-23",
-   "accepted": [
-    "kimi-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-5.4|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-5.4|bedrock": {
    "verified": "2026-10-23"
@@ -984,13 +816,13 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-5.5|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-5.5|bedrock": {
    "verified": "2026-10-23"
@@ -1008,13 +840,13 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-5.6-luna|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-5.6-luna|bedrock": {
    "verified": "2026-10-23"
@@ -1032,13 +864,13 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-5.6-sol|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-5.6-sol|bedrock": {
    "verified": "2026-10-23"
@@ -1056,13 +888,13 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-5.6-terra|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-5.6-terra|bedrock": {
    "verified": "2026-10-23"
@@ -1080,13 +912,13 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-6-astra|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-6-astra|bedrock": {
    "verified": "2026-10-23"
@@ -1104,13 +936,13 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-6-luna|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-6-luna|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-6-luna|bedrock": {
    "verified": "2026-10-23"
@@ -1128,13 +960,13 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-6-sol|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "openai/gpt-6-sol|bedrock": {
    "verified": "2026-10-23"
@@ -1152,10 +984,7 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-6.1-sol|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
    "verified": "2026-10-23"
@@ -1176,10 +1005,7 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-oss-120b|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-oss-120b|azure_foundry": {
    "verified": "2026-10-23"
@@ -1200,10 +1026,7 @@
    "verified": "2026-10-23"
   },
   "openai/gpt-oss-20b|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "openai/gpt-oss-20b|azure_foundry": {
    "verified": "2026-10-23"
@@ -1245,10 +1068,7 @@
    ]
   },
   "qwen/qwen3.5-122b|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.5-122b|azure_foundry": {
    "verified": "2026-10-23"
@@ -1263,16 +1083,10 @@
    "verified": "2026-10-23"
   },
   "qwen/qwen3.5-122b|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.7-max|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.7-max|azure_foundry": {
    "verified": "2026-10-23"
@@ -1290,16 +1104,10 @@
    "verified": "2026-10-23"
   },
   "qwen/qwen3.7-max|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.7-plus|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.7-plus|azure_foundry": {
    "verified": "2026-10-23"
@@ -1317,16 +1125,10 @@
    "verified": "2026-10-23"
   },
   "qwen/qwen3.7-plus|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.8-27b|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.8-27b|azure_foundry": {
    "verified": "2026-10-23"
@@ -1344,16 +1146,10 @@
    "verified": "2026-10-23"
   },
   "qwen/qwen3.8-27b|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.8-flash|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.8-flash|azure_foundry": {
    "verified": "2026-10-23"
@@ -1371,16 +1167,10 @@
    "verified": "2026-10-23"
   },
   "qwen/qwen3.8-flash|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.8-max|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "qwen/qwen3.8-max|azure_foundry": {
    "verified": "2026-10-23"
@@ -1401,16 +1191,10 @@
    "verified": "2026-10-23"
   },
   "qwen/qwen3.8-max|official": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "tml/inkling|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "tml/inkling|azure_foundry": {
    "verified": "2026-10-23"
@@ -1431,13 +1215,13 @@
    "verified": "2026-10-23"
   },
   "xai/grok-4.6|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-10-23"
+   "verified": "2026-10-23",
+   "unchecked": [
+    "azure-prices"
+   ]
   },
   "xai/grok-4.6|bedrock": {
    "verified": "2026-10-23"
@@ -1452,10 +1236,7 @@
    "verified": "2026-10-23"
   },
   "xai/grok-4.7|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "xai/grok-4.7|azure_foundry": {
    "verified": "2026-10-23"
@@ -1467,9 +1248,8 @@
    "verified": "2026-10-23"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-10-22",
-   "changed_at": "2026-10-23",
-   "sources": [
+   "verified": "2026-10-23",
+   "accepted": [
     "gcp-grok-4-7"
    ]
   },
@@ -1477,10 +1257,7 @@
    "verified": "2026-10-23"
   },
   "zai/glm-5.2|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "zai/glm-5.2|azure_foundry": {
    "verified": "2026-10-23"
@@ -1501,10 +1278,7 @@
    "verified": "2026-10-23"
   },
   "zai/glm-5.3-flash|alicloud": {
-   "verified": "2026-10-22",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "zai/glm-5.3-flash|azure_foundry": {
    "verified": "2026-10-23"
@@ -1525,22 +1299,14 @@
    "verified": "2026-10-23"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-10-22",
-   "changed_at": "2026-10-23",
-   "sources": [
-    "alibaba-pricing"
-   ],
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-23"
   },
   "zai/glm-5.3|azure_foundry": {
    "verified": "2026-10-23"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-10-22",
-   "changed_at": "2026-10-23",
-   "sources": [
+   "verified": "2026-10-23",
+   "accepted": [
     "aws-card-glm-5-3"
    ]
   },
