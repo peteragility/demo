@@ -12,4 +12,5 @@
 @media(prefers-reduced-motion:no-preference){.chev{transition:transform .15s}}
 .highlights{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin:0 0 7px;color:var(--ink-3);font-size:11px}.highlight{padding:0;border:0;background:none;color:var(--blue);font-size:11px;font-weight:600;text-decoration:underline;text-underline-offset:2px}
 .short{display:none}@media(max-width:720px){.long{display:none}.short{display:inline}}
+@media(max-width:720px){.tools .search{flex:1 1 90px;min-width:0}.tools .sel{flex:0 1 108px;min-width:0}.tools .sel select{width:100%;min-width:0;max-width:none}}
 @media print{.bar,.tools,.actions,.daily,.home,.save,#more{display:none}.wrap{max-width:none}.mx thead th{position:static}.card{break-inside:avoid}body{background:#fff;color:#111}.mx th,.mx td{font-size:10px}}

@@ -12,9 +12,12 @@ await withBrowser(root, async b => {
   assert.equal(await b.evaluate('document.querySelectorAll(".highlight").length >= 4'), true);
   for (const width of [1440, 768, 390, 320]) {
     await b.viewport(width, 920);
-    assert.ok(await b.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'No horizontal overflow at ' + width);
+    if (width === 320) await b.evaluate('document.querySelector(".wrap").style.fontFamily="Arial,sans-serif"');
+    const overflow = await b.evaluate('[...document.body.querySelectorAll("*")].filter(e=>e.getBoundingClientRect().right>innerWidth+1 && getComputedStyle(e).position!=="absolute").slice(0,6).map(e=>e.tagName+"."+e.className+":"+e.getBoundingClientRect().right).join(", ")');
+    assert.ok(await b.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'No horizontal overflow at ' + width + ': ' + overflow);
     if (width === 1440 || width === 390) await b.screenshot(path.join(os.tmpdir(), 'security-checklist-' + width + '.png'), width, 920);
   }
+  await b.evaluate('document.querySelector(".wrap").style.fontFamily=""');
   await b.call('Emulation.setEmulatedMedia', {features: [{name:'prefers-color-scheme',value:'dark'}]});
   await b.screenshot(path.join(os.tmpdir(), 'security-checklist-dark.png'), 1440, 920);
   assert.equal(await b.evaluate('getComputedStyle(document.body).backgroundColor'), 'rgb(13, 16, 21)');
