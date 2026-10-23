@@ -50,6 +50,7 @@
         (prefs.view !== 'done' || closed(status));
     });
     list.sort((a, b) => {
+      if (prefs.sort === 'cvss') return (Number.isFinite(b.cvss?.score) ? b.cvss.score : -1) - (Number.isFinite(a.cvss?.score) ? a.cvss.score : -1) || a.priority - b.priority || a.id.localeCompare(b.id);
       if (prefs.sort === 'new') return (b.published || b.kev_added || '').localeCompare(a.published || a.kev_added || '') || a.id.localeCompare(b.id);
       if (prefs.sort === 'epss') return (b.epss?.score ?? -1) - (a.epss?.score ?? -1) || a.priority - b.priority;
       return a.priority - b.priority || Number(closed(effective(a, saved[a.id]))) - Number(closed(effective(b, saved[b.id]))) ||

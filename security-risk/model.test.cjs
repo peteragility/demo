@@ -55,3 +55,7 @@ test('change windows and freshness use real timestamps; missing data stays unkno
   assert.equal(M.ageHours('',now),Infinity);
   assert.equal(M.ageHours('2026-10-21T12:00:00Z',now),48);
 });
+test('CVSS sort uses published severity, preserves zero and leaves unknown scores last', () => {
+  const rows=[{...r,id:'unknown',cvss:null},{...r,id:'zero',cvss:{score:0}},{...r,id:'critical',cvss:{score:10},priority:1},{...r,id:'high',cvss:{score:9.3}}];
+  assert.deepEqual(M.select(rows,{layer:'all',view:'all',q:'',sort:'cvss'},{},'').map(r=>r.id),['critical','high','zero','unknown']);
+});

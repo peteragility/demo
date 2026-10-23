@@ -10,11 +10,15 @@ await withBrowser(root, async b => {
   await b.navigate('/security-risk/'); await ready();
   assert.equal(await b.evaluate('document.querySelectorAll("#rows .row").length'), 30);
   assert.equal(await b.evaluate('document.querySelectorAll(".highlight").length >= 4'), true);
+  assert.equal(await b.evaluate('document.querySelector("thead .rank").textContent'), 'CVSS');
+  await b.evaluate('document.getElementById("sort").value="cvss";document.getElementById("sort").dispatchEvent(new Event("change"))');
+  assert.equal(await b.evaluate('document.querySelector(".rankbadge").textContent'), '10.0/10');
   for (const width of [1440, 768, 390, 320]) {
     await b.viewport(width, 920);
     if (width === 320) await b.evaluate('document.querySelector(".wrap").style.fontFamily="Arial,sans-serif"');
     const overflow = await b.evaluate('[...document.body.querySelectorAll("*")].filter(e=>e.getBoundingClientRect().right>innerWidth+1 && getComputedStyle(e).position!=="absolute").slice(0,6).map(e=>e.tagName+"."+e.className+":"+e.getBoundingClientRect().right).join(", ")');
     assert.ok(await b.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'No horizontal overflow at ' + width + ': ' + overflow);
+    assert.ok(await b.evaluate('[...document.querySelectorAll(".rankbadge")].every(e=>e.getBoundingClientRect().right<=e.closest("td").getBoundingClientRect().right)'), 'Scores fit their cells at ' + width);
     if (width === 1440 || width === 390) await b.screenshot(path.join(os.tmpdir(), 'security-checklist-' + width + '.png'), width, 920);
   }
   await b.evaluate('document.querySelector(".wrap").style.fontFamily=""');
@@ -61,6 +65,9 @@ await withBrowser(root, async b => {
   await b.waitFor('document.getElementById("notice").textContent.includes("imported")');
   assert.equal(await b.evaluate('document.querySelector(".state").textContent'), 'Not applicable');
   assert.equal(await b.evaluate('({}).polluted'), undefined);
+
+  await b.navigate('/security-risk/?score=1#emudhra-ca-2026-10'); await ready();
+  assert.equal(await b.evaluate('document.querySelector(".rankbadge").textContent'), '—');
 
   await b.navigate('/security-risk/', `Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}});`); await ready();
   assert.equal(await b.evaluate('document.getElementById("storageNotice").hidden'), false);

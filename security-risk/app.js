@@ -64,7 +64,7 @@
   }
   function renderSummary() {
     const all = data.records, open = all.filter(r => !M.closed(M.effective(r, saved[r.id])));
-    const counts = [[open.filter(r => r.priority === 0).length, 'P0 to action', 'urgent'],
+    const counts = [[open.filter(r => r.priority === 0).length, 'act now · open', 'urgent'],
       [open.filter(r => r.kev).length, 'exploited · open', 'urgent'],
       [all.filter(r => M.isChanged(r, reviewedAt)).length, 'new / changed', ''],
       [all.length - open.length, 'verified / N/A', 'good']];
@@ -85,7 +85,13 @@
   function statusLabel(r) { const a = saved[r.id]; return M.reassess(r, a) ? 'Reassess' : M.states[M.effective(r, a)]; }
   function row(r) {
     const tr = N('tr', null, {class: 'row' + (S.expanded.has(r.id) ? ' open' : ''), 'data-id': r.id});
-    const rank = N('td', null, {class: 'rank'}); rank.append(N('span', 'P' + r.priority, {class: 'rankbadge p' + r.priority, title: M.reason(r)}));
+    const rank = N('td', null, {class: 'rank'}), score = r.cvss?.score;
+    const hasScore = typeof score === 'number' && Number.isFinite(score) && score >= 0 && score <= 10;
+    const severity = !hasScore ? 'unknown' : score >= 9 ? 'critical' : score >= 7 ? 'high' : 'other';
+    const badge = N('span', hasScore ? score.toFixed(1) : '—', {class: 'rankbadge score-' + severity,
+      title: hasScore ? 'CVSS v' + r.cvss.version + ': ' + score.toFixed(1) + ' out of 10' : 'CVSS score not published / not applicable'});
+    if (hasScore) badge.append(N('span', '/10', {class: 'denom'}));
+    rank.append(badge);
     const issue = N('th', null, {scope: 'row', class: 'issue'});
     const expand = button('', () => toggle(r.id), {class: 'issuebtn', 'aria-expanded': S.expanded.has(r.id), 'aria-controls': 'detail-' + r.id, 'aria-label': 'Details for ' + r.product + ': ' + r.title});
     expand.append(N('span', r.product, {class: 'product'}), N('span', r.title, {class: 'issuetitle', title: r.title}), N('span', '›', {class: 'chev', 'aria-hidden': 'true'}));
@@ -95,7 +101,7 @@
     const impact = N('td', r.impact, {class: 'impact'});
     const ev = N('td', null, {class: 'evidence'});
     ev.append(N('span', r.kev ? 'KEV · exploited' : r.rejected ? 'CVE rejected' : 'Not in KEV', {class: r.kev ? 'kev' : ''}));
-    ev.append(N('small', 'CVSS ' + (r.cvss ? r.cvss.score.toFixed(1) : '—') + (r.epss ? ' · EPSS ' + pct(r.epss.score) : '')));
+    ev.append(N('small', r.epss ? 'EPSS ' + pct(r.epss.score) : 'EPSS —'));
     const version = N('td', null, {class: 'versions'});
     version.append(N('span', r.fixed.length ? r.fixed[0] : r.kind === 'incident' ? 'Update trust / replace chain' : 'Follow vendor remediation ↗', {class: 'fix', title: r.fixed.join('; ') || r.action}));
     version.append(N('span', (r.source_changed ? 'Source changed · review' : 'Checked ' + displayDate(r.checked_at)), {class: 'date'}));

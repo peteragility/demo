@@ -18,10 +18,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 <script src="../assets/site-analytics.js" defer></script>
-<script src="model.js?v=1" defer></script>
-<script src="app.js?v=1" defer></script>
+<script src="model.js?v=2" defer></script>
+<script src="app.js?v=2" defer></script>
 </head>
 <body>
 <main class="wrap">
@@ -33,7 +33,7 @@
   <div class="tools">
     <label class="search"><span aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Product, CVE, system or owner" aria-label="Search vulnerabilities" autocomplete="off"></label>
     <label class="sel"><span>View</span><select id="view" aria-label="Filter checklist"><option value="open">To action</option><option value="all">All risks</option><option value="changed">New / changed</option><option value="exploited">Known exploited</option><option value="reassess">Reassess</option><option value="done">Completed / N/A</option></select></label>
-    <label class="sel"><span>Sort</span><select id="sort" aria-label="Sort risks"><option value="risk">Risk priority</option><option value="new">Newest</option><option value="epss">EPSS probability</option></select></label>
+    <label class="sel"><span>Sort</span><select id="sort" aria-label="Sort risks"><option value="risk">Risk priority</option><option value="cvss">CVSS highest</option><option value="new">Newest</option><option value="epss">EPSS probability</option></select></label>
   </div>
   <section class="summary" id="summary" aria-label="Checklist summary" aria-live="polite"></section>
   <div class="highlights" id="highlights" aria-label="Urgent vendor advisories"></div>
@@ -44,10 +44,10 @@
   <p class="notice" id="notice" role="status" hidden></p>
   <p class="notice" id="storageNotice" role="status" hidden></p>
   <div class="rowhint"><span id="count">Loading risks…</span><span>Click / tap an issue for affected versions, actions and your checklist.</span></div>
-  <div class="tblwrap"><table class="mx" aria-label="Prioritized security risks"><thead><tr><th class="rank" scope="col" aria-label="Priority"><span class="long">Priority</span><span class="short" aria-hidden="true">P</span></th><th class="issue" scope="col">Product / issue</th><th class="impact" scope="col">Impact</th><th class="evidence" scope="col">Exploit / severity</th><th class="versions" scope="col">Fixed / unaffected · action</th><th class="status" scope="col">Your status</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <div class="tblwrap"><table class="mx" aria-label="Prioritized security risks"><thead><tr><th class="rank" scope="col" aria-label="CVSS severity score out of 10">CVSS</th><th class="issue" scope="col">Product / issue</th><th class="impact" scope="col">Impact</th><th class="evidence" scope="col">Exploitation</th><th class="versions" scope="col">Fixed / unaffected · action</th><th class="status" scope="col">Your status</th></tr></thead><tbody id="rows"></tbody></table></div>
   <button id="more" type="button" hidden>Show all tracked risks</button>
   <footer class="foot">
-    <section><h2>How to read it</h2><p><b>P0 · act now</b>: known exploitation with code execution, authentication bypass, credential theft, or ransomware use. <b>P1 · prioritize</b>: other known exploitation, critical CVSS, or a reviewed urgent advisory. <b>P2 · assess</b>: other security notices. These are triage priorities; confirm exposure and business impact in your environment.</p><p><b>KEV</b> means CISA confirms exploitation. Absence from KEV does not establish safety. <b>CVSS</b> is severity (version shown in details); <b>EPSS</b> estimates exploitation probability over the next 30 days, with its own score date. Neither proves that your systems are affected.</p><p>Source checked ≠ fix independently verified. Branch-specific fixes are shown only where explicitly documented. Confirm distribution backports with your vendor. A materially changed advisory reopens an earlier assessment. “Source changed” requires a fresh reading of the vendor notice.</p><p>A focused watchlist, not an asset scanner or a complete CVE inventory. It tracks recent KEV additions, important older exploited flaws, and current vendor security releases. No system is marked affected automatically.</p></section>
+    <section><h2>How to read it</h2><p><b>CVSS</b> shows published severity out of 10, such as <b>9.3/10</b> or <b>10.0/10</b>. Red scores are critical (9.0–10.0); amber scores are high (7.0–8.9). <b>—</b> means a score is unpublished or not applicable, including some CA incidents. The CVSS version and vector are in the row details. <a href="https://www.first.org/cvss/v4.0/specification-document#Qualitative-Severity-Rating-Scale" target="_blank" rel="noopener noreferrer">Scoring reference ↗</a></p><p><b>Act now</b> counts open risks with known exploitation and code execution, authentication bypass, credential theft, or ransomware use. The <b>Risk priority</b> sort puts these first, followed by other exploited risks, critical scores and reviewed urgent notices. Choose <b>CVSS highest</b> to sort by numerical severity. Confirm exposure and business impact in your environment.</p><p><b>KEV</b> means CISA confirms exploitation. Absence from KEV does not establish safety. <b>EPSS</b> estimates exploitation probability over the next 30 days, with its own score date. These signals do not prove that your systems are affected.</p><p>Source checked ≠ fix independently verified. Branch-specific fixes are shown only where explicitly documented. Confirm distribution backports with your vendor. A materially changed advisory reopens an earlier assessment. “Source changed” requires a fresh reading of the vendor notice.</p><p>A focused watchlist, not an asset scanner or a complete CVE inventory. It tracks recent KEV additions, important older exploited flaws, and current vendor security releases. No system is marked affected automatically.</p></section>
     <section><details class="srcbox"><summary><h2>Sources &amp; refresh health</h2></summary><p>Nightly GitHub Actions target: <b>23:17 Asia/Hong_Kong</b> (15:17 UTC). Scheduled starts may be delayed. Failed sources retain previous records with their original dates.</p><ul id="sources"></ul><p id="refreshMeta"></p><p><a href="data.json">Download source snapshot ↗</a> · <a href="https://github.com/peteragility/demo/actions/workflows/security-risk.yml" target="_blank" rel="noopener noreferrer">Refresh runs ↗</a></p></details><p id="savedNote">Checklist progress is saved in this browser. Export it to move devices or share a handover. Notes are not sent to a server.</p><p id="reviewDate"></p><p><b>Built by</b> Peter Chan · <a href="../llm-pricing/">same layout as LLM Token Pricing</a></p></section>
   </footer>
 </main>
