@@ -10,8 +10,18 @@
     const value=r.cvss?.score,has=Number.isFinite(value),e=node('span',has?value.toFixed(1)+'/10':'—',{class:'score '+(!has?'unknown':value>=9?'critical':value>=7?'high':'other'),title:has?'CVSS v'+r.cvss.version:'CVSS unpublished or not applicable'});return e;
   }
   function bullets(values,fallback){const list=node('ul');for(const value of values.length?values:[fallback])list.append(node('li',value));return list;}
+  function toggleRow(id){
+    const row=[...$('rows').querySelectorAll('.row')].find(row=>row.dataset.id===id);
+    const record=data.records.find(record=>record.id===id);
+    if(!row||!record)return;
+    const open=!state.open.has(id),button=row.querySelector('.issuebtn');
+    open?state.open.add(id):state.open.delete(id);
+    row.classList.toggle('open',open);button.setAttribute('aria-expanded',String(open));
+    // Update only this disclosure so focus and the mobile viewport stay in place.
+    document.getElementById('detail-'+id).replaceWith(open?details(record):node('tr',null,{id:'detail-'+id,hidden:true}));
+  }
   function details(r){
-    const tr=node('tr',null,{class:'detail',id:'detail-'+r.id}),td=node('td',null,{colspan:6});tr.append(td);
+    const tr=node('tr',null,{class:'detail',id:'detail-'+r.id}),td=node('td',null,{colspan:4});tr.append(td);
     td.append(node('h2',r.title),node('p',r.description));
     const priority=state.sort==='cvss'?{label:'CVSS severity',reason:r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.'}:M.priority(r),impact=node('section',null,{class:'impact-note'});
     impact.append(node('h3','Why this ranks here'),node('p',priority.label+' · '+priority.reason));
@@ -45,21 +55,20 @@
     $('summary').replaceChildren(...stats.map(([n,label])=>{const e=node('div',null,{class:'kpi'});e.append(node('b',n),node('span',label));return e;}));
     const rows=[];
     for(const r of records){
-      const event=M.event(r,w.today),tr=node('tr',null,{class:'row','data-id':r.id}),cvss=node('td',null,{class:'rank'});cvss.append(score(r));
+      const event=M.event(r,w.today),tr=node('tr',null,{class:'row'+(state.open.has(r.id)?' open':''),'data-id':r.id}),cvss=node('td',null,{class:'rank'});cvss.append(score(r));
       const when=node('td',null,{class:'when'});when.append(node('time',date(event.date),{datetime:event.date}),node('small',event.label));
       if(r.kev)when.append(node('small','Known exploited',{class:'known'}));
       const issue=node('th',null,{scope:'row',class:'issue'}),button=node('button',null,{type:'button','aria-expanded':String(state.open.has(r.id)),'aria-controls':'detail-'+r.id,class:'issuebtn'});
-      button.append(node('b',r.product+' ›'),node('span',r.title));button.addEventListener('click',()=>{state.open.has(r.id)?state.open.delete(r.id):state.open.add(r.id);render();});
+      button.append(node('b',r.product+' ›'),node('span',r.title,{title:r.title}));button.addEventListener('click',()=>toggleRow(r.id));
       issue.append(button,node('small',(/^CVE-/.test(r.id)?r.id+' · ':'')+M.layers[r.layer]));
       const ranking=M.priority(r);
       if(state.sort!=='cvss'&&ranking.tier<3)issue.append(node('small',ranking.label,{class:'priority-label',title:ranking.reason}));
-      const about=node('td',null,{class:'about'});about.append(node('p',r.description,{title:r.description}));
       const evidence=node('td',r.kev?'KEV · exploited':'Not in KEV',{class:'evidence'+(r.kev?' known':'')});
-      const briefAction=/BOD|ensuring compliance/.test(r.action)?'Apply vendor security updates or mitigations. If no remedy is available, discontinue use.':r.action;
-      const action=node('td',null,{class:'action'});action.append(node('p',briefAction,{title:r.action}));
-      tr.append(cvss,when,issue,about,evidence,action);rows.push(tr);if(state.open.has(r.id))rows.push(details(r));else rows.push(node('tr',null,{id:'detail-'+r.id,hidden:true}));
+      tr.append(cvss,when,issue,evidence);
+      tr.addEventListener('click',event=>{if(!event.target.closest('button,a,input,select,label'))toggleRow(r.id);});
+      rows.push(tr);if(state.open.has(r.id))rows.push(details(r));else rows.push(node('tr',null,{id:'detail-'+r.id,hidden:true}));
     }
-    if(!rows.length){const tr=node('tr');tr.append(node('td','No high-risk entries match this period and search.',{colspan:6,class:'empty'}));rows.push(tr);}
+    if(!rows.length){const tr=node('tr');tr.append(node('td','No high-risk entries match this period and search.',{colspan:4,class:'empty'}));rows.push(tr);}
     $('rows').replaceChildren(...rows);
   }
   function health(){

@@ -18,10 +18,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 <script src="../assets/site-analytics.js" defer></script>
 <script src="model.js?v=6" defer></script>
-<script src="app.js?v=7" defer></script>
+<script src="app.js?v=8" defer></script>
 </head>
 <body>
 <main class="wrap">
@@ -37,8 +37,8 @@
   </div>
   <section class="summary" id="summary" aria-label="Risk summary"></section>
   <p class="notice" id="notice" role="status" hidden></p>
-  <div class="rowhint"><b id="period">Last 30 days</b><span id="count">Loading risks…</span><span>Tap an issue for versions &amp; sources</span></div>
-  <div class="tblwrap"><table class="mx" aria-label="High-risk security vulnerabilities"><thead><tr><th class="rank" scope="col">CVSS</th><th class="when" scope="col">Risk date</th><th class="issue" scope="col">Product / issue</th><th class="about" scope="col">What happened</th><th class="evidence" scope="col">Exploitation</th><th class="action" scope="col">Recommended action</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <div class="rowhint"><b id="period">Last 30 days</b><span id="count">Loading risks…</span><span>Tap any row for issue details, actions &amp; sources</span></div>
+  <div class="tblwrap"><table class="mx" aria-label="High-risk security vulnerabilities"><thead><tr><th class="rank" scope="col">CVSS</th><th class="when" scope="col">Risk date</th><th class="issue" scope="col">Product / issue</th><th class="evidence" scope="col">Exploitation</th></tr></thead><tbody id="rows"></tbody></table></div>
   <footer class="foot">
     <section><h2>Scope &amp; dates</h2><p><b>High risk</b> means published CVSS ≥ 7.0, confirmed exploitation in CISA KEV, an automated source-text signal of shared-trust/distribution compromise, or a reviewed urgent notice. The default <b>Impact + CVSS</b> ranking applies the same rules to every issue: (1) source text reporting compromise of shared signing/certificate-authority keys or software distribution; (2) KEV-confirmed exploitation with CVSS ≥ 9.0 or known ransomware use; (3) CVSS ≥ 9.0 with a low-complexity network attack, no privileges or user interaction, and no additional CVSS v4 prerequisite; (4) all others by CVSS. Within groups: CVSS, KEV evidence, EPSS, then risk date. Choose <b>CVSS highest</b> to sort by severity alone.</p><p><b>No manual ranking boosts.</b> Product names, CVE IDs, categories and editorial urgency flags do not determine priority. The shared-trust/distribution signal is a conservative automated inference from source text, not a verified count of affected servers, organizations or people. Missing metrics stay unknown. Expand any row for its rule and source evidence.</p><p><b>Last 30 days</b> includes today and the preceding 29 days in Hong Kong time. The <b>archive</b> contains older entries within six calendar months. Risk dates reflect disclosure, a new KEV alert, or a confirmed material advisory update. Routine source checks do not renew a risk's date.</p><p><b>CVSS</b> is severity out of 10; <b>—</b> means unpublished or not applicable. <b>KEV</b> confirms exploitation. “Not in KEV” does not establish safety. Details show affected versions, prerequisites, fixes and official sources.</p><p>A focused information brief from monitored sources, not a complete inventory of every vulnerability. Confirm vendor guidance and distribution backports for your environment.</p></section>
     <section><details class="srcbox"><summary><h2>Sources &amp; refresh health</h2></summary><p>GitHub Actions checks sources, reviews eligibility and dates, and publishes the current 30-day list and six-month archive nightly at <b>23:17 Asia/Hong_Kong</b>. GitHub may delay scheduled starts. Failed sources retain prior data with its original dates.</p><ul id="sources"></ul><p id="refreshMeta"></p><p><a href="data.json">Source snapshot ↗</a> · <a href="https://github.com/peteragility/demo/actions/workflows/security-risk.yml" target="_blank" rel="noopener noreferrer">Refresh runs ↗</a></p></details><p><b>Built by</b> Peter Chan</p></section>

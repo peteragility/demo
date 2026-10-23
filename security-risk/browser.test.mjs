@@ -30,14 +30,49 @@ await withBrowser(root,async b=>{
   assert.ok(await b.evaluate('document.querySelector(".row .issue").getBoundingClientRect().width>100'),'Readable product column at '+width);
   assert.ok(await b.evaluate('document.querySelector("header .home").getBoundingClientRect().height>0'),'Demo link visible at '+width);
   assert.equal(await b.evaluate('document.querySelector("header .home").getAttribute("href")'),'../');
+  assert.equal(await b.evaluate('document.querySelectorAll(".row .about,.row .action,.detail").length'),0,'Rows start collapsed without duplicate issue/action blocks');
+  if(width<=720){
+   assert.ok(await b.evaluate('[...document.querySelectorAll(".row")].every(r=>r.getBoundingClientRect().height<=60)'),'Compact rows at '+width);
+   assert.ok(await b.evaluate('["q","sort"].every(id=>parseFloat(getComputedStyle(document.getElementById(id)).fontSize)>=16)'),'iOS controls avoid focus zoom');
+  }
   if(width===1440||width===390)await b.screenshot(path.join(os.tmpdir(),'security-info-'+width+'.png'),width,900);
  }
  await b.evaluate('document.querySelector(".issuebtn").click()');assert.ok(await b.evaluate('document.querySelector(".detail").textContent.includes("Recommended action")'));
  assert.ok(await b.evaluate('document.querySelector(".impact-note").textContent.includes("Why this ranks here")'));
+ await b.evaluate('document.querySelector(".row .rank").click()');assert.equal(await b.evaluate('document.querySelectorAll(".detail").length'),0,'Tap any cell to collapse');
+ await b.evaluate('document.querySelector(".row .rank").click()');assert.equal(await b.evaluate('document.querySelectorAll(".detail").length'),1,'Tap any cell to expand');
+ await b.evaluate('document.querySelector(".issuebtn").focus()');
+ await b.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
+ await b.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+ assert.equal(await b.evaluate('document.activeElement.className'),'issuebtn','Disclosure preserves keyboard focus');
+ assert.equal(await b.evaluate('document.activeElement.getAttribute("aria-expanded")'),'false');
  await b.evaluate('document.getElementById("archive").click()');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),2);
  assert.match(await b.evaluate('document.getElementById("period").textContent'),/Archive/);
  await b.evaluate('document.getElementById("q").value="archive-b";document.getElementById("q").dispatchEvent(new Event("input"))');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),1);
  await b.evaluate('document.getElementById("current").click()');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),3);
+ // Exercise real touch events and mobile viewport sizing, beyond desktop resizing.
+ await b.call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:3,mobile:true});
+ await b.call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});
+ await b.navigate('/security-risk/?touch=1',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');
+ const scale=await b.evaluate('visualViewport.scale');
+ const tap=async selector=>{
+  await b.evaluate(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'center'})`);await b.pause(80);
+  const point=await b.evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+  await b.call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[point]});
+  await b.call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await b.pause(150);
+  assert.equal(await b.evaluate('visualViewport.scale'),scale,'No viewport zoom after '+selector);
+ };
+ await tap('#q');assert.equal(await b.evaluate('document.activeElement.id'),'q');await b.evaluate('document.activeElement.blur()');
+ await b.evaluate('document.getElementById("sort").focus();document.getElementById("sort").value="cvss";document.getElementById("sort").dispatchEvent(new Event("change"));document.activeElement.blur()');
+ assert.equal(await b.evaluate('visualViewport.scale'),scale,'No viewport zoom after ranking control focus/change');
+ await tap('#archive');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),2);
+ await tap('#current');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),3);
+ await tap('[data-layer=trust]');await tap('[data-layer=all]');
+ await tap('.row .rank');assert.equal(await b.evaluate('document.querySelectorAll(".detail").length'),1);
+ await tap('.row .rank');assert.equal(await b.evaluate('document.querySelectorAll(".detail").length'),0);
+ assert.equal(await b.evaluate('getComputedStyle(document.querySelector(".issuebtn")).touchAction'),'manipulation');
+ assert.ok(await b.evaluate('!document.querySelector("meta[name=viewport]").content.includes("user-scalable=no")'),'Intentional accessibility zoom remains available');
+ await b.call('Emulation.setTouchEmulationEnabled',{enabled:false});await b.viewport(390,900);
  await b.navigate('/security-risk/?blocked=1',setup(fixture,`Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}});`));await b.waitFor('document.querySelectorAll(".row").length===3');
  const unsafe=structuredClone(fixture);unsafe.records[0].title='<img src=x onerror=alert(1)>';unsafe.records[0].action='<script>alert(1)</script>';unsafe.records[0].sources[0].url='javascript:alert(1)';
  await b.navigate('/security-risk/?unsafe=1',setup(unsafe));await b.waitFor('document.querySelectorAll(".row").length===3');await b.evaluate('document.querySelector(".issuebtn").click()');assert.equal(await b.evaluate('document.querySelectorAll("#rows img,#rows script,#rows a[href^=javascript]").length'),0);
@@ -47,4 +82,4 @@ await withBrowser(root,async b=>{
  await b.navigate('/security-risk/?dark=1',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');assert.equal(await b.evaluate('getComputedStyle(document.body).backgroundColor'),'rgb(13, 16, 21)');
  assert.deepEqual(b.errors,[]);
 });
-console.log('PASS: current/archive date windows, CVSS order, summaries and actions, no assessment UI, search, mobile/dark, blocked storage, injection and empty/offline states.');
+console.log('PASS: compact rows, touch/keyboard disclosure, mobile controls and viewport scale, period/category/search/ranking, safe source rendering and empty/offline states.');

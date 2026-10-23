@@ -2,7 +2,7 @@
 
 An information page at https://peteragility.github.io/demo/security-risk/, using the LLM pricing page's compact typography, light/dark themes and dense table. The default view is **Last 30 days**, with one **Archive · 6 months** view for older entries. Both default to **Impact + CVSS**, with a **CVSS highest** option. Category tabs start with **All**, followed by Certificates / TLS, Edge / VPN, Runtimes, GitLab / CI/CD, OS / containers, and Identity / data. Category counts use the selected period; search combines with the category filter. The Demo home link remains visible at every width. No assessment forms, task lists, browser storage or import/export controls.
 
-Each row shows CVSS, risk date, product/issue, a brief explanation, exploitation evidence and recommended action. Expanding it shows affected/fixed versions, configuration prerequisites, dates and source links. Search applies within the selected period. No package installation or API keys are needed.
+Collapsed rows show CVSS, risk date, product/issue and exploitation evidence. Tap any row, or activate its issue button with the keyboard, to reveal the issue explanation, recommended action, affected/fixed versions and source links. Expanding a row updates only its disclosure, preserving focus and the mobile viewport. Mobile controls use 16px text to avoid iOS focus zoom and `touch-action: manipulation` to suppress accidental double-tap zoom; intentional pinch zoom stays available. Search applies within the selected period. No package installation or API keys are needed.
 
 ## Generic ranking rules
 
