@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "last_attempt": "2026-10-23T05:12:57Z",
-  "last_success": "2026-10-23T05:12:57Z",
+  "last_attempt": "2026-10-23T05:18:12Z",
+  "last_success": "2026-10-23T05:18:12Z",
   "refresh_status": "ok",
   "sources": [
     {
       "id": "kev",
       "label": "CISA known exploited vulnerabilities",
       "url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": ""
     },
@@ -17,8 +17,8 @@
       "id": "node",
       "label": "Node.js security releases",
       "url": "https://nodejs.org/en/feed/vulnerability.xml",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": ""
     },
@@ -26,8 +26,8 @@
       "id": "php",
       "label": "PHP security releases",
       "url": "https://www.php.net/releases/feed.php",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": ""
     },
@@ -35,8 +35,8 @@
       "id": "gitlab",
       "label": "GitLab patch releases",
       "url": "https://docs.gitlab.com/releases/patch-releases.xml",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": ""
     },
@@ -44,8 +44,8 @@
       "id": "ca",
       "label": "Google Security / certificate incidents",
       "url": "https://blog.google/security/rss/",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": ""
     },
@@ -53,8 +53,8 @@
       "id": "reviewed-cve-2026-109618",
       "label": "PHP reviewed advisory",
       "url": "https://www.php.net/archive/2026.php#2026-10-21-5",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": "",
       "fingerprint": "65f4dffc05f289b095adf59b82b202df77e19bcdb2522d11b0a13576e4b99e4d"
@@ -63,8 +63,8 @@
       "id": "reviewed-cve-2026-109619",
       "label": "PHP reviewed advisory",
       "url": "https://www.php.net/archive/2026.php#2026-10-21-5",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": "",
       "fingerprint": "65f4dffc05f289b095adf59b82b202df77e19bcdb2522d11b0a13576e4b99e4d"
@@ -73,8 +73,8 @@
       "id": "reviewed-cve-2026-111497",
       "label": "Node.js reviewed advisory",
       "url": "https://nodejs.org/en/blog/vulnerability/october-2026-security-releases",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": "",
       "fingerprint": "c6668e2885942354fe62fb474c5d480ba7118cc80dfa4442b4d428d6ea9955ee"
@@ -83,8 +83,8 @@
       "id": "reviewed-cve-2026-106069",
       "label": "Node.js reviewed advisory",
       "url": "https://nodejs.org/en/blog/vulnerability/october-2026-security-releases",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": "",
       "fingerprint": "c6668e2885942354fe62fb474c5d480ba7118cc80dfa4442b4d428d6ea9955ee"
@@ -93,8 +93,8 @@
       "id": "reviewed-cve-2026-110264",
       "label": "GitLab CE / EE reviewed advisory",
       "url": "https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": "",
       "fingerprint": "8498861aaf5bf1439de5affb3ec6ef42995c8db86ab4e8aaa9885d7bf0dc741c"
@@ -103,8 +103,8 @@
       "id": "reviewed-emudhra-ca-2026-10",
       "label": "eMudhra / emSign reviewed advisory",
       "url": "https://blog.google/security/protecting-chrome-and-android-users-from-compromised-emudhra-intermediate-ca-certificates/",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": "",
       "fingerprint": "328cc209f2828425c0c89d7e54193e45b7005d159209461748387245fcb2dd4c"
@@ -113,8 +113,8 @@
       "id": "cve",
       "label": "CVE Program / CNA records",
       "url": "https://www.cve.org/",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": "",
       "note": "9 vendor-confirmed CVEs awaiting public CNA records"
@@ -123,8 +123,8 @@
       "id": "epss",
       "label": "FIRST EPSS (30-day probability)",
       "url": "https://www.first.org/epss/",
-      "checked_at": "2026-10-23T05:12:57Z",
-      "last_success": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
+      "last_success": "2026-10-23T05:18:12Z",
       "status": "ok",
       "error": ""
     }
@@ -171,7 +171,7 @@
       "ransomware": false,
       "published": "2026-10-15",
       "updated": "2026-10-17",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.3,
         "version": "4.0",
@@ -183,7 +183,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "ec608ad3bc7c57e4",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -222,7 +222,7 @@
       "ransomware": false,
       "published": "2026-10-15",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 6.7,
         "version": "3.1",
@@ -234,7 +234,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "77cb84b22d414039",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -279,7 +279,7 @@
       "ransomware": false,
       "published": "2026-10-14",
       "updated": "2026-10-15",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.6,
         "version": "4.0",
@@ -291,7 +291,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "1ee03987e46b2aad",
       "priority": 0,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -338,7 +338,7 @@
       "ransomware": false,
       "published": "2026-10-14",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 7.8,
         "version": "3.0",
@@ -350,7 +350,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "6e4acc8497d3fd3c",
       "priority": 0,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -387,7 +387,7 @@
       "ransomware": false,
       "published": "2026-10-13",
       "updated": "2026-10-13",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.6,
         "version": "3.1",
@@ -399,7 +399,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "bed1264e5d1f9275",
       "priority": 0,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -461,7 +461,7 @@
       "ransomware": false,
       "published": "2026-10-13",
       "updated": "2026-10-22",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.8,
         "version": "3.1",
@@ -473,7 +473,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "9ba96efa327c0b11",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -530,7 +530,7 @@
       "ransomware": false,
       "published": "2026-10-04",
       "updated": "2026-10-15",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 6.9,
         "version": "4.0",
@@ -542,7 +542,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "df9464180e301483",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -599,7 +599,7 @@
       "ransomware": false,
       "published": "2026-10-04",
       "updated": "2026-10-15",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "4.0",
@@ -611,7 +611,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "67b9bc747d8ab9c1",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -661,7 +661,7 @@
       "ransomware": false,
       "published": "2026-09-30",
       "updated": "2026-10-19",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.7,
         "version": "4.0",
@@ -673,7 +673,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "29e51be104d546eb",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -722,7 +722,7 @@
       "ransomware": false,
       "published": "2026-09-28",
       "updated": "2026-10-01",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.01242,
@@ -730,7 +730,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "72adbecc26c6bd3b",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -774,7 +774,7 @@
       "ransomware": false,
       "published": "2026-09-27",
       "updated": "2026-09-29",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.5,
         "version": "4.0",
@@ -786,7 +786,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "644411315e36c8ac",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -830,7 +830,7 @@
       "ransomware": false,
       "published": "2026-09-27",
       "updated": "2026-09-28",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.5,
         "version": "4.0",
@@ -842,7 +842,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "e5e6c3f73972ae07",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -881,7 +881,7 @@
       "ransomware": false,
       "published": "2026-09-22",
       "updated": "2026-09-26",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.39979,
@@ -889,7 +889,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "e362c5501c0a5be5",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -932,7 +932,7 @@
       "ransomware": false,
       "published": "2026-09-22",
       "updated": "2026-09-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -944,7 +944,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "94e009232e973914",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1014,7 +1014,7 @@
       "ransomware": false,
       "published": "2026-09-16",
       "updated": "2026-10-07",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -1026,7 +1026,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "de55b55c0cc78a87",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1065,7 +1065,7 @@
       "ransomware": false,
       "published": "2026-09-15",
       "updated": "2026-10-07",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.00591,
@@ -1073,7 +1073,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "a60b60d73a74293c",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1134,7 +1134,7 @@
       "ransomware": false,
       "published": "2026-09-14",
       "updated": "2026-09-18",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -1146,7 +1146,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "11d46049080b5bfd",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1187,7 +1187,7 @@
       "ransomware": false,
       "published": "2026-09-09",
       "updated": "2026-09-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -1199,7 +1199,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "c98a6f9e87653c9e",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1242,7 +1242,7 @@
       "ransomware": false,
       "published": "2026-08-11",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.8,
         "version": "3.1",
@@ -1254,7 +1254,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "3b98527be70681d1",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1312,7 +1312,7 @@
       "ransomware": false,
       "published": "2026-08-06",
       "updated": "2026-09-25",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -1324,7 +1324,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "3f2eb9ba7354b30b",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1363,7 +1363,7 @@
       "ransomware": true,
       "published": "2026-07-27",
       "updated": "2026-09-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -1375,7 +1375,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "f3d4ef794c7d38df",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1423,7 +1423,7 @@
       "ransomware": false,
       "published": "2026-06-16",
       "updated": "2026-09-22",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.8,
         "version": "3.1",
@@ -1435,7 +1435,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "406c5b80af3b4389",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1478,7 +1478,7 @@
       "ransomware": false,
       "published": "2025-11-03",
       "updated": "2026-02-26",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -1490,7 +1490,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "5d0c8ed3c2800aad",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1547,7 +1547,7 @@
       "ransomware": true,
       "published": "2024-06-09",
       "updated": "2025-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -1559,7 +1559,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "dbdf4608b49ef32f",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1615,7 +1615,7 @@
       "ransomware": true,
       "published": "2024-04-12",
       "updated": "2025-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -1627,7 +1627,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "7242c83906303563",
       "priority": 0,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -1666,7 +1666,7 @@
       "ransomware": true,
       "published": "2024-03-04",
       "updated": "2026-04-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 7.3,
         "version": "3.1",
@@ -1678,7 +1678,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "9fc7f9634e542f08",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1729,7 +1729,7 @@
       "ransomware": true,
       "published": "2024-01-31",
       "updated": "2026-08-07",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 7.8,
         "version": "3.1",
@@ -1741,7 +1741,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "329da5b48fed5d99",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1788,7 +1788,7 @@
       "ransomware": true,
       "published": "2023-10-10",
       "updated": "2026-07-31",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.4,
         "version": "3.1",
@@ -1800,7 +1800,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "970d73ecfe1bb1f2",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1847,7 +1847,7 @@
       "ransomware": false,
       "published": "2023-04-19",
       "updated": "2026-10-09",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.03609,
@@ -1855,7 +1855,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "0d97e069dc8b92ac",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -1906,7 +1906,7 @@
       "ransomware": true,
       "published": "2021-12-10",
       "updated": "2025-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.99999,
@@ -1914,7 +1914,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "d7b0a0074b853465",
       "priority": 0,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -1963,7 +1963,7 @@
       "ransomware": true,
       "published": "2021-04-23",
       "updated": "2026-08-06",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -1975,7 +1975,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "d04a6067e1aa09d5",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2014,7 +2014,7 @@
       "ransomware": false,
       "published": "2021-01-22",
       "updated": "2026-10-09",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.20136,
@@ -2022,7 +2022,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "a46c72a4e0628292",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2061,7 +2061,7 @@
       "ransomware": false,
       "published": "2016-04-26",
       "updated": "2026-10-09",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.96052,
@@ -2069,7 +2069,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "6c9d05843f50bb28",
       "priority": 0,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2116,7 +2116,7 @@
       "ransomware": false,
       "published": "2026-10-22",
       "updated": "2026-10-22",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -2131,7 +2131,7 @@
       "urgent": true,
       "reviewed_at": "2026-10-23",
       "source_changed": false,
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "b24c8c35cb732672",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2168,7 +2168,7 @@
       "ransomware": false,
       "published": "2026-10-22",
       "updated": "2026-10-22",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.2,
         "version": "4.0",
@@ -2179,7 +2179,7 @@
       "urgent": true,
       "reviewed_at": "2026-10-23",
       "source_changed": false,
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "193291b80ba176a8",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2212,7 +2212,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -2240,7 +2240,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-22",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.2,
         "version": "4.0",
@@ -2273,7 +2273,7 @@
         }
       ],
       "source_changed": false,
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "dc0b98f951df7a74",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2294,7 +2294,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-22",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.2,
         "version": "4.0",
@@ -2327,7 +2327,7 @@
         }
       ],
       "source_changed": false,
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "86cd17d41c219a2c",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2348,7 +2348,7 @@
       "ransomware": false,
       "published": "2026-10-20",
       "updated": "",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "incident",
@@ -2435,7 +2435,7 @@
       "ransomware": false,
       "published": "2026-10-14",
       "updated": "2026-10-15",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -2447,7 +2447,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "4a1c44dc6c12c60c",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2505,7 +2505,7 @@
       "ransomware": false,
       "published": "2026-10-05",
       "updated": "2026-10-19",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.3,
         "version": "4.0",
@@ -2517,7 +2517,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "ee28cfcb70c1982d",
       "priority": 1,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -2561,7 +2561,7 @@
       "ransomware": false,
       "published": "2026-10-04",
       "updated": "2026-10-05",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.7,
         "version": "4.0",
@@ -2573,7 +2573,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "37e7ed03c1d8d1ef",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2616,7 +2616,7 @@
       "ransomware": false,
       "published": "2026-10-01",
       "updated": "2026-10-07",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -2628,7 +2628,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "8d78384b6f3068b4",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -2683,7 +2683,7 @@
       "ransomware": false,
       "published": "2026-09-30",
       "updated": "2026-10-08",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.5,
         "version": "4.0",
@@ -2695,7 +2695,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "ca88b56e9ac80971",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3148,7 +3148,7 @@
       "ransomware": false,
       "published": "2026-09-30",
       "updated": "2026-10-02",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -3160,7 +3160,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "64996af4379db420",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3213,7 +3213,7 @@
       "ransomware": false,
       "published": "2026-09-23",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 4.3,
         "version": "3.1",
@@ -3225,7 +3225,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "cf3830f86d8c662e",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3278,7 +3278,7 @@
       "ransomware": false,
       "published": "2026-09-23",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 6.9,
         "version": "4.0",
@@ -3290,7 +3290,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "c31192b32fe0f4c1",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3343,7 +3343,7 @@
       "ransomware": false,
       "published": "2026-09-23",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 4.3,
         "version": "3.1",
@@ -3355,7 +3355,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "aa54b0bcffb96858",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3408,7 +3408,7 @@
       "ransomware": false,
       "published": "2026-09-23",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.6,
         "version": "4.0",
@@ -3420,7 +3420,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "c628ce79de37e0af",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3469,7 +3469,7 @@
       "ransomware": false,
       "published": "2026-09-22",
       "updated": "2026-09-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -3481,7 +3481,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "6aa698ced6fb55f9",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3526,7 +3526,7 @@
       "ransomware": false,
       "published": "2026-09-22",
       "updated": "2026-09-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -3538,7 +3538,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "de6339eac39be522",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3581,7 +3581,7 @@
       "ransomware": false,
       "published": "2026-09-17",
       "updated": "2026-09-18",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 7.8,
         "version": "3.0",
@@ -3593,7 +3593,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "a9dec237ad549ac8",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3640,7 +3640,7 @@
       "ransomware": false,
       "published": "2026-09-12",
       "updated": "2026-09-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -3652,7 +3652,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "e49c95bc87ece022",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3705,7 +3705,7 @@
       "ransomware": false,
       "published": "2026-09-05",
       "updated": "2026-09-26",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 6.9,
         "version": "4.0",
@@ -3717,7 +3717,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "a159c34ce25502eb",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3762,7 +3762,7 @@
       "ransomware": false,
       "published": "2026-08-11",
       "updated": "2026-09-25",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.1,
         "version": "3.1",
@@ -3774,7 +3774,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "feb53a202f7c020a",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3848,7 +3848,7 @@
       "ransomware": false,
       "published": "2026-06-25",
       "updated": "2026-09-19",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.8,
         "version": "3.1",
@@ -3860,7 +3860,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "97c42e7a730feed0",
       "priority": 1,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -3917,7 +3917,7 @@
       "ransomware": false,
       "published": "2026-04-14",
       "updated": "2026-10-17",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 5.4,
         "version": "3.1",
@@ -3929,7 +3929,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "e3c7bb56712e4911",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -3970,7 +3970,7 @@
       "ransomware": false,
       "published": "2026-04-09",
       "updated": "2026-09-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.06561,
@@ -3978,7 +3978,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "b2017338f3c4c878",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4044,7 +4044,7 @@
       "ransomware": false,
       "published": "2025-10-13",
       "updated": "2026-10-15",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 7.8,
         "version": "3.1",
@@ -4056,7 +4056,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "4c7e04f65e3ef136",
       "priority": 1,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -4118,7 +4118,7 @@
       "ransomware": false,
       "published": "2025-09-05",
       "updated": "2026-10-07",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.8,
         "version": "3.1",
@@ -4130,7 +4130,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "9b817d83c276a756",
       "priority": 1,
       "changed_at": "2026-10-23T05:08:29Z",
@@ -4177,7 +4177,7 @@
       "ransomware": false,
       "published": "2025-07-17",
       "updated": "2026-03-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 9.2,
         "version": "4.0",
@@ -4189,7 +4189,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "a61fc5f40eb8ce7f",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4238,7 +4238,7 @@
       "ransomware": false,
       "published": "2024-01-12",
       "updated": "2026-08-15",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 10,
         "version": "3.1",
@@ -4250,7 +4250,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "6d111325cab1de84",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4299,7 +4299,7 @@
       "ransomware": false,
       "published": "2021-06-11",
       "updated": "2026-10-01",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 6.8,
         "version": "3.1",
@@ -4311,7 +4311,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "938deec8718bb318",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4362,7 +4362,7 @@
       "ransomware": false,
       "published": "2015-07-29",
       "updated": "2026-10-09",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.99409,
@@ -4370,7 +4370,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "2045039bd2fa5334",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4405,7 +4405,7 @@
       "ransomware": false,
       "published": "2015-05-18",
       "updated": "2026-10-09",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.99497,
@@ -4413,7 +4413,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "97ebc0baaefc9c3e",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4464,7 +4464,7 @@
       "ransomware": false,
       "published": "2014-04-07",
       "updated": "2025-10-22",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": {
         "score": 0.99999,
@@ -4472,7 +4472,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "d3f9263b6c3c3503",
       "priority": 1,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4521,7 +4521,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 2.7,
         "version": "3.1",
@@ -4533,7 +4533,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "2ea0d16c6a15b0fc",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4566,7 +4566,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4603,7 +4603,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4640,7 +4640,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4693,7 +4693,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 3.5,
         "version": "3.1",
@@ -4705,7 +4705,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "f7ce989562150f18",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4754,7 +4754,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 4.3,
         "version": "3.1",
@@ -4766,7 +4766,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "541ab65f05014df4",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -4799,7 +4799,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4836,7 +4836,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4873,7 +4873,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4910,7 +4910,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4947,7 +4947,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "vulnerability",
@@ -4996,7 +4996,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 7.5,
         "version": "3.1",
@@ -5008,7 +5008,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "6326581a8f0de7f4",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5053,7 +5053,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 3.1,
         "version": "3.1",
@@ -5065,7 +5065,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "36654a3dbfe239c3",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5110,7 +5110,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 4.3,
         "version": "3.1",
@@ -5122,7 +5122,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "e9d1e136c71fbc3e",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5171,7 +5171,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 6.8,
         "version": "3.1",
@@ -5183,7 +5183,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "86db4702bd21beec",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5232,7 +5232,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 4.3,
         "version": "3.1",
@@ -5244,7 +5244,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "3ae5f7ef0c6f925b",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5293,7 +5293,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 3.1,
         "version": "3.1",
@@ -5305,7 +5305,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "b5c340424c5f3790",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5354,7 +5354,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-23",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 8.2,
         "version": "3.1",
@@ -5366,7 +5366,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "036b4c734f3cfb70",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5415,7 +5415,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": {
         "score": 5.9,
         "version": "3.1",
@@ -5427,7 +5427,7 @@
         "date": "2026-10-22"
       },
       "kind": "vulnerability",
-      "cve_checked_at": "2026-10-23T05:12:57Z",
+      "cve_checked_at": "2026-10-23T05:18:12Z",
       "revision": "5d7a82078e55c334",
       "priority": 2,
       "changed_at": "2026-10-23T04:57:16Z",
@@ -5456,7 +5456,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5488,7 +5488,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5520,7 +5520,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5552,7 +5552,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5584,7 +5584,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5616,7 +5616,7 @@
       "ransomware": false,
       "published": "2026-10-21",
       "updated": "2026-10-21",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5648,7 +5648,7 @@
       "ransomware": false,
       "published": "2026-10-12",
       "updated": "2026-10-12",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5680,7 +5680,7 @@
       "ransomware": false,
       "published": "2026-10-02",
       "updated": "2026-10-02",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5712,7 +5712,7 @@
       "ransomware": false,
       "published": "2026-07-29",
       "updated": "2026-07-29",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
@@ -5744,7 +5744,7 @@
       "ransomware": false,
       "published": "2026-06-18",
       "updated": "2026-06-18",
-      "checked_at": "2026-10-23T05:12:57Z",
+      "checked_at": "2026-10-23T05:18:12Z",
       "cvss": null,
       "epss": null,
       "kind": "release",
