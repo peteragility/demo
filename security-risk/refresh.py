@@ -180,12 +180,16 @@ def feed_records(key, text, now):
     return result
 
 
-def vendor_records(key, now):
+def vendor_records(key, now, failures=None):
     records = feed_records(key, fetch(FEEDS[key][1]), now)
     if key == 'ca': return records
     # Inspect every available release in the retention window, not only the latest one.
     def discover(release):
-        text = plain(fetch(release['sources'][0]['url']))
+        url = release['sources'][0]['url']
+        try:
+            text = plain(fetch(url))
+        except Exception as error:
+            return [], url + ': ' + type(error).__name__
         discovered = []
         for rid in dict.fromkeys(re.findall(r'CVE-\d{4}-\d{4,8}', text)):
             record = release.copy()
@@ -193,10 +197,15 @@ def vendor_records(key, now):
                           description='CVE referenced in the official security release. See the advisory for affected configurations.',
                           sources=release['sources'] + [{'label': 'CVE record', 'url': 'https://www.cve.org/CVERecord?id=' + rid}])
             discovered.append(record)
-        return discovered
+        return discovered, None
     discovered = []
+    failed = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
-        for found in pool.map(discover, records): discovered.extend(found)
+        for found, error in pool.map(discover, records):
+            discovered.extend(found)
+            if error: failed.append(error)
+    if failures is not None: failures.extend(failed)
+    elif failed: raise ValueError('; '.join(failed))
     unique = {}
     for record in discovered:
         prior = unique.get(record['id'])
@@ -245,10 +254,12 @@ def enrich(record, now):
                 if 'baseScore' in score:
                     record['cvss'] = {'score': score['baseScore'], 'version': score.get('version', '?'), 'vector': score.get('vectorString', '')}; break
             if record['cvss']: break
+        # Replace yesterday's CNA references; do not accumulate duplicates or stale links.
+        record['sources'] = [s for s in record['sources'] if not s['label'].startswith('CNA reference')]
         for ref in cna.get('references', []):
             url = ref.get('url', '')
             # CVE references are not all vendor advisories. Label provenance honestly.
-            if safe_url(url) and not any(x in url.lower() for x in ('exploit', 'metasploit', 'poc')):
+            if safe_url(url) and not any(s['url'] == url for s in record['sources']) and not any(x in url.lower() for x in ('exploit', 'metasploit', 'poc')):
                 record['sources'].append({'label': 'CNA reference · ' + urllib.parse.urlsplit(url).hostname, 'url': url})
                 if len(record['sources']) >= 6: break
         return record, None
@@ -368,7 +379,12 @@ def run(output):
                 catalog = prior.copy(); catalog.update(catalog_missing=True, kev=False, checked_at=now); fresh[rid] = catalog
         records.update(fresh)
     for key, (label, url, _, _) in FEEDS.items():
-        found = source(key, label, url, lambda k=key: vendor_records(k, now))
+        page_failures = []
+        found = source(key, label, url, lambda k=key: vendor_records(k, now, page_failures))
+        if page_failures:
+            sources[-1].update(status='failed', error='; '.join(page_failures)[:800],
+                               last_success=old_sources.get(key, {}).get('last_success', ''))
+            errors.append(key)
         if found is not None:
             for r in found:
                 if r['id'] not in records: records[r['id']] = r
@@ -410,6 +426,9 @@ def run(output):
                 r.update(kev=True, kev_added=fact['dateAdded'], ransomware=fact.get('knownRansomwareCampaignUse') == 'Known')
                 if not any(s['label'] == 'CISA KEV' for s in r['sources']):
                     r['sources'].append({'label': 'CISA KEV', 'url': 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=' + rid})
+            elif r.get('kev') or r.get('catalog_missing'):
+                # A successful catalog read is authoritative for every source type.
+                r.update(kev=False, ransomware=False, catalog_missing=True)
 
     cves = [r for r in records.values() if cve_id(r['id'])]
     cve_errors, cve_pending = [], []
@@ -418,11 +437,11 @@ def run(output):
             if error and error.startswith('pending:'):
                 cve_pending.append(record['id'])
             elif error:
-                prior = old.get(record['id'], {})
-                for key in ('affected', 'fixed', 'conditions', 'cvss', 'published', 'updated', 'source_updated_at', 'cve_checked_at'):
-                    if key in prior: record[key] = prior[key]
                 cve_errors.append(error)
             prior = old.get(record['id'], {})
+            if error:
+                for key in ('affected', 'fixed', 'conditions', 'cvss', 'published', 'updated', 'source_updated_at', 'cve_checked_at'):
+                    if key in prior: record[key] = prior[key]
             for field in ('advisory_published_at', 'material_updated_at'):
                 if field == 'advisory_published_at' and prior.get(field) and record.get(field): record[field] = min(record[field], prior[field])
                 elif not record.get(field) and prior.get(field): record[field] = prior[field]

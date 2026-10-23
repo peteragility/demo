@@ -14,6 +14,8 @@ The nightly collector fetches every KEV addition within six months, rather than 
 
 Feed history and these monitored sources do not constitute a complete global vulnerability inventory. Failed sources preserve previous records and original dates. Pending CNA publication remains labelled pending; failed enrichment is shown in source health. Final validation checks date windows, eligibility, source URLs, revisions and counts before atomically replacing the snapshot.
 
+One failed vendor advisory page does not discard other discoveries from that feed: the snapshot keeps successful discoveries and reports the failed page in source health. Temporarily unavailable CNA records retain previously confirmed scores, fixed builds and their verification dates. A successful KEV read clears outdated exploitation and ransomware flags for entries no longer listed, regardless of which feed originally discovered them. CNA reference links are replaced and deduplicated on each successful read.
+
 ## Reviewed recommendations
 
 `curated.json` contains concise reviewed explanations and actions, with official source links and review dates. Source fingerprint changes flag those summaries for rereading; they do not advance the risk date. After reading and updating an advisory, set `accept_source_change` to the observed fingerprint in the matching `reviewed-*` source. Exact fixed versions come from explicit CNA unaffected builds or reviewed vendor notices, never inferred from affected-range boundaries. Distribution backports require vendor confirmation.
@@ -21,6 +23,8 @@ Feed history and these monitored sources do not constitute a complete global vul
 ## Nightly Git job
 
 `.github/workflows/security-risk.yml` runs at **23:17 Asia/Hong_Kong** (`17 15 * * *` UTC), or on manual dispatch. It fetches source evidence, reevaluates the last-30-day high-risk list, moves older entries into the six-month archive, validates date/eligibility rules, reports source health and period counts, commits only `data.json` and requests a GitHub Pages build. A partial snapshot is published with failure health and the run fails visibly. The job performs automated source and policy checks; it does not claim a human or LLM review of new advisory text. GitHub may delay starts or disable inactive schedules.
+
+The refresh job waits for the validation job (including browser checks) to pass before it runs. Refreshed data then passes its own schema and decision-rule checks before publication.
 
 ## Validation
 

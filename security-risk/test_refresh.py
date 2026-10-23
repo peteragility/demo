@@ -29,6 +29,62 @@ class RefreshTests(unittest.TestCase):
         self.assertTrue(error.startswith('pending:'))
         self.assertIsNone(result['cvss'])
 
+    def test_one_vendor_page_failure_keeps_other_new_cves(self):
+        feed = '''<rss><channel><item><title>Security release</title><link>https://nodejs.org/good</link><pubDate>Wed, 21 Oct 2026 00:00:00 GMT</pubDate></item><item><title>Older security release</title><link>https://nodejs.org/bad</link><pubDate>Tue, 20 Oct 2026 00:00:00 GMT</pubDate></item></channel></rss>'''
+        def read(url):
+            if url == R.FEEDS['node'][1]: return feed
+            if url.endswith('/bad'): raise OSError('temporary outage')
+            return '<p>CVE-2026-12345</p>'
+        failures = []
+        with patch.object(R, 'fetch', side_effect=read):
+            records = R.vendor_records('node', '2026-10-23T00:00:00Z', failures)
+        self.assertIn('CVE-2026-12345', [r['id'] for r in records])
+        self.assertEqual(len(failures), 1)
+        self.assertIn('/bad', failures[0])
+
+    def test_repeated_enrichment_replaces_cna_references(self):
+        record = dict(id='CVE-2026-1234', product='Test', source_id='kev', sources=[
+            {'label': 'Vendor', 'url': 'https://vendor.test/advisory'},
+            {'label': 'CNA reference · old.test', 'url': 'https://old.test/stale'}])
+        cna = {'descriptions': [{'lang': 'en', 'value': 'Example'}], 'references': [
+            {'url': 'https://vendor.test/advisory'}, {'url': 'https://new.test/current'},
+            {'url': 'https://new.test/current'}]}
+        with patch.object(R, 'fetch', return_value={'containers': {'cna': cna}}):
+            first, error = R.enrich(record, '2026-10-23T00:00:00Z')
+            self.assertIsNone(error)
+            first_sources = copy.deepcopy(first['sources'])
+            second, error = R.enrich(first, '2026-10-24T00:00:00Z')
+        self.assertIsNone(error)
+        self.assertEqual(second['sources'], first_sources)
+        self.assertEqual([s['url'] for s in second['sources']], ['https://vendor.test/advisory', 'https://new.test/current'])
+
+    def test_pending_cna_preserves_prior_score_and_removed_kev_clears_vendor_label(self):
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            output = Path(tmp) / 'data.json'
+            with patch.object(R, 'fetch', side_effect=self.fixture), patch.object(R, 'stamp', return_value='2026-10-23T01:00:00Z'):
+                R.run(output)
+            first = json.loads(output.read_text())
+            prior = next(r for r in first['records'] if r['id'] == 'CVE-2026-10000')
+            prior.update(cvss={'score': 9.8, 'version': '3.1'}, fixed=['Confirmed fixed build'], cve_checked_at='2026-10-22T01:00:00Z')
+            prior['revision'] = R.revision(prior)
+            vendor = next(r for r in first['records'] if r['id'] == 'CVE-2026-109618')
+            vendor.update(kev=True, kev_added='2026-10-22', ransomware=True)
+            output.write_text(json.dumps(first))
+            def read(url, as_json=False):
+                if url.endswith('/CVE-2026-10000'):
+                    raise urllib.error.HTTPError(url, 404, 'temporarily missing', {}, None)
+                return self.fixture(url, as_json)
+            with patch.object(R, 'fetch', side_effect=read), patch.object(R, 'stamp', return_value='2026-10-24T01:00:00Z'):
+                R.run(output)
+            second = json.loads(output.read_text())
+            record = next(r for r in second['records'] if r['id'] == prior['id'])
+            for key in ('cvss', 'fixed', 'cve_checked_at'): self.assertEqual(record[key], prior[key])
+            self.assertEqual(record['cve_status'], 'awaiting public CNA record')
+            vendor = next(r for r in second['records'] if r['id'] == vendor['id'])
+            self.assertFalse(vendor['kev'])
+            self.assertFalse(vendor['ransomware'])
+            self.assertTrue(vendor['catalog_missing'])
+
     def test_material_revisions_ignore_daily_check_and_epss(self):
         r = {'title': 'A', 'action': 'Patch', 'affected': ['1.x'], 'checked_at': 'old', 'epss': {'score': 0.1}}
         new = {**r, 'checked_at': 'new', 'epss': {'score': 0.9}}
