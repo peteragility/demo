@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-10-21",
+ "ranked_at": "2026-10-24",
  "top": 50,
  "entries": 50,
  "models": {
@@ -35,13 +35,13 @@
    "rank": 9,
    "arena": "GPT-6 Sol (Max)"
   },
-  "google/gemini-4-argon": {
-   "rank": 10,
-   "arena": "Gemini 4 Argon (High)"
-  },
   "qwen/qwen3.8-max": {
-   "rank": 11,
+   "rank": 10,
    "arena": "Qwen3.8-Max (0902)"
+  },
+  "google/gemini-4-argon": {
+   "rank": 11,
+   "arena": "Gemini 4 Argon (High)"
   },
   "deepseek/deepseek-v4.1-flash": {
    "rank": 13,
@@ -64,7 +64,7 @@
    "arena": "Claude Fable 5 (High)"
   },
   "zai/glm-5.3": {
-   "rank": 25,
+   "rank": 24,
    "arena": "GLM-5.3 (Max)"
   },
   "xai/grok-4.6": {
@@ -95,13 +95,13 @@
    "rank": 33,
    "arena": "MiniMax-M3.1-Flash"
   },
-  "anthropic/claude-haiku-5.5": {
-   "rank": 34,
-   "arena": "Claude Haiku 5.5 (High)"
-  },
   "google/gemini-3.8-flash": {
-   "rank": 35,
+   "rank": 34,
    "arena": "Gemini 3.8 Flash (High)"
+  },
+  "anthropic/claude-haiku-5.5": {
+   "rank": 35,
+   "arena": "Claude Haiku 5.5 (High)"
   },
   "deepseek/deepseek-v4-pro": {
    "rank": 36,

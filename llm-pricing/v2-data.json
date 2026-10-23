@@ -7120,7 +7120,7 @@
         "databricks": {
           "in": 0.3,
           "out": 1.2,
-          "cache_read": 0.03,
+          "cache_read": 0.007,
           "tier": "Standard pay-per-token",
           "src": "dbx_oss",
           "status": "priced",
@@ -7128,7 +7128,7 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-09",
+          "pricing_checked_at": "2026-10-24",
           "availability_checked_at": "2026-10-21",
           "model_id_source": "dbx_models",
           "model_id_checked_at": "2026-10-09",
@@ -27931,8 +27931,9 @@
       }
     }
   },
-  "reviewed_at": "2026-10-09",
+  "reviewed_at": "2026-10-24",
   "changes": [
+    "2026-10-24: DeepSeek V4.1 Flash on Databricks FMAPI: cache read $0.03 → $0.007, applied by the daily check from its official source.",
     "2026-10-09: The list follows arena.ai's Best WebDev (Code | Overall) top 50 instead of Best Overall (Agent), shown when a compared platform sells the model with general access. Added Claude Opus 4.7 and Opus 4.6 (Databricks, Bedrock, Vertex, Azure Foundry) and Qwen3.8 Flash (Alibaba Cloud; arena: Qwen3.8 Flash Next); Claude Haiku 5.5 is #30, with a 1M context billed at 5x over 100K prompt tokens on every platform and US-only inference on the Claude API.",
     "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
     "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",

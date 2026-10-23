@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "checked_at": "2026-10-23",
+ "checked_at": "2026-10-24",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
- "published_at": "2026-10-19",
+ "published_at": "2026-10-22",
  "board_id": "webdev",
  "entries": [
   {
@@ -52,13 +52,13 @@
   },
   {
    "rank": 10,
-   "modelDisplayName": "Gemini 4 Argon (High)",
-   "modelOrganization": "google"
+   "modelDisplayName": "Qwen3.8-Max (0902)",
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 11,
-   "modelDisplayName": "Qwen3.8-Max (0902)",
-   "modelOrganization": "alibaba"
+   "modelDisplayName": "Gemini 4 Argon (High)",
+   "modelOrganization": "google"
   },
   {
    "rank": 12,
@@ -72,13 +72,13 @@
   },
   {
    "rank": 14,
-   "modelDisplayName": "Muse Spark 1.3 (Max)",
-   "modelOrganization": "meta"
+   "modelDisplayName": "Claude Opus 5 (High)",
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 15,
-   "modelDisplayName": "Claude Opus 5 (High)",
-   "modelOrganization": "anthropic"
+   "modelDisplayName": "Muse Spark 1.3 (Max)",
+   "modelOrganization": "meta"
   },
   {
    "rank": 16,
@@ -122,13 +122,13 @@
   },
   {
    "rank": 24,
-   "modelDisplayName": "Muse Spark 1.3 (xHigh)",
-   "modelOrganization": "meta"
+   "modelDisplayName": "GLM-5.3 (Max)",
+   "modelOrganization": "zai"
   },
   {
    "rank": 25,
-   "modelDisplayName": "GLM-5.3 (Max)",
-   "modelOrganization": "zai"
+   "modelDisplayName": "Muse Spark 1.3 (xHigh)",
+   "modelOrganization": "meta"
   },
   {
    "rank": 26,
@@ -172,13 +172,13 @@
   },
   {
    "rank": 34,
-   "modelDisplayName": "Claude Haiku 5.5 (High)",
-   "modelOrganization": "anthropic"
+   "modelDisplayName": "Gemini 3.8 Flash (High)",
+   "modelOrganization": "google"
   },
   {
    "rank": 35,
-   "modelDisplayName": "Gemini 3.8 Flash (High)",
-   "modelOrganization": "google"
+   "modelDisplayName": "Claude Haiku 5.5 (High)",
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 36,
