@@ -27,13 +27,16 @@ export async function withBrowser(root, task) {
   const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
   try {
     const portFile = path.join(profile, 'DevToolsActivePort');
-    for (let n = 0; n < 100; n++) {
+    for (let n = 0; n < 300; n++) {
       if (launchError) throw launchError;
       try { await fs.access(portFile); break; } catch {}
       if (proc.exitCode !== null) throw new Error('Chrome stopped: ' + log.slice(-1000));
       await pause(100);
     }
-    const [port, wsPath] = (await fs.readFile(portFile, 'utf8')).trim().split('\n');
+    let portData;
+    try { portData = await fs.readFile(portFile, 'utf8'); }
+    catch { throw new Error('Chrome did not expose its debugging port within 30 seconds: ' + log.slice(-2000)); }
+    const [port, wsPath] = portData.trim().split('\n');
     socket = new WebSocket('ws://127.0.0.1:' + port + wsPath);
     await new Promise((resolve,reject) => {socket.addEventListener('open',resolve,{once:true});socket.addEventListener('error',reject,{once:true});});
     socket.addEventListener('message', event => {
