@@ -6,9 +6,9 @@ on:
     - cron: '17 15 * * *'
   workflow_dispatch:
   push:
-    paths: ['security-risk/**', '.github/workflows/security-risk.yml']
+    paths: ['security-risk/**', 'scripts/browser-kit.mjs', '.github/workflows/security-risk.yml']
   pull_request:
-    paths: ['security-risk/**', '.github/workflows/security-risk.yml']
+    paths: ['security-risk/**', 'scripts/browser-kit.mjs', '.github/workflows/security-risk.yml']
 
 permissions:
   contents: read
