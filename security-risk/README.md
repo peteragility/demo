@@ -4,21 +4,22 @@ An information page at https://peteragility.github.io/demo/security-risk/, using
 
 Each row shows CVSS, risk date, product/issue, a brief explanation, exploitation evidence and recommended action. Expanding it shows affected/fixed versions, configuration prerequisites, dates and source links. Search applies within the selected period. No package installation or API keys are needed.
 
-## Ranking and potential reach
+## Generic ranking rules
 
-The default ranking uses explicit priority groups rather than inventing a social-impact number:
+Every entry is evaluated by the same rules. There are no product-name/CVE lists, category boosts or manual scope labels. The editorial `urgent` flag controls inclusion of unscored notices only; it does not boost ranking. The previous `impact_scope` overrides have been removed from both curated input and the published snapshot.
 
-1. **Broad impact · urgent:** a sourced, reviewed `impact_scope` for shared trust infrastructure or a broad software stack, combined with an urgent flag, KEV evidence or critical CVSS. Shared trust infrastructure sorts before broad software stacks; CVSS breaks ties within each scope.
-2. **Exploited · critical:** KEV-confirmed exploitation with CVSS 9.0+ or known ransomware use.
-3. All other qualifying risks by CVSS descending, then exploitation evidence and risk date.
+1. **Reported shared-trust / distribution compromise:** conservative text patterns detect compromised/stolen signing or CA keys, poisoned package registries, compromised update channels or malicious updates distributed to customers. The classifier reads only `ranking_evidence.text` fetched from a source, not curated headlines or descriptions. It requires an HTTPS evidence URL and suppresses sentences with hypothetical, negative, historical or remediated wording. This is a text inference, not a population-impact measurement, and it can miss differently worded reports.
+2. **Exploited · critical:** CISA KEV plus CVSS 9.0+ or known ransomware use.
+3. **Critical · unauthenticated remote:** CVSS 9.0+ with AV:N, AC:L, PR:N and UI:N; v4 additionally requires AT:N. Missing metrics never default to easy exploitation.
+4. Remaining risks by CVSS severity.
 
-The eMudhra CA incident has reviewed shared-trust scope; the two PHP emergency flaws have reviewed software-stack scope. These entries are selected on published configuration reach, not product-name matches or manual row positions. The row shows its scope and priority group; details explain why it ranks there and link to scope evidence. Unknown scope is **unassessed**, not low impact. No server, organization or person counts are inferred. Pure CVSS sorting ignores the priority groups and leaves unscored entries at the end. Both ranking modes preserve the 30-day and six-month windows.
+Within a group, ties use CVSS descending, KEV evidence, EPSS probability, risk date and a stable ID fallback. Pure CVSS sorting ignores the groups and EPSS. Unscored entries retain an unknown CVSS. No deployment, organization or person counts are invented. Neither ranking mode bypasses category/search/date filters.
 
-`curated.json` owns reviewed scope metadata (`level`, `summary`, `reviewed_at`, `sources`); the refresher preserves and validates it nightly. New entries need explicit reviewed scope evidence to enter the broad-impact group. Adding scope metadata alone does not reset the risk date. The footer describes the ranking without linking to the pricing page.
+The collector captures `ranking_evidence` (`text`, `url`) automatically from vendor feeds, CNA title/description records, or the fetched source for a non-CVE incident. Curated issue/action summaries cannot overwrite it. Daily runs refresh this evidence and the browser recomputes ranking using `model.js`. Tests verify that changing names, IDs, categories and urgency flags leaves priority unchanged when the evidence/metrics are identical, and that fresh anonymous entries qualify without curated metadata.
 
 ## Scope and retention
 
-High risk means CVSS **7.0+**, inclusion in CISA KEV, or an explicitly reviewed urgent incident (including unscored CA compromises). Rejected CVEs and lower-risk informational releases are excluded. Missing scores remain unknown. Related CVEs remain individual rows with their own descriptions and scores.
+High risk means CVSS **7.0+**, inclusion in CISA KEV, a source-text signal of shared-trust/distribution compromise, or an explicitly reviewed urgent notice. New systemic incidents can qualify automatically without a manual urgency flag. Rejected CVEs and lower-risk informational releases are excluded. Missing scores remain unknown. Related CVEs remain individual rows with their own descriptions and scores.
 
 Dates use Hong Kong calendar days: the current view includes today plus the preceding 29 days. The archive covers earlier entries back to six calendar months before today, clamping month-end dates. Risk date is the latest applicable disclosure date, KEV addition, or confirmed technical advisory update. Source-check dates, first ingestion, fingerprint changes, EPSS changes and metadata-only CNA updates never reset recency. The date's reason appears on each row. An old CVE newly added to KEV can therefore appear in the current view, explicitly labelled **Added to KEV**.
 

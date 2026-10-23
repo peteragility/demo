@@ -13,9 +13,10 @@
   function details(r){
     const tr=node('tr',null,{class:'detail',id:'detail-'+r.id}),td=node('td',null,{colspan:6});tr.append(td);
     td.append(node('h2',r.title),node('p',r.description));
-    const scopeInfo=M.reach(r),priority=state.sort==='cvss'?{label:'CVSS severity',reason:r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.'}:M.priority(r),impact=node('section',null,{class:'impact-note'});
+    const priority=state.sort==='cvss'?{label:'CVSS severity',reason:r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.'}:M.priority(r),impact=node('section',null,{class:'impact-note'});
     impact.append(node('h3','Why this ranks here'),node('p',priority.label+' · '+priority.reason));
-    if(scopeInfo){impact.append(node('p','Potential reach: '+scopeInfo.label+'. '+scopeInfo.summary),node('p','This describes infrastructure and configuration scope, not measured numbers of compromised servers or people.'),node('p','Scope reviewed '+date(scopeInfo.reviewed_at),{class:'fine'}));for(const s of scopeInfo.sources)impact.append(sourceLink(s));}
+    impact.append(node('p','Rules use source evidence and CVSS metrics. Affected server, organization and person counts are unknown; no issue receives a manual ranking boost.'));
+    if(r.ranking_evidence)impact.append(sourceLink({label:'Ranking evidence',url:r.ranking_evidence.url}));
     td.append(impact);
     const cards=node('div',null,{class:'cards'}),fix=node('section',null,{class:'card'}),scope=node('section',null,{class:'card'});
     fix.append(node('h3','Recommended action'),node('p',r.action),node('h3','Fixed / unaffected versions'),bullets(r.fixed,'See the official vendor advisory for the supported fixed build and distribution backports.'));
@@ -50,9 +51,8 @@
       const issue=node('th',null,{scope:'row',class:'issue'}),button=node('button',null,{type:'button','aria-expanded':String(state.open.has(r.id)),'aria-controls':'detail-'+r.id,class:'issuebtn'});
       button.append(node('b',r.product+' ›'),node('span',r.title));button.addEventListener('click',()=>{state.open.has(r.id)?state.open.delete(r.id):state.open.add(r.id);render();});
       issue.append(button,node('small',(/^CVE-/.test(r.id)?r.id+' · ':'')+M.layers[r.layer]));
-      const scope=M.reach(r),ranking=M.priority(r);
-      if(scope)issue.append(node('small',scope.label,{class:'reach-label',title:scope.summary}));
-      if(state.sort!=='cvss'&&ranking.tier<2)issue.append(node('small',ranking.label,{class:'priority-label',title:ranking.reason}));
+      const ranking=M.priority(r);
+      if(state.sort!=='cvss'&&ranking.tier<3)issue.append(node('small',ranking.label,{class:'priority-label',title:ranking.reason}));
       const about=node('td',null,{class:'about'});about.append(node('p',r.description,{title:r.description}));
       const evidence=node('td',r.kev?'KEV · exploited':'Not in KEV',{class:'evidence'+(r.kev?' known':'')});
       const briefAction=/BOD|ensuring compliance/.test(r.action)?'Apply vendor security updates or mitigations. If no remedy is available, discontinue use.':r.action;

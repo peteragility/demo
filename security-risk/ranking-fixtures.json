@@ -1,0 +1,50 @@
+[
+  {
+    "text": "Compromised CA keys allow forged certificates.",
+    "signal": "trust"
+  },
+  {
+    "text": "The code-signing keys were stolen.",
+    "signal": "trust"
+  },
+  {
+    "text": "A poisoned package registry distributed malicious builds.",
+    "signal": "distribution"
+  },
+  {
+    "text": "Malicious software updates were distributed to customers.",
+    "signal": "distribution"
+  },
+  {
+    "text": "No compromised CA keys were found.",
+    "signal": null
+  },
+  {
+    "text": "CA keys might be compromised.",
+    "signal": null
+  },
+  {
+    "text": "Previously compromised code-signing keys were remediated.",
+    "signal": null
+  },
+  {
+    "text": "Compromised application keys were found.",
+    "signal": null
+  },
+  {
+    "text": "Update the browser trust store.",
+    "signal": null
+  },
+  {
+    "text": "Update software to prevent compromise of CA keys.",
+    "signal": null
+  },
+  {
+    "text": "We are investigating whether code-signing keys were compromised.",
+    "signal": null
+  },
+  {
+    "text": "CA keys are potentially compromised.",
+    "signal": null
+  }
+]

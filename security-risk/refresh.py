@@ -175,7 +175,9 @@ def feed_records(key, text, now):
                            action='Check the official advisory for affected configurations and install the appropriate supported security release.' if key != 'ca' else 'Inventory certificate issuers and chains; follow the browser root-program notice and replace affected certificates.',
                            affected=[], fixed=[], conditions=[], sources=[{'label': label, 'url': url}], source_id=key,
                            kev=False, kev_added='', ransomware=False, published=day, updated=day, checked_at=now,
-                           cvss=None, epss=None, advisory_published_at=day, kind='incident' if key == 'ca' else 'release'))
+                           cvss=None, epss=None, advisory_published_at=day,
+                           ranking_evidence={'text': (title + '\n' + body)[:4000], 'url': url},
+                           kind='incident' if key == 'ca' else 'release'))
     # An otherwise valid feed can have no security releases within six months.
     return result
 
@@ -226,6 +228,9 @@ def enrich(record, now):
         record['source_updated_at'] = data.get('cveMetadata', {}).get('dateUpdated', '')
         record['cve_checked_at'] = now
         record.pop('cve_status', None)
+        raw_description = next((x.get('value', '') for x in cna.get('descriptions', []) if x.get('lang', '').startswith('en')), '')
+        record['ranking_evidence'] = {'text': (plain(cna.get('title')) + '\n' + plain(raw_description))[:4000],
+                                      'url': 'https://www.cve.org/CVERecord?id=' + record['id']}
         if record.get('source_id') != 'kev':
             record['title'] = plain(cna.get('title')) or record['title']
             description = next((x.get('value') for x in cna.get('descriptions', []) if x.get('lang', '').startswith('en')), '')
@@ -272,21 +277,12 @@ def enrich(record, now):
         return record, record['id'] + ': ' + type(error).__name__
 
 
-MATERIAL = ('title', 'description', 'action', 'affected', 'fixed', 'conditions', 'kev', 'ransomware', 'cvss', 'sources', 'rejected', 'source_changed', 'catalog_missing', 'impact_scope')
+MATERIAL = ('title', 'description', 'action', 'affected', 'fixed', 'conditions', 'kev', 'ransomware', 'cvss', 'sources', 'rejected', 'source_changed', 'catalog_missing')
 
 
 def revision(record):
-    facts = {k: record.get(k) for k in MATERIAL if k != 'impact_scope' or record.get(k)}
+    facts = {k: record.get(k) for k in MATERIAL}
     return hashlib.sha256(json.dumps(facts, sort_keys=True).encode()).hexdigest()[:16]
-
-
-def priority(record):
-    if record.get('rejected'): return 3
-    score = (record.get('cvss') or {}).get('score', 0)
-    high_impact = record.get('impact') in ('Code execution', 'Auth bypass', 'Credential / session theft')
-    if record.get('kev') and (high_impact or record.get('ransomware')): return 0
-    if record.get('kev') or score >= 9 or record.get('urgent'): return 1
-    return 2
 
 
 def material_update(record, prior):
@@ -316,8 +312,21 @@ def risk_event(record, today):
     return max(valid, default=('', ''))
 
 
+def systemic_signal(record):
+    evidence = record.get('ranking_evidence') or {}
+    text = evidence.get('text')
+    if not isinstance(text, str) or not safe_url(evidence.get('url', '')): return None
+    for sentence in re.split(r'[.\n;]+', text):
+        if re.search(r'\b(no|not|never|without|unconfirmed|hypothetical|potential|potentially|possible|suspected|could|may|might|if|whether|prevent|avoid|prevented|previously|formerly|historical|resolved|remediated)\b', sentence, re.I): continue
+        lost_key = re.search(r'(?:compromis(?:ed|e)|stolen|leaked|exposed)[^.!?;]{0,70}\bkeys?\b|\bkeys?\b[^.!?;]{0,70}(?:compromised|stolen|leaked|exposed)', sentence, re.I)
+        trust_role = re.search(r'certificate authorit|\bCA\b|root certificate|trust store|code.signing|update.signing|package.signing|software.signing', sentence, re.I)
+        if lost_key and trust_role: return 'trust'
+        if re.search(r'(?:compromised|poisoned) (?:package registr(?:y|ies)|software update (?:channel|pipeline)s?)|malicious (?:software )?updates (?:were|are|have been) (?:distributed|delivered|published)', sentence, re.I): return 'distribution'
+    return None
+
+
 def high_risk(record):
-    return not record.get('rejected') and bool(record.get('kev') or record.get('urgent') or (record.get('cvss') or {}).get('score', -1) >= 7)
+    return not record.get('rejected') and bool(record.get('kev') or record.get('urgent') or (record.get('cvss') or {}).get('score', -1) >= 7 or systemic_signal(record))
 
 
 def retain(records, now):
@@ -326,7 +335,7 @@ def retain(records, now):
     current_count = sum(risk_event(r, today)[0] >= current for r in kept)
     return kept, dict(as_of=today, current_from=current, archive_from=archive,
                       current_count=current_count, archive_count=len(kept) - current_count,
-                      policy='CVSS >= 7.0, CISA KEV or reviewed urgent incident; disclosure / new KEV / material update dates')
+                      policy='CVSS >= 7.0, CISA KEV, source-reported systemic compromise or reviewed urgent notice; disclosure / new KEV / material update dates')
 
 
 def validate(data):
@@ -339,16 +348,12 @@ def validate(data):
         for s in r['sources']:
             if not safe_url(s['url']): raise ValueError('Unsafe source URL')
         if r.get('revision') != revision(r): raise ValueError('Revision mismatch')
-        if r.get('priority') != priority(r): raise ValueError('Priority mismatch')
         score = r.get('cvss')
         if score and not 0 <= float(score['score']) <= 10: raise ValueError('Invalid CVSS')
         epss = r.get('epss')
         if epss and not 0 <= float(epss['score']) <= 1: raise ValueError('Invalid EPSS')
-        scope = r.get('impact_scope')
-        if scope:
-            if scope.get('level') not in ('ecosystem', 'software-stack') or not isinstance(scope.get('summary'), str) or not scope['summary'].strip(): raise ValueError('Invalid impact scope')
-            dt.date.fromisoformat(scope.get('reviewed_at', ''))
-            if not scope.get('sources') or any(not safe_url(s['url']) for s in scope['sources']): raise ValueError('Unsafe impact evidence')
+        evidence = r.get('ranking_evidence')
+        if evidence and (not isinstance(evidence.get('text'), str) or len(evidence['text']) > 16000 or not safe_url(evidence.get('url', ''))): raise ValueError('Invalid ranking evidence')
     if 'scope' in data:
         kept, scope = retain(data['records'], data['last_attempt'])
         if len(kept) != len(data['records']) or scope != data['scope']: raise ValueError('Date window / high-risk scope mismatch')
@@ -413,6 +418,8 @@ def run(output):
             # Source changes do not silently re-verify human-authored technical claims.
             current['source_changed'] = (bool(prior.get('fingerprint') and prior['fingerprint'] != digest) or bool(old.get(rid, {}).get('source_changed'))) and entry.get('accept_source_change') != digest
             current['checked_at'] = now
+            if not cve_id(rid):
+                current['ranking_evidence'] = {'text': plain(state)[:16000], 'url': entry['sources'][0]['url']}
         else:
             sources[-1]['fingerprint'] = prior.get('fingerprint', '')
         records[rid] = current
@@ -446,7 +453,7 @@ def run(output):
                 cve_errors.append(error)
             prior = old.get(record['id'], {})
             if error:
-                for key in ('affected', 'fixed', 'conditions', 'cvss', 'published', 'updated', 'source_updated_at', 'cve_checked_at'):
+                for key in ('affected', 'fixed', 'conditions', 'cvss', 'published', 'updated', 'source_updated_at', 'cve_checked_at', 'ranking_evidence'):
                     if key in prior: record[key] = prior[key]
             for field in ('advisory_published_at', 'material_updated_at'):
                 if field == 'advisory_published_at' and prior.get(field) and record.get(field): record[field] = min(record[field], prior[field])
@@ -454,7 +461,7 @@ def run(output):
             records[record['id']] = record
     # Restore reviewed action/version text after CVE enrichment; never overwrite KEV evidence.
     for entry in curated:
-        for field in ('action', 'affected', 'fixed', 'conditions', 'urgent', 'impact', 'description', 'title', 'impact_scope'):
+        for field in ('action', 'affected', 'fixed', 'conditions', 'urgent', 'impact', 'description', 'title'):
             if field in entry: records[entry['id']][field] = entry[field]
     sources.append(dict(id='cve', label='CVE Program / CNA records', url='https://www.cve.org/', checked_at=now,
                         last_success=now if not cve_errors else old_sources.get('cve', {}).get('last_success', ''),
@@ -477,7 +484,9 @@ def run(output):
         for rid, r in records.items(): r['epss'] = old.get(rid, {}).get('epss')
     changes = []
     for rid, r in records.items():
-        r['revision'] = revision(r); r['priority'] = priority(r)
+        r.pop('impact_scope', None)
+        r.pop('priority', None)
+        r['revision'] = revision(r)
         prior = old.get(rid)
         r['material_updated_at'] = material_update(r, prior)
         if not prior or prior.get('revision') != r['revision']:
@@ -505,6 +514,6 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, default=ROOT / 'data.json')
     args = parser.parse_args()
     if args.check:
-        validate(json.loads(args.output.read_text())); print('PASS: snapshot schema, priorities, revisions and source URLs')
+        validate(json.loads(args.output.read_text())); print('PASS: snapshot schema, eligibility, revisions and source URLs')
     else:
         raise SystemExit(2 if run(args.output) else 0)

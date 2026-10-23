@@ -135,8 +135,9 @@ class RefreshTests(unittest.TestCase):
             for rid in ('CVE-2026-109618', 'CVE-2026-109619', 'emudhra-ca-2026-10'):
                 a = next(r for r in first['records'] if r['id'] == rid)
                 b = next(r for r in second['records'] if r['id'] == rid)
-                self.assertEqual(a['impact_scope'], b['impact_scope'])
-                self.assertTrue(a['impact_scope']['sources'])
+                self.assertEqual(a['ranking_evidence'], b['ranking_evidence'])
+                self.assertNotIn('impact_scope', b)
+                self.assertTrue(b['ranking_evidence']['url'])
             self.assertEqual({r['id']: r['revision'] for r in first['records']}, {r['id']: r['revision'] for r in second['records']})
             self.assertEqual(second['changes'], first['changes'])
             with patch.object(R, 'fetch', side_effect=OSError('outage')), patch.object(R, 'stamp', return_value='2026-10-25T01:00:00Z'):
@@ -164,16 +165,23 @@ class RefreshTests(unittest.TestCase):
         self.assertEqual(R.retain([old], now)[0], [])
         self.assertEqual(R.retain([{**old, 'kev': True, 'kev_added': '2026-10-20'}], now)[1]['current_count'], 1)
 
+    def test_systemic_signal_matches_shared_browser_fixtures_without_manual_flags(self):
+        for sample in json.loads((R.ROOT / 'ranking-fixtures.json').read_text()):
+            record = dict(published='2026-10-21', ranking_evidence=dict(text=sample['text'], url='https://vendor.test/advisory'))
+            self.assertEqual(R.systemic_signal(record), sample['signal'], sample['text'])
+            self.assertEqual(R.high_risk(record), bool(sample['signal']))
+            self.assertEqual(len(R.retain([record], '2026-10-23T06:00:00Z')[0]), int(bool(sample['signal'])))
+
     def test_rejected_or_unsafe_snapshot_cannot_validate(self):
         data = json.loads((R.ROOT / 'data.json').read_text())
         self.assertTrue(R.validate(data))
         bad = copy.deepcopy(data); bad['records'][0]['sources'][0]['url'] = 'javascript:alert(1)'
         with self.assertRaises(ValueError): R.validate(bad)
         bad = copy.deepcopy(data)
-        record = next(r for r in bad['records'] if r.get('impact_scope'))
-        record['impact_scope']['sources'][0]['url'] = 'javascript:alert(1)'
-        record['revision'] = R.revision(record)
+        record = next(r for r in bad['records'] if r.get('ranking_evidence'))
+        record['ranking_evidence']['url'] = 'javascript:alert(1)'
         with self.assertRaises(ValueError): R.validate(bad)
+
 
 
 if __name__ == '__main__': unittest.main()
