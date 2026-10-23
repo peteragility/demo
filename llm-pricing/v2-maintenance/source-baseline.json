@@ -2525,7 +2525,7 @@
   "api-west-anthropic-fast": {
    "url": "https://platform.claude.com/docs/en/build-with-claude/fast-mode.md",
    "kind": "markdown",
-   "digest": "d0a4d52c228d31b3812d42c4fc6bdcd304fab9579057419cd66d452e9e764336",
+   "digest": "ce8d6733ac663ec04e465aa765938eca8a54cef741d3a292886a6a64a519af30",
    "records": [
     "item: {\"heading\":\"\",\"text\":\"Fast mode on Claude Opus 5 and Claude Opus 4.8 is in research preview and needs the `fast-mode-2026-02-01` beta header.\"}",
     "item: {\"heading\":\"\",\"text\":\"claude-opus-4-8\"}",
@@ -2540,6 +2540,7 @@
     "item: {\"heading\":\"How fast mode works\",\"text\":\"Up to 2.5x higher output tokens per second compared to standard speed\"}",
     "item: {\"heading\":\"Pricing\",\"text\":\"[Data residency](https://platform.claude.com/docs/en/manage-claude/data-residency) multipliers apply on top of fast mode pricing.\"}",
     "item: {\"heading\":\"Pricing\",\"text\":\"[Prompt caching multipliers](https://platform.claude.com/docs/en/about-claude/pricing#prompt-caching) apply on top of fast mode pricing.\"}",
+    "notice: Fast mode is priced at a multiplier on standard rates across the full context window, including requests over 200k input tokens.",
     "table: {\"cells\":[\"Claude Opus 5 / Claude Opus 4.8\",\"$10 USD / MTok\",\"$50 USD / MTok\"],\"heading\":\"Pricing\"}",
     "table: {\"cells\":[\"Claude Opus 5.5\",\"$8 USD / MTok\",\"$40 USD / MTok\"],\"heading\":\"Pricing\"}",
     "table: {\"cells\":[\"Header\",\"Description\"],\"heading\":\"Rate limits\"}",
@@ -2555,7 +2556,7 @@
   "api-west-anthropic-pricing": {
    "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
    "kind": "markdown",
-   "digest": "d0b2494404a5401f8ec99a363be274f7677c16737c09ae668720801ac247ce8b",
+   "digest": "cdf25c832ca5958c1aa475fa94af5c425e5da9e56d776ba4b1b01b0cafdfcda9",
    "records": [
     "item: {\"heading\":\"Bash tool\",\"text\":\"Command outputs (stdout/stderr)\"}",
     "item: {\"heading\":\"Bash tool\",\"text\":\"Error messages\"}",
@@ -2628,6 +2629,7 @@
     "notice: Volume discounts might be available for high-volume users. These are negotiated on a case-by-case basis.",
     "notice: [Claude Platform on AWS](https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws) bills through AWS Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to AWS Marketplace hourly. Your AWS bill shows a single CCU line item.",
     "notice: [Claude in Microsoft Foundry](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) bills through the Azure Marketplace using Claude Consumption Units (CCUs). Anthropic rates your token usage in USD at standard per-model, per-feature rates, applies any negotiated discount, converts the result to CCUs at $0.01 USD per CCU, and reports the CCU quantity to the Azure Marketplace hourly. Your Azure bill shows a single CCU line item.",
+    "notice: [Fast mode](https://platform.claude.com/docs/en/build-with-claude/fast-mode) provides significantly faster output for Claude Opus 5.5, Claude Opus 5, and Claude Opus 4.8 at premium pricing. Fast mode for Claude Opus 5 and Claude Opus 4.8 is in research preview. Fast mode pricing applies across the full context window, including requests over 200k input tokens. Fast mode is available on the Claude API (first-party) and, for Claude Opus 5.5, on [Claude Models on Google Cloud (Anthropic managed)](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/anthropic-managed#billing) and on [Claude in Microsoft Foundry](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) for deployments hosted on Azure.",
     "table: {\"cells\":[\"**Billing cadence**\",\"Hourly metering to AWS Marketplace; monthly invoices\"],\"heading\":\"Claude Platform on AWS pricing\"}",
     "table: {\"cells\":[\"**Billing cadence**\",\"Hourly metering to the Azure Marketplace; monthly invoices\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
     "table: {\"cells\":[\"**Billing unit**\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude Platform on AWS pricing\"}",
@@ -12788,12 +12790,13 @@
   "fw-fw-m-inkling": {
    "url": "https://fireworks.ai/models/fireworks/inkling",
    "kind": "text",
-   "digest": "e77ccc5d7833a6ededb21bfd3b98e7ef4fc6d0374eaeb9cccb5524186215f8a1",
+   "digest": "e21867d90df6c4419da147414b0bf7c0b21faee6086b3b4b1f1eb41bece3ed1f",
    "records": [
+    "text: $1.00 / $0.17 / $4.05",
     "text: Inkling - Thinking Machines multimodal (audio+vision) MoE. Inkling is the first open-weights model released by Thinking Machines Lab. It is a 975B Mixture-of-Experts with 41B active parameters, trained natively across text, image, and audio. Built as a broad generalist foundation for fine-tuning, with controllable thinking effort.",
     "text: Inkling is available via Fireworks' serverless API, where you pay per token. There are several ways to call the Fireworks API, including Fireworks' Python client, the REST API, or OpenAI's Python client.",
-    "text: Join us for our inaugural conference, Forge 2026",
     "text: On-demand deployments allow you to use Inkling on dedicated GPUs with Fireworks' high-performance serving stack with high reliability and no rate limits.",
+    "text: Per 1M Tokens (input/cached input/output)",
     "text: Run queries immediately, pay only for usage"
    ]
   },
@@ -15277,22 +15280,23 @@
   "kimi-pricing": {
    "url": "https://platform.kimi.ai/docs/pricing/chat.md",
    "kind": "markdown",
-   "digest": "70c625b48173e38e185c09b8f123a3b6b5d8a308ed144f553ed2785a4143f8c0",
+   "digest": "196f3adef5e6a921369087abffad429c21b9987c79ea3497b6c19b449ea87909",
    "records": [
     "item: {\"heading\":\"Model Notes\",\"text\":\"[Kimi K2.6](https://platform.kimi.ai/docs/guide/kimi-k2-6-quickstart.md)\"}",
-    "item: {\"heading\":\"Model Notes\",\"text\":\"[Kimi K2.7 Code](/docs/guide/kimi-k2-7-code-quickstart.md)\"}",
+    "item: {\"heading\":\"Model Notes\",\"text\":\"[Kimi K2.7 Code](https://platform.kimi.ai/docs/guide/kimi-k2-7-code-quickstart.md)\"}",
     "item: {\"heading\":\"Model Notes\",\"text\":\"[Kimi K3.1 Pro](https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart.md)\"}",
-    "item: {\"heading\":\"Model Notes\",\"text\":\"[Kimi K3](/docs/guide/kimi-k3-quickstart.md)\"}",
+    "item: {\"heading\":\"Model Notes\",\"text\":\"[Kimi K3](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart.md)\"}",
     "notice: > Dear Kimi Users, starting October 31, 2026, K2 series models will no longer be available to newly registered users; existing users are not affected. We plan to retire all K2 series models by the end of December 2026, please [prepare your migration](https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart.md) in advance.",
     "notice: > Understand token billing, input and output charges, cache discounts, and pricing links for Kimi model inference.",
-    "notice: Model inference APIs bill both Input and Output based on usage. For K3 series models, cache writes are billed separately by TTL (5min / 1h); cached input is billed at the cache-hit price only, with no additional cache write charge. If you upload and extract content from a document and then pass the extracted content as Input to the model, the document content will also be billed based on usage. File-related APIs (file content extraction and file storage) are **temporarily free**: if you only upload and extract a document, the file APIs themselves incur no charges.",
-    "notice: Note: **Cache Write** refers to the cost of writing request prefixes into the [context cache](/docs/guide/context-caching.md). The Kimi API automatically caches repeated request prefixes, and cache entries come in two time-to-live (TTL) tiers — 5min and 1h. If no TTL is specified, the 5min tier applies by default. Input that hits the cache within its lifetime is billed only at the Cached Input Price: each hit automatically refreshes the cache entry's lifetime, with no additional cache write charge.",
-    "table: {\"cells\":[\"Model\",\"Unit\",\"Cache Write Price (TTL 5min)\",\"Cache Write Price (TTL 1h)\",\"Cached Input Price\",\"Input Price\",\"Output Price\",\"Context Window\"],\"heading\":\"Model Notes\"}",
-    "table: {\"cells\":[\"Model\",\"Unit\",\"Input Price (Cache Hit)\",\"Input Price (Cache Miss)\",\"Output Price\",\"Context Window\"],\"heading\":\"Model Notes\"}",
+    "notice: All K2 series models support a 262,144-token context window.",
+    "notice: All K3 series models support a 1,048,576-token context window.",
+    "notice: Model inference APIs bill both Input and Output based on usage. For K3 series models, cache writes are billed separately by TTL (5min / 1h); cached input is billed at the cache-hit price only, with no additional cache write charge. If you upload and extract content from a document and then pass the extracted content as Input to the model, the document content will also be billed based on usage. File-related APIs (file content extraction and file storage) are **temporarily free**: if you only upload and extract a document, the file APIs themselves incur no charges. For tips on improving cache hit rates and choosing a TTL tier, see [Best Practices for Context Caching](https://platform.kimi.ai/docs/guide/context-caching.md).",
+    "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Cached Input\",\"5m writes\",\"1h writes\"],\"heading\":\"Model Notes\"}",
+    "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Cached Input\"],\"heading\":\"Model Notes\"}",
     "table: {\"cells\":[\"kimi-k2.6\",\"$0.95 / MTok\",\"$4.00 / MTok\",\"$0.16 / MTok\"],\"heading\":\"Model Notes\"}",
-    "table: {\"cells\":[\"kimi-k2.7-code\",\"1M tokens\",\"$0.19\",\"$0.95\",\"$4.00\",\"262,144 tokens\"],\"heading\":\"Model Notes\"}",
-    "table: {\"cells\":[\"kimi-k2.7-code-highspeed\",\"1M tokens\",\"$0.38\",\"$1.90\",\"$8.00\",\"262,144 tokens\"],\"heading\":\"Model Notes\"}",
-    "table: {\"cells\":[\"kimi-k3\",\"1M tokens\",\"$3.00\",\"$6.00\",\"$0.30\",\"$3.00\",\"$15.00\",\"1,048,576 tokens\"],\"heading\":\"Model Notes\"}",
+    "table: {\"cells\":[\"kimi-k2.7-code\",\"$0.95 / MTok\",\"$4.00 / MTok\",\"$0.19 / MTok\"],\"heading\":\"Model Notes\"}",
+    "table: {\"cells\":[\"kimi-k2.7-code-highspeed\",\"$1.90 / MTok\",\"$8.00 / MTok\",\"$0.38 / MTok\"],\"heading\":\"Model Notes\"}",
+    "table: {\"cells\":[\"kimi-k3\",\"$3.00 / MTok\",\"$15.00 / MTok\",\"$0.30 / MTok\",\"$3.00 / MTok\",\"$6.00 / MTok\"],\"heading\":\"Model Notes\"}",
     "table: {\"cells\":[\"kimi-k3.1-pro\",\"$2.00 / MTok\",\"$10.00 / MTok\",\"$0.20 / MTok\",\"$2.00 / MTok\",\"$4.00 / MTok\"],\"heading\":\"Model Notes\"}",
     "table: {\"cells\":[\"kimi-k3.1-pro-highspeed\",\"$4.00 / MTok\",\"$20.00 / MTok\",\"$0.20 / MTok\",\"$4.00 / MTok\",\"$8.00 / MTok\"],\"heading\":\"Model Notes\"}"
    ]
