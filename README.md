@@ -4,6 +4,8 @@ Public pricing tools, technical guides and interactive games at [peteragility.gi
 
 [Databricks Sizing Desk](https://peteragility.github.io/demo/databricks-sizing/) turns high-level requirements into a regional cost estimate across AWS, Azure and Google Cloud. See its [pricing sources and assumptions](databricks-sizing/README.md).
 
+[Security Risk Checklist](https://peteragility.github.io/demo/security-risk/) tracks exploited vulnerabilities and urgent vendor advisories across the stack, with browser-local assessments and a nightly 23:17 Hong Kong refresh. See [maintenance and validation](security-risk/README.md).
+
 ## Edit and validate
 
 The site uses static HTML, JavaScript and JSON, with Python/Node standard-library maintenance scripts. No new package installation is needed.

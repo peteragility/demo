@@ -1,0 +1,96 @@
+name: Security checklist nightly refresh
+
+on:
+  schedule:
+    # 23:17 Asia/Hong_Kong. Scheduled starts can be delayed by GitHub.
+    - cron: '17 15 * * *'
+  workflow_dispatch:
+  push:
+    paths: ['security-risk/**', '.github/workflows/security-risk.yml']
+  pull_request:
+    paths: ['security-risk/**', '.github/workflows/security-risk.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - run: |
+          python3 security-risk/refresh.py --check
+          python3 -m unittest discover -s security-risk -p 'test_*.py'
+          node --check security-risk/app.js
+          node --test security-risk/model.test.cjs
+          node security-risk/browser.test.mjs
+
+  refresh:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: security-risk-refresh
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Fetch official advisories and retain prior data on failures
+        id: refresh
+        continue-on-error: true
+        run: python3 security-risk/refresh.py
+      - name: Validate snapshot and decision rules before publication
+        run: |
+          python3 security-risk/refresh.py --check
+          python3 -m unittest discover -s security-risk -p 'test_*.py'
+          node --test security-risk/model.test.cjs
+      - name: Summarize source health
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path('security-risk/data.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write(f"## Security checklist\n\n{len(data['records'])} tracked risks · refresh {data['refresh_status']}\n\n")
+              for source in data['sources']:
+                  out.write(f"- {source['label']}: {source['status']} {source.get('error', '')} {source.get('note', '')}\n")
+          PY
+      - name: Publish refreshed snapshot and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add -- security-risk/data.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Refresh daily security checklist"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: Preserve source failures as a failed run after publishing health
+        if: steps.refresh.outcome == 'failure'
+        run: |
+          echo '::error::Some sources failed; retained data and source-health details were published. See the run summary.'
+          exit 1

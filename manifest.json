@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-19",
+ "generated": "2026-10-23",
  "pages": [
   {
    "path": "aidecide-arena/",
@@ -75,6 +75,15 @@
    "color": "#58a6ff",
    "category": "Guides",
    "featured": false
+  },
+  {
+   "path": "security-risk/",
+   "title": "Security Risk Checklist",
+   "desc": "Prioritize exploited vulnerabilities and CA incidents, assess affected systems and track verified fixes",
+   "tag": "Featured",
+   "color": "#ff8b78",
+   "category": "Tools",
+   "featured": true
   }
  ]
 }

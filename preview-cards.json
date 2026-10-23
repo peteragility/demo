@@ -48,5 +48,15 @@
     "ink": "#ecf0fa",
     "accent": "#ee684e",
     "footer": "peteragility.github.io/demo/databricks-sizing"
+  },
+  {
+    "name": "security-preview",
+    "title": "Security Risk Checklist",
+    "subtitle": "Assess exposure. Patch affected systems. Verify the fix.",
+    "brand": "PETER CHAN / DEMO LAB",
+    "background": "#101626",
+    "ink": "#ecf0fa",
+    "accent": "#ff8b78",
+    "footer": "peteragility.github.io/demo/security-risk"
   }
 ]

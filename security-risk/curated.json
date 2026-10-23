@@ -1,0 +1,165 @@
+[
+  {
+    "id": "CVE-2026-109618",
+    "product": "PHP",
+    "title": "PHP: out-of-memory request corruption",
+    "layer": "runtime",
+    "impact": "Code execution",
+    "urgent": true,
+    "published": "2026-10-21",
+    "reviewed_at": "2026-10-23",
+    "description": "Unauthenticated requests can cause server-side code execution under vulnerable request-handling conditions. Assess every web-serving PHP installation.",
+    "affected": [
+      "Web-serving PHP before the patched release in its branch; includes FPM, mod_php, CGI, FrankenPHP and LiteSpeed. Confirm vendor backports."
+    ],
+    "fixed": [
+      "8.5.12 / 8.4.27 / 8.3.36 / 8.2.35, or a vendor-confirmed backport"
+    ],
+    "conditions": [
+      "Older unsupported branches require a supported upgrade or a vendor-confirmed fix."
+    ],
+    "action": "Update the PHP runtime and deployed images, restart all workers, and confirm the running web SAPI uses the fixed build. Temporary mitigations do not cover every attack path.",
+    "sources": [
+      {
+        "label": "PHP official security advisory",
+        "url": "https://www.php.net/archive/2026.php#2026-10-21-5"
+      }
+    ]
+  },
+  {
+    "id": "CVE-2026-109619",
+    "product": "PHP",
+    "title": "PHP: stale request state",
+    "layer": "runtime",
+    "impact": "Code execution",
+    "urgent": true,
+    "published": "2026-10-21",
+    "reviewed_at": "2026-10-23",
+    "description": "Unauthenticated requests can cause server-side code execution under vulnerable request-handling conditions. Assess every web-serving PHP installation.",
+    "affected": [
+      "Web-serving PHP before the patched release in its branch; includes FPM, mod_php, CGI, FrankenPHP and LiteSpeed. Confirm vendor backports."
+    ],
+    "fixed": [
+      "8.5.12 / 8.4.27 / 8.3.36 / 8.2.35, or a vendor-confirmed backport"
+    ],
+    "conditions": [
+      "Older unsupported branches require a supported upgrade or a vendor-confirmed fix."
+    ],
+    "action": "Update the PHP runtime and deployed images, restart all workers, and confirm the running web SAPI uses the fixed build. Temporary mitigations do not cover every attack path.",
+    "sources": [
+      {
+        "label": "PHP official security advisory",
+        "url": "https://www.php.net/archive/2026.php#2026-10-21-5"
+      }
+    ]
+  },
+  {
+    "id": "CVE-2026-111497",
+    "product": "Node.js",
+    "title": "Node.js: Brotli decoder memory corruption",
+    "layer": "runtime",
+    "impact": "Code execution",
+    "urgent": true,
+    "published": "2026-10-21",
+    "reviewed_at": "2026-10-23",
+    "description": "Processing attacker-controlled Brotli data can corrupt memory and permit code execution. Check services and dependencies that decompress untrusted content.",
+    "affected": [
+      "Node.js 22.x / 24.x / 26.x before the October security release"
+    ],
+    "fixed": [
+      "22.23.4 / 24.22.1 / 26.12.1"
+    ],
+    "action": "Upgrade each deployed Node.js runtime to its patched branch release or a later supported release. Rebuild and redeploy images; verify the runtime inside running workloads.",
+    "sources": [
+      {
+        "label": "Node.js October security release",
+        "url": "https://nodejs.org/en/blog/vulnerability/october-2026-security-releases"
+      }
+    ]
+  },
+  {
+    "id": "CVE-2026-106069",
+    "product": "Node.js",
+    "title": "Node.js: TLS hostname verification bypass",
+    "layer": "trust",
+    "impact": "TLS verification bypass",
+    "urgent": true,
+    "published": "2026-10-21",
+    "reviewed_at": "2026-10-23",
+    "description": "Non-canonical IP-like hostnames can bypass expected TLS identity checks. Review services making outbound HTTPS calls.",
+    "affected": [
+      "Node.js 22.x / 24.x / 26.x before the October security release"
+    ],
+    "fixed": [
+      "22.23.4 / 24.22.1 / 26.12.1"
+    ],
+    "action": "Upgrade and restart affected clients; test certificate validation using normal application health checks.",
+    "sources": [
+      {
+        "label": "Node.js October security release",
+        "url": "https://nodejs.org/en/blog/vulnerability/october-2026-security-releases"
+      }
+    ]
+  },
+  {
+    "id": "CVE-2026-110264",
+    "product": "GitLab CE / EE",
+    "title": "GitLab: unauthenticated regex compiler RCE",
+    "layer": "delivery",
+    "impact": "Code execution",
+    "urgent": true,
+    "published": "2026-10-21",
+    "reviewed_at": "2026-10-23",
+    "description": "A regex compiler integer overflow can allow unauthenticated server code execution. Prioritize self-managed instances.",
+    "affected": [
+      "7.0–18.11 before 18.11.13; 19.0 before .10; 19.1 before .9; 19.2 before .9; 19.3 before .6; 19.4 before .3; 19.5 before .1"
+    ],
+    "fixed": [
+      "18.11.13 / 19.0.10 / 19.1.9 / 19.2.9 / 19.3.6 / 19.4.3 / 19.5.1"
+    ],
+    "conditions": [
+      "GitLab.com is patched. GitLab Dedicated: verify the internal build against the vendor notice."
+    ],
+    "action": "Use the supported GitLab upgrade path and patch immediately. Review the vendor detection guidance, worker crashes and anomalous rendering errors; investigate suspected compromise.",
+    "sources": [
+      {
+        "label": "GitLab critical patch release",
+        "url": "https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/"
+      }
+    ]
+  },
+  {
+    "id": "emudhra-ca-2026-10",
+    "product": "eMudhra / emSign",
+    "title": "Compromised CA keys and root removal",
+    "layer": "trust",
+    "impact": "Trust / availability",
+    "urgent": true,
+    "kind": "incident",
+    "published": "2026-10-20",
+    "reviewed_at": "2026-10-23",
+    "description": "Weak intermediate CA keys permit forged certificates against unprotected clients. Root removal can also break legitimate certificate chains.",
+    "affected": [
+      "Clients with unpatched trust bundles; servers chaining to emSign ECC Root CA - G3"
+    ],
+    "fixed": [
+      "Updated browser/OS/runtime trust data; replace affected server chains"
+    ],
+    "conditions": [
+      "Chrome root removal is expected October 27, 2026 PDT; other trust stores have their own update mechanisms."
+    ],
+    "action": "Update OS and application trust bundles, including containers and bundled runtimes. Replace affected server certificates through a trusted alternate hierarchy and test client connections.",
+    "steps": [
+      "Find affected server chains and all client trust stores, including Java, Node.js and containers.",
+      "Apply each platform vendor’s trust-store update and redeploy long-running processes.",
+      "Replace affected server chains and verify representative browser and application clients.",
+      "Record deployed package/build versions and connection test results."
+    ],
+    "sources": [
+      {
+        "label": "Chrome / Android official incident notice",
+        "url": "https://blog.google/security/protecting-chrome-and-android-users-from-compromised-emudhra-intermediate-ca-certificates/"
+      }
+    ]
+  }
+]
