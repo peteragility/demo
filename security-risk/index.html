@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="style.css?v=3">
 <script src="../assets/site-analytics.js" defer></script>
 <script src="model.js?v=2" defer></script>
-<script src="app.js?v=2" defer></script>
+<script src="app.js?v=3" defer></script>
 </head>
 <body>
 <main class="wrap">
@@ -33,7 +33,7 @@
   <div class="tools">
     <label class="search"><span aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Product, CVE, system or owner" aria-label="Search vulnerabilities" autocomplete="off"></label>
     <label class="sel"><span>View</span><select id="view" aria-label="Filter checklist"><option value="open">To action</option><option value="all">All risks</option><option value="changed">New / changed</option><option value="exploited">Known exploited</option><option value="reassess">Reassess</option><option value="done">Completed / N/A</option></select></label>
-    <label class="sel"><span>Sort</span><select id="sort" aria-label="Sort risks"><option value="risk">Risk priority</option><option value="cvss">CVSS highest</option><option value="new">Newest</option><option value="epss">EPSS probability</option></select></label>
+    <label class="sel"><span>Sort</span><select id="sort" aria-label="Sort risks"><option value="cvss" selected>CVSS highest</option><option value="risk">Risk priority</option><option value="new">Newest</option><option value="epss">EPSS probability</option></select></label>
   </div>
   <section class="summary" id="summary" aria-label="Checklist summary" aria-live="polite"></section>
   <div class="highlights" id="highlights" aria-label="Urgent vendor advisories"></div>

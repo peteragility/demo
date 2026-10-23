@@ -2,7 +2,7 @@
   'use strict';
   const M = SecurityChecklist, $ = id => document.getElementById(id);
   const KEY = 'demo-security-checklist-v1';
-  const S = {layer: 'all', q: '', view: 'open', sort: 'risk', expanded: new Set(), limit: 30};
+  const S = {layer: 'all', q: '', view: 'open', sort: 'cvss', expanded: new Set(), limit: 30};
   let data, saved = Object.create(null), reviewedAt = '', memoryOnly = false;
   const N = (tag, text, attrs = {}) => {
     const el = document.createElement(tag);

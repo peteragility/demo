@@ -11,7 +11,7 @@ await withBrowser(root, async b => {
   assert.equal(await b.evaluate('document.querySelectorAll("#rows .row").length'), 30);
   assert.equal(await b.evaluate('document.querySelectorAll(".highlight").length >= 4'), true);
   assert.equal(await b.evaluate('document.querySelector("thead .rank").textContent'), 'CVSS');
-  await b.evaluate('document.getElementById("sort").value="cvss";document.getElementById("sort").dispatchEvent(new Event("change"))');
+  assert.equal(await b.evaluate('document.getElementById("sort").value'), 'cvss');
   assert.equal(await b.evaluate('document.querySelector(".rankbadge").textContent'), '10.0/10');
   for (const width of [1440, 768, 390, 320]) {
     await b.viewport(width, 920);

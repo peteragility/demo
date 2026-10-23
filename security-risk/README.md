@@ -4,7 +4,7 @@ Static HTML/JS at https://peteragility.github.io/demo/security-risk/ using the L
 
 ## Daily use
 
-The first column shows published **CVSS severity out of 10**. Missing or inapplicable scores remain `—`. **Risk priority** keeps exploited high-impact risks first; **CVSS highest** sorts numerically, with unscored entries last. The **Act now** summary counts open high-impact exploited risks.
+The first column shows published **CVSS severity out of 10**. Missing or inapplicable scores remain `—`. **CVSS highest** is the default ranking, sorting numerically with unscored entries last. **Risk priority** keeps exploited high-impact risks first. The **Act now** summary counts open high-impact exploited risks.
 
 1. Check source health and the **New / changed** view, then work through **To action**.
 2. Open a row, identify affected builds/configurations, assign an owner and record systems.
