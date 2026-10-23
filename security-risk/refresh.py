@@ -272,11 +272,12 @@ def enrich(record, now):
         return record, record['id'] + ': ' + type(error).__name__
 
 
-MATERIAL = ('title', 'description', 'action', 'affected', 'fixed', 'conditions', 'kev', 'ransomware', 'cvss', 'sources', 'rejected', 'source_changed', 'catalog_missing')
+MATERIAL = ('title', 'description', 'action', 'affected', 'fixed', 'conditions', 'kev', 'ransomware', 'cvss', 'sources', 'rejected', 'source_changed', 'catalog_missing', 'impact_scope')
 
 
 def revision(record):
-    return hashlib.sha256(json.dumps({k: record.get(k) for k in MATERIAL}, sort_keys=True).encode()).hexdigest()[:16]
+    facts = {k: record.get(k) for k in MATERIAL if k != 'impact_scope' or record.get(k)}
+    return hashlib.sha256(json.dumps(facts, sort_keys=True).encode()).hexdigest()[:16]
 
 
 def priority(record):
@@ -343,6 +344,11 @@ def validate(data):
         if score and not 0 <= float(score['score']) <= 10: raise ValueError('Invalid CVSS')
         epss = r.get('epss')
         if epss and not 0 <= float(epss['score']) <= 1: raise ValueError('Invalid EPSS')
+        scope = r.get('impact_scope')
+        if scope:
+            if scope.get('level') not in ('ecosystem', 'software-stack') or not isinstance(scope.get('summary'), str) or not scope['summary'].strip(): raise ValueError('Invalid impact scope')
+            dt.date.fromisoformat(scope.get('reviewed_at', ''))
+            if not scope.get('sources') or any(not safe_url(s['url']) for s in scope['sources']): raise ValueError('Unsafe impact evidence')
     if 'scope' in data:
         kept, scope = retain(data['records'], data['last_attempt'])
         if len(kept) != len(data['records']) or scope != data['scope']: raise ValueError('Date window / high-risk scope mismatch')
@@ -448,7 +454,7 @@ def run(output):
             records[record['id']] = record
     # Restore reviewed action/version text after CVE enrichment; never overwrite KEV evidence.
     for entry in curated:
-        for field in ('action', 'affected', 'fixed', 'conditions', 'urgent', 'impact', 'description', 'title'):
+        for field in ('action', 'affected', 'fixed', 'conditions', 'urgent', 'impact', 'description', 'title', 'impact_scope'):
             if field in entry: records[entry['id']][field] = entry[field]
     sources.append(dict(id='cve', label='CVE Program / CNA records', url='https://www.cve.org/', checked_at=now,
                         last_success=now if not cve_errors else old_sources.get('cve', {}).get('last_success', ''),

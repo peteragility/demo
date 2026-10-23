@@ -1,8 +1,20 @@
 # Security Risk Watch
 
-An information page at https://peteragility.github.io/demo/security-risk/, using the LLM pricing page's compact typography, light/dark themes and dense table. The default view is **Last 30 days**, with one **Archive · 6 months** view for older entries. Both sort by published CVSS descending. No assessment forms, task lists, browser storage or import/export controls.
+An information page at https://peteragility.github.io/demo/security-risk/, using the LLM pricing page's compact typography, light/dark themes and dense table. The default view is **Last 30 days**, with one **Archive · 6 months** view for older entries. Both default to **Impact + CVSS**, with a **CVSS highest** option. Category tabs start with **All**, followed by Certificates / TLS, Edge / VPN, Runtimes, GitLab / CI/CD, OS / containers, and Identity / data. Category counts use the selected period; search combines with the category filter. The Demo home link remains visible at every width. No assessment forms, task lists, browser storage or import/export controls.
 
 Each row shows CVSS, risk date, product/issue, a brief explanation, exploitation evidence and recommended action. Expanding it shows affected/fixed versions, configuration prerequisites, dates and source links. Search applies within the selected period. No package installation or API keys are needed.
+
+## Ranking and potential reach
+
+The default ranking uses explicit priority groups rather than inventing a social-impact number:
+
+1. **Broad impact · urgent:** a sourced, reviewed `impact_scope` for shared trust infrastructure or a broad software stack, combined with an urgent flag, KEV evidence or critical CVSS. Shared trust infrastructure sorts before broad software stacks; CVSS breaks ties within each scope.
+2. **Exploited · critical:** KEV-confirmed exploitation with CVSS 9.0+ or known ransomware use.
+3. All other qualifying risks by CVSS descending, then exploitation evidence and risk date.
+
+The eMudhra CA incident has reviewed shared-trust scope; the two PHP emergency flaws have reviewed software-stack scope. These entries are selected on published configuration reach, not product-name matches or manual row positions. The row shows its scope and priority group; details explain why it ranks there and link to scope evidence. Unknown scope is **unassessed**, not low impact. No server, organization or person counts are inferred. Pure CVSS sorting ignores the priority groups and leaves unscored entries at the end. Both ranking modes preserve the 30-day and six-month windows.
+
+`curated.json` owns reviewed scope metadata (`level`, `summary`, `reviewed_at`, `sources`); the refresher preserves and validates it nightly. New entries need explicit reviewed scope evidence to enter the broad-impact group. Adding scope metadata alone does not reset the risk date. The footer describes the ranking without linking to the pricing page.
 
 ## Scope and retention
 

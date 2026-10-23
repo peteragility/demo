@@ -132,6 +132,11 @@ class RefreshTests(unittest.TestCase):
             with patch.object(R, 'fetch', side_effect=self.fixture), patch.object(R, 'stamp', return_value='2026-10-24T01:00:00Z'):
                 self.assertFalse(R.run(output))
             second = json.loads(output.read_text())
+            for rid in ('CVE-2026-109618', 'CVE-2026-109619', 'emudhra-ca-2026-10'):
+                a = next(r for r in first['records'] if r['id'] == rid)
+                b = next(r for r in second['records'] if r['id'] == rid)
+                self.assertEqual(a['impact_scope'], b['impact_scope'])
+                self.assertTrue(a['impact_scope']['sources'])
             self.assertEqual({r['id']: r['revision'] for r in first['records']}, {r['id']: r['revision'] for r in second['records']})
             self.assertEqual(second['changes'], first['changes'])
             with patch.object(R, 'fetch', side_effect=OSError('outage')), patch.object(R, 'stamp', return_value='2026-10-25T01:00:00Z'):
@@ -163,6 +168,11 @@ class RefreshTests(unittest.TestCase):
         data = json.loads((R.ROOT / 'data.json').read_text())
         self.assertTrue(R.validate(data))
         bad = copy.deepcopy(data); bad['records'][0]['sources'][0]['url'] = 'javascript:alert(1)'
+        with self.assertRaises(ValueError): R.validate(bad)
+        bad = copy.deepcopy(data)
+        record = next(r for r in bad['records'] if r.get('impact_scope'))
+        record['impact_scope']['sources'][0]['url'] = 'javascript:alert(1)'
+        record['revision'] = R.revision(record)
         with self.assertRaises(ValueError): R.validate(bad)
 
 

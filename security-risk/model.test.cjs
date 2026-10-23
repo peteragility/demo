@@ -29,3 +29,26 @@ test('search includes summaries and actions; safe URL and snapshot validation re
  assert.equal(M.validate({...data,records:[]}).records.length,0);
  assert.throws(()=>M.validate({...data,records:[{...base,id:'bad"onclick="x'}]}));
 });
+test('impact ranking promotes sourced broad-scope risks without inventing CVSS or population counts',()=>{
+ const scope=level=>({level,summary:'Vendor describes affected configurations across this infrastructure.',reviewed_at:'2026-10-23',sources:[{label:'Vendor',url:'https://vendor.test/advisory'}]});
+ const ca={...base,id:'ca',cvss:null,urgent:true,impact_scope:scope('ecosystem')};
+ const php={...base,id:'php',cvss:{score:9.2},urgent:true,impact_scope:scope('software-stack')};
+ const critical={...base,id:'critical',cvss:{score:10}};
+ const exploited={...base,id:'exploited',cvss:{score:9.8},kev:true,kev_added:'2026-10-21'};
+ const rows=[critical,exploited,php,ca];
+ assert.deepEqual(M.select(rows,{},now).map(r=>r.id),['ca','php','exploited','critical']);
+ assert.deepEqual(M.select(rows,{sort:'cvss'},now).map(r=>r.id),['critical','exploited','php','ca']);
+ assert.equal(ca.cvss,null);
+ assert.equal(M.reach(base),null);
+ assert.equal(M.reach({...ca,impact_scope:{...ca.impact_scope,sources:[]}}),null);
+ assert.match(M.priority(base).reason,/not been assessed/);
+ assert.equal(M.select([{...base,id:'old',published:'2020-01-01',urgent:true,impact_scope:scope('ecosystem')}],{},now).length,0,'impact promotion never overrides the date window');
+});
+test('category filtering composes with dates, search and ranking in both periods',()=>{
+ const rows=[base,{...base,id:'ca',layer:'trust',urgent:true,cvss:null},{...base,id:'archived-ca',layer:'trust',published:'2026-08-01'}];
+ assert.equal(M.select(rows,{layer:'all'},now).length,2);
+ assert.deepEqual(M.select(rows,{layer:'trust'},now).map(r=>r.id),['ca']);
+ assert.equal(M.select(rows,{layer:'runtime',q:'no match'},now).length,0);
+ assert.deepEqual(M.select(rows,{layer:'trust',view:'archive'},now).map(r=>r.id),['archived-ca']);
+ assert.equal(M.select(rows,{layer:'edge'},now).length,0);
+});

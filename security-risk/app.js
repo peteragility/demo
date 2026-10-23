@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const M=SecurityRisks,$=id=>document.getElementById(id),state={view:location.hash==='#archive'?'archive':'current',q:'',open:new Set()};
+  const M=SecurityRisks,$=id=>document.getElementById(id),state={view:location.hash==='#archive'?'archive':'current',layer:'all',sort:'impact',q:'',open:new Set()};
   let data;
   const node=(tag,text,attrs={})=>{const e=document.createElement(tag);if(text!=null)e.textContent=String(text);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,String(v));return e;};
   const date=value=>value?new Date(value).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'Asia/Hong_Kong'}):'Not available';
@@ -13,6 +13,10 @@
   function details(r){
     const tr=node('tr',null,{class:'detail',id:'detail-'+r.id}),td=node('td',null,{colspan:6});tr.append(td);
     td.append(node('h2',r.title),node('p',r.description));
+    const scopeInfo=M.reach(r),priority=state.sort==='cvss'?{label:'CVSS severity',reason:r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.'}:M.priority(r),impact=node('section',null,{class:'impact-note'});
+    impact.append(node('h3','Why this ranks here'),node('p',priority.label+' · '+priority.reason));
+    if(scopeInfo){impact.append(node('p','Potential reach: '+scopeInfo.label+'. '+scopeInfo.summary),node('p','This describes infrastructure and configuration scope, not measured numbers of compromised servers or people.'),node('p','Scope reviewed '+date(scopeInfo.reviewed_at),{class:'fine'}));for(const s of scopeInfo.sources)impact.append(sourceLink(s));}
+    td.append(impact);
     const cards=node('div',null,{class:'cards'}),fix=node('section',null,{class:'card'}),scope=node('section',null,{class:'card'});
     fix.append(node('h3','Recommended action'),node('p',r.action),node('h3','Fixed / unaffected versions'),bullets(r.fixed,'See the official vendor advisory for the supported fixed build and distribution backports.'));
     scope.append(node('h3','Affected versions / configurations'),bullets(r.affected,'Version scope is not normalized; consult the official advisory.'));
@@ -25,10 +29,17 @@
   }
   function render(){
     const w=M.windows(),records=M.select(data.records,state),current=M.select(data.records,{view:'current'}),archive=M.select(data.records,{view:'archive'});
+    const periodRecords=state.view==='archive'?archive:current;
+    $('categories').replaceChildren(...Object.entries({all:'All',...M.layers}).map(([id,label])=>{
+      const total=periodRecords.filter(r=>id==='all'||r.layer===id).length;
+      const button=node('button',null,{type:'button',class:'tab','data-layer':id,'aria-pressed':String(state.layer===id),'aria-label':label+', '+total+' risks'});
+      button.append(node('span',label,{class:'category-name'}),node('span',total,{class:'category-count'}));
+      button.addEventListener('click',()=>{state.layer=id;render();});return button;
+    }));
     for(const id of ['current','archive'])$(id).setAttribute('aria-pressed',String(state.view===id));
     $('currentCount').textContent=current.length;$('archiveCount').textContent=archive.length;
     $('period').textContent=state.view==='archive'?'Archive · '+date(w.archive)+' – '+date(new Date(Date.parse(w.current)-86400000).toISOString()):'Last 30 days · '+date(w.current)+' – '+date(w.today);
-    $('count').textContent=records.length+' high-risk '+(records.length===1?'entry':'entries')+' · CVSS highest first';
+    $('count').textContent=records.length+' high-risk '+(records.length===1?'entry':'entries')+' · '+(state.layer==='all'?'All categories':M.layers[state.layer])+' · '+(state.sort==='cvss'?'CVSS highest first':'Impact + CVSS');
     const stats=[[records.length,'high-risk entries'],[records.filter(r=>r.kev).length,'known exploited'],[records.filter(r=>r.cvss?.score>=9).length,'critical · 9.0+'],[records.filter(r=>!r.cvss).length,'unscored urgent / exploited']];
     $('summary').replaceChildren(...stats.map(([n,label])=>{const e=node('div',null,{class:'kpi'});e.append(node('b',n),node('span',label));return e;}));
     const rows=[];
@@ -39,6 +50,9 @@
       const issue=node('th',null,{scope:'row',class:'issue'}),button=node('button',null,{type:'button','aria-expanded':String(state.open.has(r.id)),'aria-controls':'detail-'+r.id,class:'issuebtn'});
       button.append(node('b',r.product+' ›'),node('span',r.title));button.addEventListener('click',()=>{state.open.has(r.id)?state.open.delete(r.id):state.open.add(r.id);render();});
       issue.append(button,node('small',(/^CVE-/.test(r.id)?r.id+' · ':'')+M.layers[r.layer]));
+      const scope=M.reach(r),ranking=M.priority(r);
+      if(scope)issue.append(node('small',scope.label,{class:'reach-label',title:scope.summary}));
+      if(state.sort!=='cvss'&&ranking.tier<2)issue.append(node('small',ranking.label,{class:'priority-label',title:ranking.reason}));
       const about=node('td',null,{class:'about'});about.append(node('p',r.description,{title:r.description}));
       const evidence=node('td',r.kev?'KEV · exploited':'Not in KEV',{class:'evidence'+(r.kev?' known':'')});
       const briefAction=/BOD|ensuring compliance/.test(r.action)?'Apply vendor security updates or mitigations. If no remedy is available, discontinue use.':r.action;
@@ -63,6 +77,8 @@
     }
     for(const id of ['current','archive'])$(id).addEventListener('click',()=>{state.view=id;state.q='';$('q').value='';history.replaceState(null,'',id==='archive'?'#archive':location.pathname);render();});
     $('q').addEventListener('input',()=>{state.q=$('q').value;render();});render();
+    $('sort').addEventListener('change',()=>{state.sort=$('sort').value;render();});
+    const controlSize=new ResizeObserver(()=>{document.documentElement.style.setProperty('--controls-height',$('controls').getBoundingClientRect().height+'px');});controlSize.observe($('controls'));
   }catch(error){$('freshness').textContent='Snapshot unavailable';$('notice').hidden=false;$('notice').textContent='Could not load the security snapshot. '+error.message;$('count').textContent='Unable to load risks';}}
   start();
 })();

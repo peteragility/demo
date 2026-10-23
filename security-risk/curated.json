@@ -24,7 +24,18 @@
         "label": "PHP official security advisory",
         "url": "https://www.php.net/archive/2026.php#2026-10-21-5"
       }
-    ]
+    ],
+    "impact_scope": {
+      "level": "software-stack",
+      "summary": "The PHP security team identifies web-serving PHP installations across FPM, mod_php, CGI, FrankenPHP and LiteSpeed as in scope. This spans applications using different server integrations; vulnerable versions and configurations still determine actual exposure. No deployed-server or affected-person count is published in this notice.",
+      "reviewed_at": "2026-10-23",
+      "sources": [
+        {
+          "label": "PHP official security advisory",
+          "url": "https://www.php.net/archive/2026.php#2026-10-21-5"
+        }
+      ]
+    }
   },
   {
     "id": "CVE-2026-109619",
@@ -51,7 +62,18 @@
         "label": "PHP official security advisory",
         "url": "https://www.php.net/archive/2026.php#2026-10-21-5"
       }
-    ]
+    ],
+    "impact_scope": {
+      "level": "software-stack",
+      "summary": "The PHP security team identifies web-serving PHP installations across FPM, mod_php, CGI, FrankenPHP and LiteSpeed as in scope. This spans applications using different server integrations; vulnerable versions and configurations still determine actual exposure. No deployed-server or affected-person count is published in this notice.",
+      "reviewed_at": "2026-10-23",
+      "sources": [
+        {
+          "label": "PHP official security advisory",
+          "url": "https://www.php.net/archive/2026.php#2026-10-21-5"
+        }
+      ]
+    }
   },
   {
     "id": "CVE-2026-111497",
@@ -154,6 +176,17 @@
         "label": "Chrome / Android official incident notice",
         "url": "https://blog.google/security/protecting-chrome-and-android-users-from-compromised-emudhra-intermediate-ca-certificates/"
       }
-    ]
+    ],
+    "impact_scope": {
+      "level": "ecosystem",
+      "summary": "Compromised CA keys affect HTTPS trust across browser, operating-system and application trust stores that have not removed the affected CAs. Root removal can also interrupt legitimate websites using the affected certificate chain. The vendor describes protections for Chrome and Android; this does not mean all users remain exposed.",
+      "reviewed_at": "2026-10-23",
+      "sources": [
+        {
+          "label": "Chrome / Android official incident notice",
+          "url": "https://blog.google/security/protecting-chrome-and-android-users-from-compromised-emudhra-intermediate-ca-certificates/"
+        }
+      ]
+    }
   }
 ]
