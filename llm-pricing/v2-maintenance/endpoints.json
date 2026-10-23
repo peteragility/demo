@@ -7188,7 +7188,7 @@
     ],
     [
      "Tiers",
-     "Fast mode (research preview, access by request) costs $8/$40, up to 2.5x output speed; Claude API only, not with Batch."
+     "Fast mode costs $8/$40 per million input/output tokens, up to 2.5x output speed; no access request or beta header for Opus 5.5. Start, Build and Scale usage tiers include Fast limits; Evaluation must upgrade. Also supported on Anthropic-managed Google Cloud and Azure-hosted Foundry deployments; cloud-specific rates require their own verification. Not available with Batch."
     ],
     [
      "Context",
