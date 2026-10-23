@@ -72,7 +72,8 @@ def html_records(text, kind):
         records = ["endpoint: " + x for x in re.findall(r"Endpoint name\s*:\s*(databricks-[a-z0-9-]+)", visible)]
     elif kind == "text":
         # Documentation pages: every paragraph and list item, plus any tables.
-        records = ["text: " + x for x in page.paragraphs]
+        records = ["product: " + packed(dict(heading=h, text=x)) if video_section(h) else "text: " + x
+                   for x, h in zip(page.paragraphs, page.paragraph_headings)]
         records += ["table: " + packed({"heading": t["heading"], "cells": row}) for t in page.tables for row in grouped(t["rows"])]
     elif kind == "aws-catalog":
         records = ["model-card: " + href.split("/")[-1].split("#")[0] for href in page.links if "model-card-openai-" in href]
@@ -89,7 +90,9 @@ def html_records(text, kind):
         # Capture the stable public model identity independently of menu formatting.
         for term in re.findall(r"(?:grok-\d[\w.-]*|deepseek-v[\w.-]+|kimi-k2p7-code)", visible, re.I):
             records.append("model-id: " + term)
-    records.extend("notice: " + n for n in page.notices)
+    notices = page.notices if kind != "text" else [x for x, h in zip(page.paragraphs, page.paragraph_headings)
+                                                  if NOTICE.search(x) and not video_section(h)]
+    records.extend("notice: " + n for n in notices)
     records = [r for r in records if not STAMP.search(r)]
     if not records or (kind == "tables" and not page.tables):
         raise ValueError("No meaningful records found; the source may need a parser update.")
@@ -107,7 +110,7 @@ def markdown_records(text):
             heading = line.lstrip("# ")
         if line.startswith("|") and not re.fullmatch(r"[|\s:-]+", line):
             records.append("table: " + packed({"heading": heading, "cells": [clean(c) for c in line.strip("|").split("|")]}))
-        elif NOTICE.search(line) and not line.startswith(("export ", "return ", "<")):
+        elif (NOTICE.search(line) or re.search(r"\bcontext window\b", line, re.I)) and not line.startswith(("export ", "return ", "<")):
             records.append("notice: " + line)
         # Kimi publishes a JSX table in its official .md page.
         elif re.match(r'\["kimi-', line):
@@ -204,15 +207,19 @@ def kimi_html_tables(text):
     """
     tables = []
     for script in re.findall(r"<script[^>]*>(.*?)</script>", text, re.S):
-        if not script.startswith("self.__next_f.push(") or "rows:[[`kimi-" not in script:
+        if not script.startswith("self.__next_f.push(") or "DocTable" not in script or "rows:[" not in script:
             continue
         payload = json.loads(script[len("self.__next_f.push("):-1])
         code = payload[1]
-        for columns, rows in re.findall(r"DocTable,\{columns:\[(.*?)\],rows:(\[\[.*?\]\])\}", code, re.S):
+        for columns, rows in re.findall(r"DocTable,\{.*?columns:\[(.*?)\],rows:(\[\[.*?\]\])\}", code, re.S):
+            columns = re.sub(r'_jsx\(Tooltip,\{tip:`[^`\\$]*`,children:`([^`\\$]+)`\}\)',
+                             lambda m: "`" + m[1] + "`", columns)
             headers = re.findall(r"title:`([^`]+)`", columns)
+            rows = re.sub(r'_jsx\(_components\.a,\{href:`/guide/[^`\\$]+`,children:`(kimi-[^`\\$]+)`\}\)',
+                          lambda m: json.dumps(m[1]), rows)
             rows = re.sub(r'_jsxs\(_Fragment,\{children:\[`\$`,`(\d+(?:\.\d+)?)`\]\}\)',
                           lambda m: json.dumps("$" + m[1]), rows)
-            rows = re.sub(r"`([^`\\$]*)`", lambda m: json.dumps(m[1]), rows)
+            rows = re.sub(r"`((?:(?!\$\{)[^`\\])*)`", lambda m: json.dumps(m[1]), rows)
             values = json.loads(rows)
             if not headers or not values or any(len(row) != len(headers) or
                     not all(isinstance(c, str) for c in row) for row in values):
@@ -668,7 +675,16 @@ def classify(before, after, rx):
     return compare(sorted(set(before) - set(after)), sorted(set(after) - set(before)), rx)
 
 
+def video_section(heading):
+    # Video generation is a separate product, including unnamed continuation rows.
+    return heading.split(" / ")[0].strip(" \u200b").lower() == "video"
+
+
 def names_a_model(record, rxs):
+    if record.startswith(("table: {", "product: {")):
+        row = json.loads(record.split(": ", 1)[1])
+        if video_section(row.get("heading", "")):
+            return True
     text = official.norm(record)
     return bool(OTHER_MODEL.search(text)) or any(rx.search(text) for rx in rxs)
 

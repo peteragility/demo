@@ -22,6 +22,47 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_video_sections_do_not_become_shared_llm_rates(self):
+        html = ('<h2>LLM</h2><p>All models receive a 50% batch discount.</p>'
+                '<table><tr><td>MiniMax-M3</td><td>$0.30</td></tr></table>'
+                '<h2>\u200b Video</h2><h3>\u200b H3 Series Flagship Models</h3>'
+                '<table><tr><td>480P</td><td>$0.025</td></tr></table>'
+                '<p>Image input: The first 5 images per task are free; additional images are billed per image.</p>'
+                '<p>Video offers receive a 25% discount.</p>'
+                '<h2>Billing</h2><p>All models receive a 10% regional premium.</p>')
+        records = review.html_records(html, 'text')
+        video = [r for r in records if '480P' in r or 'first 5 images' in r]
+        self.assertEqual(len(video), 2)
+        self.assertTrue(all(review.names_a_model(r, []) for r in video))
+        discount = [r for r in records if '25%' in r]
+        self.assertEqual(len(discount), 1)
+        self.assertTrue(review.names_a_model(discount[0], []))
+        old_header = 'table: ' + review.packed(dict(heading='\u200b Video', cells=['Model', 'Price']))
+        self.assertTrue(review.names_a_model(old_header, []))
+        for term in ('50%', '10%'):
+            shared = next(r for r in records if term in r)
+            self.assertFalse(review.names_a_model(shared, []))
+            self.assertEqual(review.compare([], [shared], None)[0], 'high')
+        text_rate = next(r for r in records if 'MiniMax-M3' in r)
+        self.assertEqual(review.classify([text_rate], [text_rate.replace('$0.30', '$0.60')], None)[0], 'high')
+
+    def test_kimi_link_cells_and_tooltip_headers_are_literal_only(self):
+        code = ('DocTable,{className:`doc-table-bordered`,corner:{top:`Model`,bottom:`Name`},'
+                'groups:[{title:`Base tokens`,span:2}],columns:[{title:`Model`,width:`25%`},'
+                '{title:_jsx(Tooltip,{tip:`A cached input rate.`,children:`Cached Input`}),width:`15%`}],'
+                'rows:[[_jsx(_components.a,{href:`/guide/kimi-k3-quickstart`,children:`kimi-k3`}),`$0.30 / MTok`]]}')
+        html = '<script>self.__next_f.push(' + json.dumps([1, code]) + ')</script>'
+        table = review.kimi_html_tables(html)
+        self.assertIn('| Model | Cached Input |', table)
+        self.assertIn('| kimi-k3 | $0.30 / MTok |', table)
+        context = 'All K3 series models support a 1,048,576-token context window.'
+        self.assertIn('notice: ' + context, review.markdown_records(context + '\n' + table))
+        for bad in (code.replace('`$0.30 / MTok`', 'getPrice()'),
+                    code.replace('kimi-k3`}', 'kimi-${run()}`}'),
+                    code.replace('Cached Input`}', '${run()}`}')):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                review.kimi_html_tables('<script>self.__next_f.push(' + json.dumps([1, bad]) + ')</script>')
+
     def test_throughput_changes_preserve_context_and_billing_review(self):
         def row(qpm, tpm, context='524,288', extra=''):
             return 'table: ' + review.packed(dict(heading='Grok 4.7', cells=['Quota limits',

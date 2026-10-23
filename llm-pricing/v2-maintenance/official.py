@@ -35,6 +35,7 @@ class Page(HTMLParser):
         self.cell = None
         self.notices = []
         self.paragraphs = []
+        self.paragraph_headings = []
         self.blocks = []
         self.block_tags = []
         self.links = []
@@ -56,6 +57,7 @@ class Page(HTMLParser):
             self.block_tags.pop()
             if len(text) >= 20:
                 self.paragraphs.append(text)
+                self.paragraph_headings.append(" / ".join(self.headings[k] for k in sorted(self.headings)))
                 if NOTICE.search(text):
                     self.notices.append(text)
 

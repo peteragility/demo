@@ -1147,12 +1147,21 @@
    "short": "model page"
   }
  },
+ "moonshot/kimi-k2.7": {
+  "official": {
+   "checked_at": "2026-10-24",
+   "base": {
+    "note": "Kimi plans to stop offering K2 series models to newly registered users on 31 October 2026; existing users are unaffected. It plans to retire the series by the end of December 2026; no exact shutdown date is confirmed."
+   }
+  }
+ },
  "moonshot/kimi-k3": {
   "official": {
    "checked_at": "2026-10-04",
    "reverified": true,
    "base": {
-    "endpoint": "Kimi API"
+    "endpoint": "Kimi API",
+    "note": "Automatic context caching: 5-min write $3.00, 1-hour write $6.00."
    },
    "variants": [],
    "src": [
@@ -1182,8 +1191,8 @@
      "Caching is automatic: 5-minute TTL by default, 1-hour via prompt_cache_options. Hits renew the TTL free; 5m and 1h caches share no entries."
     ],
     [
-     "Billing quirk",
-     "Anthropic Messages endpoint only reads the 5-minute cache unless top-level cache_control is set; Chat Completions writes the cache by default."
+     "API options",
+     "Chat Completions and Responses use prompt_cache_options.ttl; Messages uses top-level cache_control.ttl. All default to 5-minute cache reads and writes when omitted."
     ],
     [
      "Residency",
