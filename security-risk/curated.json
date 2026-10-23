@@ -149,12 +149,6 @@
       "Chrome root removal is expected October 27, 2026 PDT; other trust stores have their own update mechanisms."
     ],
     "action": "Update OS and application trust bundles, including containers and bundled runtimes. Replace affected server certificates through a trusted alternate hierarchy and test client connections.",
-    "steps": [
-      "Find affected server chains and all client trust stores, including Java, Node.js and containers.",
-      "Apply each platform vendor’s trust-store update and redeploy long-running processes.",
-      "Replace affected server chains and verify representative browser and application clients.",
-      "Record deployed package/build versions and connection test results."
-    ],
     "sources": [
       {
         "label": "Chrome / Android official incident notice",

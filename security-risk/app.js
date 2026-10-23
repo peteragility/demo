@@ -1,252 +1,68 @@
 (() => {
   'use strict';
-  const M = SecurityChecklist, $ = id => document.getElementById(id);
-  const KEY = 'demo-security-checklist-v1';
-  const S = {layer: 'all', q: '', view: 'open', sort: 'cvss', expanded: new Set(), limit: 30, ids: null, recentAll: false};
-  let data, saved = Object.create(null), reviewedAt = '', memoryOnly = false;
-  const N = (tag, text, attrs = {}) => {
-    const el = document.createElement(tag);
-    if (text != null) el.textContent = String(text);
-    for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value));
-    return el;
-  };
-  const button = (text, fn, attrs = {}) => { const el = N('button', text, {type: 'button', ...attrs}); el.addEventListener('click', fn); return el; };
-  const displayDate = value => { const date = new Date(value); return Number.isFinite(+date) ? date.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Asia/Hong_Kong'}) : 'Not checked'; };
-  const displayTime = value => { const date = new Date(value); return Number.isFinite(+date) ? date.toLocaleString('en-GB', {dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Hong_Kong'}) + ' HKT' : 'No complete successful run'; };
-  const pct = score => (score * 100).toFixed(score >= .01 ? 1 : 2) + '%';
-  const list = values => { const ul = N('ul'); for (const value of values) ul.append(N('li', value)); return ul; };
-  const link = (label, url) => {
-    const safe = M.safeURL(url);
-    return safe ? N('a', label + ' ↗', {href: safe, target: '_blank', rel: 'noopener noreferrer'}) : N('span', label + ' (invalid source URL)');
-  };
-  function notify(text) { $('notice').textContent = text; $('notice').hidden = !text; }
-  function persist() {
-    try { localStorage.setItem(KEY, JSON.stringify({schema: 1, assessments: saved, reviewedAt})); memoryOnly = false; }
-    catch { memoryOnly = true; }
-    $('storageNotice').hidden = !memoryOnly;
-    $('storageNotice').textContent = 'Browser storage is unavailable or full. Progress is kept for this tab only; export your checklist before leaving.';
-    return !memoryOnly;
+  const M=SecurityRisks,$=id=>document.getElementById(id),state={view:location.hash==='#archive'?'archive':'current',q:'',open:new Set()};
+  let data;
+  const node=(tag,text,attrs={})=>{const e=document.createElement(tag);if(text!=null)e.textContent=String(text);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,String(v));return e;};
+  const date=value=>value?new Date(value).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'Asia/Hong_Kong'}):'Not available';
+  const time=value=>value?new Date(value).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Hong_Kong'})+' HKT':'No complete successful run';
+  const sourceLink=s=>{const url=M.safeURL(s.url);return url?node('a',s.label+' ↗',{href:url,target:'_blank',rel:'noopener noreferrer'}):node('span',s.label+' (invalid source URL)');};
+  function score(r){
+    const value=r.cvss?.score,has=Number.isFinite(value),e=node('span',has?value.toFixed(1)+'/10':'—',{class:'score '+(!has?'unknown':value>=9?'critical':value>=7?'high':'other'),title:has?'CVSS v'+r.cvss.version:'CVSS unpublished or not applicable'});return e;
   }
-  function load() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (raw?.schema === 1) {
-        saved = M.progress(raw.assessments, data.records);
-        if (typeof raw.reviewedAt === 'string' && Number.isFinite(Date.parse(raw.reviewedAt))) reviewedAt = raw.reviewedAt;
-      }
-    } catch { memoryOnly = true; }
-    // Test write access too: some browsers permit reads while rejecting writes.
-    persist();
+  function bullets(values,fallback){const list=node('ul');for(const value of values.length?values:[fallback])list.append(node('li',value));return list;}
+  function details(r){
+    const tr=node('tr',null,{class:'detail',id:'detail-'+r.id}),td=node('td',null,{colspan:6});tr.append(td);
+    td.append(node('h2',r.title),node('p',r.description));
+    const cards=node('div',null,{class:'cards'}),fix=node('section',null,{class:'card'}),scope=node('section',null,{class:'card'});
+    fix.append(node('h3','Recommended action'),node('p',r.action),node('h3','Fixed / unaffected versions'),bullets(r.fixed,'See the official vendor advisory for the supported fixed build and distribution backports.'));
+    scope.append(node('h3','Affected versions / configurations'),bullets(r.affected,'Version scope is not normalized; consult the official advisory.'));
+    if(r.conditions?.length)scope.append(node('h3','Prerequisites'),bullets(r.conditions,''));
+    cards.append(fix,scope);td.append(cards);
+    const meta=[r.published?'CVE / source published '+date(r.published):'',r.advisory_published_at?'Advisory published '+date(r.advisory_published_at):'',r.kev?'KEV added '+date(r.kev_added):'',r.material_updated_at?'Material update '+date(r.material_updated_at):'',r.cvss?'CVSS v'+r.cvss.version+' · '+(r.cvss.vector||''):'CVSS not published / not applicable',r.epss?'EPSS '+(r.epss.score*100).toFixed(2)+'% · '+r.epss.date:'',r.cve_status||'',r.checked_at?'Source checked '+time(r.checked_at):''].filter(Boolean);
+    td.append(node('p',meta.join(' · '),{class:'fine'}));
+    if(r.source_changed)td.append(node('p','The source has changed since its action summary was reviewed; consult the current official notice.',{class:'warning'}));
+    const links=node('div',null,{class:'links'});for(const s of r.sources)links.append(sourceLink(s));td.append(links);return tr;
   }
-  function sourceHealth() {
-    const failed = data.sources.filter(s => s.status !== 'ok');
-    const stale = M.ageHours(data.last_attempt) > 36;
-    $('freshness').textContent = (failed.length ? 'Partial refresh' : stale ? 'Snapshot overdue' : 'Source checked') + ' · ' + displayTime(data.last_attempt);
-    if (failed.length || stale) notify((failed.length ? failed.length + ' source check(s) failed. ' : '') + (stale ? 'The snapshot is more than 36 hours old. ' : '') + 'Previous data remains visible; check source dates before acting.');
-    const src = $('sources');
-    for (const s of data.sources) {
-      const li = N('li', null, {class: s.status === 'ok' ? '' : 'failed'});
-      li.append(link(s.label, s.url), N('span', ' · ' + (s.status === 'ok' ? 'checked ' : 'failed · last good ') + displayTime(s.status === 'ok' ? s.checked_at : s.last_success)));
-      if (s.error) li.append(N('span', ' · ' + s.error));
-      if (s.note) li.append(N('span', ' · ' + s.note));
-      src.append(li);
+  function render(){
+    const w=M.windows(),records=M.select(data.records,state),current=M.select(data.records,{view:'current'}),archive=M.select(data.records,{view:'archive'});
+    for(const id of ['current','archive'])$(id).setAttribute('aria-pressed',String(state.view===id));
+    $('currentCount').textContent=current.length;$('archiveCount').textContent=archive.length;
+    $('period').textContent=state.view==='archive'?'Archive · '+date(w.archive)+' – '+date(new Date(Date.parse(w.current)-86400000).toISOString()):'Last 30 days · '+date(w.current)+' – '+date(w.today);
+    $('count').textContent=records.length+' high-risk '+(records.length===1?'entry':'entries')+' · CVSS highest first';
+    const stats=[[records.length,'high-risk entries'],[records.filter(r=>r.kev).length,'known exploited'],[records.filter(r=>r.cvss?.score>=9).length,'critical · 9.0+'],[records.filter(r=>!r.cvss).length,'unscored urgent / exploited']];
+    $('summary').replaceChildren(...stats.map(([n,label])=>{const e=node('div',null,{class:'kpi'});e.append(node('b',n),node('span',label));return e;}));
+    const rows=[];
+    for(const r of records){
+      const event=M.event(r,w.today),tr=node('tr',null,{class:'row','data-id':r.id}),cvss=node('td',null,{class:'rank'});cvss.append(score(r));
+      const when=node('td',null,{class:'when'});when.append(node('time',date(event.date),{datetime:event.date}),node('small',event.label));
+      if(r.kev)when.append(node('small','Known exploited',{class:'known'}));
+      const issue=node('th',null,{scope:'row',class:'issue'}),button=node('button',null,{type:'button','aria-expanded':String(state.open.has(r.id)),'aria-controls':'detail-'+r.id,class:'issuebtn'});
+      button.append(node('b',r.product+' ›'),node('span',r.title));button.addEventListener('click',()=>{state.open.has(r.id)?state.open.delete(r.id):state.open.add(r.id);render();});
+      issue.append(button,node('small',(/^CVE-/.test(r.id)?r.id+' · ':'')+M.layers[r.layer]));
+      const about=node('td',null,{class:'about'});about.append(node('p',r.description,{title:r.description}));
+      const evidence=node('td',r.kev?'KEV · exploited':'Not in KEV',{class:'evidence'+(r.kev?' known':'')});
+      const briefAction=/BOD|ensuring compliance/.test(r.action)?'Apply vendor security updates or mitigations. If no remedy is available, discontinue use.':r.action;
+      const action=node('td',null,{class:'action'});action.append(node('p',briefAction,{title:r.action}));
+      tr.append(cvss,when,issue,about,evidence,action);rows.push(tr);if(state.open.has(r.id))rows.push(details(r));else rows.push(node('tr',null,{id:'detail-'+r.id,hidden:true}));
     }
-    $('refreshMeta').textContent = 'Last complete refresh: ' + displayTime(data.last_success) + '. Current snapshot: ' + data.records.length + ' tracked entries.';
-    $('reviewDate').textContent = reviewedAt ? 'Changes reviewed: ' + displayTime(reviewedAt) : 'New / changed initially covers the last 24 hours. Mark changes reviewed after triage.';
-  }
-  function renderTabs() {
-    $('tabs').replaceChildren(...Object.entries(M.layers).map(([id, name]) => {
-      const count = data.records.filter(r => id === 'all' || r.layer === id).length;
-      const b = button('', () => {S.layer = id; S.ids = null; S.limit = 30; render();}, {class: 'tab', 'aria-pressed': S.layer === id, 'aria-label': name + ', ' + count + ' tracked risks'});
-      b.append(N('span', name), N('span', count, {class: 'n'}));
-      return b;
-    }));
-  }
-  function renderSummary() {
-    const all = data.records, open = all.filter(r => !M.closed(M.effective(r, saved[r.id])));
-    const counts = [[open.filter(r => r.priority === 0).length, 'act now · open', 'urgent'],
-      [open.filter(r => r.kev).length, 'exploited · open', 'urgent'],
-      [all.filter(r => M.isChanged(r, reviewedAt)).length, 'new / changed', ''],
-      [all.length - open.length, 'verified / N/A', 'good']];
-    $('summary').replaceChildren(...counts.map(([n, label, cls]) => {
-      const el = N('div', null, {class: 'kpi ' + cls}); el.append(N('b', n), N('span', label)); return el;
-    }));
-  }
-  function renderRecent() {
-    const groups = M.recent(data.records), section = $('recent'), head = N('div', null, {class: 'recent-head'});
-    head.append(N('h2', 'Recent & escalated · last 7 days'), N('span', groups.length + ' advisories · across all layers', {class: 'recent-count'}));
-    if (groups.length > 5) head.append(button(S.recentAll ? 'Show latest 5' : 'Show all ' + groups.length, () => {S.recentAll = !S.recentAll; renderRecent();}, {class: 'smallbtn', 'aria-expanded': S.recentAll}));
-    section.replaceChildren(head);
-    if (!groups.length) { section.append(N('p', 'No qualifying advisories in this period. The full watchlist is below.', {class: 'recent-empty'})); return; }
-    const items = N('ol', null, {class: 'recent-list'});
-    for (const group of groups.slice(0, S.recentAll ? groups.length : 5)) {
-      const r = group.representative, item = N('li', null, {class: 'recent-item'}), date = N('div', null, {class: 'recent-date'});
-      date.append(N('time', displayDate(group.event.date), {datetime: group.event.date}), N('span', group.event.label));
-      const open = button('', () => {
-        S.ids = group.records.map(r => r.id); S.layer = 'all'; S.view = 'all'; S.q = ''; S.limit = 30;
-        S.expanded = new Set([r.id]); $('q').value = ''; $('view').value = 'all'; render();
-        document.querySelector('.tblwrap').scrollIntoView({block: 'start'});
-      }, {class: 'recent-title', 'aria-label': 'Open advisory for ' + r.product + ': ' + r.title});
-      open.append(N('b', r.product), N('span', group.cves ? group.cves + ' CVE' + (group.cves === 1 ? '' : 's') + ' · ' + r.title : r.title));
-      const score = N('span', group.score == null ? '—' : group.score.toFixed(1) + '/10', {class: 'recent-score ' + (group.score >= 9 ? 'score-critical' : group.score >= 7 ? 'score-high' : 'score-other'), title: 'Highest published CVSS in this advisory; — means unscored'});
-      item.append(date, open, score, N('span', group.exploited ? 'KEV · exploited' : 'Not in KEV', {class: 'recent-exploit' + (group.exploited ? ' known' : '')}), N('span', r.action, {class: 'recent-action', title: r.action}));
-      items.append(item);
-    }
-    section.append(items, N('p', 'Disclosure dates, new KEV alerts and confirmed technical updates. Click an advisory for its checklist.', {class: 'recent-note'}));
-  }
-  function statusLabel(r) { const a = saved[r.id]; return M.reassess(r, a) ? 'Reassess' : M.states[M.effective(r, a)]; }
-  function row(r) {
-    const tr = N('tr', null, {class: 'row' + (S.expanded.has(r.id) ? ' open' : ''), 'data-id': r.id});
-    const rank = N('td', null, {class: 'rank'}), score = r.cvss?.score;
-    const hasScore = typeof score === 'number' && Number.isFinite(score) && score >= 0 && score <= 10;
-    const severity = !hasScore ? 'unknown' : score >= 9 ? 'critical' : score >= 7 ? 'high' : 'other';
-    const badge = N('span', hasScore ? score.toFixed(1) : '—', {class: 'rankbadge score-' + severity,
-      title: hasScore ? 'CVSS v' + r.cvss.version + ': ' + score.toFixed(1) + ' out of 10' : 'CVSS score not published / not applicable'});
-    if (hasScore) badge.append(N('span', '/10', {class: 'denom'}));
-    rank.append(badge);
-    const issue = N('th', null, {scope: 'row', class: 'issue'});
-    const expand = button('', () => toggle(r.id), {class: 'issuebtn', 'aria-expanded': S.expanded.has(r.id), 'aria-controls': 'detail-' + r.id, 'aria-label': 'Details for ' + r.product + ': ' + r.title});
-    expand.append(N('span', r.product, {class: 'product'}), N('span', r.title, {class: 'issuetitle', title: r.title}), N('span', '›', {class: 'chev', 'aria-hidden': 'true'}));
-    const meta = N('span', /^CVE-/.test(r.id) ? r.id : (r.kind === 'incident' ? 'CA / trust incident' : 'Vendor security release'), {class: 'issueid'});
-    if (M.isChanged(r, reviewedAt)) meta.append(N('span', r.change === 'updated' ? 'UPDATED' : 'NEW', {class: 'change'}));
-    issue.append(expand, meta);
-    const impact = N('td', r.impact, {class: 'impact'});
-    const ev = N('td', null, {class: 'evidence'});
-    ev.append(N('span', r.kev ? 'KEV · exploited' : r.rejected ? 'CVE rejected' : 'Not in KEV', {class: r.kev ? 'kev' : ''}));
-    ev.append(N('small', r.epss ? 'EPSS ' + pct(r.epss.score) : 'EPSS —'));
-    const version = N('td', null, {class: 'versions'});
-    version.append(N('span', r.fixed.length ? r.fixed[0] : r.kind === 'incident' ? 'Update trust / replace chain' : 'Follow vendor remediation ↗', {class: 'fix', title: r.fixed.join('; ') || r.action}));
-    version.append(N('span', (r.source_changed ? 'Source changed · review' : 'Checked ' + displayDate(r.checked_at)), {class: 'date'}));
-    const status = N('td', null, {class: 'status'}), a = saved[r.id];
-    status.append(N('span', statusLabel(r), {class: 'state ' + (M.reassess(r, a) ? 'reassess' : M.effective(r, a))}));
-    if (a?.owner) status.append(N('span', a.owner, {class: 'date'}));
-    tr.append(rank, issue, impact, ev, version, status);
-    tr.addEventListener('click', event => {if (!event.target.closest('button,a,input,select,textarea,label')) toggle(r.id);});
-    return tr;
-  }
-  function toggle(id) {
-    if (S.expanded.has(id)) S.expanded.delete(id); else S.expanded.add(id);
-    renderRows();
-    // Expansion stays in the document flow, with a stable deep link for handovers.
-    history.replaceState(null, '', '#' + encodeURIComponent(id));
-  }
-  const defaultSteps = r => [
-    'Identify deployed versions, exposed endpoints and the configurations described in this advisory.',
-    'Record applicability, affected systems and an owner. If already exploited, investigate possible compromise.',
-    'Apply the vendor fix, rebuild/redeploy affected images and restart required services. Record temporary controls separately.',
-    'Verify the running build or trust bundle, service health and relevant logs; record evidence.'
-  ];
-  function detail(r) {
-    const tr = N('tr', null, {class: 'detail', id: 'detail-' + r.id}), td = N('td', null, {colspan: 6}); tr.append(td);
-    const head = N('div', null, {class: 'detailhead'}); head.append(N('h2', r.title), link('Open primary source', r.sources[0]?.url));
-    td.append(head, N('p', M.reason(r), {class: 'why'}), N('p', r.description));
-    if (r.source_changed) td.append(N('p', 'Source changed since its reviewed baseline. Re-read the official notice before relying on the version/action summary.', {class: 'why'}));
-    if (r.catalog_missing) td.append(N('p', 'This previously tracked CVE is absent from the latest KEV catalog. Reassess its current evidence.', {class: 'why'}));
-    const cards = N('div', null, {class: 'cards'}), scope = N('section', null, {class: 'card'});
-    scope.append(N('h3', 'Affected → fixed'), N('h4', 'Affected versions / scope'), list(r.affected.length ? r.affected : ['See the vendor advisory. Version scope is not yet normalized.']), N('h4', 'Fixed / unaffected builds'), list(r.fixed.length ? r.fixed : ['Use the vendor’s current supported fix; no exact fixed build is confirmed in this snapshot.']));
-    if (r.conditions?.length) scope.append(N('h4', 'Prerequisites / configuration'), list(r.conditions));
-    scope.append(N('h4', 'Required action'), N('p', r.action));
-    const stepsCard = N('section', null, {class: 'card'}); stepsCard.append(N('h3', 'Action checklist'));
-    const a = saved[r.id] || M.assessment({}), stepInputs = [], steps = r.steps || defaultSteps(r);
-    for (let i = 0; i < 4; i++) {
-      const label = N('label', null, {class: 'check'}), input = N('input', null, {type: 'checkbox', 'aria-label': 'Step ' + (i + 1) + ': ' + steps[i]});
-      input.checked = !M.reassess(r, a) && a.steps[i];
-      label.append(input, N('span', steps[i])); stepsCard.append(label); stepInputs.push(input);
-    }
-    stepsCard.append(N('p', 'Step ticks are saved with your assessment. Mitigated items remain open until the underlying fix is verified.', {class: 'fine'}));
-    const form = N('form', null, {class: 'card'}); form.append(N('h3', 'Your assessment'));
-    const fields = N('div', null, {class: 'fields'});
-    function field(label, key, tag = 'input', max = 600) {
-      const wrapper = N('label', label), input = N(tag, null, {name: key, maxlength: max, 'aria-label': label});
-      input.value = a[key] || ''; wrapper.append(input); fields.append(wrapper); return input;
-    }
-    const stateLabel = N('label', 'Status'), select = N('select', null, {name: 'status', 'aria-label': 'Assessment status'});
-    for (const [key, value] of Object.entries(M.states)) select.append(N('option', value, {value: key}));
-    select.value = M.effective(r, a); stateLabel.append(select); fields.append(stateLabel);
-    const owner = field('Owner', 'owner', 'input', 120), systems = field('Affected systems / inventory reference', 'systems');
-    const note = field('Assessment / N/A reason', 'note', 'textarea', 2000), evidence = field('Verification evidence / ticket reference', 'evidence', 'textarea', 2000);
-    const save = N('button', 'Save assessment', {type: 'submit', class: 'save'}), message = N('p', '', {class: 'formmessage', role: 'status'});
-    form.append(fields, save, message);
-    if (M.reassess(r, a)) form.append(N('p', 'Advisory changed after your last assessment. Recheck the action steps and save your updated decision.', {class: 'why'}));
-    if (a.saved) form.append(N('p', 'Last saved ' + displayTime(a.saved), {class: 'fine'}));
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (select.value === 'fixed' && (!stepInputs.every(i => i.checked) || !evidence.value.trim())) { message.textContent = 'Complete all four steps and record verification evidence before closing.'; return; }
-      if (select.value === 'na' && !note.value.trim()) { message.textContent = 'Record why this advisory does not apply to your systems.'; return; }
-      saved[r.id] = M.assessment({status: select.value, owner: owner.value, systems: systems.value, note: note.value, evidence: evidence.value,
-        revision: r.revision, saved: new Date().toISOString(), steps: stepInputs.map(i => i.checked)});
-      const kept = persist(); render();
-      notify(kept ? 'Assessment saved in this browser.' : 'Assessment updated for this tab. Export to keep your progress.');
-    });
-    cards.append(scope, stepsCard, form); td.append(cards);
-    const meta = [r.published ? 'Published ' + displayDate(r.published) : '', r.kev_added ? 'KEV added ' + displayDate(r.kev_added) : '',
-      'Source checked ' + displayTime(r.checked_at), r.cve_checked_at ? 'CNA checked ' + displayTime(r.cve_checked_at) : '',
-      r.cve_status || '',
-      r.reviewed_at ? 'Action summary reviewed ' + displayDate(r.reviewed_at) : '',
-      r.cvss ? 'CVSS v' + r.cvss.version + ': ' + r.cvss.score + (r.cvss.vector ? ' · ' + r.cvss.vector : '') : 'CVSS not available',
-      r.epss ? 'EPSS ' + pct(r.epss.score) + ' · score date ' + r.epss.date : 'EPSS not available',
-      r.ransomware ? 'CISA: known ransomware use' : ''].filter(Boolean);
-    td.append(N('p', meta.join(' · '), {class: 'fine'}));
-    const links = N('div', null, {class: 'source-links'}); for (const source of r.sources) links.append(link(source.label, source.url)); td.append(links);
-    return tr;
-  }
-  function renderRows() {
-    const records = M.select(data.records, S, saved, reviewedAt), rows = [];
-    for (const r of records.slice(0, S.limit)) {
-      rows.push(row(r));
-      if (S.expanded.has(r.id)) rows.push(detail(r));
-      else rows.push(N('tr', null, {id: 'detail-' + r.id, hidden: true}));
-    }
-    if (!records.length) { const tr = N('tr'); tr.append(N('td', 'No matching risks. Change the layer, search or view filter.', {colspan: 6, class: 'empty'})); rows.push(tr); }
+    if(!rows.length){const tr=node('tr');tr.append(node('td','No high-risk entries match this period and search.',{colspan:6,class:'empty'}));rows.push(tr);}
     $('rows').replaceChildren(...rows);
-    $('count').textContent = 'Showing ' + Math.min(S.limit, records.length) + ' / ' + records.length + ' matching · ' + data.records.length + ' tracked';
-    $('scope').replaceChildren();
-    $('scope').hidden = !S.ids;
-    if (S.ids) $('scope').append(N('span', 'Advisory selected · '), button('Clear selection', () => {S.ids = null; renderRows();}, {class: 'smallbtn'}));
-    $('more').hidden = records.length <= S.limit;
   }
-  function render() { renderTabs(); renderSummary(); renderRecent(); renderRows(); }
-  function download() {
-    const payload = {schema: 1, exportedAt: new Date().toISOString(), reviewedAt, assessments: saved};
-    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'}));
-    const a = N('a', null, {href: url, download: 'security-checklist-' + new Date().toISOString().slice(0, 10) + '.json'});
-    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-    notify('Checklist exported. It includes the owners, system references and notes you entered.');
+  function health(){
+    const failed=data.sources.filter(s=>s.status!=='ok'),stale=!data.last_attempt||Date.now()-Date.parse(data.last_attempt)>36*3600000;
+    $('freshness').textContent=(failed.length?'Partial refresh':stale?'Snapshot overdue':'Updated')+' · '+time(data.last_attempt);
+    if(failed.length||stale){$('notice').hidden=false;$('notice').textContent=(failed.length?failed.length+' source checks failed. ':'')+(stale?'Snapshot is over 36 hours old. ':'')+'Previous source data is retained; see refresh health.';}
+    for(const s of data.sources){const li=node('li');li.append(sourceLink(s),node('span',' · '+s.status+' · '+time(s.last_success)));if(s.error)li.append(node('span',' · '+s.error));if(s.note)li.append(node('span',' · '+s.note));$('sources').append(li);}
+    $('refreshMeta').textContent='Last complete refresh: '+time(data.last_success)+'. Retained data covers the last six months from the monitored sources.';
   }
-  async function importFile(file) {
-    if (!file) return;
-    try {
-      if (file.size > 2_000_000) throw new Error('File is too large (2 MB maximum).');
-      const raw = JSON.parse(await file.text());
-      if (raw?.schema !== 1 || !raw.assessments || typeof raw.assessments !== 'object' || Array.isArray(raw.assessments)) throw new Error('Choose an exported checklist JSON file.');
-      const incoming = M.progress(raw.assessments, data.records);
-      let count = 0;
-      for (const [id, a] of Object.entries(incoming)) {
-        if (!saved[id] || (Number.isFinite(Date.parse(a.saved)) && Date.parse(a.saved) > (Date.parse(saved[id].saved) || 0))) { saved[id] = a; count++; }
-      }
-      // Keep this browser's review watermark; importing cannot hide unseen advisory changes.
-      const kept = persist(); render(); notify(count + ' assessments imported (newer entries win).' + (kept ? '' : ' Export before leaving this tab.'));
-    } catch (error) { notify('Import failed: ' + error.message); }
-    finally { $('import').value = ''; }
-  }
-  async function start() {
-    try {
-      const response = await fetch('data.json', {cache: 'no-store'});
-      if (!response.ok) throw new Error('Snapshot request failed (' + response.status + ')');
-      data = M.validate(await response.json()); load(); sourceHealth();
-      const initial = decodeURIComponent(location.hash.slice(1));
-      if (data.records.some(r => r.id === initial)) { S.expanded.add(initial); S.view = 'all'; S.q = initial; $('q').value = initial; $('view').value = 'all'; }
-      $('q').addEventListener('input', () => {S.q = $('q').value; S.ids = null; S.limit = 30; renderRows();});
-      for (const key of ['view', 'sort']) $(key).addEventListener('change', () => {S[key] = $(key).value; if (key === 'view') S.ids = null; S.limit = 30; renderRows();});
-      $('more').addEventListener('click', () => {S.limit = data.records.length; renderRows();});
-      $('export').addEventListener('click', download);
-      $('import').addEventListener('change', () => importFile($('import').files[0]));
-      $('reviewed').addEventListener('click', () => {reviewedAt = new Date().toISOString(); persist(); $('reviewDate').textContent = 'Changes reviewed: ' + displayTime(reviewedAt); render(); notify('Changes marked reviewed. Open risks remain on your action list.');});
-      render();
-    } catch (error) {
-      $('freshness').textContent = 'Snapshot unavailable'; $('count').textContent = 'Unable to load risks';
-      notify('Could not load the security snapshot. Reload the page or open the source snapshot and refresh runs below. ' + error.message);
+  async function start(){try{
+    const response=await fetch('data.json',{cache:'no-store'});if(!response.ok)throw new Error('Snapshot request failed ('+response.status+')');data=M.validate(await response.json());
+    health();
+    const id=decodeURIComponent(location.hash.slice(1));if(data.records.some(r=>r.id===id)){
+      state.open.add(id);state.q=id;$('q').value=id;if(M.select(data.records,{view:'archive',q:id}).length)state.view='archive';
     }
-  }
+    for(const id of ['current','archive'])$(id).addEventListener('click',()=>{state.view=id;state.q='';$('q').value='';history.replaceState(null,'',id==='archive'?'#archive':location.pathname);render();});
+    $('q').addEventListener('input',()=>{state.q=$('q').value;render();});render();
+  }catch(error){$('freshness').textContent='Snapshot unavailable';$('notice').hidden=false;$('notice').textContent='Could not load the security snapshot. '+error.message;$('count').textContent='Unable to load risks';}}
   start();
 })();

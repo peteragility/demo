@@ -78,8 +78,8 @@
   },
   {
    "path": "security-risk/",
-   "title": "Security Risk Checklist",
-   "desc": "Prioritize exploited vulnerabilities and CA incidents, assess affected systems and track verified fixes",
+   "title": "Security Risk Watch",
+   "desc": "High-risk vulnerabilities from the last 30 days, recommended actions and a six-month archive",
    "tag": "Featured",
    "color": "#ff8b78",
    "category": "Tools",

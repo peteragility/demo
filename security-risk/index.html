@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Security Risk Checklist</title>
-<meta name="description" content="A daily security checklist for IT and engineering: exploited vulnerabilities, CA trust incidents, Node.js, PHP and GitLab fixes across your technology stack.">
+<title>Security Risk Watch</title>
+<meta name="description" content="High-risk security vulnerabilities from the last 30 days, with concise issue summaries, recommended actions and a six-month archive.">
 <meta name="color-scheme" content="light dark">
 <link rel="canonical" href="https://peteragility.github.io/demo/security-risk/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Security Risk Checklist">
-<meta property="og:description" content="Assess exposure. Patch affected systems. Verify the fix. A security checklist refreshed nightly.">
+<meta property="og:title" content="Security Risk Watch">
+<meta property="og:description" content="Last 30 days of high-risk vulnerabilities, issue summaries and recommended actions. Updated nightly.">
 <meta property="og:url" content="https://peteragility.github.io/demo/security-risk/">
 <meta property="og:image" content="https://peteragility.github.io/demo/assets/security-preview.png">
 <meta property="og:image:width" content="1200">
@@ -18,39 +18,30 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 <script src="../assets/site-analytics.js" defer></script>
-<script src="model.js?v=3" defer></script>
-<script src="app.js?v=4" defer></script>
+<script src="model.js?v=4" defer></script>
+<script src="app.js?v=5" defer></script>
 </head>
 <body>
 <main class="wrap">
   <header class="top">
-    <h1>Security Risk Checklist</h1><span class="intref">IT + engineering · daily review</span><a class="home" href="../">Demo Lab ↗</a>
-    <p>Find affected systems → apply the fix → verify in production. <span id="freshness">Loading official-source snapshot…</span></p>
+    <h1>Security Risk Watch</h1><span class="intref">IT + engineering · information brief</span><a class="home" href="../">Demo Lab ↗</a>
+    <p>High-impact vulnerabilities and urgent security incidents. <span id="freshness">Loading official-source snapshot…</span></p>
   </header>
-  <div class="bar"><div class="tabs" id="tabs" role="group" aria-label="Security layer"></div></div>
-  <div class="tools">
-    <label class="search"><span aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Product, CVE, system or owner" aria-label="Search vulnerabilities" autocomplete="off"></label>
-    <label class="sel"><span>View</span><select id="view" aria-label="Filter checklist"><option value="open">To action</option><option value="all">All risks</option><option value="changed">New / changed</option><option value="exploited">Known exploited</option><option value="reassess">Reassess</option><option value="done">Completed / N/A</option></select></label>
-    <label class="sel"><span>Sort</span><select id="sort" aria-label="Sort risks"><option value="cvss" selected>CVSS highest</option><option value="risk">Risk priority</option><option value="new">Newest</option><option value="epss">EPSS probability</option></select></label>
+  <div class="controls">
+    <div class="tabs" role="group" aria-label="Risk period"><button id="current" class="tab" type="button" aria-pressed="true">Last 30 days <span id="currentCount"></span></button><button id="archive" class="tab" type="button" aria-pressed="false">Archive · 6 months <span id="archiveCount"></span></button></div>
+    <label class="search"><input id="q" type="search" placeholder="Search product, CVE or issue" aria-label="Search vulnerabilities" autocomplete="off"></label>
   </div>
-  <section class="summary" id="summary" aria-label="Checklist summary" aria-live="polite"></section>
-  <section class="recent" id="recent" aria-label="Recent and escalated security advisories"></section>
-  <div class="intro">
-    <details class="daily"><summary>Your daily review <span>4 steps</span></summary><ol><li>Review new and changed risks; identify deployed products, versions and exposed systems.</li><li>Assign an owner and record whether each advisory applies.</li><li>Patch affected systems or record a temporary mitigation and follow-up.</li><li>Verify running builds and service health; save evidence before closing.</li></ol></details>
-    <div class="actions"><button id="export" type="button">Export checklist ↓</button><label class="import" for="import">Import ↑</label><input id="import" type="file" accept="application/json,.json" hidden><button id="reviewed" type="button">Mark changes reviewed</button></div>
-  </div>
+  <section class="summary" id="summary" aria-label="Risk summary"></section>
   <p class="notice" id="notice" role="status" hidden></p>
-  <p class="notice" id="storageNotice" role="status" hidden></p>
-  <div class="rowhint"><span id="count">Loading risks…</span><span id="scope" hidden></span><span>Click / tap an issue for affected versions, actions and your checklist.</span></div>
-  <div class="tblwrap"><table class="mx" aria-label="Prioritized security risks"><thead><tr><th class="rank" scope="col" aria-label="CVSS severity score out of 10">CVSS</th><th class="issue" scope="col">Product / issue</th><th class="impact" scope="col">Impact</th><th class="evidence" scope="col">Exploitation</th><th class="versions" scope="col">Fixed / unaffected · action</th><th class="status" scope="col">Your status</th></tr></thead><tbody id="rows"></tbody></table></div>
-  <button id="more" type="button" hidden>Show all tracked risks</button>
+  <div class="rowhint"><b id="period">Last 30 days</b><span id="count">Loading risks…</span><span>Tap an issue for versions &amp; sources</span></div>
+  <div class="tblwrap"><table class="mx" aria-label="High-risk security vulnerabilities"><thead><tr><th class="rank" scope="col">CVSS</th><th class="when" scope="col">Risk date</th><th class="issue" scope="col">Product / issue</th><th class="about" scope="col">What happened</th><th class="evidence" scope="col">Exploitation</th><th class="action" scope="col">Recommended action</th></tr></thead><tbody id="rows"></tbody></table></div>
   <footer class="foot">
-    <section><h2>How to read it</h2><p><b>CVSS</b> shows published severity out of 10, such as <b>9.3/10</b> or <b>10.0/10</b>. Red scores are critical (9.0–10.0); amber scores are high (7.0–8.9). <b>—</b> means a score is unpublished or not applicable, including some CA incidents. The CVSS version and vector are in the row details. <a href="https://www.first.org/cvss/v4.0/specification-document#Qualitative-Severity-Rating-Scale" target="_blank" rel="noopener noreferrer">Scoring reference ↗</a></p><p><b>Act now</b> counts open risks with known exploitation and code execution, authentication bypass, credential theft, or ransomware use. The <b>Risk priority</b> sort puts these first, followed by other exploited risks, critical scores and reviewed urgent notices. Choose <b>CVSS highest</b> to sort by numerical severity. Confirm exposure and business impact in your environment.</p><p><b>KEV</b> means CISA confirms exploitation. Absence from KEV does not establish safety. <b>EPSS</b> estimates exploitation probability over the next 30 days, with its own score date. These signals do not prove that your systems are affected.</p><p>Source checked ≠ fix independently verified. Branch-specific fixes are shown only where explicitly documented. Confirm distribution backports with your vendor. A materially changed advisory reopens an earlier assessment. “Source changed” requires a fresh reading of the vendor notice.</p><p>A focused watchlist, not an asset scanner or a complete CVE inventory. It tracks recent KEV additions, important older exploited flaws, and current vendor security releases. No system is marked affected automatically.</p></section>
-    <section><details class="srcbox"><summary><h2>Sources &amp; refresh health</h2></summary><p>Nightly GitHub Actions target: <b>23:17 Asia/Hong_Kong</b> (15:17 UTC). Scheduled starts may be delayed. Failed sources retain previous records with their original dates.</p><ul id="sources"></ul><p id="refreshMeta"></p><p><a href="data.json">Download source snapshot ↗</a> · <a href="https://github.com/peteragility/demo/actions/workflows/security-risk.yml" target="_blank" rel="noopener noreferrer">Refresh runs ↗</a></p></details><p id="savedNote">Checklist progress is saved in this browser. Export it to move devices or share a handover. Notes are not sent to a server.</p><p id="reviewDate"></p><p><b>Built by</b> Peter Chan · <a href="../llm-pricing/">same layout as LLM Token Pricing</a></p></section>
+    <section><h2>Scope &amp; dates</h2><p><b>High risk</b> means published CVSS ≥ 7.0, confirmed exploitation in CISA KEV, or a reviewed urgent incident such as a CA compromise. CVSS scores rank highest first; unscored entries remain visible at the end.</p><p><b>Last 30 days</b> includes today and the preceding 29 days in Hong Kong time. The <b>archive</b> contains older entries within six calendar months. Risk dates reflect disclosure, a new KEV alert, or a confirmed material advisory update. Routine source checks do not renew a risk's date.</p><p><b>CVSS</b> is severity out of 10; <b>—</b> means unpublished or not applicable. <b>KEV</b> confirms exploitation. “Not in KEV” does not establish safety. Details show affected versions, prerequisites, fixes and official sources.</p><p>A focused information brief from monitored sources, not a complete inventory of every vulnerability. Confirm vendor guidance and distribution backports for your environment.</p></section>
+    <section><details class="srcbox"><summary><h2>Sources &amp; refresh health</h2></summary><p>GitHub Actions checks sources, reviews eligibility and dates, and publishes the current 30-day list and six-month archive nightly at <b>23:17 Asia/Hong_Kong</b>. GitHub may delay scheduled starts. Failed sources retain prior data with its original dates.</p><ul id="sources"></ul><p id="refreshMeta"></p><p><a href="data.json">Source snapshot ↗</a> · <a href="https://github.com/peteragility/demo/actions/workflows/security-risk.yml" target="_blank" rel="noopener noreferrer">Refresh runs ↗</a></p></details><p><b>Built by</b> Peter Chan · <a href="../llm-pricing/">LLM pricing page</a></p></section>
   </footer>
 </main>
-<noscript><p>JavaScript is required for interactive checklists. <a href="data.json">Read the security snapshot</a>.</p></noscript>
+<noscript><p>JavaScript is required to show this security brief. <a href="data.json">Read the security snapshot</a>.</p></noscript>
 </body>
 </html>

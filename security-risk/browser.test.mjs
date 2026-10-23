@@ -1,104 +1,36 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
-import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {withBrowser} from '../scripts/browser-kit.mjs';
-
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const snapshot = JSON.parse(readFileSync(path.join(root, 'security-risk/data.json'), 'utf8'));
-const clock = `const NativeDate=Date;const fixed=NativeDate.parse(${JSON.stringify(snapshot.last_attempt)});window.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]))}static now(){return fixed}};`;
-await withBrowser(root, async b => {
-  const ready = () => b.waitFor('document.querySelectorAll("#rows .row").length > 0');
-  await b.navigate('/security-risk/', clock); await ready();
-  assert.equal(await b.evaluate('document.querySelectorAll("#rows .row").length'), 30);
-  assert.equal(await b.evaluate('document.querySelector("#recent h2").textContent'), 'Recent & escalated · last 7 days');
-  const recentCount = await b.evaluate('document.querySelectorAll(".recent-item").length');
-  assert.ok(recentCount >= 0 && recentCount <= 5);
-  if (await b.evaluate('!!document.querySelector(".recent-head button")')) {
-    await b.evaluate('document.querySelector(".recent-head button").click()');
-    assert.ok(await b.evaluate('document.querySelectorAll(".recent-item").length > 5'));
-    await b.evaluate('document.querySelector(".recent-head button").click()');
-    assert.equal(await b.evaluate('document.querySelectorAll(".recent-item").length'), 5);
-  }
-  assert.equal(await b.evaluate('document.querySelector("thead .rank").textContent'), 'CVSS');
-  assert.equal(await b.evaluate('document.getElementById("sort").value'), 'cvss');
-  assert.equal(await b.evaluate('document.querySelector(".rankbadge").textContent'), '10.0/10');
-  for (const width of [1440, 768, 390, 320]) {
-    await b.viewport(width, 920);
-    if (width === 320) await b.evaluate('document.querySelector(".wrap").style.fontFamily="Arial,sans-serif"');
-    const overflow = await b.evaluate('[...document.body.querySelectorAll("*")].filter(e=>e.getBoundingClientRect().right>innerWidth+1 && getComputedStyle(e).position!=="absolute").slice(0,6).map(e=>e.tagName+"."+e.className+":"+e.getBoundingClientRect().right).join(", ")');
-    assert.ok(await b.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'No horizontal overflow at ' + width + ': ' + overflow);
-    assert.ok(await b.evaluate('[...document.querySelectorAll(".rankbadge")].every(e=>e.getBoundingClientRect().right<=e.closest("td").getBoundingClientRect().right)'), 'Scores fit their cells at ' + width);
-    if (width === 1440 || width === 390) await b.screenshot(path.join(os.tmpdir(), 'security-checklist-' + width + '.png'), width, 920);
-  }
-  await b.evaluate('document.querySelector(".wrap").style.fontFamily=""');
-  await b.call('Emulation.setEmulatedMedia', {features: [{name:'prefers-color-scheme',value:'dark'}]});
-  await b.screenshot(path.join(os.tmpdir(), 'security-checklist-dark.png'), 1440, 920);
-  assert.equal(await b.evaluate('getComputedStyle(document.body).backgroundColor'), 'rgb(13, 16, 21)');
-  await b.call('Emulation.setEmulatedMedia', {features: [{name:'prefers-color-scheme',value:'light'}]});
-  await b.viewport(1440, 920);
-  if (recentCount) {
-    await b.evaluate('document.querySelector(".recent-title").click()');
-    assert.equal(await b.evaluate('document.getElementById("sort").value'), 'cvss');
-    assert.ok(await b.evaluate('document.querySelectorAll(".detail").length===1 && document.getElementById("scope").textContent.includes("Advisory selected")'));
-    await b.evaluate('document.querySelector("#scope button").click();window.scrollTo(0,0)');
-  }
-  await b.evaluate('document.getElementById("more").click()');
-  assert.ok(await b.evaluate('document.querySelectorAll("#rows .row").length > 30'));
-  await b.evaluate('window.scrollTo(0,650)'); await b.pause(100);
-  assert.ok(await b.evaluate('document.querySelector("thead th").getBoundingClientRect().top >= 0 && document.querySelector("thead th").getBoundingClientRect().top <= 60'), 'Sticky table headers');
-  await b.evaluate('window.scrollTo(0,0)');
-
-  const id = 'CVE-2026-109618';
-  await b.evaluate(`document.getElementById('q').value='${id}'; document.getElementById('q').dispatchEvent(new Event('input')); document.querySelector('.issuebtn').click()`);
-  assert.equal(await b.evaluate('document.querySelectorAll("#rows .row").length'), 1);
-  assert.ok(await b.evaluate('document.querySelector(".detail").textContent.includes("8.5.12")'));
-  await b.evaluate('document.querySelector("form select").value="fixed";document.querySelector("form").requestSubmit()');
-  assert.match(await b.evaluate('document.querySelector(".formmessage").textContent'), /four steps/);
-  await b.evaluate('document.querySelector("form select").value="na";document.querySelector("form").requestSubmit()');
-  assert.match(await b.evaluate('document.querySelector(".formmessage").textContent'), /why/);
-  await b.evaluate(`document.querySelector('form select').value='affected';document.querySelector('[name=owner]').value='<img src=x onerror=alert(1)>';document.querySelector('[name=systems]').value='web-prod';document.querySelector('form').requestSubmit()`);
-  assert.equal(await b.evaluate('document.querySelectorAll("#rows img, #rows script").length'), 0);
-  await b.navigate('/security-risk/?persist=1#' + id, clock); await ready();
-  assert.equal(await b.evaluate('document.querySelector(".state").textContent'), 'Affected');
-  assert.equal(await b.evaluate('document.querySelector("[name=systems]").value'), 'web-prod');
-  await b.evaluate('document.querySelectorAll(".check input").forEach(i=>i.checked=true);document.querySelector("form select").value="fixed";document.querySelector("[name=evidence]").value="Change SEC-42; running FPM build verified";document.querySelector("form").requestSubmit()');
-  assert.equal(await b.evaluate('document.querySelector(".state").textContent'), 'Fixed / verified');
-  await b.evaluate('document.getElementById("view").value="open";document.getElementById("view").dispatchEvent(new Event("change"))');
-  assert.equal(await b.evaluate('document.querySelectorAll("#rows .row").length'), 0);
-
-  const mutate = code => clock + `const originalFetch=window.fetch;window.fetch=async (...args)=>{const response=await originalFetch(...args);if(String(args[0]).includes('data.json')){const data=await response.json();${code};return new Response(JSON.stringify(data),{status:200,headers:{'Content-Type':'application/json'}});}return response;};`;
-  await b.navigate('/security-risk/?reassess=1#' + id, mutate(`data.records.find(r=>r.id==='${id}').revision='changed-advisory';`)); await ready();
-  assert.equal(await b.evaluate('document.querySelector(".state").textContent'), 'Reassess');
-  assert.equal(await b.evaluate('document.querySelectorAll(".check input:checked").length'), 0);
-
-  // Exercise export without allowing the test browser to write into the user's Downloads.
-  await b.evaluate(`const originalObjectURL=URL.createObjectURL;URL.createObjectURL=blob=>{window.exported=blob.text();return originalObjectURL(blob)};HTMLAnchorElement.prototype.click=function(){window.exportName=this.download};document.getElementById('export').click()`);
-  const exported = await b.evaluate('window.exported.then(JSON.parse)');
-  assert.equal(exported.assessments[id].systems, 'web-prod');
-  assert.match(await b.evaluate('window.exportName'), /^security-checklist-/);
-  await b.evaluate(`const payload={schema:1,assessments:{'${id}':{status:'na',note:'No production PHP',saved:new Date(Date.now()+1000).toISOString(),revision:'changed-advisory',owner:'Ops'},'__proto__':{polluted:true},unknown:{status:'fixed'}}};const dt=new DataTransfer();dt.items.add(new File([JSON.stringify(payload)],'handover.json',{type:'application/json'}));document.getElementById('import').files=dt.files;document.getElementById('import').dispatchEvent(new Event('change'));`);
-  await b.waitFor('document.getElementById("notice").textContent.includes("imported")');
-  assert.equal(await b.evaluate('document.querySelector(".state").textContent'), 'Not applicable');
-  assert.equal(await b.evaluate('({}).polluted'), undefined);
-
-  await b.navigate('/security-risk/?score=1#emudhra-ca-2026-10', clock); await ready();
-  assert.equal(await b.evaluate('document.querySelector(".rankbadge").textContent'), '—');
-
-  await b.navigate('/security-risk/?empty-recent=1', mutate(`data.records.forEach(r=>{r.published='2020-01-01';r.advisory_published_at='2020-01-01';r.kev_added='2020-01-01';r.material_updated_at='';r.checked_at=new Date().toISOString()});`)); await ready();
-  assert.equal(await b.evaluate('document.querySelectorAll(".recent-item").length'), 0);
-  assert.match(await b.evaluate('document.querySelector(".recent-empty").textContent'), /No qualifying advisories/);
-
-  await b.navigate('/security-risk/', `Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}});`); await ready();
-  assert.equal(await b.evaluate('document.getElementById("storageNotice").hidden'), false);
-  await b.navigate('/security-risk/?unsafe=1#' + id, mutate(`data.records.find(r=>r.id==='${id}').title='<img src=x onerror=alert(1)>';data.records.find(r=>r.id==='${id}').sources[0].url='javascript:alert(1)';data.records.find(r=>r.id==='${id}').product='<img src=x onerror=alert(1)>';data.last_attempt='2020-01-01T00:00:00Z';data.sources[0].status='failed';`)); await ready();
-  assert.equal(await b.evaluate('document.querySelectorAll("#rows img, #rows script, #rows a[href^=javascript]").length'), 0);
-  assert.equal(await b.evaluate('document.querySelectorAll("#recent img, #recent script, #recent a[href^=javascript]").length'), 0);
-  assert.match(await b.evaluate('document.getElementById("notice").textContent'), /source check.*failed/);
-  await b.navigate('/security-risk/', `const originalFetch=window.fetch;window.fetch=(...args)=>String(args[0]).includes('data.json')?Promise.reject(new Error('offline')):originalFetch(...args);`);
-  await b.waitFor('document.getElementById("notice").textContent.includes("Could not load")');
-  assert.equal(await b.evaluate('document.getElementById("count").textContent'), 'Unable to load risks');
-  assert.deepEqual(b.errors, []);
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const fixed='2026-10-23T06:00:00Z',clock=`const NativeDate=Date;window.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[${JSON.stringify(fixed)}]))}static now(){return NativeDate.parse(${JSON.stringify(fixed)})}};`;
+const make=(id,published,score=9.3)=>({id,title:'Example issue '+id,product:'Example',description:'Untrusted input can allow code execution.',action:'Upgrade the runtime and restart affected services.',impact:'Code execution',layer:'runtime',published,cvss:score===null?null:{score,version:'3.1'},affected:['1.x'],fixed:['1.2'],conditions:[],sources:[{label:'Vendor',url:'https://vendor.test/advisory'}],checked_at:fixed});
+const fixture={schema:1,last_attempt:fixed,last_success:fixed,sources:[],records:[make('current-a','2026-10-21',10),make('current-b','2026-09-24'),make('archive-a','2026-09-23'),make('archive-b','2026-04-23'),make('expired','2026-04-22'),make('low','2026-10-20',6.9),{...make('ca','2026-10-20',null),urgent:true,kind:'incident'}]};
+const setup=(data,extra='')=>clock+`const originalFetch=window.fetch;window.fetch=async(...args)=>String(args[0]).includes('data.json')?new Response(JSON.stringify(${JSON.stringify(data)}),{status:200}):originalFetch(...args);`+extra;
+await withBrowser(root,async b=>{
+ await b.navigate('/security-risk/',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');
+ assert.equal(await b.evaluate('document.querySelector("#current").getAttribute("aria-pressed")'),'true');
+ assert.equal(await b.evaluate('document.querySelector(".score").textContent'),'10.0/10');
+ assert.equal(await b.evaluate('document.querySelectorAll("form,textarea,input[type=checkbox],#recent,#export,#import,#view,#sort").length'),0);
+ for(const width of [1440,768,390,320]){
+  await b.viewport(width,900);if(width===320)await b.evaluate('document.body.style.fontFamily="Arial,sans-serif"');
+  assert.ok(await b.evaluate('document.documentElement.scrollWidth<=innerWidth'),'No overflow at '+width);
+  assert.ok(await b.evaluate('document.querySelector(".row .issue").getBoundingClientRect().width>100'),'Readable product column at '+width);
+  if(width===1440||width===390)await b.screenshot(path.join(os.tmpdir(),'security-info-'+width+'.png'),width,900);
+ }
+ await b.evaluate('document.querySelector(".issuebtn").click()');assert.ok(await b.evaluate('document.querySelector(".detail").textContent.includes("Recommended action")'));
+ await b.evaluate('document.getElementById("archive").click()');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),2);
+ assert.match(await b.evaluate('document.getElementById("period").textContent'),/Archive/);
+ await b.evaluate('document.getElementById("q").value="archive-b";document.getElementById("q").dispatchEvent(new Event("input"))');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),1);
+ await b.evaluate('document.getElementById("current").click()');assert.equal(await b.evaluate('document.querySelectorAll(".row").length'),3);
+ await b.navigate('/security-risk/?blocked=1',setup(fixture,`Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}});`));await b.waitFor('document.querySelectorAll(".row").length===3');
+ const unsafe=structuredClone(fixture);unsafe.records[0].title='<img src=x onerror=alert(1)>';unsafe.records[0].action='<script>alert(1)</script>';unsafe.records[0].sources[0].url='javascript:alert(1)';
+ await b.navigate('/security-risk/?unsafe=1',setup(unsafe));await b.waitFor('document.querySelectorAll(".row").length===3');await b.evaluate('document.querySelector(".issuebtn").click()');assert.equal(await b.evaluate('document.querySelectorAll("#rows img,#rows script,#rows a[href^=javascript]").length'),0);
+ await b.navigate('/security-risk/?empty=1',setup({...fixture,records:[]}));await b.waitFor('!!document.querySelector(".empty")');
+ await b.navigate('/security-risk/?offline=1',clock+`window.fetch=()=>Promise.reject(new Error('offline'));`);await b.waitFor('document.getElementById("notice").textContent.includes("Could not load")');
+ await b.call('Emulation.setEmulatedMedia',{features:[{name:'prefers-color-scheme',value:'dark'}]});
+ await b.navigate('/security-risk/?dark=1',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');assert.equal(await b.evaluate('getComputedStyle(document.body).backgroundColor'),'rgb(13, 16, 21)');
+ assert.deepEqual(b.errors,[]);
 });
-console.log('PASS: desktop/mobile/dark layout, sticky headers, checklist persistence, closure gates, reassessment, export/import, blocked storage, injection and source outages.');
+console.log('PASS: current/archive date windows, CVSS order, summaries and actions, no assessment UI, search, mobile/dark, blocked storage, injection and empty/offline states.');

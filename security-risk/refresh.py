@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Refresh a public security watchlist. Standard library only; never scan user assets."""
 import argparse
+import calendar
+from zoneinfo import ZoneInfo
 import concurrent.futures
 import datetime as dt
 import hashlib
@@ -25,9 +27,6 @@ FEEDS = {
     'ca': ('Google Security / certificate incidents', 'https://blog.google/security/rss/', 'trust', 'Web PKI'),
 }
 LAYERS = {'trust', 'edge', 'runtime', 'delivery', 'system', 'identity'}
-ANCHORS = {'CVE-2024-4577', 'CVE-2021-22205', 'CVE-2023-7028', 'CVE-2024-6387',
-           'CVE-2024-3094', 'CVE-2021-44228', 'CVE-2024-1086', 'CVE-2024-3400',
-           'CVE-2023-4966', 'CVE-2025-29927'}
 ATOM = {'a': 'http://www.w3.org/2005/Atom', 'p': 'http://php.net/ns/releases'}
 
 
@@ -113,14 +112,10 @@ def stamp():
 def kev_records(data, now, keep=()):
     items = data.get('vulnerabilities')
     if not isinstance(items, list) or len(items) < 100: raise ValueError('Incomplete KEV catalog')
-    # Recent catalog additions across all products, plus enduring high-impact examples.
+    # Discover every KEV addition in the six-month window; no arbitrary top-N cap.
+    cutoff = window_dates(now)[1]
     ordered = sorted(items, key=lambda r: r.get('dateAdded', ''), reverse=True)
-    selected = {r['cveID']: r for r in ordered[:45]}
-    for layer in LAYERS:
-        matches = [r for r in ordered if layer_for(r['vendorProject'] + ' ' + r['product']) == layer]
-        for r in matches[:4]: selected[r['cveID']] = r
-    for r in ordered:
-        if r['cveID'] in ANCHORS or r['cveID'] in keep: selected[r['cveID']] = r
+    selected = {r['cveID']: r for r in ordered if r.get('dateAdded', '') >= cutoff or r['cveID'] in keep}
     result = []
     for r in selected.values():
         if not cve_id(r['cveID']): raise ValueError('Invalid CVE in catalog')
@@ -145,7 +140,7 @@ def feed_entries(text):
         links = e.findall('a:link', ATOM)
         url = next((a.get('href') for a in links if a.get('rel', 'alternate') == 'alternate'), e.findtext('a:id', '', ATOM))
         result.append({'title': e.findtext('a:title', '', ATOM), 'url': url,
-                       'date': e.findtext('a:updated', '', ATOM) or e.findtext('a:published', '', ATOM),
+                       'date': e.findtext('a:published', '', ATOM) or e.findtext('a:updated', '', ATOM),
                        'body': e.findtext('a:content', '', ATOM) or e.findtext('a:summary', '', ATOM),
                        'security': any(t.text == 'security' for t in e.findall('p:tag', ATOM))})
     return result
@@ -173,6 +168,7 @@ def feed_records(key, text, now):
         allowed = {'node': {'nodejs.org'}, 'php': {'www.php.net', 'php.net'}, 'gitlab': {'docs.gitlab.com', 'about.gitlab.com'}, 'ca': {'security.googleblog.com', 'blog.google'}}
         if not safe_url(url) or urllib.parse.urlsplit(url).hostname not in allowed[key]: continue
         day = date_of(e['date'])
+        if not day or day < window_dates(now)[1]: continue
         rid = key + '-' + hashlib.sha256(url.encode()).hexdigest()[:12]
         result.append(dict(id=rid, product=product, layer=layer, title=title, description=body[:700] or title,
                            impact='Trust / availability' if key == 'ca' else 'Security release',
@@ -180,25 +176,32 @@ def feed_records(key, text, now):
                            affected=[], fixed=[], conditions=[], sources=[{'label': label, 'url': url}], source_id=key,
                            kev=False, kev_added='', ransomware=False, published=day, updated=day, checked_at=now,
                            cvss=None, epss=None, advisory_published_at=day, kind='incident' if key == 'ca' else 'release'))
-        if len(result) >= (3 if key != 'php' else 4): break
-    if key in ('node', 'php', 'gitlab') and not result: raise ValueError('Feed has no recognizable security entries')
+    # An otherwise valid feed can have no security releases within six months.
     return result
 
 
 def vendor_records(key, now):
     records = feed_records(key, fetch(FEEDS[key][1]), now)
     if key == 'ca': return records
-    # Inspect the current vendor release for new CVEs, including flaws not yet in KEV.
-    latest = records[0]
-    text = plain(fetch(latest['sources'][0]['url']))
+    # Inspect every available release in the retention window, not only the latest one.
+    def discover(release):
+        text = plain(fetch(release['sources'][0]['url']))
+        discovered = []
+        for rid in dict.fromkeys(re.findall(r'CVE-\d{4}-\d{4,8}', text)):
+            record = release.copy()
+            record.update(id=rid, kind='vulnerability', title=release['product'] + ' · ' + rid,
+                          description='CVE referenced in the official security release. See the advisory for affected configurations.',
+                          sources=release['sources'] + [{'label': 'CVE record', 'url': 'https://www.cve.org/CVERecord?id=' + rid}])
+            discovered.append(record)
+        return discovered
     discovered = []
-    for rid in list(dict.fromkeys(re.findall(r'CVE-\d{4}-\d{4,8}', text)))[:16]:
-        record = latest.copy()
-        record.update(id=rid, kind='vulnerability', title=latest['product'] + ' · ' + rid,
-                      description='New CVE referenced in the official security release. Check its affected versions and prerequisites.',
-                      sources=latest['sources'] + [{'label': 'CVE record', 'url': 'https://www.cve.org/CVERecord?id=' + rid}])
-        discovered.append(record)
-    return records + discovered
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
+        for found in pool.map(discover, records): discovered.extend(found)
+    unique = {}
+    for record in discovered:
+        prior = unique.get(record['id'])
+        if not prior or record['advisory_published_at'] < prior['advisory_published_at']: unique[record['id']] = record
+    return records + list(unique.values())
 
 
 def enrich(record, now):
@@ -220,6 +223,7 @@ def enrich(record, now):
             if description: record['description'] = plain(description)[:1800]
             record['impact'] = impact_for(record['title'] + ' ' + record['description'])
         record['affected'], record['fixed'], record['conditions'] = [], [], []
+        record['cvss'] = None
         for a in cna.get('affected', []):
             prefix = a.get('product', record['product'])
             has_affected = any(v.get('status') == 'affected' for v in a.get('versions', []))
@@ -283,8 +287,38 @@ def material_update(record, prior):
     return updated if any(record.get(k) != prior.get(k) for k in technical) else previous
 
 
+def window_dates(now):
+    today = dt.datetime.fromisoformat(now.replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Hong_Kong')).date()
+    month = today.month - 6
+    year = today.year
+    if month <= 0: month += 12; year -= 1
+    archive = dt.date(year, month, min(today.day, calendar.monthrange(year, month)[1]))
+    return (today - dt.timedelta(days=29)).isoformat(), archive.isoformat(), today.isoformat()
+
+
+def risk_event(record, today):
+    candidates = [(record.get('advisory_published_at') or record.get('published', ''), 'Disclosed'),
+                  (record.get('material_updated_at', ''), 'Advisory updated')]
+    if record.get('kev'): candidates.append((record.get('kev_added', ''), 'Added to KEV'))
+    valid = [(date[:10], label) for date, label in candidates if re.fullmatch(r'\d{4}-\d{2}-\d{2}', date[:10]) and date[:10] <= today]
+    return max(valid, default=('', ''))
+
+
+def high_risk(record):
+    return not record.get('rejected') and bool(record.get('kev') or record.get('urgent') or (record.get('cvss') or {}).get('score', -1) >= 7)
+
+
+def retain(records, now):
+    current, archive, today = window_dates(now)
+    kept = [r for r in records if high_risk(r) and archive <= risk_event(r, today)[0] <= today]
+    current_count = sum(risk_event(r, today)[0] >= current for r in kept)
+    return kept, dict(as_of=today, current_from=current, archive_from=archive,
+                      current_count=current_count, archive_count=len(kept) - current_count,
+                      policy='CVSS >= 7.0, CISA KEV or reviewed urgent incident; disclosure / new KEV / material update dates')
+
+
 def validate(data):
-    if data.get('schema') != 1 or not isinstance(data.get('records'), list) or not data['records']: raise ValueError('Invalid snapshot')
+    if data.get('schema') != 1 or not isinstance(data.get('records'), list): raise ValueError('Invalid snapshot')
     ids = set()
     for r in data['records']:
         if r['id'] in ids or not re.fullmatch(r'[A-Za-z0-9-]{1,80}', r['id']): raise ValueError('Invalid or duplicate ID')
@@ -298,6 +332,9 @@ def validate(data):
         if score and not 0 <= float(score['score']) <= 10: raise ValueError('Invalid CVSS')
         epss = r.get('epss')
         if epss and not 0 <= float(epss['score']) <= 1: raise ValueError('Invalid EPSS')
+    if 'scope' in data:
+        kept, scope = retain(data['records'], data['last_attempt'])
+        if len(kept) != len(data['records']) or scope != data['scope']: raise ValueError('Date window / high-risk scope mismatch')
     return True
 
 
@@ -374,7 +411,7 @@ def run(output):
                 if not any(s['label'] == 'CISA KEV' for s in r['sources']):
                     r['sources'].append({'label': 'CISA KEV', 'url': 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=' + rid})
 
-    cves = [r for r in records.values() if cve_id(r['id']) and r.get('checked_at') == now]
+    cves = [r for r in records.values() if cve_id(r['id'])]
     cve_errors, cve_pending = [], []
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         for record, error in pool.map(lambda r: enrich(r, now), cves):
@@ -385,10 +422,14 @@ def run(output):
                 for key in ('affected', 'fixed', 'conditions', 'cvss', 'published', 'updated', 'source_updated_at', 'cve_checked_at'):
                     if key in prior: record[key] = prior[key]
                 cve_errors.append(error)
+            prior = old.get(record['id'], {})
+            for field in ('advisory_published_at', 'material_updated_at'):
+                if field == 'advisory_published_at' and prior.get(field) and record.get(field): record[field] = min(record[field], prior[field])
+                elif not record.get(field) and prior.get(field): record[field] = prior[field]
             records[record['id']] = record
     # Restore reviewed action/version text after CVE enrichment; never overwrite KEV evidence.
     for entry in curated:
-        for field in ('action', 'affected', 'fixed', 'conditions', 'steps', 'urgent', 'impact', 'description', 'title'):
+        for field in ('action', 'affected', 'fixed', 'conditions', 'urgent', 'impact', 'description', 'title'):
             if field in entry: records[entry['id']][field] = entry[field]
     sources.append(dict(id='cve', label='CVE Program / CNA records', url='https://www.cve.org/', checked_at=now,
                         last_success=now if not cve_errors else old_sources.get('cve', {}).get('last_success', ''),
@@ -419,13 +460,17 @@ def run(output):
             changes.append({'id': rid, 'type': r['change'], 'at': now})
         else:
             r['changed_at'] = prior.get('changed_at', now); r['change'] = prior.get('change', '')
-    data = dict(schema=1, last_attempt=now, last_success=now if not errors else previous.get('last_success', ''),
+    kept, scope = retain(list(records.values()), now)
+    kept_ids = {r['id'] for r in kept}
+    changes = [c for c in changes if c['id'] in kept_ids]
+    for r in kept: r.pop('steps', None)
+    data = dict(schema=1, scope=scope, last_attempt=now, last_success=now if not errors else previous.get('last_success', ''),
                 refresh_status='partial' if errors else 'ok', sources=sources,
-                records=sorted(records.values(), key=lambda r: (r['priority'], -(int((r.get('published') or r.get('kev_added') or '2000-01-01').replace('-', ''))), r['id'])),
-                changes=(changes + previous.get('changes', []))[:500])
+                records=sorted(kept, key=lambda r: (-((r.get('cvss') or {}).get('score', -1)), r['id'])),
+                changes=(changes + [c for c in previous.get('changes', []) if c['id'] in kept_ids])[:500])
     validate(data)
     temp = output.with_suffix('.tmp'); temp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n'); os.replace(temp, output)
-    print(f"{len(records)} records; {len(changes)} changes; refresh {data['refresh_status']}; failed sources: {', '.join(errors) or 'none'}")
+    print(f"{len(kept)} high-risk entries ({scope['current_count']} current, {scope['archive_count']} archived); {len(changes)} changes; refresh {data['refresh_status']}; failed sources: {', '.join(errors) or 'none'}")
     return bool(errors)
 
 

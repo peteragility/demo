@@ -1,4 +1,4 @@
-name: Security checklist nightly refresh
+name: Security risk watch nightly review
 
 on:
   schedule:
@@ -52,7 +52,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Fetch official advisories and retain prior data on failures
+      - name: Review official advisories and refresh 30-day list / six-month archive
         id: refresh
         continue-on-error: true
         run: python3 security-risk/refresh.py
@@ -68,7 +68,7 @@ jobs:
           from pathlib import Path
           data = json.loads(Path('security-risk/data.json').read_text())
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
-              out.write(f"## Security checklist\n\n{len(data['records'])} tracked risks · refresh {data['refresh_status']}\n\n")
+              out.write(f"## Security Risk Watch\n\n{data['scope']['current_count']} current high-risk entries · {data['scope']['archive_count']} archived · refresh {data['refresh_status']}\n\n")
               for source in data['sources']:
                   out.write(f"- {source['label']}: {source['status']} {source.get('error', '')} {source.get('note', '')}\n")
           PY
@@ -80,7 +80,7 @@ jobs:
           if git diff --cached --quiet; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m "Refresh daily security checklist"
+          git commit -m "Review 30-day security risks and six-month archive"
           for attempt in 1 2 3; do
             if git pull --rebase origin main && git push origin HEAD:main; then
               gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null

@@ -15,7 +15,7 @@ META = {
   'lakebase-compete-calculator/':('Lakebase Calculator','Estimate Lakebase monthly costs against Aurora, RDS, Azure, Cloud SQL and ClickHouse','Featured','#3fb950'),
   'lakebase-field-guide/':('Lakebase Field Guide','Where Lakebase fits, what to say and how to prove it: simple view for AEs, comprehensive view for SAs','Work','#f7b731'),
   'aidecide-arena/':('AI Arena','Two decision models face off in Snake and Tic-Tac-Toe. Inspect every model move','AI','#FF3621'),
-  'security-risk/': ('Security Risk Checklist','Prioritize exploited vulnerabilities and CA incidents, assess affected systems and track verified fixes','Featured','#ff8b78'),
+  'security-risk/': ('Security Risk Watch','High-risk vulnerabilities from the last 30 days, recommended actions and a six-month archive','Featured','#ff8b78'),
   'llm-pricing/':      ('LLM Token Pricing','Compare model APIs, cache rates, tiers and regions across providers and cloud platforms','Featured','#ff6b35'),
   'lakehouse-quest.html':('Lakehouse Quest','Databricks exam practice as a quest: questions, traps and revision notes','Interactive','#4ecdc4'),
   'neon-orbit.html':   ('Neon Orbit','A one-button gravity game. Jump between orbits and climb as high as you can','Interactive','#4ecdc4'),

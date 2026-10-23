@@ -51,8 +51,8 @@
   },
   {
     "name": "security-preview",
-    "title": "Security Risk Checklist",
-    "subtitle": "Assess exposure. Patch affected systems. Verify the fix.",
+    "title": "Security Risk Watch",
+    "subtitle": "Last 30 days. High-impact issues. Recommended actions.",
     "brand": "PETER CHAN / DEMO LAB",
     "background": "#101626",
     "ink": "#ecf0fa",

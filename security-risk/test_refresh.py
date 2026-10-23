@@ -48,7 +48,7 @@ class RefreshTests(unittest.TestCase):
 
     def test_unsafe_feed_links_and_nonsecurity_php_are_excluded(self):
         xml = '''<feed xmlns="http://www.w3.org/2005/Atom" xmlns:p="http://php.net/ns/releases"><entry><title>PHP release</title><id>javascript:alert(1)</id><p:tag>security</p:tag></entry></feed>'''
-        with self.assertRaises(ValueError): R.feed_records('php', xml, 'today')
+        self.assertEqual(R.feed_records('php', xml, '2026-10-23T00:00:00Z'), [])
         self.assertFalse(R.safe_url('https://user:pass@example.test'))
         self.assertEqual(R.plain('<script>alert(1)</script><p>Safe</p>'), 'Safe')
 
@@ -86,6 +86,22 @@ class RefreshTests(unittest.TestCase):
             prior = {r['id']: r for r in second['records']}
             for r in failed['records']: self.assertEqual(r['checked_at'], prior[r['id']]['checked_at'])
             self.assertTrue(all(s['status'] == 'failed' for s in failed['sources'] if s['id'] != 'cve'))
+
+    def test_retention_high_risk_and_date_boundaries(self):
+        now = '2026-10-23T06:00:00Z'
+        self.assertEqual(R.window_dates(now), ('2026-09-24', '2026-04-23', '2026-10-23'))
+        self.assertEqual(R.window_dates('2026-08-31T06:00:00Z')[1], '2026-02-28')
+        records = [dict(id=str(i), published=day, cvss={'score': 7}) for i, day in enumerate(['2026-10-23','2026-09-24','2026-09-23','2026-04-23','2026-04-22','2026-10-24'])]
+        kept, scope = R.retain(records, now)
+        self.assertEqual([r['id'] for r in kept], ['0','1','2','3'])
+        self.assertEqual((scope['current_count'],scope['archive_count']), (2,2))
+        self.assertFalse(R.high_risk({'cvss': {'score': 6.9}}))
+        self.assertTrue(R.high_risk({'kev': True}))
+        self.assertTrue(R.high_risk({'urgent': True}))
+        self.assertFalse(R.high_risk({'kev': True, 'rejected': True}))
+        old = dict(published='2020-01-01', checked_at=now, changed_at=now, cvss={'score': 9})
+        self.assertEqual(R.retain([old], now)[0], [])
+        self.assertEqual(R.retain([{**old, 'kev': True, 'kev_added': '2026-10-20'}], now)[1]['current_count'], 1)
 
     def test_rejected_or_unsafe_snapshot_cannot_validate(self):
         data = json.loads((R.ROOT / 'data.json').read_text())
