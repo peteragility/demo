@@ -18,10 +18,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 <script src="../assets/site-analytics.js" defer></script>
-<script src="model.js?v=2" defer></script>
-<script src="app.js?v=3" defer></script>
+<script src="model.js?v=3" defer></script>
+<script src="app.js?v=4" defer></script>
 </head>
 <body>
 <main class="wrap">
@@ -36,14 +36,14 @@
     <label class="sel"><span>Sort</span><select id="sort" aria-label="Sort risks"><option value="cvss" selected>CVSS highest</option><option value="risk">Risk priority</option><option value="new">Newest</option><option value="epss">EPSS probability</option></select></label>
   </div>
   <section class="summary" id="summary" aria-label="Checklist summary" aria-live="polite"></section>
-  <div class="highlights" id="highlights" aria-label="Urgent vendor advisories"></div>
+  <section class="recent" id="recent" aria-label="Recent and escalated security advisories"></section>
   <div class="intro">
     <details class="daily"><summary>Your daily review <span>4 steps</span></summary><ol><li>Review new and changed risks; identify deployed products, versions and exposed systems.</li><li>Assign an owner and record whether each advisory applies.</li><li>Patch affected systems or record a temporary mitigation and follow-up.</li><li>Verify running builds and service health; save evidence before closing.</li></ol></details>
     <div class="actions"><button id="export" type="button">Export checklist ↓</button><label class="import" for="import">Import ↑</label><input id="import" type="file" accept="application/json,.json" hidden><button id="reviewed" type="button">Mark changes reviewed</button></div>
   </div>
   <p class="notice" id="notice" role="status" hidden></p>
   <p class="notice" id="storageNotice" role="status" hidden></p>
-  <div class="rowhint"><span id="count">Loading risks…</span><span>Click / tap an issue for affected versions, actions and your checklist.</span></div>
+  <div class="rowhint"><span id="count">Loading risks…</span><span id="scope" hidden></span><span>Click / tap an issue for affected versions, actions and your checklist.</span></div>
   <div class="tblwrap"><table class="mx" aria-label="Prioritized security risks"><thead><tr><th class="rank" scope="col" aria-label="CVSS severity score out of 10">CVSS</th><th class="issue" scope="col">Product / issue</th><th class="impact" scope="col">Impact</th><th class="evidence" scope="col">Exploitation</th><th class="versions" scope="col">Fixed / unaffected · action</th><th class="status" scope="col">Your status</th></tr></thead><tbody id="rows"></tbody></table></div>
   <button id="more" type="button" hidden>Show all tracked risks</button>
   <footer class="foot">

@@ -39,11 +39,46 @@
     if (r.cvss?.score >= 9) return 'Critical vendor/CNA severity; exploitation is not confirmed by this dataset.';
     return 'Security advisory to assess against your deployed versions and configuration.';
   }
+  function recent(records, now = Date.now()) {
+    const groups = new Map(), cutoff = now - 7 * 86400000;
+    for (const r of records) {
+      if (r.rejected) continue;
+      // General catalog/CVE links are not an advisory shared by related incidents.
+      const source = r.sources.find(s => !/^(CISA KEV|CVE record|CNA reference)/i.test(s.label) && safeURL(s.url)) || r.sources.find(s => {
+        const url = safeURL(s.url); if (!url) return false;
+        const u = new URL(url);
+        return u.hostname === 'raw.githubusercontent.com' && /^\/cisagov\/CSAF\/[^/]+\/csaf_files\/.+\.json$/.test(u.pathname);
+      });
+      const key = source ? safeURL(source.url) : r.id;
+      if (!groups.has(key)) groups.set(key, {key, records: []});
+      groups.get(key).records.push(r);
+    }
+    const result = [];
+    for (const group of groups.values()) {
+      const eligible = group.records.filter(r => r.kev || r.urgent || r.cvss?.score >= 9 || (r.kind === 'release' && /critical/i.test(r.title)));
+      if (!eligible.length) continue;
+      const events = [];
+      for (const r of group.records) {
+        const published = r.advisory_published_at || r.published;
+        events.push({date: published, label: r.kind === 'incident' ? 'Incident notice' : r.kind === 'release' ? 'Security release' : 'Disclosed'});
+        if (r.kev) events.push({date: r.kev_added, label: 'Added to KEV'});
+        if (r.material_updated_at) events.push({date: r.material_updated_at, label: 'Advisory updated'});
+      }
+      const current = events.filter(e => Number.isFinite(Date.parse(e.date)) && Date.parse(e.date) >= cutoff && Date.parse(e.date) <= now)
+        .sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.label.localeCompare(b.label))[0];
+      if (!current) continue;
+      eligible.sort((a, b) => Number(Boolean(b.urgent)) - Number(Boolean(a.urgent)) || (b.cvss?.score ?? -1) - (a.cvss?.score ?? -1) || a.id.localeCompare(b.id));
+      const scores = group.records.map(r => r.cvss?.score).filter(s => typeof s === 'number' && Number.isFinite(s) && s >= 0 && s <= 10);
+      result.push({...group, event: current, representative: eligible[0], score: scores.length ? Math.max(...scores) : null,
+        urgent: group.records.some(r => r.urgent), exploited: group.records.some(r => r.kev), cves: group.records.filter(r => /^CVE-/.test(r.id)).length});
+    }
+    return result.sort((a, b) => Date.parse(b.event.date) - Date.parse(a.event.date) || Number(b.urgent) - Number(a.urgent) || Number(b.exploited) - Number(a.exploited) || (b.score ?? -1) - (a.score ?? -1) || a.key.localeCompare(b.key));
+  }
   function select(records, prefs, saved, since) {
     const q = (prefs.q || '').toLowerCase();
     const list = records.filter(r => {
       const a = saved[r.id], status = effective(r, a);
-      return (prefs.layer === 'all' || r.layer === prefs.layer) &&
+      return (!prefs.ids || prefs.ids.includes(r.id)) && (prefs.layer === 'all' || r.layer === prefs.layer) &&
         (!q || [r.id, r.product, r.title, r.description, ...(r.affected || []), a?.owner, a?.systems].join(' ').toLowerCase().includes(q)) &&
         (prefs.view !== 'open' || !closed(status)) && (prefs.view !== 'changed' || isChanged(r, since)) &&
         (prefs.view !== 'exploited' || r.kev) && (prefs.view !== 'reassess' || reassess(r, a)) &&
@@ -69,7 +104,7 @@
     }
     return data;
   }
-  const api = {states, layers, closed, safeURL, assessment, progress, reassess, effective, ageHours, isChanged, reason, select, validate};
+  const api = {states, layers, closed, safeURL, assessment, progress, reassess, effective, ageHours, isChanged, reason, recent, select, validate};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.SecurityChecklist = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

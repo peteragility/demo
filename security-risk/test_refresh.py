@@ -36,6 +36,16 @@ class RefreshTests(unittest.TestCase):
         self.assertNotEqual(R.revision(r), R.revision({**new, 'fixed': ['1.2']}))
         self.assertNotEqual(R.revision(r), R.revision({**new, 'source_changed': True}))
 
+    def test_recent_technical_updates_require_both_a_source_date_and_observed_changes(self):
+        old = {'updated': '2026-10-21', 'source_updated_at': '2026-10-21T10:00:00Z', 'fixed': ['1.2'], 'material_updated_at': ''}
+        self.assertEqual(R.material_update({**old, 'fixed': ['1.3']}, None), '')
+        self.assertEqual(R.material_update({**old, 'checked_at': '2026-10-23'}, old), '')
+        self.assertEqual(R.material_update({**old, 'source_updated_at': '2026-10-21T11:00:00Z'}, old), '')
+        self.assertEqual(R.material_update({**old, 'fixed': ['1.3']}, old), '')
+        new = {**old, 'source_updated_at': '2026-10-21T11:00:00Z', 'fixed': ['1.3']}
+        self.assertEqual(R.material_update(new, old), new['source_updated_at'])
+        self.assertEqual(R.material_update({**new, 'material_updated_at': new['source_updated_at']}, {**new, 'material_updated_at': new['source_updated_at']}), new['source_updated_at'])
+
     def test_unsafe_feed_links_and_nonsecurity_php_are_excluded(self):
         xml = '''<feed xmlns="http://www.w3.org/2005/Atom" xmlns:p="http://php.net/ns/releases"><entry><title>PHP release</title><id>javascript:alert(1)</id><p:tag>security</p:tag></entry></feed>'''
         with self.assertRaises(ValueError): R.feed_records('php', xml, 'today')

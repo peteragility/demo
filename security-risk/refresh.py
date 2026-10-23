@@ -179,7 +179,7 @@ def feed_records(key, text, now):
                            action='Check the official advisory for affected configurations and install the appropriate supported security release.' if key != 'ca' else 'Inventory certificate issuers and chains; follow the browser root-program notice and replace affected certificates.',
                            affected=[], fixed=[], conditions=[], sources=[{'label': label, 'url': url}], source_id=key,
                            kev=False, kev_added='', ransomware=False, published=day, updated=day, checked_at=now,
-                           cvss=None, epss=None, kind='incident' if key == 'ca' else 'release'))
+                           cvss=None, epss=None, advisory_published_at=day, kind='incident' if key == 'ca' else 'release'))
         if len(result) >= (3 if key != 'php' else 4): break
     if key in ('node', 'php', 'gitlab') and not result: raise ValueError('Feed has no recognizable security entries')
     return result
@@ -211,6 +211,7 @@ def enrich(record, now):
         if not cna.get('affected') and not cna.get('descriptions'): raise ValueError('Incomplete CVE record')
         record['published'] = data.get('cveMetadata', {}).get('datePublished', '')[:10]
         record['updated'] = data.get('cveMetadata', {}).get('dateUpdated', '')[:10]
+        record['source_updated_at'] = data.get('cveMetadata', {}).get('dateUpdated', '')
         record['cve_checked_at'] = now
         record.pop('cve_status', None)
         if record.get('source_id') != 'kev':
@@ -270,6 +271,16 @@ def priority(record):
     if record.get('kev') and (high_impact or record.get('ransomware')): return 0
     if record.get('kev') or score >= 9 or record.get('urgent'): return 1
     return 2
+
+
+def material_update(record, prior):
+    """Record source-dated technical changes only after an observed baseline exists."""
+    if not prior: return ''
+    previous = prior.get('material_updated_at', '')
+    updated = record.get('source_updated_at') or record.get('updated', '')
+    if not updated or updated <= (prior.get('source_updated_at') or prior.get('updated', '')): return previous
+    technical = ('description', 'affected', 'fixed', 'conditions', 'cvss')
+    return updated if any(record.get(k) != prior.get(k) for k in technical) else previous
 
 
 def validate(data):
@@ -333,6 +344,7 @@ def run(output):
             current = dict(affected=[], fixed=[], conditions=[], kev=False, kev_added='', ransomware=False,
                            published='', updated='', checked_at='', cvss=None, epss=None, kind='vulnerability', source_id='curated')
         current = {**current, **entry}
+        if entry.get('published'): current['advisory_published_at'] = entry['published']
         key = 'reviewed-' + rid.lower()
         state = source(key, entry['product'] + ' reviewed advisory', entry['sources'][0]['url'], lambda u=entry['sources'][0]['url']: fetch(u))
         prior = old_sources.get(key, {})
@@ -370,7 +382,7 @@ def run(output):
                 cve_pending.append(record['id'])
             elif error:
                 prior = old.get(record['id'], {})
-                for key in ('affected', 'fixed', 'conditions', 'cvss', 'published', 'updated', 'cve_checked_at'):
+                for key in ('affected', 'fixed', 'conditions', 'cvss', 'published', 'updated', 'source_updated_at', 'cve_checked_at'):
                     if key in prior: record[key] = prior[key]
                 cve_errors.append(error)
             records[record['id']] = record
@@ -401,6 +413,7 @@ def run(output):
     for rid, r in records.items():
         r['revision'] = revision(r); r['priority'] = priority(r)
         prior = old.get(rid)
+        r['material_updated_at'] = material_update(r, prior)
         if not prior or prior.get('revision') != r['revision']:
             r['changed_at'] = now; r['change'] = 'updated' if prior else 'new'
             changes.append({'id': rid, 'type': r['change'], 'at': now})

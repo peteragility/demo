@@ -2,7 +2,7 @@
   'use strict';
   const M = SecurityChecklist, $ = id => document.getElementById(id);
   const KEY = 'demo-security-checklist-v1';
-  const S = {layer: 'all', q: '', view: 'open', sort: 'cvss', expanded: new Set(), limit: 30};
+  const S = {layer: 'all', q: '', view: 'open', sort: 'cvss', expanded: new Set(), limit: 30, ids: null, recentAll: false};
   let data, saved = Object.create(null), reviewedAt = '', memoryOnly = false;
   const N = (tag, text, attrs = {}) => {
     const el = document.createElement(tag);
@@ -57,7 +57,7 @@
   function renderTabs() {
     $('tabs').replaceChildren(...Object.entries(M.layers).map(([id, name]) => {
       const count = data.records.filter(r => id === 'all' || r.layer === id).length;
-      const b = button('', () => {S.layer = id; S.limit = 30; render();}, {class: 'tab', 'aria-pressed': S.layer === id, 'aria-label': name + ', ' + count + ' tracked risks'});
+      const b = button('', () => {S.layer = id; S.ids = null; S.limit = 30; render();}, {class: 'tab', 'aria-pressed': S.layer === id, 'aria-label': name + ', ' + count + ' tracked risks'});
       b.append(N('span', name), N('span', count, {class: 'n'}));
       return b;
     }));
@@ -71,16 +71,28 @@
     $('summary').replaceChildren(...counts.map(([n, label, cls]) => {
       const el = N('div', null, {class: 'kpi ' + cls}); el.append(N('b', n), N('span', label)); return el;
     }));
-    const highlights = $('highlights'); highlights.replaceChildren(N('span', 'Urgent notices:'));
-    const seen = new Set();
-    for (const r of all.filter(r => r.urgent)) {
-      if (seen.has(r.product)) continue;
-      seen.add(r.product);
-      highlights.append(button(r.product + ' ↗', () => {
-        S.layer = 'all'; S.view = 'all'; S.q = r.product; S.limit = 30;
-        $('q').value = S.q; $('view').value = 'all'; render();
-      }, {class: 'highlight'}));
+  }
+  function renderRecent() {
+    const groups = M.recent(data.records), section = $('recent'), head = N('div', null, {class: 'recent-head'});
+    head.append(N('h2', 'Recent & escalated · last 7 days'), N('span', groups.length + ' advisories · across all layers', {class: 'recent-count'}));
+    if (groups.length > 5) head.append(button(S.recentAll ? 'Show latest 5' : 'Show all ' + groups.length, () => {S.recentAll = !S.recentAll; renderRecent();}, {class: 'smallbtn', 'aria-expanded': S.recentAll}));
+    section.replaceChildren(head);
+    if (!groups.length) { section.append(N('p', 'No qualifying advisories in this period. The full watchlist is below.', {class: 'recent-empty'})); return; }
+    const items = N('ol', null, {class: 'recent-list'});
+    for (const group of groups.slice(0, S.recentAll ? groups.length : 5)) {
+      const r = group.representative, item = N('li', null, {class: 'recent-item'}), date = N('div', null, {class: 'recent-date'});
+      date.append(N('time', displayDate(group.event.date), {datetime: group.event.date}), N('span', group.event.label));
+      const open = button('', () => {
+        S.ids = group.records.map(r => r.id); S.layer = 'all'; S.view = 'all'; S.q = ''; S.limit = 30;
+        S.expanded = new Set([r.id]); $('q').value = ''; $('view').value = 'all'; render();
+        document.querySelector('.tblwrap').scrollIntoView({block: 'start'});
+      }, {class: 'recent-title', 'aria-label': 'Open advisory for ' + r.product + ': ' + r.title});
+      open.append(N('b', r.product), N('span', group.cves ? group.cves + ' CVE' + (group.cves === 1 ? '' : 's') + ' · ' + r.title : r.title));
+      const score = N('span', group.score == null ? '—' : group.score.toFixed(1) + '/10', {class: 'recent-score ' + (group.score >= 9 ? 'score-critical' : group.score >= 7 ? 'score-high' : 'score-other'), title: 'Highest published CVSS in this advisory; — means unscored'});
+      item.append(date, open, score, N('span', group.exploited ? 'KEV · exploited' : 'Not in KEV', {class: 'recent-exploit' + (group.exploited ? ' known' : '')}), N('span', r.action, {class: 'recent-action', title: r.action}));
+      items.append(item);
     }
+    section.append(items, N('p', 'Disclosure dates, new KEV alerts and confirmed technical updates. Click an advisory for its checklist.', {class: 'recent-note'}));
   }
   function statusLabel(r) { const a = saved[r.id]; return M.reassess(r, a) ? 'Reassess' : M.states[M.effective(r, a)]; }
   function row(r) {
@@ -188,9 +200,12 @@
     if (!records.length) { const tr = N('tr'); tr.append(N('td', 'No matching risks. Change the layer, search or view filter.', {colspan: 6, class: 'empty'})); rows.push(tr); }
     $('rows').replaceChildren(...rows);
     $('count').textContent = 'Showing ' + Math.min(S.limit, records.length) + ' / ' + records.length + ' matching · ' + data.records.length + ' tracked';
+    $('scope').replaceChildren();
+    $('scope').hidden = !S.ids;
+    if (S.ids) $('scope').append(N('span', 'Advisory selected · '), button('Clear selection', () => {S.ids = null; renderRows();}, {class: 'smallbtn'}));
     $('more').hidden = records.length <= S.limit;
   }
-  function render() { renderTabs(); renderSummary(); renderRows(); }
+  function render() { renderTabs(); renderSummary(); renderRecent(); renderRows(); }
   function download() {
     const payload = {schema: 1, exportedAt: new Date().toISOString(), reviewedAt, assessments: saved};
     const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'}));
@@ -221,8 +236,8 @@
       data = M.validate(await response.json()); load(); sourceHealth();
       const initial = decodeURIComponent(location.hash.slice(1));
       if (data.records.some(r => r.id === initial)) { S.expanded.add(initial); S.view = 'all'; S.q = initial; $('q').value = initial; $('view').value = 'all'; }
-      $('q').addEventListener('input', () => {S.q = $('q').value; S.limit = 30; renderRows();});
-      for (const key of ['view', 'sort']) $(key).addEventListener('change', () => {S[key] = $(key).value; S.limit = 30; renderRows();});
+      $('q').addEventListener('input', () => {S.q = $('q').value; S.ids = null; S.limit = 30; renderRows();});
+      for (const key of ['view', 'sort']) $(key).addEventListener('change', () => {S[key] = $(key).value; if (key === 'view') S.ids = null; S.limit = 30; renderRows();});
       $('more').addEventListener('click', () => {S.limit = data.records.length; renderRows();});
       $('export').addEventListener('click', download);
       $('import').addEventListener('change', () => importFile($('import').files[0]));

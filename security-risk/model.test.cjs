@@ -59,3 +59,30 @@ test('CVSS sort uses published severity, preserves zero and leaves unknown score
   const rows=[{...r,id:'unknown',cvss:null},{...r,id:'zero',cvss:{score:0}},{...r,id:'critical',cvss:{score:10},priority:1},{...r,id:'high',cvss:{score:9.3}}];
   assert.deepEqual(M.select(rows,{layer:'all',view:'all',q:'',sort:'cvss'},{},'').map(r=>r.id),['critical','high','zero','unknown']);
 });
+test('recent advisories group related CVEs, include unscored CA incidents and ignore check dates', () => {
+  const now=Date.parse('2026-10-23T12:00:00Z');
+  const base={...r, sources:[{label:'Vendor notice',url:'https://vendor.test/releases/october'}],cvss:{score:9.3},action:'Update the runtime',published:'2026-10-22',advisory_published_at:'2026-10-21',kev:false};
+  const ca={...base,id:'ca',product:'CA',kind:'incident',cvss:null,urgent:true,published:'2026-10-20',advisory_published_at:'2026-10-20',sources:[{label:'CA notice',url:'https://vendor.test/ca'}]};
+  const old={...base,id:'old',published:'2020-01-01',advisory_published_at:'2020-01-01',changed_at:'2026-10-23',checked_at:'2026-10-23',sources:[{label:'Vendor notice',url:'https://vendor.test/old'}]};
+  const low={...base,id:'low',cvss:{score:3},sources:[{label:'Vendor notice',url:'https://vendor.test/low'}]};
+  const groups=M.recent([base,{...base,id:'CVE-2026-2345',cvss:{score:10}},ca,old,low],now);
+  assert.equal(groups.length,2);assert.equal(groups[0].records.length,2);assert.equal(groups[0].score,10);
+  assert.equal(groups[0].event.date,'2026-10-21','official advisory date precedes CNA publication');
+  assert.equal(groups[1].representative.id,'ca');assert.equal(groups[1].score,null);
+  assert.equal(M.recent([{...old,material_updated_at:'2026-10-23T01:00:00Z'}],now)[0].event.label,'Advisory updated');
+  assert.equal(M.recent([{...base,published:'2030-01-01',advisory_published_at:'2030-01-01'}],now).length,0);
+});
+test('recent KEV alerts can escalate old flaws without merging catalog records', () => {
+  const now=Date.parse('2026-10-23T12:00:00Z');
+  const old={...r,published:'2020-01-01',changed_at:'2026-10-23',kev_added:'2026-10-22',sources:[{label:'CISA KEV',url:'https://www.cisa.gov/known-exploited-vulnerabilities-catalog'}]};
+  const groups=M.recent([old,{...old,id:'CVE-2026-2345'}],now);
+  assert.equal(groups.length,2);assert.equal(groups[0].event.label,'Added to KEV');
+  assert.equal(M.recent([{...old,kev:false}],now).length,0);
+  assert.equal(M.recent([{...old,rejected:true}],now).length,0);
+  assert.equal(M.select([old,{...old,id:'other'}],{layer:'all',view:'all',sort:'cvss',ids:[old.id]},{},'').length,1);
+  const shared={label:'CNA reference · raw.githubusercontent.com',url:'https://raw.githubusercontent.com/cisagov/CSAF/develop/csaf_files/IT/white/2026/va-26-266-01.json'};
+  const related=M.recent([{...old,sources:[shared]},{...old,id:'CVE-2026-2345',sources:[shared]}],now);
+  assert.equal(related.length,1);assert.equal(related[0].cves,2);
+  const ca={...old,id:'ca',urgent:true,kev:false,cvss:null,kind:'incident',published:'2026-10-22',sources:[{label:'Vendor',url:'https://vendor.test/ca'}]};
+  assert.equal(M.recent([old,ca],now)[0].representative.id,'ca','urgent unscored incidents remain visible among equally recent alerts');
+});
