@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-10-24",
+ "checked_at": "2026-10-25",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4-pro|databricks|retirement|2026-10-30",
   "deepseek/deepseek-v4.1-flash|gcloud|promotion end|2026-10-16",
@@ -3084,7 +3084,7 @@
   "api-west-openai-your-data": {
    "url": "https://developers.openai.com/api/docs/guides/your-data.md",
    "kind": "markdown",
-   "digest": "fa633b791fc6e9ea757e5a60f4b8ae3177fdb4d56db3de4605a499248b1adac7",
+   "digest": "f730fff3c264f0dad8546fda54059122172045f3b7c3158f05b7d645829ed1a4",
    "records": [
     "item: {\"heading\":\"/v1/chat/completions\",\"text\":\"Cannot set store=true in non-US regions.\"}",
     "item: {\"heading\":\"/v1/chat/completions\",\"text\":\"[Extended prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention) in regions that do not support Regional processing may require that OpenAI process and temporarily store Customer Content outside of the Region to deliver the services.\"}",
@@ -3110,7 +3110,6 @@
     "item: {\"heading\":\"`/v1/responses`\",\"text\":\"MCP servers (used with the [remote MCP server tool](https://developers.openai.com/api/docs/guides/tools-connectors-mcp)) are third-party services, and data sent to an MCP server is subject to their data retention policies.\"}",
     "item: {\"heading\":\"`/v1/responses`\",\"text\":\"See [image and file inputs](#image-and-file-inputs).\"}",
     "item: {\"heading\":\"`/v1/responses`\",\"text\":\"When Zero Data Retention is enabled for an organization, the `store` parameter will always be treated as `false`, even if the request attempts to set the value to `true`.\"}",
-    "item: {\"heading\":\"`/v1/responses`\",\"text\":\"When Zero Data Retention is not enabled for an organization, all queries use extended prompt caching for all supported models.\"}",
     "notice: - Files can be manually deleted via the API or the dashboard, or can be automatically deleted by setting the `expires_after` parameter. See [here](https://developers.openai.com/api/reference/resources/files/methods/create#files_create-expires_after) for more information.",
     "notice: - Hosted containers used by [Hosted Shell](https://developers.openai.com/api/docs/guides/tools-shell#hosted-shell-quickstart) and [Code Interpreter](https://developers.openai.com/api/docs/guides/tools-code-interpreter) may write temporary application state to the container filesystem (backed by ephemeral block storage) while the container is active. Container data is deleted when the container expires or is explicitly deleted.",
     "notice: - Prompt caching may store encrypted key/value tensors in GPU-local storage as application state. This data is stored on the local GPU machines and is not retained after the 24-hour expiration. For `gpt-5.5` and `gpt-5.5-pro`, setting `prompt_cache_retention` to `in_memory` returns an error. For GPT-5.6 models and later model families, `prompt_cache_options.ttl` controls the minimum cache lifetime, not this maximum application-state retention period. To learn more, see the [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).",
