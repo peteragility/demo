@@ -255,6 +255,28 @@ class SourceReviewTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 review.collect_one(source)
 
+    def test_deepseek_getting_started_page_is_not_a_pricing_read(self):
+        config = json.loads((HERE / "source-config.json").read_text())
+        source = next(s for s in config if s["id"] == "deepseek-pricing")
+        # Reproduce issue #25: an HTTP-success response contains the API setup
+        # table and the expected model aliases, but no model pricing table.
+        wrong = ('<h1>Your First API Call</h1><table>'
+                 '<tr><th>PARAM</th><th>VALUE</th></tr>'
+                 '<tr><td>base_url (OpenAI)</td><td>https://api.deepseek.com</td></tr>'
+                 '<tr><td>model</td><td>deepseek-flash deepseek-v4-pro</td></tr></table>')
+        with patch.object(review, "fetch", return_value=wrong):
+            with self.assertRaisesRegex(ValueError, "Required pricing table missing"):
+                review.collect_one(source)
+        valid = ('<h1>Models &amp; Pricing</h1><h2>Model Details \u200b</h2>'
+                 '<table><tr><td>MODEL</td><td>deepseek-flash</td></tr>'
+                 '<tr><td>1M INPUT TOKENS (CACHE MISS)</td><td>$0.30</td></tr></table>')
+        with patch.object(review, "fetch", return_value=valid):
+            self.assertTrue(review.collect_one(source)["records"])
+        # A changed heading needs review rather than silently accepting another page.
+        with patch.object(review, "fetch", return_value=valid.replace("Model Details", "Other Product")):
+            with self.assertRaisesRegex(ValueError, "Required pricing table missing"):
+                review.collect_one(source)
+
     def test_region_review_preserves_an_explicit_variant_price_date(self):
         offer = dict(label="Data Zone US", **{"in": 3, "out": 15}, pricing_checked_at="2026-10-04")
         self.assertEqual(review.build_data.make_variant(offer, "2026-10-15")["pricing_checked_at"], "2026-10-04")

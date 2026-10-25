@@ -12419,6 +12419,10 @@
             ],
             "notes": [
               [
+                "Structured outputs",
+                "Structured outputs are not supported through India geographic CRIS or in-region Seoul; use a supported endpoint/profile."
+              ],
+              [
                 "Batch",
                 "Batch runs only through cross-Region profiles: Global $2.50/$12.50, Geo $2.75/$13.75 per 1M (50% off)."
               ],
@@ -13049,6 +13053,10 @@
               "Taipei (ap-east-2) through global cross-region inference only"
             ],
             "notes": [
+              [
+                "Structured outputs",
+                "Structured outputs are not supported through India geographic CRIS or in-region Seoul/Singapore; use a supported endpoint/profile."
+              ],
               [
                 "In-region",
                 "bedrock-runtime in-region in London, Seoul and Singapore; bedrock-mantle in-region in N. Virginia, Stockholm, Ireland, Melbourne."
@@ -22591,7 +22599,7 @@
               ],
               [
                 "Caching",
-                "Explicit caching: 1,024-token minimum per checkpoint (Opus 5: 512), 5-minute or 1-hour TTL."
+                "Explicit caching: 4,096-token minimum per checkpoint, up to 4 checkpoints, 5-minute or 1-hour TTL."
               ]
             ],
             "ids": [

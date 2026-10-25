@@ -276,6 +276,13 @@ def collect_one(source, cache_dir=None):
     excluded = set(source.get("exclude_table_headings", []))
     records = [r for r in records if not (r.startswith("table: {") and
                json.loads(r[len("table: "):]).get("heading", "").strip(" \u200b") in excluded)]
+    # A successful HTTP response can be a different documentation page (#25).
+    # Require the configured pricing section before accepting any of its records.
+    headings = {json.loads(r[len("table: "):]).get("heading", "").strip(" \u200b")
+                for r in records if r.startswith("table: {")}
+    missing = set(source.get("required_table_headings", [])) - headings
+    if missing:
+        raise ValueError("Required pricing table missing: " + ", ".join(sorted(missing)))
     if len(records) < source.get("minimum_records", 1):
         raise ValueError("Too few source records; verify the document and parser before treating it as current.")
     snapshot = dict(url=source["url"], kind=kind, digest=hashlib.sha256(packed(records).encode()).hexdigest(), records=records)
