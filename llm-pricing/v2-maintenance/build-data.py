@@ -1054,6 +1054,13 @@ def build():
     apply_endpoints(data)
     finish_variants(data)
     review_october21(data)
+    # Reviewed 26 Oct: the newly published Argon DBU rows already include 50% off.
+    # Applies to Standard, Priority and their +10% residency tiers; Batch is DBU/hour.
+    argon = data["models"]["google/gemini-4-argon"]["platforms"]["databricks"]
+    if argon["status"] == "priced":
+        for o in [argon, *argon.get("variants", [])]:
+            promo(o, "2026-11-30", {f: round(o[f] * 2, 6) for f in RATE_FIELDS if f in o},
+                  "Databricks Argon 50% promotion", o.get("label", argon["tier"]))
     check_cache_reads(data)
     lifecycle_notices(data)
     # Highlights: neutral, dated facts re-checked against the v2 offers.

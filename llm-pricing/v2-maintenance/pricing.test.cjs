@@ -75,6 +75,20 @@ test('Alibaba Flash 1017 retains regional and off-peak billing without a checkpo
   assert.equal(c.variants.filter(v => !v.model_id?.endsWith('-1017')).length, 5);
 });
 
+test('Databricks Argon promotion ends after November 30 for every priced tier', () => {
+  const c = published.models['google/gemini-4-argon'].platforms.databricks;
+  assert.equal(c.status, 'priced');
+  for (const v of [c, ...c.variants]) {
+    const options = v === c ? {} : {variantId: v.id};
+    const before = M.resolveOffer(c, {...options, asOf: '2026-11-30'});
+    const after = M.resolveOffer(c, {...options, asOf: '2026-12-01'});
+    for (const field of ['in', 'out', 'cache_read']) close(after[field], before[field] * 2);
+    assert.equal(v.promotion.ends_on, '2026-11-30');
+    assert.equal(after.cache_write, undefined);
+  }
+  assert.ok(!c.variants.some(v => v.service_tier === 'batch'));
+});
+
 test('Databricks Argon availability never supplies unverified rates or a comparison', () => {
   const c = reviewed.models['google/gemini-4-argon'].platforms.databricks;
   assert.equal(c.available, true);

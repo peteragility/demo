@@ -27495,7 +27495,17 @@
               "pricing_checked_at": "2026-10-26",
               "endpoint": "Default",
               "id": "variant-0",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 9.0,
+                  "out": 45.0,
+                  "cache_read": 0.45,
+                  "tier": "Priority"
+                },
+                "label": "Databricks Argon 50% promotion"
+              }
             },
             {
               "label": "Regional processing ⌖ +10%",
@@ -27507,7 +27517,17 @@
               "cache_read": 0.1375,
               "endpoint": "Regional processing ⌖",
               "id": "variant-1",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 5.5,
+                  "out": 27.5,
+                  "cache_read": 0.275,
+                  "tier": "Regional processing ⌖ +10%"
+                },
+                "label": "Databricks Argon 50% promotion"
+              }
             },
             {
               "in": 4.95,
@@ -27520,7 +27540,17 @@
               "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
               "endpoint": "Regional processing ⌖",
               "id": "variant-2",
-              "model_match": "confirmed"
+              "model_match": "confirmed",
+              "promotion": {
+                "ends_on": "2026-11-30",
+                "after": {
+                  "in": 9.9,
+                  "out": 49.5,
+                  "cache_read": 0.495,
+                  "tier": "Regional processing ⌖ Priority"
+                },
+                "label": "Databricks Argon 50% promotion"
+              }
             }
           ],
           "endpoint": "Default",
@@ -27581,6 +27611,16 @@
               "databricks-gemini-4-argon"
             ],
             "cache_write": "input-rate"
+          },
+          "promotion": {
+            "ends_on": "2026-11-30",
+            "after": {
+              "in": 5.0,
+              "out": 25.0,
+              "cache_read": 0.25,
+              "tier": "Standard pay-per-token"
+            },
+            "label": "Databricks Argon 50% promotion"
           }
         },
         "official": {
