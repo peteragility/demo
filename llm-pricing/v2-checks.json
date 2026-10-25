@@ -307,12 +307,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-5|bedrock": {
-   "verified": "2026-10-25",
-   "changed_at": "2026-10-26",
-   "sources": [
-    "aws-card-claude-opus-5"
-   ],
-   "quiet": true
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-5|databricks": {
    "verified": "2026-10-26"
@@ -375,12 +370,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-5|bedrock": {
-   "verified": "2026-10-25",
-   "changed_at": "2026-10-26",
-   "sources": [
-    "aws-card-claude-sonnet-5"
-   ],
-   "quiet": true
+   "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-5|databricks": {
    "verified": "2026-10-26"
@@ -434,10 +424,7 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-pro|official": {
-   "verified": "2026-10-25",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
    "verified": "2026-10-26"
@@ -458,10 +445,7 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4.1-flash|official": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-10-26"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
    "verified": "2026-10-26"
