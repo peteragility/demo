@@ -27459,16 +27459,63 @@
       ],
       "platforms": {
         "databricks": {
-          "status": "unverified",
-          "note": "Available through pay-per-token with cross-geography routing enabled; no Gemini 4 Argon rates are published in the checked Databricks DBU tables.",
+          "in": 2.5,
+          "out": 12.5,
+          "cache_read": 0.125,
           "src": "dbx_prop",
+          "tier": "Standard pay-per-token",
           "model_id": "databricks-gemini-4-argon",
-          "available": true,
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-10-17",
-          "model_id_source": "dbx_models",
-          "model_id_checked_at": "2026-10-17",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-26",
+          "availability_checked_at": "2026-10-26",
+          "comparison_scope": "global",
+          "service_tier": "standard",
           "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "model_id_checked_at": "2026-10-26",
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
+          "variants": [
+            {
+              "in": 4.5,
+              "out": 22.5,
+              "cache_read": 0.225,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-26",
+              "endpoint": "Default",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "label": "Regional processing ⌖ +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-26",
+              "in": 2.75,
+              "out": 13.75,
+              "cache_read": 0.1375,
+              "endpoint": "Regional processing ⌖",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 4.95,
+              "out": 24.75,
+              "cache_read": 0.2475,
+              "label": "Regional processing ⌖ Priority",
+              "comparison_scope": "regional",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-26",
+              "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
+              "endpoint": "Regional processing ⌖",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "endpoint": "Default",
           "endpoints": {
             "checked_at": "2026-10-17",
             "src": [
@@ -27510,6 +27557,10 @@
                 "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
               ],
               [
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
+              ],
+              [
                 "Azure",
                 "Azure Databricks provides access through ADI Services, provided by Databricks (†)."
               ],
@@ -27521,9 +27572,8 @@
             "ids": [
               "databricks-gemini-4-argon"
             ],
-            "cache_write": "not-listed"
-          },
-          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+            "cache_write": "input-rate"
+          }
         },
         "official": {
           "in": 2,
@@ -27932,8 +27982,9 @@
       }
     }
   },
-  "reviewed_at": "2026-10-24",
+  "reviewed_at": "2026-10-26",
   "changes": [
+    "2026-10-26: Databricks now prices Gemini 4 Argon at $2.5 / $12.5 per its DBU table, added by the daily check.",
     "2026-10-24: DeepSeek V4.1 Flash on Databricks FMAPI: cache read $0.03 → $0.007, applied by the daily check from its official source.",
     "2026-10-09: The list follows arena.ai's Best WebDev (Code | Overall) top 50 instead of Best Overall (Agent), shown when a compared platform sells the model with general access. Added Claude Opus 4.7 and Opus 4.6 (Databricks, Bedrock, Vertex, Azure Foundry) and Qwen3.8 Flash (Alibaba Cloud; arena: Qwen3.8 Flash Next); Claude Haiku 5.5 is #30, with a 1M context billed at 5x over 100K prompt tokens on every platform and US-only inference on the Claude API.",
     "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",

@@ -11,6 +11,28 @@
    "field": "cache_read",
    "old": 0.03,
    "new": 0.007
+  },
+  {
+   "date": "2026-10-26",
+   "model": "google/gemini-4-argon",
+   "platform": "databricks",
+   "source": "dbx-prices",
+   "offer": "new",
+   "field": "offer",
+   "old": 0,
+   "new": 0,
+   "rates": {
+    "in": 2.5,
+    "out": 12.5,
+    "cache_read": 0.125
+   },
+   "priority": {
+    "in": 4.5,
+    "out": 22.5,
+    "cache_read": 0.225
+   },
+   "regional": true,
+   "model_id": "databricks-gemini-4-argon"
   }
  ]
 }

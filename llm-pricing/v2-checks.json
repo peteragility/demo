@@ -194,10 +194,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-10-26"
@@ -218,10 +215,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "aws-card-claude-fable-5"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-fable-5|databricks": {
    "verified": "2026-10-26"
@@ -287,7 +281,10 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.6|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-4.6|fireworks": {
    "verified": "2026-10-26"
@@ -305,13 +302,13 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.7|bedrock": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "aws-card-claude-opus-4-7"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.7|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-4.7|fireworks": {
    "verified": "2026-10-26"
@@ -329,13 +326,13 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.8|bedrock": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "aws-card-claude-opus-4-8"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.8|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-4.8|fireworks": {
    "verified": "2026-10-26"
@@ -353,10 +350,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "aws-card-claude-opus-5-5"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-5.5|databricks": {
    "verified": "2026-10-26"
@@ -385,7 +379,10 @@
    "quiet": true
   },
   "anthropic/claude-opus-5|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-5|fireworks": {
    "verified": "2026-10-26"
@@ -406,7 +403,10 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-4.6|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-sonnet-4.6|fireworks": {
    "verified": "2026-10-26"
@@ -424,13 +424,13 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "aws-card-claude-sonnet-5-5"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-sonnet-5.5|fireworks": {
    "verified": "2026-10-26"
@@ -477,7 +477,10 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-flash|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "deepseek/deepseek-v4-flash|fireworks": {
    "verified": "2026-10-26"
@@ -501,7 +504,10 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-pro|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "deepseek/deepseek-v4-pro|fireworks": {
    "verified": "2026-10-26"
@@ -525,7 +531,10 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4.1-flash|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
    "verified": "2026-10-26"
@@ -612,7 +621,10 @@
    "verified": "2026-10-26"
   },
   "google/gemini-3.6-flash|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "accepted": [
+    "dbx-proprietary"
+   ]
   },
   "google/gemini-3.6-flash|fireworks": {
    "verified": "2026-10-26"
@@ -633,7 +645,10 @@
    "verified": "2026-10-26"
   },
   "google/gemini-3.7-flash|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "accepted": [
+    "dbx-proprietary"
+   ]
   },
   "google/gemini-3.7-flash|fireworks": {
    "verified": "2026-10-26"
@@ -654,7 +669,10 @@
    "verified": "2026-10-26"
   },
   "google/gemini-3.8-flash|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "accepted": [
+    "dbx-proprietary"
+   ]
   },
   "google/gemini-3.8-flash|fireworks": {
    "verified": "2026-10-26"
@@ -675,7 +693,10 @@
    "verified": "2026-10-26"
   },
   "google/gemini-4-argon|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "accepted": [
+    "dbx-proprietary"
+   ]
   },
   "google/gemini-4-argon|fireworks": {
    "verified": "2026-10-26"
@@ -696,7 +717,10 @@
    "verified": "2026-10-26"
   },
   "google/gemma-3-12b|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "google/gemma-3-12b|gcloud": {
    "verified": "2026-10-26"
@@ -711,7 +735,10 @@
    "verified": "2026-10-26"
   },
   "meta/llama-3.1-8b|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "meta/llama-3.1-8b|gcloud": {
    "verified": "2026-10-26"
@@ -726,7 +753,10 @@
    "verified": "2026-10-26"
   },
   "meta/llama-3.3-70b|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "meta/llama-3.3-70b|gcloud": {
    "verified": "2026-10-26"
@@ -741,7 +771,10 @@
    "verified": "2026-10-26"
   },
   "meta/llama-4-maverick|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "meta/llama-4-maverick|gcloud": {
    "verified": "2026-10-26"
@@ -798,7 +831,10 @@
    "verified": "2026-10-26"
   },
   "moonshot/kimi-k2.7|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "moonshot/kimi-k2.7|fireworks": {
    "verified": "2026-10-26"
@@ -819,7 +855,10 @@
    "verified": "2026-10-26"
   },
   "moonshot/kimi-k3|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "moonshot/kimi-k3|fireworks": {
    "verified": "2026-10-26"
@@ -1029,7 +1068,10 @@
    "verified": "2026-10-26"
   },
   "openai/gpt-oss-120b|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "openai/gpt-oss-120b|fireworks": {
    "verified": "2026-10-26"
@@ -1050,7 +1092,10 @@
    "verified": "2026-10-26"
   },
   "openai/gpt-oss-20b|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "openai/gpt-oss-20b|gcloud": {
    "verified": "2026-10-26"
@@ -1068,7 +1113,10 @@
    "verified": "2026-10-26"
   },
   "qwen/qwen3-next-80b-instruct|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
    "verified": "2026-10-26"
@@ -1086,7 +1134,10 @@
    "verified": "2026-10-26"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-26"
@@ -1209,7 +1260,10 @@
    "verified": "2026-10-26"
   },
   "tml/inkling|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "tml/inkling|fireworks": {
    "verified": "2026-10-26"
@@ -1248,7 +1302,10 @@
    "verified": "2026-10-26"
   },
   "xai/grok-4.7|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "xai/grok-4.7|gcloud": {
    "verified": "2026-10-26"
@@ -1266,7 +1323,10 @@
    "verified": "2026-10-26"
   },
   "zai/glm-5.2|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "zai/glm-5.2|fireworks": {
    "verified": "2026-10-26"
@@ -1287,7 +1347,10 @@
    "verified": "2026-10-26"
   },
   "zai/glm-5.3-flash|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "zai/glm-5.3-flash|fireworks": {
    "verified": "2026-10-26"
@@ -1308,7 +1371,10 @@
    "verified": "2026-10-26"
   },
   "zai/glm-5.3|databricks": {
-   "verified": "2026-10-26"
+   "verified": "2026-10-26",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "zai/glm-5.3|fireworks": {
    "verified": "2026-10-26"
