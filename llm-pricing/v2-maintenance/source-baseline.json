@@ -12556,11 +12556,11 @@
    ]
   },
   "deepseek-pricing": {
-   "url": "https://api-docs.deepseek.com/quick_start/pricing",
+   "url": "https://api-docs.deepseek.com/quick_start/pricing/",
    "kind": "tables",
-   "digest": "953b49945323d4d005f8d5f49bee5f70bb3b387368c3336b820715992c22d89e",
+   "digest": "93303755129c46fa6f1bb2523ffd7a34ac92a3919fafdaea39def865ffb52269",
    "records": [
-    "notice: (1) Use deepseek-flash as the model name. It is now served by DeepSeek-V4.1-Flash-1017, and the calling method remains unchanged. The legacy names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted, but the corresponding models have been retired; their requests are served by DeepSeek-V4.1-Flash-1017 and billed at the Flash price.",
+    "notice: (1) Use deepseek-flash as the model name. The legacy names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash-1017 model and billed at the Flash price.",
     "table: {\"cells\":[\"1M INPUT TOKENS (CACHE MISS)\",\"OFF-PEAK\",\"$0.15\",\"$0.66\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"1M OUTPUT TOKENS\",\"OFF-PEAK\",\"$0.6\",\"$1.98\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"Anthropic API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
@@ -12572,6 +12572,8 @@
     "table: {\"cells\":[\"FEATURES\",\"Json Output\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"FIM Completion（Beta）\",\"Non-thinking mode only\",\"Non-thinking mode only\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"MAX OUTPUT\",\"MAXIMUM: 384K\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
+    "table: {\"cells\":[\"MODEL VERSION\",\"DeepSeek-V4.1-Flash-1017\",\"DeepSeek-V4-Pro-0813\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
+    "table: {\"cells\":[\"MODEL\",\"deepseek-flash (1)\",\"deepseek-v4-pro\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$0.006\",\"$0.044\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$0.3\",\"$1.32\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$1.2\",\"$3.96\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
@@ -12579,8 +12581,7 @@
     "table: {\"cells\":[\"Responses API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"THINKING MODE\",\"Supports both non-thinking and thinking (default) modes See Thinking Mode for how to switch\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"Tool Calls\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Vision\",\"✓\",\"Not supported\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"model\",\"deepseek-flash (1) deepseek-v4-pro\"],\"heading\":\"Your First API Call\"}"
+    "table: {\"cells\":[\"Vision\",\"✓\",\"Not supported\"],\"heading\":\"Models & Pricing / Model Details ​\"}"
    ]
   },
   "fireworks-kimi27": {

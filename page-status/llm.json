@@ -5,8 +5,8 @@
       "checkedAt": "2026-10-26",
       "lastSuccess": "2026-10-26",
       "errors": 0,
-      "review": 1,
-      "status": "review"
+      "review": 0,
+      "status": "ok"
     }
   }
 }

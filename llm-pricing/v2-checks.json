@@ -119,62 +119,7 @@
   "api-google-gemini-4-argon": "2026-10-26",
   "gcp-deepseek-v4-1-flash": "2026-10-26"
  },
- "pending_general": [
-  {
-   "source": "deepseek-pricing",
-   "url": "https://api-docs.deepseek.com/quick_start/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"PARAM\",\"VALUE\"],\"heading\":\"Your First API Call\"}",
-    "table: {\"cells\":[\"api_key\",\"apply for an API key\"],\"heading\":\"Your First API Call\"}",
-    "table: {\"cells\":[\"base_url (Anthropic)\",\"https://api.deepseek.com/anthropic\"],\"heading\":\"Your First API Call\"}",
-    "table: {\"cells\":[\"base_url (OpenAI)\",\"https://api.deepseek.com\"],\"heading\":\"Your First API Call\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"1M INPUT TOKENS (CACHE MISS)\",\"OFF-PEAK\",\"$0.15\",\"$0.66\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"1M OUTPUT TOKENS\",\"OFF-PEAK\",\"$0.6\",\"$1.98\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Anthropic API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"BASE URL (Anthropic Format)\",\"https://api.deepseek.com/anthropic\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"BASE URL (OpenAI Format)\",\"https://api.deepseek.com\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"CONTEXT LENGTH\",\"1M\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Chat Prefix Completion（Beta）\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Concurrency Limit (3)\",\"2500\",\"500\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"FEATURES\",\"Json Output\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"FIM Completion（Beta）\",\"Non-thinking mode only\",\"Non-thinking mode only\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"MAX OUTPUT\",\"MAXIMUM: 384K\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"PEAK\",\"$0.006\",\"$0.044\"],\"heading\":\"Models & Pricing / Model Details ​\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"PARAM\",\"VALUE\"],\"heading\":\"Your First API Call\"}",
-    "table: {\"cells\":[\"api_key\",\"apply for an API key\"],\"heading\":\"Your First API Call\"}",
-    "table: {\"cells\":[\"base_url (Anthropic)\",\"https://api.deepseek.com/anthropic\"],\"heading\":\"Your First API Call\"}",
-    "table: {\"cells\":[\"base_url (OpenAI)\",\"https://api.deepseek.com\"],\"heading\":\"Your First API Call\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"1M INPUT TOKENS (CACHE MISS)\",\"OFF-PEAK\",\"$0.15\",\"$0.66\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"1M OUTPUT TOKENS\",\"OFF-PEAK\",\"$0.6\",\"$1.98\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Anthropic API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"BASE URL (Anthropic Format)\",\"https://api.deepseek.com/anthropic\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"BASE URL (OpenAI Format)\",\"https://api.deepseek.com\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"CONTEXT LENGTH\",\"1M\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Chat Prefix Completion（Beta）\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Concurrency Limit (3)\",\"2500\",\"500\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"FEATURES\",\"Json Output\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"FIM Completion（Beta）\",\"Non-thinking mode only\",\"Non-thinking mode only\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"MAX OUTPUT\",\"MAXIMUM: 384K\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"PEAK\",\"$0.006\",\"$0.044\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"PEAK\",\"$0.3\",\"$1.32\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"PEAK\",\"$1.2\",\"$3.96\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"PRICING (2)\",\"1M INPUT TOKENS (CACHE HIT)\",\"OFF-PEAK\",\"$0.003\",\"$0.022\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Responses API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"THINKING MODE\",\"Supports both non-thinking and thinking (default) modes See Thinking Mode for how to switch\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Tool Calls\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Vision\",\"✓\",\"Not supported\"],\"heading\":\"Models & Pricing / Model Details ​\"}"
-   ],
-   "baseline_digest": "ad3a6ad582a0389e9cdf2b8c402e3d1a830d67e8afc3b69631eff1c22602d393"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-26",
@@ -281,10 +226,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.6|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.6|fireworks": {
    "verified": "2026-10-26"
@@ -305,10 +247,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.7|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.7|fireworks": {
    "verified": "2026-10-26"
@@ -329,10 +268,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.8|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-4.8|fireworks": {
    "verified": "2026-10-26"
@@ -379,10 +315,7 @@
    "quiet": true
   },
   "anthropic/claude-opus-5|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-opus-5|fireworks": {
    "verified": "2026-10-26"
@@ -403,10 +336,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-4.6|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-4.6|fireworks": {
    "verified": "2026-10-26"
@@ -427,10 +357,7 @@
    "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "anthropic/claude-sonnet-5.5|fireworks": {
    "verified": "2026-10-26"
@@ -477,10 +404,7 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-flash|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-flash|fireworks": {
    "verified": "2026-10-26"
@@ -489,10 +413,7 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-flash|official": {
-   "verified": "2026-10-25",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
    "verified": "2026-10-26"
@@ -504,10 +425,7 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-pro|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4-pro|fireworks": {
    "verified": "2026-10-26"
@@ -531,10 +449,7 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4.1-flash|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
    "verified": "2026-10-26"
@@ -543,8 +458,8 @@
    "verified": "2026-10-26"
   },
   "deepseek/deepseek-v4.1-flash|official": {
-   "verified": "2026-10-25",
-   "unchecked": [
+   "verified": "2026-10-26",
+   "accepted": [
     "deepseek-pricing"
    ]
   },
@@ -621,10 +536,7 @@
    "verified": "2026-10-26"
   },
   "google/gemini-3.6-flash|databricks": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "google/gemini-3.6-flash|fireworks": {
    "verified": "2026-10-26"
@@ -645,10 +557,7 @@
    "verified": "2026-10-26"
   },
   "google/gemini-3.7-flash|databricks": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "google/gemini-3.7-flash|fireworks": {
    "verified": "2026-10-26"
@@ -669,10 +578,7 @@
    "verified": "2026-10-26"
   },
   "google/gemini-3.8-flash|databricks": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "google/gemini-3.8-flash|fireworks": {
    "verified": "2026-10-26"
@@ -693,10 +599,7 @@
    "verified": "2026-10-26"
   },
   "google/gemini-4-argon|databricks": {
-   "verified": "2026-10-26",
-   "accepted": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "google/gemini-4-argon|fireworks": {
    "verified": "2026-10-26"
@@ -717,10 +620,7 @@
    "verified": "2026-10-26"
   },
   "google/gemma-3-12b|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "google/gemma-3-12b|gcloud": {
    "verified": "2026-10-26"
@@ -735,10 +635,7 @@
    "verified": "2026-10-26"
   },
   "meta/llama-3.1-8b|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "meta/llama-3.1-8b|gcloud": {
    "verified": "2026-10-26"
@@ -753,10 +650,7 @@
    "verified": "2026-10-26"
   },
   "meta/llama-3.3-70b|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "meta/llama-3.3-70b|gcloud": {
    "verified": "2026-10-26"
@@ -771,10 +665,7 @@
    "verified": "2026-10-26"
   },
   "meta/llama-4-maverick|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "meta/llama-4-maverick|gcloud": {
    "verified": "2026-10-26"
@@ -831,10 +722,7 @@
    "verified": "2026-10-26"
   },
   "moonshot/kimi-k2.7|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "moonshot/kimi-k2.7|fireworks": {
    "verified": "2026-10-26"
@@ -855,10 +743,7 @@
    "verified": "2026-10-26"
   },
   "moonshot/kimi-k3|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "moonshot/kimi-k3|fireworks": {
    "verified": "2026-10-26"
@@ -1068,10 +953,7 @@
    "verified": "2026-10-26"
   },
   "openai/gpt-oss-120b|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "openai/gpt-oss-120b|fireworks": {
    "verified": "2026-10-26"
@@ -1092,10 +974,7 @@
    "verified": "2026-10-26"
   },
   "openai/gpt-oss-20b|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "openai/gpt-oss-20b|gcloud": {
    "verified": "2026-10-26"
@@ -1113,10 +992,7 @@
    "verified": "2026-10-26"
   },
   "qwen/qwen3-next-80b-instruct|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
    "verified": "2026-10-26"
@@ -1134,10 +1010,7 @@
    "verified": "2026-10-26"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "qwen/qwen3.5-122b|gcloud": {
    "verified": "2026-10-26"
@@ -1260,10 +1133,7 @@
    "verified": "2026-10-26"
   },
   "tml/inkling|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "tml/inkling|fireworks": {
    "verified": "2026-10-26"
@@ -1302,10 +1172,7 @@
    "verified": "2026-10-26"
   },
   "xai/grok-4.7|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "xai/grok-4.7|gcloud": {
    "verified": "2026-10-26"
@@ -1323,10 +1190,7 @@
    "verified": "2026-10-26"
   },
   "zai/glm-5.2|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "zai/glm-5.2|fireworks": {
    "verified": "2026-10-26"
@@ -1347,10 +1211,7 @@
    "verified": "2026-10-26"
   },
   "zai/glm-5.3-flash|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "zai/glm-5.3-flash|fireworks": {
    "verified": "2026-10-26"
@@ -1371,10 +1232,7 @@
    "verified": "2026-10-26"
   },
   "zai/glm-5.3|databricks": {
-   "verified": "2026-10-26",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-26"
   },
   "zai/glm-5.3|fireworks": {
    "verified": "2026-10-26"
