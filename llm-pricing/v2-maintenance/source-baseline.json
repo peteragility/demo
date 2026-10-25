@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-10-25",
+ "checked_at": "2026-10-26",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4-pro|databricks|retirement|2026-10-30",
   "deepseek/deepseek-v4.1-flash|gcloud|promotion end|2026-10-16",
@@ -3291,7 +3291,7 @@
   "aws-card-claude-fable-5": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-fable-5.html",
    "kind": "text",
-   "digest": "3256395b2e16c8933ded3590feb5efaf2eed50305d8e2c619c3351011e1cb27b",
+   "digest": "32ccae5f5d3db5e05539ce30213082113006f2e5172f992534edbf3441558ad8",
    "records": [
     "notice: Sampling parameters: temperature must be 1.0 or unset; top_p must be ≥ 0.99 and < 1.0, or unset; top_k is not supported",
     "table: {\"cells\":[\"Endpoint\",\"Model ID\",\"In-Region endpoint URL\",\"Geo inference ID\",\"Global inference ID\"],\"heading\":\"Claude Fable 5 / Programmatic Access\"}",
@@ -3300,8 +3300,6 @@
     "table: {\"cells\":[\"Input Modalities\",\"Output Modalities\"],\"heading\":\"Claude Fable 5 / Model Details\"}",
     "table: {\"cells\":[\"Messages\",\"Responses\",\"Chat Completions\",\"Converse\",\"Invoke\"],\"heading\":\"Claude Fable 5 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"Region\",\"In-Region\",\"Geo\",\"Global\"],\"heading\":\"Claude Fable 5 / Regional Availability\"}",
-    "table: {\"cells\":[\"Response streaming Implicit Prompt Caching Explicit Prompt Caching Abuse detection Count tokens yes Structured outputs\",\"Guardrails Prompt optimization Knowledge base Model evaluation Prompt management Flows Agents Intelligent prompt routing\"],\"heading\":\"Claude Fable 5 / Capabilities and Features\"}",
-    "table: {\"cells\":[\"Response streaming Implicit Prompt Caching Explicit Prompt Caching Abuse detection Guardrails Prompt optimization Knowledge base Model evaluation Prompt management Flows Agents yes Structured outputs\",\"Count tokens Intelligent prompt routing\"],\"heading\":\"Claude Fable 5 / Capabilities and Features\"}",
     "table: {\"cells\":[\"Source Region\",\"Destination Regions\"],\"heading\":\"Claude Fable 5 / Regional Availability\"}",
     "table: {\"cells\":[\"Standard\",\"Priority\",\"Flex\",\"Reserved\"],\"heading\":\"Claude Fable 5 / Service Tiers\"}",
     "table: {\"cells\":[\"Supported\",\"Not Supported\"],\"heading\":\"Claude Fable 5 / Capabilities and Features\"}",
@@ -3354,6 +3352,8 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Claude Fable 5 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Claude Fable 5 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\"],\"heading\":\"Claude Fable 5 / Model Details\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Fable 5 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Structured outputs\",\"no Count tokens no Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Fable 5 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\"],\"heading\":\"Claude Fable 5 / Model Details\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Fable 5 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Fable 5 / Service Tiers\"}",
@@ -3413,7 +3413,7 @@
   "aws-card-claude-fable-5-1": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-fable-5-1.html",
    "kind": "text",
-   "digest": "a5b8513dcba6173c6d45e30889f41c606ecb39dfe9f15047c6e86d572ddf7ad7",
+   "digest": "ac48d571e540caeec8dd9ab952d5de451db53a8b4af7d8f76f4d69300333bab5",
    "records": [
     "notice: Sampling parameters: temperature must be 1.0 or unset; top_p must be 0.99 or unset; temperature and top_p cannot be specified together; top_k is not supported",
     "table: {\"cells\":[\"Endpoint\",\"Model ID\",\"In-Region endpoint URL\",\"Geo inference ID\",\"Global inference ID\"],\"heading\":\"Claude Fable 5.1 / Programmatic Access\"}",
@@ -3422,7 +3422,7 @@
     "table: {\"cells\":[\"Messages\",\"Responses\",\"Chat Completions\",\"Converse\",\"Invoke\"],\"heading\":\"Claude Fable 5.1 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"Prompt caching supported\",\"Min tokens per cache checkpoint\",\"Max cache checkpoints per request\",\"Supported TTL\",\"Fields that accept prompt cache checkpoint\"],\"heading\":\"Claude Fable 5.1 / Capabilities and Features\"}",
     "table: {\"cells\":[\"Region\",\"In-Region\",\"Geo\",\"Global\"],\"heading\":\"Claude Fable 5.1 / Regional Availability\"}",
-    "table: {\"cells\":[\"Response streaming Prompt caching Abuse detection Guardrails Prompt optimization Knowledge base Model evaluation Prompt management Flows Agents yes Structured outputs\",\"Count tokens Intelligent prompt routing\"],\"heading\":\"Claude Fable 5.1 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"Response streaming Prompt caching Abuse detection Guardrails Prompt optimization Knowledge base Model evaluation Prompt management Flows Agents yes Structured outputs\",\"Count tokens Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Fable 5.1 / Capabilities and Features\"}",
     "table: {\"cells\":[\"Source Region\",\"Destination Regions\"],\"heading\":\"Claude Fable 5.1 / Regional Availability\"}",
     "table: {\"cells\":[\"Standard\",\"Priority\",\"Flex\",\"Reserved\"],\"heading\":\"Claude Fable 5.1 / Service Tiers\"}",
     "table: {\"cells\":[\"Supported\",\"Not Supported\"],\"heading\":\"Claude Fable 5.1 / Capabilities and Features\"}",
@@ -3477,7 +3477,7 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Claude Fable 5.1 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Claude Fable 5.1 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\"],\"heading\":\"Claude Fable 5.1 / Model Details\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Prompt caching yes Abuse detection yes Count tokens yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing\"],\"heading\":\"Claude Fable 5.1 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Prompt caching yes Abuse detection yes Count tokens yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Fable 5.1 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\"],\"heading\":\"Claude Fable 5.1 / Model Details\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Fable 5.1 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Fable 5.1 / Service Tiers\"}",
@@ -3504,6 +3504,7 @@
     "text: Geo inference details",
     "text: If you've got a moment, please tell us how we can make the documentation better.",
     "text: If you've got a moment, please tell us what we did right so we can do more of it.",
+    "text: Implicit Prompt Caching",
     "text: Intelligent prompt routing",
     "text: Knowledge cutoff: June 2026",
     "text: Legacy period: at least 6 months",
@@ -3693,7 +3694,7 @@
   "aws-card-claude-opus-4-7": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-7.html",
    "kind": "text",
-   "digest": "ce8312f1dd71bd3b747237b392ab3fe57a43a68a2800cafca6a6dde44193d8c9",
+   "digest": "5cbe40c26ef72806270c84967990f5fb553d98f8642605a26f975482e0a4cf92",
    "records": [
     "notice: Claude Opus 4.7 only supports thinking.type: \"adaptive\" for extended thinking. Unlike Claude Opus 4.6, thinking.type: \"enabled\" with budget_tokens is not supported and will return a 400 error. If you are migrating from Opus 4.6, update your requests to use thinking.type: \"adaptive\". For more information, see Adaptive thinking.",
     "table: {\"cells\":[\"Compaction supported\",\"Beta value\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
@@ -3776,8 +3777,8 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Claude Opus 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Claude Opus 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\"],\"heading\":\"Claude Opus 4.7 / Model Details / Important\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Structured outputs\",\"no Intelligent prompt routing no Count tokens\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Structured outputs\",\"no Intelligent prompt routing no Count tokens no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\"],\"heading\":\"Claude Opus 4.7 / Model Details / Important\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 4.7 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 4.7 / Service Tiers\"}",
@@ -3869,7 +3870,7 @@
   "aws-card-claude-opus-4-8": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-8.html",
    "kind": "text",
-   "digest": "9d395946fd8193a5f5c2f77af102383e3a89e224909a744092b6899f0a694be7",
+   "digest": "8fe8840cd47c4e27ed409e60eb8fe4db94c227a7723e3e87c3758362361a727e",
    "records": [
     "notice: Claude Opus 4.8 only supports thinking.type: \"adaptive\" for extended thinking. Unlike Claude Opus 4.6, thinking.type: \"enabled\" with budget_tokens is not supported and will return a 400 error. If you are migrating from Opus 4.6, update your requests to use thinking.type: \"adaptive\". For more information, see Adaptive thinking.",
     "table: {\"cells\":[\"Compaction supported\",\"Beta value\"],\"heading\":\"Claude Opus 4.8 / Capabilities and Features\"}",
@@ -3957,8 +3958,8 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Claude Opus 4.8 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Claude Opus 4.8 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\"],\"heading\":\"Claude Opus 4.8 / Model Details / Important\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing\"],\"heading\":\"Claude Opus 4.8 / Capabilities and Features\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Structured outputs\",\"no Intelligent prompt routing no Count tokens\"],\"heading\":\"Claude Opus 4.8 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 4.8 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Structured outputs\",\"no Intelligent prompt routing no Count tokens no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 4.8 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\"],\"heading\":\"Claude Opus 4.8 / Model Details / Important\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 4.8 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 4.8 / Service Tiers\"}",
@@ -4201,7 +4202,7 @@
   "aws-card-claude-opus-5-5": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5-5.html",
    "kind": "text",
-   "digest": "5435c7b843bbd6327c18864d90704d9e7e7dd546361fd7424086f46304b88ac9",
+   "digest": "d23b59ed6523593cb59c49ccc50d2d4c2aeef167186053b5be7836c11d62a0c0",
    "records": [
     "table: {\"cells\":[\"Compaction supported\",\"Beta value\"],\"heading\":\"Claude Opus 5.5 / Capabilities and Features\"}",
     "table: {\"cells\":[\"Endpoint\",\"Model ID\",\"In-Region endpoint URL\",\"Geo inference ID\",\"Global inference ID\"],\"heading\":\"Claude Opus 5.5 / Programmatic Access\"}",
@@ -4286,8 +4287,8 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Claude Opus 5.5 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Claude Opus 5.5 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\"],\"heading\":\"Claude Opus 5.5 / Model Details\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Client-side tool calling (tool_choice types auto and none only) yes Server-side tool use (tool search only; regex and BM25) yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Application inference profiles no Invocation logs\"],\"heading\":\"Claude Opus 5.5 / Capabilities and Features\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Client-side tool calling (tool_choice types auto and none only) yes Server-side tool use (tool search only; regex and BM25) yes Application inference profiles yes Invocation logs yes Structured outputs\",\"no Intelligent prompt routing no Count tokens\"],\"heading\":\"Claude Opus 5.5 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Client-side tool calling (tool_choice types auto and none only) yes Server-side tool use (tool search only; regex and BM25) yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Application inference profiles no Invocation logs no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 5.5 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Client-side tool calling (tool_choice types auto and none only) yes Server-side tool use (tool search only; regex and BM25) yes Application inference profiles yes Invocation logs yes Structured outputs\",\"no Intelligent prompt routing no Count tokens no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 5.5 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\"],\"heading\":\"Claude Opus 5.5 / Model Details\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 5.5 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 5.5 / Service Tiers\"}",
@@ -4511,7 +4512,7 @@
   "aws-card-claude-sonnet-5-5": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-sonnet-5-5.html",
    "kind": "text",
-   "digest": "08bedb8ea12061112c43e56b601cb0c1cc7a76ae877d72140ac77e20f3baf7c7",
+   "digest": "ee92393486d7b82f3fdcf417a4c201b4d13c04a8398990134072e86021eecf85",
    "records": [
     "table: {\"cells\":[\"Compaction supported\",\"Beta value\"],\"heading\":\"Claude Sonnet 5.5 / Capabilities and Features\"}",
     "table: {\"cells\":[\"Endpoint\",\"Model ID\",\"In-Region endpoint URL\",\"Geo inference ID\",\"Global inference ID\"],\"heading\":\"Claude Sonnet 5.5 / Programmatic Access\"}",
@@ -4587,8 +4588,8 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Claude Sonnet 5.5 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Claude Sonnet 5.5 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\"],\"heading\":\"Claude Sonnet 5.5 / Model Details\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing\"],\"heading\":\"Claude Sonnet 5.5 / Capabilities and Features\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Implicit Prompt Caching yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Client-side tool calling (tool_choice types auto and none only) yes Server-side tool use (tool search only) yes Application inference profiles yes Invocation logs yes Structured outputs\",\"no Intelligent prompt routing no Count tokens\"],\"heading\":\"Claude Sonnet 5.5 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Sonnet 5.5 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Client-side tool calling (tool_choice types auto and none only) yes Server-side tool use (tool search only) yes Application inference profiles yes Invocation logs yes Structured outputs\",\"no Intelligent prompt routing no Count tokens no Implicit Prompt Caching\"],\"heading\":\"Claude Sonnet 5.5 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\"],\"heading\":\"Claude Sonnet 5.5 / Model Details\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Sonnet 5.5 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Sonnet 5.5 / Service Tiers\"}",
@@ -12554,9 +12555,9 @@
   "deepseek-pricing": {
    "url": "https://api-docs.deepseek.com/quick_start/pricing",
    "kind": "tables",
-   "digest": "93303755129c46fa6f1bb2523ffd7a34ac92a3919fafdaea39def865ffb52269",
+   "digest": "953b49945323d4d005f8d5f49bee5f70bb3b387368c3336b820715992c22d89e",
    "records": [
-    "notice: (1) Use deepseek-flash as the model name. The legacy names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted, but the corresponding models have been retired, their requests are served by the DeepSeek-V4.1-Flash-1017 model and billed at the Flash price.",
+    "notice: (1) Use deepseek-flash as the model name. It is now served by DeepSeek-V4.1-Flash-1017, and the calling method remains unchanged. The legacy names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted, but the corresponding models have been retired; their requests are served by DeepSeek-V4.1-Flash-1017 and billed at the Flash price.",
     "table: {\"cells\":[\"1M INPUT TOKENS (CACHE MISS)\",\"OFF-PEAK\",\"$0.15\",\"$0.66\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"1M OUTPUT TOKENS\",\"OFF-PEAK\",\"$0.6\",\"$1.98\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"Anthropic API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
@@ -12568,8 +12569,6 @@
     "table: {\"cells\":[\"FEATURES\",\"Json Output\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"FIM Completion（Beta）\",\"Non-thinking mode only\",\"Non-thinking mode only\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"MAX OUTPUT\",\"MAXIMUM: 384K\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"MODEL VERSION\",\"DeepSeek-V4.1-Flash-1017\",\"DeepSeek-V4-Pro-0813\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"MODEL\",\"deepseek-flash (1)\",\"deepseek-v4-pro\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$0.006\",\"$0.044\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$0.3\",\"$1.32\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"PEAK\",\"$1.2\",\"$3.96\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
@@ -12577,7 +12576,8 @@
     "table: {\"cells\":[\"Responses API\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"THINKING MODE\",\"Supports both non-thinking and thinking (default) modes See Thinking Mode for how to switch\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
     "table: {\"cells\":[\"Tool Calls\",\"✓\",\"✓\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
-    "table: {\"cells\":[\"Vision\",\"✓\",\"Not supported\"],\"heading\":\"Models & Pricing / Model Details ​\"}"
+    "table: {\"cells\":[\"Vision\",\"✓\",\"Not supported\"],\"heading\":\"Models & Pricing / Model Details ​\"}",
+    "table: {\"cells\":[\"model\",\"deepseek-flash (1) deepseek-v4-pro\"],\"heading\":\"Your First API Call\"}"
    ]
   },
   "fireworks-kimi27": {
