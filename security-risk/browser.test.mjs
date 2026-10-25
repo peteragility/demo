@@ -70,12 +70,26 @@ await withBrowser(root,async b=>{
  await tap('[data-layer=trust]');await tap('[data-layer=all]');
  await tap('.row .rank');assert.equal(await b.evaluate('document.querySelectorAll(".detail").length'),1);
  await tap('.row .rank');assert.equal(await b.evaluate('document.querySelectorAll(".detail").length'),0);
+ // Double taps on text, cells, expanded content and page background must not change scale.
+ await tap('.row .rank');
+ for(const selector of ['header h1','.kpi','.detail p','.row .when']){
+  await b.evaluate(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'center'})`);await b.pause(100);
+  const point=await b.evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:Math.min(380,Math.max(10,r.x+r.width/2)),y:Math.min(830,Math.max(10,r.y+r.height/2))}})()`);
+  await b.call('Input.synthesizeTapGesture',{...point,tapCount:2,duration:50,gestureSourceType:'touch'});await b.pause(350);
+  assert.equal(await b.evaluate('visualViewport.scale'),scale,'Double tap zoom on '+selector);
+  assert.equal(await b.evaluate(`getComputedStyle(document.querySelector(${JSON.stringify(selector)})).touchAction`),'manipulation');
+ }
+ await b.call('Emulation.setPageScaleFactor',{pageScaleFactor:1.5});const zoomed=await b.evaluate('visualViewport.scale');
+ await b.call('Input.synthesizeTapGesture',{x:8,y:180,tapCount:2,duration:50,gestureSourceType:'touch'});await b.pause(350);
+ assert.equal(await b.evaluate('visualViewport.scale'),zoomed,'Double tap must not zoom out an intentionally zoomed page');
+ await b.call('Emulation.setPageScaleFactor',{pageScaleFactor:1});
  assert.equal(await b.evaluate('getComputedStyle(document.querySelector(".issuebtn")).touchAction'),'manipulation');
  assert.ok(await b.evaluate('!document.querySelector("meta[name=viewport]").content.includes("user-scalable=no")'),'Intentional accessibility zoom remains available');
  await b.call('Emulation.setTouchEmulationEnabled',{enabled:false});await b.viewport(390,900);
  await b.navigate('/security-risk/?blocked=1',setup(fixture,`Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}});`));await b.waitFor('document.querySelectorAll(".row").length===3');
  const unsafe=structuredClone(fixture);unsafe.records[0].title='<img src=x onerror=alert(1)>';unsafe.records[0].action='<script>alert(1)</script>';unsafe.records[0].sources[0].url='javascript:alert(1)';
  await b.navigate('/security-risk/?unsafe=1',setup(unsafe));await b.waitFor('document.querySelectorAll(".row").length===3');await b.evaluate('document.querySelector(".issuebtn").click()');assert.equal(await b.evaluate('document.querySelectorAll("#rows img,#rows script,#rows a[href^=javascript]").length'),0);
+ await b.navigate('/security-risk/#%',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');
  await b.navigate('/security-risk/?empty=1',setup({...fixture,records:[]}));await b.waitFor('!!document.querySelector(".empty")');
  await b.navigate('/security-risk/?offline=1',clock+`window.fetch=()=>Promise.reject(new Error('offline'));`);await b.waitFor('document.getElementById("notice").textContent.includes("Could not load")');
  await b.call('Emulation.setEmulatedMedia',{features:[{name:'prefers-color-scheme',value:'dark'}]});

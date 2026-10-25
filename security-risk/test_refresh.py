@@ -11,6 +11,14 @@ import refresh as R
 
 
 class RefreshTests(unittest.TestCase):
+    def test_hong_kong_event_dates_preserve_date_only_sources(self):
+        for value in ['2026-09-23T18:00:00Z', '2026-09-23T18:00:00', 'Wed, 23 Sep 2026 18:00:00 GMT']:
+            self.assertEqual(R.date_of(value), '2026-09-24')
+            self.assertEqual(R.risk_event({'published': value}, '2026-10-23')[0], '2026-09-24')
+        self.assertEqual(R.date_of('2026-09-23'), '2026-09-23')
+        for value in ['', None, '2026-02-30', 'bad']:
+            self.assertEqual(R.date_of(value), '')
+
     def test_cna_ranges_are_not_invented_fixes(self):
         record = dict(id='CVE-2026-1234', product='Test', source_id='kev', sources=[], cvss=None)
         value = {'cveMetadata': {}, 'containers': {'cna': {'affected': [{'product': 'Test', 'versions': [

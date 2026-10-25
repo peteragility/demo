@@ -294,7 +294,7 @@ class SourceReviewTests(unittest.TestCase):
         workflow = (HERE.parent.parent / ".github/workflows/llm-pricing-v2-review.yml").read_text()
         self.assertIn("if: inputs.record_baseline && steps.ranking.outcome == 'success'", workflow)
         step = workflow.split("      - name: Require a successful Arena ranking check\n", 1)[1]
-        script = textwrap.dedent(step.split("        run: |\n", 1)[1])
+        script = textwrap.dedent(step.split("        run: |\n", 1)[1]).replace("${{ steps.publish.outcome }}", "success")
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "llm-pricing-v2-unpriced.json"
             (Path(tmp) / "python").symlink_to(sys.executable)
@@ -441,7 +441,7 @@ class SourceReviewTests(unittest.TestCase):
             for name in ("v2-data.json", "v2-math.js"):
                 shutil.copy2(HERE.parent / name, root / name)
             for name in ("build-data.py", "validate-data.py", "seed-data.json", "verified-ids.json", "endpoints.json",
-                         "endpoints-auto.json", "prices-auto.json", "pricing.test.cjs", "pricing-fixtures.json"):
+                         "endpoints-auto.json", "prices-auto.json", "pricing.test.cjs", "pricing-fixtures.json", "pricing-regression-fixtures.json"):
                 shutil.copy2(HERE / name, maintenance / name)
             data = json.loads((root / "v2-data.json").read_text())
             kimi = data["models"]["moonshot/kimi-k3"]["platforms"]["databricks"]
@@ -551,7 +551,7 @@ class SourceReviewTests(unittest.TestCase):
         workflow = (HERE.parent.parent / ".github/workflows/llm-pricing-v2-review.yml").read_text()
         step = workflow.split("      - name: Open, update or close the review issue\n", 1)[1].split("      - name: Save the full report", 1)[0]
         self.assertIn("if: ${{ !cancelled() }}", step)
-        script = textwrap.dedent(step.split("        run: |\n", 1)[1])
+        script = textwrap.dedent(step.split("        run: |\n", 1)[1]).replace("${{ steps.publish.outcome }}", "success")
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             gh = root / "gh"

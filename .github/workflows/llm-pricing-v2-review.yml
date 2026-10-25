@@ -70,6 +70,8 @@ jobs:
           python v2-maintenance/test-review-sources.py
           python v2-maintenance/test-ranking.py
           node --test v2-maintenance/pricing.test.cjs
+          node --check v2-app.js
+          node v2-maintenance/browser-check.mjs
 
   refresh:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -127,11 +129,20 @@ jobs:
           if [ -s "$issue" ]; then cat "$issue" >> "$GITHUB_STEP_SUMMARY";
           elif [ -f "$issue" ]; then echo "Nothing to review today." >> "$GITHUB_STEP_SUMMARY";
           else echo "Source review did not complete; prior findings remain open." >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Validate final refreshed data and browser behavior
+        run: |
+          python v2-maintenance/build-data.py --check
+          python v2-maintenance/validate-data.py
+          python v2-maintenance/update-ranking.py --check
+          node --test v2-maintenance/pricing.test.cjs
+          node v2-maintenance/browser-check.mjs
       - name: Publish order, regions, proven prices and verified dates
+        id: publish
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git add v2-ranking.json v2-data.json v2-checks.json v2-maintenance/ranking-observed.json v2-maintenance/endpoints-auto.json v2-maintenance/source-baseline.json v2-maintenance/prices-auto.json
+          python ../scripts/page-status.py llm
+          git add ../page-status/llm.json v2-ranking.json v2-data.json v2-checks.json v2-maintenance/ranking-observed.json v2-maintenance/endpoints-auto.json v2-maintenance/source-baseline.json v2-maintenance/prices-auto.json
           if git diff --cached --quiet; then echo "Nothing to publish."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -160,6 +171,10 @@ jobs:
             echo "No completed source review; leaving the review issue unchanged."
             exit 0
           fi
+          PUBLISH_OK="${{ steps.publish.outcome }}"
+          if [ "$PUBLISH_OK" != success ]; then
+            printf '\nRefresh was not published. Review the final validation/publish failure in this workflow run before closing this issue.\n' >> "$ISSUE_FILE"
+          fi
           label=llm-pricing-review
           gh label create "$label" --color FBCA04 --description "The daily LLM pricing check found something to review" 2>/dev/null || true
           number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
@@ -171,7 +186,7 @@ jobs:
               gh issue edit "$number" --body-file "$ISSUE_FILE"
               gh issue comment "$number" --body "Updated by the daily check on $(TZ=Asia/Hong_Kong date +%F). See the list above."
             fi
-          elif [ -n "$number" ]; then
+          elif [ -n "$number" ] && [ "$PUBLISH_OK" = success ]; then
             gh issue close "$number" --comment "Daily check $(TZ=Asia/Hong_Kong date +%F): nothing left to review."
           fi
       - name: Save the full report

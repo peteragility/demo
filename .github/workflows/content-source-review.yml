@@ -1,0 +1,102 @@
+name: Sizing and sandbox official source review
+on:
+  schedule:
+    # 02:17 Hong Kong time; GitHub may delay scheduled starts.
+    - cron: '17 18 * * *'
+  workflow_dispatch:
+    inputs:
+      record_baseline:
+        description: Accept source observations after reviewing all changes
+        type: boolean
+        default: false
+  push:
+    paths: ['content-watch/**', 'scripts/page-status.py', 'tests/test_page_status.py', 'llm-pricing/v2-maintenance/official.py', '.github/workflows/content-source-review.yml']
+  pull_request:
+    paths: ['content-watch/**', 'scripts/page-status.py', 'tests/test_page_status.py', 'llm-pricing/v2-maintenance/official.py', '.github/workflows/content-source-review.yml']
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: |
+          python3 -m unittest discover -s content-watch -p 'test_*.py'
+          python3 -m unittest discover -s tests -p 'test_*.py'
+  review:
+    needs: validate
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: content-source-review
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      issues: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Read official sources
+        id: review
+        continue-on-error: true
+        env:
+          RECORD_BASELINE: ${{ inputs.record_baseline }}
+        run: |
+          args=()
+          if [ "$RECORD_BASELINE" = true ]; then args+=(--record-baseline); fi
+          python3 content-watch/review.py --report-dir "$RUNNER_TEMP/content-review" "${args[@]}"
+      - name: Publish source health and reviewed observations
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f "$RUNNER_TEMP/content-review/report.json"
+          python3 scripts/page-status.py content
+          git add content-watch/checks.json content-watch/baseline.json page-status/content.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Review sizing and sandbox official sources'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null
+      - name: Reconcile source review issue
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUBLISHED: ${{ steps.publish.outcome }}
+        run: |
+          report="$RUNNER_TEMP/content-review/issue.md"
+          if [ ! -f "$report" ]; then exit 0; fi
+          if [ "$PUBLISHED" != success ]; then
+            printf '\nSource health/baseline was not published. Review this workflow failure before closing the issue.\n' >> "$report"
+          fi
+          label=demo-content-review
+          gh label create "$label" --color FBCA04 --description 'Sizing or sandbox official sources need review' 2>/dev/null || true
+          number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
+          if [ -s "$report" ]; then
+            if [ -z "$number" ]; then
+              gh issue create --title 'Demo: sizing or sandbox sources need review' --label "$label" --body-file "$report"
+            else
+              gh issue edit "$number" --body-file "$report"
+            fi
+          elif [ -n "$number" ] && [ "$PUBLISHED" = success ]; then
+            gh issue close "$number" --reason completed
+          fi
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: content-source-review
+          path: ${{ runner.temp }}/content-review/
+      - name: Surface failed source reads
+        if: steps.review.outcome == 'failure'
+        run: exit 1

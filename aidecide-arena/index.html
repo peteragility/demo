@@ -372,8 +372,8 @@ async function tttMove(side){
     const probs=a.probabilities||{};
     const heat=tBoard.map((v,i)=>v==null?(probs['c'+i]||0):null);
     tttRender(heat,pick);
-    const idx=pick&&pick.startsWith('c')?+pick.slice(1):null;
-    if(idx==null||tBoard[idx]!=null)throw new Error('bad cell');
+    const idx=typeof pick==='string'&&/^c[0-8]$/.test(pick)?Number(pick.slice(1)):null;
+    if(idx===null||tBoard[idx]!==null)throw new Error('bad cell');
     tBoard[idx]=mark;
     logRow($(side==='A'?'tlogA':'tlogB'),[['ms',ms+'ms'],['pk',mark],['',POS[idx]]],
       {model,state,questions},{choice:a.choice,confidence:a.confidence,probabilities:a.probabilities});

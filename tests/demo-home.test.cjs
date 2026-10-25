@@ -58,6 +58,14 @@ test('featured ordering is editorial and alphabetical sorting stays independent 
   assert.equal(run(`ordered(${JSON.stringify(rows)},'featured')[0].path`),'z/');
   assert.equal(run(`ordered(${JSON.stringify(rows)},'az')[0].path`),'a/');
 });
+test('source health distinguishes review, outages and overdue dates without inventing success',()=>{
+  const run=homepage(),now='new Date("2026-10-25T06:00:00Z")';
+  assert.equal(run(`healthLabel({status:'ok',lastSuccess:'2026-10-25'},${now}).warning`),false);
+  assert.equal(run(`healthLabel({status:'ok',lastSuccess:'2026-10-20'},${now}).label`),'Source check overdue');
+  assert.equal(run(`healthLabel({status:'partial',lastSuccess:'2026-10-24',checkedAt:'2026-10-25'},${now}).label`),'Source check incomplete');
+  assert.equal(run(`healthLabel({status:'review',lastSuccess:'2026-10-25',review:2},${now}).label`),'2 source reviews needed');
+  assert.equal(run(`healthLabel({status:'ok',lastSuccess:'<img>'},${now}).label`),'Source check overdue');
+});
 test('empty or unsafe analytics codes do not load third-party tracking',async()=>{
   for (const code of ['',null,'https://evil.test','x/../evil','a" onload="evil']) {
     const a=analytics(code,'peteragility.github.io');

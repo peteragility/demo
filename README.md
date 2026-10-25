@@ -13,8 +13,10 @@ The site uses static HTML, JavaScript and JSON, with Python/Node standard-librar
 ```sh
 node scripts/check-site.mjs
 node scripts/browser-smoke.mjs
-node --test tests/demo-home.test.cjs tests/publish-helper.test.cjs lakebase-compete-calculator/calculator.test.cjs
-node --test databricks-sizing/calculator.test.cjs
+node --test tests/*.test.cjs lakebase-compete-calculator/calculator.test.cjs
+node --test databricks-sizing/calculator.test.cjs lakehouse-quest/progress.test.cjs
+python3 -m unittest discover -s content-watch -p 'test_*.py'
+python3 -m unittest discover -s tests -p 'test_*.py'
 python3 lakebase-content/render_facts.py --check
 python3 lakebase-content/test_review_sources.py
 ```
@@ -34,3 +36,11 @@ Use explicit paths to avoid committing unrelated work:
 The helper regenerates and stages `manifest.json`, stages only the paths passed to it, and commits already-staged changes. Review the staged diff before invoking it when other files are already staged. Pushes run the relevant GitHub checks and GitHub Pages deployment.
 
 `preview-cards.json` and `scripts/preview-images.mjs` maintain the committed 1200×630 sharing images. Run `node scripts/preview-images.mjs` after editing their text. Static previews describe the page; calculator scenario assumptions are carried by the share link and copied summary.
+
+## Source health and question bank
+
+Homepage cards read small, independent `page-status/*.json` files published by the nightly LLM, Lakebase, Security Risk Watch and sizing/sandbox jobs. They distinguish the last successful source read from the latest attempt, pending reviews and checks over two days old. A source check is not a new human review of every claim.
+
+Sizing and sandbox source monitoring runs at 02:17 Hong Kong time; see [its review procedure](content-watch/README.md). Scheduled GitHub starts may be delayed.
+
+Quest loads its versioned question bank from `lakehouse-quest/questions-v5.2.json`. Bump the bank version and filename together with the HTML fetch path when publishing a new bank. The regression suite validates question/objective/answer references and imported progress; storage and pasted imports use the same schema validator.

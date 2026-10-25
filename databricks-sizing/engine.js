@@ -1,6 +1,6 @@
 (function (root) {
   'use strict';
-  const VERSION='2026-10-17.2';
+  const VERSION='2026-10-25.1';
   const ANCHORS = {AWS:'US East (N. Virginia)',Azure:'US East',GCP:'US (Iowa)'};
   const GEOS = {singapore:{AWS:'AP (Singapore)',Azure:'Asia Southeast',GCP:'Asia (Singapore)'},us:{...ANCHORS},europe:{AWS:'Europe (Frankfurt)',Azure:'Germany West Central',GCP:'Europe (Frankfurt)'},sydney:{AWS:'AP (Sydney)',Azure:'Australia East',GCP:'Australia (Sydney)'},tokyo:{AWS:'AP (Tokyo)',Azure:'Japan East',GCP:'Asia (Tokyo)'}};
   const PRESETS = {
@@ -15,12 +15,12 @@
   const WORKLOADS={etl:'Batch ETL',stream:'Streaming',sql:'BI / SQL',ds:'Data science',ai:'GenAI / RAG',lakebase:'Lakebase'};
   const QUERY_PROFILES={dashboard:{name:'Dashboard · selective reads',scan:0.001,users:20,minSize:0},interactive:{name:'Interactive · joins & exploration',scan:0.01,users:10,minSize:1},heavy:{name:'Heavy · broad scans & joins',scan:0.1,users:5,minSize:2}};
   const ANSWER_PROFILES={short:{name:'Short · 1K in / 250 out',input:1000,output:250},standard:{name:'Standard · 2K in / 500 out',input:2000,output:500},long:{name:'Long · 8K in / 2K out',input:8000,output:2000},custom:{name:'Custom token assumptions'}};
-  const DEFAULTS={scenario:'lakehouse',cloud:'AWS',region:'AP (Singapore)',tier:'premium',platformTier:'premium',workloads:['etl','sql'],gb:100,storedTB:9,queryProfile:'dashboard',batchHours:4,newDataPct:100,answerProfile:'standard',retention:90,concurrency:10,schedule:'business',complexity:'standard',scientists:5,requests:10000,vectors:1,model:'GPT OSS 120B',inputTokens:2000,outputTokens:500,databaseGB:100,workingGB:4,sqlUtil:60,etlFactor:0.2,streamDBU:2,dsDBU:4,dsHours:4,layers:1.5,headroom:20,discount:0,uncertainty:35,extra:0,lakebaseHA:false,overrides:{},quantities:{}};
+  const DEFAULTS={scenario:'lakehouse',cloud:'AWS',region:'AP (Singapore)',tier:'premium',platformTier:'premium',workloads:['etl','sql'],gb:100,storedTB:9,queryProfile:'dashboard',batchHours:4,newDataPct:100,answerProfile:'standard',retention:90,concurrency:10,schedule:'business',complexity:'standard',scientists:5,requests:10000,vectors:1,model:'GPT OSS 120B',inputTokens:2000,outputTokens:500,databaseGB:100,workingGB:4,sqlUtil:60,etlFactor:0.2,streamDBU:2,dsDBU:4,dsHours:4,layers:1.5,headroom:20,discount:0,uncertainty:35,extra:0,lakebaseHA:false,lakebaseBilling:'qualified',overrides:{},quantities:{}};
   const BOUNDS={gb:[0,10000000],storedTB:[0,10000000],batchHours:[0.1,24],newDataPct:[0,100],retention:[1,3650],concurrency:[1,100000],scientists:[1,10000],requests:[0,1e9],vectors:[0,10000],inputTokens:[1,2000000],outputTokens:[1,2000000],databaseGB:[0,1e8],workingGB:[0.5,1000000],sqlUtil:[1,100],etlFactor:[0.001,100],streamDBU:[0.1,100000],dsDBU:[0.1,1000],dsHours:[0.1,24],layers:[0.1,10],headroom:[0,200],discount:[0,90],uncertainty:[0,90],extra:[0,1e9]};
   function normalise(raw={}) {
     const s={...DEFAULTS,workloads:[...DEFAULTS.workloads],overrides:{},quantities:{}};
     for(const [key,[min,max]] of Object.entries(BOUNDS)) {const n=Number(raw[key]);if(raw[key]!==undefined&&raw[key]!==''&&Number.isFinite(n))s[key]=Math.max(min,Math.min(max,n));}
-    for(const [key,allowed] of Object.entries({scenario:Object.keys(PRESETS),cloud:['AWS','Azure','GCP'],tier:['premium','enterprise'],platformTier:['premium','enterprise'],queryProfile:Object.keys(QUERY_PROFILES),answerProfile:Object.keys(ANSWER_PROFILES),schedule:['business','extended','always'],complexity:['simple','standard','complex'],model:['GPT OSS 120B','GPT OSS 20B','Llama 3.3 70B','Llama 4 Maverick']}))if(allowed.includes(raw[key]))s[key]=raw[key];
+    for(const [key,allowed] of Object.entries({scenario:Object.keys(PRESETS),cloud:['AWS','Azure','GCP'],tier:['premium','enterprise'],platformTier:['premium','enterprise'],queryProfile:Object.keys(QUERY_PROFILES),answerProfile:Object.keys(ANSWER_PROFILES),schedule:['business','extended','always'],lakebaseBilling:['qualified','first-month'],complexity:['simple','standard','complex'],model:['GPT OSS 120B','GPT OSS 20B','Llama 3.3 70B','Llama 4 Maverick']}))if(allowed.includes(raw[key]))s[key]=raw[key];
     if(typeof raw.region==='string'&&raw.region.length<100)s.region=raw.region;
     if(Array.isArray(raw.workloads)){const w=[...new Set(raw.workloads.filter(w=>Object.hasOwn(WORKLOADS,w)))];if(w.length)s.workloads=w;}
     s.lakebaseHA=raw.lakebaseHA===true;
@@ -111,9 +111,14 @@
       }
       const canSuspend=limits&&lakeCU<=limits.suspendMax&&!s.lakebaseHA;
       const h=canSuspend?hours:month,replicas=s.lakebaseHA?2:1;lakeHours=h;
-      const rate=lookup(data,s,`lakebase_${s.cloud.toLowerCase()}_${s.tier}`);
-      if(check.status==='unavailable'||!limits||lakeCU>limits.fixedMax){rate.rate=null;rate.status='unavailable';}
-      add('lakebase','Lakebase · '+(lakeMode??'capacity unverified'),(lakeCU??0)*h*replicas,'CU-h',rate,`${lakeCU??'?'} CU × ${h} h × ${replicas} compute(s); ${limits?.ramGB??'?'} GB RAM/CU; capacity held while active, on-demand rate`);
+      const qualified=h===month,initialHours=qualified&&s.lakebaseBilling==='first-month'?24:0;
+      const lakeRate=alwaysOn=>{
+        const r=lookup(data,s,`lakebase_${alwaysOn?'alwayson_':''}${s.cloud.toLowerCase()}_${s.tier}`);
+        if(check.status==='unavailable'||!limits||lakeCU>limits.fixedMax){r.rate=null;r.status='unavailable';}return r;
+      };
+      add('lakebase','Lakebase · '+(qualified?'Always-On minimum':lakeMode??'capacity unverified'),(lakeCU??0)*(h-initialHours)*replicas,'CU-h',lakeRate(qualified),`${lakeCU??'?'} CU × ${h-initialHours} h × ${replicas} compute(s); ${limits?.ramGB??'?'} GB RAM/CU; ${qualified?'qualified Always-On minimum':'autoscaling rate during active hours'}`);
+      if(initialHours)add('lakebase_startup','Lakebase · first 24 h qualification',(lakeCU??0)*initialHours*replicas,'CU-h',lakeRate(false),`${lakeCU??'?'} CU × 24 h × ${replicas} compute(s) at the autoscaling rate before Always-On qualification`);
+      if(qualified)notes.push(initialHours?'First month: 24 h at the autoscaling rate, then 706 h at the Always-On minimum rate.':'Steady state: scale to zero is disabled and the held capacity has qualified for Always-On pricing after 24 continuous hours. Select First month to include that qualification period.');
       add('lakebase_storage','Lakebase · database storage',s.databaseGB,'GB-mo',lookup(data,s,'lakebase_storage'),`${s.databaseGB} GB provisioned average database size`,'storage',false);
       notes.push('Lakebase sizes are 0.5 CU, then integers. This estimate holds the recommended capacity while active; it does not predict average autoscaling consumption. HA adds one equal secondary. PITR and snapshots are excluded.');
       if(limits)notes.push(`Autoscaling is limited to ${limits.autoMax} CU with a maximum ${limits.band} CU min/max spread; larger sizes to ${limits.fixedMax} CU are fixed. The chosen size is a capacity target, not an autoscaling range.`);

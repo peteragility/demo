@@ -77,7 +77,7 @@ python3 v2-maintenance/test-ranking.py
 node --test v2-maintenance/pricing.test.cjs
 ```
 
-Calculation tests use fixed reviewed examples in `pricing-fixtures.json`, so daily price updates do not invalidate arithmetic expectations. Live offers still pass the data validator. Source-review tests also apply real price updates in a temporary copy and run the calculation tests against the rebuilt data.
+Calculation tests use fixed reviewed examples in `pricing-fixtures.json` and `pricing-regression-fixtures.json`, so daily price updates do not invalidate arithmetic expectations. Live offers still pass the data validator, and browser price checks compare rendered values with the current dataset. Both run again on the final refreshed data before publication. Review issues close only after publication succeeds. Source-review tests also apply real price updates in a temporary copy and run the calculation tests against the rebuilt data.
 
 Chrome integration checks cover desktop, tablet, 390 px and 320 px viewports: all seven provider columns, rows per screen, the platform cards, filters, copy text, date changes, the read-only page and the `v2.html` redirect. Chrome uses a temporary profile; screenshots and reports go to a temporary directory.
 

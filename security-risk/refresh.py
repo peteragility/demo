@@ -148,10 +148,15 @@ def feed_entries(text):
 
 def date_of(value):
     from email.utils import parsedate_to_datetime
-    try: return dt.datetime.fromisoformat(value.replace('Z', '+00:00')).date().isoformat()
+    if not isinstance(value, str) or not value: return ''
+    try:
+        if re.fullmatch(r'\d{4}-\d{2}-\d{2}', value): return dt.date.fromisoformat(value).isoformat()
+        parsed = dt.datetime.fromisoformat(value.replace('Z', '+00:00'))
     except ValueError:
-        try: return parsedate_to_datetime(value).date().isoformat()
+        try: parsed = parsedate_to_datetime(value)
         except (ValueError, TypeError): return ''
+    if parsed.tzinfo is None: parsed = parsed.replace(tzinfo=dt.timezone.utc)
+    return parsed.astimezone(ZoneInfo('Asia/Hong_Kong')).date().isoformat()
 
 
 def feed_records(key, text, now):
@@ -223,8 +228,8 @@ def enrich(record, now):
             record['rejected'] = True; return record, None
         cna = data.get('containers', {}).get('cna', {})
         if not cna.get('affected') and not cna.get('descriptions'): raise ValueError('Incomplete CVE record')
-        record['published'] = data.get('cveMetadata', {}).get('datePublished', '')[:10]
-        record['updated'] = data.get('cveMetadata', {}).get('dateUpdated', '')[:10]
+        record['published'] = date_of(data.get('cveMetadata', {}).get('datePublished', ''))
+        record['updated'] = date_of(data.get('cveMetadata', {}).get('dateUpdated', ''))
         record['source_updated_at'] = data.get('cveMetadata', {}).get('dateUpdated', '')
         record['cve_checked_at'] = now
         record.pop('cve_status', None)
@@ -308,7 +313,7 @@ def risk_event(record, today):
     candidates = [(record.get('advisory_published_at') or record.get('published', ''), 'Disclosed'),
                   (record.get('material_updated_at', ''), 'Advisory updated')]
     if record.get('kev'): candidates.append((record.get('kev_added', ''), 'Added to KEV'))
-    valid = [(date[:10], label) for date, label in candidates if re.fullmatch(r'\d{4}-\d{2}-\d{2}', date[:10]) and date[:10] <= today]
+    valid = [(day, label) for value, label in candidates if (day := date_of(value)) and day <= today]
     return max(valid, default=('', ''))
 
 

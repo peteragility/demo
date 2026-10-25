@@ -23,6 +23,7 @@ header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:20px;align-ite
 @media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}header{grid-template-columns:minmax(0,1fr) 160px}.hero-art{height:110px}.surprise{padding:0 10px}}
 @media(max-width:560px){.wrap{padding:18px 16px}.brand-note{display:none}header{display:block;padding:22px 0 17px}.hero-art{display:none}.intro{font-size:13px;margin-top:10px}.tools{display:grid;grid-template-columns:1fr auto;gap:10px}.search{grid-column:1/-1}.sort{min-width:0}.sort select{width:100%;min-width:0}.surprise{align-self:end}.grid{grid-template-columns:1fr;gap:9px}a.card{min-height:148px;padding:14px}.cardtop{margin-bottom:8px}.cardfoot{margin-top:10px}input,select{font-size:16px}.results{margin-top:12px}.meta{gap:6px 12px}.filter{font-size:12px}h2{font-size:17px}}
 @media(prefers-reduced-motion:reduce){a.card{transition:none}a.card:hover{transform:none}.hero-art .star{animation:none}}
+.freshness{font-size:10px;color:var(--muted);margin-top:9px}.freshness.needs-review{color:#8b4800}@media(prefers-color-scheme:dark){.freshness.needs-review{color:#ffcb86}}
 </style>
 <link rel="canonical" href="https://peteragility.github.io/demo/">
 <meta property="og:type" content="website">
@@ -46,7 +47,7 @@ header{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:20px;align-ite
 <p class="eyebrow">Compare · Learn · Play</p>
 <h1>Pick your next rabbit hole.</h1>
 <p class="intro">Pricing tools, technical field notes and little games. Useful answers, with room to play.</p>
-<div class="meta"><span><b id="pageCount">—</b> things to explore</span><span>Updated <b id="updated">—</b></span><span>Built by Peter · open to everyone</span></div>
+<div class="meta"><span><b id="pageCount">—</b> things to explore</span><span>Collection updated <b id="updated">—</b></span><span>Built by Peter · open to everyone</span></div>
 </div><div class="hero-art" aria-hidden="true"><svg viewBox="0 0 230 120" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="111" cy="64" rx="81" ry="35" stroke="#6b6399" stroke-dasharray="4 5" transform="rotate(-20 111 64)"/><ellipse cx="111" cy="64" rx="40" ry="54" stroke="#515d80" transform="rotate(32 111 64)"/><rect x="79" y="42" width="65" height="46" rx="12" fill="#c1ff84" transform="rotate(-8 79 42)"/><path d="m94 57 10 8-10 8m21 0h14" stroke="#25382a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="36" cy="85" r="10" fill="#aa97ff"/><circle cx="188" cy="46" r="7" fill="#ffae80"/><path class="star" d="m175 12 3 10 10 3-10 3-3 10-3-10-10-3 10-3z" fill="#e3bdff"/><path d="m59 17 2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#b5f777"/><circle cx="177" cy="99" r="3" fill="#8597c6"/></svg></div>
 </header>
 <main class="explore" aria-label="Demo collection">
@@ -70,7 +71,31 @@ const search = document.getElementById('search');
 const sort = document.getElementById('sort');
 const collator = new Intl.Collator('en', {numeric:true, sensitivity:'base'});
 let pages = [], category = 'All', sortChosen = false, loadVersion = 0;
+const pageHealth = new Map();
 const categories = ['All', 'Tools', 'Guides', 'Interactive', 'Other'];
+
+function healthLabel(value, now = new Date()) {
+  if (!value || !['ok','partial','review'].includes(value.status)) return null;
+  const validDay = d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(Date.parse(d)) && new Date(d).toISOString().slice(0,10) === d;
+  const last = validDay(value.lastSuccess) ? value.lastSuccess : null;
+  const today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Hong_Kong',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+  const overdue = !last || Date.parse(today) - Date.parse(last) > 2 * 86400000;
+  const date = last ? new Date(last+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'}) : 'never';
+  const review = Number.isSafeInteger(value.review) && value.review > 0 ? value.review : 0;
+  const label = value.status === 'partial' ? 'Source check incomplete' : value.status === 'review' ? (review ? review+' source review'+(review===1?'':'s')+' needed' : 'Source review needed') : overdue ? 'Source check overdue' : 'Sources checked '+date;
+  return {label, warning:value.status!=='ok'||overdue, title:'Last successful source check: '+(last||'not recorded')+'. '+(validDay(value.checkedAt)?'Last attempt: '+value.checkedAt+'. ':'')+'Source monitoring is separate from a full content review.'};
+}
+async function loadHealth(version) {
+  const results = await Promise.allSettled(['llm','lakebase','security','content'].map(async group => {
+    const r = await fetch(new URL('page-status/'+group+'.json',base),{cache:'no-store',signal:AbortSignal.timeout(5000)});
+    if (!r.ok) throw new Error('Status unavailable'); return r.json();
+  }));
+  if (version !== loadVersion) return;
+  for (const result of results) if (result.status==='fulfilled' && result.value?.schema===1 && result.value.pages && typeof result.value.pages==='object') {
+    for (const [path, status] of Object.entries(result.value.pages)) if (pagePath.test(path) && healthLabel(status)) pageHealth.set(path,status);
+  }
+  render();
+}
 
 // Accept local HTML pages/directories only. Reject protocols, traversal and encoded delimiters.
 const pagePath = /^[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*(?:\/|\.html)$/;
@@ -125,7 +150,10 @@ function render() {
     const foot = element('div','cardfoot');
     foot.append(element('span','',p.visits !== null ? new Intl.NumberFormat('en').format(p.visits)+' visits' : 'Open demo'),element('span','arrow','↗'));
     foot.lastChild.setAttribute('aria-hidden','true');
-    card.append(top,element('h2','',p.title),element('p','d',p.desc),foot);
+    card.append(top,element('h2','',p.title),element('p','d',p.desc));
+    const status = healthLabel(pageHealth.get(p.path));
+    if (status) {const line=element('span','freshness'+(status.warning?' needs-review':''),status.label);line.title=status.title;card.append(line);}
+    card.append(foot);
     fragment.append(card);
   });
   if (!matches.length) fragment.append(element('p','empty',pages.length ? 'No demos match. Try another search or category.' : 'No demos published yet.'));
@@ -178,6 +206,7 @@ async function loadPages() {
     if (!pages.some(p => p.category === category)) category = 'All';
     renderFilters(); render();
     void loadStats(version);
+    void loadHealth(version);
   } catch {
     const box = element('div','empty','The collection could not load. Please try again.');
     const retry = element('button','retry','Retry'); retry.type='button'; retry.addEventListener('click',loadPages);

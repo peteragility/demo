@@ -2,6 +2,16 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const E=require('./engine.js'),data={...require('./pricing-snapshot.json'),availability:require('./availability.json'),lakebaseParameters:require('../lakebase-content/facts.json').parameters};
 const approx=(a,b)=>assert.ok(Math.abs(a-b)<1e-7,`${a} != ${b}`);
+test('Lakebase uses qualified Always-On rates, first-month qualification and scheduled autoscaling separately',()=>{
+  const s={...E.preset(E.DEFAULTS,'lakebase'),region:'US East (N. Virginia)',headroom:0,workingGB:2,databaseGB:0,lakebaseHA:true};
+  const rates=structuredClone(data);rates.rates.premium.AWS.lakebase_aws_premium[s.region]='0.092';rates.rates.premium.AWS.lakebase_alwayson_aws_premium[s.region]='0.069';
+  approx(E.estimate(s,rates).total,100.74);
+  const first=E.estimate({...s,lakebaseBilling:'first-month'},rates);approx(first.total,2*(706*0.069+24*0.092));
+  assert.equal(first.rows.find(r=>r.id==='lakebase_startup').qty,48);
+  const scheduled=E.estimate({...s,lakebaseHA:false,schedule:'business'},rates);approx(scheduled.total,176*0.092);
+  const restored=E.restoreSharedEstimate(E.createSharedEstimate({...s,lakebaseBilling:'first-month'},rates,'us'),data);
+  approx(E.estimate(restored.state,restored.data).total,first.total);
+});
 test('presets price every cloud, with unsupported Lakebase regions explicitly incomplete',()=>{
   for(const cloud of ['AWS','Azure','GCP'])for(const id of Object.keys(E.PRESETS)){
     const s={...E.preset(E.DEFAULTS,id),cloud,region:E.GEOS.singapore[cloud]},x=E.estimate(s,data);

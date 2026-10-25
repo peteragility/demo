@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* Browser integration checks using the Chrome DevTools protocol, no packages. */
 import assert from 'node:assert/strict';
+import M from '../v2-math.js';
 import {spawn} from 'node:child_process';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
@@ -74,7 +75,11 @@ try {
       return result.result.value;
     };
     const waitFor = async expression => {
-      for (let n = 0; n < 100; n++) {if (await evalJS(expression)) return; await pause(75);}
+      for (let n = 0; n < 100; n++) {
+        try {if (await evalJS(expression)) return;}
+        catch(error) {if (!/Cannot find context|Inspected target navigated or closed|Execution context was destroyed/.test(error.message)) throw error;}
+        await pause(75);
+      }
       throw new Error('Browser condition timed out: ' + expression);
     };
     await call('Page.enable'); await call('Runtime.enable');
@@ -89,6 +94,7 @@ try {
         await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: clockId});
         clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource(date)})).identifier;
       }
+      await evalJS("if(document.body)delete document.body.dataset.ready");
       await call('Page.navigate', {url: pageURL});
       await waitFor("document.body?.dataset.ready === 'true'");
       await evalJS("document.documentElement.dataset.theme='light'");
@@ -108,6 +114,17 @@ try {
       const count = g => keys.filter(k => d.models[k].group === g).length;
       return {keys, all: keys.length, oss: count('oss'), anthropic: count('anthropic'), openai: count('openai'), google: count('google'), xai: count('xai'), other: count('other')};
     })()`);
+    // Live display checks follow the reviewed dataset; fixed arithmetic cases live in unit fixtures.
+    const data = await evalJS("fetch('v2-data.json').then(r=>r.json())");
+    const cell = (key, platform='databricks') => data.models[key].platforms[platform];
+    const chosen = (key, platform='databricks', asOf='2026-10-02') => M.cheapest(cell(key,platform),{asOf});
+    const precise = value => value == null ? '—' : value.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:6});
+    const checkMainRates = async (key, asOf='2026-10-02') => {
+      const expected = chosen(key,'databricks',asOf);
+      const actual = await evalJS(`[...document.querySelectorAll('tr[data-k="${key}"] td.c:first-of-type .io .i, tr[data-k="${key}"] td.c:first-of-type .io .o')].map(e=>Number(e.textContent))`);
+      assert.equal(actual.length,2,key+' input and output cells');
+      for(const [i, rate] of [expected.in,expected.out].entries())assert.ok(Math.abs(actual[i]-rate)<=Math.max(0.005,Math.abs(rate)*0.001),key+' displayed rate '+i);
+    };
     const listed = key => expected.keys.includes(key);
     const toggle = key => evalJS(`document.querySelector('tr[data-k="${key}"] .mb').click()`);
     const rowCount = () => evalJS("document.querySelectorAll('#mx tr.row').length");
@@ -140,7 +157,7 @@ try {
       await evalJS("document.querySelector('#q').value='databricks-gpt-6-1-sol';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));");
       assert.equal(await rowCount(), 1);
       assert.match(await evalJS("document.querySelector('#mx').innerText"), /GPT-6.1 Sol/);
-      assert.match(await evalJS("document.querySelector('tr.row td.c').innerText"), /2\.00\s*\/?\s*10\.00/);
+      await checkMainRates('openai/gpt-6.1-sol');
     }
     await evalJS("document.querySelector('#q').value='';document.querySelector('#q').dispatchEvent(new Event('input',{bubbles:true}));location.hash='claude';");
     await waitFor("document.querySelector('[data-g=anthropic]').getAttribute('aria-pressed')==='true'");
@@ -156,7 +173,8 @@ try {
       await toggle('openai/gpt-6.1-sol');
       const cache = await evalJS(`(()=>{const c=[...document.querySelectorAll('tr.detail .pcard')].find(c=>c.querySelector('h3>b').textContent==='原廠 API');return {headers:[...c.querySelectorAll('.pt thead th')].map(x=>x.innerText.trim()),base:[...c.querySelector('.pt tr.pick').querySelectorAll('td')].map(x=>x.textContent),overflow:document.documentElement.scrollWidth>innerWidth};})()`);
       assert.deepEqual(cache.headers.slice(-2), viewport.width <= 720 ? ['30m wr','12h wr'] : ['30m write','12h write']);
-      assert.deepEqual(cache.base, ['2.00','10.00','0.10','2.50','5.00']);
+      const official = chosen('openai/gpt-6.1-sol','official');
+      assert.deepEqual(cache.base, ['in','out','cache_read','cache_write','cache_write_12h'].map(k=>precise(official[k])));
       assert.equal(cache.overflow, false, viewport.name + ': expanded cache columns fit');
       await toggle('openai/gpt-6.1-sol');
     }
@@ -189,8 +207,7 @@ try {
       await toggle('moonshot/kimi-k3');
       const kimi = await evalJS("document.querySelector('#d-moonshot-kimi-k3').innerText");
       assert.match(kimi, /Global CRIS/);
-      assert.match(kimi, /6\.5625/);
-      assert.match(kimi, /7\.21875/);
+      for(const variant of cell('moonshot/kimi-k3','bedrock').variants.filter(v=>v.service_tier==='priority'))assert.ok(kimi.includes(precise(variant.cache_write)),'Priority cache-write rate rendered');
       assert.match(kimi, /Cross-geo/);
       assert.match(kimi, /Routed/);
       // The shaded row is the price the table compares: one per platform card.
@@ -199,16 +216,18 @@ try {
     }
     if (listed('google/gemini-3.1-pro')) {
       await toggle('google/gemini-3.1-pro');
-      assert.match(await evalJS("document.querySelector('#d-google-gemini-3-1-pro').innerText"), /Cache storage \$4\.50 per 1M tokens per hour/);
+      const storage=chosen('google/gemini-3.1-pro','official').cache_storage;
+      assert.ok((await evalJS("document.querySelector('#d-google-gemini-3-1-pro').innerText")).includes('Cache storage $'+precise(storage)+' per 1M tokens per hour'));
       await toggle('google/gemini-3.1-pro');
     }
     if (listed('openai/gpt-6.1-sol')) {
       await toggle('openai/gpt-6.1-sol');
-      assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol .pcard.dbx').innerText"), /2\.00\s+10\.00\s+0\.10\s+2\.50/);
+      const dbx=chosen('openai/gpt-6.1-sol');
+      assert.deepEqual(await evalJS("[...document.querySelectorAll('#d-openai-gpt-6-1-sol .pcard.dbx tr.pick td')].map(e=>e.textContent)"),['in','out','cache_read','cache_write'].map(k=>precise(dbx[k])));
       assert.match(await evalJS("document.querySelector('#d-openai-gpt-6-1-sol').innerText"), /↳ >272K/);
       await evalJS("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedSummary=text;}}});document.querySelector('[data-copy=\"openai/gpt-6.1-sol\"]').click();");
       await waitFor("typeof window.copiedSummary==='string'");
-      assert.match(await evalJS('window.copiedSummary'), /Databricks: 2\.00 \/ 10\.00/);
+      assert.ok((await evalJS('window.copiedSummary')).includes('Databricks: '+precise(dbx.in)+' / '+precise(dbx.out)));
       assert.match(await evalJS('window.copiedSummary'), /原廠 API: /);
       assert.match(await evalJS('window.copiedSummary'), /Price checked \d{4}-\d{2}-\d{2}/);
       assert.match(await evalJS('window.copiedSummary'), /arena\.ai Best \w+ #\d+/);
@@ -231,9 +250,7 @@ try {
       await navigate('2026-10-30');
       if (listed('tml/inkling')) assert.equal(await evalJS("document.querySelector('tr[data-k=\"tml/inkling\"] td.c').innerText.trim()"), '✕');
       await navigate('2027-02-01');
-      if (listed('google/gemini-3.1-pro')) assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.1-pro\"] td.c').title"), /\$2\.50 \/ \$15\.00/);
-      if (listed('google/gemini-3.8-flash')) assert.match(await evalJS("document.querySelector('tr[data-k=\"google/gemini-3.8-flash\"] td.c').innerText"), /1\.50/);
-      if (listed('xai/grok-4.6')) assert.match(await evalJS("document.querySelector('tr[data-k=\"xai/grok-4.6\"] td.c').innerText"), /2\.50/);
+      for(const key of ['google/gemini-3.1-pro','google/gemini-3.8-flash','xai/grok-4.6'])if(listed(key))await checkMainRates(key,'2027-02-01');
       await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: clockId});
       clockId = (await call('Page.addScriptToEvaluateOnNewDocument', {source: clockSource('2026-10-02')})).identifier;
     }

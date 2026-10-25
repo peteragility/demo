@@ -5,6 +5,7 @@ const path = require('node:path');
 const M = require('../v2-math.js');
 // Fixed reviewed examples keep arithmetic expectations independent of daily price updates.
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'pricing-fixtures.json'), 'utf8'));
+const reviewed = JSON.parse(fs.readFileSync(path.join(__dirname, 'pricing-regression-fixtures.json'), 'utf8'));
 const published = JSON.parse(fs.readFileSync(path.join(__dirname, '../v2-data.json'), 'utf8'));
 const offer = (key, platform = 'databricks') => data.models[key].platforms[platform];
 const date = {asOf: '2026-10-02'};
@@ -13,7 +14,7 @@ const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 
 test('Grok maker Batch discounts cache hits and the full request at the 200K boundary', () => {
   for (const version of ['4.6', '4.7']) {
-    const c = published.models['xai/grok-' + version].platforms.official;
+    const c = reviewed.models['xai/grok-' + version].platforms.official;
     const batch = c.variants.find(v => v.service_tier === 'batch');
     const short = M.resolveOffer(c, {asOf: '2026-10-21', variantId: batch.id, promptTokens: 199999});
     const long = M.resolveOffer(c, {asOf: '2026-10-21', variantId: batch.id, promptTokens: 200000});
@@ -25,9 +26,9 @@ test('Grok maker Batch discounts cache hits and the full request at the 200K bou
 });
 
 test('OpenAI 12h writes use each tier and context rate without leaking to other providers', () => {
-  close(published.models['openai/gpt-5.6-terra'].platforms.official.cache_write_12h, 5);
-  close(published.models['openai/gpt-5.6-luna'].platforms.official.cache_write_12h, 0.5);
-  const c = published.models['openai/gpt-6.1-sol'].platforms.official;
+  close(reviewed.models['openai/gpt-5.6-terra'].platforms.official.cache_write_12h, 5);
+  close(reviewed.models['openai/gpt-5.6-luna'].platforms.official.cache_write_12h, 0.5);
+  const c = reviewed.models['openai/gpt-6.1-sol'].platforms.official;
   const base = M.calculate(c, {asOf: '2026-10-21', inputM: 1, outputM: 0, writeM: 1, writeTTL: '12h'});
   close(base.total, 5);
   close(M.calculate(c, {asOf: '2026-10-21', inputM: 1, outputM: 0, writeM: 1, writeTTL: '12h', promptTokens: 272001}).total, 10);
@@ -35,18 +36,18 @@ test('OpenAI 12h writes use each tier and context rate without leaking to other 
   close(M.resolveOffer(c, {asOf: '2026-10-21', variantId: batch.id}).cache_write_12h, 2.5);
   const regional = c.variants.find(v => v.service_tier === 'standard' && v.comparison_scope === 'geographic');
   close(M.resolveOffer(c, {asOf: '2026-10-21', variantId: regional.id, promptTokens: 272001}).cache_write_12h, 11);
-  const dbx = published.models['openai/gpt-6.1-sol'].platforms.databricks;
+  const dbx = reviewed.models['openai/gpt-6.1-sol'].platforms.databricks;
   assert.equal(dbx.cache_write_12h, undefined);
   assert.equal(M.calculate(dbx, {asOf: '2026-10-21', inputM: 1, writeM: 1, writeTTL: '12h'}).total, null);
 });
 
 test('unpublished maker post-promotion prices and new Databricks checkpoints are not inferred', () => {
-  const c = published.models['openai/gpt-5.6-sol'].platforms.official;
+  const c = reviewed.models['openai/gpt-5.6-sol'].platforms.official;
   close(M.resolveOffer(c, {asOf: '2026-11-21'}).in, 4);
   assert.equal(c.promotion, undefined);
   assert.equal(M.resolveOffer(c, {asOf: '2026-11-22'}).status, 'unverified');
   assert.equal(M.calculate(c, {asOf: '2026-11-22', inputM: 1}).total, null);
-  const dbx = published.models['deepseek/deepseek-v4.1-flash'].platforms.databricks;
+  const dbx = reviewed.models['deepseek/deepseek-v4.1-flash'].platforms.databricks;
   assert.equal(dbx.model_id, 'databricks-deepseek-v4-1-flash');
   assert.equal(M.status(dbx, '2026-11-19'), 'retired');
   assert.ok(dbx.endpoints.ids.some(id => /1017.*price unverified/.test(id)));
@@ -56,7 +57,7 @@ const tier = (cell, endpoint, service) => cell.variants.find(v => v.endpoint ===
 const priced = (input, output) => ({status: 'priced', in: input, out: output, model_match: 'confirmed', service_tier: 'standard'});
 
 test('Alibaba Flash 1017 retains regional and off-peak billing without a checkpoint comparison', () => {
-  const c = published.models['deepseek/deepseek-v4.1-flash'].platforms.alicloud;
+  const c = reviewed.models['deepseek/deepseek-v4.1-flash'].platforms.alicloud;
   const tiers = c.variants.filter(v => v.model_id === 'deepseek-v4.1-flash-1017');
   assert.equal(tiers.length, 6);
   for (const v of tiers) {
@@ -75,7 +76,7 @@ test('Alibaba Flash 1017 retains regional and off-peak billing without a checkpo
 });
 
 test('Databricks Argon availability never supplies unverified rates or a comparison', () => {
-  const c = published.models['google/gemini-4-argon'].platforms.databricks;
+  const c = reviewed.models['google/gemini-4-argon'].platforms.databricks;
   assert.equal(c.available, true);
   assert.equal(c.model_id, 'databricks-gemini-4-argon');
   assert.equal(c.status, 'unverified');
@@ -92,18 +93,18 @@ test('Databricks Argon availability never supplies unverified rates or a compari
 });
 
 test('retired Fireworks offers cannot supply a current Azure comparison or estimate', () => {
-  const c = published.models['zai/glm-5.2'].platforms.azure_foundry;
+  const c = reviewed.models['zai/glm-5.2'].platforms.azure_foundry;
   assert.equal(M.status(c, '2026-10-07'), 'priced');
   assert.equal(M.status(c, '2026-10-08'), 'retired');
   assert.equal(M.comparable(M.cheapest(c, {asOf: '2026-10-15'})), false);
   assert.equal(M.calculate(c, {asOf: '2026-10-15', inputM: 3, outputM: 1}).total, null);
-  const pro = published.models['deepseek/deepseek-v4-pro'].platforms.azure_foundry;
+  const pro = reviewed.models['deepseek/deepseek-v4-pro'].platforms.azure_foundry;
   assert.equal(M.status(pro, '2026-10-15'), 'priced');
   assert.ok(M.offers(pro, {asOf: '2026-10-15'}).every(o => !o.endpoint.startsWith('FW-DeepSeek-V4-Pro')));
 });
 
 test('Gemini 3.8 API storage switches on the published promotion boundary', () => {
-  const c = published.models['google/gemini-3.8-flash'].platforms.official;
+  const c = reviewed.models['google/gemini-3.8-flash'].platforms.official;
   const before = M.calculate(c, {asOf: '2026-12-31', inputM: 0, outputM: 0, storedM: 2, storageHours: 10});
   const after = M.calculate(c, {asOf: '2027-01-01', inputM: 0, outputM: 0, storedM: 2, storageHours: 10});
   close(before.total, 10);
@@ -368,7 +369,7 @@ test('invalid volumes, cache percentages, dates and DBU rates are rejected', () 
 
 
 test('Google DeepSeek V4.1 Flash introduction switches to its own verified list prices', () => {
-  const c = published.models['deepseek/deepseek-v4.1-flash'].platforms.gcloud;
+  const c = reviewed.models['deepseek/deepseek-v4.1-flash'].platforms.gcloud;
   const free = M.calculate(c, {asOf: '2026-10-16', inputM: 3, outputM: 1, cacheHit: 50});
   const paid = M.calculate(c, {asOf: '2026-10-17', inputM: 3, outputM: 1, cacheHit: 50});
   close(free.total, 0);
@@ -379,7 +380,7 @@ test('Google DeepSeek V4.1 Flash introduction switches to its own verified list 
 });
 
 test('Fireworks 1017 prices remain separate from original and US-only checkpoints', () => {
-  const c = published.models['deepseek/deepseek-v4.1-flash'].platforms.fireworks;
+  const c = reviewed.models['deepseek/deepseek-v4.1-flash'].platforms.fireworks;
   const rows = c.variants.filter(v => v.endpoint === 'Serverless 1017');
   assert.equal(rows.length, 2);
   for (const [service, rates] of [['standard', [0.30, 0.006, 1.20]], ['priority', [0.375, 0.0075, 1.50]]]) {

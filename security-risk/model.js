@@ -11,12 +11,19 @@
     const archive=new Date(Date.UTC(month.getUTCFullYear(),month.getUTCMonth(),day));
     return {today,current:new Date(t-29*86400000).toISOString().slice(0,10),archive:archive.toISOString().slice(0,10)};
   }
+  function dayOf(value) {
+    if(typeof value!=='string'||!value||!Number.isFinite(Date.parse(value)))return '';
+    if(/^\d{4}-\d{2}-\d{2}$/.test(value))return new Date(value).toISOString().slice(0,10)===value?value:'';
+    // CNA timestamps without an explicit zone are UTC; date-only source values stay dates.
+    const stamp=/^\d{4}-\d{2}-\d{2}T[\d:.]+$/.test(value)?value+'Z':value;
+    return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Hong_Kong',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(stamp));
+  }
   function event(r,today) {
     const values=[{date:r.advisory_published_at||r.published,label:r.kind==='incident'?'Incident notice':'Disclosed'},
       {date:r.material_updated_at,label:'Advisory updated'}];
     if(r.kev) values.push({date:r.kev_added,label:'Added to KEV'});
-    return values.filter(e=>typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}/.test(e.date)&&Number.isFinite(Date.parse(e.date))&&e.date.slice(0,10)<=today)
-      .map(e=>({...e,date:e.date.slice(0,10)})).sort((a,b)=>b.date.localeCompare(a.date)||b.label.localeCompare(a.label))[0]||{date:'',label:'Date unavailable'};
+    return values.map(e=>({...e,date:dayOf(e.date)})).filter(e=>e.date&&e.date<=today)
+      .sort((a,b)=>b.date.localeCompare(a.date)||b.label.localeCompare(a.label))[0]||{date:'',label:'Date unavailable'};
   }
   const highRisk=r=>!r.rejected&&(r.kev||r.urgent||(r.cvss?.score??-1)>=7||Boolean(systemicSignal(r)));
   function systemicSignal(r) {

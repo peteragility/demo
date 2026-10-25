@@ -79,8 +79,8 @@ table{min-width:640px}
 <div class="wrap">
 <div class="kicker">Agent Infrastructure · October 2026</div>
 <p style="font-size:12px;margin:0 0 8px"><a href="../" style="color:inherit">← Demo home</a></p><h1>Agent Sandbox Isolation Comparison 🏖️🔒</h1>
-<p class="sub">Major vendors vs open source, ranked by <b>isolation level</b> — E2B, Modal, Daytona, AWS AgentCore &amp; Strands Box, <b>Databricks Sandbox</b>, Pydantic Monty, Cloudflare, Docker Sandboxes, and the sandboxes built into coding agents. Isolation tier, credential handling, and the design philosophy behind each.</p>
-<span class="updated">Fact-checked 2026-10-08 · list prices &amp; public claims · verify in vendor docs before buying</span>
+<p class="sub">Major vendors vs open source, compared by <b>execution boundary</b> — E2B, Modal, Daytona, AWS AgentCore &amp; Strands Box, <b>Databricks Sandbox</b>, Pydantic Monty, Cloudflare, Docker Sandboxes, and the sandboxes built into coding agents. Isolation tier, credential handling, and the design philosophy behind each.</p>
+<span class="updated">Isolation sources checked 2026-10-25 · other notes dated 2026-10-08 · verify the selected product and deployment</span>
 </div>
 </header>
 
@@ -97,48 +97,48 @@ table{min-width:640px}
 </nav>
 
 <h2 id="ladder">The isolation ladder 🪜</h2>
-<p>Every sandbox occupies one of five tiers. <b>Lower number = stronger isolation</b> — each tier down shares more of the host with the untrusted code.</p>
+<p>These five categories describe <b>where the execution boundary sits</b>. A separate kernel reduces shared-kernel exposure, but the tier alone does not rank overall security: granted files, network access, credentials and host callbacks still matter. Some products support several runtimes.</p>
 <div class="ladder"><b>Tier 1</b>  Hardware microVM — dedicated kernel per sandbox (Firecracker, Kata, Hypervisor.framework)
    ↓
 <b>Tier 2</b>  User-space kernel interception — gVisor (syscall filtering, shared real kernel)
    ↓
 <b>Tier 3</b>  Interpreter-level sandbox — language VM, code never sees the OS (Monty)
    ↓
-<b>Tier 4</b>  Shared-kernel containers — Docker (container escape = host compromised)
+<b>Tier 4</b>  Shared-kernel containers — Docker (host-kernel exposure remains)
    ↓
-<b>Tier 5</b>  OS profiles only — Seatbelt / Landlock restrictions on an unsandboxed process</div>
-<p class="muted">Tier 5 is what the built-in coding-agent sandboxes use — and per the Novee audit (below), it is the tier with the published escapes. <b>Tier 1 is the only tier where a kernel exploit inside the sandbox does not touch the host.</b></p>
+<b>Tier 5</b>  OS policies — Seatbelt / Landlock restrictions on a host process</div>
+<p class="muted">Coding-agent boundaries vary by operating system and configuration. A guest-kernel exploit inside a VM still needs to cross the VM boundary to reach the host; credentials and allowed data paths require separate controls.</p>
 
 <h2 id="vendors">Full comparison 📋</h2>
 <div class="tblwrap">
 <table>
 <tr><th>Solution</th><th>Isolation tech</th><th>Tier</th><th>Credential handling</th><th>Standout / caveat</th></tr>
-<tr><td><b>E2B</b> <span class="muted">(open source)</span></td><td>Firecracker microVM, dedicated kernel per sandbox</td><td><span class="tag t1">Tier 1</span></td><td>SDK injection</td><td>1B+ sandboxes launched; same tech as AWS Lambda; paused sandboxes persist indefinitely (resume ~1s). No GPU.</td></tr>
-<tr><td><b>Docker Sandboxes</b></td><td>microVM via Hypervisor.framework / WHP / KVM — one Docker daemon per agent</td><td><span class="tag t1">Tier 1</span></td><td>Host proxy serves <b>stand-in credential values</b> ✅</td><td>Purpose-built to wrap Claude Code / Codex / Gemini CLI; network policy at the proxy.</td></tr>
-<tr><td><b>AWS AgentCore</b></td><td>Dedicated microVM sessions</td><td><span class="tag t1">Tier 1</span></td><td>Secrets Manager injection</td><td>Bedrock-native; Code Interpreter + Runtime + Gateway.</td></tr>
-<tr><td><b>AWS Strands Box</b> <span class="muted">(open source, dev preview)</span></td><td>OS isolation + trusted-process interpreters (Strands Shell, <b>Pydantic Monty</b>) outside the sandbox</td><td><span class="tag t1">Tier 1 + 3 hybrid</span></td><td>Egress gateway injects SigV4/API keys — <b>agent never sees secrets</b> ✅✅</td><td>Only solution with <b>temporal policy</b> (Dogwood): rules can depend on what the agent already did ("no outbound HTTP after reading customer data"). macOS/Apple-silicon only in preview.</td></tr>
-<tr><td><b>Databricks Sandbox</b> 🆕</td><td>Isolated VMs inside Agent Bricks</td><td><span class="tag t1">Tier 1</span></td><td><b>Downscoped Unity Catalog credentials</b> — dynamic, per-task least privilege ✅✅</td><td>Only governance-native option: queries inherit UC row/column permissions, lineage and audit automatically. Pairs with Lakebase instant branching for DB writes.</td></tr>
+<tr><td><b>E2B</b> <a href="https://e2b.dev/" target="_blank" rel="noopener noreferrer" aria-label="E2B official source">↗</a> <span class="muted">(open source)</span></td><td>Firecracker microVM, dedicated kernel per sandbox</td><td><span class="tag t1">Tier 1</span></td><td>SDK injection</td><td>Managed or customer-cloud deployment; verify persistence, runtime limits and accelerator support for the selected offering.</td></tr>
+<tr><td><b>Docker Sandboxes</b> <a href="https://docs.docker.com/ai/sandboxes/security/isolation/" target="_blank" rel="noopener noreferrer" aria-label="Docker Sandboxes official source">↗</a></td><td>microVM via Hypervisor.framework / WHP / KVM — one Docker daemon per agent</td><td><span class="tag t1">Tier 1</span></td><td>Host proxy serves <b>stand-in credential values</b> ✅</td><td>Purpose-built to wrap Claude Code / Codex / Gemini CLI; network policy at the proxy.</td></tr>
+<tr><td><b>AWS AgentCore</b> <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html" target="_blank" rel="noopener noreferrer" aria-label="AWS AgentCore official source">↗</a></td><td>Dedicated microVM sessions</td><td><span class="tag t1">Tier 1</span></td><td>Secrets Manager injection</td><td>Bedrock-native; Code Interpreter + Runtime + Gateway.</td></tr>
+<tr><td><b>AWS Strands Box</b> <a href="https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md" target="_blank" rel="noopener noreferrer" aria-label="AWS Strands Box official source">↗</a> <span class="muted">(open source, dev preview)</span></td><td>OS isolation + trusted-process interpreters (Strands Shell, <b>Pydantic Monty</b>) outside the sandbox</td><td><span class="tag t1">OS + language</span></td><td>Egress gateway injects SigV4/API keys — <b>agent never sees secrets</b> ✅✅</td><td>Supports <b>temporal policy</b> (Dogwood): rules can depend on what the agent already did ("no outbound HTTP after reading customer data"). macOS/Apple-silicon only in preview.</td></tr>
+<tr><td><b>Databricks Sandbox</b> <a href="https://docs.databricks.com/aws/en/compute/serverless/sandbox" target="_blank" rel="noopener noreferrer" aria-label="Databricks Sandbox official source">↗</a> Beta</td><td>Isolated serverless environment; public overview does not specify the kernel boundary</td><td><span class="tag t4">Unspecified</span></td><td>Agent Bricks sandbox tool supports <b>explicit resource scopes</b>; SDK/CLI are separate access paths</td><td>4 vCPU / 8 GB; persistent home directory. Current Beta has unrestricted, non-configurable egress.</td></tr>
 <tr><td><b>Northflank</b></td><td>Kata/Cloud Hypervisor microVM <i>or</i> gVisor — you choose</td><td><span class="tag t1">Tier 1</span> / <span class="tag t2">2</span></td><td>BYOC on your cloud</td><td>Only platform letting you pick the isolation primitive; ~97ms median start.</td></tr>
 <tr><td><b>Fly.io Sprites</b></td><td>Firecracker microVM</td><td><span class="tag t1">Tier 1</span></td><td>Platform tokens</td><td>Best persistent state; smaller ecosystem.</td></tr>
-<tr><td><b>Modal</b></td><td>gVisor (user-space kernel interception)</td><td><span class="tag t2">Tier 2</span></td><td>Secrets injection</td><td>Strongest GPU catalog (T4→B300); managed only, no self-host.</td></tr>
-<tr><td><b>Pydantic Monty</b> <span class="muted">(open source)</span></td><td>Rust Python VM — code never touches the OS; all capabilities are explicit host functions</td><td><span class="tag t3">Tier 3*</span></td><td>External functions you write and audit ✅✅</td><td>*Smallest attack surface of all: no syscalls exist. 0.004ms start; KB-scale snapshots; no third-party packages, ever. Now the Python layer inside AWS Strands Box.</td></tr>
-<tr><td><b>Cloudflare Sandbox SDK</b></td><td>Isolated Linux containers on Workers</td><td><span class="tag t4">Tier 3–4</span></td><td>Workers bindings</td><td>10ms billing granularity, global edge; requires Workers Paid.</td></tr>
-<tr><td><b>Daytona</b></td><td>Docker containers by default (VM runtime optional)</td><td><span class="tag t4">Tier 4</span></td><td>Platform tokens</td><td>Fastest published start (&lt;90ms); ⚠️ core went closed-source June 2026; shared kernel.</td></tr>
+<tr><td><b>Modal</b> <a href="https://modal.com/docs/guide/security" target="_blank" rel="noopener noreferrer" aria-label="Modal official source">↗</a></td><td>gVisor or microVM isolation; confirm the selected runtime</td><td><span class="tag t2">Tier 1–2</span></td><td>Secrets injection</td><td>Managed GPU workloads; confirm GPU availability, runtime and regional pricing.</td></tr>
+<tr><td><b>Pydantic Monty</b> <a href="https://raw.githubusercontent.com/pydantic/monty/main/docs/security.md" target="_blank" rel="noopener noreferrer" aria-label="Pydantic Monty official source">↗</a> <span class="muted">(open source)</span></td><td>Rust Python interpreter — external access depends on configured host capabilities</td><td><span class="tag t3">Tier 3*</span></td><td>External functions you write and audit ✅✅</td><td>*Language sandbox with explicit host access. Callbacks and mounted resources expand its authority; this is not an OS isolation boundary.</td></tr>
+<tr><td><b>Cloudflare Sandbox SDK 0.x</b> <a href="https://developers.cloudflare.com/sandbox/sdk/concepts/security/" target="_blank" rel="noopener noreferrer" aria-label="Cloudflare Sandbox SDK official source">↗</a></td><td>Sandbox SDK containers run in separate VMs</td><td><span class="tag t1">Tier 1</span></td><td>Workers bindings</td><td>Worker outbound handlers can inject credentials after requests leave the sandbox; this row covers SDK 0.x. Check the 1.0 security model when migrating.</td></tr>
+<tr><td><b>Daytona</b> <a href="https://www.daytona.io/docs/" target="_blank" rel="noopener noreferrer" aria-label="Daytona official source">↗</a></td><td>Current docs describe a dedicated kernel, filesystem and network per sandbox</td><td><span class="tag t1">Separate kernel</span></td><td>Platform tokens</td><td>Confirm the deployed runtime, storage persistence and lifecycle limits; do not assume a shared host kernel.</td></tr>
 <tr><td><b>Codex / Claude Code / Gemini CLI built-ins</b></td><td>OS profiles — Seatbelt / Landlock / sandbox Dockerfile</td><td><span class="tag t4">Tier 5</span></td><td>❌ Novee audit: credentials escaped in <b>every</b> architecture, even with TCP/UDP/DNS disabled</td><td>Convenient, default, weakest. Multiple published escapes (see below).</td></tr>
 </table>
 </div>
 
 <h2 id="databricks">Databricks Sandbox: isolation + governance 🟠</h2>
 <div class="card good">
-<h4>Two things nobody else combines</h4>
-<p><b>1. Downscoped UC credentials.</b> Agents in the sandbox don't carry your token — they get dynamically-issued, task-scoped Unity Catalog credentials. Novee's finding was that credentials escape every architecture; Databricks' answer is to hand out less credential in the first place, not hide it better.</p>
-<p><b>2. Governance inheritance.</b> Code inside the sandbox queries data through Unity Catalog: row/column permissions, lineage and audit apply automatically. "What data did the agent touch" has a built-in answer — other platforms require you to build that audit layer yourself.</p>
+<h4>Scope data access for the integration you actually use</h4>
+<p><b>Agent Bricks sandbox tool:</b> configure <code>--scope</code> for tables, volumes or workspace folders, and opt into writes explicitly. It runs with the requesting user's permissions by default; <code>--auth app</code> uses the app service principal. <a href="https://docs.databricks.com/aws/en/compute/serverless/sandbox-quickstart" target="_blank" rel="noopener noreferrer">Official quickstart ↗</a></p>
+<p><b>SDK and CLI:</b> these are independent access paths. Review their identities and granted data access separately; do not assume agent-tool scopes apply to arbitrary sandbox code. Current Beta egress is unrestricted and cannot be configured. <a href="https://docs.databricks.com/aws/en/compute/serverless/sandbox" target="_blank" rel="noopener noreferrer">Current limits ↗</a></p>
 <p style="margin-bottom:0">Plus <b>Lakebase instant branching</b>: agents can test writes in an isolated copy-on-write branch. Validation and promotion are separate: use migrations for schema changes and explicit application logic to apply approved business writes; branches do not merge natively. <a href="../lakebase-field-guide/?view=full#branching">Lakebase branch behavior and billing ↗</a></p>
 </div>
-<p class="muted">Announced at DAIS 2026 as part of the Agent Bricks platform (alongside Agent Bricks memory, MCP support, and the Unity AI Gateway for runtime spend/policy control). Trade-off: it lives inside the Databricks ecosystem — the isolation is excellent but the blast radius of the option is your lakehouse estate, not the open internet.</p>
+<p class="muted">The public overview describes an isolated environment without specifying a dedicated kernel or hypervisor. Confirm that boundary for your threat model. Access to governed data and outbound connectivity remain separate considerations.</p>
 
 <h2 id="philosophy">Four design philosophies 🧭</h2>
-<p>The isolation tier is downstream of a philosophy choice — and the philosophy is what actually predicts the CVEs:</p>
+<p>These approaches address different parts of the security boundary:</p>
 <div class="grid2">
 <div class="card">
 <h4>1. Start open, then restrict 🔓</h4>
@@ -146,16 +146,16 @@ table{min-width:640px}
 Full environment first, then whittle down — network rules, filesystem rules, syscall filters. Cursor's sandboxing writeup documents how painful this is across platforms. <b>Every vendor in this camp has a published 2026 escape.</b></div>
 <div class="card">
 <h4>2. Hardware isolation by default 🧱</h4>
-<p class="muted" style="margin-bottom:6px">E2B · Docker Sandboxes · AgentCore · Databricks Sandbox</p>
-Don't argue about kernels — give each sandbox its own. Strongest containment; the remaining risk migrates to <b>credentials and data access</b>, not the runtime.</div>
+<p class="muted" style="margin-bottom:6px">E2B · Docker Sandboxes · AgentCore microVM sessions</p>
+A dedicated guest kernel adds a boundary around untrusted code. Hypervisor security, runtime configuration, <b>credentials and data access</b> still need review.</div>
 <div class="card">
 <h4>3. Deny-by-default interpreter 🐍</h4>
 <p class="muted" style="margin-bottom:6px">Monty · Strands Box (Python layer)</p>
-Code literally cannot see the OS. Capabilities are functions you wrote, audited, and granted. Trade-off: a strict Python subset, no third-party packages. Philosophically closest to "firewall that blocks everything, then allowlists".</div>
+The interpreter exposes only supported operations and granted host capabilities. Audit callbacks and mounted resources; check Python and package compatibility. Philosophically closest to "firewall that blocks everything, then allowlists".</div>
 <div class="card">
 <h4>4. Governance-native 🏛️</h4>
 <p class="muted" style="margin-bottom:6px">Databricks Sandbox (+ Unity AI Gateway)</p>
-Isolation is table stakes; the differentiator is that data-plane permissions are dynamic and inherited. Built for enterprises whose #1 question is "what data could the agent reach, and who saw it."</div>
+Use explicit resource scopes and a deliberate user or app identity for the Agent Bricks sandbox tool. Verify data permissions and audit coverage for the actual query path.</div>
 </div>
 
 <h2 id="novee">The Novee lesson 🚨</h2>
@@ -174,11 +174,11 @@ Isolation is table stakes; the differentiator is that data-plane permissions are
 <div class="tblwrap">
 <table>
 <tr><th>If you need…</th><th>Pick</th><th>Why</th></tr>
-<tr><td>Strongest isolation for untrusted agent code</td><td><b>E2B</b> or Docker Sandboxes</td><td>Firecracker microVM, battle-tested at billions of starts</td></tr>
+<tr><td>Separate-kernel execution for untrusted agent code</td><td><b>E2B</b> or Docker Sandboxes</td><td>Per-sandbox microVM; verify mounts, network policy and credential exposure</td></tr>
 <tr><td>Enterprise data governance over what agents touch</td><td><b>Databricks Sandbox</b></td><td>Downscoped UC creds + lineage/audit inherited; Lakebase branching for writes</td></tr>
 <tr><td>Behavioral policy ("no X after Y")</td><td><b>Strands Box</b></td><td>Dogwood temporal rules + Monty; secret injection built-in</td></tr>
-<tr><td>GPU inference inside the sandbox</td><td><b>Modal</b></td><td>Widest GPU catalog (T4→B300); gVisor is the accepted trade</td></tr>
-<tr><td>Fastest stateful startup, persistent workspace</td><td><b>Daytona</b></td><td>&lt;90ms; accept shared-kernel + closed source</td></tr>
+<tr><td>GPU inference inside the sandbox</td><td><b>Modal</b></td><td>GPU execution with sandbox isolation; confirm the runtime for the selected workload</td></tr>
+<tr><td>Stateful development sandboxes</td><td><b>Daytona</b></td><td>Dedicated-kernel environment in current docs; validate startup and persistence for your configuration</td></tr>
 <tr><td>Ultra-low-latency simple code evals</td><td><b>Monty</b></td><td>Microseconds, zero infra, deny-by-default</td></tr>
 <tr><td>Wrapping Claude Code / Codex / Gemini CLI locally</td><td><b>Docker Sandboxes</b></td><td>microVM per agent, stand-in credentials</td></tr>
 </table>
@@ -191,7 +191,7 @@ Isolation is table stakes; the differentiator is that data-plane permissions are
 
 <footer>
 Sources: Novee Security agent-sandbox audit (Oct 2026, disclosed with Anthropic/Google/OpenAI) · AWS Strands Box launch blog (Oct 7, 2026) · Pydantic Monty article (pydantic.dev) · Databricks DAIS 2026 Agent Bricks announcements · Northflank / MintMCP / Blaxel sandbox comparisons (2026) · Cursor agent sandboxing post · vendor documentation.<br>
-Independent comparison — not affiliated with any vendor. Prices and claims as published 2026-10-08; verify in vendor docs before making decisions.
+Independent comparison — not affiliated with any vendor. Isolation descriptions checked against the linked primary sources on 2026-10-25. Other notes retain their 2026-10-08 review date. The nightly source watcher flags changes for review; it does not certify every claim.
 </footer>
 
 </div>

@@ -81,7 +81,8 @@
   async function start(){try{
     const response=await fetch('data.json',{cache:'no-store'});if(!response.ok)throw new Error('Snapshot request failed ('+response.status+')');data=M.validate(await response.json());
     health();
-    const id=decodeURIComponent(location.hash.slice(1));if(data.records.some(r=>r.id===id)){
+    let id='';try{id=decodeURIComponent(location.hash.slice(1));}catch{/* An invalid shared fragment must not hide the snapshot. */}
+    if(data.records.some(r=>r.id===id)){
       state.open.add(id);state.q=id;$('q').value=id;if(M.select(data.records,{view:'archive',q:id}).length)state.view='archive';
     }
     for(const id of ['current','archive'])$(id).addEventListener('click',()=>{state.view=id;state.q='';$('q').value='';history.replaceState(null,'',id==='archive'?'#archive':location.pathname);render();});

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "sizing-prices",
+    "page": "databricks-sizing/",
+    "url": "https://www.databricks.com/en-pricing-assets/data/pricing/cards.json",
+    "kind": "prices"
+  },
+  {
+    "id": "sizing-availability-aws",
+    "page": "databricks-sizing/",
+    "url": "https://docs.databricks.com/aws/en/oltp/projects/manage-projects#region-availability",
+    "kind": "availability"
+  },
+  {
+    "id": "sizing-availability-azure",
+    "page": "databricks-sizing/",
+    "url": "https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects#region-availability",
+    "kind": "availability"
+  },
+  {
+    "id": "sizing-availability-gcp",
+    "page": "databricks-sizing/",
+    "url": "https://docs.databricks.com/gcp/en/oltp/projects/manage-projects#region-availability",
+    "kind": "availability"
+  },
+  {
+    "id": "sandbox-e2b",
+    "page": "sandbox-compare/",
+    "url": "https://e2b.dev/",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-docker",
+    "page": "sandbox-compare/",
+    "url": "https://docs.docker.com/ai/sandboxes/security/isolation/",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-agentcore",
+    "page": "sandbox-compare/",
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-databricks-limits",
+    "page": "sandbox-compare/",
+    "url": "https://docs.databricks.com/aws/en/compute/serverless/sandbox",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-databricks",
+    "page": "sandbox-compare/",
+    "url": "https://docs.databricks.com/aws/en/compute/serverless/sandbox-quickstart",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-modal",
+    "page": "sandbox-compare/",
+    "url": "https://modal.com/docs/guide/security",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-cloudflare",
+    "page": "sandbox-compare/",
+    "url": "https://developers.cloudflare.com/sandbox/sdk/concepts/security/",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-daytona",
+    "page": "sandbox-compare/",
+    "url": "https://www.daytona.io/docs/",
+    "kind": "html"
+  },
+  {
+    "id": "sandbox-monty",
+    "page": "sandbox-compare/",
+    "url": "https://raw.githubusercontent.com/pydantic/monty/main/docs/security.md",
+    "kind": "markdown"
+  },
+  {
+    "id": "sandbox-strands",
+    "page": "sandbox-compare/",
+    "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+    "kind": "markdown"
+  }
+]

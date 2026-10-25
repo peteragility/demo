@@ -31,6 +31,7 @@ await withBrowser(root,async b=>{
   assert.equal(await b.evaluate('sizingDesk.getState().platformTier'),'premium');
   await click('[data-cloud="AWS"]');assert.equal(await b.evaluate('sizingDesk.getState().tier'),'premium');
 
+  await click('[data-scenario="science"]');assert.ok(await b.evaluate('sizingDesk.getEstimate().complete'));
   await click('[data-scenario="bi"]');
   assert.equal(await b.evaluate('document.querySelectorAll("#requirements .field").length'),3);
   assert.equal(await b.evaluate('!!document.querySelector("#requirements #field-gb")'),false);

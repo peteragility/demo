@@ -1,6 +1,13 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),M=require('./model.js'),data=require('./data.json');
 const now=Date.parse('2026-10-23T06:00:00Z');
 const base={id:'CVE-2026-1234',product:'Example',title:'Example issue',description:'Memory corruption',action:'Update runtime',layer:'runtime',published:'2026-10-21',sources:[{label:'Vendor',url:'https://vendor.test/advisory'}],cvss:{score:9.3},affected:[],fixed:[]};
+test('timestamp events use Hong Kong dates at current/archive boundaries',()=>{
+ for(const value of ['2026-09-23T18:00:00Z','2026-09-23T18:00:00','2026-09-24T02:00:00+08:00']){
+  assert.equal(M.event({...base,published:value},'2026-10-23').date,'2026-09-24');
+  assert.equal(M.select([{...base,published:value}],{},now).length,1);
+ }
+ assert.equal(M.select([{...base,published:'2026-09-23'}],{view:'archive'},now).length,1);
+});
 test('30-day view and six-calendar-month archive have non-overlapping boundaries',()=>{
  assert.deepEqual(M.windows(now),{today:'2026-10-23',current:'2026-09-24',archive:'2026-04-23'});
  const records=['2026-10-23','2026-09-24','2026-09-23','2026-04-23','2026-04-22','2026-10-24'].map((published,i)=>({...base,id:'risk-'+i,published}));

@@ -21,6 +21,7 @@ jobs:
     permissions:
       contents: write
       issues: write
+      pages: write
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -32,17 +33,24 @@ jobs:
         if: inputs.record_baseline
         run: python3 lakebase-content/review_sources.py --report-dir "$RUNNER_TEMP/lakebase-baseline" --record-baseline
       - name: Read official sources
+        id: review
+        continue-on-error: true
         run: python3 lakebase-content/review_sources.py --report-dir "$RUNNER_TEMP/lakebase-review"
-      - name: Publish observed baseline
-        if: inputs.record_baseline && success()
+      - name: Publish source health and observed baseline
+        id: publish
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git add lakebase-content/watch-baseline.json
+          python3 scripts/page-status.py lakebase --report "$RUNNER_TEMP/lakebase-review/report.json"
+          git add lakebase-content/watch-baseline.json page-status/lakebase.json
           if git diff --cached --quiet; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'Lakebase: record reviewed source observations'
+          git commit -m 'Lakebase: update source health and reviewed observations'
           git pull --rebase origin main
           git push origin HEAD:main
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null
       - name: Reconcile review issue
         if: ${{ !cancelled() }}
         env:
@@ -50,6 +58,9 @@ jobs:
         run: |
           report="$RUNNER_TEMP/lakebase-review/issue.md"
           if [ ! -f "$report" ]; then exit 0; fi
+          if [ "${{ steps.publish.outcome }}" != success ]; then
+            printf '\nSource health/baseline was not published. Review this workflow failure before closing the issue.\n' >> "$report"
+          fi
           label=lakebase-source-review
           gh label create "$label" --color FBCA04 --description 'Official Lakebase or competitor sources need review' 2>/dev/null || true
           number=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
@@ -59,7 +70,7 @@ jobs:
             else
               gh issue edit "$number" --body-file "$report"
             fi
-          elif [ -n "$number" ]; then
+          elif [ -n "$number" ] && [ "${{ steps.publish.outcome }}" = success ]; then
             gh issue close "$number" --reason completed
           fi
       - uses: actions/upload-artifact@v6
@@ -68,3 +79,6 @@ jobs:
           name: lakebase-source-review
           path: ${{ runner.temp }}/lakebase-review/
           retention-days: 14
+      - name: Surface failed source reads
+        if: steps.review.outcome == 'failure'
+        run: exit 1

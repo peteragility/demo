@@ -62,7 +62,7 @@
     const p=E.PRESETS[state.scenario];$('scenario-description').textContent=w.join(',')===p.workloads.join(',')?p.description:'A combined estimate for your selected workloads.';
   }
   function renderAdvanced(){
-    const w=state.workloads,fields=[numeric('headroom','Compute headroom','%','Capacity cushion on sized compute.',true),numeric('uncertainty','Budget sensitivity','± %','Range around the full estimate.',true),numeric('discount','Compute discount','%','Only eligible compute; default 0%.',true)];
+    const w=state.workloads,processing=w.some(x=>['etl','stream'].includes(x)),fields=[numeric('headroom','Compute headroom','%','Capacity cushion on sized compute.',true),numeric('uncertainty','Budget sensitivity','± %','Range around the full estimate.',true),numeric('discount','Compute discount','%','Only eligible compute; default 0%.',true)];
     if(w.some(x=>['etl','stream'].includes(x)))fields.push(numeric('etlFactor','Processing intensity','DBU/GB','Heuristic: 0.08 / 0.20 / 0.50.',true));
     if(w.includes('etl')&&(w.includes('sql')||w.includes('stream')))fields.push(numeric('batchHours','Batch completion window','h/day','Throughput target; total estimated DBUs stay the same.',true));
     if(w.includes('stream'))fields.push(numeric('streamDBU','Streaming baseline','DBU/h','Minimum estimated continuous usage.',true));
@@ -72,7 +72,7 @@
     if(!w.includes('sql')&&w.some(x=>['etl','stream','ds'].includes(x)))fields.push(numeric('retention','Lakehouse retention','days','Steady-state, not first-month growth.',true),numeric('newDataPct','Net-new share of processed data','%','Updates do not necessarily grow retained storage.',true));
     if(w.includes('ds')){if(!processing&&!w.includes('sql'))fields.push(numeric('gb','Daily data volume','GB/day','Used only to estimate retained storage.',true));fields.push(numeric('dsDBU','Notebook usage per person','DBU/h','Replace after measuring a sample.',true));}
     if(w.includes('ai'))fields.push(select('model','Foundation model',Object.keys(data.models.AWS).map(x=>[x,x])),numeric('inputTokens','Input tokens / request','tokens','Includes prompt and retrieved context.',true),numeric('outputTokens','Output tokens / request','tokens','Generated response length.',true));
-    if(w.includes('lakebase')){const f=node('div',undefined,'field');const lab=node('label','Lakebase high availability');lab.htmlFor='lakebase-ha';const checkbox=node('input');checkbox.type='checkbox';checkbox.id='lakebase-ha';checkbox.checked=state.lakebaseHA;checkbox.addEventListener('change',()=>update('lakebaseHA',checkbox.checked));f.append(lab,checkbox,node('p','Primary + 1 equal secondary, 24/7.','field-help'));fields.push(f);}
+    if(w.includes('lakebase')){fields.push(select('lakebaseBilling','Lakebase billing period',[['qualified','Steady state · qualified Always-On'],['first-month','First month · include first 24 h']],'For 24/7 held capacity with scale to zero disabled; scheduled use keeps the autoscaling rate.'));const f=node('div',undefined,'field');const lab=node('label','Lakebase high availability');lab.htmlFor='lakebase-ha';const checkbox=node('input');checkbox.type='checkbox';checkbox.id='lakebase-ha';checkbox.checked=state.lakebaseHA;checkbox.addEventListener('change',()=>update('lakebaseHA',checkbox.checked));f.append(lab,checkbox,node('p','Primary + 1 equal secondary, 24/7.','field-help'));fields.push(f);}
     fields.push(numeric('extra','Other monthly costs','$ / mo','Networking, support or other services.',true));
     $('advanced-fields').replaceChildren(...fields);
   }
