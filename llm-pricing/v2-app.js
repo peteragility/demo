@@ -161,7 +161,7 @@
     const badges = (m.badges || []).map(b => `<span class="bdg">${esc(b)}</span>`).join('') + (warn ? `<span class="bdg warn" title="${esc(warn)}">!</span>` : '');
     const meta = [m.maker, m.ctx && (m.ctx + ' ctx')].filter(Boolean).join(' · ');
     const rank = rankOf(r.k);
-    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm">${rank != null ? `<span class="rk" title="${esc(boardName())} rank">${rank}</span>` : ''}<span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="chev" aria-hidden="true">›</span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
+    return `<tr class="row${open ? ' open' : ''}" data-k="${esc(r.k)}"><th scope="row" class="m"><button type="button" class="mb" aria-label="${esc((open ? 'Close' : 'Show') + ' pricing details for ' + m.name)}" aria-expanded="${open}"${open ? ` aria-controls="d-${slug(r.k)}"` : ''}><span class="nm">${rank != null ? `<span class="rk" title="${esc(boardName())} rank">${rank}</span>` : ''}<span class="f">${esc(m.name)}</span><span class="s">${esc(m.short || m.name)}</span>${badges}<span class="row-action" aria-hidden="true"><span class="action-label">${open ? 'Close' : 'Details'}</span><span class="action-icon">${open ? '−' : '+'}</span></span></span><span class="mk">${esc(meta)}</span></button></th>${PL.map(pl => cellHtml(r, pl)).join('')}</tr>`;
   }
 
   // Why a priced cell has no Δ, or which tier its Δ uses. Plain text: the card escapes it, the copied summary uses it as is.
@@ -405,7 +405,7 @@
       if (S.open.has(r.k)) body += cardsHtml(r);
     }
     if (!list.length) body = `<tr class="empty"><td colspan="8">No models match “${esc(S.q)}”.</td></tr>`;
-    const cap = '<caption class="sr">LLM price per 1M tokens by platform</caption>';
+    const cap = '<caption class="sr">LLM price per 1M tokens by platform. Activate a model button or click any row to expand pricing details.</caption>';
     paint($('#mx'), cap + head + `<tbody>${body}</tbody>` + (list.length ? footHtml(list) : ''));
     if (focus) { const el = document.querySelector(focus); if (el && el !== document.activeElement) el.focus({ preventScroll: true }); }
   }

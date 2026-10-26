@@ -145,10 +145,13 @@ try {
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','FW','Azure','AWS','GCP','Ali']);
     assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','Δ vs Databricks']);
     assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /arena\.ai Best \w+/);
-    // The expand hint is a plain line directly above the table, always shown, never floating.
+    // The expand instruction and controls remain visible without opening a panel by default.
     const hint = await evalJS("(()=>{const h=document.querySelector('#rowhint'),r=h.getBoundingClientRect(),t=document.querySelector('.tblwrap').getBoundingClientRect(),s=document.querySelector('#summary').getBoundingClientRect();return {text:h.innerText.replace(/\\s+/g,' ').trim(),position:getComputedStyle(h).position,gap:Math.round(t.top-r.bottom),belowSummary:r.top>=s.bottom-1,button:!!h.querySelector('button')};})()");
-    assert.equal(hint.text, viewport.mobile ? '› Tap a row for full details' : '› Click any row for every endpoint, tier, cache price and region', viewport.name + ': hint wording');
+    assert.equal(hint.text, '+ '+(viewport.mobile ? 'Tap' : 'Click')+' any row to expand Cache · tiers · regions', viewport.name + ': hint wording');
     assert.ok(hint.position === 'static' && hint.belowSummary && hint.gap >= 0 && hint.gap <= 12 && !hint.button, viewport.name + ': hint sits above the table ' + JSON.stringify(hint));
+    assert.equal(await evalJS("document.querySelectorAll('tr.detail').length"), 0, 'Start with the compact comparison');
+    assert.equal(await evalJS("[...document.querySelectorAll('tr.row .mb')].every(b=>b.getAttribute('aria-expanded')==='false' && b.getAttribute('aria-label').startsWith('Show pricing details for ') && b.querySelector('.action-label').textContent==='Details' && b.querySelector('.action-icon').textContent==='+')"), true, 'Every model has a named expand control');
+    assert.equal(await evalJS("[...document.querySelectorAll('tr.row .row-action')].every(a=>{const r=a.getBoundingClientRect(),c=a.closest('th').getBoundingClientRect();return r.width>=12 && r.height>=12 && r.left>=c.left && r.right<=c.right && r.top>=c.top && r.bottom<=c.bottom;})"), true, 'All disclosure controls fit inside their model column');
     assert.equal(await evalJS("(()=>{const tab=document.querySelector('[data-g=all]').getBoundingClientRect(),tabs=document.querySelector('#tabs').getBoundingClientRect();return tab.left>=tabs.left-1&&tab.right<=tabs.right+1;})()"), true, 'Selected family tab is visible');
     await saveScreenshot(viewport.name);
 
@@ -179,14 +182,43 @@ try {
       await toggle('openai/gpt-6.1-sol');
     }
 
-    // One row is open at a time: opening a second row closes the first.
+    // Discoverable controls support actual pointer/touch events and the keyboard, preserving focus.
     {
       const [first, second] = expected.keys.slice(0, 2);
-      await toggle(first);
-      await evalJS(`document.querySelector('tr[data-k="${second}"] .mb').click()`);
+      const activate = async selector => {
+        await evalJS(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'center'})`);
+        const point = await evalJS(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
+        if (viewport.mobile) {
+          await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[point]});
+          await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+        } else {
+          await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...point});
+          await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...point});
+        }
+      };
+      const control = key => `tr[data-k="${key}"] .mb`;
+      const assertOpen = async key => {
+        await waitFor(`document.querySelector(${JSON.stringify(control(key))}).getAttribute('aria-expanded')==='true'`);
+        assert.equal(await evalJS(`document.querySelector(${JSON.stringify(control(key))}).querySelector('.action-icon').textContent`), '−');
+        assert.equal(await evalJS(`document.querySelector(${JSON.stringify(control(key))}).querySelector('.action-label').textContent`), 'Close');
+        assert.equal(await evalJS(`(()=>{const b=document.querySelector(${JSON.stringify(control(key))});return !!document.getElementById(b.getAttribute('aria-controls')) && b.getAttribute('aria-label').startsWith('Close pricing details for ');})()`), true);
+      };
+      await activate(control(first)+' .row-action');
+      await assertOpen(first);
+      await activate(control(second)+' .row-action');
+      await assertOpen(second);
       assert.deepEqual(await evalJS("[...document.querySelectorAll('tr.detail')].map(d => d.previousElementSibling.dataset.k)"), [second], viewport.name + ': one row open');
-      await toggle(second);
+      await activate(`tr[data-k="${second}"] td.c`);
       assert.equal(await evalJS("document.querySelectorAll('tr.detail').length"), 0);
+      await evalJS(`document.querySelector(${JSON.stringify(control(first))}).focus()`);
+      for (const key of ['Enter',' ']) {
+        await call('Input.dispatchKeyEvent',{type:'keyDown',key,code:key==='Enter'?'Enter':'Space',windowsVirtualKeyCode:key==='Enter'?13:32,text:key==='Enter'?'\r':' '});
+        await call('Input.dispatchKeyEvent',{type:'keyUp',key,code:key==='Enter'?'Enter':'Space',windowsVirtualKeyCode:key==='Enter'?13:32});
+        if (key==='Enter') await assertOpen(first);
+        else assert.equal(await evalJS("document.querySelectorAll('tr.detail').length"), 0, 'Space closes details');
+        assert.equal(await evalJS(`document.activeElement===document.querySelector(${JSON.stringify(control(first))})`), true, 'Keyboard focus survives disclosure');
+      }
+      await evalJS('window.scrollTo(0,0)');
     }
     // Row details: one card per platform, in column order, each with a price table and where it runs.
     if (listed('deepseek/deepseek-v4-pro')) {
