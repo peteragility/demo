@@ -6623,7 +6623,7 @@
   "aws-model-cards": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/toc-contents.json",
    "kind": "aws-toc",
-   "digest": "a73bc17a689bd3d532cb0f421f364c446b259c2abce9ac553cee10217be730b6",
+   "digest": "b150a0829e37e1ff3c03bb344b9e12d05ee857f30dd428dba02517f237f2df1b",
    "records": [
     "card: Amazon Nova Multimodal Embeddings | model-card-amazon-amazon-nova-multimodal-embeddings.html",
     "card: Claude 3 Haiku | model-card-anthropic-claude-3-haiku.html",
@@ -6671,6 +6671,7 @@
     "card: GPT-6 Luna | model-card-openai-gpt-6-luna.html",
     "card: GPT-6 Sol | model-card-openai-gpt-6-sol.html",
     "card: GPT-6.1 Sol | model-card-openai-gpt-6-1-sol.html",
+    "card: GPT-6.1 Terra | model-card-openai-gpt-6-1-terra.html",
     "card: Gemma 3 12B IT | model-card-google-gemma-3-12b-it.html",
     "card: Gemma 3 27B PT | model-card-google-gemma-3-27b-pt.html",
     "card: Gemma 3 4B IT | model-card-google-gemma-3-4b-it.html",
@@ -7878,7 +7879,7 @@
   "aws-pricing-page": {
    "url": "https://aws.amazon.com/bedrock/pricing/",
    "kind": "tables",
-   "digest": "36eec8edf01996a1e2f8cc2093c2d2e36092ad3042ee50dc8496cc8f096baa09",
+   "digest": "44d2545e51905db57bad53dadbc0ecb8b265090b56e27aa2bc81f49731406400",
    "records": [
     "notice: * Priority tier pricing is at 75% premium to Standard tier pricing * Flex tier and Batch pricing are at 50% discount to Standard tier pricing",
     "notice: * Priority tier pricing is at 75% premium to Standard tier pricing * Flex tier and Batch pricing is at 50% discount to Standard tier pricing.",
@@ -7910,7 +7911,7 @@
     "table: {\"cells\":[\"Content filters (image content)\",\"$0.00075 per image processed\"],\"heading\":\"Amazon Bedrock pricing / Amazon Bedrock Guardrails\"}",
     "table: {\"cells\":[\"Content filters (text content only)\",\"$0.07 per 1,000 text units\"],\"heading\":\"Amazon Bedrock pricing / Amazon Bedrock Guardrails\"}",
     "table: {\"cells\":[\"Content filters for both standard tier and classic tier (text content)\",\"$0.15 per 1,000 text units\"],\"heading\":\"Amazon Bedrock pricing / Amazon Bedrock Guardrails\"}",
-    "table: {\"cells\":[\"Contextual grounding checks**\",\"$0.10 per 1,000 text units\"],\"heading\":\"Amazon Bedrock pricing / Amazon Bedrock Guardrails\"}",
+    "table: {\"cells\":[\"Contextual grounding checks for both standard tier and classic tier**\",\"$0.10 per 1,000 text units\"],\"heading\":\"Amazon Bedrock pricing / Amazon Bedrock Guardrails\"}",
     "table: {\"cells\":[\"Custom Model Unit version\",\"v1.0\"],\"heading\":\"Amazon Bedrock pricing / Custom Model Import\"}",
     "table: {\"cells\":[\"Custom Model Unit version\",\"v2.0\"],\"heading\":\"Amazon Bedrock pricing / Custom Model Import\"}",
     "table: {\"cells\":[\"DeepSeek models\",\"Price per 1M input tokens\",\"Price per 1M output tokens\"],\"heading\":\"Amazon Bedrock pricing / DeepSeek\"}",
