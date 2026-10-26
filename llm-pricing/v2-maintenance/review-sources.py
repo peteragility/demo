@@ -690,7 +690,10 @@ def video_section(heading):
 def names_a_model(record, rxs):
     if record.startswith(("table: {", "product: {")):
         row = json.loads(record.split(": ", 1)[1])
-        if video_section(row.get("heading", "")):
+        # Guardrails text-unit charges are a separate product, not shared model
+        # input/output token rates. Scope both old and new records consistently.
+        if (video_section(row.get("heading", ""))
+                or row.get("heading", "") == "Amazon Bedrock pricing / Amazon Bedrock Guardrails"):
             return True
     text = official.norm(record)
     return bool(OTHER_MODEL.search(text)) or any(rx.search(text) for rx in rxs)

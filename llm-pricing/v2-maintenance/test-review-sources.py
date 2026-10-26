@@ -22,6 +22,25 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_guardrails_charges_are_not_shared_model_token_rates(self):
+        def row(heading, label, price):
+            return 'table: ' + review.packed(dict(heading=heading, cells=[label, price]))
+        heading = 'Amazon Bedrock pricing / Amazon Bedrock Guardrails'
+        before = row(heading, 'Contextual grounding checks**', '$0.10 per 1,000 text units')
+        after = row(heading, 'Contextual grounding checks for both standard tier and classic tier**', '$0.10 per 1,000 text units')
+        source = dict(id='aws', url='https://aws.amazon.com/bedrock/pricing/', kind='tables')
+        data = dict(models={'claude': dict(name='Claude Opus 5')})
+        baseline = dict(sources={'aws': dict(records=[before])})
+        self.assertEqual(review.general_changes(data, [source], baseline,
+            {'aws': dict(url=source['url'], records=[after])}, {}), [])
+        # Token billing and unnamed shared rules must still require review.
+        for record in (row('Amazon Bedrock pricing / Inference', 'Input tokens', '$2 per 1M tokens'),
+                       'notice: All models receive a 10% regional premium.'):
+            self.assertFalse(review.names_a_model(record, []))
+            findings = review.general_changes(data, [source], {'sources': {'aws': {'records': []}}},
+                {'aws': dict(url=source['url'], records=[record])}, {})
+            self.assertEqual(findings[0]['risk'], 'high')
+
     def test_video_sections_do_not_become_shared_llm_rates(self):
         html = ('<h2>LLM</h2><p>All models receive a 50% batch discount.</p>'
                 '<table><tr><td>MiniMax-M3</td><td>$0.30</td></tr></table>'
