@@ -1,23 +1,53 @@
 {
   "schema": 1,
-  "checkedAt": "2026-10-26",
+  "checkedAt": "2026-10-27",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-10-26",
-      "lastSuccess": "2026-10-26",
+      "checkedAt": "2026-10-27",
+      "lastSuccess": "2026-10-27",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-10-26",
-      "lastSuccess": "2026-10-26",
+      "checkedAt": "2026-10-27",
+      "lastSuccess": "2026-10-27",
       "errors": 0,
-      "review": 0,
+      "review": 2,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-databricks-limits",
+      "url": "https://docs.databricks.com/aws/en/compute/serverless/sandbox",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 4d206eaee96930290d60b02fdf3410655922718d0fa5881ba49afa2a6e84e81e",
+        "Removed record: 9bffac9740ee889231ace305de251bd5477aee585dabf4e26fcc8d9fcd305eca",
+        "Added record: 15d526969d3e27d235072ad0b97e387111cfac9c9acf2f5b4de03acc76fbc802: The public IP addresses of your Databricks Sandbox can change at any time. The default ingress of the sandbox is closed to all traffic, and you can't ",
+        "Added record: 198c6af3db2c57379de6a2f5fc755fe314c817ee39262fdcf02d6064caca1223: Quotas are enforced. By default, you can have at most 200 active sandboxes per user (800 total across all states), and a workspace can have at most 40",
+        "Added record: b40727970c87431b85ba158b6e23d0742d4a71703968db89b806c0a8d750056f: Databricks credentials",
+        "Added record: c9f8f03a026a842f3ed0b6c91211707e3f07469e7dafc13c3f05c7aceb538073: So that code in a sandbox can call Databricks APIs, each sandbox is provisioned with a Databricks credential that authenticates as the user who create",
+        "Added record: dfc9630393e3d9cfee1eb206a065182df32da92fca0b08c134a9ebef9f4bf6bc"
+      ]
+    },
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 4f5c846b3cf16bde22d5a06b1c580ede45cd4acb1b87023afde23c52e2e13aee",
+        "Removed record: c35e5c645f3b9be19c63ffed89abd14c77e774fb7a0cc138d24871e1fa884053",
+        "Removed record: c923bd290c02b932d5191bb44690bb71d47b2cfac49b17d76080d930e5d7d329",
+        "Added record: 0cfb60ab098ce91b96fa66be3af2d4aed97365115f3f46806d2dc2d22e628c3f: The [dependency startup design](containment.md#dependency-read-startup-design) states the operator experience and the limits of static discovery.",
+        "Added record: ae16c12956b5f07a4c7a6bb471f11adccb84a627a394987c47f44cddf0a43b6c: that the sandbox is in place for this box.",
+        "Added record: f8bee8fb8bc863f09f726c913b977e7dca8363154599592e38bed6c15785a715: The selected [dependency startup experience](containment.md#dependency-read-startup-design) requires grouped missing-read reports before launching the"
+      ]
+    }
+  ]
 }
