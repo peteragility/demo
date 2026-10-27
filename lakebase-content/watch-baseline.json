@@ -1,5 +1,5 @@
 {
-  "observed": "2026-10-27",
+  "observed": "2026-10-28",
   "sources": {
     "aws-rds-price-index": {
       "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
@@ -208,6 +208,7 @@
         "constraint-table:[\"azure database for postgresql pricing / memory optimized / esv6 series\",[\"e8s v6\",\"8\",\"32 gib\",\"$\",\"$\",\"$\",\"$\"]]",
         "constraint-table:[\"azure database for postgresql pricing / memory optimized / esv6 series\",[\"e96s v6\",\"96\",\"384 gib\",\"$\",\"$\",\"$\",\"$\"]]",
         "constraint-table:[\"azure database for postgresql pricing / memory optimized / esv6 series\",[\"instance\",\"vcores\",\"memory\",\"pay as you go\",\"1 year savings plan\",\"1 year reserved\",\"3 year reserved\"]]",
+        "constraint-table:[\"azure database for postgresql pricing / memory optimized / extended support\",[\"\",\"price year 1 and year 2\",\"price year 3\",\"note\"]]",
         "constraint-table:[\"azure database for postgresql pricing / memory optimized / storage\",[\"premium ssd v2 configuration\",\"unit\",\"monthly price\"]]",
         "constraint-table:[\"azure database for postgresql pricing / memory optimized / storage\",[\"provisioned iops\",\"iops\",\"included iops (at no additional cost): up to 3,000 iops for disks upto 399 gib. up to 12,000 iops for disks 400 gib or larger. additional provisioned iops $ per iops beyond the included limits. $ /provisioned iops over 3,000 iops\"]]",
         "constraint-table:[\"azure database for postgresql pricing / memory optimized / storage\",[\"provisioned throughput\",\"mb/s\",\"included throughput (at no additional cost): up to 125 mb/s for disks upto 399 gib. up to 500 mb/s for disks 400 gib or larger. additional provisioned throughput: $ per mb/s beyond the included limits. $ /provisioned mb/s over 125 mb/s\"]]",
