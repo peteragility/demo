@@ -12,6 +12,28 @@ const date = {asOf: '2026-10-02'};
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `Expected ${b}, got ${a}`);
 const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 
+test('Alibaba regional offers retain their own scope, rates and checkpoint match', () => {
+  const glm = published.models['zai/glm-5.3'].platforms.alicloud;
+  const us = glm.variants.find(v => v.endpoint === 'US (Virginia) · US scope');
+  assert.ok(us, 'GLM 5.3 US offer is published');
+  close(us.in, 1.4); close(us.out, 4.4); close(us.cache_read, 0.28);
+  assert.equal(us.comparison_scope, 'geographic');
+  for (const platform of ['official', 'alicloud']) {
+    const cell = published.models['qwen/qwen3.8-flash'].platforms[platform];
+    for (const endpoint of ['Germany (Frankfurt) · EU scope', 'Hong Kong · Hong Kong scope']) {
+      const v = cell.variants.find(v => v.endpoint === endpoint);
+      assert.ok(v, endpoint);
+      close(v.in, 0.15); close(v.out, 0.47);
+      assert.equal(v.comparison_scope, 'geographic');
+      assert.equal(v.model_match, 'unverified');
+      assert.equal(v.cache_read, undefined);
+      assert.equal(v.cache_write, undefined);
+    }
+    assert.equal(cell.endpoints.hk[0], 'in-region');
+    close(cell.in, 0.113); close(cell.out, 0.382);
+  }
+});
+
 test('Grok maker Batch discounts cache hits and the full request at the 200K boundary', () => {
   for (const version of ['4.6', '4.7']) {
     const c = reviewed.models['xai/grok-' + version].platforms.official;

@@ -6551,10 +6551,11 @@
             {
               "in": 1.4,
               "out": 4.4,
+              "cache_read": 0.28,
               "label": "International (Singapore) · Standard",
               "comparison_scope": "global",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-28",
               "endpoint": "International (Singapore)",
               "id": "variant-0",
               "model_match": "confirmed"
@@ -6562,12 +6563,25 @@
             {
               "in": 1.131,
               "out": 3.957,
+              "cache_read": 0.28275,
               "label": "Chinese mainland (Beijing) · Standard",
               "comparison_scope": "geographic",
               "service_tier": "standard",
-              "pricing_checked_at": "2026-10-04",
+              "pricing_checked_at": "2026-10-28",
               "endpoint": "Chinese mainland (Beijing)",
               "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.4,
+              "out": 4.4,
+              "cache_read": 0.28,
+              "label": "US (Virginia) · US scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-28",
+              "endpoint": "US (Virginia) · US scope",
+              "id": "variant-2",
               "model_match": "confirmed"
             }
           ],
@@ -6577,15 +6591,17 @@
           "model_match": "confirmed",
           "comparison_scope": "global",
           "service_tier": "standard",
-          "pricing_checked_at": "2026-10-04",
-          "availability_checked_at": "2026-10-04",
+          "pricing_checked_at": "2026-10-28",
+          "availability_checked_at": "2026-10-28",
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
           "endpoint": "Global",
+          "cache_read": 0.28275,
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-28",
             "src": [
               "ali_ali_pricing",
-              "ali_ali_regions"
+              "ali_ali_regions",
+              "ali_ali_cache"
             ],
             "regions": [
               [
@@ -6593,6 +6609,12 @@
                 "global",
                 "Global",
                 "US (Virginia)"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US",
+                "US (Virginia): inference stays in the US"
               ],
               [
                 "Europe",
@@ -6630,11 +6652,11 @@
             "notes": [
               [
                 "Pricing",
-                "Flat-rate pricing (no input-length tiers); Singapore International costs $1.40/$4.40 versus $1.131/$3.957 elsewhere."
+                "Flat-rate pricing (no input-length tiers), in thinking and non-thinking modes: Singapore International and Virginia US scope cost $1.40/$4.40 per million input/output tokens; Global and Beijing cost $1.131/$3.957."
               ],
               [
                 "Caching",
-                "Implicit cache supported in all six regions; no published cache-hit rate for this model."
+                "Implicit cache writes use the input rate. The cache billing guide specifies hits at 20% of input in Singapore and Virginia US scope ($0.28 per million tokens), and 25% elsewhere ($0.28275). The US supported-model list has not yet added glm-5.3; confirm endpoint cache support before relying on a hit."
               ],
               [
                 "Separate model · 23 Oct 2026",
@@ -25674,17 +25696,40 @@
               "endpoint": "Chinese mainland (Beijing)",
               "id": "variant-3",
               "model_match": "unverified"
+            },
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "Germany (Frankfurt) · EU scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-28",
+              "endpoint": "Germany (Frankfurt) · EU scope",
+              "id": "variant-4",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "Hong Kong · Hong Kong scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-28",
+              "endpoint": "Hong Kong · Hong Kong scope",
+              "id": "variant-5",
+              "model_match": "unverified"
             }
           ],
           "model_id_checked_at": "2026-10-09",
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
           "endpoint": "Global",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-28",
             "src": [
               "ali_ali_batch",
               "ali_ali_pricing",
-              "ali_ali_regions"
+              "ali_ali_regions",
+              "ali_ali_cache"
             ],
             "regions": [
               [
@@ -25706,6 +25751,12 @@
                 "Germany (Frankfurt)"
               ],
               [
+                "Europe",
+                "geo",
+                "EU",
+                "Germany (Frankfurt): inference stays in the EU"
+              ],
+              [
                 "APAC",
                 "global",
                 "International",
@@ -25722,11 +25773,17 @@
                 "geo",
                 "Chinese mainland",
                 "Beijing"
+              ],
+              [
+                "APAC",
+                "in-region",
+                "Hong Kong scope",
+                "Hong Kong: inference stays in Hong Kong"
               ]
             ],
             "hk": [
-              "routed",
-              "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+              "in-region",
+              "Hong Kong endpoint (cn-hongkong): Hong Kong scope keeps inference in Hong Kong; Global scope may route inference worldwide"
             ],
             "tw": [
               "none",
@@ -25740,6 +25797,14 @@
               [
                 "Model",
                 "Arena ranks Qwen3.8 Flash Next; Model Studio's current Flash model is qwen3.8-flash, and the two are not confirmed to be the same checkpoint."
+              ],
+              [
+                "Regional pricing · 28 Oct 2026",
+                "EU scope in Frankfurt and Hong Kong scope in Hong Kong cost $0.15/$0.47 per million input/output tokens, for 0 < input tokens ≤ 1M. Global, Singapore, US and Beijing offers remain separate."
+              ],
+              [
+                "Caching",
+                "Explicit and implicit caching are supported, but Qwen3.8 Flash is excluded from the generic cache ratios: explicit write/read ratios vary by region and implicit hit rates require the console. No cache charge is inferred."
               ]
             ],
             "ids": [
@@ -25805,17 +25870,40 @@
               "endpoint": "Chinese mainland (Beijing)",
               "id": "variant-3",
               "model_match": "unverified"
+            },
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "Germany (Frankfurt) · EU scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-28",
+              "endpoint": "Germany (Frankfurt) · EU scope",
+              "id": "variant-4",
+              "model_match": "unverified"
+            },
+            {
+              "in": 0.15,
+              "out": 0.47,
+              "label": "Hong Kong · Hong Kong scope · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-28",
+              "endpoint": "Hong Kong · Hong Kong scope",
+              "id": "variant-5",
+              "model_match": "unverified"
             }
           ],
           "model_id_checked_at": "2026-10-09",
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
           "endpoint": "Global",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-28",
             "src": [
               "ali_ali_batch",
               "ali_ali_pricing",
-              "ali_ali_regions"
+              "ali_ali_regions",
+              "ali_ali_cache"
             ],
             "regions": [
               [
@@ -25837,6 +25925,12 @@
                 "Germany (Frankfurt)"
               ],
               [
+                "Europe",
+                "geo",
+                "EU",
+                "Germany (Frankfurt): inference stays in the EU"
+              ],
+              [
                 "APAC",
                 "global",
                 "International",
@@ -25853,11 +25947,17 @@
                 "geo",
                 "Chinese mainland",
                 "Beijing"
+              ],
+              [
+                "APAC",
+                "in-region",
+                "Hong Kong scope",
+                "Hong Kong: inference stays in Hong Kong"
               ]
             ],
             "hk": [
-              "routed",
-              "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+              "in-region",
+              "Hong Kong endpoint (cn-hongkong): Hong Kong scope keeps inference in Hong Kong; Global scope may route inference worldwide"
             ],
             "tw": [
               "none",
@@ -25871,6 +25971,14 @@
               [
                 "Model",
                 "Arena ranks Qwen3.8 Flash Next; Model Studio's current Flash model is qwen3.8-flash, and the two are not confirmed to be the same checkpoint."
+              ],
+              [
+                "Regional pricing · 28 Oct 2026",
+                "EU scope in Frankfurt and Hong Kong scope in Hong Kong cost $0.15/$0.47 per million input/output tokens, for 0 < input tokens ≤ 1M. Global, Singapore, US and Beijing offers remain separate."
+              ],
+              [
+                "Caching",
+                "Explicit and implicit caching are supported, but Qwen3.8 Flash is excluded from the generic cache ratios: explicit write/read ratios vary by region and implicit hit rates require the console. No cache charge is inferred."
               ]
             ],
             "ids": [

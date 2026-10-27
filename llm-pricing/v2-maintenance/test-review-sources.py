@@ -22,6 +22,25 @@ spec.loader.exec_module(review)
 
 
 class SourceReviewTests(unittest.TestCase):
+    def test_dollar_padding_keeps_rates_but_not_assignments_equivalent(self):
+        row = lambda cells: 'table: ' + review.packed(dict(heading='Google models / Gemini 4', cells=cells))
+        before = [row(['Gemini 4 Argon', 'Non-global', '$2.2', '$11'])]
+        after = [row(['Gemini 4 Argon', 'Non-global', '$2.20', '$11.00'])]
+        self.assertEqual(review.classify(before, after, None)[0], 'low')
+        for cells in (['Gemini 4 Argon', 'Non-global', '$2.21', '$11.00'],
+                      ['Gemini 4 Argon', 'Non-global', '$11.00', '$2.20'],
+                      ['Gemini 4 Argon', 'Global', '$2.20', '$11.00'],
+                      ['Gemini 4 Argon', 'Non-global', 'EUR 2.20', '$11.00']):
+            self.assertEqual(review.classify(before, [row(cells)], None)[0], 'high')
+
+    def test_decision_model_table_is_not_a_shared_llm_billing_rule(self):
+        for cells in (['Model', 'Standard', 'Priority'], ['Rune 26B-A4B', '$0.042 / $0.0084 / $0.00', '—']):
+            record = 'table: ' + review.packed(dict(heading='\u200b Decision models', cells=cells))
+            self.assertTrue(review.names_a_model(record, []))
+        record = 'table: ' + review.packed(dict(heading='Text and vision models', cells=['Input', '$0.042']))
+        self.assertFalse(review.names_a_model(record, []))
+        self.assertEqual(review.compare([], [record], None)[0], 'high')
+
     def test_guardrails_charges_are_not_shared_model_token_rates(self):
         def row(heading, label, price):
             return 'table: ' + review.packed(dict(heading=heading, cells=[label, price]))

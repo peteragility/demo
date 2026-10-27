@@ -572,6 +572,9 @@ DOCUMENT_KINDS = {"tables", "text", "markdown", "card"}
 def rate_text(text):
     # In a cache-write label, m means minutes; elsewhere it can mean million tokens.
     text = re.sub(r"(\$\s?\d[\d,]*(?:\.\d+)?)\s+usd\b", r"\1", official.norm(text))
+    # Currency display precision does not change a rate. Keep the dollar sign,
+    # significant digits, units and table columns for the assignment checks.
+    text = re.sub(r"\$\s?\d[\d,]*\.\d+", lambda m: m.group().rstrip("0").rstrip("."), text)
     text = re.sub(r"\b(\d+(?:\.\d+)?)\s+percent\b", r"\1%", text)
     # These are throughput quotas, not billable input/output rates. Keep context
     # limits and any prices elsewhere in the same line under normal review.
@@ -693,6 +696,7 @@ def names_a_model(record, rxs):
         # Guardrails text-unit charges are a separate product, not shared model
         # input/output token rates. Scope both old and new records consistently.
         if (video_section(row.get("heading", ""))
+                or row.get("heading", "").strip(" \u200b") == "Decision models"
                 or row.get("heading", "") == "Amazon Bedrock pricing / Amazon Bedrock Guardrails"):
             return True
     text = official.norm(record)
