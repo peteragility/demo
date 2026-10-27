@@ -33,6 +33,16 @@
    },
    "regional": true,
    "model_id": "databricks-gemini-4-argon"
+  },
+  {
+   "date": "2026-10-28",
+   "model": "anthropic/claude-sonnet-5.5",
+   "platform": "databricks",
+   "source": "dbx-prices",
+   "offer": "base",
+   "field": "cache_read",
+   "old": 0.2,
+   "new": 0.1
   }
  ]
 }

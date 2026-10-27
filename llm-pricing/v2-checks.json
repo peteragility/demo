@@ -136,23 +136,6 @@
    ],
    "removed_all": [],
    "baseline_digest": "1495eb181006c3fd598063112314b195c062b56ef9a92c7f4212bb5c6f9478b4"
-  },
-  {
-   "source": "fireworks-pricing",
-   "url": "https://docs.fireworks.ai/serverless/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Model\",\"Standard\",\"Priority\"],\"heading\":\"​ Decision models\"}",
-    "table: {\"cells\":[\"Rune 26B-A4B\",\"$0.042 / $0.0084 / $0.00\",\"—\"],\"heading\":\"​ Decision models\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "table: {\"cells\":[\"Model\",\"Standard\",\"Priority\"],\"heading\":\"​ Decision models\"}",
-    "table: {\"cells\":[\"Rune 26B-A4B\",\"$0.042 / $0.0084 / $0.00\",\"—\"],\"heading\":\"​ Decision models\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "eb82f57309bc98b83f925bb7caabaab55aa8d7aee6ae18f62dd285425aef706a"
   }
  ],
  "ranking": {
@@ -266,10 +249,7 @@
    ]
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-10-28",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.6|alicloud": {
    "verified": "2026-10-28"
@@ -440,8 +420,8 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
+   "verified": "2026-10-28",
+   "accepted": [
     "dbx-proprietary"
    ]
   },
@@ -467,7 +447,10 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "accepted": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-sonnet-5|fireworks": {
    "verified": "2026-10-28"
@@ -557,10 +540,7 @@
    ]
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
    "verified": "2026-10-27",
@@ -840,10 +820,7 @@
    "verified": "2026-10-28"
   },
   "minimax/minimax-m3|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "minimax/minimax-m3|gcloud": {
    "verified": "2026-10-27",
@@ -867,10 +844,7 @@
    "verified": "2026-10-28"
   },
   "mistral/mistral-medium-3.5|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "mistral/mistral-medium-3.5|gcloud": {
    "verified": "2026-10-27",
@@ -928,10 +902,7 @@
    ]
   },
   "moonshot/kimi-k3|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "moonshot/kimi-k3|gcloud": {
    "verified": "2026-10-27",
@@ -973,10 +944,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.5|bedrock": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "aws-openai-models"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.5|databricks": {
    "verified": "2026-10-28"
@@ -1000,13 +968,13 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.6-luna|bedrock": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "aws-openai-models"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.6-luna|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "accepted": [
+    "dbx-proprietary"
+   ]
   },
   "openai/gpt-5.6-luna|fireworks": {
    "verified": "2026-10-28"
@@ -1027,10 +995,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.6-sol|bedrock": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "aws-openai-models"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.6-sol|databricks": {
    "verified": "2026-10-28"
@@ -1054,10 +1019,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.6-terra|bedrock": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "aws-openai-models"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.6-terra|databricks": {
    "verified": "2026-10-28"
@@ -1186,10 +1148,7 @@
    ]
   },
   "openai/gpt-oss-120b|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-oss-120b|gcloud": {
    "verified": "2026-10-27",
@@ -1266,7 +1225,6 @@
   "qwen/qwen3.5-122b|databricks": {
    "verified": "2026-10-27",
    "unchecked": [
-    "dbx-models",
     "dbx-proprietary"
    ]
   },
@@ -1292,10 +1250,7 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.7-max|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.7-max|gcloud": {
    "verified": "2026-10-27",
@@ -1319,10 +1274,7 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.7-plus|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.7-plus|gcloud": {
    "verified": "2026-10-27",
@@ -1346,10 +1298,7 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.8-27b|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-27b|gcloud": {
    "verified": "2026-10-27",
@@ -1377,10 +1326,7 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.8-flash|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-flash|gcloud": {
    "verified": "2026-10-27",
@@ -1520,10 +1466,7 @@
    ]
   },
   "zai/glm-5.2|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.2|gcloud": {
    "verified": "2026-10-27",
@@ -1550,10 +1493,7 @@
    ]
   },
   "zai/glm-5.3-flash|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.3-flash|gcloud": {
    "verified": "2026-10-27",
@@ -1565,7 +1505,7 @@
    "verified": "2026-10-28"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-10-27",
+   "verified": "2026-10-28",
    "changed_at": "2026-10-28",
    "sources": [
     "alibaba-pricing"
@@ -1584,10 +1524,7 @@
    ]
   },
   "zai/glm-5.3|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.3|gcloud": {
    "verified": "2026-10-27",
