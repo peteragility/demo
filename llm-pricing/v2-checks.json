@@ -119,25 +119,7 @@
   "api-google-gemini-4-argon": "2026-10-28",
   "gcp-deepseek-v4-1-flash": "2026-10-28"
  },
- "pending_general": [
-  {
-   "source": "vertex-pricing",
-   "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a date changed",
-   "added": [
-    "notice: (through December 31, 2026)",
-    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens)\",\"Price (/1M tokens) Cached input\"],\"heading\":\"Google models / Gemini Robotics\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "notice: (through December 31, 2026)",
-    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens)\",\"Price (/1M tokens) Cached input\"],\"heading\":\"Google models / Gemini Robotics\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "1495eb181006c3fd598063112314b195c062b56ef9a92c7f4212bb5c6f9478b4"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-28",
@@ -147,12 +129,7 @@
   "published_at": "2026-10-23"
  },
  "databricks_coverage": [],
- "review": [
-  "Gemini 4 Argon · gcloud",
-  "Qwen3.8 Flash · alicloud",
-  "Qwen3.8 Flash · official",
-  "GLM 5.3 · alicloud"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -171,10 +148,7 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-fable-5.1|official": {
    "verified": "2026-10-28"
@@ -195,10 +169,7 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-fable-5|official": {
    "verified": "2026-10-28"
@@ -219,10 +190,7 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-haiku-4.5|official": {
    "verified": "2026-10-28"
@@ -243,10 +211,7 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-haiku-5.5|official": {
    "verified": "2026-10-28"
@@ -261,19 +226,13 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.6|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.6|fireworks": {
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.6|official": {
    "verified": "2026-10-28"
@@ -288,19 +247,13 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.7|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.7|fireworks": {
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.7|official": {
    "verified": "2026-10-28"
@@ -315,19 +268,13 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.8|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.8|fireworks": {
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-4.8|official": {
    "verified": "2026-10-28"
@@ -348,10 +295,7 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-5.5|official": {
    "verified": "2026-10-28"
@@ -366,19 +310,13 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-5|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-5|fireworks": {
    "verified": "2026-10-28"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-opus-5|official": {
    "verified": "2026-10-28"
@@ -393,19 +331,13 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-4.6|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-4.6|fireworks": {
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-4.6|official": {
    "verified": "2026-10-28"
@@ -420,19 +352,13 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-10-28",
-   "accepted": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5.5|fireworks": {
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5.5|official": {
    "verified": "2026-10-28"
@@ -447,28 +373,19 @@
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5|databricks": {
-   "verified": "2026-10-28",
-   "accepted": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5|fireworks": {
    "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "anthropic/claude-sonnet-5|official": {
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
    "verified": "2026-10-28"
@@ -477,28 +394,19 @@
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-flash|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-flash|fireworks": {
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-flash|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-flash|official": {
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
    "verified": "2026-10-28"
@@ -507,19 +415,13 @@
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-pro|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-pro|fireworks": {
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-pro|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4-pro|official": {
    "verified": "2026-10-28"
@@ -534,19 +436,13 @@
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4.1-flash|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
    "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "deepseek/deepseek-v4.1-flash|official": {
    "verified": "2026-10-28"
@@ -567,10 +463,7 @@
    "verified": "2026-10-28"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemini-3.1-flash-lite|official": {
    "verified": "2026-10-28"
@@ -591,10 +484,7 @@
    "verified": "2026-10-28"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemini-3.1-pro|official": {
    "verified": "2026-10-28"
@@ -615,10 +505,7 @@
    "verified": "2026-10-28"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemini-3.5-flash-lite|official": {
    "verified": "2026-10-28"
@@ -639,10 +526,7 @@
    "verified": "2026-10-28"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemini-3.6-flash|official": {
    "verified": "2026-10-28"
@@ -663,10 +547,7 @@
    "verified": "2026-10-28"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemini-3.7-flash|official": {
    "verified": "2026-10-28"
@@ -687,10 +568,7 @@
    "verified": "2026-10-28"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemini-3.8-flash|official": {
    "verified": "2026-10-28"
@@ -711,14 +589,7 @@
    "verified": "2026-10-28"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-10-27",
-   "changed_at": "2026-10-28",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemini-4-argon|official": {
    "verified": "2026-10-28"
@@ -733,16 +604,10 @@
    "verified": "2026-10-28"
   },
   "google/gemma-3-12b|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "google/gemma-3-12b|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "meta/llama-3.1-8b|alicloud": {
    "verified": "2026-10-28"
@@ -754,16 +619,10 @@
    "verified": "2026-10-28"
   },
   "meta/llama-3.1-8b|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "meta/llama-3.1-8b|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "meta/llama-3.3-70b|alicloud": {
    "verified": "2026-10-28"
@@ -775,16 +634,10 @@
    "verified": "2026-10-28"
   },
   "meta/llama-3.3-70b|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "meta/llama-4-maverick|alicloud": {
    "verified": "2026-10-28"
@@ -796,16 +649,10 @@
    "verified": "2026-10-28"
   },
   "meta/llama-4-maverick|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-10-28"
@@ -823,10 +670,7 @@
    "verified": "2026-10-28"
   },
   "minimax/minimax-m3|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "minimax/minimax-m3|official": {
    "verified": "2026-10-28"
@@ -847,17 +691,10 @@
    "verified": "2026-10-28"
   },
   "mistral/mistral-medium-3.5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "mistral/mistral-medium-3.5|official": {
-   "verified": "2026-10-27",
-   "changed_at": "2026-10-28",
-   "sources": [
-    "api-other-mistral-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "moonshot/kimi-k2.7|alicloud": {
    "verified": "2026-10-28"
@@ -869,19 +706,13 @@
    "verified": "2026-10-28"
   },
   "moonshot/kimi-k2.7|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "moonshot/kimi-k2.7|fireworks": {
    "verified": "2026-10-28"
   },
   "moonshot/kimi-k2.7|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "moonshot/kimi-k2.7|official": {
    "verified": "2026-10-28"
@@ -896,19 +727,13 @@
    "verified": "2026-10-28"
   },
   "moonshot/kimi-k3|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "moonshot/kimi-k3|fireworks": {
    "verified": "2026-10-28"
   },
   "moonshot/kimi-k3|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "moonshot/kimi-k3|official": {
    "verified": "2026-10-28"
@@ -929,10 +754,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.4|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.4|official": {
    "verified": "2026-10-28"
@@ -953,10 +775,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.5|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.5|official": {
    "verified": "2026-10-28"
@@ -971,19 +790,13 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.6-luna|databricks": {
-   "verified": "2026-10-28",
-   "accepted": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.6-luna|fireworks": {
    "verified": "2026-10-28"
   },
   "openai/gpt-5.6-luna|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.6-luna|official": {
    "verified": "2026-10-28"
@@ -1004,10 +817,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.6-sol|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.6-sol|official": {
    "verified": "2026-10-28"
@@ -1028,10 +838,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-5.6-terra|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-5.6-terra|official": {
    "verified": "2026-10-28"
@@ -1052,10 +859,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-6-astra|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-6-astra|official": {
    "verified": "2026-10-28"
@@ -1076,10 +880,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-6-luna|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-6-luna|official": {
    "verified": "2026-10-28"
@@ -1100,10 +901,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-6-sol|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-6-sol|official": {
    "verified": "2026-10-28"
@@ -1124,10 +922,7 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-6.1-sol|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-6.1-sol|official": {
    "verified": "2026-10-28"
@@ -1142,19 +937,13 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-oss-120b|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-oss-120b|fireworks": {
    "verified": "2026-10-28"
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-oss-120b|official": {
    "verified": "2026-10-28"
@@ -1169,25 +958,16 @@
    "verified": "2026-10-28"
   },
   "openai/gpt-oss-20b|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "openai/gpt-oss-20b|official": {
    "verified": "2026-10-28"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
    "verified": "2026-10-28"
@@ -1196,22 +976,13 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3-next-80b-instruct|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.5-122b|alicloud": {
    "verified": "2026-10-28"
@@ -1223,16 +994,10 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.5-122b|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.5-122b|official": {
    "verified": "2026-10-28"
@@ -1253,10 +1018,7 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.7-max|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.7-max|official": {
    "verified": "2026-10-28"
@@ -1277,10 +1039,7 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.7-plus|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.7-plus|official": {
    "verified": "2026-10-28"
@@ -1301,20 +1060,13 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.8-27b|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-27b|official": {
    "verified": "2026-10-28"
   },
   "qwen/qwen3.8-flash|alicloud": {
-   "verified": "2026-10-27",
-   "changed_at": "2026-10-28",
-   "sources": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-flash|azure_foundry": {
    "verified": "2026-10-28"
@@ -1329,17 +1081,10 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.8-flash|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-flash|official": {
-   "verified": "2026-10-27",
-   "changed_at": "2026-10-28",
-   "sources": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-max|alicloud": {
    "verified": "2026-10-28"
@@ -1354,16 +1099,10 @@
    "verified": "2026-10-28"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-max|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "qwen/qwen3.8-max|official": {
    "verified": "2026-10-28"
@@ -1378,19 +1117,13 @@
    "verified": "2026-10-28"
   },
   "tml/inkling|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "tml/inkling|fireworks": {
    "verified": "2026-10-28"
   },
   "tml/inkling|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "tml/inkling|official": {
    "verified": "2026-10-28"
@@ -1408,18 +1141,10 @@
    "verified": "2026-10-28"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "xai/grok-4.6|official": {
-   "verified": "2026-10-27",
-   "changed_at": "2026-10-28",
-   "sources": [
-    "xai-grok46"
-   ],
-   "quiet": true
+   "verified": "2026-10-28"
   },
   "xai/grok-4.7|alicloud": {
    "verified": "2026-10-28"
@@ -1431,24 +1156,13 @@
    "verified": "2026-10-28"
   },
   "xai/grok-4.7|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "xai/grok-4.7|official": {
-   "verified": "2026-10-27",
-   "changed_at": "2026-10-28",
-   "sources": [
-    "xai-grok47"
-   ],
-   "quiet": true
+   "verified": "2026-10-28"
   },
   "zai/glm-5.2|alicloud": {
    "verified": "2026-10-28"
@@ -1460,19 +1174,13 @@
    "verified": "2026-10-28"
   },
   "zai/glm-5.2|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.2|fireworks": {
    "verified": "2026-10-28"
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.2|official": {
    "verified": "2026-10-28"
@@ -1487,29 +1195,19 @@
    "verified": "2026-10-28"
   },
   "zai/glm-5.3-flash|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.3-flash|fireworks": {
    "verified": "2026-10-28"
   },
   "zai/glm-5.3-flash|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.3-flash|official": {
    "verified": "2026-10-28"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-28",
-   "sources": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.3|azure_foundry": {
    "verified": "2026-10-28"
@@ -1518,19 +1216,13 @@
    "verified": "2026-10-28"
   },
   "zai/glm-5.3|databricks": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "dbx-proprietary"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.3|fireworks": {
    "verified": "2026-10-28"
   },
   "zai/glm-5.3|gcloud": {
-   "verified": "2026-10-27",
-   "unchecked": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-28"
   },
   "zai/glm-5.3|official": {
    "verified": "2026-10-28"
