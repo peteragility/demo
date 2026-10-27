@@ -12,6 +12,16 @@ const date = {asOf: '2026-10-02'};
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `Expected ${b}, got ${a}`);
 const selected = (cell, label) => cell.variants.find(v => v.label === label).id;
 
+test('Databricks Sonnet 5.5 and Sonnet 5 keep separate published cache charges', () => {
+  for (const [version, cached] of [['5.5', 0.1], ['5', 0.2]]) {
+    const cell = published.models['anthropic/claude-sonnet-' + version].platforms.databricks;
+    close(cell.in, 2); close(cell.out, 10); close(cell.cache_read, cached);
+    close(cell.cache_write, 2.5); close(cell.cache_write_1h, 4);
+    const regional = cell.variants.find(v => v.comparison_scope === 'regional' && v.service_tier === 'standard');
+    close(regional.cache_read, cached * 1.1);
+  }
+});
+
 test('Alibaba regional offers retain their own scope, rates and checkpoint match', () => {
   const glm = published.models['zai/glm-5.3'].platforms.alicloud;
   const us = glm.variants.find(v => v.endpoint === 'US (Virginia) · US scope');
