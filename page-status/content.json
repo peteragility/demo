@@ -2,16 +2,16 @@
   "schema": 1,
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-10-27",
-      "lastSuccess": "2026-10-27",
+      "checkedAt": "2026-10-28",
+      "lastSuccess": "2026-10-28",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-10-27",
-      "lastSuccess": "2026-10-27",
+      "checkedAt": "2026-10-28",
+      "lastSuccess": "2026-10-28",
       "errors": 0,
       "review": 0,
       "sources": 10,
