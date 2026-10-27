@@ -4322,12 +4322,6 @@
                 "global",
                 "Global (api.x.ai)",
                 "No APAC region or endpoint listed"
-              ],
-              [
-                "Americas",
-                "unknown",
-                "Batch API",
-                "Supported in us-east-1 and us-west-2; separate US regional-endpoint Batch terms are not verified"
               ]
             ],
             "hk": [
@@ -4345,7 +4339,7 @@
               ],
               [
                 "Tiers",
-                "Batch is supported in us-east-1 and us-west-2 at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint."
+                "Batch is supported at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint. Current model cards do not specify Batch processing regions."
               ],
               [
                 "Residency",
@@ -4861,12 +4855,6 @@
                 "global",
                 "Global (api.x.ai)",
                 "No APAC region or endpoint listed"
-              ],
-              [
-                "Americas",
-                "unknown",
-                "Batch API",
-                "Supported in us-east-1 and us-west-2; separate US regional-endpoint Batch terms are not verified"
               ]
             ],
             "hk": [
@@ -4884,7 +4872,7 @@
               ],
               [
                 "Tiers",
-                "Batch is supported in us-east-1 and us-west-2 at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint."
+                "Batch is supported at 20% off all standard token rates, including cache hits and long-context rates. Priority costs 2x on all token types, billed only when the response confirms priority. No Batch rate is inferred for the US regional endpoint. Current model cards do not specify Batch processing regions."
               ],
               [
                 "Residency",
