@@ -1538,6 +1538,50 @@
    "adi": true,
    "changed_at": "2026-10-04"
   },
+  "openai/gpt-6.1-terra": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+    ],
+    [
+     "Americas",
+     "global",
+     "Cross-geo",
+     "AWS São Paulo · Azure Canada Central, Brazil South"
+    ],
+    [
+     "Europe",
+     "in-region",
+     "In-region",
+     "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+    ],
+    [
+     "Europe",
+     "global",
+     "Cross-geo",
+     "Azure UK South"
+    ],
+    [
+     "APAC",
+     "global",
+     "Cross-geo",
+     "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Azure East Asia (Hong Kong) through cross-geo routing"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region in Databricks' model-serving tables"
+   ],
+   "adi": true,
+   "changed_at": "2026-10-29"
+  },
   "openai/gpt-oss-120b": {
    "regions": [
     [
@@ -2673,6 +2717,50 @@
    ],
    "read_at": "2026-10-29",
    "changed_at": "2026-10-10"
+  },
+  "openai/gpt-6.1-terra": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-10-29",
+   "changed_at": "2026-10-29"
   }
  }
 }

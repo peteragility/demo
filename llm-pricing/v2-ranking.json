@@ -43,6 +43,10 @@
    "rank": 12,
    "arena": "Qwen3.8-Max (0902)"
   },
+  "openai/gpt-6.1-terra": {
+   "rank": 14,
+   "arena": "GPT-6.1 Terra (Max)"
+  },
   "deepseek/deepseek-v4.1-flash": {
    "rank": 15,
    "arena": "DeepSeek-V4.1-Flash-20261017 (Max)"

@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "checked_at": "2026-10-29",
- "sources_checked": 114,
+ "sources_checked": 116,
  "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-10-29",
@@ -117,9 +117,88 @@
   "aws-pricing-page": "2026-10-29",
   "gcp-gemini-4-argon": "2026-10-29",
   "api-google-gemini-4-argon": "2026-10-29",
-  "gcp-deepseek-v4-1-flash": "2026-10-29"
+  "gcp-deepseek-v4-1-flash": "2026-10-29",
+  "api-west-openai-m-gpt-6-1-terra": "2026-10-29",
+  "aws-card-gpt-6-1-terra": "2026-10-29"
  },
  "pending_general": [
+  {
+   "source": "google-pricing",
+   "url": "https://ai.google.dev/gemini-api/docs/pricing",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"Input price\",\"Free of charge\",\"$0.15\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"Input price\",\"Not available\",\"$0.075\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}"
+   ],
+   "removed": [
+    "table: {\"cells\":[\"File search\",\"Free of charge\",\"Charged for embeddings at $0.15 / 1M tokens. Retrieved document tokens charged as regular tokens per model pricing.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}"
+   ],
+   "added_all": [
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"Input price\",\"Free of charge\",\"$0.15\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"Input price\",\"Not available\",\"$0.075\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}"
+   ],
+   "removed_all": [
+    "table: {\"cells\":[\"File search\",\"Free of charge\",\"Charged for embeddings at $0.15 / 1M tokens. Retrieved document tokens charged as regular tokens per model pricing.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}"
+   ],
+   "baseline_digest": "57c1abcd8da56a6f21e310ef741a7854e9da9e2e1db4336d8b1c41f8066f8c27"
+  },
+  {
+   "source": "vertex-pricing",
+   "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit and a date changed",
+   "added": [],
+   "removed": [
+    "notice: * Available at no charge until Oct 16, 2026.",
+    "notice: * If a query input context is longer than 200K tokens, all tokens are charged at long context rates.",
+    "notice: * If a query input context is longer than or equal to 200K tokens, all tokens (input and output) are charged at long context rates.",
+    "notice: ** If a query input context is longer than or equal to 100k tokens, all tokens (input and output) are charged at long context rates.",
+    "notice: 1h Batch Cache Write",
+    "notice: 5m Batch Cache Write",
+    "table: {\"cells\":[\"DeepSeek-OCR\",\"Input\",\"$0.30\"],\"heading\":\"Pricing for Agent Platform's code completion / Deepseek's models\"}",
+    "table: {\"cells\":[\"DeepSeek-OCR\",\"Output\",\"$1.20\"],\"heading\":\"Pricing for Agent Platform's code completion / Deepseek's models\"}",
+    "table: {\"cells\":[\"Mistral OCR (25.05)\",\"Input\",\"$0.0005 (or $0.0005/page)\"],\"heading\":\"Pricing for Agent Platform's code completion / Mistral AI’s models\"}",
+    "table: {\"cells\":[\"Mistral OCR (25.05)\",\"Output\",\"$0.0005 (or $0.0005/page)\"],\"heading\":\"Pricing for Agent Platform's code completion / Mistral AI’s models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens *\",\"Price (/1M tokens) > 200K input tokens *\",\"Price (/1M tokens) =< 100K input tokens **\",\"Price (/1M tokens) > 100K input tokens **\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens\",\"Price (/1M tokens) > 200K input tokens\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}"
+   ],
+   "added_all": [],
+   "removed_all": [
+    "notice: * Available at no charge until Oct 16, 2026.",
+    "notice: * If a query input context is longer than 200K tokens, all tokens are charged at long context rates.",
+    "notice: * If a query input context is longer than or equal to 200K tokens, all tokens (input and output) are charged at long context rates.",
+    "notice: ** If a query input context is longer than or equal to 100k tokens, all tokens (input and output) are charged at long context rates.",
+    "notice: 1h Batch Cache Write",
+    "notice: 5m Batch Cache Write",
+    "table: {\"cells\":[\"DeepSeek-OCR\",\"Input\",\"$0.30\"],\"heading\":\"Pricing for Agent Platform's code completion / Deepseek's models\"}",
+    "table: {\"cells\":[\"DeepSeek-OCR\",\"Output\",\"$1.20\"],\"heading\":\"Pricing for Agent Platform's code completion / Deepseek's models\"}",
+    "table: {\"cells\":[\"Mistral OCR (25.05)\",\"Input\",\"$0.0005 (or $0.0005/page)\"],\"heading\":\"Pricing for Agent Platform's code completion / Mistral AI’s models\"}",
+    "table: {\"cells\":[\"Mistral OCR (25.05)\",\"Output\",\"$0.0005 (or $0.0005/page)\"],\"heading\":\"Pricing for Agent Platform's code completion / Mistral AI’s models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens *\",\"Price (/1M tokens) > 200K input tokens *\",\"Price (/1M tokens) =< 100K input tokens **\",\"Price (/1M tokens) > 100K input tokens **\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens\",\"Price (/1M tokens) > 200K input tokens\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price (/1M tokens) =< 200K input tokens\",\"Price (/1M tokens) > 200K input tokens\"],\"heading\":\"Pricing for Agent Platform's code completion / xAI's Grok models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price / 1M tokens (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / xAI's Grok models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / Deepseek's models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / GLM's models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / Meta's Llama models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / MiniMax's models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / Mistral AI’s models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / Moonshot's models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / OpenAI's models\"}",
+    "table: {\"cells\":[\"Model\",\"Type\",\"Price /1M (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / Qwen's models\"}",
+    "table: {\"cells\":[\"Tool\",\"Price (USD)\"],\"heading\":\"Pricing for Agent Platform's code completion / Anthropic’s Claude models / Pricing for tools\"}"
+   ],
+   "baseline_digest": "96cc46fe22b31a165f63e896aa87a17b31d73cf7fa5ef517dbee43caff071ccc"
+  },
   {
    "source": "fireworks-pricing",
    "url": "https://docs.fireworks.ai/serverless/pricing",
@@ -244,7 +323,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-fable-5.1|official": {
    "verified": "2026-10-28",
@@ -270,7 +357,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-fable-5|official": {
    "verified": "2026-10-28",
@@ -296,7 +391,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-haiku-4.5|official": {
    "verified": "2026-10-29"
@@ -317,7 +420,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-haiku-5.5|official": {
    "verified": "2026-10-29"
@@ -338,7 +449,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-opus-4.6|official": {
    "verified": "2026-10-28",
@@ -364,7 +483,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-opus-4.7|official": {
    "verified": "2026-10-28",
@@ -390,7 +517,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-opus-4.8|official": {
    "verified": "2026-10-28",
@@ -416,7 +551,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-opus-5.5|official": {
    "verified": "2026-10-28",
@@ -447,7 +590,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-opus-5|official": {
    "verified": "2026-10-28",
@@ -473,7 +624,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-sonnet-4.6|official": {
    "verified": "2026-10-29"
@@ -494,7 +653,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5.5|official": {
    "verified": "2026-10-28",
@@ -525,7 +692,15 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5|official": {
    "verified": "2026-10-28",
@@ -551,7 +726,10 @@
    "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "deepseek/deepseek-v4-flash|official": {
    "verified": "2026-10-29"
@@ -572,7 +750,10 @@
    "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "deepseek/deepseek-v4-pro|official": {
    "verified": "2026-10-29"
@@ -596,7 +777,15 @@
    ]
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "deepseek/deepseek-v4.1-flash|official": {
    "verified": "2026-10-29"
@@ -617,10 +806,16 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "google/gemini-3.1-flash-lite|official": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.1-pro|alicloud": {
    "verified": "2026-10-29"
@@ -640,11 +835,14 @@
   "google/gemini-3.1-pro|gcloud": {
    "verified": "2026-10-28",
    "unchecked": [
-    "gcp-locations"
+    "vertex-pricing"
    ]
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.5-flash-lite|alicloud": {
    "verified": "2026-10-29"
@@ -662,10 +860,16 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.6-flash|alicloud": {
    "verified": "2026-10-29"
@@ -683,10 +887,16 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "google/gemini-3.6-flash|official": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.7-flash|alicloud": {
    "verified": "2026-10-29"
@@ -704,10 +914,16 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.8-flash|alicloud": {
    "verified": "2026-10-29"
@@ -725,10 +941,16 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-4-argon|alicloud": {
    "verified": "2026-10-29"
@@ -746,10 +968,16 @@
    "verified": "2026-10-29"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-10-29"
@@ -764,7 +992,10 @@
    "verified": "2026-10-29"
   },
   "google/gemma-3-12b|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "meta/llama-3.1-8b|alicloud": {
    "verified": "2026-10-29"
@@ -779,7 +1010,10 @@
    "verified": "2026-10-29"
   },
   "meta/llama-3.1-8b|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "meta/llama-3.3-70b|alicloud": {
    "verified": "2026-10-29"
@@ -794,7 +1028,14 @@
    "verified": "2026-10-29"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "meta/llama-4-maverick|alicloud": {
    "verified": "2026-10-29"
@@ -809,7 +1050,15 @@
    "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-10-29"
@@ -830,7 +1079,10 @@
    ]
   },
   "minimax/minimax-m3|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "minimax/minimax-m3|official": {
    "verified": "2026-10-28",
@@ -857,7 +1109,10 @@
    ]
   },
   "mistral/mistral-medium-3.5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "mistral/mistral-medium-3.5|official": {
    "verified": "2026-10-28",
@@ -882,7 +1137,10 @@
    "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "moonshot/kimi-k2.7|official": {
    "verified": "2026-10-29"
@@ -906,7 +1164,10 @@
    ]
   },
   "moonshot/kimi-k3|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "moonshot/kimi-k3|official": {
    "verified": "2026-10-29"
@@ -927,7 +1188,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-5.4|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-5.4|official": {
    "verified": "2026-10-29"
@@ -948,7 +1212,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-5.5|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-5.5|official": {
    "verified": "2026-10-29"
@@ -969,7 +1236,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-5.6-luna|official": {
    "verified": "2026-10-29"
@@ -990,7 +1260,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-5.6-sol|official": {
    "verified": "2026-10-29"
@@ -1011,7 +1284,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-5.6-terra|official": {
    "verified": "2026-10-29"
@@ -1032,7 +1308,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-6-astra|official": {
    "verified": "2026-10-29"
@@ -1053,7 +1332,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-6-luna|official": {
    "verified": "2026-10-29"
@@ -1074,7 +1356,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-6-sol|official": {
    "verified": "2026-10-29"
@@ -1095,13 +1380,46 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-6.1-sol|official": {
    "verified": "2026-10-28",
    "changed_at": "2026-10-29",
    "sources": [
     "api-west-openai-m-gpt-6-1-sol"
+   ]
+  },
+  "openai/gpt-6.1-terra|alicloud": {
+   "verified": "2026-10-29"
+  },
+  "openai/gpt-6.1-terra|azure_foundry": {
+   "verified": "2026-10-29"
+  },
+  "openai/gpt-6.1-terra|bedrock": {
+   "verified": "2026-10-29",
+   "unchecked": [
+    "aws-card-gpt-6-1-terra"
+   ]
+  },
+  "openai/gpt-6.1-terra|databricks": {
+   "verified": "2026-10-29"
+  },
+  "openai/gpt-6.1-terra|fireworks": {
+   "verified": "2026-10-29"
+  },
+  "openai/gpt-6.1-terra|gcloud": {
+   "verified": null,
+   "unchecked": [
+    "vertex-pricing"
+   ]
+  },
+  "openai/gpt-6.1-terra|official": {
+   "verified": "2026-10-29",
+   "unchecked": [
+    "api-west-openai-m-gpt-6-1-terra"
    ]
   },
   "openai/gpt-oss-120b|alicloud": {
@@ -1123,7 +1441,15 @@
    ]
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-oss-120b|official": {
    "verified": "2026-10-29"
@@ -1141,7 +1467,15 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "openai/gpt-oss-20b|official": {
    "verified": "2026-10-29"
@@ -1159,7 +1493,15 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "qwen/qwen3-next-80b-instruct|official": {
    "verified": "2026-10-29"
@@ -1177,7 +1519,10 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3.5-122b|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "qwen/qwen3.5-122b|official": {
    "verified": "2026-10-29"
@@ -1201,7 +1546,10 @@
    ]
   },
   "qwen/qwen3.7-max|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "qwen/qwen3.7-max|official": {
    "verified": "2026-10-29"
@@ -1225,7 +1573,10 @@
    ]
   },
   "qwen/qwen3.7-plus|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "qwen/qwen3.7-plus|official": {
    "verified": "2026-10-29"
@@ -1249,7 +1600,10 @@
    ]
   },
   "qwen/qwen3.8-27b|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "qwen/qwen3.8-27b|official": {
    "verified": "2026-10-29"
@@ -1273,7 +1627,10 @@
    ]
   },
   "qwen/qwen3.8-flash|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "qwen/qwen3.8-flash|official": {
    "verified": "2026-10-29"
@@ -1297,7 +1654,10 @@
    ]
   },
   "qwen/qwen3.8-max|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "qwen/qwen3.8-max|official": {
    "verified": "2026-10-29"
@@ -1318,7 +1678,10 @@
    "verified": "2026-10-29"
   },
   "tml/inkling|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "tml/inkling|official": {
    "verified": "2026-10-29"
@@ -1336,7 +1699,15 @@
    "verified": "2026-10-29"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "xai/grok-4.6|official": {
    "verified": "2026-10-29"
@@ -1355,8 +1726,13 @@
   },
   "xai/grok-4.7|gcloud": {
    "verified": "2026-10-29",
-   "accepted": [
-    "gcp-grok-4-7"
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
    ]
   },
   "xai/grok-4.7|official": {
@@ -1381,7 +1757,15 @@
    ]
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "vertex-pricing"
+   ],
+   "quiet": true,
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "zai/glm-5.2|official": {
    "verified": "2026-10-29"
@@ -1405,7 +1789,10 @@
    ]
   },
   "zai/glm-5.3-flash|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "zai/glm-5.3-flash|official": {
    "verified": "2026-10-29"
@@ -1429,7 +1816,10 @@
    ]
   },
   "zai/glm-5.3|gcloud": {
-   "verified": "2026-10-29"
+   "verified": "2026-10-29",
+   "unchecked": [
+    "vertex-pricing"
+   ]
   },
   "zai/glm-5.3|official": {
    "verified": "2026-10-29"

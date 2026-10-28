@@ -28385,20 +28385,51 @@
           "model_id_checked_at": "2026-10-29",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-29",
             "src": [
               "dbx_region",
               "dbx_region_azure",
               "dbx_region_gcp"
             ],
-            "regions": [],
+            "regions": [
+              [
+                "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+              ],
+              [
+                "Americas",
+                "global",
+                "Cross-geo",
+                "AWS São Paulo · Azure Canada Central, Brazil South"
+              ],
+              [
+                "Europe",
+                "in-region",
+                "In-region",
+                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+              ],
+              [
+                "Europe",
+                "global",
+                "Cross-geo",
+                "Azure UK South"
+              ],
+              [
+                "APAC",
+                "global",
+                "Cross-geo",
+                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+              ]
+            ],
             "hk": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "routed",
+              "Azure East Asia (Hong Kong) through cross-geo routing"
             ],
             "tw": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "none",
+              "No Taiwan region in Databricks' model-serving tables"
             ],
             "notes": [
               [
@@ -28410,12 +28441,16 @@
                 "Short context is ≤272K input; above it, the exact published long-context rates apply."
               ],
               [
+                "Residency",
+                "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
+              ],
+              [
                 "Regional processing",
                 "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
               ],
               [
-                "Regions",
-                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
+                "Azure",
+                "Azure Databricks provides access through ADI Services, provided by Databricks (†)."
               ],
               [
                 "Billing",
