@@ -122,130 +122,7 @@
   "aws-card-gpt-6-1-terra": "2026-10-29",
   "vertex-partner-pricing": "2026-10-29"
  },
- "pending_general": [
-  {
-   "source": "google-pricing",
-   "url": "https://ai.google.dev/gemini-api/docs/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
-    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
-    "table: {\"cells\":[\"Input price\",\"Free of charge\",\"$0.15\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
-    "table: {\"cells\":[\"Input price\",\"Not available\",\"$0.075\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"File search\",\"Free of charge\",\"Charged for embeddings at $0.15 / 1M tokens. Retrieved document tokens charged as regular tokens per model pricing.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
-    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
-    "table: {\"cells\":[\"Input price\",\"Free of charge\",\"$0.15\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
-    "table: {\"cells\":[\"Input price\",\"Not available\",\"$0.075\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"File search\",\"Free of charge\",\"Charged for embeddings at $0.15 / 1M tokens. Retrieved document tokens charged as regular tokens per model pricing.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}"
-   ],
-   "baseline_digest": "57c1abcd8da56a6f21e310ef741a7854e9da9e2e1db4336d8b1c41f8066f8c27"
-  },
-  {
-   "source": "fireworks-pricing",
-   "url": "https://docs.fireworks.ai/serverless/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.225 / $0.045 / $0.75\",\"$0.28125 / $0.05625 / $0.9375\"],\"heading\":\"​ Text and vision models\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.225 / $0.045 / $0.75\",\"$0.28125 / $0.05625 / $0.9375\"],\"heading\":\"​ Text and vision models\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "eb82f57309bc98b83f925bb7caabaab55aa8d7aee6ae18f62dd285425aef706a"
-  },
-  {
-   "source": "minimax-pricing",
-   "url": "https://platform.minimax.io/docs/pricing/overview",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio · View Video\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio or Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\",\"1 month for all four standard packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech or video workloads where you expect to make good use of the included points.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}"
-   ],
-   "removed": [
-    "notice: Resource pack remaining quantity is not inherited; it will automatically reset to zero when expired.",
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Discounted Price\",\"$1,000\",\"$2,500\",\"$4,500\",\"$6,000\",\"-\"],\"heading\":\"​ Video Packages\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Subscription\",\"Video Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Subscriptions and Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Functions\",\"• Supports Video Generation API • RPM: 20\",\"• Supports Video Generation API • RPM: 30\",\"• Supports Video Generation API • RPM: 40\",\"• Supports Video Generation API • RPM: 50\",\"• Unlimited RPM/TPM • Priority access to model updates • Exclusive security and stability guarantees\"],\"heading\":\"​ Video Packages\"}",
-    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Subscription · View Video Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Subscription or a prepaid Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio Subscription\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio · View Video\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio or Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\",\"1 month for all four standard packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech or video workloads where you expect to make good use of the included points.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Yearly Subscription (20% off)\",\"$48\",\"$288\",\"$950\",\"$2,390\",\"$9,590\",\"/\"],\"heading\":\"​ Audio\"}",
-    "text: Audio points: Starter, Standard, Pro, Scale, and Business each include a monthly allowance of audio points. The allowance varies by plan. See the Audio package pricing table for included points, voice slots, and rate limits.",
-    "text: Which models can I use with packages?"
-   ],
-   "removed_all": [
-    "notice: Resource pack remaining quantity is not inherited; it will automatically reset to zero when expired.",
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Discounted Price\",\"$1,000\",\"$2,500\",\"$4,500\",\"$6,000\",\"-\"],\"heading\":\"​ Video Packages\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Subscription\",\"Video Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Subscriptions and Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Functions\",\"• Supports Video Generation API • RPM: 20\",\"• Supports Video Generation API • RPM: 30\",\"• Supports Video Generation API • RPM: 40\",\"• Supports Video Generation API • RPM: 50\",\"• Unlimited RPM/TPM • Priority access to model updates • Exclusive security and stability guarantees\"],\"heading\":\"​ Video Packages\"}",
-    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Subscription · View Video Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Subscription or a prepaid Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
-    "table: {\"cells\":[\"Package Category\",\"Standard (SAVE 5%)\",\"Pro (SAVE 10%)\",\"Scale (SAVE 15%)\",\"Business (SAVE 20%)\",\"Custom Pricing\"],\"heading\":\"​ Video Packages\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio Subscription\",\"Video Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Subscription term / package validity\",\"Monthly, 3-month (10% off), or annual (20% off) subscriptions\",\"The four standard packages are valid for 1 month\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Total video points\",\"3,760 video points\",\"9,920 video points\",\"18,900 video points\",\"26,780 video points\",\"As many video points as you need\"],\"heading\":\"​ Video Packages\"}",
-    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech or video workloads where you expect to use the included points during the subscription term or before the package expires.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Valid\",\"1 month\",\"1 month\",\"1 month\",\"1 month\",\"-\"],\"heading\":\"​ Video Packages\"}",
-    "table: {\"cells\":[\"Yearly Subscription (20% off)\",\"$48\",\"$288\",\"$950\",\"$2,390\",\"$9,590\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
-    "text: Audio points: Starter, Standard, Pro, Scale, and Business each include a monthly allowance of audio points. The allowance varies by plan. See the Audio Subscription table for included points, voice slots, and rate limits.",
-    "text: Resource pack remaining quantity is not inherited; it will automatically reset to zero when expired.",
-    "text: The deduction times for generating videos differ depending on the model:",
-    "text: Video generation failures or videos that trigger security review will not result in a deduction.",
-    "text: Which models can I use with subscriptions and packages?"
-   ],
-   "baseline_digest": "a7f211f44e1537db4cd22a42d20a60b0546ac416e2a87ec20b854511d0ea9699"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-10-29",
@@ -255,13 +132,7 @@
   "published_at": "2026-10-27"
  },
  "databricks_coverage": [],
- "review": [
-  "Gemini 3.6 Flash · gcloud",
-  "Gemini 3.7 Flash · gcloud",
-  "Gemini 3.8 Flash · gcloud",
-  "Gemini 4 Argon · gcloud",
-  "GPT-6.1 Sol · official"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -280,18 +151,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|alicloud": {
    "verified": "2026-10-29"
@@ -309,18 +172,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
    "verified": "2026-10-29"
@@ -338,10 +193,7 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|official": {
    "verified": "2026-10-29"
@@ -362,10 +214,7 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|official": {
    "verified": "2026-10-29"
@@ -386,18 +235,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|alicloud": {
    "verified": "2026-10-29"
@@ -415,18 +256,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|alicloud": {
    "verified": "2026-10-29"
@@ -444,18 +277,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-10-29"
@@ -473,18 +298,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-10-29"
@@ -493,12 +310,7 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|bedrock": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "aws-card-claude-opus-5"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|databricks": {
    "verified": "2026-10-29"
@@ -507,18 +319,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-10-29"
@@ -536,10 +340,7 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|official": {
    "verified": "2026-10-29"
@@ -560,18 +361,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|alicloud": {
    "verified": "2026-10-29"
@@ -580,12 +373,7 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|bedrock": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "aws-card-claude-sonnet-5"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|databricks": {
    "verified": "2026-10-29"
@@ -594,18 +382,10 @@
    "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-anthropic-residency"
-   ],
-   "quiet": true
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
    "verified": "2026-10-29"
@@ -656,16 +436,10 @@
    "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|official": {
    "verified": "2026-10-29"
@@ -686,17 +460,10 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-10-29",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|alicloud": {
    "verified": "2026-10-29"
@@ -714,17 +481,10 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
    "verified": "2026-10-29"
@@ -742,17 +502,10 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-10-29",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|alicloud": {
    "verified": "2026-10-29"
@@ -770,17 +523,10 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-29",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|alicloud": {
    "verified": "2026-10-29"
@@ -798,17 +544,10 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-29",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|alicloud": {
    "verified": "2026-10-29"
@@ -826,17 +565,10 @@
    "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-29",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|alicloud": {
    "verified": "2026-10-29"
@@ -854,17 +586,10 @@
    "verified": "2026-10-29"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-10-29",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-10-29"
@@ -903,10 +628,7 @@
    "verified": "2026-10-29"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|alicloud": {
    "verified": "2026-10-29"
@@ -921,10 +643,7 @@
    "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-10-29"
@@ -939,16 +658,10 @@
    "verified": "2026-10-29"
   },
   "minimax/minimax-m3|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|official": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "minimax-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|alicloud": {
    "verified": "2026-10-29"
@@ -963,17 +676,10 @@
    "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-other-mistral-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|alicloud": {
    "verified": "2026-10-29"
@@ -1006,10 +712,7 @@
    "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|official": {
    "verified": "2026-10-29"
@@ -1174,11 +877,7 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|official": {
-   "verified": "2026-10-28",
-   "changed_at": "2026-10-29",
-   "sources": [
-    "api-west-openai-m-gpt-6-1-sol"
-   ]
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-terra|alicloud": {
    "verified": "2026-10-29"
@@ -1187,10 +886,7 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-6.1-terra|bedrock": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "aws-card-gpt-6-1-terra"
-   ]
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-terra|databricks": {
    "verified": "2026-10-29"
@@ -1199,10 +895,7 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-6.1-terra|official": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "api-west-openai-m-gpt-6-1-terra"
-   ]
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|alicloud": {
    "verified": "2026-10-29"
@@ -1217,16 +910,10 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|official": {
    "verified": "2026-10-29"
@@ -1244,10 +931,7 @@
    "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|official": {
    "verified": "2026-10-29"
@@ -1265,10 +949,7 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|official": {
    "verified": "2026-10-29"
@@ -1301,10 +982,7 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|official": {
    "verified": "2026-10-29"
@@ -1322,10 +1000,7 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|official": {
    "verified": "2026-10-29"
@@ -1343,10 +1018,7 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|official": {
    "verified": "2026-10-29"
@@ -1364,10 +1036,7 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|official": {
    "verified": "2026-10-29"
@@ -1385,10 +1054,7 @@
    "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|official": {
    "verified": "2026-10-29"
@@ -1424,10 +1090,7 @@
    "verified": "2026-10-29"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "xai/grok-4.6|official": {
    "verified": "2026-10-29"
@@ -1445,10 +1108,7 @@
    "verified": "2026-10-29"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "xai/grok-4.7|official": {
    "verified": "2026-10-29"
@@ -1466,16 +1126,10 @@
    "verified": "2026-10-29"
   },
   "zai/glm-5.2|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-10-29",
-   "unchecked": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|official": {
    "verified": "2026-10-29"
@@ -1493,10 +1147,7 @@
    "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|official": {
    "verified": "2026-10-29"
@@ -1514,10 +1165,7 @@
    "verified": "2026-10-29"
   },
   "zai/glm-5.3|fireworks": {
-   "verified": "2026-10-28",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3|official": {
    "verified": "2026-10-29"
