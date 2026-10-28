@@ -1145,6 +1145,14 @@
    "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/opus-4-6",
    "label": "Claude Opus 4.6 on Google Cloud model page",
    "short": "model page"
+  },
+  "openai_terra61": {
+   "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra.md",
+   "label": "GPT-6.1 Terra API rates, context and cache retention"
+  },
+  "aws_terra61": {
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-terra.html",
+   "label": "Bedrock GPT-6.1 Terra pricing and regions"
   }
  },
  "moonshot/kimi-k2.7": {
@@ -8134,7 +8142,7 @@
    "notes": [
     [
      "Structured outputs",
-     "Structured outputs are not supported through India geographic CRIS or in-region Seoul; use a supported endpoint/profile."
+     "The current model card lists structured outputs as supported and no longer includes its former geographic/in-region exclusions; confirm the selected endpoint supports the feature."
     ],
     [
      "Batch",
@@ -8543,7 +8551,7 @@
    "notes": [
     [
      "Structured outputs",
-     "Structured outputs are not supported through India geographic CRIS or in-region Seoul/Singapore; use a supported endpoint/profile."
+     "The current model card lists structured outputs as supported and no longer includes its former geographic/in-region exclusions; confirm the selected endpoint supports the feature."
     ],
     [
      "In-region",
@@ -8694,7 +8702,7 @@
    "notes": [
     [
      "Launch",
-     "Preview (Pre-GA terms), released 30 Sep 2026; batch predictions and Provisioned Throughput are not supported."
+     "GA, released 30 Sep 2026; function calling, structured output and reasoning are supported. Batch predictions, standard pay-as-you-go and Provisioned Throughput remain unsupported on this card."
     ],
     [
      "Pricing",
@@ -14795,6 +14803,128 @@
     "claude-opus-4-6 (Foundry deployment/model name)",
     "version 1 = Hosted on Anthropic infrastructure (no Hosted on Azure version)",
     "Billing: 'Claude Platform on Foundry' Azure Marketplace offer, CCU meter"
+   ]
+  }
+ },
+ "openai/gpt-6.1-terra": {
+  "official": {
+   "checked_at": "2026-10-29",
+   "base": {
+    "endpoint": "Global (api.openai.com)"
+   },
+   "src": [
+    "openai_terra61",
+    "openai"
+   ],
+   "regions": [
+    [
+     "Global",
+     "global",
+     "Global API",
+     "Regional processing carries +10% where available; exact processing locations require confirmation."
+    ]
+   ],
+   "hk": [
+    "unknown",
+    "No Hong Kong processing location verified for this model"
+   ],
+   "tw": [
+    "unknown",
+    "No Taiwan processing location verified for this model"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "30m writes cost 1.25x input; 12h writes cost 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime."
+    ],
+    [
+     "Context",
+     "Above 272K input, input/cache rates double and output is 1.5x for the full request; API context window 1,050,000 tokens."
+    ]
+   ],
+   "ids": [
+    "gpt-6.1-terra"
+   ]
+  },
+  "bedrock": {
+   "checked_at": "2026-10-29",
+   "regions_from_card": true,
+   "src": [
+    "aws_terra61"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Endpoints",
+     "Mantle in-region in N. Virginia; runtime uses US geographic or global cross-region profiles, without direct in-region inference."
+    ],
+    [
+     "Tiers",
+     "Standard only; no Priority, Flex or Reserved tier listed. No per-token Batch offer is verified."
+    ],
+    [
+     "Caching",
+     "Published write rates retain prefixes for 30 minutes; no 12h write price is inferred."
+    ]
+   ],
+   "ids": [
+    "openai.gpt-6.1-terra",
+    "us.openai.gpt-6.1-terra",
+    "global.openai.gpt-6.1-terra"
+   ]
+  },
+  "databricks": {
+   "checked_at": "2026-10-29",
+   "notes": [
+    [
+     "Billing",
+     "Standard/Priority are DBU per million tokens at $0.07/DBU; the separate Batch table is DBU/hour, not a token rate."
+    ],
+    [
+     "Context",
+     "Short context is ≤272K input; above it, the exact published long-context rates apply."
+    ]
    ]
   }
  }

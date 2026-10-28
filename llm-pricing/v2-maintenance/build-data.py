@@ -1026,6 +1026,48 @@ def review_october21(data):
         "The model card also lists London (europe-west2) and Singapore (asia-southeast1) for ML processing and Provisioned Throughput. Separate single-region per-token rates have not been verified; these endpoints are not added to price comparisons."])
 
 
+def add_terra61(data):
+    """Exact GPT-6.1 Terra sources reviewed 29 Oct; no predecessor prices or regions."""
+    day = "2026-10-29"
+    direct = offer(1, 5, 0.05, 1.25, src="openai_terra61", tier="Standard · ≤272K input",
+                   model_id="gpt-6.1-terra", context_threshold=272000,
+                   long_context=dict(rates(2, 7.5, 0.1, 2.5), cache_write_12h=5), cache_write_12h=2.5)
+    direct["variants"] = [
+        variant("Fast", 2, 10, 0.1, 2.5, service="priority", cache_write_12h=5,
+                long_context=dict(rates(4, 15, 0.2, 5), cache_write_12h=10)),
+        variant("Batch", 0.5, 2.5, 0.025, 0.625, service="batch", cache_write_12h=1.25,
+                long_context=dict(rates(1, 3.75, 0.05, 1.25), cache_write_12h=2.5)),
+        variant("Flex", 0.5, 2.5, 0.025, 0.625, service="flex", cache_write_12h=1.25,
+                long_context=dict(rates(1, 3.75, 0.05, 1.25), cache_write_12h=2.5)),
+        variant("Regional processing +10%", 1.1, 5.5, 0.055, 1.375, scope="regional", cache_write_12h=2.75,
+                long_context=dict(rates(2.2, 8.25, 0.11, 2.75), cache_write_12h=5.5)),
+    ]
+    for v in direct["variants"]:
+        v["endpoint"] = "Regional processing" if v["comparison_scope"] == "regional" else "Global (api.openai.com)"
+    dbx = offer(1, 5, 0.05, 1.25, src="dbx_prop", tier="Standard · short context",
+                model_id="databricks-gpt-6-1-terra", model_id_source="dbx_models", dbu_rate_basis=0.07,
+                context_threshold=272000, long_context=rates(2, 7.5, 0.1, 2.5))
+    dbx["variants"] = [
+        variant("Priority", 2, 10, 0.1, 2.5, service="priority", long_context=rates(4, 15, 0.2, 5)),
+        variant("Regional processing ⌖ +10%", 1.1, 5.5, 0.055, 1.375, scope="regional"),
+    ]
+    aws = offer(1, 5, 0.05, 1.25, src="aws_terra61", tier="Global cross-region · runtime",
+                model_id="openai.gpt-6.1-terra", context_threshold=272000, long_context=rates(2, 7.5, 0.1, 2.5))
+    aws["variants"] = [
+        variant("Mantle in-region (us-east-1)", 1.1, 5.5, 0.055, 1.375, scope="regional", long_context=rates(2.2, 8.25, 0.11, 2.75)),
+        variant("US geographic cross-region", 1.1, 5.5, 0.055, 1.375, scope="geographic", long_context=rates(2.2, 8.25, 0.11, 2.75)),
+    ]
+    platforms = dict(official=direct, databricks=dbx, bedrock=aws,
+        azure_foundry=pending("The regional catalog lists version 2026-10-26; exact token prices remain unverified.",
+                              "az_learn_regions", "gpt-6.1-terra", True),
+        gcloud=unavailable("vertex", "No closed GPT-6.1 Terra offer verified."),
+        fireworks=unavailable("fireworks_nexus", "Nexus uses your provider key; no Fireworks per-token offer verified."),
+        alicloud=unavailable("ali", "No closed GPT-6.1 Terra offer verified."))
+    data["models"]["openai/gpt-6.1-terra"] = dict(name="GPT-6.1 Terra", short="GPT-6.1 Terra", maker="OpenAI",
+        group="openai", oss=False, ctx="1.05M", badges=["Added"],
+        about="Visual reasoning, computer use and writing", platforms={pl: checked(c, day) for pl, c in platforms.items()})
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1051,6 +1093,7 @@ def build():
     corrections(data)
     enrich_context_and_promotions(data)
     add_gemini4(data)
+    add_terra61(data)
     apply_endpoints(data)
     finish_variants(data)
     review_october21(data)

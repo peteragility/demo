@@ -459,3 +459,27 @@ test('Fireworks 1017 prices remain separate from original and US-only checkpoint
     close(result.total, rates[0] * 0.5 + rates[1] * 0.5 + rates[2]);
   }
 });
+
+
+test('GPT-6.1 Terra keeps exact platform tiers, context boundary and cache lifetimes', () => {
+  const model = published.models['openai/gpt-6.1-terra'];
+  assert.ok(model, 'new top-50 model must have its own offers');
+  for (const platform of ['official', 'databricks', 'bedrock']) {
+    const c = model.platforms[platform];
+    const short = M.resolveOffer(c, {asOf:'2026-10-29', promptTokens:272000});
+    const long = M.resolveOffer(c, {asOf:'2026-10-29', promptTokens:272001});
+    close(short.in, 1); close(short.out, 5); close(short.cache_read, 0.05); close(short.cache_write, 1.25);
+    close(long.in, 2); close(long.out, 7.5); close(long.cache_read, 0.1); close(long.cache_write, 2.5);
+    assert.equal(c.variants.some(v => v.service_tier === 'batch'), platform === 'official');
+    assert.equal('cache_write_12h' in c, platform === 'official');
+  }
+  const maker = model.platforms.official;
+  close(maker.cache_write_12h, 2.5); close(maker.long_context.cache_write_12h, 5);
+  const fast = maker.variants.find(v => v.service_tier === 'priority');
+  close(fast.in, 2); close(fast.out, 10); close(fast.long_context.out, 15);
+  const bedrock = model.platforms.bedrock;
+  assert.ok(bedrock.variants.every(v => v.service_tier === 'standard'));
+  close(bedrock.variants[0].in, 1.1); close(bedrock.variants[0].long_context.out, 8.25);
+  assert.equal(model.platforms.azure_foundry.status, 'unverified');
+  assert.equal(model.platforms.azure_foundry.in, undefined);
+});

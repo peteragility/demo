@@ -43,6 +43,7 @@
     "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
     "https://developers.openai.com/api/docs/models/gpt-6-sol.md",
     "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-terra.md",
     "https://developers.openai.com/api/docs/pricing",
     "https://developers.openai.com/api/docs/pricing.md",
     "https://developers.openai.com/api/docs/supported-countries.md",
@@ -64,6 +65,7 @@
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-terra.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-terra.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-luna.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-sol.html",
@@ -1508,6 +1510,14 @@
       "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/opus-4-6",
       "label": "Claude Opus 4.6 on Google Cloud model page",
       "short": "model page"
+    },
+    "openai_terra61": {
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra.md",
+      "label": "GPT-6.1 Terra API rates, context and cache retention"
+    },
+    "aws_terra61": {
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-terra.html",
+      "label": "Bedrock GPT-6.1 Terra pricing and regions"
     }
   },
   "platform_meta": {
@@ -4587,7 +4597,7 @@
             "notes": [
               [
                 "Launch",
-                "Preview (Pre-GA terms), released 30 Sep 2026; batch predictions and Provisioned Throughput are not supported."
+                "GA, released 30 Sep 2026; function calling, structured output and reasoning are supported. Batch predictions, standard pay-as-you-go and Provisioned Throughput remain unsupported on this card."
               ],
               [
                 "Pricing",
@@ -12430,7 +12440,7 @@
             "notes": [
               [
                 "Structured outputs",
-                "Structured outputs are not supported through India geographic CRIS or in-region Seoul; use a supported endpoint/profile."
+                "The current model card lists structured outputs as supported and no longer includes its former geographic/in-region exclusions; confirm the selected endpoint supports the feature."
               ],
               [
                 "Batch",
@@ -13065,7 +13075,7 @@
             "notes": [
               [
                 "Structured outputs",
-                "Structured outputs are not supported through India geographic CRIS or in-region Seoul/Singapore; use a supported endpoint/profile."
+                "The current model card lists structured outputs as supported and no longer includes its former geographic/in-region exclusions; confirm the selected endpoint supports the feature."
               ],
               [
                 "In-region",
@@ -28124,6 +28134,470 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       }
+    },
+    "openai/gpt-6.1-terra": {
+      "name": "GPT-6.1 Terra",
+      "short": "GPT-6.1 Terra",
+      "maker": "OpenAI",
+      "group": "openai",
+      "oss": false,
+      "ctx": "1.05M",
+      "badges": [
+        "Added"
+      ],
+      "about": "Visual reasoning, computer use and writing",
+      "platforms": {
+        "official": {
+          "in": 1,
+          "out": 5,
+          "cache_read": 0.05,
+          "cache_write": 1.25,
+          "src": "openai_terra61",
+          "tier": "Standard · ≤272K input",
+          "model_id": "gpt-6.1-terra",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-29",
+          "availability_checked_at": "2026-10-29",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "context_threshold": 272000,
+          "long_context": {
+            "in": 2,
+            "out": 7.5,
+            "cache_read": 0.1,
+            "cache_write": 2.5,
+            "cache_write_12h": 5
+          },
+          "cache_write_12h": 2.5,
+          "variants": [
+            {
+              "in": 2,
+              "out": 10,
+              "cache_read": 0.1,
+              "cache_write": 2.5,
+              "label": "Fast",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-29",
+              "cache_write_12h": 5,
+              "long_context": {
+                "in": 4,
+                "out": 15,
+                "cache_read": 0.2,
+                "cache_write": 5,
+                "cache_write_12h": 10
+              },
+              "endpoint": "Global (api.openai.com)",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.5,
+              "out": 2.5,
+              "cache_read": 0.025,
+              "cache_write": 0.625,
+              "label": "Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-10-29",
+              "cache_write_12h": 1.25,
+              "long_context": {
+                "in": 1,
+                "out": 3.75,
+                "cache_read": 0.05,
+                "cache_write": 1.25,
+                "cache_write_12h": 2.5
+              },
+              "endpoint": "Global (api.openai.com)",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.5,
+              "out": 2.5,
+              "cache_read": 0.025,
+              "cache_write": 0.625,
+              "label": "Flex",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-10-29",
+              "cache_write_12h": 1.25,
+              "long_context": {
+                "in": 1,
+                "out": 3.75,
+                "cache_read": 0.05,
+                "cache_write": 1.25,
+                "cache_write_12h": 2.5
+              },
+              "endpoint": "Global (api.openai.com)",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.1,
+              "out": 5.5,
+              "cache_read": 0.055,
+              "cache_write": 1.375,
+              "label": "Regional processing +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-29",
+              "cache_write_12h": 2.75,
+              "long_context": {
+                "in": 2.2,
+                "out": 8.25,
+                "cache_read": 0.11,
+                "cache_write": 2.75,
+                "cache_write_12h": 5.5
+              },
+              "endpoint": "Regional processing",
+              "id": "variant-3",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-29",
+          "endpoint": "Global (api.openai.com)",
+          "endpoints": {
+            "checked_at": "2026-10-29",
+            "src": [
+              "openai_terra61",
+              "openai"
+            ],
+            "regions": [
+              [
+                "Global",
+                "global",
+                "Global API",
+                "Regional processing carries +10% where available; exact processing locations require confirmation."
+              ]
+            ],
+            "hk": [
+              "unknown",
+              "No Hong Kong processing location verified for this model"
+            ],
+            "tw": [
+              "unknown",
+              "No Taiwan processing location verified for this model"
+            ],
+            "notes": [
+              [
+                "Caching",
+                "30m writes cost 1.25x input; 12h writes cost 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime."
+              ],
+              [
+                "Context",
+                "Above 272K input, input/cache rates double and output is 1.5x for the full request; API context window 1,050,000 tokens."
+              ]
+            ],
+            "ids": [
+              "gpt-6.1-terra"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra.md"
+        },
+        "databricks": {
+          "in": 1,
+          "out": 5,
+          "cache_read": 0.05,
+          "cache_write": 1.25,
+          "src": "dbx_prop",
+          "tier": "Standard · short context",
+          "model_id": "databricks-gpt-6-1-terra",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-29",
+          "availability_checked_at": "2026-10-29",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "context_threshold": 272000,
+          "long_context": {
+            "in": 2,
+            "out": 7.5,
+            "cache_read": 0.1,
+            "cache_write": 2.5
+          },
+          "variants": [
+            {
+              "in": 2,
+              "out": 10,
+              "cache_read": 0.1,
+              "cache_write": 2.5,
+              "label": "Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-29",
+              "long_context": {
+                "in": 4,
+                "out": 15,
+                "cache_read": 0.2,
+                "cache_write": 5
+              },
+              "endpoint": "Default",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.1,
+              "out": 5.5,
+              "cache_read": 0.055,
+              "cache_write": 1.375,
+              "label": "Regional processing ⌖ +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-29",
+              "long_context": {
+                "in": 2.2,
+                "out": 8.25,
+                "cache_read": 0.11,
+                "cache_write": 2.75
+              },
+              "endpoint": "Regional processing ⌖",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.2,
+              "out": 11.0,
+              "cache_read": 0.11,
+              "cache_write": 2.75,
+              "long_context": {
+                "in": 4.4,
+                "out": 16.5,
+                "cache_read": 0.22,
+                "cache_write": 5.5
+              },
+              "label": "Regional processing ⌖ Priority",
+              "comparison_scope": "regional",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-10-29",
+              "derived": "Priority × 1.1 (Databricks regional-processing uplift)",
+              "endpoint": "Regional processing ⌖",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-29",
+          "endpoint": "Default",
+          "endpoints": {
+            "checked_at": "2026-10-09",
+            "src": [
+              "dbx_region",
+              "dbx_region_azure",
+              "dbx_region_gcp"
+            ],
+            "regions": [],
+            "hk": [
+              "unknown",
+              "Not in Databricks' region tables yet"
+            ],
+            "tw": [
+              "unknown",
+              "Not in Databricks' region tables yet"
+            ],
+            "notes": [
+              [
+                "Billing",
+                "Standard/Priority are DBU per million tokens at $0.07/DBU; the separate Batch table is DBU/hour, not a token rate."
+              ],
+              [
+                "Context",
+                "Short context is ≤272K input; above it, the exact published long-context rates apply."
+              ],
+              [
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
+              ],
+              [
+                "Regions",
+                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
+              ],
+              [
+                "Billing",
+                "DBU list rate $0.07 per DBU; committed-use discounts lower it."
+              ]
+            ],
+            "ids": [
+              "databricks-gpt-6-1-terra"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "bedrock": {
+          "in": 1,
+          "out": 5,
+          "cache_read": 0.05,
+          "cache_write": 1.25,
+          "src": "aws_terra61",
+          "tier": "Global cross-region · runtime",
+          "model_id": "openai.gpt-6.1-terra",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-10-29",
+          "availability_checked_at": "2026-10-29",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "context_threshold": 272000,
+          "long_context": {
+            "in": 2,
+            "out": 7.5,
+            "cache_read": 0.1,
+            "cache_write": 2.5
+          },
+          "variants": [
+            {
+              "in": 1.1,
+              "out": 5.5,
+              "cache_read": 0.055,
+              "cache_write": 1.375,
+              "label": "Mantle in-region (us-east-1)",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-29",
+              "long_context": {
+                "in": 2.2,
+                "out": 8.25,
+                "cache_read": 0.11,
+                "cache_write": 2.75
+              },
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.1,
+              "out": 5.5,
+              "cache_read": 0.055,
+              "cache_write": 1.375,
+              "label": "US geographic cross-region",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-10-29",
+              "long_context": {
+                "in": 2.2,
+                "out": 8.25,
+                "cache_read": 0.11,
+                "cache_write": 2.75
+              },
+              "id": "variant-1",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-10-29",
+          "endpoints": {
+            "checked_at": "2026-10-29",
+            "src": [
+              "aws_terra61"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "in-region",
+                "In-region",
+                "N. Virginia"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+              ],
+              [
+                "Americas",
+                "global",
+                "Global CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global CRIS",
+                "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global CRIS",
+                "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No Bedrock endpoint in Hong Kong (ap-east-1)"
+            ],
+            "tw": [
+              "routed",
+              "Taipei (ap-east-2) through global cross-region inference only"
+            ],
+            "notes": [
+              [
+                "Endpoints",
+                "Mantle in-region in N. Virginia; runtime uses US geographic or global cross-region profiles, without direct in-region inference."
+              ],
+              [
+                "Tiers",
+                "Standard only; no Priority, Flex or Reserved tier listed. No per-token Batch offer is verified."
+              ],
+              [
+                "Caching",
+                "Published write rates retain prefixes for 30 minutes; no 12h write price is inferred."
+              ]
+            ],
+            "ids": [
+              "openai.gpt-6.1-terra",
+              "us.openai.gpt-6.1-terra",
+              "global.openai.gpt-6.1-terra"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-terra.html"
+        },
+        "azure_foundry": {
+          "status": "unverified",
+          "note": "The regional catalog lists version 2026-10-26; exact token prices remain unverified.",
+          "src": "az_learn_regions",
+          "model_id": "gpt-6.1-terra",
+          "available": true,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-29",
+          "model_id_checked_at": "2026-10-29",
+          "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure-region-availability"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "No closed GPT-6.1 Terra offer verified.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-29",
+          "model_id": null,
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks_nexus",
+          "note": "Nexus uses your provider key; no Fireworks per-token offer verified.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-29",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": "No closed GPT-6.1 Terra offer verified.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-10-29",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "openai/gpt-6.1-terra"
     }
   },
   "reviewed_at": "2026-10-28",
