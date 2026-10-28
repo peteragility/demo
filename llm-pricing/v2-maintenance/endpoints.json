@@ -1153,6 +1153,10 @@
   "aws_terra61": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-terra.html",
    "label": "Bedrock GPT-6.1 Terra pricing and regions"
+  },
+  "vertex_partner": {
+   "url": "https://cloud.google.com/model-garden/partner-models/pricing",
+   "label": "Google Model Garden partner model pricing"
   }
  },
  "moonshot/kimi-k2.7": {

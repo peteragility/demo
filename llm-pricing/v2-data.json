@@ -28,6 +28,7 @@
     "https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html",
     "https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html",
     "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+    "https://cloud.google.com/model-garden/partner-models/pricing",
     "https://developers.openai.com/api/docs/guides/fast-mode.md",
     "https://developers.openai.com/api/docs/guides/flex-processing.md",
     "https://developers.openai.com/api/docs/guides/latest-model/gpt-5.4.md",
@@ -1518,6 +1519,10 @@
     "aws_terra61": {
       "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-terra.html",
       "label": "Bedrock GPT-6.1 Terra pricing and regions"
+    },
+    "vertex_partner": {
+      "url": "https://cloud.google.com/model-garden/partner-models/pricing",
+      "label": "Google Model Garden partner model pricing"
     }
   },
   "platform_meta": {
@@ -2224,7 +2229,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": "claude-sonnet-5-5",
           "model_match": "confirmed",
@@ -2234,14 +2239,14 @@
           "availability_checked_at": "2026-10-04",
           "model_id_source": "anthropic_models",
           "model_id_checked_at": "2026-10-09",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-04",
             "src": [
               "gcp_claude_sonnet_5_5",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -2605,7 +2610,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": "claude-haiku-5-5",
           "model_match": "confirmed",
@@ -2623,7 +2628,7 @@
             "cache_write": 0.625,
             "cache_write_1h": 1.0
           },
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
@@ -4528,7 +4533,7 @@
           "in": 2,
           "out": 6,
           "cache_read": 0.5,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Vertex MaaS · ≤200K input",
           "model_id": null,
           "note": null,
@@ -4545,7 +4550,7 @@
             "cache_read": 1
           },
           "comparison_note": "Price is verified; endpoint scope is not confirmed for this offer.",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "variants": [
             {
@@ -4570,7 +4575,7 @@
             "checked_at": "2026-10-04",
             "src": [
               "gcp_grok_4_7",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -5157,7 +5162,7 @@
           "in": 2,
           "out": 6,
           "cache_read": 0.5,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Vertex MaaS · ≤200K input",
           "model_id": null,
           "note": null,
@@ -5174,7 +5179,7 @@
             "cache_read": 1
           },
           "comparison_note": "Price is verified; endpoint scope is not confirmed for this offer.",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "variants": [
             {
@@ -5199,7 +5204,7 @@
             "checked_at": "2026-10-04",
             "src": [
               "gcp_grok_4_6",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -7398,7 +7403,7 @@
           "in": 0,
           "out": 0,
           "cache_read": 0,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Global · no-charge introduction",
           "model_id": "deepseek-v4.1-flash-maas",
           "note": null,
@@ -7421,11 +7426,11 @@
               "tier": "Global · Standard"
             }
           },
-          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoints": {
             "checked_at": "2026-10-15",
             "src": [
-              "vertex",
+              "vertex_partner",
               "gcp_deepseek"
             ],
             "regions": [
@@ -9503,7 +9508,7 @@
           "in": 0.15,
           "out": 1.2,
           "tier": "Vertex MaaS",
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -9512,7 +9517,7 @@
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
           "comparison_note": "Price is verified; this MaaS offer's processing scope is not confirmed.",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
@@ -9747,7 +9752,7 @@
           "in": 0.09,
           "out": 0.36,
           "tier": "Vertex MaaS",
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -9756,7 +9761,7 @@
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
           "comparison_note": "Price is verified; this MaaS offer's processing scope is not confirmed.",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "in": 0.15,
@@ -9967,7 +9972,7 @@
           "out": 0.25,
           "cache_read": 0.007,
           "tier": "Vertex MaaS",
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -9976,7 +9981,7 @@
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
           "comparison_note": "Price is verified; this MaaS offer's processing scope is not confirmed.",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
@@ -10157,7 +10162,7 @@
           "in": 0.35,
           "out": 1.15,
           "tier": "Vertex MaaS",
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -10166,7 +10171,7 @@
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
           "comparison_note": "Price is verified; this MaaS offer's processing scope is not confirmed.",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
@@ -10352,7 +10357,7 @@
           "in": 0.72,
           "out": 0.72,
           "tier": "Vertex MaaS",
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -10361,7 +10366,7 @@
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
           "comparison_note": "Price is verified; this MaaS offer's processing scope is not confirmed.",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "note": "On-demand (dedicated GPU) deployments only; no serverless per-token price.",
@@ -11244,7 +11249,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -11252,14 +11257,14 @@
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-04",
             "src": [
               "gcp_claude_fable_5_1",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -11922,7 +11927,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -11930,14 +11935,14 @@
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-04",
           "availability_checked_at": "2026-10-04",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-04",
             "src": [
               "gcp_claude_opus_5_5",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -12626,7 +12631,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -12634,14 +12639,14 @@
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-06",
             "src": [
               "gcp_claude_opus_5",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -13251,7 +13256,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -13259,14 +13264,14 @@
           "service_tier": "standard",
           "pricing_checked_at": "2026-10-06",
           "availability_checked_at": "2026-10-06",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-06",
             "src": [
               "gcp_claude_sonnet_5",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -13578,7 +13583,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -13586,7 +13591,7 @@
           "service_tier": "standard",
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
@@ -13841,7 +13846,7 @@
               "model_match": "confirmed"
             }
           ],
-          "src": "vertex",
+          "src": "vertex_partner",
           "status": "priced",
           "model_id": null,
           "model_match": "confirmed",
@@ -13849,7 +13854,7 @@
           "service_tier": "standard",
           "pricing_checked_at": "2026-09-28",
           "availability_checked_at": "2026-09-28",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
         },
         "fireworks": {
           "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
@@ -21372,7 +21377,7 @@
           "cache_read": 1,
           "cache_write": 12.5,
           "cache_write_1h": 20,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Global endpoint",
           "model_id": null,
           "note": null,
@@ -21426,14 +21431,14 @@
               "model_match": "confirmed"
             }
           ],
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-06",
             "src": [
               "gcp_claude_fable_5",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -22009,7 +22014,7 @@
           "cache_read": 0.5,
           "cache_write": 6.25,
           "cache_write_1h": 10,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Global endpoint",
           "model_id": null,
           "note": null,
@@ -22077,14 +22082,14 @@
               "model_match": "confirmed"
             }
           ],
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-04",
             "src": [
               "gcp_claude_opus_4_8",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -22639,7 +22644,7 @@
           "cache_read": 0.5,
           "cache_write": 6.25,
           "cache_write_1h": 10,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Global endpoint",
           "model_id": null,
           "note": null,
@@ -22707,14 +22712,14 @@
               "model_match": "confirmed"
             }
           ],
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-09",
             "src": [
               "gcp_claude_opus_4_7",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -23250,7 +23255,7 @@
           "cache_read": 0.5,
           "cache_write": 6.25,
           "cache_write_1h": 10,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Global endpoint",
           "model_id": null,
           "note": null,
@@ -23290,14 +23295,14 @@
               "model_match": "confirmed"
             }
           ],
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-09",
             "src": [
               "gcp_claude_opus_4_6",
               "gcp_locations",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [
@@ -24964,7 +24969,7 @@
           "in": 1.4,
           "out": 4.4,
           "cache_read": 0.14,
-          "src": "vertex",
+          "src": "vertex_partner",
           "tier": "Vertex MaaS",
           "model_id": null,
           "note": null,
@@ -24974,14 +24979,14 @@
           "comparison_scope": "unverified",
           "service_tier": "standard",
           "model_match": "confirmed",
-          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing",
           "endpoint": "Global",
           "endpoints": {
             "checked_at": "2026-10-04",
             "src": [
               "gcp_glm",
               "gcp_glm_5_2",
-              "gcp_pricing"
+              "vertex_partner"
             ],
             "regions": [
               [

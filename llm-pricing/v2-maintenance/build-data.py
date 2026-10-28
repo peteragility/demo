@@ -1095,6 +1095,15 @@ def build():
     add_gemini4(data)
     add_terra61(data)
     apply_endpoints(data)
+    # Google moved all partner billing tables to Model Garden (29 Oct).
+    # Keep Google's own models on the existing source and monitor partner prices separately.
+    for key, model in data["models"].items():
+        cell = model["platforms"]["gcloud"]
+        if model["maker"] != "Google" and cell["status"] == "priced":
+            cell.update(src="vertex_partner", url=data["source_meta"]["vertex_partner"]["url"])
+            if cell.get("endpoints"):
+                cell["endpoints"]["src"] = ["vertex_partner" if sid in ("vertex", "gcp_pricing") else sid
+                                             for sid in cell["endpoints"]["src"]]
     finish_variants(data)
     review_october21(data)
     # Reviewed 26 Oct: the newly published Argon DBU rows already include 50% off.
