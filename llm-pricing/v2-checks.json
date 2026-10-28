@@ -1,1231 +1,1438 @@
 {
  "schema": 1,
- "checked_at": "2026-10-28",
+ "checked_at": "2026-10-29",
  "sources_checked": 114,
  "sources_failed": [],
  "sources_read": {
-  "dbx-models": "2026-10-28",
-  "dbx-oss": "2026-10-28",
-  "dbx-proprietary": "2026-10-28",
-  "dbx-retirement": "2026-10-28",
-  "openai-pricing": "2026-10-28",
-  "anthropic-pricing": "2026-10-28",
-  "anthropic-models": "2026-10-28",
-  "google-pricing": "2026-10-28",
-  "vertex-pricing": "2026-10-28",
-  "aws-prices": "2026-10-28",
-  "aws-marketplace": "2026-10-28",
-  "aws-openai-models": "2026-10-28",
-  "aws-gpt61": "2026-10-28",
-  "aws-gpt6sol": "2026-10-28",
-  "aws-gpt6luna": "2026-10-28",
-  "azure-prices": "2026-10-28",
-  "fireworks-pricing": "2026-10-28",
-  "fireworks-v4pro": "2026-10-28",
-  "fireworks-v4flash": "2026-10-28",
-  "fireworks-kimi27": "2026-10-28",
-  "xai-grok47": "2026-10-28",
-  "xai-grok46": "2026-10-28",
-  "aws-grok47": "2026-10-28",
-  "aws-grok46": "2026-10-28",
-  "deepseek-pricing": "2026-10-28",
-  "kimi-pricing": "2026-10-28",
-  "zai-pricing": "2026-10-28",
-  "alibaba-pricing": "2026-10-28",
-  "dbx-region-aws": "2026-10-28",
-  "dbx-region-azure": "2026-10-28",
-  "dbx-region-gcp": "2026-10-28",
-  "aws-kimi-k3": "2026-10-28",
-  "fireworks-modes": "2026-10-28",
-  "fireworks-us": "2026-10-28",
-  "alibaba-regions": "2026-10-28",
-  "azure-partners": "2026-10-28",
-  "minimax-pricing": "2026-10-28",
-  "mistral-card": "2026-10-28",
-  "ali-ali-batch": "2026-10-28",
-  "ali-ali-prime": "2026-10-28",
-  "api-other-deepseek-privacy": "2026-10-28",
-  "api-other-mistral-limits": "2026-10-28",
-  "api-other-mistral-pricing": "2026-10-28",
-  "api-other-mistral-priority": "2026-10-28",
-  "api-other-mistral-regional": "2026-10-28",
-  "api-other-moonshot-privacy": "2026-10-28",
-  "api-other-tml-privacy": "2026-10-28",
-  "api-other-tml-serverless-json": "2026-10-28",
-  "api-other-tml-tinker-pricing": "2026-10-28",
-  "api-other-zai-privacy": "2026-10-28",
-  "api-west-anthropic-countries": "2026-10-28",
-  "api-west-anthropic-fast": "2026-10-28",
-  "api-west-anthropic-pricing": "2026-10-28",
-  "api-west-anthropic-residency": "2026-10-28",
-  "api-west-google-regions": "2026-10-28",
-  "api-west-openai-countries": "2026-10-28",
-  "api-west-openai-m-gpt-6-1-sol": "2026-10-28",
-  "api-west-openai-your-data": "2026-10-28",
-  "api-west-xai-pricing": "2026-10-28",
-  "api-west-xai-regions": "2026-10-28",
-  "aws-card-claude-fable-5": "2026-10-28",
-  "aws-card-claude-fable-5-1": "2026-10-28",
-  "aws-card-claude-opus-4-8": "2026-10-28",
-  "aws-card-claude-opus-4-7": "2026-10-28",
-  "aws-card-claude-opus-4-6": "2026-10-28",
-  "aws-card-claude-opus-5": "2026-10-28",
-  "aws-card-claude-opus-5-5": "2026-10-28",
-  "aws-card-claude-sonnet-5": "2026-10-28",
-  "aws-card-claude-sonnet-5-5": "2026-10-28",
-  "aws-card-gpt-5-4": "2026-10-28",
-  "aws-card-gpt-5-5": "2026-10-28",
-  "aws-card-gpt-5-6-luna": "2026-10-28",
-  "aws-card-gpt-5-6-sol": "2026-10-28",
-  "aws-card-gpt-5-6-terra": "2026-10-28",
-  "aws-card-gpt-6-astra": "2026-10-28",
-  "aws-endpoint-regions": "2026-10-28",
-  "az-anthropic-countries": "2026-10-28",
-  "az-aoai-pricing": "2026-10-28",
-  "az-deepseek-pricing": "2026-10-28",
-  "az-fw-pricing": "2026-10-28",
-  "az-learn-fireworks": "2026-10-28",
-  "az-learn-fireworks-faq": "2026-10-28",
-  "az-learn-partners": "2026-10-28",
-  "az-learn-region-support": "2026-10-28",
-  "az-learn-regions": "2026-10-28",
-  "az-mistral-pricing": "2026-10-28",
-  "fireworks-nexus": "2026-10-28",
-  "fw-fw-batch": "2026-10-28",
-  "fw-fw-m-inkling": "2026-10-28",
-  "fw-fw-residency": "2026-10-28",
-  "gcp-claude-fable-5": "2026-10-28",
-  "gcp-claude-fable-5-1": "2026-10-28",
-  "gcp-claude-opus-4-8": "2026-10-28",
-  "gcp-claude-opus-4-7": "2026-10-28",
-  "gcp-claude-opus-4-6": "2026-10-28",
-  "gcp-claude-opus-5": "2026-10-28",
-  "gcp-claude-opus-5-5": "2026-10-28",
-  "gcp-claude-sonnet-5": "2026-10-28",
-  "gcp-claude-sonnet-5-5": "2026-10-28",
-  "gcp-gemini-3-1-pro": "2026-10-28",
-  "gcp-gemini-3-6-flash": "2026-10-28",
-  "gcp-gemini-3-7-flash": "2026-10-28",
-  "gcp-gemini-3-8-flash": "2026-10-28",
-  "gcp-glm": "2026-10-28",
-  "gcp-glm-5-2": "2026-10-28",
-  "gcp-grok-4-6": "2026-10-28",
-  "gcp-grok-4-7": "2026-10-28",
-  "gcp-locations": "2026-10-28",
-  "aws-model-cards": "2026-10-28",
-  "aws-card-glm-5-3": "2026-10-28",
-  "aws-pricing-page": "2026-10-28",
-  "gcp-gemini-4-argon": "2026-10-28",
-  "api-google-gemini-4-argon": "2026-10-28",
-  "gcp-deepseek-v4-1-flash": "2026-10-28"
+  "dbx-models": "2026-10-29",
+  "dbx-oss": "2026-10-29",
+  "dbx-proprietary": "2026-10-29",
+  "dbx-retirement": "2026-10-29",
+  "openai-pricing": "2026-10-29",
+  "anthropic-pricing": "2026-10-29",
+  "anthropic-models": "2026-10-29",
+  "google-pricing": "2026-10-29",
+  "vertex-pricing": "2026-10-29",
+  "aws-prices": "2026-10-29",
+  "aws-marketplace": "2026-10-29",
+  "aws-openai-models": "2026-10-29",
+  "aws-gpt61": "2026-10-29",
+  "aws-gpt6sol": "2026-10-29",
+  "aws-gpt6luna": "2026-10-29",
+  "azure-prices": "2026-10-29",
+  "fireworks-pricing": "2026-10-29",
+  "fireworks-v4pro": "2026-10-29",
+  "fireworks-v4flash": "2026-10-29",
+  "fireworks-kimi27": "2026-10-29",
+  "xai-grok47": "2026-10-29",
+  "xai-grok46": "2026-10-29",
+  "aws-grok47": "2026-10-29",
+  "aws-grok46": "2026-10-29",
+  "deepseek-pricing": "2026-10-29",
+  "kimi-pricing": "2026-10-29",
+  "zai-pricing": "2026-10-29",
+  "alibaba-pricing": "2026-10-29",
+  "dbx-region-aws": "2026-10-29",
+  "dbx-region-azure": "2026-10-29",
+  "dbx-region-gcp": "2026-10-29",
+  "aws-kimi-k3": "2026-10-29",
+  "fireworks-modes": "2026-10-29",
+  "fireworks-us": "2026-10-29",
+  "alibaba-regions": "2026-10-29",
+  "azure-partners": "2026-10-29",
+  "minimax-pricing": "2026-10-29",
+  "mistral-card": "2026-10-29",
+  "ali-ali-batch": "2026-10-29",
+  "ali-ali-prime": "2026-10-29",
+  "api-other-deepseek-privacy": "2026-10-29",
+  "api-other-mistral-limits": "2026-10-29",
+  "api-other-mistral-pricing": "2026-10-29",
+  "api-other-mistral-priority": "2026-10-29",
+  "api-other-mistral-regional": "2026-10-29",
+  "api-other-moonshot-privacy": "2026-10-29",
+  "api-other-tml-privacy": "2026-10-29",
+  "api-other-tml-serverless-json": "2026-10-29",
+  "api-other-tml-tinker-pricing": "2026-10-29",
+  "api-other-zai-privacy": "2026-10-29",
+  "api-west-anthropic-countries": "2026-10-29",
+  "api-west-anthropic-fast": "2026-10-29",
+  "api-west-anthropic-pricing": "2026-10-29",
+  "api-west-anthropic-residency": "2026-10-29",
+  "api-west-google-regions": "2026-10-29",
+  "api-west-openai-countries": "2026-10-29",
+  "api-west-openai-m-gpt-6-1-sol": "2026-10-29",
+  "api-west-openai-your-data": "2026-10-29",
+  "api-west-xai-pricing": "2026-10-29",
+  "api-west-xai-regions": "2026-10-29",
+  "aws-card-claude-fable-5": "2026-10-29",
+  "aws-card-claude-fable-5-1": "2026-10-29",
+  "aws-card-claude-opus-4-8": "2026-10-29",
+  "aws-card-claude-opus-4-7": "2026-10-29",
+  "aws-card-claude-opus-4-6": "2026-10-29",
+  "aws-card-claude-opus-5": "2026-10-29",
+  "aws-card-claude-opus-5-5": "2026-10-29",
+  "aws-card-claude-sonnet-5": "2026-10-29",
+  "aws-card-claude-sonnet-5-5": "2026-10-29",
+  "aws-card-gpt-5-4": "2026-10-29",
+  "aws-card-gpt-5-5": "2026-10-29",
+  "aws-card-gpt-5-6-luna": "2026-10-29",
+  "aws-card-gpt-5-6-sol": "2026-10-29",
+  "aws-card-gpt-5-6-terra": "2026-10-29",
+  "aws-card-gpt-6-astra": "2026-10-29",
+  "aws-endpoint-regions": "2026-10-29",
+  "az-anthropic-countries": "2026-10-29",
+  "az-aoai-pricing": "2026-10-29",
+  "az-deepseek-pricing": "2026-10-29",
+  "az-fw-pricing": "2026-10-29",
+  "az-learn-fireworks": "2026-10-29",
+  "az-learn-fireworks-faq": "2026-10-29",
+  "az-learn-partners": "2026-10-29",
+  "az-learn-region-support": "2026-10-29",
+  "az-learn-regions": "2026-10-29",
+  "az-mistral-pricing": "2026-10-29",
+  "fireworks-nexus": "2026-10-29",
+  "fw-fw-batch": "2026-10-29",
+  "fw-fw-m-inkling": "2026-10-29",
+  "fw-fw-residency": "2026-10-29",
+  "gcp-claude-fable-5": "2026-10-29",
+  "gcp-claude-fable-5-1": "2026-10-29",
+  "gcp-claude-opus-4-8": "2026-10-29",
+  "gcp-claude-opus-4-7": "2026-10-29",
+  "gcp-claude-opus-4-6": "2026-10-29",
+  "gcp-claude-opus-5": "2026-10-29",
+  "gcp-claude-opus-5-5": "2026-10-29",
+  "gcp-claude-sonnet-5": "2026-10-29",
+  "gcp-claude-sonnet-5-5": "2026-10-29",
+  "gcp-gemini-3-1-pro": "2026-10-29",
+  "gcp-gemini-3-6-flash": "2026-10-29",
+  "gcp-gemini-3-7-flash": "2026-10-29",
+  "gcp-gemini-3-8-flash": "2026-10-29",
+  "gcp-glm": "2026-10-29",
+  "gcp-glm-5-2": "2026-10-29",
+  "gcp-grok-4-6": "2026-10-29",
+  "gcp-grok-4-7": "2026-10-29",
+  "gcp-locations": "2026-10-29",
+  "aws-model-cards": "2026-10-29",
+  "aws-card-glm-5-3": "2026-10-29",
+  "aws-pricing-page": "2026-10-29",
+  "gcp-gemini-4-argon": "2026-10-29",
+  "api-google-gemini-4-argon": "2026-10-29",
+  "gcp-deepseek-v4-1-flash": "2026-10-29"
  },
- "pending_general": [],
+ "pending_general": [
+  {
+   "source": "fireworks-pricing",
+   "url": "https://docs.fireworks.ai/serverless/pricing",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.225 / $0.045 / $0.75\",\"$0.28125 / $0.05625 / $0.9375\"],\"heading\":\"​ Text and vision models\"}"
+   ],
+   "removed": [],
+   "added_all": [
+    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.225 / $0.045 / $0.75\",\"$0.28125 / $0.05625 / $0.9375\"],\"heading\":\"​ Text and vision models\"}"
+   ],
+   "removed_all": [],
+   "baseline_digest": "eb82f57309bc98b83f925bb7caabaab55aa8d7aee6ae18f62dd285425aef706a"
+  },
+  {
+   "source": "minimax-pricing",
+   "url": "https://platform.minimax.io/docs/pricing/overview",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Feature\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio · View Video\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio or Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\",\"1 month for all four standard packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Plan details\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech or video workloads where you expect to make good use of the included points.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}"
+   ],
+   "removed": [
+    "notice: Resource pack remaining quantity is not inherited; it will automatically reset to zero when expired.",
+    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Discounted Price\",\"$1,000\",\"$2,500\",\"$4,500\",\"$6,000\",\"-\"],\"heading\":\"​ Video Packages\"}",
+    "table: {\"cells\":[\"Feature\",\"Audio Subscription\",\"Video Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Subscriptions and Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Functions\",\"• Supports Video Generation API • RPM: 20\",\"• Supports Video Generation API • RPM: 30\",\"• Supports Video Generation API • RPM: 40\",\"• Supports Video Generation API • RPM: 50\",\"• Unlimited RPM/TPM • Priority access to model updates • Exclusive security and stability guarantees\"],\"heading\":\"​ Video Packages\"}",
+    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Subscription · View Video Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Subscription or a prepaid Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio Subscription\"}"
+   ],
+   "added_all": [
+    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Feature\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio · View Video\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio or Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio\"}",
+    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\",\"1 month for all four standard packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Plan details\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech or video workloads where you expect to make good use of the included points.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Yearly Subscription (20% off)\",\"$48\",\"$288\",\"$950\",\"$2,390\",\"$9,590\",\"/\"],\"heading\":\"​ Audio\"}",
+    "text: Audio points: Starter, Standard, Pro, Scale, and Business each include a monthly allowance of audio points. The allowance varies by plan. See the Audio package pricing table for included points, voice slots, and rate limits.",
+    "text: Which models can I use with packages?"
+   ],
+   "removed_all": [
+    "notice: Resource pack remaining quantity is not inherited; it will automatically reset to zero when expired.",
+    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Discounted Price\",\"$1,000\",\"$2,500\",\"$4,500\",\"$6,000\",\"-\"],\"heading\":\"​ Video Packages\"}",
+    "table: {\"cells\":[\"Feature\",\"Audio Subscription\",\"Video Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Subscriptions and Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Functions\",\"• Supports Video Generation API • RPM: 20\",\"• Supports Video Generation API • RPM: 30\",\"• Supports Video Generation API • RPM: 40\",\"• Supports Video Generation API • RPM: 50\",\"• Unlimited RPM/TPM • Priority access to model updates • Exclusive security and stability guarantees\"],\"heading\":\"​ Video Packages\"}",
+    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Subscription · View Video Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Subscription or a prepaid Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
+    "table: {\"cells\":[\"Package Category\",\"Standard (SAVE 5%)\",\"Pro (SAVE 10%)\",\"Scale (SAVE 15%)\",\"Business (SAVE 20%)\",\"Custom Pricing\"],\"heading\":\"​ Video Packages\"}",
+    "table: {\"cells\":[\"Plan details\",\"Audio Subscription\",\"Video Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Subscription term / package validity\",\"Monthly, 3-month (10% off), or annual (20% off) subscriptions\",\"The four standard packages are valid for 1 month\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
+    "table: {\"cells\":[\"Total video points\",\"3,760 video points\",\"9,920 video points\",\"18,900 video points\",\"26,780 video points\",\"As many video points as you need\"],\"heading\":\"​ Video Packages\"}",
+    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech or video workloads where you expect to use the included points during the subscription term or before the package expires.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
+    "table: {\"cells\":[\"Valid\",\"1 month\",\"1 month\",\"1 month\",\"1 month\",\"-\"],\"heading\":\"​ Video Packages\"}",
+    "table: {\"cells\":[\"Yearly Subscription (20% off)\",\"$48\",\"$288\",\"$950\",\"$2,390\",\"$9,590\",\"/\"],\"heading\":\"​ Audio Subscription\"}",
+    "text: Audio points: Starter, Standard, Pro, Scale, and Business each include a monthly allowance of audio points. The allowance varies by plan. See the Audio Subscription table for included points, voice slots, and rate limits.",
+    "text: Resource pack remaining quantity is not inherited; it will automatically reset to zero when expired.",
+    "text: The deduction times for generating videos differ depending on the model:",
+    "text: Video generation failures or videos that trigger security review will not result in a deduction.",
+    "text: Which models can I use with subscriptions and packages?"
+   ],
+   "baseline_digest": "a7f211f44e1537db4cd22a42d20a60b0546ac416e2a87ec20b854511d0ea9699"
+  }
+ ],
  "ranking": {
   "schema": 1,
-  "checked_at": "2026-10-28",
-  "last_successful_read": "2026-10-28",
+  "checked_at": "2026-10-29",
+  "last_successful_read": "2026-10-29",
   "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
   "board_id": "webdev",
-  "published_at": "2026-10-23"
+  "published_at": "2026-10-27"
  },
  "databricks_coverage": [],
- "review": [],
+ "review": [
+  "GPT-6.1 Sol · official"
+ ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-fable-5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-haiku-4.5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-opus-4.7|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-opus-4.8|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-opus-5.5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-opus-5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "aws-card-claude-opus-5"
+   ],
+   "quiet": true
   },
   "anthropic/claude-opus-5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "anthropic/claude-sonnet-5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "aws-card-claude-sonnet-5"
+   ],
+   "quiet": true
   },
   "anthropic/claude-sonnet-5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-anthropic-residency"
+   ],
+   "quiet": true
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-flash|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4-pro|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "deepseek/deepseek-v4.1-flash|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-flash-lite|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "gcp-locations"
+   ]
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.6-flash|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemma-3-12b|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemma-3-12b|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemma-3-12b|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemma-3-12b|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "google/gemma-3-12b|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.1-8b|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.1-8b|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.1-8b|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.1-8b|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.1-8b|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.3-70b|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.3-70b|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.3-70b|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.3-70b|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "minimax/minimax-m3|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "minimax/minimax-m3|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "minimax-pricing"
+   ]
   },
   "mistral/mistral-medium-3.5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "mistral/mistral-medium-3.5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "mistral/mistral-medium-3.5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-other-mistral-pricing"
+   ]
   },
   "moonshot/kimi-k2.7|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k2.7|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "moonshot/kimi-k3|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "moonshot/kimi-k3|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.4|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.4|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.4|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.4|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.4|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.4|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.5|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.5|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.5|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.5|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.5|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.5|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-luna|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-sol|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-5.6-terra|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-astra|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-luna|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6-sol|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-6.1-sol|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "changed_at": "2026-10-29",
+   "sources": [
+    "api-west-openai-m-gpt-6-1-sol"
+   ]
   },
   "openai/gpt-oss-120b|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-120b|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "openai/gpt-oss-20b|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.5-122b|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.5-122b|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.5-122b|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.5-122b|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.5-122b|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "qwen/qwen3.7-max|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-max|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "qwen/qwen3.7-plus|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.7-plus|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "qwen/qwen3.8-27b|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-27b|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "qwen/qwen3.8-flash|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-flash|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "qwen/qwen3.8-max|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "qwen/qwen3.8-max|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "tml/inkling|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "tml/inkling|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "tml/inkling|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "tml/inkling|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "tml/inkling|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "tml/inkling|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "tml/inkling|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.6|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.6|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.6|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.6|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.7|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.7|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.7|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.7|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29",
+   "accepted": [
+    "gcp-grok-4-7"
+   ]
   },
   "xai/grok-4.7|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.2|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "zai/glm-5.3-flash|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3-flash|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3|azure_foundry": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3|databricks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3|fireworks": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-28",
+   "unchecked": [
+    "fireworks-pricing"
+   ]
   },
   "zai/glm-5.3|gcloud": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   },
   "zai/glm-5.3|official": {
-   "verified": "2026-10-28"
+   "verified": "2026-10-29"
   }
  }
 }
