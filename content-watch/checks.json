@@ -14,50 +14,10 @@
       "checkedAt": "2026-10-29",
       "lastSuccess": "2026-10-29",
       "errors": 0,
-      "review": 2,
+      "review": 0,
       "sources": 10,
-      "status": "review"
+      "status": "ok"
     }
   },
-  "findings": [
-    {
-      "id": "sandbox-e2b",
-      "url": "https://e2b.dev/",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 0d086efebf5821c80127011f483e4bf62f0996bbf7f6d40d114aafae2d44e604",
-        "Removed record: 6b7ce0c3e3efe381a7d69d13161392070207ba9743f5bcd36882a7ea16dc48d8",
-        "Added record: 047083d78c5c54c1a275f8d012ec243f9922a84355eee702e17a9b955028c0a9: VALUE NEVER ENTERS THE SANDBOX",
-        "Added record: 10f7302817a8a83c9b0c58ca077c3d17cf005f289ab3290e1b55c4d9deea3c14: A microVM per session · Apache-⁠2.0 runtime · SOC 2 Type II",
-        "Added record: 21505a434c71891954760206e22ca703e0e4bb81afa5a052ca700af49c0b7347: $ pip install e2b // $ npm i e2b",
-        "Added record: 54d99d51891dcc8b831764378767068b02e523197aac7430c80656d47f2ae95b: /$100 in credits (+usage costs)",
-        "Added record: 6da96a7a75d86630825b41672b7abba940354c67867e9cead81389ed7e67e2c5",
-        "Added record: 869c5f810fa2a50ca8b0e840394e0e1187153c71b786fed8d6e08611fd0c2b78",
-        "Added record: 952b04d74ab535237784c62938df7ca310ea157cb9e55ef7e598feb419b20ddc",
-        "Added record: a83af852bc51bd594d85d0d0df9588233adcedd0135823e004b9e318e59a98ea",
-        "Added record: b515ff438640a9fa155bf8562f78d4b112842afecf41c24826bb05095f1a16b3",
-        "Added record: be5f706ec07b4bad10a8858fc4d3d9c8d2f5e16305f78d8b4b4319ed24f54d1f",
-        "Added record: c14eb6ad0849e16c96d6f1a85cbeb56bdd1283e48f84c9054bc59254c8159541",
-        "Added record: c59ec71af9527da3141f3fb1b8958fa7e31cc5c943e059b2fb791d7c6c09a309",
-        "Added record: d7ae398aeaf22368a2b644aad62c25914057efac46cee50af18ab37954659f6f",
-        "Added record: e65be3a7d5c5b5bc44127d798ed3b0a2817df2168786c40d90f12b25383aad87"
-      ]
-    },
-    {
-      "id": "sandbox-agentcore",
-      "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 0958c3416e845dcbea3f4f05f88116a7fdd12b1c68ac0b0a6abdb96dfdd310c9",
-        "Added record: 169e20fbd42c43cf71a786c707232687af70c88a2387610b4ae9287984c90a35: Use a unique session ID for each user. AgentCore does not enforce session-to-user mappings - your client backend should maintain the relationship betw",
-        "Added record: 9d731a5d5a89c47ffa568742a373392517fd202f4b1c59f8b859506e3d889ac4: A session key can stop resolving right after you update a runtime. AgentCore Runtime serves each invocation by restoring a snapshot taken before any s",
-        "Added record: a9d60c2d2fa474fac3d147041839420bbcba2bec71c28117acdb5b66617151d1: These keys attest that the request’s credentials originated from a given runtime session. They do not prove that a request was made from inside the co",
-        "Added record: cb3b58e2c5eeb24c3c18f6126bfbb50d03d0370af8b97138dee78b3796609e6b: To scope access, AgentCore Runtime adds two AWS Identity and Access Management (IAM) context keys (a kind of IAM condition key) to each session’s exec",
-        "Added record: dab82c448f6616e60470e7b510fa34d3b035064c1691feea53d0db04d8838db8",
-        "Added record: f903700d6854352dd1530ecd26c5cab216a7e931717d980462dfd82fdbbfc039"
-      ]
-    }
-  ]
+  "findings": []
 }
