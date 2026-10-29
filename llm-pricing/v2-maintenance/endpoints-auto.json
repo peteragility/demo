@@ -2035,7 +2035,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-fable-5.1": {
@@ -2073,7 +2073,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-4.8": {
@@ -2147,7 +2147,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-4.7": {
@@ -2221,7 +2221,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-4.6": {
@@ -2277,7 +2277,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-5.5": {
@@ -2351,7 +2351,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-sonnet-5.5": {
@@ -2401,7 +2401,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-5.4": {
@@ -2445,7 +2445,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-14"
   },
   "openai/gpt-5.5": {
@@ -2489,7 +2489,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-14"
   },
   "openai/gpt-5.6-luna": {
@@ -2539,7 +2539,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-5.6-sol": {
@@ -2583,7 +2583,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-5.6-terra": {
@@ -2633,7 +2633,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-6-astra": {
@@ -2677,7 +2677,7 @@
     "none",
     "No access from Taipei (ap-east-2) for this model"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "zai/glm-5.3": {
@@ -2715,7 +2715,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-6.1-terra": {
@@ -2759,7 +2759,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-10-29",
+   "read_at": "2026-10-30",
    "changed_at": "2026-10-29"
   }
  }
