@@ -1,23 +1,62 @@
 {
   "schema": 1,
-  "checkedAt": "2026-10-29",
+  "checkedAt": "2026-10-30",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-10-29",
-      "lastSuccess": "2026-10-29",
+      "checkedAt": "2026-10-30",
+      "lastSuccess": "2026-10-30",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-10-29",
-      "lastSuccess": "2026-10-29",
+      "checkedAt": "2026-10-30",
+      "lastSuccess": "2026-10-30",
       "errors": 0,
-      "review": 0,
+      "review": 3,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-agentcore",
+      "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 9d731a5d5a89c47ffa568742a373392517fd202f4b1c59f8b859506e3d889ac4",
+        "Added record: 067582bf10935861077d5ae7c8507291da0f484638db07ad4c61abc600f6feff: Session context keys are present only in the credentials that a session receives. When a session starts, AgentCore Runtime restores the session’s micr"
+      ]
+    },
+    {
+      "id": "sandbox-monty",
+      "url": "https://raw.githubusercontent.com/pydantic/monty/main/docs/security.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Added record: cf4f455533f1402816862a0403bd92152a71ac70cb5d3cbf3a82af376a2329e5: then the mounts, the paths `open()` could read, and runs the file as sandbox code, with the capabilities the session's"
+      ]
+    },
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 44d366a518c31a4c2cbaaf2ce0bfc13464a948254a155805a78c73e5c35f0490",
+        "Removed record: abf3a44ace299251f02ef005545d375d3eddff7b0ce1e9bb2b7b129b1dbaa0c4",
+        "Added record: 376b7c30c7a743ec6d1a57cda9ea8f61e9f21e7a6ae8f7c12dc8692769467e45: The alternative was proxy fields on the vendored `VfsKernel`, set through `ShellBuilder::egress_proxy`.",
+        "Added record: 5fa6db53d585bc129dc9a2f50641b6b7f381cbe5ff2306c6a84c79f8b07eeb49: header, and Box's kernel wrapper turns such a response into a permission-denied error, so `curl`",
+        "Added record: 77a8103750f2ac4c652efceb2ccfde2802afff239d07969504085e97e1c6864c: The cost: the wrapper governs only what reaches the kernel's HTTP step. A future Shell network command",
+        "Added record: 9a098dc93c8601763b139bf6866dc7f508acbf96179b97d5fe2112e475ad9cec: `net:connect` and `http:request`, and the Shell resolves no credential and attaches no secret.",
+        "Added record: ae0ba09a3a09a45ae975f80f258b54c6d03f2aadbf3fa2a2af796165195be1d0",
+        "Added record: bda9dee8d440998e63b6fb805fbb194cca455a7549e94d339cef0a00301f0b55",
+        "Added record: d375625a11a4c43069c0a5ed0a27cbfafc9a3510a3a86583d116a02dc2baa94d",
+        "Added record: d7df45fc4eef1e346a2f8f4557e94d397c74afab8144c235779a99fba2628366",
+        "Added record: f1b1ea03b6f34564632508fe210ea05be2fa0834a22f461dbd5578d76c739118"
+      ]
+    }
+  ]
 }
