@@ -1,25 +1,35 @@
 {
   "schema": 1,
-  "checkedAt": "2026-10-30",
+  "checkedAt": "2026-10-31",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-10-30",
-      "lastSuccess": "2026-10-30",
+      "checkedAt": "2026-10-31",
+      "lastSuccess": "2026-10-31",
       "errors": 0,
-      "review": 0,
+      "review": 1,
       "sources": 4,
-      "status": "ok"
+      "status": "review"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-10-30",
-      "lastSuccess": "2026-10-30",
+      "checkedAt": "2026-10-31",
+      "lastSuccess": "2026-10-31",
       "errors": 0,
-      "review": 3,
+      "review": 4,
       "sources": 10,
       "status": "review"
     }
   },
   "findings": [
+    {
+      "id": "sizing-availability-gcp",
+      "url": "https://docs.databricks.com/gcp/en/oltp/projects/manage-projects#region-availability",
+      "page": "databricks-sizing/",
+      "error": null,
+      "changes": [
+        "Added record: 81fb37c572854da2abcbc2cc5c57efc31592cdcefe7a9443c21e432f8ff634d8: us-west1 (US West - Oregon)",
+        "Added record: f7894003459ac15cbb41d495cea0c4075f706281746572e669142a325ddc2f50: asia-southeast1 (Asia Pacific - Singapore)"
+      ]
+    },
     {
       "id": "sandbox-agentcore",
       "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html",
@@ -31,12 +41,29 @@
       ]
     },
     {
+      "id": "sandbox-databricks-limits",
+      "url": "https://docs.databricks.com/aws/en/compute/serverless/sandbox",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: c9f8f03a026a842f3ed0b6c91211707e3f07469e7dafc13c3f05c7aceb538073",
+        "Added record: 5a1a00494663ceb97f65570cc2c7c0fa9ebd440d0814eff43c9c95e6b912f972: So that code in a sandbox can call Databricks APIs, each sandbox is provisioned with a Databricks credential that authenticates as the user who create",
+        "Added record: 85b58890f1568409ce39a2f2d0b90979bf38f3c26e6e9dd34053eae9ff69acd5: A sandbox can run for at most 24 hours after each start. After 24 hours, Databricks stops the sandbox, including any running commands and background p"
+      ]
+    },
+    {
       "id": "sandbox-monty",
       "url": "https://raw.githubusercontent.com/pydantic/monty/main/docs/security.md",
       "page": "sandbox-compare/",
       "error": null,
       "changes": [
-        "Added record: cf4f455533f1402816862a0403bd92152a71ac70cb5d3cbf3a82af376a2329e5: then the mounts, the paths `open()` could read, and runs the file as sandbox code, with the capabilities the session's"
+        "Removed record: 149636be229817f9e10bc64902af69c13b86ba16cd7e32b90704fd31d01e5ea8",
+        "Removed record: eb107f14f5b506bf56cff01346b316cf2f13f1bcb592d8213bb01b417f3a5e23",
+        "Added record: 3fbbeac15f928ced613fd029ffe49f910defb9717ecc670a73e1ec4c47301275: The supervisor CPU limit includes compilation and protocol CPU during each execution request.",
+        "Added record: 7a9dcb7e551681f1c3fc882678be6cbfc5e9addb306c7eaa1291d8a7e7c542d7: The optional `feed_duration_limit_grace` and `turn_duration_limit_grace` use the selected execution clock.",
+        "Added record: 7ad1ed29ebd09a94dfd0d992382ecc798f6c18f1a50c975d3d81f323fefb3ffd: Local Python, JavaScript and Rust subprocess pools support [CPU execution clocks](resource-limits.md#cpu-execution-clock)",
+        "Added record: 9deee60e3525290b07c98df181abfd7045b754754ed931aa1862b5f72f991b99: - The VM duration budgets do not charge compilation of the fed source.",
+        "Added record: cf4f455533f1402816862a0403bd92152a71ac70cb5d3cbf3a82af376a2329e5"
       ]
     },
     {
