@@ -1768,7 +1768,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-08",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -1791,7 +1791,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -2388,7 +2388,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-13",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -2411,7 +2411,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -2784,7 +2784,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -2795,19 +2795,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -2819,7 +2819,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -3578,7 +3578,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -3595,7 +3595,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -3902,7 +3902,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -3911,15 +3911,27 @@
             "regions": [
               [
                 "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo"
+              ],
+              [
+                "Americas",
                 "global",
                 "Cross-geo",
-                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+              ],
+              [
+                "Europe",
+                "in-region",
+                "In-region",
+                "AWS Frankfurt, Ireland, London, Paris"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -4181,7 +4193,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -4198,7 +4210,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -4713,7 +4725,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -4730,7 +4742,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -5354,7 +5366,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -5365,19 +5377,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS Canada, São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure West Europe, UK South · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -6042,7 +6054,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -6065,7 +6077,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "Azure West Europe, UK South · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -6716,7 +6728,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -6727,7 +6739,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo"
+              ],
+              [
+                "Europe",
+                "global",
+                "Cross-geo",
+                "AWS Frankfurt, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "global",
+                "Cross-geo",
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney"
               ]
             ],
             "hk": [
@@ -6739,6 +6763,10 @@
               "No Taiwan region in Databricks' model-serving tables"
             ],
             "notes": [
+              [
+                "Residency",
+                "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
+              ],
               [
                 "Billing",
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
@@ -7166,7 +7194,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -7189,7 +7217,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "Azure West Europe, UK South · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -7970,7 +7998,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -7981,7 +8009,7 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS Oregon · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
@@ -7993,13 +8021,13 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "Azure West Europe, UK South"
+                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -8243,7 +8271,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -8266,7 +8294,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "Azure West Europe, UK South · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -8842,7 +8870,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -8853,25 +8881,25 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS Canada, São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "Azure West Europe, UK South"
+                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -9129,7 +9157,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -9140,7 +9168,7 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS Oregon · Azure East US 2, West US · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US 2, West US · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
@@ -9152,7 +9180,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -9164,7 +9192,7 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Seoul, Mumbai · Azure Japan East · GCP Mumbai, Singapore"
+                "AWS Tokyo, Seoul, Mumbai, Singapore · Azure Japan East · GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
@@ -9367,7 +9395,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -9390,7 +9418,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -9594,7 +9622,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -9605,19 +9633,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -9839,7 +9867,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -9850,19 +9878,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -9874,13 +9902,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Seoul, Singapore, Sydney · Azure Australia East · GCP Singapore"
+                "AWS Tokyo, Singapore, Sydney · Azure Australia East · GCP Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India · GCP Mumbai"
+                "AWS Seoul, Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India · GCP Mumbai"
               ]
             ],
             "hk": [
@@ -10043,7 +10071,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -10054,19 +10082,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
               ],
               [
                 "Europe",
@@ -10233,7 +10261,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -10244,19 +10272,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
               ],
               [
                 "Europe",
@@ -10268,13 +10296,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Seoul, Mumbai"
+                "AWS Seoul, Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Tokyo, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
+                "AWS Tokyo, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
               ]
             ],
             "hk": [
@@ -10428,7 +10456,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -10439,19 +10467,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -10463,13 +10491,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Seoul, Mumbai, Sydney · Azure Japan East, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure Japan East, Australia East"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Singapore · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai, Singapore"
+                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai, Singapore"
               ]
             ],
             "hk": [
@@ -10634,7 +10662,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -10657,7 +10685,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
+                "Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
               ],
               [
                 "Europe",
@@ -10669,13 +10697,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Seoul, Mumbai"
+                "AWS Seoul, Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Tokyo, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -10830,7 +10858,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -10839,15 +10867,21 @@
             "regions": [
               [
                 "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo"
+              ],
+              [
+                "Americas",
                 "global",
                 "Cross-geo",
-                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -11389,7 +11423,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-07",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -11412,7 +11446,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -12067,7 +12101,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-20",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -12090,7 +12124,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -12771,7 +12805,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-20",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -12782,25 +12816,31 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+              ],
+              [
+                "Europe",
+                "in-region",
+                "In-region",
+                "AWS Frankfurt, Ireland, London, Paris"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Seoul, Mumbai, Singapore · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
+                "AWS Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Tokyo, Sydney · Azure Japan East"
+                "AWS Tokyo · Azure Japan East"
               ]
             ],
             "hk": [
@@ -13400,7 +13440,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -13411,19 +13451,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -13435,13 +13475,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Seoul, Singapore, Sydney · Azure Japan East, Australia East · GCP Singapore"
+                "AWS Tokyo, Singapore, Sydney · Azure Japan East, Australia East · GCP Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai"
+                "AWS Seoul, Mumbai · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central, Central India · GCP Mumbai"
               ]
             ],
             "hk": [
@@ -13674,7 +13714,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-14",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -13685,19 +13725,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -13709,13 +13749,13 @@
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure Japan East, Central India, Australia East · GCP Mumbai, Singapore"
+                "AWS Tokyo, Mumbai, Singapore, Sydney · Azure Japan East, Central India, Australia East · GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central"
+                "AWS Seoul · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Korea Central"
               ]
             ],
             "hk": [
@@ -13998,7 +14038,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -14009,19 +14049,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -14033,7 +14073,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -14866,7 +14906,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -14877,19 +14917,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -14901,7 +14941,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -15684,7 +15724,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -15695,19 +15735,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -15719,7 +15759,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -16466,7 +16506,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -16477,19 +16517,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -16501,7 +16541,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -17251,7 +17291,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -17262,19 +17302,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -17286,7 +17326,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -18018,7 +18058,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -18029,19 +18069,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -18053,7 +18093,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -18741,7 +18781,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -18752,19 +18792,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -19452,7 +19492,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -19469,7 +19509,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -19926,7 +19966,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -19937,31 +19977,25 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon · GCP Iowa, S. Carolina, N. Virginia, Oregon"
-              ],
-              [
-                "Americas",
-                "global",
-                "Cross-geo",
-                "AWS Canada, São Paulo"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · GCP London, Frankfurt"
               ],
               [
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Mumbai, Singapore · GCP Mumbai, Singapore"
+                "GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Seoul, Sydney"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney"
               ]
             ],
             "hk": [
@@ -20536,7 +20570,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -20547,31 +20581,25 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon · GCP Iowa, S. Carolina, N. Virginia, Oregon"
-              ],
-              [
-                "Americas",
-                "global",
-                "Cross-geo",
-                "AWS Canada, São Paulo"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · GCP London, Frankfurt"
               ],
               [
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Mumbai, Singapore · GCP Mumbai, Singapore"
+                "GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Seoul, Sydney"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney"
               ]
             ],
             "hk": [
@@ -21067,7 +21095,7 @@
           ],
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -21076,15 +21104,21 @@
             "regions": [
               [
                 "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo"
+              ],
+              [
+                "Americas",
                 "global",
                 "Cross-geo",
-                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -21627,7 +21661,7 @@
           ],
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -21650,7 +21684,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -22300,7 +22334,7 @@
           ],
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -22323,7 +22357,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -22904,7 +22938,7 @@
           ],
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -22915,25 +22949,25 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure UK South · GCP London, Frankfurt"
+                "Azure UK South · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -23525,7 +23559,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -23536,19 +23570,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -24238,7 +24272,7 @@
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -24249,37 +24283,37 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · GCP London, Frankfurt"
+                "GCP London, Frankfurt"
               ],
               [
                 "Europe",
                 "global",
                 "Cross-geo",
-                "Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North"
               ],
               [
                 "APAC",
                 "in-region",
                 "In-region",
-                "AWS Tokyo, Mumbai, Singapore · GCP Mumbai, Singapore"
+                "GCP Mumbai, Singapore"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Seoul, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
@@ -24761,7 +24795,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-04",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -24784,7 +24818,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "Azure West Europe, UK South · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -27666,7 +27700,7 @@
           ],
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-17",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -27683,7 +27717,7 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -28390,7 +28424,7 @@
           "model_id_checked_at": "2026-10-29",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-29",
+            "checked_at": "2026-10-31",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -28401,19 +28435,19 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
               ],
               [
                 "Americas",
                 "global",
                 "Cross-geo",
-                "AWS São Paulo · Azure Canada Central, Brazil South"
+                "Azure Canada Central, Brazil South"
               ],
               [
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "Europe",
@@ -28425,7 +28459,7 @@
                 "APAC",
                 "global",
                 "Cross-geo",
-                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
