@@ -25,14 +25,13 @@
     td.append(node('h2',r.title),node('p',r.description));
     const w=M.windows(),impact=node('section',null,{class:'impact-note'});
     impact.append(node('h3','Why this ranks here'));
-    if(state.sort==='hot'){
+    if(state.sort==='cvss'){
+      impact.append(node('p','CVSS severity · '+(r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.')));
+    }else{
       const hot=M.hotRank(r,w.today);
       impact.append(node('p',(hot.emergency?'Emergency group · '+hot.label:'Hot score '+hot.score+'/100')+' · '+hot.reason));
       impact.append(node('p','Score weights: attack evidence 35% (KEV '+(r.kev?'confirmed':'not listed')+(r.exploit?', public PoC/exploit repositories':'')+(r.epss?', EPSS '+(r.epss.score*100).toFixed(2)+'%':'')+') + severity 25% (CVSS '+(Number.isFinite(r.cvss?.score)?r.cvss.score.toFixed(1):'unknown')+'/10) + recency 25% (risk date '+ (M.event(r,w.today).date||'unknown')+', one-week half-life) + attention 15% ('+M.heatOf(r,w.today).reports+' independent report'+(M.heatOf(r,w.today).reports===1?'':'s')+', halved every three idle days).'));
       if(M.heatOf(r,w.today).reports)impact.append(node('p','Attention reports: '+r.heat.reports.map(rep=>rep.k).join(', ')));
-    }else{
-      const priority=state.sort==='cvss'?{label:'CVSS severity',reason:r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.'}:M.priority(r);
-      impact.append(node('p',priority.label+' · '+priority.reason));
     }
     impact.append(node('p','Rules use source evidence and CVSS metrics. Affected server, organization and person counts are unknown; no issue receives a manual ranking boost. Attention never creates an Emergency classification.'));
     if(r.ranking_evidence)impact.append(sourceLink({label:'Ranking evidence',url:r.ranking_evidence.url}));
@@ -61,7 +60,7 @@
     for(const id of ['current','archive'])$(id).setAttribute('aria-pressed',String(state.view===id));
     $('currentCount').textContent=current.length;$('archiveCount').textContent=archive.length;
     $('period').textContent=state.view==='archive'?'Archive · '+date(w.archive)+' – '+date(new Date(Date.parse(w.current)-86400000).toISOString()):'Last 30 days · '+date(w.current)+' – '+date(w.today);
-    $('count').textContent=records.length+' high-risk '+(records.length===1?'entry':'entries')+' · '+(state.layer==='all'?'All categories':M.layers[state.layer])+' · '+({hot:'Hot · latest high impact',impact:'Impact + CVSS',cvss:'CVSS highest first'})[state.sort];
+    $('count').textContent=records.length+' high-risk '+(records.length===1?'entry':'entries')+' · '+(state.layer==='all'?'All categories':M.layers[state.layer])+' · '+(state.sort==='cvss'?'CVSS highest first':'Hot · latest high impact');
     const stats=[[records.length,'high-risk entries'],[records.filter(r=>r.kev).length,'known exploited'],[records.filter(r=>r.cvss?.score>=9).length,'critical · 9.0+'],[records.filter(r=>!r.cvss).length,'unscored urgent / exploited']];
     $('summary').replaceChildren(...stats.map(([n,label])=>{const e=node('div',null,{class:'kpi'});e.append(node('b',n),node('span',label));return e;}));
     const rows=[];

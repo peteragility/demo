@@ -249,6 +249,17 @@ class RefreshTests(unittest.TestCase):
             # The snapshot rewrite keeps rank_history so ranks.cjs can move current -> previous.
             self.assertEqual(second['rank_history'], history)
 
+    def test_categories_bucket_by_what_the_reader_patches(self):
+        self.assertEqual(R.layer_for('MikroTik RouterOS'), 'edge')
+        self.assertEqual(R.layer_for('Arista VeloCloud Orchestrator'), 'edge')
+        self.assertEqual(R.layer_for('JFrog Artifactory'), 'delivery')
+        self.assertEqual(R.layer_for('Google Chromium V8'), 'runtime')
+        self.assertEqual(R.layer_for('Microsoft SharePoint'), 'app')
+        self.assertEqual(R.layer_for('WordPress Core'), 'app')
+        self.assertEqual(R.layer_for('Linux Kernel'), 'system')
+        # The retired catch-all layer remaps instead of stranding archived history.
+        self.assertEqual(R.LAYER_MIGRATION, {'identity': 'app'})
+
     def test_rejected_or_unsafe_snapshot_cannot_validate(self):
         data = json.loads((R.ROOT / 'data.json').read_text())
         self.assertTrue(R.validate(data))

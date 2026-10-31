@@ -26,7 +26,9 @@ FEEDS = {
     'gitlab': ('GitLab patch releases', 'https://docs.gitlab.com/releases/patch-releases.xml', 'delivery', 'GitLab'),
     'ca': ('Google Security / certificate incidents', 'https://blog.google/security/rss/', 'trust', 'Web PKI'),
 }
-LAYERS = {'trust', 'edge', 'runtime', 'delivery', 'system', 'identity'}
+LAYERS = {'trust', 'edge', 'runtime', 'delivery', 'system', 'app'}
+# Old snapshots carry the retired 'identity' catch-all; remap instead of stranding history.
+LAYER_MIGRATION = {'identity': 'app'}
 ATOM = {'a': 'http://www.w3.org/2005/Atom', 'p': 'http://php.net/ns/releases'}
 # Attention and exploit evidence come from keyless public feeds only; no social-network APIs.
 ATTENTION_FEEDS = {
@@ -86,15 +88,16 @@ def fetch(url, as_json=False):
 
 
 def layer_for(product):
+    # Ordered: runtime before edge so 'Apache Tomcat' is not caught by 'apache http' style names.
     for pattern, layer in [
-        (r'openssl|certificate|cryptoapi', 'trust'),
-        (r'gitlab|jenkins|bamboo|teamcity|bitbucket|npm|supply.chain|xz utils', 'delivery'),
-        (r'php|node.js|struts|spring|log4j|react|next.js|django|laravel|ruby|python|tomcat', 'runtime'),
-        (r'forti|ivanti|cisco|pan-os|palo alto|net[sS]caler|citrix|vpn|sonicwall|f5|big-ip|nginx|apache http|bind|zyxel', 'edge'),
-        (r'windows|linux|kernel|docker|kubernetes|vmware|esxi|openssh|sudo|polkit', 'system'),
+        (r'openssl|certificate|cryptoapi|trust store|root (?:program|store)|code.signing|emudhra|emsign', 'trust'),
+        (r'gitlab|jenkins|bamboo|teamcity|bitbucket|artifactory|jfrog|npm|supply.chain|xz utils|package registr', 'delivery'),
+        (r'php|node\.js|chromium|\bv8\b|struts|spring|log4j|react|next\.js|django|laravel|ruby|python|tomcat|openjdk|jvm', 'runtime'),
+        (r'forti|ivanti|cisco|pan-os|palo alto|net[sS]caler|citrix|vpn|sonicwall|f5|big-ip|nginx|apache http|bind|zyxel|mikrotik|routeros|ubiquiti|unifi|velocloud|arista|sd-?wan|meraki|firewall', 'edge'),
+        (r'windows|linux|kernel|docker|kubernetes|vmware|esx|vcenter|openssh|sudo|polkit', 'system'),
     ]:
         if re.search(pattern, product, re.I): return layer
-    return 'identity'
+    return 'app'
 
 
 def impact_for(text):
@@ -573,6 +576,7 @@ def run(output):
     for rid, r in records.items():
         r.pop('impact_scope', None)
         r.pop('priority', None)
+        r['layer'] = LAYER_MIGRATION.get(r['layer'], r['layer'])
         r['revision'] = revision(r)
         prior = old.get(rid)
         r['material_updated_at'] = material_update(r, prior)

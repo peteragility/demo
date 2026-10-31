@@ -1,6 +1,6 @@
 (function (root) {
   'use strict';
-  const layers = {trust:'Certificates / TLS',edge:'Edge / VPN',runtime:'Runtimes',delivery:'GitLab / CI/CD',system:'OS / containers',identity:'Identity / data'};
+  const layers = {app:'Apps / platforms',delivery:'CI/CD / supply chain',edge:'Network / VPN',system:'OS / infrastructure',runtime:'Runtimes / libraries',trust:'Certificates / PKI'};
   function safeURL(value) {
     try {const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;} catch {return null;}
   }
@@ -93,10 +93,8 @@
       const inWindow=prefs.view==='archive'?date>=w.archive&&date<w.current:date>=w.current&&date<=w.today;
       return inWindow&&(!prefs.layer||prefs.layer==='all'||prefs.layer===r.layer)&&(!q||[r.id,r.product,r.title,r.description,r.action,layers[r.layer],...(r.affected||[]),...(r.fixed||[])].join(' ').toLowerCase().includes(q));
     }).sort((a,b)=>{
-      let order=0;
-      if(prefs.sort==='hot')order=hotOrder(a,b,w.today);
-      else if(prefs.sort!=='cvss')order=priority(a).tier-priority(b).tier;
-      if(order)return order;
+      // Two ranking modes: Hot · latest high impact (default) and pure CVSS.
+      if(prefs.sort!=='cvss'){const order=hotOrder(a,b,w.today);if(order)return order;}
       return (b.cvss?.score??-1)-(a.cvss?.score??-1)||Number(Boolean(b.kev))-Number(Boolean(a.kev))||(prefs.sort!=='cvss'?(b.epss?.score??-1)-(a.epss?.score??-1):0)||event(b,w.today).date.localeCompare(event(a,w.today).date)||a.id.localeCompare(b.id);
     });
   }

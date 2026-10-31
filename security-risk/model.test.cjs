@@ -18,7 +18,8 @@ test('30-day view and six-calendar-month archive have non-overlapping boundaries
 });
 test('high risk includes 7+, KEV and urgent unscored CA incidents, excludes low and rejected',()=>{
  const records=[base,{...base,id:'low',cvss:{score:6.9}},{...base,id:'high',cvss:{score:7}},{...base,id:'kev',cvss:null,kev:true,kev_added:'2026-10-22'},{...base,id:'ca',cvss:null,urgent:true,kind:'incident'},{...base,id:'rejected',rejected:true}];
- assert.deepEqual(M.select(records,{},now).map(r=>r.id),[base.id,'high','kev','ca']);
+ // Default hot ordering: KEV attack evidence outranks CVSS; the urgent unscored notice is included but ranks on evidence alone.
+ assert.deepEqual(M.select(records,{},now).map(r=>r.id),['kev',base.id,'high','ca']);
 });
 test('date is latest genuine event, never check/import date; new KEV brings older CVEs into current view',()=>{
  const old={...base,published:'2020-01-01',checked_at:'2026-10-23',changed_at:'2026-10-23'};
@@ -43,10 +44,12 @@ test('generic priority rules depend only on evidence, not identity or editorial 
  const remote={...base,id:'b',cvss:{score:9.2,vector}};
  const numeric={...base,id:'c',cvss:{score:10}};
  const exploited={...base,id:'d',cvss:{score:9.8},kev:true,kev_added:'2026-10-21'};
- assert.deepEqual(M.select([numeric,remote,exploited,trust],{},now).map(r=>r.id),['a','d','b','c']);
+ // Emergencies first (trust compromise, then exploited-critical); remaining entries by hot score.
+ assert.deepEqual(M.select([numeric,remote,exploited,trust],{},now).map(r=>r.id),['a','d','c','b']);
+ assert.deepEqual(M.select([numeric,remote,exploited,trust],{sort:'hot'},now).map(r=>r.id),['a','d','c','b'],'hot is the default ranking');
  assert.deepEqual(M.select([numeric,remote,exploited,trust],{sort:'cvss'},now).map(r=>r.id),['c','d','b','a']);
  for(const r of [trust,remote,numeric,exploited]){
-  const changed={...r,id:'unrelated-id',product:'Unrelated vendor',layer:'identity',title:'New headline',description:'Editorial replacement',urgent:!r.urgent,impact_scope:{level:'ecosystem'}};
+  const changed={...r,id:'unrelated-id',product:'Unrelated vendor',layer:'app',title:'New headline',description:'Editorial replacement',urgent:!r.urgent,impact_scope:{level:'ecosystem'}};
   assert.deepEqual(M.priority(changed),M.priority(r));
  }
  assert.equal(M.priority({...numeric,urgent:true,impact_scope:{level:'ecosystem'}}).tier,3);

@@ -34,7 +34,7 @@ await withBrowser(root,async b=>{
  assert.equal(await b.evaluate('document.querySelector(".row").dataset.id'),'ca');
  await b.evaluate('document.querySelector("[data-layer=all]").click();document.getElementById("sort").value="cvss";document.getElementById("sort").dispatchEvent(new Event("change"))');
  assert.equal(await b.evaluate('document.querySelector(".score").textContent'),'10.0/10');
- await b.evaluate('document.getElementById("sort").value="impact";document.getElementById("sort").dispatchEvent(new Event("change"))');
+ await b.evaluate('document.getElementById("sort").value="hot";document.getElementById("sort").dispatchEvent(new Event("change"))');
  for(const width of [1440,768,390,320]){
   await b.viewport(width,900);if(width===320)await b.evaluate('document.body.style.fontFamily="Arial,sans-serif"');
   assert.ok(await b.evaluate('document.documentElement.scrollWidth<=innerWidth'),'No overflow at '+width);
