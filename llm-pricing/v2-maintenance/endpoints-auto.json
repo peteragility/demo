@@ -604,38 +604,6 @@
    "adi": true,
    "changed_at": "2026-10-31"
   },
-  "deepseek/deepseek-v4-pro": {
-   "regions": [
-    [
-     "Americas",
-     "in-region",
-     "In-region",
-     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo"
-    ],
-    [
-     "Europe",
-     "global",
-     "Cross-geo",
-     "AWS Frankfurt, Ireland, London, Paris"
-    ],
-    [
-     "APAC",
-     "global",
-     "Cross-geo",
-     "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney"
-    ]
-   ],
-   "hk": [
-    "none",
-    "No Hong Kong region in Databricks' model-serving tables"
-   ],
-   "tw": [
-    "none",
-    "No Taiwan region in Databricks' model-serving tables"
-   ],
-   "adi": false,
-   "changed_at": "2026-10-31"
-  },
   "deepseek/deepseek-v4.1-flash": {
    "regions": [
     [
@@ -1806,44 +1774,6 @@
    "adi": false,
    "changed_at": "2026-10-31"
   },
-  "tml/inkling": {
-   "regions": [
-    [
-     "Americas",
-     "in-region",
-     "In-region",
-     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
-    ],
-    [
-     "Americas",
-     "global",
-     "Cross-geo",
-     "Azure Canada Central, Brazil South"
-    ],
-    [
-     "Europe",
-     "global",
-     "Cross-geo",
-     "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South"
-    ],
-    [
-     "APAC",
-     "global",
-     "Cross-geo",
-     "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
-    ]
-   ],
-   "hk": [
-    "routed",
-    "Azure East Asia (Hong Kong) through cross-geo routing"
-   ],
-   "tw": [
-    "none",
-    "No Taiwan region in Databricks' model-serving tables"
-   ],
-   "adi": true,
-   "changed_at": "2026-10-31"
-  },
   "xai/grok-4.6": {
    "regions": [
     [
@@ -2021,6 +1951,78 @@
    ],
    "adi": true,
    "changed_at": "2026-10-31"
+  },
+  "deepseek/deepseek-v4-pro": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Cross-geo",
+     "AWS Frankfurt, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Cross-geo",
+     "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Hong Kong region in Databricks' model-serving tables"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region in Databricks' model-serving tables"
+   ],
+   "adi": false,
+   "changed_at": "2026-10-31",
+   "missing_since": "2026-10-31"
+  },
+  "tml/inkling": {
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+    ],
+    [
+     "Americas",
+     "global",
+     "Cross-geo",
+     "Azure Canada Central, Brazil South"
+    ],
+    [
+     "Europe",
+     "global",
+     "Cross-geo",
+     "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South"
+    ],
+    [
+     "APAC",
+     "global",
+     "Cross-geo",
+     "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Azure East Asia (Hong Kong) through cross-geo routing"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region in Databricks' model-serving tables"
+   ],
+   "adi": true,
+   "changed_at": "2026-10-31",
+   "missing_since": "2026-10-31"
   }
  },
  "bedrock": {
