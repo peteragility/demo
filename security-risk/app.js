@@ -98,9 +98,9 @@
     const stale=!data.last_attempt||Date.now()-Date.parse(data.last_attempt)>36*3600000;
     $('freshness').textContent=(failed.length?'Partial refresh':stale?'Snapshot overdue':'Updated')+' · '+time(data.last_attempt);
     if(failed.length||stale){$('notice').hidden=false;$('notice').textContent=(failed.length?failed.length+' source checks failed. ':'')+(stale?'Snapshot is over 36 hours old. ':'')+'Previous source data is retained; see refresh health.';}
-    else if(attentionFailed){$('notice').hidden=false;$('notice').textContent=attentionFailed+' attention feed'+(attentionFailed===1?'':'s')+' unavailable; yesterday\'s attention and PoC evidence is retained. Ranking is unaffected.';}
     for(const s of data.sources){const li=node('li');li.append(sourceLink(s),node('span',' · '+s.status+' · '+time(s.last_success)));if(s.error)li.append(node('span',' · '+s.error));if(s.note)li.append(node('span',' · '+s.note));$('sources').append(li);}
-    $('refreshMeta').textContent='Last complete refresh: '+time(data.last_success)+'. Retained data covers the last six months from the monitored sources.';
+    // Optional-feed outages stay inside refresh health; only required-source failures warn at page level.
+    $('refreshMeta').textContent='Last complete refresh: '+time(data.last_success)+'. Retained data covers the last six months from the monitored sources.'+(attentionFailed?' '+attentionFailed+' attention feed'+(attentionFailed===1?' was':'s were')+' unavailable; yesterday\'s attention and PoC evidence is retained with its original dates, and ranking is unaffected.':'');
   }
   async function start(){try{
     const response=await fetch('data.json',{cache:'no-store'});if(!response.ok)throw new Error('Snapshot request failed ('+response.status+')');data=M.validate(await response.json());
