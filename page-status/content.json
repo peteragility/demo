@@ -5,17 +5,17 @@
       "checkedAt": "2026-10-31",
       "lastSuccess": "2026-10-31",
       "errors": 0,
-      "review": 1,
+      "review": 0,
       "sources": 4,
-      "status": "review"
+      "status": "ok"
     },
     "sandbox-compare/": {
       "checkedAt": "2026-10-31",
       "lastSuccess": "2026-10-31",
       "errors": 0,
-      "review": 4,
+      "review": 0,
       "sources": 10,
-      "status": "review"
+      "status": "ok"
     }
   }
 }
