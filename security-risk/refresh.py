@@ -28,6 +28,16 @@ FEEDS = {
 }
 LAYERS = {'trust', 'edge', 'runtime', 'delivery', 'system', 'identity'}
 ATOM = {'a': 'http://www.w3.org/2005/Atom', 'p': 'http://php.net/ns/releases'}
+# Attention and exploit evidence come from keyless public feeds only; no social-network APIs.
+ATTENTION_FEEDS = {
+    'news': ('Security press (BleepingComputer, The Record)',
+             ('https://www.bleepingcomputer.com/feed/', 'https://therecord.media/feed')),
+    'reddit': ('Reddit security communities (r/netsec, r/blueteamsec)',
+               ('https://www.reddit.com/r/netsec/.rss?limit=100', 'https://www.reddit.com/r/blueteamsec/.rss?limit=100')),
+}
+HN_API = 'https://hn.algolia.com/api/v1/search_by_date'
+GITHUB_API = 'https://api.github.com/search/repositories'
+ATTENTION_WINDOW = 21  # days; older reports decay to insignificance under the 3-day halving
 
 
 class Text(HTMLParser):
@@ -317,6 +327,63 @@ def risk_event(record, today):
     return max(valid, default=('', ''))
 
 
+def cve_ids_in(text):
+    return {m.upper() for m in re.findall(r'CVE-\d{4}-\d{4,8}', str(text or ''))}
+
+
+def attention_from_feed(kind, text, cutoff):
+    """Independent original reports: one entry per article or post, never per repost."""
+    reports = {}
+    entries = feed_entries(text)
+    if not entries: raise ValueError('Empty or unrecognized attention feed')
+    for e in entries:
+        url = e.get('url', '')
+        if not safe_url(url): continue
+        day = date_of(e.get('date', ''))
+        if not day or day < cutoff: continue
+        body = plain(e.get('title', '')) + ' ' + plain(e.get('body', ''))
+        for rid in cve_ids_in(body):
+            reports.setdefault(rid, []).append({'k': kind, 'url': url, 'at': day})
+    return reports
+
+
+def hn_attention(ids, cutoff):
+    """Hacker News stories whose title or linked article names the exact CVE."""
+    def query(rid):
+        url = HN_API + '?' + urllib.parse.urlencode({'query': '"' + rid + '"', 'tags': 'story', 'hitsPerPage': '30'})
+        found = []
+        for hit in fetch(url, True).get('hits', []):
+            named = ' '.join(str(hit.get(k) or '') for k in ('title', 'story_title', 'url'))
+            if rid.lower() not in named.lower(): continue
+            day = date_of(hit.get('created_at', ''))
+            if day and day >= cutoff:
+                found.append({'k': 'hn', 'url': 'https://news.ycombinator.com/item?id=' + str(hit.get('objectID', '')), 'at': day})
+        return rid, found
+    reports = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        for rid, found in pool.map(query, ids):
+            if found: reports[rid] = found
+    return reports
+
+
+def github_exploits(cutoff):
+    """Public PoC/exploit repositories named for a CVE count as attack evidence, not chatter."""
+    reports = {}
+    for page in (1, 2, 3):
+        query = urllib.parse.urlencode({'q': 'CVE in:name created:>=' + cutoff, 'sort': 'updated', 'order': 'desc', 'per_page': '100', 'page': str(page)})
+        items = fetch(GITHUB_API + '?' + query, True).get('items', [])
+        for item in items:
+            for rid in cve_ids_in(str(item.get('name', '')) + ' ' + str(item.get('description') or '')):
+                reports.setdefault(rid, []).append(item['html_url'])
+        if len(items) < 100: break
+    return reports
+
+
+def merge_attention(target, extra):
+    for rid, found in extra.items():
+        target.setdefault(rid, []).extend(found)
+
+
 def systemic_signal(record):
     evidence = record.get('ranking_evidence') or {}
     text = evidence.get('text')
@@ -359,6 +426,19 @@ def validate(data):
         if epss and not 0 <= float(epss['score']) <= 1: raise ValueError('Invalid EPSS')
         evidence = r.get('ranking_evidence')
         if evidence and (not isinstance(evidence.get('text'), str) or len(evidence['text']) > 16000 or not safe_url(evidence.get('url', ''))): raise ValueError('Invalid ranking evidence')
+        heat = r.get('heat')
+        if heat is not None:
+            reports = heat.get('reports')
+            if not isinstance(reports, list) or not 1 <= len(reports) <= 16 or len(reports) != len({rep.get('url') for rep in reports}):
+                raise ValueError('Invalid attention reports')
+            for rep in reports:
+                if rep.get('k') not in ('hn', 'reddit', 'news', 'poc') or not safe_url(rep.get('url', '')) or not date_of(rep.get('at', '')):
+                    raise ValueError('Invalid attention report')
+        exploit = r.get('exploit')
+        if exploit is not None:
+            refs = exploit.get('refs')
+            if not isinstance(refs, list) or not 1 <= len(refs) <= 8 or not all(safe_url(u) for u in refs):
+                raise ValueError('Invalid exploit evidence')
     if 'scope' in data:
         kept, scope = retain(data['records'], data['last_attempt'])
         if len(kept) != len(data['records']) or scope != data['scope']: raise ValueError('Date window / high-risk scope mismatch')
@@ -372,13 +452,15 @@ def run(output):
     old_sources = {s['id']: s for s in previous['sources']}
     records, sources, errors = {}, [], []
 
-    def source(key, label, url, task):
+    def source(key, label, url, task, optional=False):
         state = dict(id=key, label=label, url=url, checked_at=now, last_success=old_sources.get(key, {}).get('last_success', ''), status='ok', error='')
         try:
             value = task(); state['last_success'] = now
         except Exception as error:
             state['status'], state['error'] = 'failed', type(error).__name__ + ': ' + str(error)[:180]
-            errors.append(key); value = None
+            # Optional attention feeds report failure in source health without blocking publication.
+            if not optional: errors.append(key)
+            value = None
         sources.append(state)
         return value
 
@@ -500,11 +582,51 @@ def run(output):
         else:
             r['changed_at'] = prior.get('changed_at', now); r['change'] = prior.get('change', '')
     kept, scope = retain(list(records.values()), now)
+    # Attention / exploit evidence from keyless public feeds; a failed feed retains prior signals.
+    today = scope['as_of']
+    attention_cutoff = (dt.date.fromisoformat(today) - dt.timedelta(days=ATTENTION_WINDOW)).isoformat()
+    kept_cves = [r['id'] for r in kept if cve_id(r['id'])]
+
+    def read_attention(kind):
+        merged = {}
+        for url in ATTENTION_FEEDS[kind][1]:
+            merge_attention(merged, attention_from_feed(kind, fetch(url), attention_cutoff))
+        return merged
+    press = source('press', ATTENTION_FEEDS['news'][0], ATTENTION_FEEDS['news'][1][0], lambda: read_attention('news'), optional=True)
+    reddit = source('reddit', ATTENTION_FEEDS['reddit'][0], ATTENTION_FEEDS['reddit'][1][0], lambda: read_attention('reddit'), optional=True)
+    hn = source('hn', 'Hacker News discussion attention', HN_API, lambda: hn_attention(kept_cves, attention_cutoff), optional=True)
+    poc = source('poc', 'Public PoC repositories (GitHub search)', GITHUB_API, lambda: github_exploits(window_dates(now)[1]), optional=True)
+    heat = {}
+    for result in (press, reddit, hn):
+        if result is not None: merge_attention(heat, result)
+    exploits = ({rid: sorted(set(urls))[:8] for rid, urls in poc.items()} if poc is not None else None)
+    attention_failed = any(s['status'] == 'failed' for s in sources if s['id'] in ('press', 'reddit', 'hn'))
+    for r in kept:
+        rid = r['id']
+        prior = old.get(rid, {})
+        fresh = heat.get(rid)
+        if fresh is not None:
+            seen, unique = set(), []
+            for rep in sorted(fresh, key=lambda x: x['at'], reverse=True):
+                if rep['url'] in seen: continue
+                seen.add(rep['url']); unique.append(rep)
+            r['heat'] = {'reports': unique[:12], 'as_of': now}
+        elif attention_failed and prior.get('heat'):
+            r['heat'] = prior['heat']  # outages keep yesterday's attention with its original dates
+        elif not attention_failed:
+            r.pop('heat', None)
+        if exploits is not None:
+            # PoC repositories accumulate; search pagination can miss older ones, so merge with prior refs.
+            merged = sorted(set(exploits.get(rid, [])) | set(prior.get('exploit', {}).get('refs', [])))[:8]
+            if merged: r['exploit'] = {'refs': merged, 'at': now}
+            else: r.pop('exploit', None)
+        elif prior.get('exploit'):
+            r['exploit'] = prior['exploit']
     kept_ids = {r['id'] for r in kept}
     changes = [c for c in changes if c['id'] in kept_ids]
     for r in kept: r.pop('steps', None)
     data = dict(schema=1, scope=scope, last_attempt=now, last_success=now if not errors else previous.get('last_success', ''),
-                refresh_status='partial' if errors else 'ok', sources=sources,
+                refresh_status='partial' if errors else 'ok', sources=sources, rank_history=previous.get('rank_history', {}),
                 records=sorted(kept, key=lambda r: (-((r.get('cvss') or {}).get('score', -1)), r['id'])),
                 changes=(changes + [c for c in previous.get('changes', []) if c['id'] in kept_ids])[:500])
     validate(data)

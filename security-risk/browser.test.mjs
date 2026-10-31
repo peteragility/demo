@@ -6,15 +6,26 @@ import {withBrowser} from '../scripts/browser-kit.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const fixed='2026-10-23T06:00:00Z',clock=`const NativeDate=Date;window.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[${JSON.stringify(fixed)}]))}static now(){return NativeDate.parse(${JSON.stringify(fixed)})}};`;
 const make=(id,published,score=9.3)=>({id,title:'Example issue '+id,product:'Example',description:'Untrusted input can allow code execution.',action:'Upgrade the runtime and restart affected services.',impact:'Code execution',layer:'runtime',published,cvss:score===null?null:{score,version:'3.1'},affected:['1.x'],fixed:['1.2'],conditions:[],sources:[{label:'Vendor',url:'https://vendor.test/advisory'}],checked_at:fixed});
-const fixture={schema:1,last_attempt:fixed,last_success:fixed,sources:[],records:[make('current-a','2026-10-21',10),make('current-b','2026-09-24'),make('archive-a','2026-09-23'),make('archive-b','2026-04-23'),make('expired','2026-04-22'),make('low','2026-10-20',6.9),{...make('ca','2026-10-20',null),layer:'trust',urgent:true,kind:'incident',ranking_evidence:{text:'Compromised code-signing keys allow forged software updates.',url:'https://vendor.test/advisory'}}]};
+const fixture={schema:1,last_attempt:fixed,last_success:fixed,sources:[],rank_history:{at:fixed,current:{},previous:{ca:1,'current-a':4,'current-b':2}},records:[{...make('current-a','2026-10-21',10),heat:{reports:[{k:'hn',url:'https://news.test/a',at:'2026-10-22'},{k:'news',url:'https://therecord.media/b',at:'2026-10-23'}]}},{...make('current-b','2026-09-24'),exploit:{refs:['https://github.com/test/CVE-poc']}},make('archive-a','2026-09-23'),make('archive-b','2026-04-23'),make('expired','2026-04-22'),make('low','2026-10-20',6.9),{...make('ca','2026-10-20',null),layer:'trust',urgent:true,kind:'incident',ranking_evidence:{text:'Compromised code-signing keys allow forged software updates.',url:'https://vendor.test/advisory'}}]};
 const setup=(data,extra='')=>clock+`const originalFetch=window.fetch;window.fetch=async(...args)=>String(args[0]).includes('data.json')?new Response(JSON.stringify(${JSON.stringify(data)}),{status:200}):originalFetch(...args);`+extra;
 await withBrowser(root,async b=>{
  await b.navigate('/security-risk/',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');
  assert.equal(await b.evaluate('document.querySelector("#current").getAttribute("aria-pressed")'),'true');
+ assert.equal(await b.evaluate('document.querySelector("#sort").value'),'hot');
+ // Default hot ranking: emergency first, then attention-lifted current-a over the staler PoC entry.
+ assert.deepEqual(await b.evaluate('[...document.querySelectorAll(".row")].map(r=>r.dataset.id)'),['ca','current-a','current-b']);
+ assert.equal(await b.evaluate('document.querySelector(".row[data-id=current-a] .trend").textContent'),'Trending');
+ assert.equal(await b.evaluate('document.querySelector(".row[data-id=current-a] .delta.up").textContent'),'↑ 2 since yesterday');
+ assert.equal(await b.evaluate('document.querySelector(".row[data-id=current-b] .delta.down").textContent'),'↓ 1 since yesterday');
+ assert.equal(await b.evaluate('document.querySelector(".row[data-id=current-b] .evidence").textContent'),'PoC / exploit public');
+ await b.evaluate('document.querySelector(".row[data-id=ca] .issuebtn").click()');
+ assert.ok(await b.evaluate('document.querySelector(".impact-note").textContent.includes("Emergency group")'));
+ assert.ok(await b.evaluate('document.querySelector(".impact-note").textContent.includes("attack evidence 35%")'));
+ await b.evaluate('document.querySelector(".row[data-id=ca] .issuebtn").click()');
  assert.equal(await b.evaluate('document.querySelector(".row").dataset.id'),'ca');
  assert.equal(await b.evaluate('document.querySelector(".score").textContent'),'—');
  assert.equal(await b.evaluate('document.querySelectorAll("form,textarea,input[type=checkbox],#recent,#export,#import,#view").length'),0);
- assert.equal(await b.evaluate('document.getElementById("sort").value'),'impact');
+ assert.equal(await b.evaluate('document.getElementById("sort").value'),'hot');
  assert.equal(await b.evaluate('document.querySelectorAll("#categories button").length'),7);
  assert.equal(await b.evaluate('document.querySelector("#categories [aria-pressed=true]").dataset.layer'),'all');
  assert.equal(await b.evaluate('document.querySelectorAll("footer a[href*=llm-pricing]").length'),0);

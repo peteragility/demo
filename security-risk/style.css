@@ -9,6 +9,9 @@
 @media(max-width:720px){.mx{display:block}.mx thead{display:block;position:sticky;top:80px;z-index:20;background:var(--panel2)}.mx thead tr{display:grid;grid-template-columns:17% 24% 59%;width:100%}.mx thead th{position:static;width:auto}.mx tbody{display:block}.mx .row{width:100%}.mx .detail{display:block}.mx .detail>td{display:block;width:100%}.mx .empty{display:block;width:100%}.mx tbody>tr:has(.empty){display:block}}
 
 .row .known{color:var(--red);font-weight:600}
+.row .trend{color:var(--amber);font-weight:600}
+.row .delta{color:var(--muted)}
+.row .delta.up{color:var(--red)}
 
 /* Categories and ranking share a compact sticky toolbar at every width. */
 .controls{flex-wrap:wrap;gap:6px 10px}.categories{flex-basis:100%;width:100%;overflow-x:auto;scrollbar-width:thin;padding:3px;margin:-3px}.categories .tab{flex:none}.categories .category-name{margin:0;opacity:1;font-weight:600}.categories .category-count{font-size:11px}.sorting{display:flex;align-items:center;gap:5px;margin-left:auto;font-size:11px;color:var(--muted)}.sorting select{max-width:155px;height:30px;border:1px solid var(--line);border-radius:7px;background:var(--panel);font:inherit;color:var(--ink);padding:3px 5px;font-size:12px}.controls>.tabs:not(.categories){width:auto}.mx thead th{top:var(--controls-height,92px)}.impact-note{border-left:3px solid var(--amber);padding:5px 9px;margin:8px 0;background:var(--panel)}.impact-note h3{margin:0;font-size:12px}.impact-note a{font-size:11px;margin-right:12px}.row .priority-label{color:var(--amber);font-size:9px}.home{display:inline-flex;align-items:center;min-height:28px;white-space:nowrap}

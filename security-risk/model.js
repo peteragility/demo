@@ -53,6 +53,38 @@
     if((r.cvss?.score??-1)>=9&&remoteUnauthenticated(r))return {tier:2,label:'Critical · unauthenticated remote',reason:'CVSS 9.0+ with network access, low complexity, no privileges and no user interaction; CVSS v4 also requires no additional attack prerequisite.'};
     return {tier:3,label:'CVSS severity',reason:'Ordered by published CVSS. No systemic-compromise or critical-exposure promotion rule was established from the available evidence.'};
   }
+  // Attention: each independent report loses half its weight every 3 days without fresh reporting.
+  function heatOf(r,today) {
+    let score=0,latest='',reports=0;
+    for(const rep of r.heat?.reports||[]){
+      if(!safeURL(rep.url))continue;
+      const day=dayOf(rep.at);
+      if(!day||day>today)continue;
+      const age=Math.round((Date.parse(today)-Date.parse(day))/86400000);
+      score+=Math.pow(0.5,Math.max(0,age)/3);reports++;
+      if(day>latest)latest=day;
+    }
+    return {score:Math.min(1,score),reports,latest};
+  }
+  // Default "Hot · latest high impact" score. Transparent weights, not a harm measurement.
+  function hotRank(r,today) {
+    const tier=priority(r),emergency=tier.tier<2;
+    const day=event(r,today).date;
+    const age=day?Math.round((Date.parse(today)-Date.parse(day))/86400000):30;
+    const recency=Math.pow(0.5,Math.max(0,age)/7); // half-life: one week
+    const severity=(Number.isFinite(r.cvss?.score)?r.cvss.score:0)/10;
+    const exploit=(r.exploit?.refs||[]).some(u=>safeURL(u));
+    const attack=r.kev?1:exploit?0.7:Math.min(0.5,(Number.isFinite(r.epss?.score)?r.epss.score:0)*25);
+    const heat=heatOf(r,today).score;
+    return {emergency,tier:tier.tier,label:tier.label,reason:tier.reason,
+            score:Math.round(35*attack+25*severity+25*recency+15*heat),attack,severity,recency,heat};
+  }
+  function hotOrder(a,b,today) {
+    const x=hotRank(a,today),y=hotRank(b,today);
+    // Emergencies keep their rule order above every scored entry; social heat cannot create one.
+    const tx=x.emergency?x.tier:9,ty=y.emergency?y.tier:9;
+    return tx-ty||y.score-x.score;
+  }
   function select(records,prefs={},now=Date.now()) {
     const w=windows(now),q=(prefs.q||'').toLowerCase();
     return records.filter(r=>{
@@ -61,10 +93,10 @@
       const inWindow=prefs.view==='archive'?date>=w.archive&&date<w.current:date>=w.current&&date<=w.today;
       return inWindow&&(!prefs.layer||prefs.layer==='all'||prefs.layer===r.layer)&&(!q||[r.id,r.product,r.title,r.description,r.action,layers[r.layer],...(r.affected||[]),...(r.fixed||[])].join(' ').toLowerCase().includes(q));
     }).sort((a,b)=>{
-      if(prefs.sort!=='cvss'){
-        const x=priority(a),y=priority(b),order=x.tier-y.tier;
-        if(order)return order;
-      }
+      let order=0;
+      if(prefs.sort==='hot')order=hotOrder(a,b,w.today);
+      else if(prefs.sort!=='cvss')order=priority(a).tier-priority(b).tier;
+      if(order)return order;
       return (b.cvss?.score??-1)-(a.cvss?.score??-1)||Number(Boolean(b.kev))-Number(Boolean(a.kev))||(prefs.sort!=='cvss'?(b.epss?.score??-1)-(a.epss?.score??-1):0)||event(b,w.today).date.localeCompare(event(a,w.today).date)||a.id.localeCompare(b.id);
     });
   }
@@ -77,9 +109,12 @@
         (r.cvss&&(!Number.isFinite(r.cvss.score)||r.cvss.score<0||r.cvss.score>10)))throw new Error('Invalid security record');
       ids.add(r.id);
       if(r.ranking_evidence){const e=r.ranking_evidence;if(typeof e.text!=='string'||e.text.length>16000||!safeURL(e.url))throw new Error('Invalid ranking evidence');}
+      if(r.heat){const h=r.heat;if(!Array.isArray(h.reports)||h.reports.length>16)throw new Error('Invalid attention reports');
+        for(const rep of h.reports){if(!['hn','reddit','news','poc'].includes(rep.k)||!safeURL(rep.url)||!rep.at)throw new Error('Invalid attention report');}}
+      if(r.exploit){const x=r.exploit;if(!Array.isArray(x.refs)||!x.refs.length||x.refs.length>8||!x.refs.every(safeURL))throw new Error('Invalid exploit evidence');}
     }
     return data;
   }
-  const api={layers,safeURL,windows,event,highRisk,systemicSignal,remoteUnauthenticated,priority,select,validate};
+  const api={layers,safeURL,windows,event,highRisk,systemicSignal,remoteUnauthenticated,priority,heatOf,hotRank,hotOrder,select,validate};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.SecurityRisks=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

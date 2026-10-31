@@ -180,6 +180,75 @@ class RefreshTests(unittest.TestCase):
             self.assertEqual(R.high_risk(record), bool(sample['signal']))
             self.assertEqual(len(R.retain([record], '2026-10-23T06:00:00Z')[0]), int(bool(sample['signal'])))
 
+    def test_attention_feeds_count_independent_reports_in_window_only(self):
+        rss = '''<rss><channel>
+          <item><title>CVE-2026-1234 exploited widely</title><link>https://therecord.media/a</link><pubDate>Thu, 22 Oct 2026 00:00:00 GMT</pubDate><description>Original reporting on CVE-2026-1234.</description></item>
+          <item><title>Older coverage</title><link>https://therecord.media/b</link><pubDate>Wed, 01 Oct 2026 00:00:00 GMT</pubDate><description>CVE-2026-1234 mention</description></item>
+          <item><title>Unsafe link</title><link>javascript:alert(1)</link><pubDate>Thu, 22 Oct 2026 00:00:00 GMT</pubDate><description>CVE-2026-1234</description></item>
+        </channel></rss>'''
+        reports = R.attention_from_feed('news', rss, '2026-10-02')
+        self.assertEqual(reports, {'CVE-2026-1234': [{'k': 'news', 'url': 'https://therecord.media/a', 'at': '2026-10-22'}]})
+        with self.assertRaises(ValueError): R.attention_from_feed('news', '<html><body>not a feed</body></html>', '2026-10-02')
+
+    def test_hacker_news_attention_requires_exact_cve_in_story_and_recent_date(self):
+        payload = {'hits': [
+            {'objectID': '1', 'title': 'Big VPN flaw discussion', 'url': 'https://vendor.test/x', 'created_at': '2026-10-22T00:00:00Z'},
+            {'objectID': '2', 'title': 'Something else CVE-2026-5678', 'url': '', 'created_at': '2026-10-22T00:00:00Z'},
+            {'objectID': '3', 'title': 'CVE-2026-5678 retro coverage', 'url': '', 'created_at': '2026-04-22T00:00:00Z'}]}
+        with patch.object(R, 'fetch', return_value=payload):
+            reports = R.hn_attention(['CVE-2026-5678'], '2026-10-02')
+        self.assertEqual(reports, {'CVE-2026-5678': [{'k': 'hn', 'url': 'https://news.ycombinator.com/item?id=2', 'at': '2026-10-22'}]})
+
+    def test_github_exploit_search_maps_repositories_to_cves(self):
+        pages = [{'items': [{'name': 'CVE-2026-5678-poc', 'description': 'Working exploit', 'html_url': 'https://github.com/a/CVE-2026-5678-poc'},
+                            {'name': 'unrelated', 'description': 'No cve here', 'html_url': 'https://github.com/a/other'}]},
+                 {'items': []}]
+        with patch.object(R, 'fetch', side_effect=pages):
+            reports = R.github_exploits('2026-04-30')
+        self.assertEqual(reports, {'CVE-2026-5678': ['https://github.com/a/CVE-2026-5678-poc']})
+
+    def test_snapshot_validation_rejects_unsafe_attention_and_exploit_evidence(self):
+        data = json.loads((R.ROOT / 'data.json').read_text())
+        record = copy.deepcopy(data['records'][0])
+        for heat in [{'reports': [{'k': 'news', 'url': 'javascript:alert(1)', 'at': '2026-10-22'}]},
+                     {'reports': [{'k': 'forum', 'url': 'https://forum.test/t', 'at': '2026-10-22'}]},
+                     {'reports': []}, {'reports': None}]:
+            bad = copy.deepcopy(data); bad['records'][0] = {**record, 'heat': heat}
+            with self.assertRaises(ValueError): R.validate(bad)
+        for exploit in [{'refs': ['http://github.com/a/poc']}, {'refs': []}]:
+            bad = copy.deepcopy(data); bad['records'][0] = {**record, 'exploit': exploit}
+            with self.assertRaises(ValueError): R.validate(bad)
+
+    def test_attention_outage_retains_previous_heat_and_exploit(self):
+        now = '2026-10-23T01:00:00Z'
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            output = Path(tmp) / 'data.json'
+            with patch.object(R, 'fetch', side_effect=self.fixture), patch.object(R, 'stamp', return_value=now):
+                R.run(output)
+            first = json.loads(output.read_text())
+            prior_heat = {'reports': [{'k': 'news', 'url': 'https://therecord.media/a', 'at': '2026-10-22'}], 'as_of': now}
+            prior_exploit = {'refs': ['https://github.com/a/CVE-2026-10000'], 'at': now}
+            for r in first['records']:
+                if r['id'] == 'CVE-2026-10000':
+                    r['heat'] = prior_heat; r['exploit'] = prior_exploit
+            output.write_text(json.dumps(first))
+            def read(url, as_json=False):
+                if any(host in url for host in ('bleepingcomputer.com', 'therecord.media', 'reddit.com', 'hn.algolia.com', 'api.github.com')):
+                    raise OSError('attention outage')
+                return self.fixture(url, as_json)
+            history = {'at': now, 'current': {'CVE-2026-10000': 1}, 'previous': {}}
+            first['rank_history'] = history; output.write_text(json.dumps(first))
+            with patch.object(R, 'fetch', side_effect=read), patch.object(R, 'stamp', return_value='2026-10-24T01:00:00Z'):
+                R.run(output)
+            second = json.loads(output.read_text())
+            record = next(r for r in second['records'] if r['id'] == 'CVE-2026-10000')
+            self.assertEqual(record['heat'], prior_heat)
+            self.assertEqual(record['exploit'], prior_exploit)
+            self.assertEqual(second['refresh_status'], 'ok')
+            self.assertTrue(all(s['status'] == 'failed' for s in second['sources'] if s['id'] in ('press', 'reddit', 'hn', 'poc')))
+            # The snapshot rewrite keeps rank_history so ranks.cjs can move current -> previous.
+            self.assertEqual(second['rank_history'], history)
+
     def test_rejected_or_unsafe_snapshot_cannot_validate(self):
         data = json.loads((R.ROOT / 'data.json').read_text())
         self.assertTrue(R.validate(data))

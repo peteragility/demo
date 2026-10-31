@@ -57,6 +57,8 @@ jobs:
         id: refresh
         continue-on-error: true
         run: python3 security-risk/refresh.py
+      - name: Record default-ranking order for day-over-day movement
+        run: node security-risk/ranks.cjs
       - name: Validate snapshot and decision rules before publication
         run: |
           python3 security-risk/refresh.py --check

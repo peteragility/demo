@@ -53,6 +53,49 @@ test('generic priority rules depend only on evidence, not identity or editorial 
  assert.equal(M.priority({...trust,ranking_evidence:undefined}).tier,3);
  assert.equal(M.select([{...trust,published:'2020-01-01'}],{},now).length,0);
 });
+test('hot ranking: emergency first, then attack, severity, recency and attention weights',()=>{
+ const heat=(...days)=>({reports:days.map(d=>({k:'hn',url:'https://news.test/'+d,at:d}))});
+ const old={...base,id:'old',published:'2026-09-24',cvss:{score:9.8}};
+ const fresh={...base,id:'fresh',published:'2026-10-22',cvss:{score:7.5}};
+ const hot={...base,id:'hot',published:'2026-10-21',cvss:{score:7.5},heat:heat('2026-10-22','2026-10-22','2026-10-23')};
+ const exploited={...base,id:'exploited',published:'2026-09-24',kev:true,kev_added:'2026-09-24',cvss:{score:9.5}};
+ // Emergency exploitation evidence outranks every scored entry; attention lifts a modest CVE
+ // above a staler, higher-scored one; recency lifts an otherwise equal fresh entry.
+ assert.deepEqual(M.select([old,fresh,hot,exploited],{sort:'hot'},now).map(r=>r.id),['exploited','hot','fresh','old']);
+ // Attention alone never creates an Emergency classification.
+ assert.equal(M.hotRank(hot,'2026-10-23').emergency,false);
+ assert.equal(M.hotRank(exploited,'2026-10-23').emergency,true);
+});
+test('attention halves every three idle days and requires several fresh reports to trend',()=>{
+ const heat=(...days)=>({reports:days.map(d=>({k:'news',url:'https://news.test/'+d,at:d}))});
+ const one=M.heatOf({heat:heat('2026-10-23')},'2026-10-23').score;
+ const threeDays=M.heatOf({heat:heat('2026-10-20')},'2026-10-23').score;
+ assert.equal(one,1);assert.ok(Math.abs(threeDays-0.5)<0.01);
+ const stale=M.heatOf({heat:heat('2026-09-23','2026-09-24')},'2026-10-23').score;
+ assert.ok(stale<0.5,'stale attention is not Trending');
+ assert.ok(M.heatOf({heat:heat('2026-10-23','2026-10-22')},'2026-10-23').score>=0.5,'several fresh reports trend');
+ assert.equal(M.heatOf({heat:{reports:[{k:'news',url:'javascript:alert(1)',at:'2026-10-23'}]}},'2026-10-23').score,0,'unsafe report URLs count for nothing');
+});
+test('attack evidence ladder: KEV, then public PoC, then capped EPSS prediction',()=>{
+ const none=M.hotRank({...base,published:'2026-10-23'},'2026-10-23');
+ const epss=M.hotRank({...base,published:'2026-10-23',epss:{score:0.004}},'2026-10-23');
+ const cap=M.hotRank({...base,published:'2026-10-23',epss:{score:0.5}},'2026-10-23');
+ const poc=M.hotRank({...base,published:'2026-10-23',exploit:{refs:['https://github.com/test/poc']}},'2026-10-23');
+ const kev=M.hotRank({...base,published:'2026-10-23',kev:true,kev_added:'2026-10-23'},'2026-10-23');
+ assert.ok(none.attack<epss.attack&&epss.attack<cap.attack&&cap.attack<poc.attack&&poc.attack<kev.attack);
+ assert.equal(cap.attack,0.5,'EPSS contribution is capped');
+});
+test('hot score ignores identity and editorial flags',()=>{
+ const a=M.hotRank({...base,published:'2026-10-21'},'2026-10-23');
+ for(const extra of [{id:'other-id',product:'Famous vendor',title:'New headline',description:'Editorial text',urgent:true,impact_scope:{level:'ecosystem'}}])
+  assert.equal(M.hotRank({...base,published:'2026-10-21',...extra},'2026-10-23').score,a.score);
+});
+test('snapshot validation rejects unsafe attention and exploit evidence',()=>{
+ const extra=M.validate;
+ assert.throws(()=>M.validate({...data,records:[{...base,heat:{reports:[{k:'news',url:'javascript:alert(1)',at:'2026-10-23'}]}}]}));
+ assert.throws(()=>M.validate({...data,records:[{...base,exploit:{refs:['http://example.test/poc']}}]}));
+ assert.throws(()=>M.validate({...data,records:[{...base,heat:{reports:[{k:'forum',url:'https://forum.test/t',at:'2026-10-23'}]}}]}));
+});
 test('advisory text signal rejects hypothetical or negated compromise and ordinary leaked app keys',()=>{
  for(const sample of require('./ranking-fixtures.json')){
   const r={...base,cvss:null,ranking_evidence:{text:sample.text,url:'https://vendor.test/advisory'}};

@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const M=SecurityRisks,$=id=>document.getElementById(id),state={view:location.hash==='#archive'?'archive':'current',layer:'all',sort:'impact',q:'',open:new Set()};
+  const M=SecurityRisks,$=id=>document.getElementById(id),state={view:location.hash==='#archive'?'archive':'current',layer:'all',sort:'hot',q:'',open:new Set()};
   let data;
   const node=(tag,text,attrs={})=>{const e=document.createElement(tag);if(text!=null)e.textContent=String(text);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,String(v));return e;};
   const date=value=>value?new Date(value).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'Asia/Hong_Kong'}):'Not available';
@@ -23,10 +23,21 @@
   function details(r){
     const tr=node('tr',null,{class:'detail',id:'detail-'+r.id}),td=node('td',null,{colspan:4});tr.append(td);
     td.append(node('h2',r.title),node('p',r.description));
-    const priority=state.sort==='cvss'?{label:'CVSS severity',reason:r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.'}:M.priority(r),impact=node('section',null,{class:'impact-note'});
-    impact.append(node('h3','Why this ranks here'),node('p',priority.label+' · '+priority.reason));
-    impact.append(node('p','Rules use source evidence and CVSS metrics. Affected server, organization and person counts are unknown; no issue receives a manual ranking boost.'));
+    const w=M.windows(),impact=node('section',null,{class:'impact-note'});
+    impact.append(node('h3','Why this ranks here'));
+    if(state.sort==='hot'){
+      const hot=M.hotRank(r,w.today);
+      impact.append(node('p',(hot.emergency?'Emergency group · '+hot.label:'Hot score '+hot.score+'/100')+' · '+hot.reason));
+      impact.append(node('p','Score weights: attack evidence 35% (KEV '+(r.kev?'confirmed':'not listed')+(r.exploit?', public PoC/exploit repositories':'')+(r.epss?', EPSS '+(r.epss.score*100).toFixed(2)+'%':'')+') + severity 25% (CVSS '+(Number.isFinite(r.cvss?.score)?r.cvss.score.toFixed(1):'unknown')+'/10) + recency 25% (risk date '+ (M.event(r,w.today).date||'unknown')+', one-week half-life) + attention 15% ('+M.heatOf(r,w.today).reports+' independent report'+(M.heatOf(r,w.today).reports===1?'':'s')+', halved every three idle days).'));
+      if(M.heatOf(r,w.today).reports)impact.append(node('p','Attention reports: '+r.heat.reports.map(rep=>rep.k).join(', ')));
+    }else{
+      const priority=state.sort==='cvss'?{label:'CVSS severity',reason:r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.'}:M.priority(r);
+      impact.append(node('p',priority.label+' · '+priority.reason));
+    }
+    impact.append(node('p','Rules use source evidence and CVSS metrics. Affected server, organization and person counts are unknown; no issue receives a manual ranking boost. Attention never creates an Emergency classification.'));
     if(r.ranking_evidence)impact.append(sourceLink({label:'Ranking evidence',url:r.ranking_evidence.url}));
+    for(const rep of r.heat?.reports||[])impact.append(sourceLink({label:'Attention · '+rep.k+' · '+rep.at,url:rep.url}));
+    for(const url of r.exploit?.refs||[])impact.append(sourceLink({label:'Public PoC / exploit repository',url}));
     td.append(impact);
     const cards=node('div',null,{class:'cards'}),fix=node('section',null,{class:'card'}),scope=node('section',null,{class:'card'});
     fix.append(node('h3','Recommended action'),node('p',r.action),node('h3','Fixed / unaffected versions'),bullets(r.fixed,'See the official vendor advisory for the supported fixed build and distribution backports.'));
@@ -50,20 +61,31 @@
     for(const id of ['current','archive'])$(id).setAttribute('aria-pressed',String(state.view===id));
     $('currentCount').textContent=current.length;$('archiveCount').textContent=archive.length;
     $('period').textContent=state.view==='archive'?'Archive · '+date(w.archive)+' – '+date(new Date(Date.parse(w.current)-86400000).toISOString()):'Last 30 days · '+date(w.current)+' – '+date(w.today);
-    $('count').textContent=records.length+' high-risk '+(records.length===1?'entry':'entries')+' · '+(state.layer==='all'?'All categories':M.layers[state.layer])+' · '+(state.sort==='cvss'?'CVSS highest first':'Impact + CVSS');
+    $('count').textContent=records.length+' high-risk '+(records.length===1?'entry':'entries')+' · '+(state.layer==='all'?'All categories':M.layers[state.layer])+' · '+({hot:'Hot · latest high impact',impact:'Impact + CVSS',cvss:'CVSS highest first'})[state.sort];
     const stats=[[records.length,'high-risk entries'],[records.filter(r=>r.kev).length,'known exploited'],[records.filter(r=>r.cvss?.score>=9).length,'critical · 9.0+'],[records.filter(r=>!r.cvss).length,'unscored urgent / exploited']];
     $('summary').replaceChildren(...stats.map(([n,label])=>{const e=node('div',null,{class:'kpi'});e.append(node('b',n),node('span',label));return e;}));
     const rows=[];
-    for(const r of records){
+    // Deltas compare like with like: the unfiltered current 30-day list under the default ranking.
+    const prior=data.rank_history?.previous;
+    const prevRanks=state.sort==='hot'&&state.view==='current'&&state.layer==='all'&&!state.q&&prior&&Object.keys(prior).length?prior:null;
+    for(let index=0;index<records.length;index++){
+      const r=records[index];
       const event=M.event(r,w.today),tr=node('tr',null,{class:'row'+(state.open.has(r.id)?' open':''),'data-id':r.id}),cvss=node('td',null,{class:'rank'});cvss.append(score(r));
       const when=node('td',null,{class:'when'});when.append(node('time',date(event.date),{datetime:event.date}),node('small',event.label));
       if(r.kev)when.append(node('small','Known exploited',{class:'known'}));
+      if(M.heatOf(r,w.today).score>=0.5)when.append(node('small','Trending',{class:'trend'}));
       const issue=node('th',null,{scope:'row',class:'issue'}),button=node('button',null,{type:'button','aria-expanded':String(state.open.has(r.id)),'aria-controls':'detail-'+r.id,class:'issuebtn'});
       button.append(node('b',r.product+' ›'),node('span',r.title,{title:r.title}));button.addEventListener('click',()=>toggleRow(r.id));
       issue.append(button,node('small',(/^CVE-/.test(r.id)?r.id+' · ':'')+M.layers[r.layer]));
       const ranking=M.priority(r);
       if(state.sort!=='cvss'&&ranking.tier<3)issue.append(node('small',ranking.label,{class:'priority-label',title:ranking.reason}));
-      const evidence=node('td',r.kev?'KEV · exploited':'Not in KEV',{class:'evidence'+(r.kev?' known':'')});
+      if(prevRanks){
+        const move=prevRanks[r.id]-(index+1);
+        if(move>0)issue.append(node('small','↑ '+move+' since yesterday',{class:'delta up'}));
+        else if(move<0)issue.append(node('small','↓ '+(-move)+' since yesterday',{class:'delta down'}));
+        else if(!prevRanks[r.id])issue.append(node('small','new entry',{class:'delta'}));
+      }
+      const evidence=node('td',r.kev?'KEV · exploited':r.exploit?'PoC / exploit public':'Not in KEV',{class:'evidence'+(r.kev?' known':'')});
       tr.append(cvss,when,issue,evidence);
       tr.addEventListener('click',event=>{if(!event.target.closest('button,a,input,select,label'))toggleRow(r.id);});
       rows.push(tr);if(state.open.has(r.id))rows.push(details(r));else rows.push(node('tr',null,{id:'detail-'+r.id,hidden:true}));
