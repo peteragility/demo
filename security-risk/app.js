@@ -93,9 +93,12 @@
     $('rows').replaceChildren(...rows);
   }
   function health(){
-    const failed=data.sources.filter(s=>s.status!=='ok'),stale=!data.last_attempt||Date.now()-Date.parse(data.last_attempt)>36*3600000;
+    const optional=new Set(['press','reddit','hn','poc']);
+    const failed=data.sources.filter(s=>s.status!=='ok'&&!optional.has(s.id)),attentionFailed=data.sources.filter(s=>s.status!=='ok'&&optional.has(s.id)).length;
+    const stale=!data.last_attempt||Date.now()-Date.parse(data.last_attempt)>36*3600000;
     $('freshness').textContent=(failed.length?'Partial refresh':stale?'Snapshot overdue':'Updated')+' · '+time(data.last_attempt);
     if(failed.length||stale){$('notice').hidden=false;$('notice').textContent=(failed.length?failed.length+' source checks failed. ':'')+(stale?'Snapshot is over 36 hours old. ':'')+'Previous source data is retained; see refresh health.';}
+    else if(attentionFailed){$('notice').hidden=false;$('notice').textContent=attentionFailed+' attention feed'+(attentionFailed===1?'':'s')+' unavailable; yesterday\'s attention and PoC evidence is retained. Ranking is unaffected.';}
     for(const s of data.sources){const li=node('li');li.append(sourceLink(s),node('span',' · '+s.status+' · '+time(s.last_success)));if(s.error)li.append(node('span',' · '+s.error));if(s.note)li.append(node('span',' · '+s.note));$('sources').append(li);}
     $('refreshMeta').textContent='Last complete refresh: '+time(data.last_success)+'. Retained data covers the last six months from the monitored sources.';
   }
