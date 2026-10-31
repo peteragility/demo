@@ -147,6 +147,18 @@ class SourceReviewTests(unittest.TestCase):
             self.assertTrue(rx.search(review.official.norm(own + '-1017')))
             self.assertFalse(rx.search(review.official.norm(own + 'X')))
 
+    def test_law_configuration_does_not_change_gpt_6_astra_prices(self):
+        # "GPT-6 Astra for Law" is a separate model configuration, not a GPT-6 Astra tier.
+        row = 'table: ' + review.packed(dict(heading='Grouped Pricing Table data',
+                                             cells=['gpt-6-astra-law', '$10.00', '$50.00', '$1.00']))
+        notice = 'GPT-6 Astra for Law promotional pricing is available at least through December 31, 2026.'
+        rx = review.model_regex(dict(name='GPT-6 Astra'))
+        for line in (row, 'notice: ' + notice):
+            self.assertFalse(rx.search(review.official.norm(line)))
+        self.assertTrue(rx.search(review.official.norm('gpt-6-astra | $10.00 | $50.00')))
+        self.assertTrue(rx.search(review.official.norm('gpt-6-astra-20260903')))
+        self.assertFalse(rx.search(review.official.norm('gpt-6-astra-law-20260903')))
+
     def test_percent_wording_keeps_discounts_and_regional_premiums(self):
         for old, new in [('Batch discount 50%', 'Batch discount 50 percent'),
                          ('Regional premium 10%', 'Regional premium 10 percent')]:

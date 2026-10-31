@@ -352,7 +352,7 @@ def make_report(baseline, current, errors, data, today):
 
 # ---- Per-offer checks ------------------------------------------------------------------------
 
-SIBLINGS = r"flash|flashx|fast|lite|mini|nano|pro|prime|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber"
+SIBLINGS = r"flash|flashx|fast|lite|mini|nano|pro|prime|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber|law"
 
 
 def model_regex(model):
@@ -364,7 +364,8 @@ def model_regex(model):
         own = {t for t in tokens if re.fullmatch(SIBLINGS, t)}
         tail = "|".join(x for x in SIBLINGS.split("|") if x not in own)
         # A digit right after the version, directly or after one separator, is another version ("5.3", "5-3").
-        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![a-z0-9])(?![._ -]?\d)(?!" + sep + "(?:" + tail + r")\b)"
+        # A sibling also excludes the named configurations joined by "for" ("GPT-6 Astra for Law").
+        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![a-z0-9])(?![._ -]?\d)(?!" + sep + r"(?:for" + sep + r")?(?:" + tail + r")\b)"
     tokens = official.norm(model.get("name") or "").split()
     options = [phrase(tokens)] if tokens else []
     if len(tokens) > 2 and tokens[0] in ("claude", "gemini", "grok", "kimi"):
