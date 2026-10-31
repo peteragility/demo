@@ -122,23 +122,7 @@
   "aws-card-gpt-6-1-terra": "2026-11-01",
   "vertex-partner-pricing": "2026-11-01"
  },
- "pending_general": [
-  {
-   "source": "openai-pricing",
-   "url": "https://developers.openai.com/api/docs/pricing.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Model configuration\",\"Input\",\"Output\",\"Cached input\"],\"heading\":\"Grouped Pricing Table data\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "table: {\"cells\":[\"Model configuration\",\"Input\",\"Output\",\"Cached input\"],\"heading\":\"Grouped Pricing Table data\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "3cd25dc61b3946502acc3f41fa373e5ab6c4e5bd882d40322cb047b681b724f2"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-11-01",
@@ -148,10 +132,7 @@
   "published_at": "2026-10-28"
  },
  "databricks_coverage": [],
- "review": [
-  "GPT-5.6 Sol · official",
-  "GPT-6 Astra · official"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -757,10 +738,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-5.4|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-5.5|alicloud": {
    "verified": "2026-11-01"
@@ -778,10 +756,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-5.5|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-5.6-luna|alicloud": {
    "verified": "2026-11-01"
@@ -799,10 +774,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-5.6-luna|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-5.6-sol|alicloud": {
    "verified": "2026-11-01"
@@ -820,14 +792,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-5.6-sol|official": {
-   "verified": "2026-10-31",
-   "changed_at": "2026-11-01",
-   "sources": [
-    "openai-pricing"
-   ],
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-5.6-terra|alicloud": {
    "verified": "2026-11-01"
@@ -845,10 +810,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-5.6-terra|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-6-astra|alicloud": {
    "verified": "2026-11-01"
@@ -866,14 +828,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-6-astra|official": {
-   "verified": "2026-10-31",
-   "changed_at": "2026-11-01",
-   "sources": [
-    "openai-pricing"
-   ],
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-6-luna|alicloud": {
    "verified": "2026-11-01"
@@ -891,10 +846,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-6-luna|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-6-sol|alicloud": {
    "verified": "2026-11-01"
@@ -912,10 +864,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-6-sol|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-6.1-sol|alicloud": {
    "verified": "2026-11-01"
@@ -933,10 +882,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-6.1-sol|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-6.1-terra|alicloud": {
    "verified": "2026-11-01"
@@ -954,10 +900,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-6.1-terra|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-oss-120b|alicloud": {
    "verified": "2026-11-01"
@@ -978,10 +921,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-oss-120b|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "openai/gpt-oss-20b|alicloud": {
    "verified": "2026-11-01"
@@ -999,10 +939,7 @@
    "verified": "2026-11-01"
   },
   "openai/gpt-oss-20b|official": {
-   "verified": "2026-10-31",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-01"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
    "verified": "2026-11-01"

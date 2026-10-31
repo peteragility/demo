@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-10-31",
+ "checked_at": "2026-11-01",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4-flash|databricks|retirement|2026-11-05",
   "deepseek/deepseek-v4-pro|databricks|retirement|2026-10-30",
@@ -15713,11 +15713,12 @@
   "openai-pricing": {
    "url": "https://developers.openai.com/api/docs/pricing.md",
    "kind": "markdown",
-   "digest": "c28ba655121ab2bbecdee48f24882ed7e810cc19a8be9878e5f535590a48bb61",
+   "digest": "cbd3d4682e7bf918cc84dbfb2e7318d4c9ea9c086c61926c2f34d96b067b6df7",
    "records": [
     "item: {\"heading\":\"Pricing Table data\",\"text\":\"See [Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/).\"}",
     "item: {\"heading\":\"Pricing Table data\",\"text\":\"See [Microsoft Azure pricing](https://azure.microsoft.com/en-us/pricing/details/azure-openai/).\"}",
-    "notice: Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol’s promotional pricing is available at least through November 21, 2026.",
+    "notice: GPT-6 Astra for Law promotional pricing is available at least through December 31, 2026.",
+    "notice: Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. Starting Nov 1, 2026, FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol’s promotional pricing is available at least through November 21, 2026.",
     "notice: Short context: ≤272K input tokens. Long context: >272K input tokens.",
     "notice: Tokens used for model grading in reinforcement fine-tuning are billed at that model's per-token rate. Inference discounts are available if you enable data sharing when creating the fine-tune job. Learn more.",
     "notice: [here](https://developers.openai.com/api/docs/deprecations#update-to-openais-self-serve-fine-tuning).",
@@ -15733,6 +15734,7 @@
     "table: {\"cells\":[\"Embedding\",\"text-embedding-ada-002\",\"$0.10\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"File search\",\"Storage\",\"$0.10 / GB per day (1 GB free)\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"File search\",\"Tool call\",\"$2.50 / 1k calls\"],\"heading\":\"Grouped Pricing Table data\"}",
+    "table: {\"cells\":[\"Model configuration\",\"Input\",\"Output\",\"Cached input\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Cached input\"],\"heading\":\"Batch\"}",
     "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Cached input\"],\"heading\":\"Fast pricing data\"}",
     "table: {\"cells\":[\"Model\",\"Input\",\"Output\",\"Cached input\"],\"heading\":\"Flex\"}",
@@ -15868,6 +15870,7 @@
     "table: {\"cells\":[\"gpt-6-astra\",\"$5.00\",\"$25.00\",\"$0.50\",\"$6.25\",\"$12.50\",\"$10.00\",\"$37.50\",\"$1.00\",\"$12.50\",\"$25.00\"],\"heading\":\"Batch\"}",
     "table: {\"cells\":[\"gpt-6-astra\",\"$5.00\",\"$25.00\",\"$0.50\",\"$6.25\",\"$12.50\",\"$10.00\",\"$37.50\",\"$1.00\",\"$12.50\",\"$25.00\"],\"heading\":\"Flex\"}",
     "table: {\"cells\":[\"gpt-6-astra\",\"$60.00\",\"$300.00\",\"$6.00\",\"$75.00\",\"$150.00\",\"$120.00\",\"$450.00\",\"$12.00\",\"$150.00\",\"$300.00\"],\"heading\":\"Ultrafast pricing data\"}",
+    "table: {\"cells\":[\"gpt-6-astra-law\",\"$10.00\",\"$50.00\",\"$1.00\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"gpt-6-luna\",\"$0.05\",\"$0.25\",\"$0.005\",\"$0.0625\",\"$0.125\",\"$0.10\",\"$0.375\",\"$0.01\",\"$0.125\",\"$0.25\"],\"heading\":\"Batch\"}",
     "table: {\"cells\":[\"gpt-6-luna\",\"$0.05\",\"$0.25\",\"$0.005\",\"$0.0625\",\"$0.125\",\"$0.10\",\"$0.375\",\"$0.01\",\"$0.125\",\"$0.25\"],\"heading\":\"Flex\"}",
     "table: {\"cells\":[\"gpt-6-luna\",\"$0.10\",\"$0.50\",\"$0.01\",\"$0.125\",\"$0.25\",\"$0.20\",\"$0.75\",\"$0.02\",\"$0.25\",\"$0.50\"],\"heading\":\"Standard pricing data\"}",
