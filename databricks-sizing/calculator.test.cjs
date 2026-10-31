@@ -69,12 +69,12 @@ test('untrusted shared state is clamped and unknown fields are discarded',()=>{
   assert.equal(x.cloud,'AWS');assert.equal(x.gb,0);assert.equal(x.discount,90);assert.deepEqual(x.workloads,['etl']);assert.equal(x.prototype,undefined);assert.equal(x.overrides.etl,0);assert.equal(Object.hasOwn(x.overrides,'__proto__'),false);
 });
 test('Lakebase availability is independent of exact prices and survives manual overrides',()=>{
-  const s={...E.preset(E.DEFAULTS,'lakebase'),cloud:'GCP',region:'Asia (Singapore)'};
+  const s={...E.preset(E.DEFAULTS,'lakebase'),cloud:'GCP',region:'US (Nevada)'};
   assert.equal(E.lookup(data,s,'lakebase_gcp_premium').status,'exact');
   const x=E.estimate({...s,overrides:{lakebase:0}},data);
   assert.equal(x.complete,false);assert.equal(x.total,null);assert.equal(x.availabilityChecks[0].status,'unavailable');
   assert.match(x.issues[0],/not listed as available/);
-  for(const region of ['US (Virginia)','US (Iowa)','Europe (Frankfurt)']){
+  for(const region of ['US (Virginia)','US (Iowa)','US (Oregon)','Europe (Frankfurt)','Asia (Singapore)']){
     const beta=E.estimate({...s,region},data);assert.equal(beta.complete,true);assert.equal(beta.availabilityChecks[0].status,'beta');
   }
 });

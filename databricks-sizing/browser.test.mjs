@@ -42,7 +42,7 @@ await withBrowser(root,async b=>{
   await change('#field-answerProfile','long');assert.equal(await b.evaluate('sizingDesk.getState().inputTokens'),8000);
   await input('#field-inputTokens',1234);assert.equal(await b.evaluate('sizingDesk.getState().answerProfile'),'custom');
 
-  await click('[data-scenario="lakebase"]');await click('[data-cloud="GCP"]');
+  await click('[data-scenario="lakebase"]');await click('[data-cloud="GCP"]');await change('#region','Asia (Tokyo)');
   assert.equal(await b.evaluate('sizingDesk.getEstimate().complete'),false);
   assert.match(await b.evaluate('document.getElementById("summary-notes").textContent'),/not listed as available/);
   assert.ok(await b.evaluate('[...document.querySelectorAll("#comparison tbody tr")].find(r=>r.textContent.includes("Google Cloud")).querySelector("button").disabled'));
