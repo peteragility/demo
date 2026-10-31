@@ -5964,7 +5964,7 @@
    "notes": [
     [
      "Tiers",
-     "Fast mode (research preview, access by request) costs $10/$50; not available with Batch or Priority Tier."
+     "Fast mode (research preview, access by request) costs $10/$50; not available with Batch or Priority Tier. Fast mode is deprecated and will be removed on 30 November 2026; requests with speed \"fast\" will then error. Migrate to Opus 5.5."
     ],
     [
      "Caching",
@@ -5977,7 +5977,15 @@
    ],
    "ids": [
     "claude-opus-4-8 (Claude API model ID; alias is the same)"
-   ]
+   ],
+   "patch": {
+    "Claude API · global · Fast": {
+     "valid_through": "2026-11-30"
+    },
+    "US-only inference · Fast": {
+     "valid_through": "2026-11-30"
+    }
+   }
   },
   "bedrock": {
    "checked_at": "2026-10-04",
