@@ -2,3 +2,4 @@
 logs/
 *.mp3
 __pycache__/
+.issue-repair-20261022/
