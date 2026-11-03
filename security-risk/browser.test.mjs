@@ -105,6 +105,23 @@ await withBrowser(root,async b=>{
  await b.navigate('/security-risk/?offline=1',clock+`window.fetch=()=>Promise.reject(new Error('offline'));`);await b.waitFor('document.getElementById("notice").textContent.includes("Could not load")');
  await b.call('Emulation.setEmulatedMedia',{features:[{name:'prefers-color-scheme',value:'dark'}]});
  await b.navigate('/security-risk/?dark=1',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');assert.equal(await b.evaluate('getComputedStyle(document.body).backgroundColor'),'rgb(13, 16, 21)');
+ await b.navigate('/security-risk/?reading=1',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');
+ await b.evaluate('document.querySelector(".skip").focus();document.querySelector(".skip").click()');assert.equal(await b.evaluate('document.activeElement.id'),'risk-list');
+ for(const id of ['calm','comfortable','singleOpen'])await b.evaluate(`document.getElementById(${JSON.stringify(id)}).click()`);
+ assert.deepEqual(await b.evaluate('["calm","comfortable","singleOpen"].map(id=>document.getElementById(id).getAttribute("aria-pressed"))'),['true','true','true']);
+ assert.equal(await b.evaluate('getComputedStyle(document.querySelector(".trend")).display'),'none');
+ await b.evaluate('document.querySelector(".row[data-id=ca] .issuebtn").click();document.querySelector(".row[data-id=current-a] .issuebtn").click()');
+ assert.equal(await b.evaluate('document.querySelectorAll(".detail").length'),1,'Only one detail stays open');
+ assert.equal(await b.evaluate('document.querySelector(".row[data-id=ca] .issuebtn").getAttribute("aria-expanded")'),'false');
+ assert.equal(await b.evaluate('document.querySelector(".row[data-id=current-a] .issuebtn").getAttribute("aria-expanded")'),'true');
+ assert.ok(await b.evaluate('document.querySelector(".detail .cards").compareDocumentPosition(document.querySelector(".detail .impact-note"))&Node.DOCUMENT_POSITION_FOLLOWING'),'Actions precede ranking details');
+ assert.equal(await b.evaluate('document.querySelector(".detail .impact-note").open'),false,'Technical ranking detail starts collapsed');
+ for(const width of [390,320]){await b.viewport(width,900);assert.ok(await b.evaluate('document.documentElement.scrollWidth<=innerWidth'),'Comfort reading overflows at '+width);}
+ await b.navigate('/security-risk/?reading=persisted',setup(fixture));await b.waitFor('document.querySelectorAll(".row").length===3');
+ assert.deepEqual(await b.evaluate('["calm","comfortable","singleOpen"].map(id=>document.body.classList.contains(id))'),[true,true,true]);
+ for(const id of ['calm','comfortable','singleOpen'])await b.evaluate(`document.getElementById(${JSON.stringify(id)}).click()`);
+ await b.navigate('/security-risk/?reading=blocked',setup(fixture,`Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}});`));await b.waitFor('document.querySelectorAll(".row").length===3');
+ await b.evaluate('document.getElementById("calm").click()');assert.equal(await b.evaluate('document.body.classList.contains("calm")'),true,'Preferences work without storage');
  assert.deepEqual(b.errors,[]);
 });
 console.log('PASS: compact rows, touch/keyboard disclosure, mobile controls and viewport scale, period/category/search/ranking, safe source rendering and empty/offline states.');

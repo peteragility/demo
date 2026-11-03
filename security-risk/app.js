@@ -1,6 +1,12 @@
 (() => {
   'use strict';
-  const M=SecurityRisks,$=id=>document.getElementById(id),state={view:location.hash==='#archive'?'archive':'current',layer:'all',sort:'hot',q:'',open:new Set()};
+  const M=SecurityRisks,$=id=>document.getElementById(id),state={view:location.hash==='#archive'?'archive':'current',layer:'all',sort:'hot',q:'',open:new Set(),calm:false,comfortable:false,singleOpen:false};
+  const preferenceKey='security-risk-reading-v1';
+  try{const saved=JSON.parse(localStorage.getItem(preferenceKey)||'null');for(const id of ['calm','comfortable','singleOpen'])state[id]=saved?.[id]===true;}catch{/* Preferences remain optional when storage is unavailable. */}
+  function applyPreferences(save=false){
+    for(const id of ['calm','comfortable','singleOpen']){document.body.classList.toggle(id,state[id]);$(id).setAttribute('aria-pressed',String(state[id]));}
+    if(save)try{localStorage.setItem(preferenceKey,JSON.stringify({calm:state.calm,comfortable:state.comfortable,singleOpen:state.singleOpen}));}catch{/* The controls still work for this visit. */}
+  }
   let data;
   const node=(tag,text,attrs={})=>{const e=document.createElement(tag);if(text!=null)e.textContent=String(text);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,String(v));return e;};
   const date=value=>value?new Date(value).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'Asia/Hong_Kong'}):'Not available';
@@ -10,21 +16,26 @@
     const value=r.cvss?.score,has=Number.isFinite(value),e=node('span',has?value.toFixed(1)+'/10':'—',{class:'score '+(!has?'unknown':value>=9?'critical':value>=7?'high':'other'),title:has?'CVSS v'+r.cvss.version:'CVSS unpublished or not applicable'});return e;
   }
   function bullets(values,fallback){const list=node('ul');for(const value of values.length?values:[fallback])list.append(node('li',value));return list;}
+  function setRowOpen(record,open){
+    const row=[...$('rows').querySelectorAll('.row')].find(row=>row.dataset.id===record.id);
+    if(!row)return;
+    open?state.open.add(record.id):state.open.delete(record.id);
+    row.classList.toggle('open',open);row.querySelector('.issuebtn').setAttribute('aria-expanded',String(open));
+    document.getElementById('detail-'+record.id).replaceWith(open?details(record):node('tr',null,{id:'detail-'+record.id,hidden:true}));
+  }
   function toggleRow(id){
-    const row=[...$('rows').querySelectorAll('.row')].find(row=>row.dataset.id===id);
     const record=data.records.find(record=>record.id===id);
-    if(!row||!record)return;
-    const open=!state.open.has(id),button=row.querySelector('.issuebtn');
-    open?state.open.add(id):state.open.delete(id);
-    row.classList.toggle('open',open);button.setAttribute('aria-expanded',String(open));
-    // Update only this disclosure so focus and the mobile viewport stay in place.
-    document.getElementById('detail-'+id).replaceWith(open?details(record):node('tr',null,{id:'detail-'+id,hidden:true}));
+    if(!record)return;
+    const open=!state.open.has(id);
+    if(open&&state.singleOpen)for(const other of state.open)if(other!==id){const previous=data.records.find(record=>record.id===other);if(previous)setRowOpen(previous,false);}
+    // Update only affected disclosures so focus and the mobile viewport stay in place.
+    setRowOpen(record,open);
   }
   function details(r){
     const tr=node('tr',null,{class:'detail',id:'detail-'+r.id}),td=node('td',null,{colspan:4});tr.append(td);
     td.append(node('h2',r.title),node('p',r.description));
-    const w=M.windows(),impact=node('section',null,{class:'impact-note'});
-    impact.append(node('h3','Why this ranks here'));
+    const w=M.windows(),impact=node('details',null,{class:'impact-note'});
+    impact.append(node('summary','Why this ranks here'));
     if(state.sort==='cvss'){
       impact.append(node('p','CVSS severity · '+(r.cvss?'Ordered solely by published CVSS; exploitation evidence and risk date break ties.':'No published CVSS; unscored entries follow scored entries.')));
     }else{
@@ -37,12 +48,11 @@
     if(r.ranking_evidence)impact.append(sourceLink({label:'Ranking evidence',url:r.ranking_evidence.url}));
     for(const rep of r.heat?.reports||[])impact.append(sourceLink({label:'Attention · '+rep.k+' · '+rep.at,url:rep.url}));
     for(const url of r.exploit?.refs||[])impact.append(sourceLink({label:'Public PoC / exploit repository',url}));
-    td.append(impact);
     const cards=node('div',null,{class:'cards'}),fix=node('section',null,{class:'card'}),scope=node('section',null,{class:'card'});
     fix.append(node('h3','Recommended action'),node('p',r.action),node('h3','Fixed / unaffected versions'),bullets(r.fixed,'See the official vendor advisory for the supported fixed build and distribution backports.'));
     scope.append(node('h3','Affected versions / configurations'),bullets(r.affected,'Version scope is not normalized; consult the official advisory.'));
     if(r.conditions?.length)scope.append(node('h3','Prerequisites'),bullets(r.conditions,''));
-    cards.append(fix,scope);td.append(cards);
+    cards.append(fix,scope);td.append(cards,impact);
     const meta=[r.published?'CVE / source published '+date(r.published):'',r.advisory_published_at?'Advisory published '+date(r.advisory_published_at):'',r.kev?'KEV added '+date(r.kev_added):'',r.material_updated_at?'Material update '+date(r.material_updated_at):'',r.cvss?'CVSS v'+r.cvss.version+' · '+(r.cvss.vector||''):'CVSS not published / not applicable',r.epss?'EPSS '+(r.epss.score*100).toFixed(2)+'% · '+r.epss.date:'',r.cve_status||'',r.checked_at?'Source checked '+time(r.checked_at):''].filter(Boolean);
     td.append(node('p',meta.join(' · '),{class:'fine'}));
     if(r.source_changed)td.append(node('p','The source has changed since its action summary was reviewed; consult the current official notice.',{class:'warning'}));
@@ -102,7 +112,14 @@
     // Optional-feed outages stay inside refresh health; only required-source failures warn at page level.
     $('refreshMeta').textContent='Last complete refresh: '+time(data.last_success)+'. Retained data covers the last six months from the monitored sources.'+(attentionFailed?' '+attentionFailed+' attention feed'+(attentionFailed===1?' was':'s were')+' unavailable; yesterday\'s attention and PoC evidence is retained with its original dates, and ranking is unaffected.':'');
   }
-  async function start(){try{
+  async function start(){
+    applyPreferences();
+    for(const id of ['calm','comfortable','singleOpen'])$(id).addEventListener('click',()=>{
+      state[id]=!state[id];
+      if(id==='singleOpen'&&state.singleOpen&&state.open.size>1)for(const other of [...state.open].slice(0,-1)){const record=data.records.find(record=>record.id===other);if(record)setRowOpen(record,false);}
+      applyPreferences(true);
+    });
+    try{
     const response=await fetch('data.json',{cache:'no-store'});if(!response.ok)throw new Error('Snapshot request failed ('+response.status+')');data=M.validate(await response.json());
     health();
     let id='';try{id=decodeURIComponent(location.hash.slice(1));}catch{/* An invalid shared fragment must not hide the snapshot. */}
