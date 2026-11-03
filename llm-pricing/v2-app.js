@@ -516,8 +516,10 @@
     const day = [d.reviewed_at, CHECKS && CHECKS.checked_at].filter(Boolean).sort().pop();
     $('#verified').textContent = long(day); $('#srcDate').textContent = '· checked ' + long(day);
     if (CHECKS && CHECKS.ranking && CHECKS.ranking.error) {
-      const last = CHECKS.ranking.last_successful_read || 'unknown';
-      $('#verified').insertAdjacentHTML('afterend', ` · <span class="rev" role="status" title="${esc(CHECKS.ranking.error)}">Ranking update unavailable · showing saved order · last checked ${esc(last)}</span>`);
+      // Only a short marker in the header, so an Arena outage never pushes the table down; the ranking note explains it.
+      const status = CHECKS.ranking, note = `Ranking update unavailable: showing the saved order, last checked ${status.last_successful_read ? long(status.last_successful_read) : 'unknown'}.`;
+      $('#rankSrc').insertAdjacentHTML('beforeend', ` <span class="rkst">· <span class="rev" role="status" title="${esc(note + ' ' + status.error)}">saved order</span></span>`);
+      $('#rankNote').append(document.createTextNode(' ' + note));
     } else if (CHECKS && CHECKS.ranking && CHECKS.ranking.last_successful_read) {
       const status = CHECKS.ranking;
       $('#rankNote').append(document.createTextNode(` Ranking last checked ${long(status.last_successful_read)}${status.published_at ? '; Arena published ' + long(status.published_at) : ''}.`));

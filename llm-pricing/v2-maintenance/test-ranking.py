@@ -8,7 +8,7 @@ import unittest
 import tempfile
 import urllib.error
 from unittest.mock import patch
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location("update_ranking", HERE / "update-ranking.py")
@@ -145,6 +145,29 @@ class RankingTests(unittest.TestCase):
             self.assertIn("403", json.loads(unpriced.read_text())["error"])
             self.assertTrue(json.loads(unpriced.read_text())["models"], "Cached candidates remain available during an outage")
             self.assertIn("Arena ranking could not be checked", summary.read_text())
+
+    def test_brief_server_errors_are_retried_and_refusals_are_not(self):
+        errors = []
+        def failure(code, reason):
+            errors.append(urllib.error.HTTPError(CONFIG["source"], code, reason, {}, None))
+            return errors[-1]
+        try:
+            with redirect_stderr(io.StringIO()):
+                with patch.object(ranking.time, "sleep") as wait, patch.object(ranking.urllib.request, "urlopen", side_effect=[
+                        failure(503, "Service Temporarily Unavailable"), urllib.error.URLError("reset"), io.BytesIO(b"ok")]) as fetch:
+                    self.assertEqual(ranking.read_url(CONFIG["source"]), "ok")
+                self.assertEqual((fetch.call_count, [c.args[0] for c in wait.call_args_list]), (3, [5, 15]))
+                with patch.object(ranking.time, "sleep"), patch.object(ranking.urllib.request, "urlopen", side_effect=[
+                        failure(503, "Service Temporarily Unavailable") for _ in range(4)]) as fetch, self.assertRaises(urllib.error.HTTPError):
+                    ranking.read_url(CONFIG["source"])
+                self.assertEqual(fetch.call_count, 4, "a lasting outage still fails")
+                with patch.object(ranking.time, "sleep") as wait, patch.object(
+                        ranking.urllib.request, "urlopen", side_effect=failure(403, "Forbidden")) as fetch, self.assertRaises(urllib.error.HTTPError):
+                    ranking.read_url(CONFIG["source"])
+                self.assertEqual((fetch.call_count, wait.call_count), (1, 0), "a 403 is not retried")
+        finally:
+            for error in errors:
+                error.close()
 
     def test_entries_are_read_from_split_flight_data(self):
         entries = ranking.board_entries(page([entry(1, "Claude Fable 5.1 (Max)")]), CONFIG["board_id"])

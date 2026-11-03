@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -83,13 +84,30 @@ def build(config, html, today, previous=None):
     return build_entries(config, board_entries(html, config["board_id"]), today, previous)
 
 
-def read_url(address):
+def read_url(address, attempts=4):
+    """GET with retries for rate limits (429), transient server errors and network drops, as the source review does.
+
+    Refusals such as 403 are not retried, so a blocked source still fails fast.
+    """
     request = urllib.request.Request(address, headers={"User-Agent": "LLM-Pricing-Ranking/1.0 (+https://github.com/peteragility/demo)"})
-    with urllib.request.urlopen(request, timeout=30) as response:
-        text = response.read(30 * 1024 * 1024 + 1)
-        if len(text) > 30 * 1024 * 1024:
-            raise ValueError("Ranking source exceeded the 30 MB limit.")
-        return text.decode("utf-8")
+    for attempt in range(attempts):
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                text = response.read(30 * 1024 * 1024 + 1)
+                if len(text) > 30 * 1024 * 1024:
+                    raise ValueError("Ranking source exceeded the 30 MB limit.")
+                return text.decode("utf-8")
+        except urllib.error.HTTPError as error:
+            if error.code not in (429, 500, 502, 503, 504) or attempt == attempts - 1:
+                raise
+            wait = int(error.headers.get("Retry-After") or 0) if error.headers else 0
+            wait, problem = min(max(wait, 5 * 3 ** attempt), 60), error
+        except urllib.error.URLError as error:
+            if attempt == attempts - 1:
+                raise
+            wait, problem = 5 * 3 ** attempt, error
+        print(f"Retrying {address} in {wait}s: {problem}", file=sys.stderr)
+        time.sleep(wait)
 
 
 def dataset_entries(config, today):

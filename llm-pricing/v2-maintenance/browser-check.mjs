@@ -141,6 +141,23 @@ try {
     assert.equal(initial.columns, 8, viewport.name + ': all seven providers stay visible');
     assert.ok(initial.scrollWidth <= initial.width, viewport.name + ': document overflow ' + JSON.stringify(initial));
     assert.ok(initial.visibleRows >= 14, viewport.name + ': compact information density ' + initial.visibleRows);
+    // An Arena outage adds only a short marker, so it can never push rows off any screen and block the daily publish.
+    const outage = (await call('Page.addScriptToEvaluateOnNewDocument', {source: `(() => {
+      const originalFetch = window.fetch.bind(window);
+      window.fetch = async (...args) => {
+        const response = await originalFetch(...args);
+        if (!response.ok || !/v2-checks\\.json$/.test(String(args[0]).split('?')[0])) return response;
+        const d = await response.json();
+        d.ranking = {...d.ranking, last_successful_read:'2026-10-09', error:'Official dataset: HTTP Error 503: Service Temporarily Unavailable; Arena website: HTTP Error 403: Forbidden'};
+        return new Response(JSON.stringify(d), {headers:{'Content-Type':'application/json'}});
+      };
+    })();`})).identifier;
+    await navigate();
+    const during = await evalJS(measure);
+    assert.ok(during.visibleRows >= 14, viewport.name + ': compact information density during an Arena outage ' + during.visibleRows);
+    assert.equal(await evalJS("document.querySelector('#rankSrc [role=status]').textContent"), 'saved order', viewport.name + ': outage marker');
+    await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: outage});
+    await navigate();
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .lg')].map(x=>x.textContent)"), ['Databricks','原廠 API','Fireworks','Azure Foundry','AWS Bedrock','Google Vertex','Alibaba']);
     assert.deepEqual(await evalJS("[...document.querySelectorAll('#mx>thead th .sh')].map(x=>x.textContent)"), ['DBX','原廠','FW','Azure','AWS','GCP','Ali']);
     assert.deepEqual(await evalJS("[...document.querySelector('#sort').options].map(x=>x.textContent)"), ['Arena rank','Cheapest','Δ vs Databricks']);
@@ -310,7 +327,9 @@ try {
         };
       })();`})).identifier;
       await navigate('2026-10-11');
-      assert.match(await evalJS("document.querySelector('[role=status]').textContent"), /Ranking update unavailable · showing saved order · last checked 2026-10-09/);
+      assert.equal(await evalJS("document.querySelector('#rankSrc [role=status]').textContent"), 'saved order');
+      assert.match(await evalJS("document.querySelector('#rankNote').textContent"), /Ranking update unavailable: showing the saved order, last checked 9 Oct 2026\./);
+      assert.match(await evalJS("document.querySelector('#rankSrc [role=status]').title"), /last checked 9 Oct 2026\. HTTP 403/);
       assert.equal(await evalJS("Boolean(window.rankingInjection) || !!document.querySelector('[role=status] img')"), false, 'ranking error text is escaped');
       await toggle(key);
       const checked = await evalJS("document.querySelector('tr.detail .pcard.dbx .chk').textContent");
