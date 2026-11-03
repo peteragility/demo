@@ -1,8 +1,10 @@
 {
  "schema": 1,
  "checked_at": "2026-11-04",
- "sources_checked": 117,
- "sources_failed": [],
+ "sources_checked": 116,
+ "sources_failed": [
+  "vertex-partner-pricing"
+ ],
  "sources_read": {
   "dbx-models": "2026-11-04",
   "dbx-oss": "2026-11-04",
@@ -122,74 +124,7 @@
   "aws-card-gpt-6-1-terra": "2026-11-04",
   "vertex-partner-pricing": "2026-11-04"
  },
- "pending_general": [
-  {
-   "source": "fireworks-pricing",
-   "url": "https://docs.fireworks.ai/serverless/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.15 / $0.03 / $0.50\",\"$0.1875 / $0.0375 / $0.625\"],\"heading\":\"​ Text and vision models\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.225 / $0.045 / $0.75\",\"$0.28125 / $0.05625 / $0.9375\"],\"heading\":\"​ Text and vision models\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.15 / $0.03 / $0.50\",\"$0.1875 / $0.0375 / $0.625\"],\"heading\":\"​ Text and vision models\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.225 / $0.045 / $0.75\",\"$0.28125 / $0.05625 / $0.9375\"],\"heading\":\"​ Text and vision models\"}"
-   ],
-   "baseline_digest": "2e809d3600abddc53679ff388ab2565daf921577b402586e4dd4dab2bf2d0852"
-  },
-  {
-   "source": "minimax-pricing",
-   "url": "https://platform.minimax.io/docs/pricing/overview",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Lyrics Generation\",\"$0.01 per song\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.0\",\"$0.03 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5+\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.6\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-3.0\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "text: How do I add funds and check usage and charges?"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Lyrics Generation (Discontinued)\",\"Lyrics generation/editing\",\"$0.01/per song\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Model\",\"Description\",\"Price\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.0 (Discontinued)\",\"Enhanced musical expression\",\"$0.03/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.5 (Discontinued)\",\"Direct the detail, define the real\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.5+ (Discontinued)\",\"Instrumental unlocked, break through style boundaries\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.6 (Discontinued)\",\"RPM = 120, contact sales to increase\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-3.0 (Discontinued)\",\"RPM = 120, contact sales to increase\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "text: How do I add funds to my account?"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Lyrics Generation\",\"$0.01 per song\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.0\",\"$0.03 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5+\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.6\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-3.0\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "text: How do I add funds and check usage and charges?"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Lyrics Generation (Discontinued)\",\"Lyrics generation/editing\",\"$0.01/per song\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Model\",\"Description\",\"Price\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.0 (Discontinued)\",\"Enhanced musical expression\",\"$0.03/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.5 (Discontinued)\",\"Direct the detail, define the real\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.5+ (Discontinued)\",\"Instrumental unlocked, break through style boundaries\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-2.6 (Discontinued)\",\"RPM = 120, contact sales to increase\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "table: {\"cells\":[\"Music-3.0 (Discontinued)\",\"RPM = 120, contact sales to increase\",\"$0.15/up-to-5 minutes music\"],\"heading\":\"​ Music\"}",
-    "text: How do I add funds to my account?"
-   ],
-   "baseline_digest": "ede2596851cca910340f4e0f741cd6c4eaab442ef1d63c796822e2ee59e19cee"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-11-04",
@@ -199,12 +134,7 @@
   "published_at": "2026-10-28"
  },
  "databricks_coverage": [],
- "review": [
-  "DeepSeek V4.1 Flash · fireworks",
-  "Gemini 3.7 Flash · gcloud",
-  "Gemini 3.8 Flash · gcloud",
-  "Gemini 4 Argon · gcloud"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -214,10 +144,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-11-04"
@@ -226,7 +153,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-fable-5.1|official": {
    "verified": "2026-11-04"
@@ -238,10 +168,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-fable-5"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-fable-5|databricks": {
    "verified": "2026-11-04"
@@ -250,7 +177,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-fable-5|official": {
    "verified": "2026-11-04"
@@ -271,7 +201,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-haiku-4.5|official": {
    "verified": "2026-11-04"
@@ -292,7 +225,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-haiku-5.5|official": {
    "verified": "2026-11-04"
@@ -304,10 +240,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.6|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-opus-4-6"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.6|databricks": {
    "verified": "2026-11-04"
@@ -316,7 +249,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-opus-4.6|official": {
    "verified": "2026-11-04"
@@ -328,10 +264,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.7|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-opus-4-7"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.7|databricks": {
    "verified": "2026-11-04"
@@ -340,7 +273,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-opus-4.7|official": {
    "verified": "2026-11-04"
@@ -352,10 +288,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.8|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-opus-4-8"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.8|databricks": {
    "verified": "2026-11-04"
@@ -364,7 +297,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-opus-4.8|official": {
    "verified": "2026-11-04"
@@ -376,10 +312,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-opus-5-5"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-opus-5.5|databricks": {
    "verified": "2026-11-04"
@@ -388,7 +321,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-opus-5.5|official": {
    "verified": "2026-11-04"
@@ -400,10 +336,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-5|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-opus-5"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-opus-5|databricks": {
    "verified": "2026-11-04"
@@ -412,7 +345,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-opus-5|official": {
    "verified": "2026-11-04"
@@ -433,7 +369,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-sonnet-4.6|official": {
    "verified": "2026-11-04"
@@ -445,10 +384,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-sonnet-5-5"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
    "verified": "2026-11-04"
@@ -457,7 +393,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5.5|official": {
    "verified": "2026-11-04"
@@ -469,10 +408,7 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-sonnet-5|bedrock": {
-   "verified": "2026-11-04",
-   "accepted": [
-    "aws-card-claude-sonnet-5"
-   ]
+   "verified": "2026-11-04"
   },
   "anthropic/claude-sonnet-5|databricks": {
    "verified": "2026-11-04"
@@ -481,7 +417,10 @@
    "verified": "2026-11-04"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5|official": {
    "verified": "2026-11-04"
@@ -540,17 +479,13 @@
    "verified": "2026-11-04"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "deepseek/deepseek-v4.1-flash|official": {
    "verified": "2026-11-04"
@@ -571,11 +506,7 @@
    "verified": "2026-11-04"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "google/gemini-3.1-flash-lite|official": {
    "verified": "2026-11-04"
@@ -596,11 +527,7 @@
    "verified": "2026-11-04"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "google/gemini-3.1-pro|official": {
    "verified": "2026-11-04"
@@ -621,11 +548,7 @@
    "verified": "2026-11-04"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "google/gemini-3.5-flash-lite|official": {
    "verified": "2026-11-04"
@@ -646,11 +569,7 @@
    "verified": "2026-11-04"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "google/gemini-3.6-flash|official": {
    "verified": "2026-11-04"
@@ -671,11 +590,7 @@
    "verified": "2026-11-04"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "google/gemini-3.7-flash|official": {
    "verified": "2026-11-04"
@@ -696,11 +611,7 @@
    "verified": "2026-11-04"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "google/gemini-3.8-flash|official": {
    "verified": "2026-11-04"
@@ -721,11 +632,7 @@
    "verified": "2026-11-04"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-11-03",
-   "changed_at": "2026-11-04",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "google/gemini-4-argon|official": {
    "verified": "2026-11-04"
@@ -767,7 +674,10 @@
    "verified": "2026-11-04"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "meta/llama-4-maverick|alicloud": {
    "verified": "2026-11-04"
@@ -782,7 +692,10 @@
    "verified": "2026-11-04"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-11-04"
@@ -797,16 +710,10 @@
    "verified": "2026-11-04"
   },
   "minimax/minimax-m3|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "minimax/minimax-m3|official": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "minimax-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "mistral/mistral-medium-3.5|alicloud": {
    "verified": "2026-11-04"
@@ -821,10 +728,7 @@
    "verified": "2026-11-04"
   },
   "mistral/mistral-medium-3.5|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "mistral/mistral-medium-3.5|official": {
    "verified": "2026-11-04"
@@ -860,10 +764,7 @@
    "verified": "2026-11-04"
   },
   "moonshot/kimi-k3|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "moonshot/kimi-k3|official": {
    "verified": "2026-11-04"
@@ -1061,13 +962,13 @@
    "verified": "2026-11-04"
   },
   "openai/gpt-oss-120b|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "openai/gpt-oss-120b|official": {
    "verified": "2026-11-04"
@@ -1085,7 +986,10 @@
    "verified": "2026-11-04"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "openai/gpt-oss-20b|official": {
    "verified": "2026-11-04"
@@ -1103,7 +1007,10 @@
    "verified": "2026-11-04"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "qwen/qwen3-next-80b-instruct|official": {
    "verified": "2026-11-04"
@@ -1136,10 +1043,7 @@
    "verified": "2026-11-04"
   },
   "qwen/qwen3.7-max|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "qwen/qwen3.7-max|official": {
    "verified": "2026-11-04"
@@ -1157,10 +1061,7 @@
    "verified": "2026-11-04"
   },
   "qwen/qwen3.7-plus|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "qwen/qwen3.7-plus|official": {
    "verified": "2026-11-04"
@@ -1178,10 +1079,7 @@
    "verified": "2026-11-04"
   },
   "qwen/qwen3.8-27b|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "qwen/qwen3.8-27b|official": {
    "verified": "2026-11-04"
@@ -1199,10 +1097,7 @@
    "verified": "2026-11-04"
   },
   "qwen/qwen3.8-flash|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "qwen/qwen3.8-flash|official": {
    "verified": "2026-11-04"
@@ -1220,10 +1115,7 @@
    "verified": "2026-11-04"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "qwen/qwen3.8-max|official": {
    "verified": "2026-11-04"
@@ -1259,7 +1151,10 @@
    "verified": "2026-11-04"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "xai/grok-4.6|official": {
    "verified": "2026-11-04"
@@ -1277,7 +1172,10 @@
    "verified": "2026-11-04"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "xai/grok-4.7|official": {
    "verified": "2026-11-04"
@@ -1295,13 +1193,13 @@
    "verified": "2026-11-04"
   },
   "zai/glm-5.2|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-11-04"
+   "verified": "2026-11-04",
+   "unchecked": [
+    "vertex-partner-pricing"
+   ]
   },
   "zai/glm-5.2|official": {
    "verified": "2026-11-04"
@@ -1319,10 +1217,7 @@
    "verified": "2026-11-04"
   },
   "zai/glm-5.3-flash|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "zai/glm-5.3-flash|official": {
    "verified": "2026-11-04"
@@ -1340,10 +1235,7 @@
    "verified": "2026-11-04"
   },
   "zai/glm-5.3|fireworks": {
-   "verified": "2026-11-03",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-04"
   },
   "zai/glm-5.3|official": {
    "verified": "2026-11-04"
