@@ -1,12 +1,8 @@
 {
  "schema": 1,
  "checked_at": "2026-11-03",
- "sources_checked": 114,
- "sources_failed": [
-  "api-google-gemini-4-argon",
-  "api-west-google-regions",
-  "google-pricing"
- ],
+ "sources_checked": 117,
+ "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-11-03",
   "dbx-oss": "2026-11-03",
@@ -15,7 +11,7 @@
   "openai-pricing": "2026-11-03",
   "anthropic-pricing": "2026-11-03",
   "anthropic-models": "2026-11-03",
-  "google-pricing": "2026-11-02",
+  "google-pricing": "2026-11-03",
   "vertex-pricing": "2026-11-03",
   "aws-prices": "2026-11-03",
   "aws-marketplace": "2026-11-03",
@@ -62,7 +58,7 @@
   "api-west-anthropic-fast": "2026-11-03",
   "api-west-anthropic-pricing": "2026-11-03",
   "api-west-anthropic-residency": "2026-11-03",
-  "api-west-google-regions": "2026-11-02",
+  "api-west-google-regions": "2026-11-03",
   "api-west-openai-countries": "2026-11-03",
   "api-west-openai-m-gpt-6-1-sol": "2026-11-03",
   "api-west-openai-your-data": "2026-11-03",
@@ -120,7 +116,7 @@
   "aws-card-glm-5-3": "2026-11-03",
   "aws-pricing-page": "2026-11-03",
   "gcp-gemini-4-argon": "2026-11-03",
-  "api-google-gemini-4-argon": "2026-11-02",
+  "api-google-gemini-4-argon": "2026-11-03",
   "gcp-deepseek-v4-1-flash": "2026-11-03",
   "api-west-openai-m-gpt-6-1-terra": "2026-11-03",
   "aws-card-gpt-6-1-terra": "2026-11-03",
@@ -149,6 +145,297 @@
    "baseline_digest": "a133f3d0e9dd43d3cd2bccb8e59eb1ee3fb96642bde31fb7c154fc8d44dd34a1"
   },
   {
+   "source": "google-pricing",
+   "url": "https://ai.google.dev/gemini-api/docs/pricing",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "notice: Volume-based discounts (based on usage)",
+    "table: {\"cells\":[\"Code execution\",\"Free of charge\",\"Code execution is billed at the standard token rates for the selected model. Costs are determined solely by tool usage; no charges accrue for session runtime. Generated code and execution results are billed as Output tokens when created, and as Input tokens when used by the model in its iterative reasoning process.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"Feature\",\"Model\",\"Tools\"],\"heading\":\"Gemini Developer API pricing / Pricing for agents\"}",
+    "table: {\"cells\":[\"Output price (including thinking tokens)\",\"Not available\",\"$9.00 (text) $17.50 (video)*\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}"
+   ],
+   "removed": [
+    "notice: check_circle Volume-based discounts (based on usage)",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"\",\"Model\",\"Tools\"],\"heading\":\"Gemini Developer API pricing / Pricing for agents\"}",
+    "table: {\"cells\":[\"Code execution\",\"Free of charge\",\"Code execution is billed at the standard token rates for the selected model. Costs are determined solely by the tool's usage, no charges are accrued for the session runtime. The generated code and execution results are billed as Output tokens when created, and as Input tokens when the model uses them as part of its iterative reasoning process.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"Output price (including thinking tokens)\",\"Not available\",\"$9.00 (text) $17.50 (video) *\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}"
+   ],
+   "added_all": [
+    "notice: Volume-based discounts (based on usage)",
+    "table: {\"cells\":[\"Code execution\",\"Free of charge\",\"Code execution is billed at the standard token rates for the selected model. Costs are determined solely by tool usage; no charges accrue for session runtime. Generated code and execution results are billed as Output tokens when created, and as Input tokens when used by the model in its iterative reasoning process.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"Feature\",\"Model\",\"Tools\"],\"heading\":\"Gemini Developer API pricing / Pricing for agents\"}",
+    "table: {\"cells\":[\"Output price (including thinking tokens)\",\"Not available\",\"$9.00 (text) $17.50 (video)*\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}"
+   ],
+   "removed_all": [
+    "notice: check_circle Volume-based discounts (based on usage)",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Batch\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Embedding / Standard\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}",
+    "table: {\"cells\":[\"\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"\",\"Model\",\"Tools\"],\"heading\":\"Gemini Developer API pricing / Pricing for agents\"}",
+    "table: {\"cells\":[\"Code execution\",\"Free of charge\",\"Code execution is billed at the standard token rates for the selected model. Costs are determined solely by the tool's usage, no charges are accrued for the session runtime. The generated code and execution results are billed as Output tokens when created, and as Input tokens when the model uses them as part of its iterative reasoning process.\"],\"heading\":\"Gemini Developer API pricing / Pricing for tools\"}",
+    "table: {\"cells\":[\"Output price (including thinking tokens)\",\"Not available\",\"$9.00 (text) $17.50 (video) *\"],\"heading\":\"Gemini Developer API pricing / Gemini Omni Flash / Standard\"}"
+   ],
+   "baseline_digest": "6dbec0ff35ca6eee6a0231bc5f3632db3c31b15c26c48d0cf7d2b67ebc35f3d9"
+  },
+  {
+   "source": "api-west-google-regions",
+   "url": "https://ai.google.dev/gemini-api/docs/available-regions",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit and a region or its availability changed",
+   "added": [
+    "text: Albania",
+    "text: Algeria",
+    "text: American Samoa",
+    "text: Andorra",
+    "text: Angola",
+    "text: Anguilla",
+    "text: Antarctica",
+    "text: Antigua and Barbuda",
+    "text: Argentina",
+    "text: Armenia",
+    "text: Aruba",
+    "text: Australia"
+   ],
+   "removed": [
+    "text: Español – América Latina",
+    "text: Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.",
+    "text: Note: For Colab users - Region restrictions are applied based on the region that the Colab instance is in, not the region that the user is in. You can check the location of the Colab instance using!curl ipinfo.io"
+   ],
+   "added_all": [
+    "text: Albania",
+    "text: Algeria",
+    "text: American Samoa",
+    "text: Andorra",
+    "text: Angola",
+    "text: Anguilla",
+    "text: Antarctica",
+    "text: Antigua and Barbuda",
+    "text: Argentina",
+    "text: Armenia",
+    "text: Aruba",
+    "text: Australia",
+    "text: Austria",
+    "text: Azerbaijan",
+    "text: Bahrain",
+    "text: Bangladesh",
+    "text: Barbados",
+    "text: Belgium",
+    "text: Belize",
+    "text: Benin",
+    "text: Bermuda",
+    "text: Bhutan",
+    "text: Bolivia",
+    "text: Botswana",
+    "text: Brazil",
+    "text: Brunei",
+    "text: Bulgaria",
+    "text: Burkina Faso",
+    "text: Burundi",
+    "text: Cabo Verde",
+    "text: Cambodia",
+    "text: Cameroon",
+    "text: Canada",
+    "text: Cayman Islands",
+    "text: Chad",
+    "text: Chile",
+    "text: Christmas Island",
+    "text: Colombia",
+    "text: Comoros",
+    "text: Cook Islands",
+    "text: Costa Rica",
+    "text: Croatia",
+    "text: Curaçao",
+    "text: Czech Republic",
+    "text: Côte d'Ivoire",
+    "text: Denmark",
+    "text: Djibouti",
+    "text: Dominica",
+    "text: Dominican Republic",
+    "text: Ecuador",
+    "text: Egypt",
+    "text: El Salvador",
+    "text: Equatorial Guinea",
+    "text: Eritrea",
+    "text: Estonia",
+    "text: Eswatini",
+    "text: Ethiopia",
+    "text: Faroe Islands",
+    "text: Fiji",
+    "text: Finland",
+    "text: France",
+    "text: French Guiana",
+    "text: Gabon",
+    "text: Georgia",
+    "text: Germany",
+    "text: Ghana",
+    "text: Gibraltar",
+    "text: Greece",
+    "text: Greenland",
+    "text: Grenada",
+    "text: Guam",
+    "text: Guatemala",
+    "text: Guernsey",
+    "text: Guinea",
+    "text: Guinea-Bissau",
+    "text: Guyana",
+    "text: Haiti",
+    "text: Honduras",
+    "text: Hungary",
+    "text: Iceland",
+    "text: India",
+    "text: Indonesia",
+    "text: Iraq",
+    "text: Ireland",
+    "text: Isle of Man",
+    "text: Israel",
+    "text: Italy",
+    "text: Jamaica",
+    "text: Japan",
+    "text: Jersey",
+    "text: Jordan",
+    "text: Kazakhstan",
+    "text: Kenya",
+    "text: Kiribati",
+    "text: Kosovo",
+    "text: Kuwait",
+    "text: Kyrgyzstan",
+    "text: Laos",
+    "text: Latvia",
+    "text: Lebanon",
+    "text: Lesotho",
+    "text: Liberia",
+    "text: Libya",
+    "text: Liechtenstein",
+    "text: Lithuania",
+    "text: Luxembourg",
+    "text: Madagascar",
+    "text: Malawi",
+    "text: Malaysia",
+    "text: Maldives",
+    "text: Mali",
+    "text: Malta",
+    "text: Marshall Islands",
+    "text: Mauritania",
+    "text: Mauritius",
+    "text: Mexico",
+    "text: Micronesia",
+    "text: Moldova",
+    "text: Monaco",
+    "text: Mongolia",
+    "text: Montenegro",
+    "text: Montserrat",
+    "text: Morocco",
+    "text: Mozambique",
+    "text: Namibia",
+    "text: Nauru",
+    "text: Nepal",
+    "text: Netherlands",
+    "text: New Caledonia",
+    "text: New Zealand",
+    "text: Nicaragua",
+    "text: Niger",
+    "text: Nigeria",
+    "text: Niue",
+    "text: Norfolk Island",
+    "text: North Macedonia",
+    "text: Norway",
+    "text: Note: For Colab users - Region restrictions are applied based on the region that the Colab instance is in, not the region that the user is in. You can check the location of the Colab instance using `!curl ipinfo.io`",
+    "text: Oman",
+    "text: Pakistan",
+    "text: Palau",
+    "text: Palestine",
+    "text: Panama",
+    "text: Papua New Guinea",
+    "text: Paraguay",
+    "text: Peru",
+    "text: Philippines",
+    "text: Pitcairn Islands",
+    "text: Poland",
+    "text: Portugal",
+    "text: Puerto Rico",
+    "text: Qatar",
+    "text: Republic of Cyprus",
+    "text: Romania",
+    "text: Rwanda",
+    "text: Réunion",
+    "text: Saint Barthélemy",
+    "text: Saint Lucia",
+    "text: Samoa",
+    "text: San Marino",
+    "text: Saudi Arabia",
+    "text: Senegal",
+    "text: Serbia",
+    "text: Seychelles",
+    "text: Sierra Leone",
+    "text: Singapore",
+    "text: Slovakia",
+    "text: Slovenia",
+    "text: Solomon Islands",
+    "text: Somalia",
+    "text: South Africa",
+    "text: South Korea",
+    "text: South Sudan",
+    "text: Spain",
+    "text: Sri Lanka",
+    "text: Sudan",
+    "text: Suriname",
+    "text: Sweden",
+    "text: Switzerland",
+    "text: Taiwan",
+    "text: Tajikistan",
+    "text: Tanzania",
+    "text: Thailand",
+    "text: The Bahamas",
+    "text: The Gambia",
+    "text: Timor-Leste",
+    "text: Togo",
+    "text: Tokelau",
+    "text: Tonga",
+    "text: Trinidad and Tobago",
+    "text: Tunisia",
+    "text: Turkmenistan",
+    "text: Tuvalu",
+    "text: Türkiye",
+    "text: U.S. Virgin Islands",
+    "text: Uganda",
+    "text: Ukraine",
+    "text: United Kingdom",
+    "text: United States",
+    "text: Uruguay",
+    "text: Uzbekistan",
+    "text: Vanuatu",
+    "text: Vatican City",
+    "text: Venezuela",
+    "text: Vietnam",
+    "text: Wallis and Futuna",
+    "text: Western Sahara",
+    "text: Yemen",
+    "text: Zambia",
+    "text: Zimbabwe",
+    "text: Åland Islands"
+   ],
+   "removed_all": [
+    "text: Español – América Latina",
+    "text: Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.",
+    "text: Note: For Colab users - Region restrictions are applied based on the region that the Colab instance is in, not the region that the user is in. You can check the location of the Colab instance using!curl ipinfo.io"
+   ],
+   "baseline_digest": "8639e1a772b8ba756fc7c8fc7a7ae0fbc67cd826235486c880bcdabd729beb4f"
+  },
+  {
    "source": "api-west-xai-pricing",
    "url": "https://docs.x.ai/developers/pricing.md",
    "risk": "high",
@@ -174,6 +461,8 @@
  },
  "databricks_coverage": [],
  "review": [
+  "Gemini 3.8 Flash · official",
+  "Gemini 4 Argon · official",
   "Grok 4.7 · bedrock"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
@@ -185,10 +474,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-11-03"
@@ -209,10 +495,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-fable-5"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-fable-5|databricks": {
    "verified": "2026-11-03"
@@ -275,10 +558,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-opus-4.6|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-opus-4-6"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-opus-4.6|databricks": {
    "verified": "2026-11-03"
@@ -299,10 +579,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-opus-4.7|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-opus-4-7"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-opus-4.7|databricks": {
    "verified": "2026-11-03"
@@ -323,10 +600,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-opus-4.8|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-opus-4-8"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-opus-4.8|databricks": {
    "verified": "2026-11-03"
@@ -347,10 +621,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-opus-5-5"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-opus-5.5|databricks": {
    "verified": "2026-11-03"
@@ -371,10 +642,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-opus-5|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-opus-5"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-opus-5|databricks": {
    "verified": "2026-11-03"
@@ -416,10 +684,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-sonnet-5-5"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
    "verified": "2026-11-03"
@@ -440,10 +705,7 @@
    "verified": "2026-11-03"
   },
   "anthropic/claude-sonnet-5|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-claude-sonnet-5"
-   ]
+   "verified": "2026-11-03"
   },
   "anthropic/claude-sonnet-5|databricks": {
    "verified": "2026-11-03"
@@ -458,10 +720,7 @@
    "verified": "2026-11-03"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-11-02",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-03"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
    "verified": "2026-11-03"
@@ -479,10 +738,7 @@
    "verified": "2026-11-03"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-11-02",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-03"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
    "verified": "2026-11-03"
@@ -594,6 +850,10 @@
   },
   "google/gemini-3.5-flash-lite|official": {
    "verified": "2026-11-02",
+   "changed_at": "2026-11-03",
+   "sources": [
+    "google-pricing"
+   ],
    "unchecked": [
     "google-pricing"
    ]
@@ -639,10 +899,7 @@
    "verified": "2026-11-03"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "gcp-gemini-3-7-flash"
-   ]
+   "verified": "2026-11-03"
   },
   "google/gemini-3.7-flash|official": {
    "verified": "2026-11-02",
@@ -671,6 +928,10 @@
   },
   "google/gemini-3.8-flash|official": {
    "verified": "2026-11-02",
+   "changed_at": "2026-11-03",
+   "sources": [
+    "google-pricing"
+   ],
    "unchecked": [
     "api-west-google-regions",
     "google-pricing"
@@ -696,8 +957,11 @@
   },
   "google/gemini-4-argon|official": {
    "verified": "2026-11-02",
+   "changed_at": "2026-11-03",
+   "sources": [
+    "api-google-gemini-4-argon"
+   ],
    "unchecked": [
-    "api-google-gemini-4-argon",
     "google-pricing"
    ]
   },
@@ -747,10 +1011,7 @@
    "verified": "2026-11-03"
   },
   "meta/llama-4-maverick|bedrock": {
-   "verified": "2026-11-02",
-   "unchecked": [
-    "aws-prices"
-   ]
+   "verified": "2026-11-03"
   },
   "meta/llama-4-maverick|databricks": {
    "verified": "2026-11-03"
@@ -819,10 +1080,7 @@
    "verified": "2026-11-03"
   },
   "moonshot/kimi-k3|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-kimi-k3"
-   ]
+   "verified": "2026-11-03"
   },
   "moonshot/kimi-k3|databricks": {
    "verified": "2026-11-03"
@@ -840,10 +1098,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-5.4|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-gpt-5-4"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-5.4|databricks": {
    "verified": "2026-11-03"
@@ -864,10 +1119,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-5.5|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-gpt-5-5"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-5.5|databricks": {
    "verified": "2026-11-03"
@@ -888,10 +1140,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-5.6-luna|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-gpt-5-6-luna"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-5.6-luna|databricks": {
    "verified": "2026-11-03"
@@ -912,10 +1161,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-5.6-sol|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-gpt-5-6-sol"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-5.6-sol|databricks": {
    "verified": "2026-11-03"
@@ -936,10 +1182,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-5.6-terra|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-gpt-5-6-terra"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-5.6-terra|databricks": {
    "verified": "2026-11-03"
@@ -960,10 +1203,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-6-astra|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-gpt-6-astra"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-6-astra|databricks": {
    "verified": "2026-11-03"
@@ -1026,10 +1266,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-6.1-sol|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-gpt61"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-6.1-sol|databricks": {
    "verified": "2026-11-03"
@@ -1050,10 +1287,7 @@
    "verified": "2026-11-03"
   },
   "openai/gpt-6.1-terra|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-card-gpt-6-1-terra"
-   ]
+   "verified": "2026-11-03"
   },
   "openai/gpt-6.1-terra|databricks": {
    "verified": "2026-11-03"
@@ -1113,10 +1347,7 @@
    ]
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-11-02",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-03"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
    "verified": "2026-11-03"
@@ -1131,10 +1362,7 @@
    "verified": "2026-11-03"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-11-02",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-03"
   },
   "qwen/qwen3.5-122b|alicloud": {
    "verified": "2026-11-03"
@@ -1266,10 +1494,7 @@
    "verified": "2026-11-03"
   },
   "xai/grok-4.6|bedrock": {
-   "verified": "2026-11-03",
-   "accepted": [
-    "aws-grok46"
-   ]
+   "verified": "2026-11-03"
   },
   "xai/grok-4.6|databricks": {
    "verified": "2026-11-03"
@@ -1354,10 +1579,7 @@
    "verified": "2026-11-03"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-11-02",
-   "unchecked": [
-    "aws-pricing-page"
-   ]
+   "verified": "2026-11-03"
   },
   "zai/glm-5.3|databricks": {
    "verified": "2026-11-03"
