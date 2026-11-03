@@ -2010,6 +2010,24 @@
               "id": "variant-5"
             },
             {
+              "in": 2.4,
+              "out": 9.6,
+              "cache_read": 0.048,
+              "label": "Serverless 1017 · Ultra-fast (Preview)",
+              "comparison_scope": "unverified",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-04",
+              "endpoint": "Serverless 1017",
+              "tier_label": "Ultra-fast (Preview)",
+              "model_id": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
+              "snapshot": "DeepSeek-V4.1-Flash-1017",
+              "model_match": "unverified",
+              "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
+              "availability_checked_at": "2026-11-04",
+              "url": "https://docs.fireworks.ai/serverless/serverless-modes",
+              "id": "variant-6"
+            },
+            {
               "in": 0.45,
               "out": 1.8,
               "cache_read": 0.009,
@@ -2024,7 +2042,7 @@
               "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
               "availability_checked_at": "2026-10-23",
               "url": "https://docs.fireworks.ai/serverless/us-only-serverless",
-              "id": "variant-6"
+              "id": "variant-7"
             },
             {
               "in": 0.5625,
@@ -2041,7 +2059,7 @@
               "comparison_note": "The 1017 checkpoint is not confirmed as the Databricks checkpoint.",
               "availability_checked_at": "2026-10-23",
               "url": "https://docs.fireworks.ai/serverless/us-only-serverless",
-              "id": "variant-7"
+              "id": "variant-8"
             }
           ],
           "src": "fireworks",
@@ -2097,7 +2115,7 @@
               ],
               [
                 "Tier semantics",
-                "No Fast variant; Priority and US-only are available."
+                "No Fast variant; Priority and US-only are available. Ultra-fast (Preview) serves the 1017 checkpoint only, through its own router model ID, with no Priority tier."
               ],
               [
                 "Input limits",
@@ -2106,13 +2124,18 @@
               [
                 "Checkpoint review · 23 Oct 2026",
                 "1017 has separate default and US-only model IDs, each with published Standard and Priority prices. The US-only router serves inference exclusively in the United States. The original IDs remain listed separately. Its exact checkpoint match to Databricks is unconfirmed, so 1017 offers are excluded from same-model comparisons."
+              ],
+              [
+                "Checkpoint review · 4 Nov 2026",
+                "Fireworks lists an Ultra-fast (Preview) speed mode for the 1017 checkpoint at 8× its Standard rates ($2.40 / $9.60, cached input $0.048), served by the router deepseek-v4p1-flash-1017-ultrafast; Priority is not offered on it. Fireworks says preview modes are under active development and change quickly."
               ]
             ],
             "ids": [
               "accounts/fireworks/models/deepseek-v4p1-flash (serverless)",
               "accounts/fireworks/routers/deepseek-v4p1-flash-us (US-only)",
               "accounts/fireworks/models/deepseek-v4p1-flash-1017 (separate 1017 checkpoint; reviewed 2026-10-19)",
-              "accounts/fireworks/routers/deepseek-v4p1-flash-1017-us (US-only 1017 checkpoint; reviewed 2026-10-23)"
+              "accounts/fireworks/routers/deepseek-v4p1-flash-1017-us (US-only 1017 checkpoint; reviewed 2026-10-23)",
+              "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast (Ultra-fast 1017 preview; reviewed 2026-11-04)"
             ],
             "cache_write": "input-rate"
           }

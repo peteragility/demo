@@ -428,15 +428,20 @@ test('Google DeepSeek V4.1 Flash introduction switches to its own verified list 
 test('Fireworks 1017 prices remain separate from original and US-only checkpoints', () => {
   const c = reviewed.models['deepseek/deepseek-v4.1-flash'].platforms.fireworks;
   const rows = c.variants.filter(v => v.endpoint === 'Serverless 1017');
-  assert.equal(rows.length, 2);
-  for (const [service, rates] of [['standard', [0.30, 0.006, 1.20]], ['priority', [0.375, 0.0075, 1.50]]]) {
-    const row = rows.find(v => v.service_tier === service);
+  assert.equal(rows.length, 3);
+  const byTier = Object.fromEntries(rows.map(v => [v.tier_label || v.service_tier, v]));
+  for (const [tier, rates, id, day] of [
+    ['standard', [0.30, 0.006, 1.20], 'accounts/fireworks/models/deepseek-v4p1-flash-1017', '2026-10-19'],
+    ['priority', [0.375, 0.0075, 1.50], 'accounts/fireworks/models/deepseek-v4p1-flash-1017', '2026-10-19'],
+    ['Ultra-fast (Preview)', [2.40, 0.048, 9.60], 'accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast', '2026-11-04'],
+  ]) {
+    const row = byTier[tier];
     assert.deepEqual([row.in, row.cache_read, row.out], rates);
-    assert.equal(row.model_id, 'accounts/fireworks/models/deepseek-v4p1-flash-1017');
+    assert.equal(row.model_id, id);
     assert.equal(row.snapshot, 'DeepSeek-V4.1-Flash-1017');
     assert.equal(row.model_match, 'unverified');
     assert.equal(M.comparable(row), false);
-    assert.equal(row.pricing_checked_at, '2026-10-19');
+    assert.equal(row.pricing_checked_at, day);
   }
   assert.equal(c.snapshot, undefined);
   assert.equal(c.endpoint, 'Serverless');
