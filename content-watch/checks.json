@@ -1,23 +1,51 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-03",
+  "checkedAt": "2026-11-04",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-03",
-      "lastSuccess": "2026-11-03",
+      "checkedAt": "2026-11-04",
+      "lastSuccess": "2026-11-04",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-03",
-      "lastSuccess": "2026-11-03",
+      "checkedAt": "2026-11-04",
+      "lastSuccess": "2026-11-04",
       "errors": 0,
-      "review": 0,
+      "review": 2,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-docker",
+      "url": "https://docs.docker.com/ai/sandboxes/security/isolation/",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 3681882c1700bc3462438acbd4d9461419ca36d3a7a554d73c2ba98de0dec0db",
+        "Removed record: 6a17f26747f724caa70201569f42c8b8a916e3738b6a9119fe5a1677edf52cd8",
+        "Added record: 29d7727ee063851d4ffa3b448e00ee6f57ebc1abfc132c5cdeaf6880c0306fe4: [experimental UDP egress](/ai/sandboxes/governance/local/network-rules/#allow-outbound-udp),",
+        "Added record: a58a6dca81a0901df51a12e3ce01ab122f8b121354b7e8dbda7f4b9b8bdd5b85: [Sandbox governance](/ai/sandboxes/governance/). Only the",
+        "Added record: b6f51ddb1f6a7744bdeb97708ccad1b0aca5b69953f8b0ab0481774a408d1927: network policy. The sandbox routes traffic through either a forward proxy or a"
+      ]
+    },
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 2946fba133790b32de9c82e7f37ba3711d8abd8e8ae9d104cfbbd6880e7d5e4d",
+        "Removed record: 83054845dbf925a3c9b7c7a4c467f07c232495065ba0da06c8ad07e5322f9d3e",
+        "Added record: 22c2940c9dbbb30e2fe89c063d4fad7ff912a511fa3d4f1ad9fb2ac11c2762ea: Keeping Linux in preview only would prevent an accepted Linux build from using the stable channel.",
+        "Added record: 60f13f26bbdb016a6fa6c433a32b98839f318a2498c4974b4fc0f3d15569d7ea: Package availability and runtime consent establish neither filesystem authority nor security acceptance.",
+        "Added record: 8ad1341df10bb0b898bcf35ba591a1b62477bbcf712b82c2dfcd733b8b63d729: Linux evaluation requires `EXPERIMENTAL_LINUX_SUPPORT=TRUE`, while help and version checks remain available without consent.",
+        "Added record: 9bd247b9522dcd458e34796db1ddf7b355a57fdd87e2dc9b1b412ad1178fed74: Linux previews always include ARM64 Linux and leave the latest stable release unchanged."
+      ]
+    }
+  ]
 }
