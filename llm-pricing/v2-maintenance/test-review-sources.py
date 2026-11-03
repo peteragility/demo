@@ -101,6 +101,65 @@ class SourceReviewTests(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(ValueError):
                 review.kimi_html_tables('<script>self.__next_f.push(' + json.dumps([1, bad]) + ')</script>')
 
+    def test_aistudio_shell_tables_keep_headings_tabs_and_price_cells(self):
+        body = (
+            "> ## AI Agent Context\n> Get the complete documentation index at: https://aistudio.google.com/llms.txt\n\n"
+            "# Gemini Developer API pricing\n\n## Gemini 3.5 Flash-Lite\n\n{% tabs %}\n  {% tab title=\"Standard\" %}\n"
+            "  {% table %}\n  * Feature\n  * Free Tier\n  * Paid Tier, per 1M tokens in USD\n\n  ---\n\n"
+            "  * Input price\n  * Not available\n  * $0.30\n\n  ---\n\n"
+            "  * Grounding with Google Search{% sup %}*{% /sup %}\n  * Not available\n"
+            "  * 5,000 free requests per month, then $14 per 1,000 requests\n"
+            "  (subject to a [daily cap](/docs/pricing) of 1,500 requests per day).\n  {% /table %}\n  {% /tab %}\n"
+            "  {% tab title=\"Batch\" %}\n  {% table %}\n  * Input price\n  * Not available\n  * $0.15\n  {% /table %}\n"
+            "  {% /tab %}\n{% /tabs %}\n")
+        page = '<html><head><base href="https://aistudio.google.com/"></head><body><app><pre>' + \
+            body.replace("&", "&amp;").replace('"', "&quot;") + '</pre></app></body></html>'
+        records = review.html_records(page, "tables")
+        self.assertIn('table: ' + review.packed(dict(
+            heading="Gemini Developer API pricing / Gemini 3.5 Flash-Lite / Standard",
+            cells=["Input price", "Not available", "$0.30"])), records)
+        self.assertIn('table: ' + review.packed(dict(
+            heading="Gemini Developer API pricing / Gemini 3.5 Flash-Lite / Batch",
+            cells=["Input price", "Not available", "$0.15"])), records)
+        # Markdown links collapse to their text; the sup marker stays part of the cell.
+        grounding = [r for r in records if "Grounding" in r]
+        self.assertEqual(len(grounding), 1)
+        self.assertIn("Grounding with Google Search*", grounding[0])
+        self.assertNotIn("](/docs/pricing)", grounding[0])
+        self.assertTrue(all(r.startswith("table: ") for r in records))
+
+    def test_aistudio_shell_text_records_carry_badge_marks_and_notices(self):
+        body = (
+            "> ## AI Agent Context\n> https://aistudio.google.com/llms.txt\n\n"
+            "# Gemini 4 Argon\n\n{% table variant=\"model\" %}\n  * Property\n  * Description\n\n  ---\n\n"
+            "  *     {% section %}\n  {% icon name=\"handyman\" /%}Capabilities\n\n    {% /section %}\n\n"
+            "  *     {% section %}\n  **Caching**\n\n  {% badge label=Supported (Implicit only) type=\"supported\" /%}\n\n"
+            "  Note: Explicit caching is not supported.\n\n  {% /section %}\n\n"
+            "  {% section %}\n  **Audio generation**\n\n  {% badge type=\"not-supported\" /%}\n\n  {% /section %}\n"
+            "  {% /table %}\n\nAvailable in:\n\n* Albania\n* Taiwan\n")
+        page = '<html><body><app><pre>' + body + '</pre></app></body></html>'
+        records = review.html_records(page, "text")
+        row = next(r for r in records if r.startswith("table: ") and "Capabilities" in r)
+        self.assertIn("Caching Supported (Implicit only)", row)
+        self.assertIn("Note: Explicit caching is not supported.", row)
+        self.assertIn("Audio generation not-supported", row)
+        self.assertIn("text: Albania", records)
+        self.assertIn("text: Taiwan", records)
+        # Callout paragraphs outside tables still surface as notice records.
+        self.assertIn("notice: Warning: Gemini 2.5 Flash Image is deprecated and will be shut down.",
+                      review.aistudio_records(
+                          "> https://aistudio.google.com/llms.txt\n\n# Pricing\n\n"
+                          "{% callout type=\"note\" %}\nWarning: Gemini 2.5 Flash Image is deprecated and will be shut down.\n{% /callout %}\n",
+                          "tables"))
+
+    def test_aistudio_shell_without_records_is_a_failed_read(self):
+        page = '<html><body><app><pre>> ## AI Agent Context\n> https://aistudio.google.com/llms.txt\n\n{% hr /%}\n</pre></app></body></html>'
+        with self.assertRaises(ValueError):
+            review.html_records(page, "tables")
+
+    def test_former_html_pages_do_not_hit_the_aistudio_path(self):
+        self.assertIsNone(review.aistudio_markdown('<h1>Pricing</h1><table><tr><td>$1</td></tr></table>'))
+
     def test_throughput_changes_preserve_context_and_billing_review(self):
         def row(qpm, tpm, context='524,288', extra=''):
             return 'table: ' + review.packed(dict(heading='Grok 4.7', cells=['Quota limits',

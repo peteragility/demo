@@ -287,8 +287,9 @@ def add_models(data):
         dbx["variants"] = [pr, regional]
         off = offer(i, o, cr, src="google", tier="Gemini API paid tier · text", model_id=api_id, storage=1,
                     note="Cache storage: $1 / million token-hours. Audio input has a different price on 3.1 Flash-Lite.")
-        # Google's published API rounds 3.5 Lite cache hits differently on Priority / Flex.
-        off["variants"] = [variant("Batch", i / 2, o / 2, 0.02 if version == "3.5" else cr / 2, service="batch", cache_storage=1 if version == "3.5" else 0.5),
+        # Google's published API rounds 3.5 Lite cache hits differently on Priority / Flex;
+        # its Batch tier lists the exact half ($0.015) since the 2026-11-03 review.
+        off["variants"] = [variant("Batch", i / 2, o / 2, 0.015 if version == "3.5" else cr / 2, service="batch", cache_storage=1 if version == "3.5" else 0.5),
                            variant("Flex", i / 2, o / 2, 0.02 if version == "3.5" else cr / 2, service="flex", cache_storage=1 if version == "3.5" else 0.5),
                            variant("Priority", round(i * 1.8, 6), round(o * 1.8, 6), 0.05 if version == "3.5" else round(cr * 1.8, 6), service="priority", cache_storage=1 if version == "3.5" else 1.8)]
         vertex = offer(i, o, cr, src="vertex", tier="Global endpoint · text", model_id=api_id, storage=1)

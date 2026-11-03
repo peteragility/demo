@@ -8951,6 +8951,10 @@
     [
      "Billing",
      "Price List SKU names contain \"mantle\" although the card lists bedrock-runtime only."
+    ],
+    [
+     "GovCloud",
+     "The card's AWS GovCloud (US) table lists Geo CRIS Standard at $2.64 input / $7.92 output / $0.66 cache read per million tokens (reviewed 3 Nov 2026); GovCloud is a separate partition outside the general-access comparison."
     ]
    ],
    "ids": [

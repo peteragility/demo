@@ -18,6 +18,7 @@ import concurrent.futures
 import datetime as dt
 import difflib
 import hashlib
+import html
 import importlib.util
 import json
 import os
@@ -63,7 +64,116 @@ def grouped(rows):
     return out
 
 
+AISTUDIO_BANNER = "aistudio.google.com/llms.txt"
+
+
+def aistudio_markdown(text):
+    """Google's Gemini API documentation pages now serve an AI Studio shell whose <pre> element
+    carries the page as Markdown, with {% table %} bullet grids in place of the former HTML
+    tables. Return that Markdown, or None when the page is still in the former format."""
+    match = re.search(r"<pre[^>]*>(.*?)</pre>", text, re.S)
+    if not match or AISTUDIO_BANNER not in match.group(1):
+        return None
+    return html.unescape(match.group(1))
+
+
+def aistudio_records(body, kind):
+    """Records from the AI Studio Markdown shell in the shape the former HTML pages produced:
+    headings joined with " / " (the active tab title last), table bullets as cells with "---"
+    as the row break, paragraphs and list items as text records."""
+    headings, tab, records = {}, "", []
+    table, row, cell, block = None, None, None, []
+
+    def heading_text():
+        parts = [headings[k] for k in sorted(headings)] + ([tab] if tab else [])
+        return " / ".join(parts)
+
+    def inline(text):
+        # Badge labels carry the yes / no support marks; other directives drop, leaving their text.
+        text = re.sub(r'\{%\s*badge label=(.*?) type="[^"]*"\s*/?%\}', r" \1 ", text)
+        text = re.sub(r'\{%\s*badge type="(supported|not-supported)"[^%]*%\}', r" \1 ", text)
+        text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)
+        return clean(re.sub(r"\{%[^%]*%\}", "", text).replace("**", ""))
+
+    def emit_text(text):
+        if kind == "text" and text:
+            records.append(("product: " if video_section(heading_text()) else "text: ") + text)
+        if len(text) >= 20 and NOTICE.search(text) and not video_section(heading_text()):
+            records.append("notice: " + text)
+
+    def flush_block():
+        nonlocal block
+        if block:
+            emit_text(inline(" ".join(block)))
+        block = []
+
+    def flush_cell():
+        nonlocal cell
+        if cell is not None and row is not None:
+            row.append(inline(" ".join(cell)))
+        cell = None
+
+    def flush_row():
+        nonlocal row
+        flush_cell()
+        if row is not None and table is not None and any(row):
+            table.append(row)
+        row = None
+
+    for raw in body.splitlines():
+        line = raw.strip()
+        if table is not None:
+            if line == "---":
+                flush_row()
+            elif re.fullmatch(r"\{%\s*/table\s*%\}", line):
+                flush_row()
+                records += ["table: " + packed({"heading": heading_text(), "cells": r}) for r in grouped(table)]
+                table = None
+            elif line.startswith("* "):
+                flush_cell()
+                row = row if row is not None else []
+                cell = [line[2:]]
+            elif line and cell is not None:
+                cell.append(line)
+            continue
+        if line.startswith("#"):
+            flush_block()
+            level = len(line) - len(line.lstrip("#"))
+            text = inline(line[level:].strip())
+            headings = {k: v for k, v in headings.items() if k < level}
+            if text:
+                headings[level] = text
+        elif line.startswith(">"):
+            continue  # the AI-agent banner quoting the llms.txt index
+        elif re.fullmatch(r'\{%\s*tab title="([^"]*)"\s*%\}', line):
+            flush_block()
+            tab = re.fullmatch(r'\{%\s*tab title="([^"]*)"\s*%\}', line).group(1)
+        elif re.fullmatch(r"\{%\s*/?tabs?\s*%\}", line):
+            flush_block()
+            tab = ""
+        elif re.fullmatch(r"\{%\s*table[^%]*%\}", line):
+            flush_block()
+            table, row, cell = [], None, None
+        elif re.fullmatch(r"\{%[^%]*%\}", line):
+            continue
+        elif line.startswith("* "):
+            flush_block()
+            block = [line[2:]]
+        elif line:
+            block = block if block else []
+            block.append(line)
+        else:
+            flush_block()
+    flush_block()
+    if not records:
+        raise ValueError("No meaningful records found; the source may need a parser update.")
+    return sorted(set(records))
+
+
 def html_records(text, kind):
+    shell = aistudio_markdown(text)
+    if shell is not None:
+        return aistudio_records(shell, kind)
     page = Page()
     page.feed(text)
     visible = clean(" ".join(page.text))
