@@ -1,23 +1,43 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-02",
+  "checkedAt": "2026-11-03",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-02",
-      "lastSuccess": "2026-11-02",
+      "checkedAt": "2026-11-03",
+      "lastSuccess": "2026-11-03",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-02",
-      "lastSuccess": "2026-11-02",
+      "checkedAt": "2026-11-03",
+      "lastSuccess": "2026-11-03",
       "errors": 0,
-      "review": 0,
+      "review": 2,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-monty",
+      "url": "https://raw.githubusercontent.com/pydantic/monty/main/docs/security.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Added record: 270c89ccd8dda61a61bc46bf033242295453a3440617d3a16cef063b2b37c767: `OSAccess` caps what writes can grow it to: `max_total_file_bytes`, 50 MB by default (see [write limits](limitations/filesystem.md#write-limits)).",
+        "Added record: fc31a7783b6f72bd057b1d782759114c430aae819f54bab127ff5af78c128ec3: Set the count to 1 when callers do not trust each other (see [worker recycling](resource-limits.md#worker-recycling))."
+      ]
+    },
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 79ec2798e16fba37b12aea96abde6efb9fe9039f34c1b9800e042c26d553243e"
+      ]
+    }
+  ]
 }
