@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-10-30",
+ "ranked_at": "2026-11-05",
  "top": 50,
  "entries": 50,
  "models": {
@@ -26,6 +26,10 @@
   "anthropic/claude-fable-5.1": {
    "rank": 6,
    "arena": "Claude Fable 5.1 (Max)"
+  },
+  "moonshot/kimi-k3.1-pro": {
+   "rank": 9,
+   "arena": "Kimi K3.1 Pro (Max)"
   },
   "anthropic/claude-opus-5": {
    "rank": 10,

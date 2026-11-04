@@ -30,6 +30,7 @@
     "google/gemini-3.7-flash": "^gemini 3[. ]7 flash\\b(?! lite)",
     "xai/grok-4.7": "^grok 4[. ]7(?![\\d.]| \\d)",
     "xai/grok-4.6": "^grok 4[. ]6(?![\\d.]| \\d)",
+    "moonshot/kimi-k3.1-pro": "^kimi k3[.]1 pro",
     "moonshot/kimi-k3": "^kimi k3(?![\\d.]| \\d)",
     "moonshot/kimi-k2.7": "^kimi k2[. ]7(?![\\d.]| \\d)",
     "zai/glm-5.3": "^glm 5[. ]3(?![\\d.]| \\d)(?! flash)",

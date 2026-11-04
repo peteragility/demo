@@ -882,11 +882,13 @@ def enrich_context_and_promotions(data):
             if key == "openai/gpt-5.6-sol" and pl in ("databricks", "official"):
                 after = rates(5, 30, 0.5, 6.25)
                 after["long_context"] = rates(10, 45, 1, 12.5)
-                promo(c, "2026-11-21", after, "GPT-5.6 Sol promotion", c["tier"])
+                # 5 Nov 2026: OpenAI's page extends its promotional rates to 30 Nov; Databricks'
+                # own DBU footnote still ends them on 21 Nov, so the platforms keep their own dates.
+                promo(c, "2026-11-21" if pl == "databricks" else "2026-11-30", after, "GPT-5.6 Sol promotion", c["tier"])
                 # Future nonstandard tiers are not extrapolated from Standard.
                 for v in variants:
                     if not v.get("context_only"):
-                        v["valid_through"] = "2026-11-21"
+                        v["valid_through"] = "2026-11-21" if pl == "databricks" else "2026-11-30"
             for n, v in enumerate(variants):
                 v.setdefault("id", "variant-" + str(n))
                 v.setdefault("model_match", c.get("model_match", "confirmed"))
@@ -1004,10 +1006,11 @@ def review_october21(data):
                 "openai/gpt-6-luna", "openai/gpt-5.6-sol", "openai/gpt-5.6-terra", "openai/gpt-5.6-luna"):
         c = data["models"][key]["platforms"]["official"]
         if key == "openai/gpt-5.6-sol":
-            # The maker publishes only the promotional rates through this date.
-            # Databricks' independently published post-promotion rates remain separate.
+            # The maker publishes only the promotional rates through this date
+            # (extended from 21 Nov to 30 Nov on 5 Nov 2026). Databricks' independently
+            # published post-promotion rates remain separate.
             c.pop("promotion", None)
-            c["valid_through"] = "2026-11-21"
+            c["valid_through"] = "2026-11-30"
         for o in [c, *c.get("variants", [])]:
             o["cache_write_12h"] = round(o["cache_write"] * 2, 6)
             o["pricing_checked_at"] = "2026-10-21"
@@ -1069,6 +1072,31 @@ def add_terra61(data):
         about="Visual reasoning, computer use and writing", platforms={pl: checked(c, day) for pl, c in platforms.items()})
 
 
+def add_kimi_k31_pro(data):
+    """Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') added 5 Nov from Fireworks and the
+    Moonshot API; no Kimi K3 price is copied into the newer checkpoint."""
+    day = "2026-11-05"
+    api = offer(2, 10, 0.2, 2, 4, src="moonshot", tier="Moonshot API", model_id="kimi-k3.1-pro",
+                note="Automatic context caching: 5-minute write $2.00, 1-hour write $4.00.")
+    api["variants"] = [
+        variant("Highspeed", 4, 20, 0.2, 4, 8, service="priority", endpoint="Highspeed"),
+        variant("Batch", 1.2, 6, service="batch", endpoint="Batch API"),
+    ]
+    fw = offer(2, 10, 0.2, src="fireworks", tier="Serverless Standard",
+               model_id="accounts/fireworks/models/kimi-k3p1-pro")
+    fw["variants"] = [variant("Serverless · Priority", 3, 15, 0.3, service="priority", endpoint="Serverless")]
+    platforms = dict(official=api, fireworks=fw,
+        databricks=pending("Pay-per-token in us-east-1 (endpoint databricks-kimi-k3-1-pro); the DBU tables publish no K3.1 Pro rates yet.",
+                           "dbx_models", "databricks-kimi-k3-1-pro", True),
+        bedrock=unavailable("aws", "Bedrock's Moonshot lineup tops out at Kimi K3."),
+        azure_foundry=unavailable("az_learn_regions", "Azure's directly sold Kimi models stop at K2.7 Code; no K3.1 Pro listing verified."),
+        gcloud=unavailable("vertex", "Vertex MaaS offers Kimi K2 Thinking; no K3.1 Pro."),
+        alicloud=unavailable("ali", "Model Studio pricing lists kimi-k3 and K2.x; no K3.1 Pro."))
+    data["models"]["moonshot/kimi-k3.1-pro"] = dict(name="Kimi K3.1 Pro", short="K3.1 Pro", maker="Moonshot",
+        group="oss", oss=True, ctx="1M", badges=["Added"],
+        about="2.8T MoE · 104B active · vision", platforms={pl: checked(c, day) for pl, c in platforms.items()})
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1095,6 +1123,7 @@ def build():
     enrich_context_and_promotions(data)
     add_gemini4(data)
     add_terra61(data)
+    add_kimi_k31_pro(data)
     apply_endpoints(data)
     # Google moved all partner billing tables to Model Garden (29 Oct).
     # Keep Google's own models on the existing source and monitor partner prices separately.
@@ -1141,8 +1170,8 @@ def build():
                    "Bedrock sells GPT-6 and GPT-5.x (GPT-6 Sol / Luna since 22 Sep 2026) and charges a 30-minute cache write. GPT-5.5 there is in-region only, at +10%. Not on Vertex.",
                    {"text": "GPT-5.4 is $2.50 / $15 on Databricks and OpenAI; Bedrock sells it in-region only at $2.75 / $16.50 (+10%).", "models": ["openai/gpt-5.4"]},
                    "GPT-6.1 Sol: $2 / $10 with $0.10 cached input on Databricks, OpenAI, Bedrock Global and Azure Global Standard; long context (>272K) is $4 / $15.",
-                   {"text": "GPT-5.6 Sol promo ends 21 Nov 2026, then $5 / $30 on every platform.", "until": "2026-11-21"},
-                   {"text": "GPT-5.6 Sol is $5 / $30 on every platform since its promotion ended 21 Nov 2026.", "from": "2026-11-22"}],
+                   {"text": "GPT-5.6 Sol promo: OpenAI's promotional rates run until 30 Nov 2026; Databricks' table applies them through 21 Nov, then $5 / $30.", "until": "2026-11-21"},
+                   {"text": "Databricks lists GPT-5.6 Sol at $5 / $30 since its promotion ended 21 Nov 2026; OpenAI's promotional rates run until 30 Nov.", "from": "2026-11-22"}],
         "google": [{"text": "Gemini 3.1 Pro: a 20% Databricks promotion matches Google's price through 31 Jan 2027; then Databricks lists $2.50 / $15.00 (+25%).", "until": "2027-01-31"},
                    {"text": "Gemini 3.1 Pro on Databricks lists at $2.50 / $15.00 since its promotion ended 31 Jan 2027: 25% above the Gemini API and Vertex.", "from": "2027-02-01"},
                    {"text": "The same 20% Databricks promotion covers Gemini 3.5 and 3.1 Flash-Lite to 31 Jan 2027, then $0.375 / $3.125 and $0.3125 / $1.875 (+25%).", "until": "2027-01-31", "models": ["google/gemini-3.5-flash-lite", "google/gemini-3.1-flash-lite"]},
@@ -1161,6 +1190,7 @@ def build():
     if proven_log:
         data["reviewed_at"] = max(data["reviewed_at"], max(line[:10] for line in proven_log))
     data["changes"] = proven_log[::-1] + [
+        "2026-11-05: Added Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') from Fireworks serverless ($2 / $10, $0.20 cached input; Priority $3 / $15) and the Moonshot API ($2 / $10, $0.20 cached input, $2 / $4 cache writes; Highspeed $4 / $20; Batch 60%). Databricks hosts it pay-per-token in us-east-1 with no published DBU rates yet; Bedrock, Vertex, Azure and Alibaba do not sell it. GPT-5.6 Sol's maker promotional rates extend to 30 Nov 2026; Databricks' own promotion still ends 21 Nov.",
         "2026-10-09: The list follows arena.ai's Best WebDev (Code | Overall) top 50 instead of Best Overall (Agent), shown when a compared platform sells the model with general access. Added Claude Opus 4.7 and Opus 4.6 (Databricks, Bedrock, Vertex, Azure Foundry) and Qwen3.8 Flash (Alibaba Cloud; arena: Qwen3.8 Flash Next); Claude Haiku 5.5 is #30, with a 1M context billed at 5x over 100K prompt tokens on every platform and US-only inference on the Claude API.",
         "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
         "2026-10-07: Databricks retires DeepSeek V4 Flash (0731) on 5 Nov 2026 (use V4.1 Flash); Opus 5.5 runs in-region in APAC on Databricks (AWS Tokyo / Singapore / Sydney, Azure Japan East / Australia East, GCP Singapore).",

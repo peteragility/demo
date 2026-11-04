@@ -1629,6 +1629,96 @@
    }
   }
  },
+ "moonshot/kimi-k3.1-pro": {
+  "official": {
+   "checked_at": "2026-11-05",
+   "base": {
+    "endpoint": "Kimi API",
+    "note": "Automatic context caching: 5-minute write $2.00, 1-hour write $4.00."
+   },
+   "src": [
+    "api_other_moonshot_pricing",
+    "api_other_moonshot_privacy"
+   ],
+   "regions": [
+    [
+     "APAC",
+     "in-region",
+     "Kimi API",
+     "Singapore"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Hong Kong region or endpoint; Moonshot states its servers are in Singapore"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region or endpoint; Moonshot states its servers are in Singapore"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "Automatic 5-minute TTL by default, 1-hour via prompt_cache_options. Hits renew the TTL free."
+    ],
+    [
+     "Tiers",
+     "Highspeed serves the same checkpoint at 2x input and output with the same $0.20 cache read. Batch (kimi-k3.1-pro and kimi-k3) is 60% of standard pricing. Flat pricing across the full 1,048,576-token context."
+    ]
+   ],
+   "ids": [
+    "kimi-k3.1-pro (model ID)",
+    "kimi-k3.1-pro-highspeed (high-speed tier)"
+   ]
+  },
+  "fireworks": {
+   "checked_at": "2026-11-05",
+   "base": {
+    "endpoint": "Serverless"
+   },
+   "variants": [
+    {
+     "label": "Serverless · Priority",
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "scope": "unverified",
+     "service": "priority",
+     "endpoint": "Serverless"
+    }
+   ],
+   "src": [
+    "fw_fw_pricing"
+   ],
+   "regions": [
+    [
+     "Global",
+     "unknown",
+     "Serverless",
+     "Location of the default endpoint is not published"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Hong Kong endpoint; the default endpoint's location is not published"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan endpoint; the default endpoint's location is not published"
+   ],
+   "cache_write": "input-rate",
+   "notes": [
+    [
+     "Input limits",
+     "Fireworks serves a 1,048,576-token context; text and image input. Batch is 50% of serverless pricing."
+    ]
+   ],
+   "ids": [
+    "accounts/fireworks/models/kimi-k3p1-pro (serverless)"
+   ]
+  }
+ },
  "openai/gpt-6-astra": {
   "databricks": {
    "checked_at": "2026-10-04",
@@ -3344,7 +3434,7 @@
    "notes": [
     [
      "Promotion",
-     "$4/$20 is promotional pricing 'available at least through November 21, 2026'; the later price is not published."
+     "$4/$20 is promotional pricing 'available until November 30, 2026'; the later price is not published."
     ],
     [
      "Tiers",
