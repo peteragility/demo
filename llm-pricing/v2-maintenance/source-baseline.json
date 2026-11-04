@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-11-04",
+ "checked_at": "2026-11-05",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4-flash|databricks|retirement|2026-11-05",
   "deepseek/deepseek-v4-pro|databricks|retirement|2026-10-30",
@@ -13,12 +13,11 @@
   "ali-ali-batch": {
    "url": "https://www.alibabacloud.com/help/en/model-studio/batch-interfaces-compatible-with-openai",
    "kind": "text",
-   "digest": "e6a6221b9b01cd390e5ea9ccc433861323f209b6dd4190115d49e2d73fc5756e",
+   "digest": "2e31d1dc2f617321d0aefbe16645593a4fef0236e40f1bd351029f7f531acf02",
    "records": [
     "notice: Batch inference is a separate billing item. It supports AI general-purpose savings plan, but not discounts, such as subscription (other savings plans) or free quotas for new users. It also does not support features such as context cache.",
     "notice: Execution time depends on system resources and task scale. If a task does not complete within the completion_window, it expires. Unprocessed requests in expired tasks are not executed and do not incur charges.",
     "notice: How long does it take to complete a submitted batch file? Execution time depends on system resources and task scale. If a task does not complete within the completion_window, it expires. Unprocessed requests in expired tasks are not executed and do not incur charges. Scenario recommendations: Use real-time calls for scenarios requiring strict real-time model inference. Use batch calls for large-scale data processing scenarios that can tolerate delay.",
-    "notice: Image and video understanding: qwen3.8-max (multimodal input only; text-only input is not supported yet), qwen3.7-plus",
     "notice: Task status: validating, failed, in_progress, finalizing, completed, expired, cancelling, cancelled.",
     "notice: Unix timestamp (seconds) when the task expired.",
     "table: {\"cells\":[\"API\",\"Rate limit (per Alibaba Cloud account)\"],\"heading\":\"Rate limits\"}",
@@ -95,7 +94,6 @@
     "text: 3. Query and manage batch tasks",
     "text: 4. Download Batch result file",
     "text: A successful query returns detailed batch task information. The following is a response example for a task with completed status:",
-    "text: API Reference (Models)",
     "text: Additional metadata as key-value pairs.",
     "text: After a task completes, result files (output_file_id) and error files (error_file_id) may be generated. Download both file types using the same file download API.",
     "text: After creating a task, use the following APIs to query its status, list historical tasks, or cancel an ongoing task.",
@@ -161,7 +159,7 @@
     "text: If polling is required, set the interval to more than 1 minute and use an exponential backoff strategy.",
     "text: If specified multiple times, the last value takes effect.",
     "text: If your data is in a CSV file (first column: ID, second column: content), use this script to generate a JSONL batch input file.",
-    "text: Image and video understanding: qwen3.8-max (multimodal input only; text-only input is not supported yet), qwen3.7-plus",
+    "text: Image and video understanding: qwen3.8-max, qwen3.7-plus",
     "text: Image and video understanding: qwen3.8-max, qwen3.8-flash, qwen3.7-plus, qwen3.6-plus, qwen3.7-flash, qwen3.6-flash, qwen3.5-plus, qwen3.5-flash, qwen3-vl-plus",
     "text: Implement handling for network errors, API errors, and other exceptions.",
     "text: In the JSONL request body, enable_thinking is a top-level parameter of body and must be placed at the same level as model. Do not place it inside extra_body.",
@@ -197,6 +195,7 @@
     "text: Query specific task status",
     "text: Qwen-Flash: qwen-flash",
     "text: Qwen-Flash: qwen3.8-flash, qwen3.7-flash, qwen3.6-flash, qwen3.5-flash, qwen-flash",
+    "text: Qwen-Max: qwen3.8-max, qwen-max",
     "text: Qwen-Max: qwen3.8-max, qwen3.7-max, qwen-max, qwen-max-latest",
     "text: Qwen-Plus: qwen3.7-plus, qwen-plus",
     "text: Qwen-Plus: qwen3.7-plus, qwen3.6-plus, qwen3.5-plus, qwen-plus, qwen-plus-latest",
@@ -1973,7 +1972,7 @@
   "api-other-mistral-pricing": {
    "url": "https://docs.mistral.ai/inference/pricing",
    "kind": "text",
-   "digest": "5969fd165169def2ad3c10be9167eb2530184d543c654d92f4a994816df4e705",
+   "digest": "ee55c01b8e67fc4be8d7ffb339dea375a65bb00fa00a9203c5e92c63b0334909",
    "records": [
     "table: {\"cells\":[\"Codestral Embed ↗\",\"$0.15\",\"$0.015\",\"—\"],\"heading\":\"API pricing / Embedding models\"}",
     "table: {\"cells\":[\"Codestral ↗\",\"$0.3\",\"$0.03\",\"$0.9\"],\"heading\":\"API pricing / Code models\"}",
@@ -2015,6 +2014,7 @@
     "text: Models for speech transcription, realtime transcription, and speech generation.",
     "text: Models for zero-shot time series forecasting with covariate support and probabilistic outputs.",
     "text: Models that turn text or code into vectors for retrieval and similarity search.",
+    "text: Optimize cost and latency",
     "text: Pricing for Mistral models, organized by family.",
     "text: Pricing for the Voice Agents API, billed per minute of conversation.",
     "text: Specialized models for code generation, completion, and software engineering agents.",
@@ -2024,7 +2024,7 @@
   "api-other-mistral-priority": {
    "url": "https://docs.mistral.ai/inference/priority-tier",
    "kind": "text",
-   "digest": "92fa711587c957ee8f87a7d5a323dea6ec9bd7d6070527ed45c15ee04c8a7327",
+   "digest": "568f2236e4827fe5a09e9c34e694d429f9f29fd4c7b418d37f94dc3d36547922",
    "records": [
     "notice: Priority requests retain full eligibility for prompt caching discounts, up to 90% savings on cached input tokens. The 1.75x multiplier applies after the prompt cache discount is applied.",
     "table: {\"cells\":[\"Availability\",\"Global\",\"Global or regional, depending on endpoint and model\",\"Global or regional, depending on account setup, model, and capacity\"],\"heading\":\"Priority Tier / Compare service tiers\"}",
@@ -2055,6 +2055,7 @@
     "text: If you need more Priority Tier capacity, coordinate with Mistral ahead of time. Capacity increases may require advance notice.",
     "text: If you omit service_tier, the request defaults to standard_only.",
     "text: Model lifecycle policy",
+    "text: Optimize cost and latency",
     "text: Possible response values are:",
     "text: Priority Tier availability depends on all of the following:",
     "text: Priority Tier capacity is available for the model and deployment region.",
@@ -2080,7 +2081,7 @@
   "api-other-mistral-regional": {
    "url": "https://docs.mistral.ai/inference/regional-inference",
    "kind": "text",
-   "digest": "a05b6ced81cefeab7a1bcd97d01ab452777d9f94021fa24a0164d28e398babbe",
+   "digest": "e89586c54fef112e9750c7763289fd1f92cf1b83d76e2da62b4a095758526e46",
    "records": [
     "notice: Regional inference is billed at 1.1× standard list pricing (a 10% upcharge) for input tokens, output tokens, cached reads, and cache writes.",
     "table: {\"cells\":[\"Endpoint\",\"Region\",\"Regional upcharge\",\"Geography\",\"When to use it\"],\"heading\":\"Regional inference / What regions are supported?\"}",
@@ -2098,6 +2099,7 @@
     "text: Mistral offers regional inference as an optional service through dedicated API endpoints. It supports processing inference requests by systems located within a chosen geography: currently the European Union or the United States.",
     "text: Model lifecycle policy",
     "text: Not all tool calls are currently supported. Function calling is the only supported regional tool.",
+    "text: Optimize cost and latency",
     "text: Reduce latency when most users or systems are close to the selected geography.",
     "text: Regional endpoints have feature limitations. If a workload depends on an unsupported feature, the regional processing guarantees for that workload do not apply.",
     "text: Regional endpoints only serve models hosted in that region. Use the same model IDs as the global API, but check availability against the regional endpoint before you send production traffic.",
@@ -2574,7 +2576,7 @@
   "api-west-anthropic-pricing": {
    "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
    "kind": "markdown",
-   "digest": "a490fb19408a3067031ae2e3e2c26352ea9b7a61325912d03e14f0709f7505ba",
+   "digest": "62055e37976e3409cc3f1033c353b4c0d1977857c3cf894fe7c329be738461f3",
    "records": [
     "item: {\"heading\":\"Bash tool\",\"text\":\"Command outputs (stdout/stderr)\"}",
     "item: {\"heading\":\"Bash tool\",\"text\":\"Error messages\"}",
@@ -2695,9 +2697,9 @@
     "table: {\"cells\":[\"Claude Opus 4 ([retired, except on Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$15 / MTok\",\"$18.75 / MTok\",\"$30 / MTok\",\"$1.50 / MTok\",\"$75 / MTok\"],\"heading\":\"Model pricing\"}",
     "table: {\"cells\":[\"Claude Opus 4 ([retired, except on Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$7.50 / MTok\",\"$37.50 / MTok\"],\"heading\":\"Batch processing\"}",
     "table: {\"cells\":[\"Claude Opus 4 ([retired, except on Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"313 tokens\",\"315 tokens\"],\"heading\":\"Tool use pricing\"}",
-    "table: {\"cells\":[\"Claude Opus 4.1 ([retired, except on Bedrock and Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$15 / MTok\",\"$18.75 / MTok\",\"$30 / MTok\",\"$1.50 / MTok\",\"$75 / MTok\"],\"heading\":\"Model pricing\"}",
-    "table: {\"cells\":[\"Claude Opus 4.1 ([retired, except on Bedrock and Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$7.50 / MTok\",\"$37.50 / MTok\"],\"heading\":\"Batch processing\"}",
-    "table: {\"cells\":[\"Claude Opus 4.1 ([retired, except on Bedrock and Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"313 tokens\",\"315 tokens\"],\"heading\":\"Tool use pricing\"}",
+    "table: {\"cells\":[\"Claude Opus 4.1 ([retired, except on Claude Models on Google Cloud (Google managed) and Bedrock](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$15 / MTok\",\"$18.75 / MTok\",\"$30 / MTok\",\"$1.50 / MTok\",\"$75 / MTok\"],\"heading\":\"Model pricing\"}",
+    "table: {\"cells\":[\"Claude Opus 4.1 ([retired, except on Claude Models on Google Cloud (Google managed) and Bedrock](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$7.50 / MTok\",\"$37.50 / MTok\"],\"heading\":\"Batch processing\"}",
+    "table: {\"cells\":[\"Claude Opus 4.1 ([retired, except on Claude Models on Google Cloud (Google managed) and Bedrock](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"313 tokens\",\"315 tokens\"],\"heading\":\"Tool use pricing\"}",
     "table: {\"cells\":[\"Claude Opus 4.5\",\"$2.50 / MTok\",\"$12.50 / MTok\"],\"heading\":\"Batch processing\"}",
     "table: {\"cells\":[\"Claude Opus 4.5\",\"$5 / MTok\",\"$6.25 / MTok\",\"$10 / MTok\",\"$0.50 / MTok\",\"$25 / MTok\"],\"heading\":\"Model pricing\"}",
     "table: {\"cells\":[\"Claude Opus 4.5\",\"496 tokens\",\"588 tokens\"],\"heading\":\"Tool use pricing\"}",
@@ -2718,9 +2720,9 @@
     "table: {\"cells\":[\"Claude Opus 5.5\",\"$4 / MTok\",\"$5 / MTok\",\"$8 / MTok\",\"$0.20 / MTok<sup>2</sup>\",\"$20 / MTok\"],\"heading\":\"Model pricing\"}",
     "table: {\"cells\":[\"Claude Opus 5.5\",\"$8 USD / MTok\",\"$40 USD / MTok\"],\"heading\":\"Fast mode pricing\"}",
     "table: {\"cells\":[\"Claude Opus 5.5\",\"286 tokens\",\"\"],\"heading\":\"Tool use pricing\"}",
-    "table: {\"cells\":[\"Claude Sonnet 4 ([retired, except on Bedrock and Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$1.50 / MTok\",\"$7.50 / MTok\"],\"heading\":\"Batch processing\"}",
-    "table: {\"cells\":[\"Claude Sonnet 4 ([retired, except on Bedrock and Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$3 / MTok\",\"$3.75 / MTok\",\"$6 / MTok\",\"$0.30 / MTok\",\"$15 / MTok\"],\"heading\":\"Model pricing\"}",
-    "table: {\"cells\":[\"Claude Sonnet 4 ([retired, except on Bedrock and Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"313 tokens\",\"315 tokens\"],\"heading\":\"Tool use pricing\"}",
+    "table: {\"cells\":[\"Claude Sonnet 4 ([retired, except on Claude Models on Google Cloud (Google managed) and Bedrock](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$1.50 / MTok\",\"$7.50 / MTok\"],\"heading\":\"Batch processing\"}",
+    "table: {\"cells\":[\"Claude Sonnet 4 ([retired, except on Claude Models on Google Cloud (Google managed) and Bedrock](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"$3 / MTok\",\"$3.75 / MTok\",\"$6 / MTok\",\"$0.30 / MTok\",\"$15 / MTok\"],\"heading\":\"Model pricing\"}",
+    "table: {\"cells\":[\"Claude Sonnet 4 ([retired, except on Claude Models on Google Cloud (Google managed) and Bedrock](https://platform.claude.com/docs/en/about-claude/model-deprecations))\",\"313 tokens\",\"315 tokens\"],\"heading\":\"Tool use pricing\"}",
     "table: {\"cells\":[\"Claude Sonnet 4.5\",\"$1.50 / MTok\",\"$7.50 / MTok\"],\"heading\":\"Batch processing\"}",
     "table: {\"cells\":[\"Claude Sonnet 4.5\",\"$3 / MTok\",\"$3.75 / MTok\",\"$6 / MTok\",\"$0.30 / MTok\",\"$15 / MTok\"],\"heading\":\"Model pricing\"}",
     "table: {\"cells\":[\"Claude Sonnet 4.5\",\"496 tokens\",\"588 tokens\"],\"heading\":\"Tool use pricing\"}",
@@ -13144,7 +13146,7 @@
   "fireworks-pricing": {
    "url": "https://docs.fireworks.ai/serverless/pricing",
    "kind": "tables",
-   "digest": "330c821665ded03afca2c8648c91cef78fab0d60b376a2837f0bc849b238c4d5",
+   "digest": "560e567b008569fc9568e38c234706bbfec020313485c87f60e12deebe77f55f",
    "records": [
     "table: {\"cells\":[\"150M – 350M\",\"$0.016\"],\"heading\":\"​ Embeddings\"}",
     "table: {\"cells\":[\"4B – 16B parameters\",\"$0.20\"],\"heading\":\"​ Other base models — by size and architecture\"}",
@@ -13163,6 +13165,7 @@
     "table: {\"cells\":[\"Kimi K3 (US)\",\"$4.50 / $0.45 / $22.50\",\"$5.625 / $0.5625 / $28.125\"],\"heading\":\"​ Text and vision models\"}",
     "table: {\"cells\":[\"Kimi K3 Fast\",\"$4.50 / $0.45 / $22.50\",\"—\"],\"heading\":\"​ Text and vision models\"}",
     "table: {\"cells\":[\"Kimi K3\",\"$3.00 / $0.30 / $15.00\",\"$3.75 / $0.375 / $18.75\"],\"heading\":\"​ Text and vision models\"}",
+    "table: {\"cells\":[\"Kimi K3.1 Pro\",\"$2.00 / $0.20 / $10.00\",\"$3.00 / $0.30 / $15.00\"],\"heading\":\"​ Text and vision models\"}",
     "table: {\"cells\":[\"Less than 4B parameters\",\"$0.10\"],\"heading\":\"​ Other base models — by size and architecture\"}",
     "table: {\"cells\":[\"MiniMax M3\",\"$0.30 / $0.06 / $1.20\",\"$0.45 / $0.09 / $1.80\"],\"heading\":\"​ Text and vision models\"}",
     "table: {\"cells\":[\"MoE 56.1B – 176B parameters (e.g. DBRX, Mixtral 8x22B)\",\"$1.20\"],\"heading\":\"​ Other base models — by size and architecture\"}",
@@ -13226,13 +13229,13 @@
   "fw-fw-batch": {
    "url": "https://docs.fireworks.ai/guides/batch-inference",
    "kind": "text",
-   "digest": "21a48b64f210b9590cdb9ece301759286a256cec079e6753e29933d351f1f226",
+   "digest": "71fa8dae766f01c8c2d915f2b72dc9db1415216e5147aa0ec22fa4101a6ad99d",
    "records": [
     "notice: Handling expired jobs",
-    "notice: Job expiration: Select from 12, 24, 48, 72 hours maximum in Optional Settings",
+    "notice: Job expiration: 12 to 72 hours after creation, 24 hours by default. In the console, choose 12, 24, 36, 48, or 72 hours in Optional Settings. With firectl, pass --max-job-duration (for example, --max-job-duration 48h). In the API, set maxJobDuration as a duration in seconds (for example, \"172800s\" for 48 hours). Positive values outside 12 to 72 hours are clamped to the nearest limit.",
     "notice: Output dataset: Max 8GB (job may expire early if limit is reached)",
     "table: {\"cells\":[\"COMPLETED\",\"All requests successfully processed\"],\"heading\":\"​ Reference\"}",
-    "table: {\"cells\":[\"EXPIRED\",\"Exceeded chosen time limit (12, 24, 48, 72 hrs). Completed requests are saved.\"],\"heading\":\"​ Reference\"}",
+    "table: {\"cells\":[\"EXPIRED\",\"Reached its job expiration time (24 hours by default). Completed requests are saved.\"],\"heading\":\"​ Reference\"}",
     "table: {\"cells\":[\"FAILED\",\"Unrecoverable error occurred (check status message)\"],\"heading\":\"​ Reference\"}",
     "table: {\"cells\":[\"PENDING\",\"Job is queued and waiting for resources\"],\"heading\":\"​ Reference\"}",
     "table: {\"cells\":[\"RUNNING\",\"Actively processing requests\"],\"heading\":\"​ Reference\"}",
@@ -13258,7 +13261,7 @@
     "text: If validation failed, check your JSONL input — each line must be a complete, valid JSON object matching the request schema.",
     "text: Input dataset: Up to 80 GiB",
     "text: Input mode: body.messages (standard) or body.prompt_token_ids (pre-tokenized) — mutually exclusive",
-    "text: Job expiration: Select from 12, 24, 48, 72 hours maximum in Optional Settings",
+    "text: Job expiration: 12 to 72 hours after creation, 24 hours by default. In the console, choose 12, 24, 36, 48, or 72 hours in Optional Settings. With firectl, pass --max-job-duration (for example, --max-job-duration 48h). In the API, set maxJobDuration as a duration in seconds (for example, \"172800s\" for 48 hours). Positive values outside 12 to 72 hours are clamped to the nearest limit.",
     "text: Large-scale evaluations and benchmarking",
     "text: Limits and constraints",
     "text: Monitor progress: Track long-running jobs regularly",
@@ -14440,7 +14443,7 @@
   "gcp-locations": {
    "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations",
    "kind": "text",
-   "digest": "eb766dcbba14071a47affd0a56b6e6f3caa780f8a8ad04e3888e13bdc7fbd9d3",
+   "digest": "380e18e9c7942914632e8bfbb26d5ed0b38fc5559b7e6d7f0cc4406f9b50fa76",
    "records": [
     "table: {\"cells\":[\"\",\"Global (global)\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud open model endpoint locations / Global\"}",
     "table: {\"cells\":[\"\",\"Global (global)\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Global\"}",
@@ -14561,13 +14564,13 @@
     "table: {\"cells\":[\"Anthropic's Claude Opus 5.5 on Google Cloud\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Americas\"}",
     "table: {\"cells\":[\"Anthropic's Claude Opus 5.5 on Google Cloud\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Multi-region\"}",
     "table: {\"cells\":[\"Anthropic's Claude Opus 5.5 on Google Cloud\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Global\"}",
-    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Europe\"}",
-    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Asia Pacific\"}",
-    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / United States\"}",
-    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Middle East\"}",
-    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Americas\"}",
-    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Multi-region\"}",
-    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Global\"}",
+    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud (deprecated)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Europe\"}",
+    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud (deprecated)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Asia Pacific\"}",
+    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud (deprecated)\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / United States\"}",
+    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud (deprecated)\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Middle East\"}",
+    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud (deprecated)\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Americas\"}",
+    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud (deprecated)\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Multi-region\"}",
+    "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.5 on Google Cloud (deprecated)\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Global\"}",
     "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.6 on Google Cloud\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Europe\"}",
     "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.6 on Google Cloud\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / Asia Pacific\"}",
     "table: {\"cells\":[\"Anthropic's Claude Sonnet 4.6 on Google Cloud\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"heading\":\"Deployments and endpoints Stay organized with collections Save and categorize content based on your preferences. / Google Cloud partner model endpoint locations / United States\"}",
@@ -15924,9 +15927,10 @@
   "mistral-card": {
    "url": "https://docs.mistral.ai/models/model-cards/mistral-medium-3-5-26-04",
    "kind": "text",
-   "digest": "ad0dccb97392a3dda0c420625e5ab0dace9ff51ffebf8336bb46e826fc4a9667",
+   "digest": "4cb278516c2b2335d176e96b96570b026bd5a39397d55ffb99150853b66b57a1",
    "records": [
     "text: Model lifecycle policy",
+    "text: Optimize cost and latency",
     "text: Our frontier-class multimodal model optimized for agentic and coding use cases. Released as open weights under a Modified MIT license."
    ]
   },
