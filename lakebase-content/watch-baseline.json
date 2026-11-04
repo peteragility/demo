@@ -1,5 +1,5 @@
 {
-  "observed": "2026-10-31",
+  "observed": "2026-11-05",
   "sources": {
     "aws-rds-price-index": {
       "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
@@ -669,8 +669,10 @@
         "limit:7 days",
         "limit:768 gb",
         "limit:8 gb",
+        "price:$25.3",
         "price:24x",
         "price:50%",
+        "price:sequence:[\"$25.3\"]",
         "price:sequence:[\"24x\"]",
         "price:sequence:[\"50%\"]"
       ]
