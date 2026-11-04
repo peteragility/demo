@@ -28873,26 +28873,29 @@
           "availability_checked_at": "2026-11-05",
           "model_id_checked_at": "2026-11-05",
           "endpoints": {
-            "checked_at": "2026-10-09",
+            "checked_at": "2026-11-05",
             "src": [
               "dbx_region",
               "dbx_region_azure",
               "dbx_region_gcp"
             ],
-            "regions": [],
+            "regions": [
+              [
+                "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia"
+              ]
+            ],
             "hk": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "none",
+              "No Hong Kong region in Databricks' model-serving tables"
             ],
             "tw": [
-              "unknown",
-              "Not in Databricks' region tables yet"
+              "none",
+              "No Taiwan region in Databricks' model-serving tables"
             ],
             "notes": [
-              [
-                "Regions",
-                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
-              ],
               [
                 "Billing",
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
