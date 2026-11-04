@@ -245,7 +245,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
       <div class="fi"><label for="syncDbu">Sync pipeline size (DBU/hour)</label><input type="number" id="syncDbu" min="0.5" max="100" step="0.5" value="2"><div class="h">Assumption; measure yours in system.billing.usage</div></div>
       <div class="fi chks">
         <label class="ck"><input type="checkbox" id="promo"><span id="promoLbl">Lakebase 50% compute promotion (public Databricks offer, ends 31 Jan 2027)</span></label>
-        <label class="ck"><input type="checkbox" id="chBeta"><span>ClickHouse Postgres Beta 50% discount (may end at GA)</span></label>
+        <label class="ck"><input type="checkbox" id="chBeta"><span>ClickHouse Postgres Beta 50% discount (ends 9 Nov 2026 on AWS)</span></label>
         <label class="ck"><input type="checkbox" id="azsqlAhb"><span>Azure SQL: Hybrid Benefit (customer brings SQL Server licenses)</span></label>
       </div>
     </div></details>
@@ -366,7 +366,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Not covered:</b> burstable classes, Serverless v2 and ClickHouse.</li>
           </ul></li>
         <li><b>ClickHouse Postgres:</b> the smallest memory-optimized size whose RAM ≥ peak and local NVMe ≥ DB size, at Scale-tier list price, with the 50% Beta discount when ticked.</li>
-        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies, snapshots and extra SSD v2 throughput. Lakehouse sync costs are added only when selected. ClickHouse Beta pricing may change at GA.</li>
+        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies, snapshots and extra SSD v2 throughput. Lakehouse sync costs are added only when selected. The ClickHouse Beta 50% discount ends 9 Nov 2026 on AWS.</li>
       </ul></details>
       <details><summary>Billing gotchas</summary><ul>
         <li><b>Lakebase:</b>
@@ -393,7 +393,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
         <li><b>Cloud SQL:</b> HA doubles CPU, RAM and storage rates. Enterprise custom RAM starts at 3.75 GiB; PITR is limited to 7 days. Backups are billed, while PITR logs in Cloud Storage are free.</li>
         <li><b>ClickHouse Postgres:</b>
           <ul>
-            <li><b>Beta pricing:</b> 50% off today; egress and longer backup retention may be charged at GA.</li>
+            <li><b>Beta pricing:</b> 50% off until AWS GA on 9 Nov 2026; from GA, backup storage beyond the provisioned disk bills at ClickHouse Cloud storage rates (e.g. $25.30/TB-month in us-east-1) and data transfer at ClickHouse Cloud rates. GCP stays free in Private Preview.</li>
             <li><b>Storage:</b> it's local NVMe, so a bigger database forces a bigger instance. Each standby is a full instance.</li>
             <li><b>Resizes:</b> old and new instances run in parallel and are both billed.</li>
             <li><b>Region:</b> not offered in Hong Kong.</li>
@@ -740,7 +740,7 @@ function calcClickHouse(s) {
   const byStorage = CHPG.sizes.find(x => x[1] >= R)[0] < vc;
   const c = {cmp: node, ha: s.ha ? node : 0, rep: s.rep * node, sto: 0, bk: 0, io: 0, ext: s.etl};
   return row({key: 'ch', name: 'ClickHouse Postgres', sub: vc + ' vCPU / ' + gb + ' GiB / ' + nvme.toLocaleString() + ' GB NVMe · Scale' + (s.ha ? ' · 1 standby' : '') + ' · Beta · ' + g.label,
-    c, notes: [(s.chBeta ? 'Includes the 50% Beta discount; list would be ' + fmt(row({c: {cmp: node / df, ha: s.ha ? node / df : 0, rep: s.rep * node / df, ext: s.etl}}).total) + '/mo.' : 'List price (Beta discount off).'), 'Price covers the whole VM: CPU, RAM and local NVMe storage. Backups, data transfer and CDC to ClickHouse are free in Beta; egress and longer backup retention may be charged at GA.']
+    c, notes: [(s.chBeta ? 'Includes the 50% Beta discount; list would be ' + fmt(row({c: {cmp: node / df, ha: s.ha ? node / df : 0, rep: s.rep * node / df, ext: s.etl}}).total) + '/mo.' : 'List price (Beta discount off).'), 'Price covers the whole VM: CPU, RAM and local NVMe storage. Backup storage up to the provisioned disk and CDC to ClickHouse are free in Beta; the 50% discount ends at AWS GA on 9 Nov 2026, when extra backup storage bills at ClickHouse Cloud storage rates (e.g. $25.30/TB-month in us-east-1) and data transfer at ClickHouse Cloud rates.']
       .concat(byStorage ? ['Size driven by storage: local NVMe must hold the database. A storage-optimized family may be cheaper.'] : []).concat(s.region !== 'us' ? [] : []).concat(s.commit !== 'od' ? ['No public commitment discount; not applied.'] : []).concat(s.stopIdle ? ['Modeled always running (730 h).'] : []),
     size: [['Compute', vc + ' vCPU / ' + gb + ' GiB (memory-optimized, Graviton) · ' + nvme.toLocaleString() + ' GB NVMe'], ['Hours', '730 h'], ['HA', s.ha ? '1 standby (billed as an instance)' : 'off'],
       ['Read scale', s.rep ? pl(s.rep, 'replica') + ', billed as instances' : 'none'], ['Storage', 'included (local NVMe) · no I/O charges']],
