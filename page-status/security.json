@@ -2,8 +2,8 @@
   "schema": 1,
   "pages": {
     "security-risk/": {
-      "checkedAt": "2026-11-05",
-      "lastSuccess": "2026-11-05",
+      "checkedAt": "2026-11-06",
+      "lastSuccess": "2026-11-06",
       "errors": 1,
       "review": 6,
       "status": "partial"
