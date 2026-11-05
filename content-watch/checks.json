@@ -1,23 +1,45 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-05",
+  "checkedAt": "2026-11-06",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-05",
-      "lastSuccess": "2026-11-05",
+      "checkedAt": "2026-11-06",
+      "lastSuccess": "2026-11-06",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-05",
-      "lastSuccess": "2026-11-05",
+      "checkedAt": "2026-11-06",
+      "lastSuccess": "2026-11-06",
       "errors": 0,
-      "review": 0,
+      "review": 1,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 35b77b7a0031cc79727e07a3453a669e0e40c6283cb997856d62c63a1eecec37",
+        "Removed record: 60f13f26bbdb016a6fa6c433a32b98839f318a2498c4974b4fc0f3d15569d7ea",
+        "Removed record: 8ad1341df10bb0b898bcf35ba591a1b62477bbcf712b82c2dfcd733b8b63d729",
+        "Removed record: 9effcf6478b43af3207bc290522351936a4273b9cb4b042e224111fa8bdd5bb1",
+        "Removed record: dbbe950047c1a9e502e55b5ab67aa1bfdd3b0d2a1b0a20eb302edc85f2b626d2",
+        "Added record: 280224291fbe92ec40df06b4eba9b326765287d18034a5334fae022b5885f2c5: harness's own credential location before it writes the real secret, so the phantom does not ride out",
+        "Added record: 2f98c6baf205725b4afb9c2c99a52b02a221ecba2698b757a58a1b4ab64fe3b9: cost: a phantom works at every destination of its credential, so it separates credentials, not hosts.",
+        "Added record: 5744cbce794aaf520f2af9ae1ca1b27f8b6bf5577bf57e36415f7138ecdcfe62: outside the sandbox. The startup disclosure and",
+        "Added record: 5d792b9a8f1d3072672977fbbb8f8ab69fd4c584c9feef29be229e582829ab5d: carried. This does not cover the workload's own syscalls inside the cage: the sandbox refuses a",
+        "Added record: 73ae504f0464558a3d5af49d8e4bc688e977ccd6e07dded5099ae011aa58eaae",
+        "Added record: 88088904735205bb326f05857f499a13cd97bea267e9a5850679ec95c41dc792",
+        "Added record: 9fdc6ba23bda4bdc2b6277a08536f2c65b5721ae653b2959a3367b94f8dd83cb",
+        "Added record: a77a85e7e8450d1a58a8d87f02bbefea421fa854a27ec03afb215f2622d64c99"
+      ]
+    }
+  ]
 }
