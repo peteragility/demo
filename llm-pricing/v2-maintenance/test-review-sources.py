@@ -101,6 +101,25 @@ class SourceReviewTests(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(ValueError):
                 review.kimi_html_tables('<script>self.__next_f.push(' + json.dumps([1, bad]) + ')</script>')
 
+    def test_kimi_mintlify_template_carries_the_literal_tables(self):
+        # The docs moved from Next.js to Mintlify: the same literal DocTable
+        # data now ships inside a template element, not a flight-data script.
+        code = ('function _createMdxContent(props){_jsx(_MdxComponentBoundary,{name:`DocTable`,'
+                'children:_jsx(DocTable,{className:`doc-table-bordered`,corner:{top:`Model`,bottom:`Name`},'
+                'groups:[{title:`Base tokens`,span:3}],columns:[{title:`Model`,width:`25%`},'
+                '{title:`Input`,width:`15%`},{title:`Output`,width:`15%`}],'
+                'rows:[[_jsx(_components.a,{href:`/guide/kimi-k3-quickstart`,children:`kimi-k3`}),'
+                '`$3.00 / MTok`,`$15.00 / MTok`]]})})}')
+        html = ('<script>documentElement.setAttribute("data-page-mode", "none");</script>'
+                '<template data-mint="manifest">{"docsConfig":{}}' + code + '</template>')
+        table = review.kimi_html_tables(html)
+        self.assertIn('| Model | Input | Output |', table)
+        self.assertIn('| kimi-k3 | $3.00 / MTok | $15.00 / MTok |', table)
+        for bad in (code.replace('`$15.00 / MTok`', 'getPrice()'),
+                    code.replace('kimi-k3`}', 'kimi-${run()}`}')):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                review.kimi_html_tables(html.replace(code, bad))
+
     def test_aistudio_shell_tables_keep_headings_tabs_and_price_cells(self):
         body = (
             "> ## AI Agent Context\n> Get the complete documentation index at: https://aistudio.google.com/llms.txt\n\n"

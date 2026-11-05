@@ -316,11 +316,28 @@ def kimi_html_tables(text):
     Unknown component syntax or incomplete rows are failed reads.
     """
     tables = []
-    for script in re.findall(r"<script[^>]*>(.*?)</script>", text, re.S):
-        if not script.startswith("self.__next_f.push(") or "DocTable" not in script or "rows:[" not in script:
+    segments = []
+    opens = list(re.finditer(r"<script[^>]*>", text))
+    for match, following in zip(opens, opens[1:] + [None]):
+        end = text.find("</script>", match.end())
+        limit = following.start() if following else len(text)
+        if end < 0 or end > limit:
+            # Mintlify's final script tag is never closed; it streams to the
+            # end of the document, so treat the next script (or the document
+            # end) as its boundary.
+            end = limit
+        segments.append(text[match.end():end])
+    # The docs moved from Next.js to Mintlify, which ships the same literal
+    # component data outside scripts, inside template elements.
+    segments += re.findall(r"<template[^>]*>(.*?)</template>", text, re.S)
+    for segment in segments:
+        if "DocTable" not in segment or "rows:[" not in segment:
             continue
-        payload = json.loads(script[len("self.__next_f.push("):-1])
-        code = payload[1]
+        if segment.startswith("self.__next_f.push("):
+            payload = json.loads(segment[len("self.__next_f.push("):segment.rfind(")")])
+            code = payload[1]
+        else:
+            code = segment
         for columns, rows in re.findall(r"DocTable,\{.*?columns:\[(.*?)\],rows:(\[\[.*?\]\])\}", code, re.S):
             columns = re.sub(r'_jsx\(Tooltip,\{tip:`[^`\\$]*`,children:`([^`\\$]+)`\}\)',
                              lambda m: "`" + m[1] + "`", columns)
