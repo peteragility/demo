@@ -43,6 +43,24 @@
    "field": "cache_read",
    "old": 0.2,
    "new": 0.1
+  },
+  {
+   "date": "2026-11-06",
+   "model": "moonshot/kimi-k3.1-pro",
+   "platform": "databricks",
+   "source": "dbx-prices",
+   "offer": "new",
+   "field": "offer",
+   "old": 0,
+   "new": 0,
+   "rates": {
+    "in": 2.0,
+    "out": 10.0,
+    "cache_read": 0.2
+   },
+   "priority": null,
+   "regional": true,
+   "model_id": "databricks-kimi-k3-1-pro"
   }
  ]
 }

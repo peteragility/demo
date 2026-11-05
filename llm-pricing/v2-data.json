@@ -28864,14 +28864,38 @@
           "url": "https://docs.fireworks.ai/serverless/pricing"
         },
         "databricks": {
-          "status": "unverified",
-          "note": "Pay-per-token in us-east-1 (endpoint databricks-kimi-k3-1-pro); the DBU tables publish no K3.1 Pro rates yet.",
+          "in": 2.0,
+          "out": 10.0,
+          "cache_read": 0.2,
           "src": "dbx_models",
+          "tier": "Standard pay-per-token",
           "model_id": "databricks-kimi-k3-1-pro",
-          "available": true,
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-11-05",
-          "model_id_checked_at": "2026-11-05",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-06",
+          "availability_checked_at": "2026-11-06",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "model_id_checked_at": "2026-11-06",
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models",
+          "variants": [
+            {
+              "label": "Regional processing ⌖ +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-06",
+              "in": 2.2,
+              "out": 11.0,
+              "cache_read": 0.22,
+              "endpoint": "Regional processing ⌖",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "endpoint": "Default",
           "endpoints": {
             "checked_at": "2026-11-05",
             "src": [
@@ -28897,6 +28921,10 @@
             ],
             "notes": [
               [
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
+              ],
+              [
                 "Billing",
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
               ]
@@ -28904,9 +28932,8 @@
             "ids": [
               "databricks-kimi-k3-1-pro"
             ],
-            "cache_write": "not-listed"
-          },
-          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+            "cache_write": "input-rate"
+          }
         },
         "bedrock": {
           "status": "unavailable",
@@ -28948,8 +28975,9 @@
       "model_key": "moonshot/kimi-k3.1-pro"
     }
   },
-  "reviewed_at": "2026-10-28",
+  "reviewed_at": "2026-11-06",
   "changes": [
+    "2026-11-06: Databricks now prices Kimi K3.1 Pro at $2 / $10 per its DBU table, added by the daily check.",
     "2026-10-26: Databricks now prices Gemini 4 Argon at $2.5 / $12.5 per its DBU table, added by the daily check.",
     "2026-10-28: Claude Sonnet 5.5 on Databricks FMAPI: cache read $0.20 → $0.10, applied by the daily check from its official source.",
     "2026-10-24: DeepSeek V4.1 Flash on Databricks FMAPI: cache read $0.03 → $0.007, applied by the daily check from its official source.",
