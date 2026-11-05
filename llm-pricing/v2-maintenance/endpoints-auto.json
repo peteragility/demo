@@ -572,7 +572,7 @@
      "Americas",
      "in-region",
      "In-region",
-     "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+     "Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3"
     ],
     [
      "Americas",
@@ -584,13 +584,13 @@
      "Europe",
      "global",
      "Cross-geo",
-     "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South"
+     "Azure West Europe, UK South"
     ],
     [
      "APAC",
      "global",
      "Cross-geo",
-     "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+     "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
     ]
    ],
    "hk": [
@@ -602,7 +602,7 @@
     "No Taiwan region in Databricks' model-serving tables"
    ],
    "adi": true,
-   "changed_at": "2026-10-31"
+   "changed_at": "2026-11-06"
   },
   "deepseek/deepseek-v4.1-flash": {
    "regions": [
@@ -2087,7 +2087,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-fable-5.1": {
@@ -2125,7 +2125,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-4.8": {
@@ -2199,7 +2199,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-4.7": {
@@ -2273,7 +2273,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-4.6": {
@@ -2329,7 +2329,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-opus-5.5": {
@@ -2403,7 +2403,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "anthropic/claude-sonnet-5.5": {
@@ -2453,7 +2453,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-5.4": {
@@ -2497,7 +2497,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-14"
   },
   "openai/gpt-5.5": {
@@ -2541,7 +2541,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-14"
   },
   "openai/gpt-5.6-luna": {
@@ -2591,7 +2591,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-5.6-sol": {
@@ -2635,7 +2635,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-5.6-terra": {
@@ -2685,7 +2685,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-6-astra": {
@@ -2729,7 +2729,7 @@
     "none",
     "No access from Taipei (ap-east-2) for this model"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "zai/glm-5.3": {
@@ -2767,7 +2767,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-10"
   },
   "openai/gpt-6.1-terra": {
@@ -2811,7 +2811,7 @@
     "routed",
     "Taipei (ap-east-2) through global cross-region inference only"
    ],
-   "read_at": "2026-11-05",
+   "read_at": "2026-11-06",
    "changed_at": "2026-10-29"
   }
  }

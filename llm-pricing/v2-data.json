@@ -8025,7 +8025,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-31",
+            "checked_at": "2026-11-06",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -8036,7 +8036,7 @@
                 "Americas",
                 "in-region",
                 "In-region",
-                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo · Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3 · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+                "Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3"
               ],
               [
                 "Americas",
@@ -8048,13 +8048,13 @@
                 "Europe",
                 "global",
                 "Cross-geo",
-                "AWS Frankfurt, Ireland, London, Paris · Azure West Europe, UK South"
+                "Azure West Europe, UK South"
               ],
               [
                 "APAC",
                 "global",
                 "Cross-geo",
-                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
+                "Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East"
               ]
             ],
             "hk": [
