@@ -2212,9 +2212,9 @@
   "api-other-tml-serverless-json": {
    "url": "https://tinker-docs.thinkingmachines.ai/tinker/serverless.json",
    "kind": "json",
-   "digest": "17c5a4d066276b233e355bce098c7d33618036eeea86a3e4ba17ba7dfd221d36",
+   "digest": "40f060cdd870382f0feae1aa56a7a4bd6d21e47ce7b80110fd2cfa52b8f19444",
    "records": [
-    "{\"cached_input\":\"$0.03\",\"context\":\"256K\",\"input\":\"$0.30\",\"name\":\"Inkling 2 Small\",\"output\":\"$1.00\",\"tinker_id\":\"thinkingmachines/Inkling-2-Small:peft:262144:sampling-nvfp4\",\"url\":\"https://huggingface.co/thinkingmachines/Inkling-2-Small\"}",
+    "{\"cached_input\":\"$0.03\",\"context\":\"256K\",\"input\":\"$0.30\",\"name\":\"Inkling 2 Small\",\"output\":\"$1.00\",\"tinker_id\":\"thinkingmachines/Inkling-2-Small:peft:262144:sampling-nvfp4\",\"url\":\"\"}",
     "{\"cached_input\":\"$0.06\",\"context\":\"256K\",\"input\":\"$0.30\",\"name\":\"Inkling-Small\",\"output\":\"$1.20\",\"tinker_id\":\"thinkingmachines/Inkling-Small:peft:262144:sampling-nvfp4\",\"url\":\"https://huggingface.co/thinkingmachines/Inkling-Small\"}",
     "{\"cached_input\":\"$0.17\",\"context\":\"256K\",\"input\":\"$1.00\",\"name\":\"Inkling\",\"output\":\"$4.05\",\"tinker_id\":\"thinkingmachines/Inkling:peft:262144:sampling-nvfp4\",\"url\":\"https://huggingface.co/thinkingmachines/Inkling\"}"
    ]
@@ -3278,7 +3278,7 @@
   "api-west-openai-m-gpt-6-1-sol": {
    "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md",
    "kind": "markdown",
-   "digest": "e8407fafa61bc325563d05b8415cca08f2cf0fcf60544a295f833edfcbe94d4b",
+   "digest": "c596a2c69ba6e2583549846e500e84dab3f413093d33d25cf06af1a0fc6ae570",
    "records": [
     "item: {\"heading\":\"Model details\",\"text\":\"128,000 max output tokens\"}",
     "item: {\"heading\":\"Model details\",\"text\":\"Apr 30, 2026 knowledge cutoff\"}",
@@ -3335,6 +3335,7 @@
     "table: {\"cells\":[\"Metric\",\"Price\",\"Unit\"],\"heading\":\"Text tokens\"}",
     "table: {\"cells\":[\"Moderation\",\"`v1/moderations`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Output\",\"$10\",\"1M tokens\"],\"heading\":\"Text tokens\"}",
+    "table: {\"cells\":[\"Provider\",\"Model ID\"],\"heading\":\"Cloud providers\"}",
     "table: {\"cells\":[\"Realtime transcription\",\"`v1/realtime/transcription_sessions`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Realtime translation\",\"`v1/realtime/translations`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Realtime\",\"`v1/realtime`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
@@ -3343,13 +3344,15 @@
     "table: {\"cells\":[\"Tier\",\"RPM\",\"TPM\"],\"heading\":\"Standard\"}",
     "table: {\"cells\":[\"Transcription\",\"`v1/audio/transcriptions`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Translation\",\"`v1/audio/translations`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
-    "table: {\"cells\":[\"Videos\",\"`v1/videos`\",\"Not supported\"],\"heading\":\"Endpoints\"}"
+    "table: {\"cells\":[\"Videos\",\"`v1/videos`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
+    "table: {\"cells\":[\"[Amazon Bedrock](/api/docs/guides/amazon-bedrock)\",\"`openai.gpt-6.1-sol`\"],\"heading\":\"Cloud providers\"}",
+    "table: {\"cells\":[\"[Google Cloud](/api/docs/guides/google-cloud)<br>Private preview\",\"`gpt-6.1-sol`\"],\"heading\":\"Cloud providers\"}"
    ]
   },
   "api-west-openai-m-gpt-6-1-terra": {
    "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra.md",
    "kind": "markdown",
-   "digest": "c89fe6ee47243636d4465dc92445bb1cf2d56bcf1d90d8167066b9caa040d6a8",
+   "digest": "0f034d918c9fe01aa9d934f80597b78582a969e46f6279bc6f1f652f3c62bfa1",
    "records": [
     "item: {\"heading\":\"Model details\",\"text\":\"128,000 max output tokens\"}",
     "item: {\"heading\":\"Model details\",\"text\":\"Default snapshot: `gpt-6.1-terra`\"}",
@@ -3405,6 +3408,7 @@
     "table: {\"cells\":[\"Metric\",\"Price\",\"Unit\"],\"heading\":\"Text tokens\"}",
     "table: {\"cells\":[\"Moderation\",\"`v1/moderations`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Output\",\"$5\",\"1M tokens\"],\"heading\":\"Text tokens\"}",
+    "table: {\"cells\":[\"Provider\",\"Model ID\"],\"heading\":\"Cloud providers\"}",
     "table: {\"cells\":[\"Realtime transcription\",\"`v1/realtime/transcription_sessions`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Realtime translation\",\"`v1/realtime/translations`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Realtime\",\"`v1/realtime`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
@@ -3413,7 +3417,9 @@
     "table: {\"cells\":[\"Tier\",\"RPM\",\"TPM\",\"Batch queue limit\"],\"heading\":\"Standard\"}",
     "table: {\"cells\":[\"Transcription\",\"`v1/audio/transcriptions`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
     "table: {\"cells\":[\"Translation\",\"`v1/audio/translations`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
-    "table: {\"cells\":[\"Videos\",\"`v1/videos`\",\"Not supported\"],\"heading\":\"Endpoints\"}"
+    "table: {\"cells\":[\"Videos\",\"`v1/videos`\",\"Not supported\"],\"heading\":\"Endpoints\"}",
+    "table: {\"cells\":[\"[Amazon Bedrock](/api/docs/guides/amazon-bedrock)\",\"`openai.gpt-6.1-terra`\"],\"heading\":\"Cloud providers\"}",
+    "table: {\"cells\":[\"[Google Cloud](/api/docs/guides/google-cloud)<br>Private preview\",\"`gpt-6.1-terra`\"],\"heading\":\"Cloud providers\"}"
    ]
   },
   "api-west-openai-your-data": {
@@ -13872,15 +13878,10 @@
   "gcp-deepseek-v4-1-flash": {
    "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/maas/deepseek",
    "kind": "text",
-   "digest": "4c21af707383b8cf97cd5b1095988262d4cefdded27ab321d8b324ca340321d9",
+   "digest": "c77eba056d7356b55cdb6f0f8f7c11d1c13f72de635c1e2b81b1e1b0290e763c",
    "records": [
-    "notice: Caution: As of July 21, 2026, this model endpoint is deprecated and will be retired on October 21, 2026. For more information, see Open model deprecations.",
-    "notice: Caution: As of July 21, 2026, this model endpoint is deprecated and will be retired on October 21, 2026. For more information, see Open model deprecations. DeepSeek-OCR is a comprehensive Optical Character Recognition (OCR) model that analyzes and understands complex documents. It excels at challenging OCR tasks, including recognizing mathematical formulas and processing text that is curved, rotated, or overlapping.",
-    "table: {\"cells\":[\"DeepSeek-OCR\",\"us-central1\"],\"heading\":\"DeepSeek models Stay organized with collections Save and categorize content based on your preferences. / DeepSeek model region availability\"}",
     "table: {\"cells\":[\"DeepSeek-V4.1-Flash\",\"global\"],\"heading\":\"DeepSeek models Stay organized with collections Save and categorize content based on your preferences. / DeepSeek model region availability\"}",
     "table: {\"cells\":[\"Model\",\"Regions\"],\"heading\":\"DeepSeek models Stay organized with collections Save and categorize content based on your preferences. / DeepSeek model region availability\"}",
-    "text: Caution: As of July 21, 2026, this model endpoint is deprecated and will be retired on October 21, 2026. For more information, see Open model deprecations.",
-    "text: Caution: As of July 21, 2026, this model endpoint is deprecated and will be retired on October 21, 2026. For more information, see Open model deprecations. DeepSeek-OCR is a comprehensive Optical Character Recognition (OCR) model that analyzes and understands complex documents. It excels at challenging OCR tasks, including recognizing mathematical formulas and processing text that is curved, rotated, or overlapping.",
     "text: Click Enable and complete the provided form to get the necessary commercial use licenses.",
     "text: DeepSeek models are available for use as managed APIs and self-deployed models on Gemini Enterprise Agent Platform. You can stream your responses to reduce the end-user latency perception. A streamed response uses server-sent events (SSE) to incrementally stream the response.",
     "text: DeepSeek models are available in the following regions:",
@@ -13889,13 +13890,13 @@
     "text: Español – América Latina",
     "text: Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.",
     "text: Find the relevant Gemini Enterprise Agent Platform model.",
-    "text: For DeepSeek-OCR, use deepseek-ocr-maas",
     "text: For DeepSeek-V4.1-Flash, use deepseek-v4.1-flash-maas",
     "text: For managed models, you can use curl commands to send requests to the Gemini Enterprise Agent Platform endpoint using the following model names:",
     "text: For more information about deploying and using partner models, see Deploy a partner model and make prediction requests.",
     "text: Gemini Enterprise Agent Platform",
     "text: Learn how to Call open model APIs.",
     "text: Navigate to the Model Garden console.",
+    "text: Note: DeepSeek models are not Google products, and their availability in Gemini Enterprise Agent Platform is subject to the terms for \"Separate Offerings\" in the AI/ML Services section of the Service Specific Terms, and separate terms found in the relevant model card.",
     "text: The following models are available from DeepSeek to use in Gemini Enterprise Agent Platform. To access a DeepSeek model, go to its Model Garden model card.",
     "text: To learn how to make streaming and non-streaming calls to DeepSeek models, see Call open model APIs.",
     "text: To use a self-deployed Gemini Enterprise Agent Platform model:"
