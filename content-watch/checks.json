@@ -14,21 +14,10 @@
       "checkedAt": "2026-11-08",
       "lastSuccess": "2026-11-08",
       "errors": 0,
-      "review": 1,
+      "review": 0,
       "sources": 10,
-      "status": "review"
+      "status": "ok"
     }
   },
-  "findings": [
-    {
-      "id": "sandbox-strands",
-      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: b24b1711812a11eb1e01b6f9bbddaf003ec4027114a5e1199767f8b184fba1d8",
-        "Added record: 62b622cbaec96228915aabadb859bd1c73e840eae5098359d762ad464671249d: capture for schema staging. The credential controls stay deny-only beneath policy, so the classifier"
-      ]
-    }
-  ]
+  "findings": []
 }
