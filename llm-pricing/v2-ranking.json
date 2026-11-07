@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-11-05",
+ "ranked_at": "2026-11-08",
  "top": 50,
  "entries": 50,
  "models": {
@@ -11,45 +11,45 @@
    "rank": 1,
    "arena": "Claude Opus 5.5 (Max)"
   },
-  "openai/gpt-6-astra": {
-   "rank": 2,
-   "arena": "GPT-6 Astra (Max)"
-  },
   "anthropic/claude-sonnet-5.5": {
-   "rank": 3,
+   "rank": 2,
    "arena": "Claude Sonnet 5.5 (xHigh)"
   },
-  "openai/gpt-6.1-sol": {
-   "rank": 5,
-   "arena": "GPT-6.1 Sol (Max)"
+  "openai/gpt-6-astra": {
+   "rank": 3,
+   "arena": "GPT-6 Astra (Max)"
   },
   "anthropic/claude-fable-5.1": {
-   "rank": 6,
+   "rank": 5,
    "arena": "Claude Fable 5.1 (Max)"
   },
-  "moonshot/kimi-k3.1-pro": {
-   "rank": 9,
-   "arena": "Kimi K3.1 Pro (Max)"
+  "openai/gpt-6.1-sol": {
+   "rank": 6,
+   "arena": "GPT-6.1 Sol (Max)"
   },
   "anthropic/claude-opus-5": {
-   "rank": 10,
+   "rank": 9,
    "arena": "Claude Opus 5 (Max)"
+  },
+  "moonshot/kimi-k3.1-pro": {
+   "rank": 10,
+   "arena": "Kimi K3.1 Pro (Max)"
   },
   "google/gemini-4-argon": {
    "rank": 11,
    "arena": "Gemini 4 Argon (High)"
   },
-  "openai/gpt-6-sol": {
+  "openai/gpt-6.1-terra": {
    "rank": 12,
-   "arena": "GPT-6 Sol (Max)"
+   "arena": "GPT-6.1 Terra (Max)"
   },
   "qwen/qwen3.8-max": {
    "rank": 13,
    "arena": "Qwen3.8-Max (0902)"
   },
-  "openai/gpt-6.1-terra": {
+  "openai/gpt-6-sol": {
    "rank": 14,
-   "arena": "GPT-6.1 Terra (Max)"
+   "arena": "GPT-6 Sol (Max)"
   },
   "deepseek/deepseek-v4.1-flash": {
    "rank": 16,
@@ -59,12 +59,16 @@
    "rank": 18,
    "arena": "Kimi K3 (Max)"
   },
-  "xai/grok-4.7": {
+  "tml/inkling": {
    "rank": 21,
+   "arena": "Inkling 2 Small"
+  },
+  "xai/grok-4.7": {
+   "rank": 22,
    "arena": "Grok 4.7 (xHigh)"
   },
   "qwen/qwen3.8-flash": {
-   "rank": 24,
+   "rank": 25,
    "arena": "Qwen3.8-Flash-Next"
   },
   "anthropic/claude-fable-5": {
@@ -72,72 +76,68 @@
    "arena": "Claude Fable 5 (High)"
   },
   "zai/glm-5.3": {
-   "rank": 27,
+   "rank": 28,
    "arena": "GLM-5.3 (Max)"
   },
   "xai/grok-4.6": {
-   "rank": 30,
+   "rank": 31,
    "arena": "Grok 4.6 (High)"
   },
   "openai/gpt-5.6-sol": {
-   "rank": 31,
+   "rank": 32,
    "arena": "GPT-5.6 Sol (xHigh, Codex Harness)"
   },
   "zai/glm-5.3-flash": {
-   "rank": 32,
+   "rank": 33,
    "arena": "GLM-5.3-Flash"
   },
   "zai/glm-5.2": {
-   "rank": 33,
+   "rank": 34,
    "arena": "GLM-5.2 (Max)"
   },
+  "anthropic/claude-haiku-5.5": {
+   "rank": 35,
+   "arena": "Claude Haiku 5.5 (High)"
+  },
   "qwen/qwen3.8-27b": {
-   "rank": 34,
+   "rank": 36,
    "arena": "Qwen3.8-27B"
   },
   "google/gemini-3.7-flash": {
-   "rank": 35,
+   "rank": 37,
    "arena": "Gemini 3.7 Flash (High)"
   },
-  "anthropic/claude-haiku-5.5": {
-   "rank": 36,
-   "arena": "Claude Haiku 5.5 (High)"
-  },
   "google/gemini-3.8-flash": {
-   "rank": 37,
+   "rank": 38,
    "arena": "Gemini 3.8 Flash (High)"
   },
   "minimax/minimax-m3": {
-   "rank": 38,
-   "arena": "MiniMax-M3.1-Flash"
-  },
-  "deepseek/deepseek-v4-pro": {
    "rank": 39,
-   "arena": "DeepSeek-V4-Pro (High, 20260813)"
+   "arena": "MiniMax-M3.1-Flash"
   },
   "deepseek/deepseek-v4-flash": {
    "rank": 40,
    "arena": "DeepSeek-V4-Flash (High)"
   },
-  "openai/gpt-6-luna": {
+  "deepseek/deepseek-v4-pro": {
    "rank": 41,
+   "arena": "DeepSeek-V4-Pro (High, 20260813)"
+  },
+  "openai/gpt-6-luna": {
+   "rank": 42,
    "arena": "GPT-6 Luna (Max)"
   },
   "anthropic/claude-opus-4.7": {
-   "rank": 43,
+   "rank": 45,
    "arena": "Claude Opus 4.7 (High)"
   },
   "anthropic/claude-opus-4.8": {
-   "rank": 44,
+   "rank": 46,
    "arena": "Claude Opus 4.8 (High)"
   },
   "anthropic/claude-opus-4.6": {
-   "rank": 47,
+   "rank": 49,
    "arena": "Claude Opus 4.6 (High)"
-  },
-  "anthropic/claude-sonnet-5": {
-   "rank": 50,
-   "arena": "Claude Sonnet 5 (High)"
   }
  }
 }
