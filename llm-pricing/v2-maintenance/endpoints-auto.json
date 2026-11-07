@@ -2771,6 +2771,50 @@
    "read_at": "2026-11-08",
    "changed_at": "2026-10-10"
   },
+  "moonshot/kimi-k3.1-pro": {
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "geo",
+     "IN CRIS",
+     "Mumbai, Hyderabad"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "read_at": "2026-11-08",
+   "changed_at": "2026-11-08"
+  },
   "openai/gpt-6.1-terra": {
    "regions": [
     [

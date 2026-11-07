@@ -881,6 +881,11 @@
    "label": "Amazon Bedrock model card - Kimi K3",
    "short": "model page"
   },
+  "aws_card_kimi_k31_highspeed": {
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-moonshot-ai-kimi-k3-1-highspeed.html",
+   "label": "Amazon Bedrock model card - Kimi K3.1 Pro - Highspeed",
+   "short": "model page"
+  },
   "aws_card_gpt_5_5": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-55.html",
    "label": "Amazon Bedrock model card - GPT-5.5",
@@ -1717,6 +1722,79 @@
    "ids": [
     "accounts/fireworks/models/kimi-k3p1-pro (serverless)"
    ]
+  },
+  "bedrock": {
+   "checked_at": "2026-11-08",
+   "base": {
+    "endpoint": "Global CRIS"
+   },
+   "src": [
+    "aws_pricing_page",
+    "aws_card_kimi_k31_highspeed",
+    "aws_endpoint_regions"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "geo",
+     "IN CRIS",
+     "Mumbai, Hyderabad"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Tiers",
+     "Priority (1.75x) and Flex (0.5x) multiply the Global or US CRIS Standard rate; supported on Responses, Chat Completions, Converse and Invoke (Converse takes serviceTier as an object)."
+    ],
+    [
+     "Caching",
+     "Explicit caching: 256-token minimum per checkpoint, TTL at least 30 minutes; implicit caching is on by default. Converse does not support explicit caching."
+    ],
+    [
+     "Endpoints",
+     "bedrock-runtime and bedrock-mantle, no in-region; US geo (us.) from N. Virginia, Ohio, N. California, Oregon, Canada, Calgary; India geo (in.) from Mumbai and Hyderabad. AWS recommends the Chat Completions API."
+    ]
+   ],
+   "ids": [
+    "moonshotai.kimi-k3.1 (model ID; bedrock-runtime + bedrock-mantle)",
+    "us.moonshotai.kimi-k3.1 (US geo inference profile)",
+    "global.moonshotai.kimi-k3.1 (global inference profile)",
+    "in.moonshotai.kimi-k3.1 (India geo inference profile)"
+   ],
+   "regions_from_card": true
   }
  },
  "openai/gpt-6-astra": {

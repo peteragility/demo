@@ -59,6 +59,7 @@
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-sonnet-5-5.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-sonnet-5.html",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-moonshot-ai-kimi-k3-1-highspeed.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-moonshot-ai-kimi-k3.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-55.html",
@@ -1245,6 +1246,11 @@
     "aws_card_kimi_k3": {
       "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-moonshot-ai-kimi-k3.html",
       "label": "Amazon Bedrock model card - Kimi K3",
+      "short": "model page"
+    },
+    "aws_card_kimi_k31_highspeed": {
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-moonshot-ai-kimi-k3-1-highspeed.html",
+      "label": "Amazon Bedrock model card - Kimi K3.1 Pro - Highspeed",
       "short": "model page"
     },
     "aws_card_gpt_5_5": {
@@ -7252,13 +7258,13 @@
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
               ],
               [
-                "Checkpoint review · 21 Oct 2026",
-                "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Neither checked DBU table explicitly prices 1017; its rates remain unverified and are not copied from the original endpoint. The original retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."
+                "Checkpoint review · 21 Oct 2026, updated 8 Nov",
+                "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Since the 21 Oct review, the OSS DBU table prices it: Standard 4.286/17.143/0.100 and Priority 7.500/30.000/0.175 DBU per million tokens — at $0.07/DBU $0.30/$1.20/$0.007 Standard (the rates shown here) and about $0.53/$2.10/$0.012 Priority. The Priority tier belongs to the 1017 endpoint, so it is not added to this card's original endpoint, which retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."
               ]
             ],
             "ids": [
               "databricks-deepseek-v4-1-flash",
-              "databricks-deepseek-v4-1-flash-1017 (separate checkpoint; price unverified)"
+              "databricks-deepseek-v4-1-flash-1017 (separate checkpoint; priced in the DBU table)"
             ],
             "cache_write": "input-rate"
           }
@@ -28936,13 +28942,172 @@
           }
         },
         "bedrock": {
-          "status": "unavailable",
-          "src": "aws",
-          "note": "Bedrock's Moonshot lineup tops out at Kimi K3.",
-          "pricing_checked_at": null,
-          "availability_checked_at": "2026-11-05",
-          "model_id": null,
-          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+          "in": 4,
+          "out": 20,
+          "cache_read": 0.2,
+          "cache_write": 5,
+          "src": "aws_pricing_page",
+          "tier": "Global CRIS · Standard",
+          "model_id": "moonshotai.kimi-k3.1",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-08",
+          "availability_checked_at": "2026-11-08",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 4.4,
+              "out": 22,
+              "cache_read": 0.22,
+              "cache_write": 5.5,
+              "label": "US CRIS · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-08",
+              "endpoint": "US CRIS",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 4.4,
+              "out": 22,
+              "cache_read": 0.22,
+              "cache_write": 5.5,
+              "label": "IN CRIS · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-08",
+              "endpoint": "IN CRIS",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 7,
+              "out": 35,
+              "cache_read": 0.35,
+              "cache_write": 8.75,
+              "label": "Global CRIS · Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-08",
+              "endpoint": "Global CRIS",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 7.7,
+              "out": 38.5,
+              "cache_read": 0.385,
+              "cache_write": 9.625,
+              "label": "US CRIS · Priority",
+              "comparison_scope": "geographic",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-08",
+              "endpoint": "US CRIS",
+              "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2,
+              "out": 10,
+              "cache_read": 0.1,
+              "cache_write": 2.5,
+              "label": "Global CRIS · Flex",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-11-08",
+              "endpoint": "Global CRIS",
+              "id": "variant-4",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.2,
+              "out": 11,
+              "cache_read": 0.11,
+              "cache_write": 2.75,
+              "label": "US CRIS · Flex",
+              "comparison_scope": "geographic",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-11-08",
+              "endpoint": "US CRIS",
+              "id": "variant-5",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-11-08",
+          "endpoint": "Global CRIS",
+          "endpoints": {
+            "checked_at": "2026-11-08",
+            "src": [
+              "aws_pricing_page",
+              "aws_card_kimi_k31_highspeed",
+              "aws_endpoint_regions"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "geo",
+                "US CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+              ],
+              [
+                "Americas",
+                "global",
+                "Global CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, São Paulo"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global CRIS",
+                "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "geo",
+                "IN CRIS",
+                "Mumbai, Hyderabad"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global CRIS",
+                "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No Bedrock endpoint in Hong Kong (ap-east-1)"
+            ],
+            "tw": [
+              "routed",
+              "Taipei (ap-east-2) through global cross-region inference only"
+            ],
+            "notes": [
+              [
+                "Tiers",
+                "Priority (1.75x) and Flex (0.5x) multiply the Global or US CRIS Standard rate; supported on Responses, Chat Completions, Converse and Invoke (Converse takes serviceTier as an object)."
+              ],
+              [
+                "Caching",
+                "Explicit caching: 256-token minimum per checkpoint, TTL at least 30 minutes; implicit caching is on by default. Converse does not support explicit caching."
+              ],
+              [
+                "Endpoints",
+                "bedrock-runtime and bedrock-mantle, no in-region; US geo (us.) from N. Virginia, Ohio, N. California, Oregon, Canada, Calgary; India geo (in.) from Mumbai and Hyderabad. AWS recommends the Chat Completions API."
+              ]
+            ],
+            "ids": [
+              "moonshotai.kimi-k3.1 (model ID; bedrock-runtime + bedrock-mantle)",
+              "us.moonshotai.kimi-k3.1 (US geo inference profile)",
+              "global.moonshotai.kimi-k3.1 (global inference profile)",
+              "in.moonshotai.kimi-k3.1 (India geo inference profile)"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://aws.amazon.com/bedrock/pricing/"
         },
         "azure_foundry": {
           "status": "unavailable",

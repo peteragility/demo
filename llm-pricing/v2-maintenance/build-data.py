@@ -1020,9 +1020,9 @@ def review_october21(data):
         c["endpoints"]["notes"] = [n for n in c["endpoints"]["notes"] if n[0] != "Caching"] + [
             ["Caching", "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."]]
     c = data["models"]["deepseek/deepseek-v4.1-flash"]["platforms"]["databricks"]
-    c["endpoints"]["ids"].append("databricks-deepseek-v4-1-flash-1017 (separate checkpoint; price unverified)")
-    c["endpoints"]["notes"].append(["Checkpoint review · 21 Oct 2026",
-        "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Neither checked DBU table explicitly prices 1017; its rates remain unverified and are not copied from the original endpoint. The original retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."])
+    c["endpoints"]["ids"].append("databricks-deepseek-v4-1-flash-1017 (separate checkpoint; priced in the DBU table)")
+    c["endpoints"]["notes"].append(["Checkpoint review · 21 Oct 2026, updated 8 Nov",
+        "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Since the 21 Oct review, the OSS DBU table prices it: Standard 4.286/17.143/0.100 and Priority 7.500/30.000/0.175 DBU per million tokens — at $0.07/DBU $0.30/$1.20/$0.007 Standard (the rates shown here) and about $0.53/$2.10/$0.012 Priority. The Priority tier belongs to the 1017 endpoint, so it is not added to this card's original endpoint, which retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."])
     c = data["models"]["google/gemini-4-argon"]["platforms"]["gcloud"]
     c["availability_checked_at"] = "2026-10-21"
     c["endpoints"]["checked_at"] = "2026-10-21"
@@ -1074,7 +1074,8 @@ def add_terra61(data):
 
 def add_kimi_k31_pro(data):
     """Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') added 5 Nov from Fireworks and the
-    Moonshot API; no Kimi K3 price is copied into the newer checkpoint."""
+    Moonshot API; Bedrock's Kimi K3.1 Pro - Highspeed offer added 8 Nov from its model card
+    and the Bedrock pricing page; no Kimi K3 price is copied into the newer checkpoint."""
     day = "2026-11-05"
     api = offer(2, 10, 0.2, 2, 4, src="moonshot", tier="Moonshot API", model_id="kimi-k3.1-pro",
                 note="Automatic context caching: 5-minute write $2.00, 1-hour write $4.00.")
@@ -1085,16 +1086,30 @@ def add_kimi_k31_pro(data):
     fw = offer(2, 10, 0.2, src="fireworks", tier="Serverless Standard",
                model_id="accounts/fireworks/models/kimi-k3p1-pro")
     fw["variants"] = [variant("Serverless · Priority", 3, 15, 0.3, service="priority", endpoint="Serverless")]
+    # Bedrock sells the Highspeed tier only; its Global CRIS Standard rates match Moonshot's
+    # own Highspeed prices. Priority is 1.75x and Flex 0.5x Standard; the card scopes the
+    # multipliers to the Global and US CRIS base rates, so no IN Priority/Flex is inferred.
+    aws = offer(4, 20, 0.2, 5, src="aws_pricing_page", tier="Global CRIS · Standard",
+                model_id="moonshotai.kimi-k3.1")
+    aws["variants"] = [
+        variant("US CRIS · Standard", 4.4, 22, 0.22, 5.5, scope="geographic", endpoint="US CRIS"),
+        variant("IN CRIS · Standard", 4.4, 22, 0.22, 5.5, scope="geographic", endpoint="IN CRIS"),
+        variant("Global CRIS · Priority", 7, 35, 0.35, 8.75, service="priority", endpoint="Global CRIS"),
+        variant("US CRIS · Priority", 7.7, 38.5, 0.385, 9.625, scope="geographic", service="priority", endpoint="US CRIS"),
+        variant("Global CRIS · Flex", 2, 10, 0.1, 2.5, service="flex", endpoint="Global CRIS"),
+        variant("US CRIS · Flex", 2.2, 11, 0.11, 2.75, scope="geographic", service="flex", endpoint="US CRIS"),
+    ]
     platforms = dict(official=api, fireworks=fw,
         databricks=pending("Pay-per-token in us-east-1 (endpoint databricks-kimi-k3-1-pro); the DBU tables publish no K3.1 Pro rates yet.",
                            "dbx_models", "databricks-kimi-k3-1-pro", True),
-        bedrock=unavailable("aws", "Bedrock's Moonshot lineup tops out at Kimi K3."),
+        bedrock=aws,
         azure_foundry=unavailable("az_learn_regions", "Azure's directly sold Kimi models stop at K2.7 Code; no K3.1 Pro listing verified."),
         gcloud=unavailable("vertex", "Vertex MaaS offers Kimi K2 Thinking; no K3.1 Pro."),
         alicloud=unavailable("ali", "Model Studio pricing lists kimi-k3 and K2.x; no K3.1 Pro."))
     data["models"]["moonshot/kimi-k3.1-pro"] = dict(name="Kimi K3.1 Pro", short="K3.1 Pro", maker="Moonshot",
         group="oss", oss=True, ctx="1M", badges=["Added"],
-        about="2.8T MoE · 104B active · vision", platforms={pl: checked(c, day) for pl, c in platforms.items()})
+        about="2.8T MoE · 104B active · vision",
+        platforms={pl: checked(c, "2026-11-08" if pl == "bedrock" else day) for pl, c in platforms.items()})
 
 
 def build():
