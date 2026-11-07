@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "checked_at": "2026-11-08",
- "sources_checked": 117,
+ "sources_checked": 118,
  "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-11-08",
@@ -114,6 +114,7 @@
   "gcp-locations": "2026-11-08",
   "aws-model-cards": "2026-11-08",
   "aws-card-glm-5-3": "2026-11-08",
+  "aws-card-kimi-k31-highspeed": "2026-11-08",
   "aws-pricing-page": "2026-11-08",
   "gcp-gemini-4-argon": "2026-11-08",
   "api-google-gemini-4-argon": "2026-11-08",
@@ -122,171 +123,7 @@
   "aws-card-gpt-6-1-terra": "2026-11-08",
   "vertex-partner-pricing": "2026-11-08"
  },
- "pending_general": [
-  {
-   "source": "alibaba-pricing",
-   "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a region or its availability changed",
-   "added": [
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Speech synthesis / Qwen-TTS / Qwen-TTS\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 10,000 characters)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition / Qwen-ASR / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition / Qwen-ASR-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\"],\"heading\":\"Speech recognition / Qwen-ASR / US (Virginia)\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment region\",\"Input price (per million tokens)\",\"Output price (per million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Voice Chat / Real-time Voice Chat / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment region\",\"Input price (per million tokens)\",\"Output price (per million tokens)\"],\"heading\":\"Voice Chat / Real-time Voice Chat / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS / Qwen-TTS\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 10,000 characters)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-ASR / Singapore\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Speech synthesis / Qwen-TTS / Qwen-TTS\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 10,000 characters)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition / Qwen-ASR / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition / Qwen-ASR-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\"],\"heading\":\"Speech recognition / Qwen-ASR / US (Virginia)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Price (per voice clone)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Voice cloning and design / Qwen-TTS Voice cloning / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Audio and video translation / Qwen-LiveTranslate-Flash-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (per 10,000 characters)\"],\"heading\":\"Speech synthesis / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\",\"Free quota (Note)\"],\"heading\":\"Speech recognition / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition / Qwen-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition / Qwen-ASR-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Output price (per second)\",\"Free quota (Note)\"],\"heading\":\"Music generation / Fun-Music / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Price (per voice clone)\"],\"heading\":\"Voice cloning and design / Qwen-TTS Voice cloning / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v2\",\"$0.286706\"],\"heading\":\"Speech synthesis / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-flash\",\"$0.14335\"],\"heading\":\"Speech synthesis / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-flash\",\"International\",\"$ 0.13\",\"10,000 characters\"],\"heading\":\"Speech synthesis / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-plus\",\"$0.286706\"],\"heading\":\"Speech synthesis / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-plus\",\"International\",\"$ 0.26\",\"10,000 characters\"],\"heading\":\"Speech synthesis / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"cosyvoice-v3.5-flash\",\"$0.116\"],\"heading\":\"Speech synthesis / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3.5-plus\",\"$0.22\"],\"heading\":\"Speech synthesis / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr\",\"$0.000032/second\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr\",\"International\",\"$0.000035/second\",\"36,000 seconds (10 hours)\"],\"heading\":\"Speech recognition / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"fun-asr-flash-2026-06-15\",\"$0.00003/second\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-flash-2026-06-15\",\"International\",\"$0.000035/second\",\"36,000 seconds (10 hours)\"],\"heading\":\"Speech recognition / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"fun-asr-flash-8k-realtime Currently equivalent to fun-asr-flash-8k-realtime-2026-01-28\",\"$0.000032/second\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-flash-8k-realtime-2026-01-28\",\"$0.000032/second\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-mtl-realtime-2025-12-10\",\"$0.000047/second\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-realtime\",\"$0.000047/second\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-realtime\",\"International\",\"$0.00009/second\",\"36,000 seconds (10 hours)\"],\"heading\":\"Speech recognition / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"fun-asr-realtime-2026-02-28\",\"$0.000047/second\"],\"heading\":\"Speech recognition / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-music-preview\",\"$0.000695\",\"No free quota\"],\"heading\":\"Music generation / Fun-Music / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-music-v1\",\"$0.000275\",\"No free quota\"],\"heading\":\"Music generation / Fun-Music / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-8k-v2\",\"$0.000012/second\"],\"heading\":\"Speech recognition / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-realtime-8k-v2\",\"$0.000035/second\",\"No free quota\"],\"heading\":\"Speech recognition / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-realtime-v2\",\"$0.000035/second\",\"No free quota\"],\"heading\":\"Speech recognition / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-v2\",\"$0.000012/second\"],\"heading\":\"Speech recognition / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"qwen-tts-flash\",\"Chinese mainland\",\"$0.23\",\"$1.434\"],\"heading\":\"Speech synthesis / Qwen-TTS / Qwen-TTS\"}",
-    "table: {\"cells\":[\"qwen-voice-enrollment\",\"$0.01\"],\"heading\":\"Voice cloning and design / Qwen-TTS Voice cloning / China (Beijing)\"}",
-    "table: {\"cells\":[\"qwen-voice-enrollment\",\"International\",\"$0.01\",\"1,000 voices/account\"],\"heading\":\"Voice cloning and design / Qwen-TTS Voice cloning / Singapore\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Input: audio\",\"Input: image\",\"Output: text\",\"Output: audio\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment region\",\"Input price (per million tokens)\",\"Output price (per million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Voice Chat / Real-time Voice Chat / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment region\",\"Input price (per million tokens)\",\"Output price (per million tokens)\"],\"heading\":\"Voice Chat / Real-time Voice Chat / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS / Qwen-TTS\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price (per 10,000 characters)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-ASR / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-ASR-Realtime / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Input price\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-ASR / US (Virginia)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Deployment scope\",\"Price (per voice clone)\",\"Free quota (Note) Valid for 90 days from the date of Model Studio activation, model release, or application approval, whichever is later\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS Voice cloning / Singapore\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (USD/million tokens)\",\"Output price (USD/million tokens)\"],\"heading\":\"Audio generation / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (per 1 million tokens)\",\"Output price (per 1 million tokens)\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-LiveTranslate-Flash-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price (per 10,000 characters)\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\",\"Free quota (Note)\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Input price\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Qwen-ASR-Realtime / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Output price (per second)\",\"Free quota (Note)\"],\"heading\":\"Music generation / China (Beijing)\"}",
-    "table: {\"cells\":[\"Model ID\",\"Price (per voice clone)\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS Voice cloning / China (Beijing)\"}",
-    "table: {\"cells\":[\"Text\",\"Audio\",\"Text\",\"Audio\"],\"heading\":\"Voice Chat / Real-time Voice Chat / China (Beijing)\"}",
-    "table: {\"cells\":[\"Text\",\"Audio\",\"Text\",\"Audio\"],\"heading\":\"Voice Chat / Real-time Voice Chat / Singapore\"}",
-    "table: {\"cells\":[\"cosyvoice-v2\",\"$0.286706\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-flash\",\"$0.14335\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-flash\",\"International\",\"$ 0.13\",\"10,000 characters\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-plus\",\"$0.286706\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3-plus\",\"International\",\"$ 0.26\",\"10,000 characters\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / Singapore\"}",
-    "table: {\"cells\":[\"cosyvoice-v3.5-flash\",\"$0.116\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"cosyvoice-v3.5-plus\",\"$0.22\"],\"heading\":\"Speech synthesis (text-to-speech) / CosyVoice / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr\",\"$0.000032/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr\",\"International\",\"$0.000035/second\",\"36,000 seconds (10 hours)\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"fun-asr-flash-2026-06-15\",\"$0.00003/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-flash-2026-06-15\",\"International\",\"$0.000035/second\",\"36,000 seconds (10 hours)\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"fun-asr-flash-8k-realtime Currently equivalent to fun-asr-flash-8k-realtime-2026-01-28\",\"$0.000032/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-flash-8k-realtime-2026-01-28\",\"$0.000032/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-mtl-realtime-2025-12-10\",\"$0.000047/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-realtime\",\"$0.000047/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-asr-realtime\",\"International\",\"$0.00009/second\",\"36,000 seconds (10 hours)\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / Singapore\"}",
-    "table: {\"cells\":[\"fun-asr-realtime-2026-02-28\",\"$0.000047/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Fun-ASR / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-music-preview\",\"$0.000695\",\"No free quota\"],\"heading\":\"Music generation / China (Beijing)\"}",
-    "table: {\"cells\":[\"fun-music-v1\",\"$0.000275\",\"No free quota\"],\"heading\":\"Music generation / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-8k-v2\",\"$0.000012/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-realtime-8k-v2\",\"$0.000035/second\",\"No free quota\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-realtime-v2\",\"$0.000035/second\",\"No free quota\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"paraformer-v2\",\"$0.000012/second\"],\"heading\":\"Speech recognition (speech-to-text) and translation (speech-to-text in a specified language) / Paraformer / China (Beijing)\"}",
-    "table: {\"cells\":[\"qwen-tts-flash\",\"Chinese mainland\",\"$0.23\",\"$1.434\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS / Qwen-TTS\"}",
-    "table: {\"cells\":[\"qwen-voice-enrollment\",\"$0.01\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS Voice cloning / China (Beijing)\"}",
-    "table: {\"cells\":[\"qwen-voice-enrollment\",\"International\",\"$0.01\",\"1,000 voices/account\"],\"heading\":\"Speech synthesis (text-to-speech) / Qwen-TTS Voice cloning / Singapore\"}"
-   ],
-   "baseline_digest": "d707426c7fefd0d63d36b77fa6b6ff2899ab12c10bb741fcfb7957ce3df31cc6"
-  },
-  {
-   "source": "aws-pricing-page",
-   "url": "https://aws.amazon.com/bedrock/pricing/",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "notice: Inference option Input Output Cache read Cache write (30 min) Global CRIS $4.00 $20.00 $0.20 $5.00 US CRIS $4.40 $22.00 $0.22 $5.50 IN CRIS $4.40 $22.00 $0.22 $5.50 All prices are per 1 million tokens. Pricing shown is for the Standard tier.",
-    "table: {\"cells\":[\"Global CRIS\",\"$4.00\",\"$20.00\",\"$0.20\",\"$5.00\"],\"heading\":\"Amazon Bedrock pricing / Moonshot AI\"}",
-    "table: {\"cells\":[\"IN CRIS\",\"$4.40\",\"$22.00\",\"$0.22\",\"$5.50\"],\"heading\":\"Amazon Bedrock pricing / Moonshot AI\"}",
-    "table: {\"cells\":[\"US CRIS\",\"$4.40\",\"$22.00\",\"$0.22\",\"$5.50\"],\"heading\":\"Amazon Bedrock pricing / Moonshot AI\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "notice: Inference option Input Output Cache read Cache write (30 min) Global CRIS $4.00 $20.00 $0.20 $5.00 US CRIS $4.40 $22.00 $0.22 $5.50 IN CRIS $4.40 $22.00 $0.22 $5.50 All prices are per 1 million tokens. Pricing shown is for the Standard tier.",
-    "table: {\"cells\":[\"Global CRIS\",\"$4.00\",\"$20.00\",\"$0.20\",\"$5.00\"],\"heading\":\"Amazon Bedrock pricing / Moonshot AI\"}",
-    "table: {\"cells\":[\"IN CRIS\",\"$4.40\",\"$22.00\",\"$0.22\",\"$5.50\"],\"heading\":\"Amazon Bedrock pricing / Moonshot AI\"}",
-    "table: {\"cells\":[\"US CRIS\",\"$4.40\",\"$22.00\",\"$0.22\",\"$5.50\"],\"heading\":\"Amazon Bedrock pricing / Moonshot AI\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "a415b942cd7daddca605e2ad0f9b1b1b097d30396c22dfde16af13455b382c7e"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-11-08",
@@ -300,10 +137,7 @@
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
    "verified": "2026-11-08"
@@ -324,10 +158,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-fable-5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-fable-5|azure_foundry": {
    "verified": "2026-11-08"
@@ -348,10 +179,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-haiku-4.5|azure_foundry": {
    "verified": "2026-11-08"
@@ -372,10 +200,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-haiku-5.5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-haiku-5.5|azure_foundry": {
    "verified": "2026-11-08"
@@ -396,10 +221,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-opus-4.6|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
    "verified": "2026-11-08"
@@ -420,10 +242,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-opus-4.7|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
    "verified": "2026-11-08"
@@ -444,10 +263,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-opus-4.8|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
    "verified": "2026-11-08"
@@ -468,10 +284,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-opus-5.5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
    "verified": "2026-11-08"
@@ -492,10 +305,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-opus-5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-opus-5|azure_foundry": {
    "verified": "2026-11-08"
@@ -516,10 +326,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-sonnet-4.6|azure_foundry": {
    "verified": "2026-11-08"
@@ -540,10 +347,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
    "verified": "2026-11-08"
@@ -564,10 +368,7 @@
    "verified": "2026-11-08"
   },
   "anthropic/claude-sonnet-5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
    "verified": "2026-11-08"
@@ -588,16 +389,10 @@
    "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4-flash|bedrock": {
    "verified": "2026-11-08"
@@ -617,16 +412,10 @@
    "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-11-08"
@@ -646,16 +435,10 @@
    "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
    "verified": "2026-11-08"
@@ -678,10 +461,7 @@
    "verified": "2026-11-08"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemini-3.1-flash-lite|azure_foundry": {
    "verified": "2026-11-08"
@@ -702,10 +482,7 @@
    "verified": "2026-11-08"
   },
   "google/gemini-3.1-pro|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemini-3.1-pro|azure_foundry": {
    "verified": "2026-11-08"
@@ -726,10 +503,7 @@
    "verified": "2026-11-08"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemini-3.5-flash-lite|azure_foundry": {
    "verified": "2026-11-08"
@@ -750,10 +524,7 @@
    "verified": "2026-11-08"
   },
   "google/gemini-3.6-flash|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemini-3.6-flash|azure_foundry": {
    "verified": "2026-11-08"
@@ -774,10 +545,7 @@
    "verified": "2026-11-08"
   },
   "google/gemini-3.7-flash|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemini-3.7-flash|azure_foundry": {
    "verified": "2026-11-08"
@@ -798,10 +566,7 @@
    "verified": "2026-11-08"
   },
   "google/gemini-3.8-flash|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemini-3.8-flash|azure_foundry": {
    "verified": "2026-11-08"
@@ -822,10 +587,7 @@
    "verified": "2026-11-08"
   },
   "google/gemini-4-argon|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemini-4-argon|azure_foundry": {
    "verified": "2026-11-08"
@@ -846,10 +608,7 @@
    "verified": "2026-11-08"
   },
   "google/gemma-3-12b|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "google/gemma-3-12b|azure_foundry": {
    "verified": "2026-11-08"
@@ -861,10 +620,7 @@
    "verified": "2026-11-08"
   },
   "meta/llama-3.1-8b|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "meta/llama-3.1-8b|azure_foundry": {
    "verified": "2026-11-08"
@@ -876,10 +632,7 @@
    "verified": "2026-11-08"
   },
   "meta/llama-3.3-70b|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "meta/llama-3.3-70b|azure_foundry": {
    "verified": "2026-11-08"
@@ -894,22 +647,13 @@
    "verified": "2026-11-08"
   },
   "meta/llama-4-maverick|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "meta/llama-4-maverick|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "meta/llama-4-maverick|bedrock": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "aws-model-cards"
-   ]
+   "verified": "2026-11-08"
   },
   "meta/llama-4-maverick|databricks": {
    "verified": "2026-11-08"
@@ -918,16 +662,10 @@
    "verified": "2026-11-08"
   },
   "minimax/minimax-m3|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "minimax/minimax-m3|bedrock": {
    "verified": "2026-11-08"
@@ -942,16 +680,10 @@
    "verified": "2026-11-08"
   },
   "mistral/mistral-medium-3.5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "mistral/mistral-medium-3.5|bedrock": {
    "verified": "2026-11-08"
@@ -966,10 +698,7 @@
    "verified": "2026-11-08"
   },
   "moonshot/kimi-k2.7|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "moonshot/kimi-k2.7|azure_foundry": {
    "verified": "2026-11-08"
@@ -987,21 +716,13 @@
    "verified": "2026-11-08"
   },
   "moonshot/kimi-k3.1-pro|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "moonshot/kimi-k3.1-pro|azure_foundry": {
    "verified": "2026-11-08"
   },
   "moonshot/kimi-k3.1-pro|bedrock": {
-   "verified": "2026-11-07",
-   "changed_at": "2026-11-08",
-   "sources": [
-    "aws-model-cards"
-   ],
-   "quiet": true
+   "verified": "2026-11-08"
   },
   "moonshot/kimi-k3.1-pro|databricks": {
    "verified": "2026-11-08"
@@ -1013,10 +734,7 @@
    "verified": "2026-11-08"
   },
   "moonshot/kimi-k3|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "moonshot/kimi-k3|azure_foundry": {
    "verified": "2026-11-08"
@@ -1034,16 +752,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-5.4|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.4|bedrock": {
    "verified": "2026-11-08"
@@ -1058,16 +770,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-5.5|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.5|bedrock": {
    "verified": "2026-11-08"
@@ -1082,16 +788,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-5.6-luna|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.6-luna|bedrock": {
    "verified": "2026-11-08"
@@ -1106,16 +806,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-5.6-sol|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.6-sol|bedrock": {
    "verified": "2026-11-08"
@@ -1130,16 +824,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-5.6-terra|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-5.6-terra|bedrock": {
    "verified": "2026-11-08"
@@ -1154,16 +842,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-6-astra|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6-astra|bedrock": {
    "verified": "2026-11-08"
@@ -1178,16 +860,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-6-luna|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6-luna|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6-luna|bedrock": {
    "verified": "2026-11-08"
@@ -1202,16 +878,10 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-6-sol|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6-sol|bedrock": {
    "verified": "2026-11-08"
@@ -1226,10 +896,7 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-6.1-sol|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
    "verified": "2026-11-08"
@@ -1247,10 +914,7 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-6.1-terra|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-6.1-terra|azure_foundry": {
    "verified": "2026-11-08"
@@ -1268,10 +932,7 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-oss-120b|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-oss-120b|azure_foundry": {
    "verified": "2026-11-08"
@@ -1292,10 +953,7 @@
    "verified": "2026-11-08"
   },
   "openai/gpt-oss-20b|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "openai/gpt-oss-20b|azure_foundry": {
    "verified": "2026-11-08"
@@ -1313,10 +971,7 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
    "verified": "2026-11-08"
@@ -1331,16 +986,10 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.5-122b|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.5-122b|azure_foundry": {
    "verified": "2026-11-08"
@@ -1352,16 +1001,10 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3.5-122b|official": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.7-max|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.7-max|azure_foundry": {
    "verified": "2026-11-08"
@@ -1376,16 +1019,10 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3.7-max|official": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.7-plus|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.7-plus|azure_foundry": {
    "verified": "2026-11-08"
@@ -1400,16 +1037,10 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3.7-plus|official": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.8-27b|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.8-27b|azure_foundry": {
    "verified": "2026-11-08"
@@ -1424,16 +1055,10 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3.8-27b|official": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.8-flash|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.8-flash|azure_foundry": {
    "verified": "2026-11-08"
@@ -1448,16 +1073,10 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3.8-flash|official": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.8-max|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "qwen/qwen3.8-max|azure_foundry": {
    "verified": "2026-11-08"
@@ -1472,16 +1091,10 @@
    "verified": "2026-11-08"
   },
   "qwen/qwen3.8-max|official": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "tml/inkling|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "tml/inkling|azure_foundry": {
    "verified": "2026-11-08"
@@ -1504,16 +1117,10 @@
    "verified": "2026-11-08"
   },
   "xai/grok-4.6|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-08"
   },
   "xai/grok-4.6|bedrock": {
    "verified": "2026-11-08"
@@ -1528,10 +1135,7 @@
    "verified": "2026-11-08"
   },
   "xai/grok-4.7|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "xai/grok-4.7|azure_foundry": {
    "verified": "2026-11-08"
@@ -1549,10 +1153,7 @@
    "verified": "2026-11-08"
   },
   "zai/glm-5.2|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "zai/glm-5.2|azure_foundry": {
    "verified": "2026-11-08"
@@ -1573,10 +1174,7 @@
    "verified": "2026-11-08"
   },
   "zai/glm-5.3-flash|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "zai/glm-5.3-flash|azure_foundry": {
    "verified": "2026-11-08"
@@ -1594,19 +1192,13 @@
    "verified": "2026-11-08"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "alibaba-pricing"
-   ]
+   "verified": "2026-11-08"
   },
   "zai/glm-5.3|azure_foundry": {
    "verified": "2026-11-08"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-11-07",
-   "unchecked": [
-    "aws-pricing-page"
-   ]
+   "verified": "2026-11-08"
   },
   "zai/glm-5.3|databricks": {
    "verified": "2026-11-08"
