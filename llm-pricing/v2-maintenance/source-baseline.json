@@ -13478,14 +13478,10 @@
   "fw-fw-m-inkling": {
    "url": "https://fireworks.ai/models/fireworks/inkling",
    "kind": "text",
-   "digest": "e21867d90df6c4419da147414b0bf7c0b21faee6086b3b4b1f1eb41bece3ed1f",
+   "digest": "27c94bd298232e8a76d379ff544585e8f440ae30deec252659c844718abd6713",
    "records": [
-    "text: $1.00 / $0.17 / $4.05",
     "text: Inkling - Thinking Machines multimodal (audio+vision) MoE. Inkling is the first open-weights model released by Thinking Machines Lab. It is a 975B Mixture-of-Experts with 41B active parameters, trained natively across text, image, and audio. Built as a broad generalist foundation for fine-tuning, with controllable thinking effort.",
-    "text: Inkling is available via Fireworks' serverless API, where you pay per token. There are several ways to call the Fireworks API, including Fireworks' Python client, the REST API, or OpenAI's Python client.",
-    "text: On-demand deployments allow you to use Inkling on dedicated GPUs with Fireworks' high-performance serving stack with high reliability and no rate limits.",
-    "text: Per 1M Tokens (input/cached input/output)",
-    "text: Run queries immediately, pay only for usage"
+    "text: On-demand deployments allow you to use Inkling on dedicated GPUs with Fireworks' high-performance serving stack with high reliability and no rate limits."
    ]
   },
   "fw-fw-residency": {

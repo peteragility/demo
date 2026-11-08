@@ -133,9 +133,7 @@
   "published_at": "2026-11-06"
  },
  "databricks_coverage": [],
- "review": [
-  "Inkling · fireworks"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -145,10 +143,7 @@
    "verified": "2026-11-09"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-11-09",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-11-09"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-11-09"
@@ -169,10 +164,7 @@
    "verified": "2026-11-09"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-11-09",
-   "accepted": [
-    "aws-card-claude-fable-5"
-   ]
+   "verified": "2026-11-09"
   },
   "anthropic/claude-fable-5|databricks": {
    "verified": "2026-11-09"
@@ -1119,11 +1111,7 @@
    "quiet": true
   },
   "tml/inkling|fireworks": {
-   "verified": "2026-11-08",
-   "changed_at": "2026-11-09",
-   "sources": [
-    "fw-fw-m-inkling"
-   ]
+   "verified": "2026-11-09"
   },
   "tml/inkling|official": {
    "verified": "2026-11-09"
