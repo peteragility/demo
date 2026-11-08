@@ -12799,58 +12799,11 @@
  },
  "tml/inkling": {
   "fireworks": {
-   "checked_at": "2026-10-04",
-   "reverified": true,
-   "base": {
-    "endpoint": "Serverless"
-   },
-   "variants": [
-    {
-     "label": "Batch API · Batch",
-     "in": 0.5,
-     "out": 2.025,
-     "scope": "unverified",
-     "service": "batch",
-     "endpoint": "Batch API"
-    }
-   ],
-   "src": [
-    "fw_fw_batch",
-    "fw_fw_m_inkling",
-    "fw_fw_residency"
-   ],
-   "regions": [
-    [
-     "Global",
-     "unknown",
-     "Serverless",
-     "Location of the default endpoint is not published"
-    ],
-    [
-     "Europe",
-     "none",
-     "On request",
-     "EU-only serverless through Fireworks sales"
-    ]
-   ],
-   "hk": [
-    "none",
-    "No Hong Kong endpoint; the default endpoint's location is not published"
-   ],
-   "tw": [
-    "none",
-    "No Taiwan endpoint; the default endpoint's location is not published"
-   ],
-   "cache_write": "input-rate",
-   "notes": [
-    [
-     "Input limits",
-     "975B MoE (41B active), 1,040K context, image input supported; fine-tuning not supported."
-    ]
-   ],
-   "ids": [
-    "accounts/fireworks/models/inkling (serverless)"
-   ]
+   "checked_at": "2026-11-09",
+   "unavailable": {
+    "src": "fw_fw_m_inkling",
+    "note": "Serverless serving was removed (the model catalog was updated on 8 Nov 2026); the model page lists on-demand deployment only and publishes no per-token rates."
+   }
   },
   "official": {
    "checked_at": "2026-10-04",

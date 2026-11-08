@@ -297,7 +297,10 @@ try {
 
     if (viewport.name === 'desktop') {
       await navigate('2026-10-30');
-      if (listed('tml/inkling')) assert.equal(await evalJS("document.querySelector('tr[data-k=\"tml/inkling\"] td.c').innerText.trim()"), '✕');
+      // Fireworks removed Inkling's serverless offer, so no compared platform hosts it after the
+      // Databricks retirement: the row is hidden. DeepSeek V4 Pro retires the same day but stays hosted.
+      if (listed('tml/inkling')) assert.equal(await evalJS("document.querySelector('tr[data-k=\"tml/inkling\"]') === null"), true, 'inkling hidden once no compared platform hosts it');
+      if (listed('deepseek/deepseek-v4-pro')) assert.equal(await evalJS("document.querySelector('tr[data-k=\"deepseek/deepseek-v4-pro\"] td.c').innerText.trim()"), '✕');
       await navigate('2027-02-01');
       for(const key of ['google/gemini-3.1-pro','google/gemini-3.8-flash','xai/grok-4.6'])if(listed(key))await checkMainRates(key,'2027-02-01');
       await call('Page.removeScriptToEvaluateOnNewDocument', {identifier: clockId});
