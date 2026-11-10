@@ -2,18 +2,18 @@
   "schema": 1,
   "pages": {
     "lakebase-compete-calculator/": {
-      "checkedAt": "2026-11-09",
-      "lastSuccess": "2026-11-09",
+      "checkedAt": "2026-11-10",
+      "lastSuccess": "2026-11-10",
       "errors": 0,
-      "review": 0,
-      "status": "ok"
+      "review": 2,
+      "status": "review"
     },
     "lakebase-field-guide/": {
-      "checkedAt": "2026-11-09",
-      "lastSuccess": "2026-11-09",
+      "checkedAt": "2026-11-10",
+      "lastSuccess": "2026-11-10",
       "errors": 0,
-      "review": 0,
-      "status": "ok"
+      "review": 2,
+      "status": "review"
     }
   }
 }
