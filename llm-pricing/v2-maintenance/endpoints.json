@@ -2878,7 +2878,7 @@
    }
   },
   "official": {
-   "checked_at": "2026-10-09",
+   "checked_at": "2026-11-11",
    "reverified": true,
    "base": {
     "endpoint": "Global (api.openai.com)",
@@ -2940,14 +2940,14 @@
      }
     },
     {
-     "label": "Regional processing (US / EU) · Standard",
+     "label": "Regional processing (US / EU / AU / IN / JP) · Standard",
      "in": 0.11,
      "out": 0.55,
      "cache_read": 0.011,
      "cache_write": 0.1375,
      "scope": "geographic",
      "service": "standard",
-     "endpoint": "Regional processing (US / EU)",
+     "endpoint": "Regional processing (US / EU / AU / IN / JP)",
      "long_context": {
       "in": 0.22,
       "out": 0.825,
@@ -2956,14 +2956,14 @@
      }
     },
     {
-     "label": "Regional processing (US / EU) · Batch",
+     "label": "Regional processing (US / EU / AU / IN / JP) · Batch",
      "in": 0.055,
      "out": 0.275,
      "cache_read": 0.0055,
      "cache_write": 0.06875,
      "scope": "geographic",
      "service": "batch",
-     "endpoint": "Regional processing (US / EU)",
+     "endpoint": "Regional processing (US / EU / AU / IN / JP)",
      "long_context": {
       "in": 0.11,
       "out": 0.4125,
@@ -2972,14 +2972,14 @@
      }
     },
     {
-     "label": "Regional processing (US / EU) · Flex",
+     "label": "Regional processing (US / EU / AU / IN / JP) · Flex",
      "in": 0.055,
      "out": 0.275,
      "cache_read": 0.0055,
      "cache_write": 0.06875,
      "scope": "geographic",
      "service": "flex",
-     "endpoint": "Regional processing (US / EU)",
+     "endpoint": "Regional processing (US / EU / AU / IN / JP)",
      "long_context": {
       "in": 0.11,
       "out": 0.4125,
@@ -2988,14 +2988,14 @@
      }
     },
     {
-     "label": "Regional processing (US / EU) · Fast",
+     "label": "Regional processing (US / EU / AU / IN / JP) · Fast",
      "in": 0.22,
      "out": 1.1,
      "cache_read": 0.022,
      "cache_write": 0.275,
      "scope": "geographic",
      "service": "priority",
-     "endpoint": "Regional processing (US / EU)",
+     "endpoint": "Regional processing (US / EU / AU / IN / JP)",
      "tier_label": "Fast",
      "long_context": {
       "in": 0.44,
@@ -3070,7 +3070,7 @@
    "notes": [
     [
      "Residency",
-     "US and EU data residency, including Fast mode (+10%)."
+     "US and EU data residency, including Fast mode (+10%). Since 11 Nov 2026 the Australia, India and Japan regional endpoints also process regionally for gpt-6-luna (chat completions and responses)."
     ],
     [
      "Context",
@@ -9141,7 +9141,7 @@
  },
  "zai/glm-5.2": {
   "gcloud": {
-   "checked_at": "2026-10-04",
+   "checked_at": "2026-11-11",
    "reverified": true,
    "base": {
     "endpoint": "Global"
@@ -9172,7 +9172,7 @@
    "notes": [
     [
      "Launch",
-     "Preview (released 24 Aug 2026); Google commits to the glm-5.2-maas endpoint only until at least 31 Oct 2026."
+     "Preview (released 24 Aug 2026); Google commits to the glm-5.2-maas endpoint only until at least 30 Nov 2026."
     ],
     [
      "Residency",

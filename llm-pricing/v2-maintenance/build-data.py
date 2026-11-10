@@ -804,6 +804,8 @@ def corrections(data):
         "moonshot/kimi-k2.7": ("2026-10-30", ["Kimi K3"], REVIEWED),
         "deepseek/deepseek-v4-flash": ("2026-11-05", ["DeepSeek V4.1 Flash"], "2026-10-07"),
         "deepseek/deepseek-v4.1-flash": ("2026-11-19", ["DeepSeek V4.1 Flash (1017)"], "2026-10-21"),
+        # 11 Nov 2026: the catalog deprecates GLM 5.2 and the retirement policy names GLM 5.3.
+        "zai/glm-5.2": ("2027-02-04", ["GLM 5.3"], "2026-11-11"),
     }
     for key in ("deepseek/deepseek-v4-pro", "deepseek/deepseek-v4-flash"):
         day, _, _ = retirement[key]
@@ -1112,6 +1114,138 @@ def add_kimi_k31_pro(data):
         platforms={pl: checked(c, "2026-11-08" if pl == "bedrock" else day) for pl, c in platforms.items()})
 
 
+def add_gemini4_carbon(data):
+    """Gemini 4 Carbon (arena #3, 'Gemini 4 Carbon (High)') added 11 Nov 2026 from the
+    Gemini API and Vertex pricing tables. Introductory rates run through 30 Nov 2026 and
+    the published list rates apply from 1 Dec; the checked rates match Gemini 4 Argon's
+    tiers exactly. Vertex non-global (US / EU multi-region) rows are +10%. Carbon Cyber
+    Permissive is a separate allowlisted model excluded from the promotion; the invite-only
+    Contributor tier is excluded from the general-access comparison."""
+    day = "2026-11-11"
+    platforms = {pl: pending("No verified Gemini 4 Carbon offer in the reviewed platform sources.",
+                             data["models"]["google/gemini-4-argon"]["platforms"][pl].get("src"))
+                 for pl in PLATFORMS}
+    for pl, src in (("official", "google"), ("gcloud", "vertex")):
+        cell = offer(2, 10, 0.1, src=src, tier="Standard · introductory pricing", model_id="gemini-4-carbon")
+        promo(cell, "2026-11-30", rates(4, 20, 0.2), "Introductory pricing", "Standard")
+        variants = []
+        tiers = [("priority", 3.6, 18, 0.18), ("batch", 1, 5, 0.05)]
+        if pl == "official":
+            tiers.append(("flex", 1, 5, 0.05))
+        else:
+            v = variant("US / EU multi-region · Standard", 2.2, 11, 0.11, scope="geographic", endpoint="US / EU multi-region")
+            promo(v, "2026-11-30", rates(4.4, 22, 0.22), "50% credits back on net spend", "US / EU multi-region · Standard")
+            variants.append(v)
+        for service, i, o, cr in tiers:
+            v = variant("Global · " + service.title(), i, o, cr, service=service, endpoint="Global")
+            promo(v, "2026-11-30", rates(i * 2, o * 2, cr * 2), "Introductory pricing", "Global · " + service.title())
+            variants.append(v)
+            if pl == "gcloud":
+                v = variant("US / EU multi-region · " + service.title(), round(i * 1.1, 6), round(o * 1.1, 6),
+                            round(cr * 1.1, 6), service=service, scope="geographic", endpoint="US / EU multi-region")
+                promo(v, "2026-11-30", rates(round(i * 2.2, 6), round(o * 2.2, 6), round(cr * 2.2, 6)),
+                      "50% credits back on net spend", "US / EU multi-region · " + service.title())
+                variants.append(v)
+        cell["variants"] = variants
+        cell["endpoints"] = dict(checked_at=day,
+            src=[src, "gcp_locations"] if pl == "gcloud" else [src],
+            regions=[["Global", "global" if pl == "gcloud" else "unknown", "Global",
+                      "Public Gemini 4 Carbon endpoint" if pl == "gcloud" else "Gemini API global endpoint"]],
+            hk=["none", "No single-region Hong Kong endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            tw=["none", "No single-region Taiwan endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            notes=[["Context", "Unified 1M-token context window with long decode, per the Gemini 4 Argon model card's comparison with Carbon; no separate long-context price band is listed."],
+                   ["Caching", "Implicit caching only (explicit cache writes and storage are not supported); cache reads cost 5% of the tier's input price."],
+                   ["Promotion", "Introductory rates end 30 Nov 2026; published list rates apply from 1 Dec 2026."],
+                   ["Version", "gemini-4-carbon (GA). Carbon Cyber Permissive is a separate allowlisted model and is excluded from the promotion."],
+                   ["Tiers", "Standard, Priority and Batch; Flex is listed on the Gemini API only. The Gemini API Contributor tier is an invite-only private preview and is excluded."]],
+            ids=["gemini-4-carbon"], cache_write="input-rate")
+        if pl == "gcloud":
+            cell["promotion"]["label"] = "50% credits back on net spend"
+            cell["endpoints"]["regions"] += [
+                ["Americas", "geo", "US multi-region", "US endpoint; processing stays in the US (+10%)"],
+                ["Europe", "geo", "EU multi-region", "EU endpoint; processing stays in the EU (+10%)"]]
+        platforms[pl] = checked(cell, day)
+    for cell in platforms.values():
+        cell["availability_checked_at"] = day
+    data["models"]["google/gemini-4-carbon"] = dict(name="Gemini 4 Carbon", short="Gemini 4 Carbon", maker="Google",
+        group="google", oss=False, model_key="google/gemini-4-carbon", ctx="1M unified", badges=["Added"], platforms=platforms)
+
+
+def add_muse_models(data):
+    """Meta's Muse models on Vertex partner pricing (arena #19/#20/#30/#34), added 11 Nov 2026.
+
+    One price table covers Meta's models: Muse Spark 1.3 and Muse Wonder 1.0 are fixed-price;
+    Muse Ember 1.0 is tiered at 200K input tokens. Arena names 'Muse Wonder (Max)' and
+    'Muse Ember (Max)' carry no version; the compared offers are the 1.0 versions listed there.
+    No maker API or other compared platform sells them (Muse Spark Open's Fireworks preview
+    ended 29 Oct 2026 and is a different model)."""
+    day = "2026-11-11"
+    for key, name, short, i, o, cr, extra in [
+            ("meta/muse-spark-1.3", "Muse Spark 1.3", "Muse Spark 1.3", 1.25, 4.25, 0.15, {}),
+            ("meta/muse-wonder", "Muse Wonder 1.0", "Muse Wonder", 4.0, 20.0, 0.2, {}),
+            ("meta/muse-ember", "Muse Ember 1.0", "Muse Ember", 0.1, 0.5, 0.004,
+             dict(context_threshold=200000, long_context=rates(0.3, 1.5, 0.012)))]:
+        gc = offer(i, o, cr, src="vertex_partner", tier="Vertex partner · pay-as-you-go", scope="unverified", **extra)
+        gc["comparison_note"] = "Price is verified; this partner offer's processing scope is not confirmed."
+        gc["endpoints"] = dict(checked_at=day, src=["vertex_partner"], regions=[],
+            hk=["unknown", "No Muse endpoint location data in the checked sources"],
+            tw=["unknown", "No Muse endpoint location data in the checked sources"],
+            notes=[["Pricing", "Model Garden partner pricing lists one price per model; Muse Spark 1.3 and Muse Wonder 1.0 are fixed-price regardless of length, Muse Ember 1.0 charges long-context rates above 200K input tokens."],
+                   ["Caching", "Cache-hit prices are listed per model ($0.15 Spark 1.3, $0.20 Wonder 1.0, $0.004 / $0.012 Ember 1.0); no cache-write price is published."],
+                   ["IDs", "Vertex model IDs for the Muse models are not published in the checked sources."]],
+            ids=[], cache_write="not-listed")
+        platforms = dict(gcloud=checked(gc, day),
+            official=unavailable("vertex_partner", "Meta publishes no Muse maker-API price list; the checked sources sell Muse models only through Vertex."),
+            databricks=unavailable("dbx_models", "The Databricks catalog lists no Muse model."),
+            bedrock=unavailable("aws", "Bedrock lists no Muse model."),
+            azure_foundry=unavailable("az_learn_fireworks", "The Fireworks on Foundry catalog lists no Muse model."),
+            fireworks=unavailable("fireworks", "Fireworks serverless pricing lists no Muse model; the Muse Spark Open preview ended 29 Oct 2026 and is a separate model."),
+            alicloud=unavailable("ali", "Model Studio lists no Muse model."))
+        data["models"][key] = dict(name=name, short=short, maker="Meta", group="other", oss=False,
+                                   model_key=key, badges=["Added"], platforms=platforms)
+
+
+def review_november11(data):
+    """Issue #50 review, 11 Nov 2026.
+
+    The Fireworks on Foundry catalog added pay-per-token listings whose prices are absent
+    from the checked Azure retail meters, so availability is recorded without prices:
+    FW-Kimi-K3.1-Pro (new) and FW-DeepSeek-V4.1-Flash-1017 (a separate checkpoint; no rate
+    is copied from the non-1017 offer). FW-MiniMax-M3 pay-per-token retires 24 Nov 2026
+    (PTU may continue). GLM 5.3 Flash also gains a PTU row, which is not a per-token offer.
+    Anthropic's Fable 5.2 / Mythos 5.2 launch changes no tracked rate: every tracked Claude
+    price is unchanged, the new models are outside the arena top 50, and the cache-read
+    shares stay 2.5% (Fable/Mythos 5.x) and 5% (Opus/Sonnet 5.5). Inkling 2 Small's Tinker
+    serverless ID drops its ':sampling-nvfp4' suffix with unchanged rates; it is a different
+    model from the tracked Inkling, so no offer changes."""
+    day = "2026-11-11"
+    m = data["models"]
+    k31 = m["moonshot/kimi-k3.1-pro"]["platforms"]["azure_foundry"]
+    k31.clear()
+    k31.update(pending("The Fireworks on Foundry catalog lists FW-Kimi-K3.1-Pro pay-per-token (Global Standard) GA "
+                       "and provisioned throughput; Azure publishes no per-token prices for it in the checked sources.",
+                       "az_learn_fireworks", model_id="FW-Kimi-K3.1-Pro", available=True),
+               availability_checked_at=day)
+    ds = m["deepseek/deepseek-v4.1-flash"]["platforms"]["azure_foundry"]
+    ds["endpoints"]["notes"].append(["Checkpoint · 11 Nov 2026",
+        "The catalog also lists FW-DeepSeek-V4.1-Flash-1017 pay-per-token GA (Global Standard), a separate "
+        "checkpoint with no Azure prices published; no rate is copied from the non-1017 offer."])
+    ds["endpoints"]["ids"].append("FW-DeepSeek-V4.1-Flash-1017 (separate checkpoint; no Azure prices published)")
+    ds["endpoints"]["checked_at"] = day
+    mm = m["minimax/minimax-m3"]["platforms"]["azure_foundry"]
+    mm["retires_on"] = "2026-11-24"
+    mm["replacement"] = ["FW-DeepSeek-V4.1-Flash"]
+    mm["retirement_src"] = "az_learn_fireworks"
+    mm["endpoints"]["notes"].append(["Retirement · 11 Nov 2026",
+        "Pay-per-token (Data Zone Standard) retires 24 Nov 2026; the catalog recommends FW-DeepSeek-V4.1-Flash. "
+        "Provisioned throughput may remain available after that date."])
+    mm["endpoints"]["checked_at"] = day
+    gf = m["zai/glm-5.3-flash"]["platforms"]["azure_foundry"]
+    gf["endpoints"]["notes"].append(["Tiers · 11 Nov 2026",
+        "The catalog now also lists provisioned throughput (PTU); it is not a per-token offer and adds no compared rate."])
+    gf["endpoints"]["checked_at"] = day
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1139,6 +1273,8 @@ def build():
     add_gemini4(data)
     add_terra61(data)
     add_kimi_k31_pro(data)
+    add_gemini4_carbon(data)
+    add_muse_models(data)
     apply_endpoints(data)
     # Google moved all partner billing tables to Model Garden (29 Oct).
     # Keep Google's own models on the existing source and monitor partner prices separately.
@@ -1159,6 +1295,7 @@ def build():
             promo(o, "2026-11-30", {f: round(o[f] * 2, 6) for f in RATE_FIELDS if f in o},
                   "Databricks Argon 50% promotion", o.get("label", argon["tier"]))
     check_cache_reads(data)
+    review_november11(data)
     lifecycle_notices(data)
     # Highlights: neutral, dated facts re-checked against the v2 offers.
     # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
@@ -1193,8 +1330,10 @@ def build():
                    {"text": "Flash intro pricing (50% off) ends 31 Dec 2026 everywhere, then $1.50 / $7.50.", "until": "2026-12-31"},
                    {"text": "Gemini 3.8 / 3.7 Flash list at $1.50 / $7.50 everywhere since intro pricing ended 31 Dec 2026.", "from": "2027-01-01"},
                    "Only Databricks, Vertex and the Gemini API sell Gemini; Bedrock, Azure and Alibaba do not.",
+                   {"text": "Gemini 4 Carbon (arena #3) joined at Argon's rates: $2 / $10 with $0.10 cached input through 30 Nov 2026, then $4 / $20.", "models": ["google/gemini-4-carbon"]},
                    "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."],
         "other": ["Qwen3.8 Max, Qwen3.7 Max and Qwen3.7 Plus are sold on Alibaba Model Studio (Qwen3.8 Max also on Fireworks); none is on Databricks, Bedrock, Azure or Vertex.",
+                  {"text": "Meta's Muse models sell only on Vertex: Muse Spark 1.3 $1.25 / $4.25, Muse Wonder 1.0 $4 / $20, Muse Ember 1.0 $0.10 / $0.50 up to 200K input and $0.30 / $1.50 above it.", "models": ["meta/muse-spark-1.3", "meta/muse-wonder", "meta/muse-ember"]},
                   "Model Studio's Global scope is below its International (Singapore) list; Qwen3.7 Plus also has limited-time daytime / night discounts."],
         "xai": ["Grok 4.7: xAI, Bedrock Global, Vertex and Databricks list $2 / $6, with $0.50 cached input.",
                 {"text": "Grok 4.7 and 4.6 have Databricks promotional parity at $2 / $6 through 31 Jan 2027, then $2.50 / $7.50.", "until": "2027-01-31"},
@@ -1205,6 +1344,7 @@ def build():
     if proven_log:
         data["reviewed_at"] = max(data["reviewed_at"], max(line[:10] for line in proven_log))
     data["changes"] = proven_log[::-1] + [
+        "2026-11-11: Added Gemini 4 Carbon (arena #3) from the Gemini API and Vertex pricing tables at Argon's tier rates ($2 / $10 Standard, $3.60 / $18 Priority, $1 / $5 Batch, US / EU multi-region +10%; introductory rates through 30 Nov 2026, list rates double from 1 Dec). Added Meta's Muse Spark 1.3 ($1.25 / $4.25), Muse Wonder 1.0 ($4 / $20) and Muse Ember 1.0 ($0.10 / $0.50 to 200K input, $0.30 / $1.50 above) from Vertex partner pricing; no other compared platform sells them. Azure's Fireworks catalog added FW-Kimi-K3.1-Pro and FW-DeepSeek-V4.1-Flash-1017 pay-per-token without published prices (availability recorded, no rates copied); FW-MiniMax-M3 pay-per-token retires 24 Nov 2026. Databricks deprecates GLM 5.2 with retirement on 4 Feb 2027 (use GLM 5.3). GPT-6 Luna adds Australia / India / Japan regional processing. Anthropic's Fable 5.2 / Mythos 5.2 launch changes no tracked rate.",
         "2026-11-05: Added Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') from Fireworks serverless ($2 / $10, $0.20 cached input; Priority $3 / $15) and the Moonshot API ($2 / $10, $0.20 cached input, $2 / $4 cache writes; Highspeed $4 / $20; Batch 60%). Databricks hosts it pay-per-token in us-east-1 with no published DBU rates yet; Bedrock, Vertex, Azure and Alibaba do not sell it. GPT-5.6 Sol's maker promotional rates extend to 30 Nov 2026; Databricks' own promotion still ends 21 Nov.",
         "2026-10-09: The list follows arena.ai's Best WebDev (Code | Overall) top 50 instead of Best Overall (Agent), shown when a compared platform sells the model with general access. Added Claude Opus 4.7 and Opus 4.6 (Databricks, Bedrock, Vertex, Azure Foundry) and Qwen3.8 Flash (Alibaba Cloud; arena: Qwen3.8 Flash Next); Claude Haiku 5.5 is #30, with a 1M context billed at 5x over 100K prompt tokens on every platform and US-only inference on the Claude API.",
         "2026-10-09: GPT-6.1 Sol adds Ultrafast ($12 / $60, 6x Standard; US / EU residency +10%); Fast mode now supports EU residency for GPT-6.1 Sol, GPT-6 Sol and GPT-6 Luna; Bedrock adds GPT-6.1 Sol Ultrafast ($12 / $60 Global CRIS, $13.20 / $66 US CRIS and in-region) and AU CRIS (Sydney, Melbourne) for Claude Sonnet 5.5; Alibaba adds a US scope for Qwen3.8 Max in US (Virginia) ($2 / $6); Databricks prices Claude Haiku 5.5 ($0.10 / $0.50).",
