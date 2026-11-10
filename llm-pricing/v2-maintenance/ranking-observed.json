@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "checked_at": "2026-11-09",
+ "checked_at": "2026-11-11",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
- "published_at": "2026-11-06",
+ "published_at": "2026-11-09",
  "board_id": "webdev",
  "entries": [
   {
@@ -17,13 +17,13 @@
   },
   {
    "rank": 3,
-   "modelDisplayName": "GPT-6 Astra (Max)",
-   "modelOrganization": "openai"
+   "modelDisplayName": "Gemini 4 Carbon (High)",
+   "modelOrganization": "google"
   },
   {
    "rank": 4,
-   "modelDisplayName": "Gemini 4 Carbon (High)",
-   "modelOrganization": "google"
+   "modelDisplayName": "GPT-6 Astra (Max)",
+   "modelOrganization": "openai"
   },
   {
    "rank": 5,
@@ -87,13 +87,13 @@
   },
   {
    "rank": 17,
-   "modelDisplayName": "Claude Opus 5 (High)",
-   "modelOrganization": "anthropic"
+   "modelDisplayName": "Kimi K3 (Max)",
+   "modelOrganization": "moonshot"
   },
   {
    "rank": 18,
-   "modelDisplayName": "Kimi K3 (Max)",
-   "modelOrganization": "moonshot"
+   "modelDisplayName": "Claude Opus 5 (High)",
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 19,
@@ -127,13 +127,13 @@
   },
   {
    "rank": 25,
-   "modelDisplayName": "Qwen3.8-Flash-Next",
-   "modelOrganization": "alibaba"
+   "modelDisplayName": "Claude Fable 5 (High)",
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 26,
-   "modelDisplayName": "Claude Fable 5 (High)",
-   "modelOrganization": "anthropic"
+   "modelDisplayName": "Qwen3.8-Flash-Next",
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 27,
@@ -172,33 +172,33 @@
   },
   {
    "rank": 34,
+   "modelDisplayName": "Muse Ember (Max)",
+   "modelOrganization": "meta"
+  },
+  {
+   "rank": 35,
    "modelDisplayName": "GLM-5.2 (Max)",
    "modelOrganization": "zai"
   },
   {
-   "rank": 35,
+   "rank": 36,
    "modelDisplayName": "Claude Haiku 5.5 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 36,
+   "rank": 37,
    "modelDisplayName": "Qwen3.8-27B",
    "modelOrganization": "alibaba"
   },
   {
-   "rank": 37,
+   "rank": 38,
    "modelDisplayName": "Gemini 3.7 Flash (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 38,
+   "rank": 39,
    "modelDisplayName": "Gemini 3.8 Flash (High)",
    "modelOrganization": "google"
-  },
-  {
-   "rank": 39,
-   "modelDisplayName": "MiniMax-M3.1-Flash",
-   "modelOrganization": "minimax"
   },
   {
    "rank": 40,
@@ -207,53 +207,53 @@
   },
   {
    "rank": 41,
+   "modelDisplayName": "MiniMax-M3.1-Flash",
+   "modelOrganization": "minimax"
+  },
+  {
+   "rank": 42,
    "modelDisplayName": "DeepSeek-V4-Pro (High, 20260813)",
    "modelOrganization": "deepseek"
   },
   {
-   "rank": 42,
+   "rank": 43,
    "modelDisplayName": "GPT-6 Luna (Max)",
    "modelOrganization": "openai"
   },
   {
-   "rank": 43,
+   "rank": 44,
    "modelDisplayName": "Step 5 Preview (High)",
    "modelOrganization": "stepfun"
   },
   {
-   "rank": 44,
+   "rank": 45,
    "modelDisplayName": "Mistral Large 4",
    "modelOrganization": "mistral"
   },
   {
-   "rank": 45,
+   "rank": 46,
    "modelDisplayName": "Claude Opus 4.7 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 46,
+   "rank": 47,
    "modelDisplayName": "Claude Opus 4.8 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 47,
+   "rank": 48,
    "modelDisplayName": "Claude Opus 4.7",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 48,
+   "rank": 49,
    "modelDisplayName": "Grok 4.5",
    "modelOrganization": "xai"
   },
   {
-   "rank": 49,
+   "rank": 50,
    "modelDisplayName": "Claude Opus 4.6 (High)",
    "modelOrganization": "anthropic"
-  },
-  {
-   "rank": 50,
-   "modelDisplayName": "Muse Spark 1.1",
-   "modelOrganization": "meta"
   }
  ]
 }

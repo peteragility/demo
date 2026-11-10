@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-11-08",
+ "ranked_at": "2026-11-11",
  "top": 50,
  "entries": 50,
  "models": {
@@ -16,7 +16,7 @@
    "arena": "Claude Sonnet 5.5 (xHigh)"
   },
   "openai/gpt-6-astra": {
-   "rank": 3,
+   "rank": 4,
    "arena": "GPT-6 Astra (Max)"
   },
   "anthropic/claude-fable-5.1": {
@@ -56,7 +56,7 @@
    "arena": "DeepSeek-V4.1-Flash-20261017 (Max)"
   },
   "moonshot/kimi-k3": {
-   "rank": 18,
+   "rank": 17,
    "arena": "Kimi K3 (Max)"
   },
   "tml/inkling": {
@@ -67,13 +67,13 @@
    "rank": 22,
    "arena": "Grok 4.7 (xHigh)"
   },
-  "qwen/qwen3.8-flash": {
-   "rank": 25,
-   "arena": "Qwen3.8-Flash-Next"
-  },
   "anthropic/claude-fable-5": {
-   "rank": 26,
+   "rank": 25,
    "arena": "Claude Fable 5 (High)"
+  },
+  "qwen/qwen3.8-flash": {
+   "rank": 26,
+   "arena": "Qwen3.8-Flash-Next"
   },
   "zai/glm-5.3": {
    "rank": 28,
@@ -92,51 +92,51 @@
    "arena": "GLM-5.3-Flash"
   },
   "zai/glm-5.2": {
-   "rank": 34,
+   "rank": 35,
    "arena": "GLM-5.2 (Max)"
   },
   "anthropic/claude-haiku-5.5": {
-   "rank": 35,
+   "rank": 36,
    "arena": "Claude Haiku 5.5 (High)"
   },
   "qwen/qwen3.8-27b": {
-   "rank": 36,
+   "rank": 37,
    "arena": "Qwen3.8-27B"
   },
   "google/gemini-3.7-flash": {
-   "rank": 37,
+   "rank": 38,
    "arena": "Gemini 3.7 Flash (High)"
   },
   "google/gemini-3.8-flash": {
-   "rank": 38,
-   "arena": "Gemini 3.8 Flash (High)"
-  },
-  "minimax/minimax-m3": {
    "rank": 39,
-   "arena": "MiniMax-M3.1-Flash"
+   "arena": "Gemini 3.8 Flash (High)"
   },
   "deepseek/deepseek-v4-flash": {
    "rank": 40,
    "arena": "DeepSeek-V4-Flash (High)"
   },
-  "deepseek/deepseek-v4-pro": {
+  "minimax/minimax-m3": {
    "rank": 41,
+   "arena": "MiniMax-M3.1-Flash"
+  },
+  "deepseek/deepseek-v4-pro": {
+   "rank": 42,
    "arena": "DeepSeek-V4-Pro (High, 20260813)"
   },
   "openai/gpt-6-luna": {
-   "rank": 42,
+   "rank": 43,
    "arena": "GPT-6 Luna (Max)"
   },
   "anthropic/claude-opus-4.7": {
-   "rank": 45,
+   "rank": 46,
    "arena": "Claude Opus 4.7 (High)"
   },
   "anthropic/claude-opus-4.8": {
-   "rank": 46,
+   "rank": 47,
    "arena": "Claude Opus 4.8 (High)"
   },
   "anthropic/claude-opus-4.6": {
-   "rank": 49,
+   "rank": 50,
    "arena": "Claude Opus 4.6 (High)"
   }
  }
