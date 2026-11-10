@@ -1,34 +1,23 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-10",
+  "checkedAt": "2026-11-11",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-10",
-      "lastSuccess": "2026-11-10",
+      "checkedAt": "2026-11-11",
+      "lastSuccess": "2026-11-11",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-10",
-      "lastSuccess": "2026-11-10",
+      "checkedAt": "2026-11-11",
+      "lastSuccess": "2026-11-11",
       "errors": 0,
-      "review": 1,
+      "review": 0,
       "sources": 10,
-      "status": "review"
+      "status": "ok"
     }
   },
-  "findings": [
-    {
-      "id": "sandbox-e2b",
-      "url": "https://e2b.dev/",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 1d62b2b11b0d9fdccbd2dc2beea403ea938b95b26762d95cfb00645733ae7986",
-        "Added record: 7782bc17f796bf22342925e824ea76d8784544be3dceb693f7358138735380bd: 10 concurrent sandboxes"
-      ]
-    }
-  ]
+  "findings": []
 }
