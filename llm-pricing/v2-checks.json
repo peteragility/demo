@@ -123,292 +123,7 @@
   "aws-card-gpt-6-1-terra": "2026-11-11",
   "vertex-partner-pricing": "2026-11-11"
  },
- "pending_general": [
-  {
-   "source": "openai-pricing",
-   "url": "https://developers.openai.com/api/docs/pricing.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "item: {\"heading\":\"Grouped Pricing Table data\",\"text\":\"[Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/)\"}",
-    "item: {\"heading\":\"Grouped Pricing Table data\",\"text\":\"[Microsoft Azure pricing](https://azure.microsoft.com/en-us/pricing/details/azure-openai/)\"}",
-    "notice: Fine-tuned models remain available for inference until their base models are deprecated.",
-    "notice: [Deprecation timeline](https://developers.openai.com/api/docs/deprecations#update-to-openais-self-serve-fine-tuning).",
-    "table: {\"cells\":[\"Agent Kit\",\"ChatKit file and image upload storage\",\"$0.10 / GB-day 1 GB free\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Category\",\"Model\",\"Input\",\"Output\",\"Cached input\",\"30m write\",\"12h write\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"ChatGPT\",\"chat-latest\",\"$5.00\",\"$30.00\",\"$0.50\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Containers\",\"Hosted Shell and Code Interpreter\",\"1 GB $0.03, 4 GB $0.12, 16 GB $0.48, 64 GB $1.92 per 20-minute session per container\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-large\",\"$0.13\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-small\",\"$0.02\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-ada-002\",\"$0.10\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"File search\",\"Storage\",\"$0.10 / GB per day 1 GB free\"],\"heading\":\"Grouped Pricing Table data\"}"
-   ],
-   "removed": [
-    "item: {\"heading\":\"Pricing Table data\",\"text\":\"See [Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/).\"}",
-    "item: {\"heading\":\"Pricing Table data\",\"text\":\"See [Microsoft Azure pricing](https://azure.microsoft.com/en-us/pricing/details/azure-openai/).\"}",
-    "notice: Inference discounts are available if you enable data sharing when creating the fine-tune job. Learn more.",
-    "notice: [here](https://developers.openai.com/api/docs/deprecations#update-to-openais-self-serve-fine-tuning).",
-    "notice: models are deprecated. The full timeline is",
-    "table: {\"cells\":[\"Agent Kit\",\"ChatKit file and image upload storage\",\"$0.10 / GB-day after 1 GB free per account per month\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"ChatGPT\",\"chat-latest\",\"$5.00\",\"$30.00\",\"$0.50\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Containers\",\"Hosted Shell and Code Interpreter\",\"1 GB $0.03, 4 GB $0.12, 16 GB $0.48, 64 GB $1.92 per 20-minute session per container.\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-large\",\"$0.13\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-small\",\"$0.02\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-ada-002\",\"$0.10\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"File search\",\"Storage\",\"$0.10 / GB per day (1 GB free)\"],\"heading\":\"Grouped Pricing Table data\"}"
-   ],
-   "added_all": [
-    "item: {\"heading\":\"Grouped Pricing Table data\",\"text\":\"[Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/)\"}",
-    "item: {\"heading\":\"Grouped Pricing Table data\",\"text\":\"[Microsoft Azure pricing](https://azure.microsoft.com/en-us/pricing/details/azure-openai/)\"}",
-    "notice: Fine-tuned models remain available for inference until their base models are deprecated.",
-    "notice: [Deprecation timeline](https://developers.openai.com/api/docs/deprecations#update-to-openais-self-serve-fine-tuning).",
-    "table: {\"cells\":[\"Agent Kit\",\"ChatKit file and image upload storage\",\"$0.10 / GB-day 1 GB free\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Category\",\"Model\",\"Input\",\"Output\",\"Cached input\",\"30m write\",\"12h write\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"ChatGPT\",\"chat-latest\",\"$5.00\",\"$30.00\",\"$0.50\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Containers\",\"Hosted Shell and Code Interpreter\",\"1 GB $0.03, 4 GB $0.12, 16 GB $0.48, 64 GB $1.92 per 20-minute session per container\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-large\",\"$0.13\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-small\",\"$0.02\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-ada-002\",\"$0.10\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"File search\",\"Storage\",\"$0.10 / GB per day 1 GB free\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Life Sciences — Trusted Access: [Rosalind](https://help.openai.com/en/articles/20001193-gpt-rosalind-for-life-sciences-research)\",\"gpt-rosalind-discovery (long context)\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Life Sciences — Trusted Access: [Rosalind](https://help.openai.com/en/articles/20001193-gpt-rosalind-for-life-sciences-research)\",\"gpt-rosalind-discovery (short context)\",\"$5.00\",\"$25.00\",\"$0.50\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Life Sciences — Trusted Access: [Rosalind](https://help.openai.com/en/articles/20001193-gpt-rosalind-for-life-sciences-research)\",\"gpt-rosalind-research (long context)\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Life Sciences — Trusted Access: [Rosalind](https://help.openai.com/en/articles/20001193-gpt-rosalind-for-life-sciences-research)\",\"gpt-rosalind-research (short context)\",\"$5.00\",\"$25.00\",\"$0.50\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Moderation\",\"omni-moderation-latest\",\"Free\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Web search\",\"Web search (incl. images)\",\"$10.00 / 1k calls + Search content tokens billed at model rates.\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Web search\",\"Web search preview (other models)\",\"$25.00 / 1k calls + Search content tokens are free.\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Web search\",\"Web search preview (reasoning models)\",\"$10.00 / 1k calls + Search content tokens billed at model rates.\"],\"heading\":\"Grouped Pricing Table data\"}"
-   ],
-   "removed_all": [
-    "item: {\"heading\":\"Pricing Table data\",\"text\":\"See [Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/).\"}",
-    "item: {\"heading\":\"Pricing Table data\",\"text\":\"See [Microsoft Azure pricing](https://azure.microsoft.com/en-us/pricing/details/azure-openai/).\"}",
-    "notice: Inference discounts are available if you enable data sharing when creating the fine-tune job. Learn more.",
-    "notice: [here](https://developers.openai.com/api/docs/deprecations#update-to-openais-self-serve-fine-tuning).",
-    "notice: models are deprecated. The full timeline is",
-    "table: {\"cells\":[\"Agent Kit\",\"ChatKit file and image upload storage\",\"$0.10 / GB-day after 1 GB free per account per month\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"ChatGPT\",\"chat-latest\",\"$5.00\",\"$30.00\",\"$0.50\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Containers\",\"Hosted Shell and Code Interpreter\",\"1 GB $0.03, 4 GB $0.12, 16 GB $0.48, 64 GB $1.92 per 20-minute session per container.\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-large\",\"$0.13\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-3-small\",\"$0.02\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Embedding\",\"text-embedding-ada-002\",\"$0.10\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"File search\",\"Storage\",\"$0.10 / GB per day (1 GB free)\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Model configuration\",\"Input\",\"Output\",\"Cached input\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Model\",\"Modality\",\"Input\",\"Output / cost\",\"Cached input\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Moderation\",\"omni-moderation-latest\",\"Free\",\"-\",\"-\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Web search\",\"Image Web search (all models)\",\"$10.00 / 1k calls + Search content tokens billed at model rates.\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Web search\",\"Web search (all models)\",\"$10.00 / 1k calls + Search content tokens billed at model rates.\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"Web search\",\"Web search preview (non-reasoning models)\",\"$25.00 / 1k calls + Search content tokens are free.\"],\"heading\":\"Grouped Pricing Table data\"}",
-    "table: {\"cells\":[\"gpt-rosalind-discovery\",\"$5.00\",\"$25.00\",\"$0.50\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Standard pricing data\"}",
-    "table: {\"cells\":[\"gpt-rosalind-research\",\"$5.00\",\"$25.00\",\"$0.50\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\",\"-\"],\"heading\":\"Standard pricing data\"}"
-   ],
-   "baseline_digest": "476c47bdca66aeacab050b9e2785377b89e247dd69ce0a31e108cdf46c1f8753"
-  },
-  {
-   "source": "anthropic-models",
-   "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a date changed",
-   "added": [
-    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Compare models \"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Comparative latency\",\"Slower\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Pricing\",\"$10 / input MTok $50 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than September 1, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Compare models \"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Compare models \"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Comparative latency\",\"Slower\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Pricing\",\"$10 / input MTok $50 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Compare models \"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than September 1, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Compare models \"}"
-   ],
-   "baseline_digest": "934399e3d4239f3015bc2f1551ad0d082646a3e9a1f9d8f4413f63fe945c4953"
-  },
-  {
-   "source": "azure-partners",
-   "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners",
-   "risk": "high",
-   "reason": "a date changed",
-   "added": [
-    "text: Last updated on 2026-09-22"
-   ],
-   "removed": [
-    "text: Last updated on 2026-09-21"
-   ],
-   "added_all": [
-    "text: Last updated on 2026-09-22"
-   ],
-   "removed_all": [
-    "text: Last updated on 2026-09-21"
-   ],
-   "baseline_digest": "08bc848a0dc46fdcf1d4455a5156e365425eb8d0c66d55d9c66484748b45c6d3"
-  },
-  {
-   "source": "minimax-pricing",
-   "url": "https://platform.minimax.io/docs/pricing/overview",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Audio Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.02654\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.04525\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.02658\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.04576\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.07312 $0.03656 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.13673 $0.06837 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}"
-   ],
-   "removed": [
-    "notice: What happens to unused video points when my package expires?",
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month; video points\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models; Hailuo video models\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio · View Video\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio or Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Included points\",\"Audio points per month\",\"Video points\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Image\"}",
-    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\",\"1 month for all four standard packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Supported APIs\",\"T2A v2 and T2A large v2\",\"Video Generation API\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Audio Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.02654\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.04525\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.02658\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.04576\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.07312 $0.03656 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.13673 $0.06837 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.03563\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.06037\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.04177\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.06069\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.07914 $0.03957 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.15407 $0.07703 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Included points\",\"Audio points per month\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Model\",\"Input $ / M tokens\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"Model\",\"Input Text $ / M tokens\",\"Input Image $ / M tokens\",\"Output Image $ / M tokens\"],\"heading\":\"​ Image / ​ Image Generation\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Supported APIs\",\"T2A v2 and T2A large v2\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Supported models\",\"All speech models\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Task\",\"Input image (each)\",\"Output image\",\"Example total cost $ / image\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"1K (1024 × 1024)\",\"$0.02179\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"1K (1024 × 1024)\",\"$0.03529\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"2K (2048 × 2048)\",\"$0.02333\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"2K (2048 × 2048)\",\"$0.03622\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"4K (4096 × 4096)\",\"$0.06879 $0.03439 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"4K (4096 × 4096)\",\"$0.13001 $0.06501 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech workloads where you expect to use the included audio points.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"image-01 image-01-live\",\"$0.0035 per image\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "text: Which models can I use with Audio Packages?"
-   ],
-   "removed_all": [
-    "notice: What happens to unused video points when my package expires?",
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month; video points\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models; Hailuo video models\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio · View Video\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio or Video Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Included points\",\"Audio points per month\",\"Video points\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Image\"}",
-    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\",\"1 month for all four standard packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio\",\"Video\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Supported APIs\",\"T2A v2 and T2A large v2\",\"Video Generation API\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech or video workloads where you expect to make good use of the included points.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"image-01\",\"$0.0035 per image\"],\"heading\":\"​ Image\"}",
-    "text: Audio points: Starter, Standard, Pro, Scale, and Business each include a monthly allowance of audio points. The allowance varies by plan. See the Audio package pricing table for included points, voice slots, and rate limits.",
-    "text: Failed video tasks: No points are deducted when video generation fails or a video triggers a security review.",
-    "text: Video points: Points used depend on the model, resolution, and video duration. One point does not equal one video. See the video point deduction rules.",
-    "text: What happens to unused video points when my package expires?",
-    "text: Which models can I use with packages?"
-   ],
-   "baseline_digest": "37194d6f5543bec65bb69e182f30cbf6d40a9b27ee54c4f95bc6ac1fa5284aee"
-  },
-  {
-   "source": "api-west-openai-your-data",
-   "url": "https://developers.openai.com/api/docs/guides/your-data.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [],
-   "removed": [
-    "table: {\"cells\":[\"Australia\\\\*\",\"`au.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"India\\\\*\",\"`in.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Japan\\\\*\",\"`jp.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}"
-   ],
-   "added_all": [],
-   "removed_all": [
-    "table: {\"cells\":[\"Australia\\\\*\",\"`au.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"India\\\\*\",\"`in.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Japan\\\\*\",\"`jp.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}"
-   ],
-   "baseline_digest": "05c478c331e4c0b786609bca7bd5732cf6499df6cb969ff2f78f03d3c15ddb9d"
-  },
-  {
-   "source": "az-learn-fireworks",
-   "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/fireworks-model-catalog",
-   "risk": "high",
-   "reason": "a date changed",
-   "added": [
-    "notice: Retirement dates in this table apply only to pay-per-token deployments. The recommended replacements reflect model performance and pricing, but you can choose any available model or continue using the retiring model with provisioned throughput, depending on your requirements.",
-    "text: Last updated on 2026-11-09",
-    "text: Retirement dates in this table apply only to pay-per-token deployments. The recommended replacements reflect model performance and pricing, but you can choose any available model or continue using the retiring model with provisioned throughput, depending on your requirements."
-   ],
-   "removed": [
-    "notice: Retirement dates in this table apply only to pay-per-token deployments. A model can remain available with provisioned throughput after its pay-per-token offering retires.",
-    "text: Last updated on 2026-10-14",
-    "text: Retirement dates in this table apply only to pay-per-token deployments. A model can remain available with provisioned throughput after its pay-per-token offering retires."
-   ],
-   "added_all": [
-    "notice: Retirement dates in this table apply only to pay-per-token deployments. The recommended replacements reflect model performance and pricing, but you can choose any available model or continue using the retiring model with provisioned throughput, depending on your requirements.",
-    "text: Last updated on 2026-11-09",
-    "text: Retirement dates in this table apply only to pay-per-token deployments. The recommended replacements reflect model performance and pricing, but you can choose any available model or continue using the retiring model with provisioned throughput, depending on your requirements."
-   ],
-   "removed_all": [
-    "notice: Retirement dates in this table apply only to pay-per-token deployments. A model can remain available with provisioned throughput after its pay-per-token offering retires.",
-    "text: Last updated on 2026-10-14",
-    "text: Retirement dates in this table apply only to pay-per-token deployments. A model can remain available with provisioned throughput after its pay-per-token offering retires."
-   ],
-   "baseline_digest": "67c1860307c34210c66aee62d74fc931cd350699274d8c068b1b1e862911082f"
-  },
-  {
-   "source": "az-learn-partners",
-   "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-from-partners",
-   "risk": "high",
-   "reason": "a date changed",
-   "added": [
-    "text: Last updated on 2026-09-22"
-   ],
-   "removed": [
-    "text: Last updated on 2026-09-21"
-   ],
-   "added_all": [
-    "text: Last updated on 2026-09-22"
-   ],
-   "removed_all": [
-    "text: Last updated on 2026-09-21"
-   ],
-   "baseline_digest": "08bc848a0dc46fdcf1d4455a5156e365425eb8d0c66d55d9c66484748b45c6d3"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-11-11",
@@ -418,54 +133,17 @@
   "published_at": "2026-11-09"
  },
  "databricks_coverage": [],
- "review": [
-  "Claude Fable 5.1 · azure_foundry",
-  "Claude Fable 5.1 · gcloud",
-  "Claude Fable 5.1 · official",
-  "Claude Fable 5 · gcloud",
-  "Claude Haiku 5.5 · gcloud",
-  "Claude Opus 4.6 · gcloud",
-  "Claude Opus 4.7 · gcloud",
-  "Claude Opus 4.8 · gcloud",
-  "Claude Opus 5.5 · azure_foundry",
-  "Claude Opus 5.5 · gcloud",
-  "Claude Opus 5.5 · official",
-  "Claude Opus 5 · gcloud",
-  "Claude Sonnet 5.5 · azure_foundry",
-  "Claude Sonnet 5.5 · gcloud",
-  "Claude Sonnet 5.5 · official",
-  "DeepSeek V4.1 Flash · azure_foundry",
-  "DeepSeek V4.1 Flash · gcloud",
-  "MiniMax M3 · azure_foundry",
-  "GPT-6 Luna · official",
-  "Inkling · official",
-  "Grok 4.6 · gcloud",
-  "Grok 4.7 · gcloud",
-  "GLM 5.2 · databricks",
-  "GLM 5.2 · gcloud",
-  "GLM 5.3 Flash · azure_foundry"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "az-learn-partners",
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-fable-5-1"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5.1|databricks": {
    "verified": "2026-11-11"
@@ -474,34 +152,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-fable-5"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5|databricks": {
    "verified": "2026-11-11"
@@ -510,26 +173,16 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-4.5|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-4.5|bedrock": {
    "verified": "2026-11-11"
@@ -541,32 +194,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-5.5|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-5.5|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-5.5|bedrock": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-5.5|databricks": {
    "verified": "2026-11-11"
@@ -575,35 +215,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ],
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.6|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.6|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-opus-4-6"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.6|databricks": {
    "verified": "2026-11-11"
@@ -612,32 +236,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.7|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.7|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-opus-4-7"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.7|databricks": {
    "verified": "2026-11-11"
@@ -646,33 +257,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "anthropic-pricing",
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.8|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.8|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-opus-4-8"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.8|databricks": {
    "verified": "2026-11-11"
@@ -681,38 +278,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "api-west-anthropic-pricing",
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "az-learn-partners",
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-opus-5-5"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5.5|databricks": {
    "verified": "2026-11-11"
@@ -721,35 +299,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-partners",
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-opus-5"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5|databricks": {
    "verified": "2026-11-11"
@@ -758,27 +320,16 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "api-west-anthropic-pricing",
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-4.6|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-4.6|bedrock": {
    "verified": "2026-11-11"
@@ -790,38 +341,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-models",
-    "az-learn-partners",
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
    "verified": "2026-11-11"
@@ -830,41 +362,19 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ],
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "anthropic-pricing",
-    "api-west-anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5|alicloud": {
    "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-partners",
-    "azure-partners"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5|bedrock": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "aws-card-claude-sonnet-5"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5|databricks": {
    "verified": "2026-11-11"
@@ -873,17 +383,10 @@
    "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "api-west-anthropic-residency"
-   ]
+   "verified": "2026-11-11"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
    "verified": "2026-11-11"
@@ -900,10 +403,7 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true,
-   "unchecked": [
-    "dbx-models"
-   ]
+   "quiet": true
   },
   "deepseek/deepseek-v4-flash|fireworks": {
    "verified": "2026-11-11"
@@ -915,10 +415,7 @@
    "verified": "2026-11-11"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-11-11"
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-11-11"
@@ -929,10 +426,7 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true,
-   "unchecked": [
-    "dbx-models"
-   ]
+   "quiet": true
   },
   "deepseek/deepseek-v4-pro|fireworks": {
    "verified": "2026-11-11"
@@ -944,14 +438,7 @@
    "verified": "2026-11-11"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-11-11"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
    "verified": "2026-11-11"
@@ -968,11 +455,7 @@
    "verified": "2026-11-11"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "deepseek/deepseek-v4.1-flash|official": {
    "verified": "2026-11-11"
@@ -1014,16 +497,10 @@
    "verified": "2026-11-11"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "gcp-locations"
-   ]
+   "verified": "2026-11-11"
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
    "verified": "2026-11-11"
@@ -1086,10 +563,7 @@
    "verified": "2026-11-11"
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "google/gemini-3.8-flash|alicloud": {
    "verified": "2026-11-11"
@@ -1107,12 +581,7 @@
    "verified": "2026-11-11"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "gcp-gemini-3-8-flash"
-   ],
-   "quiet": true
+   "verified": "2026-11-11"
   },
   "google/gemini-3.8-flash|official": {
    "verified": "2026-11-11"
@@ -1136,10 +605,28 @@
    "verified": "2026-11-11"
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-11-11",
-   "accepted": [
-    "api-google-gemini-4-argon"
-   ]
+   "verified": "2026-11-11"
+  },
+  "google/gemini-4-carbon|alicloud": {
+   "verified": "2026-11-11"
+  },
+  "google/gemini-4-carbon|azure_foundry": {
+   "verified": "2026-11-11"
+  },
+  "google/gemini-4-carbon|bedrock": {
+   "verified": "2026-11-11"
+  },
+  "google/gemini-4-carbon|databricks": {
+   "verified": "2026-11-11"
+  },
+  "google/gemini-4-carbon|fireworks": {
+   "verified": "2026-11-11"
+  },
+  "google/gemini-4-carbon|gcloud": {
+   "verified": "2026-11-11"
+  },
+  "google/gemini-4-carbon|official": {
+   "verified": "2026-11-11"
   },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-11-11"
@@ -1178,11 +665,7 @@
    "verified": "2026-11-11"
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "meta/llama-4-maverick|alicloud": {
    "verified": "2026-11-11"
@@ -1191,33 +674,64 @@
    "verified": "2026-11-11"
   },
   "meta/llama-4-maverick|bedrock": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "aws-model-cards"
-   ]
+   "verified": "2026-11-11"
   },
   "meta/llama-4-maverick|databricks": {
    "verified": "2026-11-11"
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
+  },
+  "meta/muse-ember|alicloud": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-ember|azure_foundry": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-ember|bedrock": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-ember|databricks": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-ember|fireworks": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-spark-1.3|alicloud": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-spark-1.3|azure_foundry": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-spark-1.3|bedrock": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-spark-1.3|databricks": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-spark-1.3|fireworks": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-wonder|alicloud": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-wonder|azure_foundry": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-wonder|bedrock": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-wonder|databricks": {
+   "verified": "2026-11-11"
+  },
+  "meta/muse-wonder|fireworks": {
+   "verified": "2026-11-11"
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-11-11"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-11-11"
   },
   "minimax/minimax-m3|bedrock": {
    "verified": "2026-11-11"
@@ -1229,10 +743,7 @@
    "verified": "2026-11-11"
   },
   "minimax/minimax-m3|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "minimax-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "mistral/mistral-medium-3.5|alicloud": {
    "verified": "2026-11-11"
@@ -1262,10 +773,7 @@
    "verified": "2026-11-11"
   },
   "moonshot/kimi-k2.7|databricks": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "dbx-retirement"
-   ]
+   "verified": "2026-11-11"
   },
   "moonshot/kimi-k2.7|fireworks": {
    "verified": "2026-11-11"
@@ -1295,10 +803,7 @@
    "verified": "2026-11-11"
   },
   "moonshot/kimi-k3|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-11-11"
   },
   "moonshot/kimi-k3|bedrock": {
    "verified": "2026-11-11"
@@ -1328,11 +833,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-5.4|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-5.5|alicloud": {
    "verified": "2026-11-11"
@@ -1350,11 +851,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-5.5|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-5.6-luna|alicloud": {
    "verified": "2026-11-11"
@@ -1372,11 +869,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-5.6-luna|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-5.6-sol|alicloud": {
    "verified": "2026-11-11"
@@ -1394,11 +887,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-5.6-sol|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-5.6-terra|alicloud": {
    "verified": "2026-11-11"
@@ -1416,11 +905,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-5.6-terra|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-6-astra|alicloud": {
    "verified": "2026-11-11"
@@ -1438,11 +923,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-6-astra|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-6-luna|alicloud": {
    "verified": "2026-11-11"
@@ -1460,15 +941,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-6-luna|official": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-6-sol|alicloud": {
    "verified": "2026-11-11"
@@ -1486,11 +959,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-6-sol|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-6.1-sol|alicloud": {
    "verified": "2026-11-11"
@@ -1508,11 +977,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-6.1-sol|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "api-west-openai-your-data",
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-6.1-terra|alicloud": {
    "verified": "2026-11-11"
@@ -1530,10 +995,7 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-6.1-terra|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-oss-120b|alicloud": {
    "verified": "2026-11-11"
@@ -1551,17 +1013,10 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-oss-120b|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-oss-20b|alicloud": {
    "verified": "2026-11-11"
@@ -1576,17 +1031,10 @@
    "verified": "2026-11-11"
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "openai/gpt-oss-20b|official": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "openai-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
    "verified": "2026-11-11"
@@ -1601,11 +1049,7 @@
    "verified": "2026-11-11"
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "qwen/qwen3-next-80b-instruct|official": {
    "verified": "2026-11-11"
@@ -1620,10 +1064,7 @@
    "verified": "2026-11-11"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "dbx-models"
-   ]
+   "verified": "2026-11-11"
   },
   "qwen/qwen3.5-122b|official": {
    "verified": "2026-11-11"
@@ -1733,21 +1174,13 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true,
-   "unchecked": [
-    "dbx-models"
-   ]
+   "quiet": true
   },
   "tml/inkling|fireworks": {
    "verified": "2026-11-11"
   },
   "tml/inkling|official": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "api-other-tml-serverless-json",
-    "api-other-tml-tinker-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "xai/grok-4.6|alicloud": {
    "verified": "2026-11-11"
@@ -1762,11 +1195,7 @@
    "verified": "2026-11-11"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "xai/grok-4.6|official": {
    "verified": "2026-11-11"
@@ -1784,11 +1213,7 @@
    "verified": "2026-11-11"
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "xai/grok-4.7|official": {
    "verified": "2026-11-11"
@@ -1797,31 +1222,19 @@
    "verified": "2026-11-11"
   },
   "zai/glm-5.2|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-11-11"
   },
   "zai/glm-5.2|bedrock": {
    "verified": "2026-11-11"
   },
   "zai/glm-5.2|databricks": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "dbx-models"
-   ]
+   "verified": "2026-11-11"
   },
   "zai/glm-5.2|fireworks": {
    "verified": "2026-11-11"
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "gcp-glm-5-2",
-    "vertex-partner-pricing"
-   ]
+   "verified": "2026-11-11"
   },
   "zai/glm-5.2|official": {
    "verified": "2026-11-11"
@@ -1830,14 +1243,7 @@
    "verified": "2026-11-11"
   },
   "zai/glm-5.3-flash|azure_foundry": {
-   "verified": "2026-11-09",
-   "changed_at": "2026-11-11",
-   "sources": [
-    "az-learn-fireworks"
-   ],
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-11-11"
   },
   "zai/glm-5.3-flash|bedrock": {
    "verified": "2026-11-11"
@@ -1855,10 +1261,7 @@
    "verified": "2026-11-11"
   },
   "zai/glm-5.3|azure_foundry": {
-   "verified": "2026-11-09",
-   "unchecked": [
-    "az-learn-fireworks"
-   ]
+   "verified": "2026-11-11"
   },
   "zai/glm-5.3|bedrock": {
    "verified": "2026-11-11"
