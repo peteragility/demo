@@ -245,7 +245,6 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
       <div class="fi"><label for="syncDbu">Sync pipeline size (DBU/hour)</label><input type="number" id="syncDbu" min="0.5" max="100" step="0.5" value="2"><div class="h">Assumption; measure yours in system.billing.usage</div></div>
       <div class="fi chks">
         <label class="ck"><input type="checkbox" id="promo"><span id="promoLbl">Lakebase 50% compute promotion (public Databricks offer, ends 31 Jan 2027)</span></label>
-        <label class="ck"><input type="checkbox" id="chBeta"><span>ClickHouse Postgres Beta 50% discount (ends 9 Nov 2026 on AWS)</span></label>
         <label class="ck"><input type="checkbox" id="azsqlAhb"><span>Azure SQL: Hybrid Benefit (customer brings SQL Server licenses)</span></label>
       </div>
     </div></details>
@@ -259,7 +258,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <div class="tblwrap"><table class="mx tech">
     <thead><tr><th scope="col">Capability</th><th scope="col" class="lb">Lakebase</th><th scope="col">Aurora PG</th><th scope="col">Aurora Serverless v2</th><th scope="col">RDS PG</th><th scope="col">Azure PG Flexible</th><th scope="col">Azure SQL Database</th><th scope="col">Cloud SQL PG</th><th scope="col">ClickHouse Postgres</th></tr></thead>
     <tbody>
-    <tr><td>Engine</td><td class="lb"><span data-fact="table.engine">Postgres 16–18</span></td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres (Beta) + pg_clickhouse</td></tr>
+    <tr><td>Engine</td><td class="lb"><span data-fact="table.engine">Postgres 16–18</span></td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>Postgres</td><td>SQL Server (T-SQL)</td><td>Postgres</td><td>Postgres + pg_clickhouse</td></tr>
     <tr><td>Billing unit</td><td class="lb"><span data-fact="table.billing">CU-hours (≈2 GB RAM + CPU + local SSD) · storage per GB-mo</span></td><td>Instance-hrs + storage (+ I/O on Standard)</td><td>ACU-hrs (≈2 GiB) + storage (+ I/O on Standard)</td><td>Instance-hrs + provisioned GB/IOPS</td><td>vCore-hrs + provisioned storage</td><td>vCore-hrs incl. SQL license (or Hybrid Benefit) · serverless per vCore-second</td><td>vCPU-hrs + GiB-hrs + provisioned SSD</td><td>Per instance-hour: CPU + RAM + local NVMe bundled (Basic / Scale / Enterprise tiers)</td></tr>
     <tr><td>Size range</td><td class="lb"><span data-fact="table.sizes">0.5 CU, then integers · autoscale to 64 CU (max−min ≤16); fixed to 112 CU</span></td><td>t4g.medium → r8g.48xlarge (192 vCPU / 1.5 TiB)</td><td>0–256 ACU on supported engine/platform versions; older versions have lower limits</td><td>t4g → r8g.48xlarge</td><td>Burstable → 192 vCores on v6; model prices v5 to 96</td><td>Priced GP standard: 2–80 vCores (~5.2 GB/vCore) · serverless min/max depends on SKU</td><td>Enterprise custom: 1 or even 2–96 vCPU / 3.75–624 GiB; Plus N2 to 128 / 864</td><td>1 vCPU / 8 GB / 59 GB → 96 vCPU / 768 GB / 60 TB</td></tr>
     <tr><td>Autoscaling</td><td class="lb"><span data-fact="table.autoscale">Within configured range: no restart; changing min/max may interrupt connections</span></td><td>No</td><td>Yes</td><td>Storage autogrow; manual compute resize</td><td>Manual compute resize; storage autogrow depends on disk type</td><td>Serverless compute</td><td>Storage autogrow; manual compute resize</td><td>Storage autoscale; replacement cutover drops connections; old + new billed</td></tr>
@@ -268,11 +267,11 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
     <tr><td>Read replicas</td><td class="lb"><span data-fact="table.replicas">6 standalone / branch · shared storage, separate compute · eventual consistency; not HA candidates</span></td><td>15 · shared storage</td><td>Shared storage</td><td>Own instance + storage</td><td>5 per source (2 levels) · own storage</td><td>GP: geo-replicas billed as full databases</td><td>Own instance + storage</td><td>Yes · billed as instances</td></tr>
     <tr><td>Storage</td><td class="lb"><span data-fact="table.storage">Separated · billed on data stored · per-branch quota adjustable</span></td><td>Auto-grow to 256 TiB (PG 17.5+, 16.9+, 15.13+); earlier versions 128 TiB</td><td>As Aurora</td><td>Provisioned gp3 / io2</td><td>SSD v2: 1 GiB steps, to 64 TiB · SSD v1: fixed tiers, to 32 TiB · no shrink</td><td>GP: provisioned 5 GB–4 TB</td><td>Provisioned SSD ≤ 64 TB</td><td>Local NVMe; service to 60 TB · priced family to 3,800 GB</td></tr>
     <tr><td>I/O charges</td><td class="lb"><span data-fact="table.io">No I/O-request meter; storage/history charged</span></td><td>Standard per request · I/O-Opt none</td><td>As Aurora</td><td>IOPS/throughput above baseline</td><td>SSD v2: 3,000 IOPS free below 400 GiB; 12,000 at ≥400 GiB; extra IOPS/throughput billed</td><td>IOPS limits scale with vCores</td><td>None</td><td>None (local NVMe)</td></tr>
-    <tr><td>PITR / backups</td><td class="lb"><span data-fact="table.history">2–30 d (default 7) · history at PITR rate</span></td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS default</td><td>PITR logs: Enterprise 1–7 d, Plus 1–35 d · logs in Cloud Storage free; backups billed</td><td>Free in Beta · 1 d (Basic) / 7 d (Scale) retention</td></tr>
+    <tr><td>PITR / backups</td><td class="lb"><span data-fact="table.history">2–30 d (default 7) · history at PITR rate</span></td><td>1–35 d · free to cluster size</td><td>As Aurora</td><td>≤ 35 d · free to DB size</td><td>7–35 d · free to 100% storage</td><td>7 d default, up to 35 · RA-GRS default</td><td>PITR logs: Enterprise 1–7 d, Plus 1–35 d · logs in Cloud Storage free; backups billed</td><td>7 d retention, PITR included · backup storage to disk size included; beyond at CH Cloud rates</td></tr>
     <tr><td>Branch / clone</td><td class="lb"><span data-fact="table.branches">Copy-on-write (500 / project) · expiring: changed-data billing; permanent: full-data billing</span></td><td>Copy-on-write clone, new DB cluster</td><td>Copy-on-write clone, new DB cluster</td><td>Snapshot restore</td><td>Restore to new server</td><td>Database copy / PITR restore</td><td>Clone instance</td><td>PITR branch: full new deployment from backup + WAL</td></tr>
-    <tr><td>Lakehouse / analytics</td><td class="lb"><span data-fact="table.analytics">Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT over Lakebase (Private Preview) · UC for analytics; PG roles for direct access</span></td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing</td><td>Native CDC to ClickHouse (free in Beta)</td></tr>
+    <tr><td>Lakehouse / analytics</td><td class="lb"><span data-fact="table.analytics">Synced PG copy + pipeline DBUs (GA) · PG→Delta CDF (Public Preview) · Lakehouse//RT over Lakebase (Private Preview) · UC for analytics; PG roles for direct access</span></td><td colspan="6">Separate integration per vendor (e.g. zero-ETL, Datastream, Fabric mirroring) with its own setup and billing</td><td>Native CDC to ClickHouse (free)</td></tr>
     <tr><td>Pooling</td><td class="lb"><span data-fact="table.pooling">Built-in PgBouncer transaction mode · native password roles only; OAuth direct · 10K clients ≠ running transactions</span></td><td colspan="3">RDS Proxy (billed per vCPU / ACU)</td><td>Built-in PgBouncer</td><td>Connection limits by vCores</td><td>Managed pooling: Plus only (model prices Enterprise)</td><td>Bundled PgBouncer, enabled in connection settings</td></tr>
-    <tr><td>Status</td><td class="lb"><span data-fact="table.status">AWS / Azure GA; GCP Beta · individual features have separate status</span></td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>Beta (AWS; GCP private preview)</td></tr>
+    <tr><td>Status</td><td class="lb"><span data-fact="table.status">AWS / Azure GA; GCP Beta · individual features have separate status</span></td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA</td><td>GA on AWS since 9 Nov 2026 · GCP private preview</td></tr>
     </tbody></table></div>
     <details><summary>Technical sources by provider</summary><ul>
       <li><a href="../lakebase-field-guide/?view=full#sources">Lakebase: dated status and sources beside each answer</a></li>
@@ -365,8 +364,8 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
             <li><b>Google CUD:</b> −25% / −52%.</li>
             <li><b>Not covered:</b> burstable classes, Serverless v2 and ClickHouse.</li>
           </ul></li>
-        <li><b>ClickHouse Postgres:</b> the smallest memory-optimized size whose RAM ≥ peak and local NVMe ≥ DB size, at Scale-tier list price, with the 50% Beta discount when ticked.</li>
-        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies, snapshots and extra SSD v2 throughput. Lakehouse sync costs are added only when selected. The ClickHouse Beta 50% discount ends 9 Nov 2026 on AWS.</li>
+        <li><b>ClickHouse Postgres:</b> the smallest memory-optimized size whose RAM ≥ peak and local NVMe ≥ DB size, at Scale-tier list price (the 50% beta discount ended at AWS GA on 9 Nov 2026).</li>
+        <li><b>Excluded:</b> taxes, support, data transfer, private connectivity, proxies, snapshots and extra SSD v2 throughput. Lakehouse sync costs are added only when selected. ClickHouse Managed Postgres became GA on AWS on 9 Nov 2026 and the 50% beta discount has ended.</li>
       </ul></details>
       <details><summary>Billing gotchas</summary><ul>
         <li><b>Lakebase:</b>
@@ -393,7 +392,7 @@ tfoot tr:last-child td{border-bottom-left-radius:10px;border-bottom-right-radius
         <li><b>Cloud SQL:</b> HA doubles CPU, RAM and storage rates. Enterprise custom RAM starts at 3.75 GiB; PITR is limited to 7 days. Backups are billed, while PITR logs in Cloud Storage are free.</li>
         <li><b>ClickHouse Postgres:</b>
           <ul>
-            <li><b>Beta pricing:</b> 50% off until AWS GA on 9 Nov 2026; from GA, backup storage beyond the provisioned disk bills at ClickHouse Cloud storage rates (e.g. $25.30/TB-month in us-east-1) and data transfer at ClickHouse Cloud rates. GCP stays free in Private Preview.</li>
+            <li><b>GA pricing (since 9 Nov 2026):</b> the 50% beta discount has ended. Backup storage beyond the provisioned disk bills at ClickHouse Cloud storage rates (e.g. $25.30/TB-month in us-east-1) and data transfer at ClickHouse Cloud rates. GCP stays free in Private Preview.</li>
             <li><b>Storage:</b> it's local NVMe, so a bigger database forces a bigger instance. Each standby is a full instance.</li>
             <li><b>Resizes:</b> old and new instances run in parallel and are both billed.</li>
             <li><b>Region:</b> not offered in Hong Kong.</li>
@@ -461,8 +460,8 @@ const CSQL = {
   tk: {v: 0.0537, m: 0.0091, ssd: 0.221, ssdHA: 0.442, bk: 0.104},
   hk: {v: 0.062, m: 0.0105, ssd: 0.255, ssdHA: 0.510, bk: 0.120}
 };
-// ClickHouse Managed Postgres (Beta), Scale tier, AWS memory-optimized ARM: list $/vCPU-month, twice what ClickHouse's calculator shows
-// ("Includes 50% discount": $143/mo for 4 vCPU in us-east-1); sizes [vCPU, GiB RAM, GB NVMe]
+// ClickHouse Managed Postgres (AWS GA since 9 Nov 2026; the 50% beta discount has ended), Scale tier,
+// AWS memory-optimized ARM list $/vCPU-month (during Beta ClickHouse's calculator showed "Includes 50% discount": $143/mo for 4 vCPU in us-east-1); sizes [vCPU, GiB RAM, GB NVMe]
 const CHPG = {us: {vm: 71.48, label: 'AWS us-east-1'}, uw: {vm: 71.48, label: 'AWS us-west-2'}, sg: {vm: 86.25, label: 'AWS ap-southeast-1'}, tk: {vm: 86.25, label: 'AWS ap-northeast-1'}, sizes: [[1, 8, 59], [2, 16, 118], [4, 32, 237], [8, 64, 474], [16, 128, 950], [32, 256, 1900], [48, 384, 2850], [64, 512, 3800]]};
 // Azure SQL Database (General Purpose, standard-series Gen5): li = provisioned $/vCore-hr license included, ahb = with Azure Hybrid Benefit,
 // zr = zone-redundancy uplift $/vCore-hr, sv / svZR = serverless $/vCore-hr (license included) and its ZR uplift, st / stZR = $/GB-mo, bk = RA-GRS backup $/GB-mo
@@ -529,7 +528,7 @@ function state() {
     pattern: patKey, preset: curPreset, lfl, region: $('region').value, cloud: $('lbCloud').value, tier: $('lbTier').value, promo: $('promo').checked,
     disc: num('disc'), commit: $('commit').value, family: 'mem',
     peak: P, floor: m, load: band > 0 ? (avg - m) / band : 0,
-    hpd: pat.hpd, dpw: pat.dpw, s2z: pat.s2z && !lfl, stopIdle: false, burst: patKey === 'intermittent', azsqlAhb: $('azsqlAhb').checked, chBeta: $('chBeta').checked,
+    hpd: pat.hpd, dpw: pat.dpw, s2z: pat.s2z && !lfl, stopIdle: false, burst: patKey === 'intermittent', azsqlAhb: $('azsqlAhb').checked,
     ha, haN: ha ? 1 : 0, rep: +$('rep').value, repLoad: 0.5,
     sto, chg: sto * io.chg, ret: num('ret'),
     avgIops, peakIops: Math.max(3000, 3 * avgIops), io: $('io').value, ...syncCost(P, sto, io)
@@ -736,15 +735,15 @@ function calcClickHouse(s) {
   if (s.ret > 7) return {key: 'ch', name: 'ClickHouse Postgres', na: 'The priced Scale tier retains backups for 7 days; confirm an alternative for longer retention.'};
   const fit = CHPG.sizes.find(x => x[1] >= R && x[2] >= s.sto);
   if (!fit) return {key: 'ch', name: 'ClickHouse Postgres', na: 'Exceeds the priced memory-optimized configurations (maximum 3,800 GB local NVMe); request a storage-optimized quote.'};
-  const [vc, gb, nvme] = fit, df = s.chBeta ? 0.5 : 1, node = vc * g.vm * df;
+  const [vc, gb, nvme] = fit, node = vc * g.vm;
   const byStorage = CHPG.sizes.find(x => x[1] >= R)[0] < vc;
   const c = {cmp: node, ha: s.ha ? node : 0, rep: s.rep * node, sto: 0, bk: 0, io: 0, ext: s.etl};
-  return row({key: 'ch', name: 'ClickHouse Postgres', sub: vc + ' vCPU / ' + gb + ' GiB / ' + nvme.toLocaleString() + ' GB NVMe · Scale' + (s.ha ? ' · 1 standby' : '') + ' · Beta · ' + g.label,
-    c, notes: [(s.chBeta ? 'Includes the 50% Beta discount; list would be ' + fmt(row({c: {cmp: node / df, ha: s.ha ? node / df : 0, rep: s.rep * node / df, ext: s.etl}}).total) + '/mo.' : 'List price (Beta discount off).'), 'Price covers the whole VM: CPU, RAM and local NVMe storage. Backup storage up to the provisioned disk and CDC to ClickHouse are free in Beta; the 50% discount ends at AWS GA on 9 Nov 2026, when extra backup storage bills at ClickHouse Cloud storage rates (e.g. $25.30/TB-month in us-east-1) and data transfer at ClickHouse Cloud rates.']
+  return row({key: 'ch', name: 'ClickHouse Postgres', sub: vc + ' vCPU / ' + gb + ' GiB / ' + nvme.toLocaleString() + ' GB NVMe · Scale' + (s.ha ? ' · 1 standby' : '') + ' · GA · ' + g.label,
+    c, notes: ['List price; the 50% beta discount ended at AWS GA on 9 Nov 2026.', 'Price covers the whole VM: CPU, RAM and local NVMe storage. Since AWS GA, backup storage up to the provisioned disk is included, additional backup storage bills at ClickHouse Cloud storage rates (e.g. $25.30/TB-month in us-east-1) and data transfer at ClickHouse Cloud rates; CDC to ClickHouse (ClickPipes / WalShadow) stays free.']
       .concat(byStorage ? ['Size driven by storage: local NVMe must hold the database. A storage-optimized family may be cheaper.'] : []).concat(s.region !== 'us' ? [] : []).concat(s.commit !== 'od' ? ['No public commitment discount; not applied.'] : []).concat(s.stopIdle ? ['Modeled always running (730 h).'] : []),
     size: [['Compute', vc + ' vCPU / ' + gb + ' GiB (memory-optimized, Graviton) · ' + nvme.toLocaleString() + ' GB NVMe'], ['Hours', '730 h'], ['HA', s.ha ? '1 standby (billed as an instance)' : 'off'],
       ['Read scale', s.rep ? pl(s.rep, 'replica') + ', billed as instances' : 'none'], ['Storage', 'included (local NVMe) · no I/O charges']],
-    rates: fmt2(g.vm) + '/vCPU-month list (' + fmt2(g.vm / 2) + ' with Beta discount) · Scale tier · Enterprise tier ≈ +12% · source: clickhouse.com pricing calculator'});
+    rates: fmt2(g.vm) + '/vCPU-month list · Scale tier · Enterprise tier ≈ +12% · source: clickhouse.com pricing calculator'});
 }
 
 const OPEN = new Set();
@@ -784,7 +783,7 @@ function render() {
   const best = sorted.find(r => r.key !== 'lb'), rank = sorted.indexOf(lb) + 1, pct = (lb.total / best.total - 1) * 100;
   $('summary').innerHTML =
     '<div class="kpi dbx"><b>' + fmt(lb.total) + '<small>/mo</small></b><span>Lakebase' + (s.promo ? '<br>after promo ' + fmt(lb.post) : '<br>' + fmt(lb.total * 12) + '/yr') + '</span></div>'
-    + '<div class="kpi"><b>' + fmt(best.total) + '<small>/mo</small></b><span>cheapest other<br>' + best.name + (best.key === 'ch' && s.chBeta ? ' (Beta price)' : '') + '</span></div>'
+    + '<div class="kpi"><b>' + fmt(best.total) + '<small>/mo</small></b><span>cheapest other<br>' + best.name + '</span></div>'
     + '<div class="kpi"><b>' + (pct <= 0 ? '−' : '+') + Math.abs(pct).toFixed(0) + '%</b><span>Lakebase vs<br>cheapest other</span></div>'
     + '<div class="kpi"><b>#' + rank + '<small> of ' + sorted.length + '</small></b><span>' + REG[s.region].name + '<br>' + ({od: 'others on-demand', '1y': 'others 1-yr commit', '3y': 'others 3-yr commit'})[s.commit] + '</span></div>'
     + '<div class="acts"><button class="abtn" id="inpBtn" aria-expanded="' + !$('inputs').hidden + '" aria-controls="inputs">Inputs</button><button class="abtn" id="copyBtn">Copy</button><button class="abtn" id="shareBtn">Share</button></div>';
@@ -808,13 +807,13 @@ function render() {
     }
   });
   na.forEach(r => { h += '<tr class="na"><td class="m"><span class="rk">–</span><span class="nm">' + r.name + '</span><span class="mk">' + r.na + '</span></td><td colspan="' + cols.length + '" style="text-align:right">n/a</td></tr>'; });
-  h += '</tbody><tfoot><tr><td colspan="' + n + '">' + REG[s.region].name + ' list prices checked ' + longDate(REG[s.region].checked || CHECKED) + ' · 730 h/month · ' + (s.promo ? 'Lakebase promo on' : 'Lakebase list') + (s.disc ? ' · −' + s.disc + '% Databricks discount' : '') + ' · competitors ' + ({od: 'on-demand', '1y': '1-yr commitment', '3y': '3-yr commitment'})[s.commit] + (s.chBeta ? ' · ClickHouse Beta 50% off' : '') + ' · excludes tax, support and data transfer.' + (narrow ? ' Tap a row for the cost split.' : '') + '</td></tr></tfoot>';
+  h += '</tbody><tfoot><tr><td colspan="' + n + '">' + REG[s.region].name + ' list prices checked ' + longDate(REG[s.region].checked || CHECKED) + ' · 730 h/month · ' + (s.promo ? 'Lakebase promo on' : 'Lakebase list') + (s.disc ? ' · −' + s.disc + '% Databricks discount' : '') + ' · competitors ' + ({od: 'on-demand', '1y': '1-yr commitment', '3y': '3-yr commitment'})[s.commit] + ' · excludes tax, support and data transfer.' + (narrow ? ' Tap a row for the cost split.' : '') + '</td></tr></tfoot>';
   $('mx').innerHTML = h;
   $('mx').querySelectorAll('tr.row').forEach(tr => tr.onclick = () => { const k = tr.dataset.k; OPEN.has(k) ? OPEN.delete(k) : OPEN.add(k); render(); });
   writeHash();
 }
 
-const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'peak', 'sto', 'pat', 'io', 'ha', 'rep', 'sync', 'disc', 'ret', 'syncShare', 'syncDbu', 'promo', 'chBeta', 'azsqlAhb', 'etlOverride'];
+const IDS = ['region', 'lbCloud', 'lbTier', 'commit', 'peak', 'sto', 'pat', 'io', 'ha', 'rep', 'sync', 'disc', 'ret', 'syncShare', 'syncDbu', 'promo', 'azsqlAhb', 'etlOverride'];
 const DEFAULTS = {};
 function getVal(id) { const e = $(id); return e.type === 'checkbox' ? (e.checked ? 1 : 0) : e.value; }
 function setVal(id, v) {
