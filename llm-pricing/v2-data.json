@@ -9153,7 +9153,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-31",
+            "checked_at": "2026-11-12",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -9176,13 +9176,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
-              ],
-              [
-                "Europe",
-                "global",
-                "Cross-geo",
-                "Azure UK South"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -9618,7 +9612,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-31",
+            "checked_at": "2026-11-12",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -9641,13 +9635,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
-              ],
-              [
-                "Europe",
-                "global",
-                "Cross-geo",
-                "Azure UK South"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",
@@ -10452,7 +10440,7 @@
           "url": "https://www.databricks.com/product/pricing/foundation-model-serving",
           "endpoint": "Default",
           "endpoints": {
-            "checked_at": "2026-10-31",
+            "checked_at": "2026-11-12",
             "src": [
               "dbx_region",
               "dbx_region_azure",
@@ -10475,13 +10463,7 @@
                 "Europe",
                 "in-region",
                 "In-region",
-                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
-              ],
-              [
-                "Europe",
-                "global",
-                "Cross-geo",
-                "Azure UK South"
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
               ],
               [
                 "APAC",

@@ -1,401 +1,825 @@
 {
  "schema": 1,
- "checked_at": "2026-11-11",
+ "checked_at": "2026-11-12",
  "sources_checked": 118,
  "sources_failed": [],
  "sources_read": {
-  "dbx-models": "2026-11-11",
-  "dbx-oss": "2026-11-11",
-  "dbx-proprietary": "2026-11-11",
-  "dbx-retirement": "2026-11-11",
-  "openai-pricing": "2026-11-11",
-  "anthropic-pricing": "2026-11-11",
-  "anthropic-models": "2026-11-11",
-  "google-pricing": "2026-11-11",
-  "vertex-pricing": "2026-11-11",
-  "aws-prices": "2026-11-11",
-  "aws-marketplace": "2026-11-11",
-  "aws-openai-models": "2026-11-11",
-  "aws-gpt61": "2026-11-11",
-  "aws-gpt6sol": "2026-11-11",
-  "aws-gpt6luna": "2026-11-11",
-  "azure-prices": "2026-11-11",
-  "fireworks-pricing": "2026-11-11",
-  "fireworks-v4pro": "2026-11-11",
-  "fireworks-v4flash": "2026-11-11",
-  "fireworks-kimi27": "2026-11-11",
-  "xai-grok47": "2026-11-11",
-  "xai-grok46": "2026-11-11",
-  "aws-grok47": "2026-11-11",
-  "aws-grok46": "2026-11-11",
-  "deepseek-pricing": "2026-11-11",
-  "kimi-pricing": "2026-11-11",
-  "zai-pricing": "2026-11-11",
-  "alibaba-pricing": "2026-11-11",
-  "dbx-region-aws": "2026-11-11",
-  "dbx-region-azure": "2026-11-11",
-  "dbx-region-gcp": "2026-11-11",
-  "aws-kimi-k3": "2026-11-11",
-  "fireworks-modes": "2026-11-11",
-  "fireworks-us": "2026-11-11",
-  "alibaba-regions": "2026-11-11",
-  "azure-partners": "2026-11-11",
-  "minimax-pricing": "2026-11-11",
-  "mistral-card": "2026-11-11",
-  "ali-ali-batch": "2026-11-11",
-  "ali-ali-prime": "2026-11-11",
-  "api-other-deepseek-privacy": "2026-11-11",
-  "api-other-mistral-limits": "2026-11-11",
-  "api-other-mistral-pricing": "2026-11-11",
-  "api-other-mistral-priority": "2026-11-11",
-  "api-other-mistral-regional": "2026-11-11",
-  "api-other-moonshot-privacy": "2026-11-11",
-  "api-other-tml-privacy": "2026-11-11",
-  "api-other-tml-serverless-json": "2026-11-11",
-  "api-other-tml-tinker-pricing": "2026-11-11",
-  "api-other-zai-privacy": "2026-11-11",
-  "api-west-anthropic-countries": "2026-11-11",
-  "api-west-anthropic-fast": "2026-11-11",
-  "api-west-anthropic-pricing": "2026-11-11",
-  "api-west-anthropic-residency": "2026-11-11",
-  "api-west-google-regions": "2026-11-11",
-  "api-west-openai-countries": "2026-11-11",
-  "api-west-openai-m-gpt-6-1-sol": "2026-11-11",
-  "api-west-openai-your-data": "2026-11-11",
-  "api-west-xai-pricing": "2026-11-11",
-  "api-west-xai-regions": "2026-11-11",
-  "aws-card-claude-fable-5": "2026-11-11",
-  "aws-card-claude-fable-5-1": "2026-11-11",
-  "aws-card-claude-opus-4-8": "2026-11-11",
-  "aws-card-claude-opus-4-7": "2026-11-11",
-  "aws-card-claude-opus-4-6": "2026-11-11",
-  "aws-card-claude-opus-5": "2026-11-11",
-  "aws-card-claude-opus-5-5": "2026-11-11",
-  "aws-card-claude-sonnet-5": "2026-11-11",
-  "aws-card-claude-sonnet-5-5": "2026-11-11",
-  "aws-card-gpt-5-4": "2026-11-11",
-  "aws-card-gpt-5-5": "2026-11-11",
-  "aws-card-gpt-5-6-luna": "2026-11-11",
-  "aws-card-gpt-5-6-sol": "2026-11-11",
-  "aws-card-gpt-5-6-terra": "2026-11-11",
-  "aws-card-gpt-6-astra": "2026-11-11",
-  "aws-endpoint-regions": "2026-11-11",
-  "az-anthropic-countries": "2026-11-11",
-  "az-aoai-pricing": "2026-11-11",
-  "az-deepseek-pricing": "2026-11-11",
-  "az-fw-pricing": "2026-11-11",
-  "az-learn-fireworks": "2026-11-11",
-  "az-learn-fireworks-faq": "2026-11-11",
-  "az-learn-partners": "2026-11-11",
-  "az-learn-region-support": "2026-11-11",
-  "az-learn-regions": "2026-11-11",
-  "az-mistral-pricing": "2026-11-11",
-  "fireworks-nexus": "2026-11-11",
-  "fw-fw-batch": "2026-11-11",
-  "fw-fw-m-inkling": "2026-11-11",
-  "fw-fw-residency": "2026-11-11",
-  "gcp-claude-fable-5": "2026-11-11",
-  "gcp-claude-fable-5-1": "2026-11-11",
-  "gcp-claude-opus-4-8": "2026-11-11",
-  "gcp-claude-opus-4-7": "2026-11-11",
-  "gcp-claude-opus-4-6": "2026-11-11",
-  "gcp-claude-opus-5": "2026-11-11",
-  "gcp-claude-opus-5-5": "2026-11-11",
-  "gcp-claude-sonnet-5": "2026-11-11",
-  "gcp-claude-sonnet-5-5": "2026-11-11",
-  "gcp-gemini-3-1-pro": "2026-11-11",
-  "gcp-gemini-3-6-flash": "2026-11-11",
-  "gcp-gemini-3-7-flash": "2026-11-11",
-  "gcp-gemini-3-8-flash": "2026-11-11",
-  "gcp-glm": "2026-11-11",
-  "gcp-glm-5-2": "2026-11-11",
-  "gcp-grok-4-6": "2026-11-11",
-  "gcp-grok-4-7": "2026-11-11",
-  "gcp-locations": "2026-11-11",
-  "aws-model-cards": "2026-11-11",
-  "aws-card-glm-5-3": "2026-11-11",
-  "aws-card-kimi-k31-highspeed": "2026-11-11",
-  "aws-pricing-page": "2026-11-11",
-  "gcp-gemini-4-argon": "2026-11-11",
-  "api-google-gemini-4-argon": "2026-11-11",
-  "gcp-deepseek-v4-1-flash": "2026-11-11",
-  "api-west-openai-m-gpt-6-1-terra": "2026-11-11",
-  "aws-card-gpt-6-1-terra": "2026-11-11",
-  "vertex-partner-pricing": "2026-11-11"
+  "dbx-models": "2026-11-12",
+  "dbx-oss": "2026-11-12",
+  "dbx-proprietary": "2026-11-12",
+  "dbx-retirement": "2026-11-12",
+  "openai-pricing": "2026-11-12",
+  "anthropic-pricing": "2026-11-12",
+  "anthropic-models": "2026-11-12",
+  "google-pricing": "2026-11-12",
+  "vertex-pricing": "2026-11-12",
+  "aws-prices": "2026-11-12",
+  "aws-marketplace": "2026-11-12",
+  "aws-openai-models": "2026-11-12",
+  "aws-gpt61": "2026-11-12",
+  "aws-gpt6sol": "2026-11-12",
+  "aws-gpt6luna": "2026-11-12",
+  "azure-prices": "2026-11-12",
+  "fireworks-pricing": "2026-11-12",
+  "fireworks-v4pro": "2026-11-12",
+  "fireworks-v4flash": "2026-11-12",
+  "fireworks-kimi27": "2026-11-12",
+  "xai-grok47": "2026-11-12",
+  "xai-grok46": "2026-11-12",
+  "aws-grok47": "2026-11-12",
+  "aws-grok46": "2026-11-12",
+  "deepseek-pricing": "2026-11-12",
+  "kimi-pricing": "2026-11-12",
+  "zai-pricing": "2026-11-12",
+  "alibaba-pricing": "2026-11-12",
+  "dbx-region-aws": "2026-11-12",
+  "dbx-region-azure": "2026-11-12",
+  "dbx-region-gcp": "2026-11-12",
+  "aws-kimi-k3": "2026-11-12",
+  "fireworks-modes": "2026-11-12",
+  "fireworks-us": "2026-11-12",
+  "alibaba-regions": "2026-11-12",
+  "azure-partners": "2026-11-12",
+  "minimax-pricing": "2026-11-12",
+  "mistral-card": "2026-11-12",
+  "ali-ali-batch": "2026-11-12",
+  "ali-ali-prime": "2026-11-12",
+  "api-other-deepseek-privacy": "2026-11-12",
+  "api-other-mistral-limits": "2026-11-12",
+  "api-other-mistral-pricing": "2026-11-12",
+  "api-other-mistral-priority": "2026-11-12",
+  "api-other-mistral-regional": "2026-11-12",
+  "api-other-moonshot-privacy": "2026-11-12",
+  "api-other-tml-privacy": "2026-11-12",
+  "api-other-tml-serverless-json": "2026-11-12",
+  "api-other-tml-tinker-pricing": "2026-11-12",
+  "api-other-zai-privacy": "2026-11-12",
+  "api-west-anthropic-countries": "2026-11-12",
+  "api-west-anthropic-fast": "2026-11-12",
+  "api-west-anthropic-pricing": "2026-11-12",
+  "api-west-anthropic-residency": "2026-11-12",
+  "api-west-google-regions": "2026-11-12",
+  "api-west-openai-countries": "2026-11-12",
+  "api-west-openai-m-gpt-6-1-sol": "2026-11-12",
+  "api-west-openai-your-data": "2026-11-12",
+  "api-west-xai-pricing": "2026-11-12",
+  "api-west-xai-regions": "2026-11-12",
+  "aws-card-claude-fable-5": "2026-11-12",
+  "aws-card-claude-fable-5-1": "2026-11-12",
+  "aws-card-claude-opus-4-8": "2026-11-12",
+  "aws-card-claude-opus-4-7": "2026-11-12",
+  "aws-card-claude-opus-4-6": "2026-11-12",
+  "aws-card-claude-opus-5": "2026-11-12",
+  "aws-card-claude-opus-5-5": "2026-11-12",
+  "aws-card-claude-sonnet-5": "2026-11-12",
+  "aws-card-claude-sonnet-5-5": "2026-11-12",
+  "aws-card-gpt-5-4": "2026-11-12",
+  "aws-card-gpt-5-5": "2026-11-12",
+  "aws-card-gpt-5-6-luna": "2026-11-12",
+  "aws-card-gpt-5-6-sol": "2026-11-12",
+  "aws-card-gpt-5-6-terra": "2026-11-12",
+  "aws-card-gpt-6-astra": "2026-11-12",
+  "aws-endpoint-regions": "2026-11-12",
+  "az-anthropic-countries": "2026-11-12",
+  "az-aoai-pricing": "2026-11-12",
+  "az-deepseek-pricing": "2026-11-12",
+  "az-fw-pricing": "2026-11-12",
+  "az-learn-fireworks": "2026-11-12",
+  "az-learn-fireworks-faq": "2026-11-12",
+  "az-learn-partners": "2026-11-12",
+  "az-learn-region-support": "2026-11-12",
+  "az-learn-regions": "2026-11-12",
+  "az-mistral-pricing": "2026-11-12",
+  "fireworks-nexus": "2026-11-12",
+  "fw-fw-batch": "2026-11-12",
+  "fw-fw-m-inkling": "2026-11-12",
+  "fw-fw-residency": "2026-11-12",
+  "gcp-claude-fable-5": "2026-11-12",
+  "gcp-claude-fable-5-1": "2026-11-12",
+  "gcp-claude-opus-4-8": "2026-11-12",
+  "gcp-claude-opus-4-7": "2026-11-12",
+  "gcp-claude-opus-4-6": "2026-11-12",
+  "gcp-claude-opus-5": "2026-11-12",
+  "gcp-claude-opus-5-5": "2026-11-12",
+  "gcp-claude-sonnet-5": "2026-11-12",
+  "gcp-claude-sonnet-5-5": "2026-11-12",
+  "gcp-gemini-3-1-pro": "2026-11-12",
+  "gcp-gemini-3-6-flash": "2026-11-12",
+  "gcp-gemini-3-7-flash": "2026-11-12",
+  "gcp-gemini-3-8-flash": "2026-11-12",
+  "gcp-glm": "2026-11-12",
+  "gcp-glm-5-2": "2026-11-12",
+  "gcp-grok-4-6": "2026-11-12",
+  "gcp-grok-4-7": "2026-11-12",
+  "gcp-locations": "2026-11-12",
+  "aws-model-cards": "2026-11-12",
+  "aws-card-glm-5-3": "2026-11-12",
+  "aws-card-kimi-k31-highspeed": "2026-11-12",
+  "aws-pricing-page": "2026-11-12",
+  "gcp-gemini-4-argon": "2026-11-12",
+  "api-google-gemini-4-argon": "2026-11-12",
+  "gcp-deepseek-v4-1-flash": "2026-11-12",
+  "api-west-openai-m-gpt-6-1-terra": "2026-11-12",
+  "aws-card-gpt-6-1-terra": "2026-11-12",
+  "vertex-partner-pricing": "2026-11-12"
  },
- "pending_general": [],
+ "pending_general": [
+  {
+   "source": "anthropic-pricing",
+   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "notice: Cache write tokens are charged when content is first stored. Cache read tokens are charged when a subsequent request retrieves the cached content.",
+    "table: {\"cells\":[\"All other models\",\"0.1x\",\"See Model pricing\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
+    "table: {\"cells\":[\"Cache read (hit)\",\"0.1x base input price on most models\",\"Same duration as the preceding write\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing \"}",
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
+    "table: {\"cells\":[\"Model\",\"Cache hit multiplier\",\"Cache hit price per million tokens\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}"
+   ],
+   "removed": [
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Claude API pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing \"}",
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Claude API pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}"
+   ],
+   "added_all": [
+    "notice: Cache write tokens are charged when content is first stored. Cache read tokens are charged when a subsequent request retrieves the cached content.",
+    "table: {\"cells\":[\"All other models\",\"0.1x\",\"See Model pricing\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
+    "table: {\"cells\":[\"Cache read (hit)\",\"0.1x base input price on most models\",\"Same duration as the preceding write\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing \"}",
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
+    "table: {\"cells\":[\"Model\",\"Cache hit multiplier\",\"Cache hit price per million tokens\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}"
+   ],
+   "removed_all": [
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Claude API pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing \"}",
+    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Claude API pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}"
+   ],
+   "baseline_digest": "f514aeaeebb6d0363fd71ee99670396b966d22b77a19820de8c047d7fdc98a97"
+  },
+  {
+   "source": "anthropic-models",
+   "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "notice: Older models might still be available, but where possible, you should default to the latest models. To move to a newer model, see the migration guides. For retirement dates, see model deprecations.",
+    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Model\",\"Capabilities\",\"Base tokens\"],\"heading\":\"All models \"}",
+    "table: {\"cells\":[\"Name\",\"Context window\",\"Max output\",\"Input\",\"Output\"],\"heading\":\"All models \"}",
+    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Latest models \"}"
+   ],
+   "removed": [
+    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Thinking\",\"Adaptive (always on)\",\"Adaptive (always on)\",\"Adaptive\",\"Adaptive\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Training data cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\" Additional details\",\"\"],\"heading\":\"Compare models \"}"
+   ],
+   "added_all": [
+    "notice: Older models might still be available, but where possible, you should default to the latest models. To move to a newer model, see the migration guides. For retirement dates, see model deprecations.",
+    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Model\",\"Capabilities\",\"Base tokens\"],\"heading\":\"All models \"}",
+    "table: {\"cells\":[\"Name\",\"Context window\",\"Max output\",\"Input\",\"Output\"],\"heading\":\"All models \"}",
+    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Thinking\",\"Adaptive (always on)\",\"Adaptive (always on)\",\"Adaptive\",\"Adaptive\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\"Training data cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models \"}",
+    "table: {\"cells\":[\" Additional details\",\"\"],\"heading\":\"Latest models \"}"
+   ],
+   "removed_all": [
+    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Thinking\",\"Adaptive (always on)\",\"Adaptive (always on)\",\"Adaptive\",\"Adaptive\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\"Training data cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Compare models \"}",
+    "table: {\"cells\":[\" Additional details\",\"\"],\"heading\":\"Compare models \"}"
+   ],
+   "baseline_digest": "191482aade95eb8b1ef0054d8e0b7a836c1c4c3fb1523f0d9d9fdd6b4d9eb814"
+  },
+  {
+   "source": "google-pricing",
+   "url": "https://ai.google.dev/gemini-api/docs/pricing",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "table: {\"cells\":[\"Context caching price\",\"Not available\",\"Not available\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Input price (text, image, video, audio, PDF)\",\"Free of charge\",\"$0.10\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Output price\",\"Not applicable (0 output tokens)\",\"Not applicable (0 output tokens)\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}"
+   ],
+   "removed": [],
+   "added_all": [
+    "table: {\"cells\":[\"Context caching price\",\"Not available\",\"Not available\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Input price (text, image, video, audio, PDF)\",\"Free of charge\",\"$0.10\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Output price\",\"Not applicable (0 output tokens)\",\"Not applicable (0 output tokens)\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
+    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}"
+   ],
+   "removed_all": [],
+   "baseline_digest": "846154787db2a1e29076e63f3e21a4a57a4fa32dcf73894a9d749af19d146bb9"
+  },
+  {
+   "source": "minimax-pricing",
+   "url": "https://platform.minimax.io/docs/pricing/overview",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "table: {\"cells\":[\"H3-Image-Context-IR\",\"$2.30\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
+    "table: {\"cells\":[\"Model / API\",\"Input $ / M tokens\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}"
+   ],
+   "removed": [
+    "table: {\"cells\":[\"Model\",\"Input $ / M tokens\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}"
+   ],
+   "added_all": [
+    "table: {\"cells\":[\"H3-Image-Context-IR\",\"$2.30\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
+    "table: {\"cells\":[\"Model / API\",\"Input $ / M tokens\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}"
+   ],
+   "removed_all": [
+    "table: {\"cells\":[\"Model\",\"Input $ / M tokens\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}"
+   ],
+   "baseline_digest": "5b0986c31546b3b03dd66eb33fc2c7fdd40b9abeac5c5a4c7a64f8ac5e302e4a"
+  },
+  {
+   "source": "api-west-anthropic-pricing",
+   "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
+   "risk": "high",
+   "reason": "a price, rate, multiplier or context limit changed",
+   "added": [
+    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking is available in the [Claude Console](https://platform.claude.com/).\"}",
+    "item: {\"heading\":\"Browser use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Resolution and token cost](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Cloud platform pricing\",\"text\":\"Amazon Bedrock global versus regional endpoints: [Claude in Amazon Bedrock (`bedrock-mantle`)](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock#regions) or [Claude on Amazon Bedrock (`bedrock-runtime`)](https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy#global-vs-regional-endpoints), depending on whether you call `bedrock-mantle` or `bedrock-runtime`\"}",
+    "item: {\"heading\":\"Cloud platform pricing\",\"text\":\"Google Cloud global, multi-region, and regional endpoints: [Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed#global-multi-region-and-regional-endpoints)\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Resolution and token cost](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Tool definition: about 735 input tokens for each tool definition (measured with `computer_20250124`)\"}",
+    "item: {\"heading\":\"Prompt caching\",\"text\":\"**1-hour duration (2x write):** after two cache reads\"}",
+    "item: {\"heading\":\"Prompt caching\",\"text\":\"**5-minute duration (1.25x write):** after one cache read\"}",
+    "item: {\"heading\":\"Volume discounts\",\"text\":\"Enterprise customers can [email sales](mailto:sales@anthropic.com) for custom pricing.\"}",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (for example, Claude Platform on AWS), usage is invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices in the [API section of the Claude pricing page](https://claude.com/pricing#api), after application of any discounts.",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (for example, Claude Platform on AWS, Claude in Microsoft Foundry), usage is invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices in the [API section of the Claude pricing page](https://claude.com/pricing#api), after application of any discounts.",
+    "notice: Cache write tokens are charged when content is first stored. Cache read tokens are charged when a subsequent request retrieves the cached content."
+   ],
+   "removed": [
+    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking is available in the Claude Console at [platform.claude.com](https://platform.claude.com/).\"}",
+    "item: {\"heading\":\"Browser use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Vision pricing](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Cloud platform pricing\",\"text\":\"[Claude Models on Google Cloud (Google managed) global, multi-region, and regional endpoints](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed#global-multi-region-and-regional-endpoints)\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Vision pricing](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Tool definition: about 735 input tokens per tool definition (measured with `computer_20250124`)\"}",
+    "item: {\"heading\":\"Volume discounts\",\"text\":\"Enterprise customers can [contact sales](mailto:sales@anthropic.com) for custom pricing.\"}",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (e.g., Claude Platform on AWS), usage will be invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices on [claude.com/pricing#api](https://claude.com/pricing#api), after application of any discounts.",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (e.g., Claude Platform on AWS, Claude in Microsoft Foundry), usage will be invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices on [claude.com/pricing#api](https://claude.com/pricing#api), after application of any discounts.",
+    "table: {\"cells\":[\"**Conversion**\",\"Token usage rated in USD at standard per-model, per-feature rates (same as [Claude API pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing)), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing\"}",
+    "table: {\"cells\":[\"**Conversion**\",\"Token usage rated in USD at standard per-model, per-feature rates (same as [Claude API pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing)), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}"
+   ],
+   "added_all": [
+    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking is available in the [Claude Console](https://platform.claude.com/).\"}",
+    "item: {\"heading\":\"Browser use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Resolution and token cost](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Cloud platform pricing\",\"text\":\"Amazon Bedrock global versus regional endpoints: [Claude in Amazon Bedrock (`bedrock-mantle`)](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock#regions) or [Claude on Amazon Bedrock (`bedrock-runtime`)](https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy#global-vs-regional-endpoints), depending on whether you call `bedrock-mantle` or `bedrock-runtime`\"}",
+    "item: {\"heading\":\"Cloud platform pricing\",\"text\":\"Google Cloud global, multi-region, and regional endpoints: [Claude Models on Google Cloud (Google managed)](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed#global-multi-region-and-regional-endpoints)\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Resolution and token cost](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Tool definition: about 735 input tokens for each tool definition (measured with `computer_20250124`)\"}",
+    "item: {\"heading\":\"Prompt caching\",\"text\":\"**1-hour duration (2x write):** after two cache reads\"}",
+    "item: {\"heading\":\"Prompt caching\",\"text\":\"**5-minute duration (1.25x write):** after one cache read\"}",
+    "item: {\"heading\":\"Volume discounts\",\"text\":\"Enterprise customers can [email sales](mailto:sales@anthropic.com) for custom pricing.\"}",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (for example, Claude Platform on AWS), usage is invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices in the [API section of the Claude pricing page](https://claude.com/pricing#api), after application of any discounts.",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (for example, Claude Platform on AWS, Claude in Microsoft Foundry), usage is invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices in the [API section of the Claude pricing page](https://claude.com/pricing#api), after application of any discounts.",
+    "notice: Cache write tokens are charged when content is first stored. Cache read tokens are charged when a subsequent request retrieves the cached content.",
+    "notice: Fast mode pricing applies across the full context window, including requests over 200k input tokens.",
+    "table: {\"cells\":[\"**Conversion**\",\"Token usage rated in USD at standard per-model, per-feature rates (same as [Model pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing)), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing\"}",
+    "table: {\"cells\":[\"**Conversion**\",\"Token usage rated in USD at standard per-model, per-feature rates (same as [Model pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing)), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
+    "table: {\"cells\":[\"All other models\",\"0.1x\",\"See [Model pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing)\"],\"heading\":\"Prompt caching\"}",
+    "table: {\"cells\":[\"Cache read (hit)\",\"0.1x base input price on most models\",\"Same duration as the preceding write\"],\"heading\":\"Prompt caching\"}",
+    "table: {\"cells\":[\"Model\",\"Cache hit multiplier\",\"Cache hit price per million tokens\"],\"heading\":\"Prompt caching\"}"
+   ],
+   "removed_all": [
+    "item: {\"heading\":\"Billing and payment\",\"text\":\"Usage tracking is available in the Claude Console at [platform.claude.com](https://platform.claude.com/).\"}",
+    "item: {\"heading\":\"Browser use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Vision pricing](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Cloud platform pricing\",\"text\":\"[Claude Models on Google Cloud (Google managed) global, multi-region, and regional endpoints](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed#global-multi-region-and-regional-endpoints)\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Screenshot and zoom images returned in tool results, billed as image input (see [Vision pricing](https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size))\"}",
+    "item: {\"heading\":\"Computer use tool\",\"text\":\"Tool definition: about 735 input tokens per tool definition (measured with `computer_20250124`)\"}",
+    "item: {\"heading\":\"Volume discounts\",\"text\":\"Enterprise customers can [contact sales](mailto:sales@anthropic.com) for custom pricing.\"}",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (e.g., Claude Platform on AWS), usage will be invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices on [claude.com/pricing#api](https://claude.com/pricing#api), after application of any discounts.",
+    "notice: **CCU:** Claude Consumption Unit. A CCU is a unit of measure used solely for Marketplace Platform invoicing. If Customer accesses the Services through certain Marketplace Platforms (e.g., Claude Platform on AWS, Claude in Microsoft Foundry), usage will be invoiced in Claude Consumption Units (“CCU”) rather than per MTok. One hundred (100) CCU represents $1.00 USD of fees owed for the Services, calculated at the applicable prices on [claude.com/pricing#api](https://claude.com/pricing#api), after application of any discounts.",
+    "table: {\"cells\":[\"**Conversion**\",\"Token usage rated in USD at standard per-model, per-feature rates (same as [Claude API pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing)), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing\"}",
+    "table: {\"cells\":[\"**Conversion**\",\"Token usage rated in USD at standard per-model, per-feature rates (same as [Claude API pricing](https://platform.claude.com/docs/en/about-claude/pricing#model-pricing)), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}"
+   ],
+   "baseline_digest": "456ab598694c759fc9b95c6a75fd58f2747c542d11b5c593d44bd2aac04eeb6d"
+  }
+ ],
  "ranking": {
   "schema": 1,
-  "checked_at": "2026-11-11",
-  "last_successful_read": "2026-11-11",
+  "checked_at": "2026-11-12",
+  "last_successful_read": "2026-11-12",
   "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
   "board_id": "webdev",
-  "published_at": "2026-11-09"
+  "published_at": "2026-11-10"
  },
- "databricks_coverage": [],
- "review": [],
+ "databricks_coverage": [
+  {
+   "model": "google/gemini-4-carbon",
+   "name": "Gemini 4 Carbon",
+   "endpoints": [
+    "databricks-gemini-4-carbon"
+   ],
+   "reason": "official listing is missing from dataset availability",
+   "pricing": "not published in checked DBU tables",
+   "sources": [
+    {
+     "id": "dbx-models",
+     "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+    }
+   ]
+  }
+ ],
+ "review": [
+  "Claude Fable 5.1 · azure_foundry",
+  "Claude Fable 5.1 · official",
+  "Claude Haiku 5.5 · bedrock",
+  "Claude Haiku 5.5 · gcloud",
+  "Claude Haiku 5.5 · official",
+  "Claude Opus 4.7 · azure_foundry",
+  "Claude Opus 4.7 · official",
+  "Claude Opus 4.8 · azure_foundry",
+  "Claude Opus 4.8 · official",
+  "Claude Opus 5.5 · azure_foundry",
+  "Claude Opus 5.5 · official",
+  "Claude Opus 5 · azure_foundry",
+  "Claude Opus 5 · official",
+  "Claude Sonnet 5.5 · azure_foundry",
+  "Claude Sonnet 5.5 · bedrock",
+  "Claude Sonnet 5.5 · gcloud",
+  "Claude Sonnet 5.5 · official",
+  "Gemini 3.8 Flash · gcloud",
+  "Gemini 4 Carbon · official",
+  "Inkling · official"
+ ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-fable-5.1|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5.1|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5.1|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5.1|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-fable-5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-fable-5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-haiku-4.5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-4.5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-4.5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-4.5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-4.5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-4.5|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-haiku-5.5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-5.5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-5.5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-models"
+   ],
+   "unchecked": [
+    "anthropic-models"
+   ]
   },
   "anthropic/claude-haiku-5.5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-5.5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-models"
+   ],
+   "unchecked": [
+    "anthropic-models"
+   ]
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-models"
+   ],
+   "unchecked": [
+    "anthropic-models",
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.6|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.6|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.6|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-4.6|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.6|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.7|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.7|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.7|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-4.7|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.7|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.8|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-4.8|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.8|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-4.8|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.8|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing",
+    "api-west-anthropic-fast",
+    "api-west-anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-5.5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-5.5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5.5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5.5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5.5|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing",
+    "api-west-anthropic-fast",
+    "api-west-anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-opus-5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-opus-5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-pricing",
+    "api-west-anthropic-fast",
+    "api-west-anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-4.6|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-4.6|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-4.6|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "anthropic/claude-sonnet-4.6|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-4.6|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-models",
+    "anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-models",
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-models"
+   ],
+   "unchecked": [
+    "anthropic-models"
+   ]
   },
   "anthropic/claude-sonnet-5.5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5.5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-models"
+   ],
+   "unchecked": [
+    "anthropic-models"
+   ]
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "anthropic-models",
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ],
+   "unchecked": [
+    "anthropic-models",
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing"
+   ]
   },
   "anthropic/claude-sonnet-5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "anthropic-pricing",
+    "api-west-anthropic-pricing"
+   ]
   },
   "deepseek/deepseek-v4-flash|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-flash|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-flash|databricks": {
    "verified": "2026-11-06",
@@ -403,22 +827,29 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true
+   "quiet": true,
+   "unchecked": [
+    "dbx-models",
+    "dbx-proprietary"
+   ]
   },
   "deepseek/deepseek-v4-flash|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-flash|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "az-learn-regions"
+   ]
   },
   "deepseek/deepseek-v4-pro|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-pro|databricks": {
    "verified": "2026-10-30",
@@ -426,22 +857,26 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true
+   "quiet": true,
+   "unchecked": [
+    "dbx-models",
+    "dbx-proprietary"
+   ]
   },
   "deepseek/deepseek-v4-pro|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4-pro|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4.1-flash|databricks": {
    "verified": "2026-11-06",
@@ -449,724 +884,799 @@
    "sources": [
     "dbx-prices"
    ],
-   "quiet": true
+   "quiet": true,
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "deepseek/deepseek-v4.1-flash|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-flash-lite|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-flash-lite|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-flash-lite|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-flash-lite|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-flash-lite|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.1-pro|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-pro|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-pro|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-pro|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-pro|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.5-flash-lite|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.5-flash-lite|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.5-flash-lite|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.5-flash-lite|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.5-flash-lite|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.6-flash|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.6-flash|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.6-flash|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.6-flash|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.6-flash|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.6-flash|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.7-flash|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.7-flash|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.7-flash|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.7-flash|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.7-flash|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-3.8-flash|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.8-flash|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.8-flash|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.8-flash|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.8-flash|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "gcp-gemini-3-8-flash"
+   ]
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-4-argon|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-argon|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-argon|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-argon|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-argon|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemini-4-carbon|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-carbon|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-carbon|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-carbon|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-carbon|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-carbon|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemini-4-carbon|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "google-pricing"
+   ],
+   "unchecked": [
+    "google-pricing"
+   ]
   },
   "google/gemma-3-12b|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemma-3-12b|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemma-3-12b|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "google/gemma-3-12b|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "meta/llama-3.1-8b|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-3.1-8b|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-3.1-8b|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-3.1-8b|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "meta/llama-3.3-70b|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-3.3-70b|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-3.3-70b|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-3.3-70b|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "meta/llama-3.3-70b|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-4-maverick|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-4-maverick|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-4-maverick|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/llama-4-maverick|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "meta/llama-4-maverick|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-ember|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-ember|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-ember|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-ember|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-ember|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-spark-1.3|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-spark-1.3|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-spark-1.3|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-spark-1.3|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-spark-1.3|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-wonder|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-wonder|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-wonder|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-wonder|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "meta/muse-wonder|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "minimax/minimax-m3|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "minimax/minimax-m3|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "minimax/minimax-m3|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "minimax/minimax-m3|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "minimax/minimax-m3|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "minimax-pricing"
+   ]
   },
   "mistral/mistral-medium-3.5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "mistral/mistral-medium-3.5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "mistral/mistral-medium-3.5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "mistral/mistral-medium-3.5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "mistral/mistral-medium-3.5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k2.7|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k2.7|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k2.7|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k2.7|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "moonshot/kimi-k2.7|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k2.7|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3.1-pro|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3.1-pro|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3.1-pro|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "aws-pricing-page"
+   ]
   },
   "moonshot/kimi-k3.1-pro|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "moonshot/kimi-k3.1-pro|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3.1-pro|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "moonshot/kimi-k3|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "moonshot/kimi-k3|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.4|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.4|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.4|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.4|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.4|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.5|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.5|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.5|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.5|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.5|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-luna|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-luna|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-luna|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-luna|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-luna|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-sol|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-sol|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-sol|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-sol|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-sol|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-terra|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-terra|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-terra|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-terra|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-5.6-terra|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-astra|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-astra|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-astra|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-astra|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-astra|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-luna|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-luna|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-luna|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-luna|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-luna|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-luna|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-sol|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-sol|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-sol|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-sol|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6-sol|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-sol|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-sol|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-sol|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-sol|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-sol|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-sol|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-terra|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-terra|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-terra|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-terra|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-terra|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-6.1-terra|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-120b|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-120b|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-120b|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-120b|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "openai/gpt-oss-120b|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-120b|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-120b|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-20b|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-20b|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-20b|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-20b|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "openai/gpt-oss-20b|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "openai/gpt-oss-20b|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3-next-80b-instruct|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3-next-80b-instruct|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3-next-80b-instruct|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3-next-80b-instruct|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "qwen/qwen3-next-80b-instruct|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3-next-80b-instruct|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.5-122b|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.5-122b|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.5-122b|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-models",
+    "dbx-proprietary"
+   ]
   },
   "qwen/qwen3.5-122b|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-max|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-max|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-max|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-max|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-max|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-max|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-plus|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-plus|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-plus|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-plus|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-plus|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.7-plus|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-27b|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-27b|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-27b|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-27b|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-27b|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-27b|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-flash|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-flash|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-flash|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-flash|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-flash|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-flash|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-max|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-max|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-max|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-max|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "qwen/qwen3.8-max|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "tml/inkling|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "tml/inkling|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "tml/inkling|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "tml/inkling|databricks": {
    "verified": "2026-11-07",
@@ -1174,106 +1684,129 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true
+   "quiet": true,
+   "unchecked": [
+    "dbx-models",
+    "dbx-proprietary"
+   ]
   },
   "tml/inkling|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "tml/inkling|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "changed_at": "2026-11-12",
+   "sources": [
+    "api-other-tml-tinker-pricing"
+   ]
   },
   "xai/grok-4.6|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.6|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.6|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.6|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.6|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.7|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.7|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.7|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.7|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "xai/grok-4.7|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "xai/grok-4.7|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.2|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.2|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.2|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.2|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "zai/glm-5.2|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.2|gcloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.2|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3-flash|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3-flash|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3-flash|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3-flash|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "zai/glm-5.3-flash|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3-flash|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3|alicloud": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3|azure_foundry": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3|bedrock": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "aws-pricing-page"
+   ]
   },
   "zai/glm-5.3|databricks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-11",
+   "unchecked": [
+    "dbx-proprietary"
+   ]
   },
   "zai/glm-5.3|fireworks": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   },
   "zai/glm-5.3|official": {
-   "verified": "2026-11-11"
+   "verified": "2026-11-12"
   }
  }
 }

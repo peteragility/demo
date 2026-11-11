@@ -1,34 +1,34 @@
 {
  "schema": 1,
- "checked_at": "2026-11-11",
+ "checked_at": "2026-11-12",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
- "published_at": "2026-11-09",
+ "published_at": "2026-11-10",
  "board_id": "webdev",
  "entries": [
   {
    "rank": 1,
-   "modelDisplayName": "Claude Opus 5.5 (Max)",
+   "modelDisplayName": "Claude Fable 5.2 (xHigh)",
    "modelOrganization": "anthropic"
   },
   {
    "rank": 2,
-   "modelDisplayName": "Claude Sonnet 5.5 (xHigh)",
+   "modelDisplayName": "Claude Opus 5.5 (Max)",
    "modelOrganization": "anthropic"
   },
   {
    "rank": 3,
+   "modelDisplayName": "Claude Sonnet 5.5 (xHigh)",
+   "modelOrganization": "anthropic"
+  },
+  {
+   "rank": 4,
    "modelDisplayName": "Gemini 4 Carbon (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 4,
+   "rank": 5,
    "modelDisplayName": "GPT-6 Astra (Max)",
    "modelOrganization": "openai"
-  },
-  {
-   "rank": 5,
-   "modelDisplayName": "Claude Fable 5.1 (Max)",
-   "modelOrganization": "anthropic"
   },
   {
    "rank": 6,
@@ -37,103 +37,103 @@
   },
   {
    "rank": 7,
+   "modelDisplayName": "Claude Fable 5.1 (Max)",
+   "modelOrganization": "anthropic"
+  },
+  {
+   "rank": 8,
    "modelDisplayName": "Muse Wonder Full (Max)",
    "modelOrganization": "meta"
   },
   {
-   "rank": 8,
+   "rank": 9,
    "modelDisplayName": "Claude Sonnet 5.5 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 9,
+   "rank": 10,
    "modelDisplayName": "Claude Opus 5 (Max)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 10,
+   "rank": 11,
    "modelDisplayName": "Kimi K3.1 Pro (Max)",
    "modelOrganization": "moonshot"
   },
   {
-   "rank": 11,
+   "rank": 12,
    "modelDisplayName": "Gemini 4 Argon (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 12,
+   "rank": 13,
    "modelDisplayName": "GPT-6.1 Terra (Max)",
    "modelOrganization": "openai"
   },
   {
-   "rank": 13,
+   "rank": 14,
    "modelDisplayName": "Qwen3.8-Max (0902)",
    "modelOrganization": "alibaba"
   },
   {
-   "rank": 14,
+   "rank": 15,
    "modelDisplayName": "GPT-6 Sol (Max)",
    "modelOrganization": "openai"
   },
   {
-   "rank": 15,
+   "rank": 16,
    "modelDisplayName": "Qwen3.8-Max",
    "modelOrganization": "alibaba"
   },
   {
-   "rank": 16,
+   "rank": 17,
    "modelDisplayName": "DeepSeek-V4.1-Flash-20261017 (Max)",
    "modelOrganization": "deepseek"
   },
   {
-   "rank": 17,
+   "rank": 18,
    "modelDisplayName": "Kimi K3 (Max)",
    "modelOrganization": "moonshot"
   },
   {
-   "rank": 18,
+   "rank": 19,
    "modelDisplayName": "Claude Opus 5 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 19,
+   "rank": 20,
    "modelDisplayName": "Muse Spark 1.3 (Max)",
    "modelOrganization": "meta"
   },
   {
-   "rank": 20,
+   "rank": 21,
    "modelDisplayName": "Muse Wonder (Max)",
    "modelOrganization": "meta"
   },
   {
-   "rank": 21,
+   "rank": 22,
    "modelDisplayName": "Inkling 2 Small",
    "modelOrganization": "thinky"
   },
   {
-   "rank": 22,
+   "rank": 23,
    "modelDisplayName": "Grok 4.7 (xHigh)",
    "modelOrganization": "xai"
   },
   {
-   "rank": 23,
+   "rank": 24,
    "modelDisplayName": "MiMo-V2.6-Flash",
    "modelOrganization": "xiaomi"
   },
   {
-   "rank": 24,
+   "rank": 25,
    "modelDisplayName": "Hy4 preview",
    "modelOrganization": "tencent"
   },
   {
-   "rank": 25,
+   "rank": 26,
    "modelDisplayName": "Claude Fable 5 (High)",
    "modelOrganization": "anthropic"
-  },
-  {
-   "rank": 26,
-   "modelDisplayName": "Qwen3.8-Flash-Next",
-   "modelOrganization": "alibaba"
   },
   {
    "rank": 27,
@@ -142,68 +142,68 @@
   },
   {
    "rank": 28,
+   "modelDisplayName": "Qwen3.8-Flash-Next",
+   "modelOrganization": "alibaba"
+  },
+  {
+   "rank": 29,
    "modelDisplayName": "GLM-5.3 (Max)",
    "modelOrganization": "zai"
   },
   {
-   "rank": 29,
+   "rank": 30,
    "modelDisplayName": "DeepSeek-V4.1-Flash-20260910 (Max)",
    "modelOrganization": "deepseek"
   },
   {
-   "rank": 30,
+   "rank": 31,
    "modelDisplayName": "Muse Spark 1.3 (xHigh)",
    "modelOrganization": "meta"
   },
   {
-   "rank": 31,
+   "rank": 32,
    "modelDisplayName": "Grok 4.6 (High)",
    "modelOrganization": "xai"
   },
   {
-   "rank": 32,
+   "rank": 33,
    "modelDisplayName": "GPT-5.6 Sol (xHigh, Codex Harness)",
    "modelOrganization": "openai"
   },
   {
-   "rank": 33,
+   "rank": 34,
+   "modelDisplayName": "U2 Flash",
+   "modelOrganization": "unisound"
+  },
+  {
+   "rank": 35,
    "modelDisplayName": "GLM-5.3-Flash",
    "modelOrganization": "zai"
   },
   {
-   "rank": 34,
+   "rank": 36,
    "modelDisplayName": "Muse Ember (Max)",
    "modelOrganization": "meta"
   },
   {
-   "rank": 35,
+   "rank": 37,
    "modelDisplayName": "GLM-5.2 (Max)",
    "modelOrganization": "zai"
   },
   {
-   "rank": 36,
+   "rank": 38,
    "modelDisplayName": "Claude Haiku 5.5 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 37,
+   "rank": 39,
    "modelDisplayName": "Qwen3.8-27B",
    "modelOrganization": "alibaba"
   },
   {
-   "rank": 38,
+   "rank": 40,
    "modelDisplayName": "Gemini 3.7 Flash (High)",
    "modelOrganization": "google"
-  },
-  {
-   "rank": 39,
-   "modelDisplayName": "Gemini 3.8 Flash (High)",
-   "modelOrganization": "google"
-  },
-  {
-   "rank": 40,
-   "modelDisplayName": "DeepSeek-V4-Flash (High)",
-   "modelOrganization": "deepseek"
   },
   {
    "rank": 41,
@@ -212,47 +212,47 @@
   },
   {
    "rank": 42,
+   "modelDisplayName": "Gemini 3.8 Flash (High)",
+   "modelOrganization": "google"
+  },
+  {
+   "rank": 43,
+   "modelDisplayName": "DeepSeek-V4-Flash (High)",
+   "modelOrganization": "deepseek"
+  },
+  {
+   "rank": 44,
    "modelDisplayName": "DeepSeek-V4-Pro (High, 20260813)",
    "modelOrganization": "deepseek"
   },
   {
-   "rank": 43,
+   "rank": 45,
    "modelDisplayName": "GPT-6 Luna (Max)",
    "modelOrganization": "openai"
   },
   {
-   "rank": 44,
+   "rank": 46,
    "modelDisplayName": "Step 5 Preview (High)",
    "modelOrganization": "stepfun"
   },
   {
-   "rank": 45,
+   "rank": 47,
    "modelDisplayName": "Mistral Large 4",
    "modelOrganization": "mistral"
   },
   {
-   "rank": 46,
+   "rank": 48,
    "modelDisplayName": "Claude Opus 4.7 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 47,
+   "rank": 49,
    "modelDisplayName": "Claude Opus 4.8 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 48,
-   "modelDisplayName": "Claude Opus 4.7",
-   "modelOrganization": "anthropic"
-  },
-  {
-   "rank": 49,
-   "modelDisplayName": "Grok 4.5",
-   "modelOrganization": "xai"
-  },
-  {
    "rank": 50,
-   "modelDisplayName": "Claude Opus 4.6 (High)",
+   "modelDisplayName": "Claude Opus 4.7",
    "modelOrganization": "anthropic"
   }
  ]
