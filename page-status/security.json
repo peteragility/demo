@@ -2,11 +2,11 @@
   "schema": 1,
   "pages": {
     "security-risk/": {
-      "checkedAt": "2026-11-11",
-      "lastSuccess": "2026-11-11",
-      "errors": 0,
+      "checkedAt": "2026-11-12",
+      "lastSuccess": "2026-11-12",
+      "errors": 1,
       "review": 6,
-      "status": "review"
+      "status": "partial"
     }
   }
 }
