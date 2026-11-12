@@ -1,73 +1,23 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-12",
+  "checkedAt": "2026-11-13",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-12",
-      "lastSuccess": "2026-11-12",
+      "checkedAt": "2026-11-13",
+      "lastSuccess": "2026-11-13",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-12",
-      "lastSuccess": "2026-11-12",
+      "checkedAt": "2026-11-13",
+      "lastSuccess": "2026-11-13",
       "errors": 0,
-      "review": 1,
+      "review": 0,
       "sources": 10,
-      "status": "review"
+      "status": "ok"
     }
   },
-  "findings": [
-    {
-      "id": "sandbox-strands",
-      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 0679346d52b4337b0ae9d3c4d70aa54392fdb3d25b837472c52f37d56512bda6",
-        "Removed record: 30c612327b73fb01d4f3e8741f143341a915f7096100b92125d20a639bb75c1a",
-        "Removed record: 8e4f5c7fc4c51a19b20923047526fb87a038a3dd0b30964bddf7a8c18e738352",
-        "Removed record: c0c3260c5576e5c5c9e9a0f043d532a6cbb798435fd8ffc20242c570406c6aa1",
-        "Removed record: c2d3b29424e8b3822ecc167d06e00d95450b12a2d9262671d166baa3c94d67c1",
-        "Added record: 03e0dac180d664d6e83f63f0ee9b4a7fb0867863125285600ebbc6e6cd95daa0: `a_shared_variable_keeps_the_ordinary_phantom_and_drops_the_backend_duplicate`, and the credentials",
-        "Added record: 16ee9c6f5964c6c645588bacdf0a2f332bd0e1e3558993abf3f8bba132c8c69c: because a credential that is not the one the operator named is a silent authority change. A bare",
-        "Added record: 22251aea142f5a2bef10d1ef1e4d176872ea9543a4919afb069344eadfe7ea64: `an_aws_backend_auth_without_an_explicit_scope_is_refused`, and the credentials crate's",
-        "Added record: 27026e9665c16df232b5901e53197ef0239ca5807d50c1e83e6dfb5235e48266: `a_backend_strip_phantom_opens_without_the_destination_secret_set`,",
-        "Added record: 3585ce29b872b6638a8d3251feff85a0d46d8ffd8b0147980a384f75686546cf",
-        "Added record: 358c5f711a5eac43784148a8072b82ae341bada8a1dad6377f47e3cba7116242",
-        "Added record: 4152180322dadabea51ca6101f9135e226402b52b8de1f45d8b3a30a1d1ed3ae",
-        "Added record: 4f2152ac6de779edce02166f49e698e1b4c40d38c8d612d93e3bbfefab47a927",
-        "Added record: 60264b8718909fcf34ca3d68bbca27599701a5464b0d1adf6f76bf69329ed17c",
-        "Added record: 6455da071d43c6830e32088ab52bda81c9379562213c27ea01b3e654158ff2b5",
-        "Added record: 7569fc704b3bbdf47193c6c035bb81f5f2c12a032191f61d4ffe633e04bbdf76",
-        "Added record: 77f3dc542fd6450ea53b3bac5510e80fff26348d757d6887ad2c3b5abe95630f",
-        "Added record: 79a3b6d07f6ac92898d709cd87846415b6856153292b964cd13935ae0ede30a4",
-        "Added record: 7d30cbed47de16844374bea1168f4ccc6b13b9079d1dbf94126949c147708a85",
-        "Added record: 82cc41c8bcb2eedd77654c086d103ecbcf9bfe3bdf385b57333d4932353e9514",
-        "Added record: 89c188d7cd8dec830b550f724a67622976c791d3447e1ca6d2c9b991b41cb95a",
-        "Added record: 8b634b1d4c8da6800f54ca429049066496fc49286635e4dec6ba970850a571dc",
-        "Added record: 8bf221bee7c00d0fe4c837ff69d4dc3b21932a3b2d8d88090597eb9eab2fae5f",
-        "Added record: 9224bfcd4814d469886930307ee29423564143d148f3f66c8c0f8c308688b354",
-        "Added record: 9aec54025edafddbc617a770a9c0dc511895fa8e6893080df9e630fdc1ac6c8a",
-        "Added record: a426329f7fbc454fe706141fe3023990b668e97cc92766ff966ea80ed982f126",
-        "Added record: a5f5ec5464e09c5b432827c031efba37c0eabc979b311c9d640045d2451f864a",
-        "Added record: a829b0fc8b2fbf02d4458d894ce10a94bdc79163546d2a48f3fd01bcd229d03e",
-        "Added record: a84ea1ba832c983484595e46afa06fce6a31daf1fb569c7165cb40118b233ca7",
-        "Added record: ac319b7585a2d98563a6812cf712f908752885980f2d618649d6c0c61878ba49",
-        "Added record: adf930bd290cf26f13f657a148fcd4916dfc2081104f1cbd8e4c26e6ecd162a5",
-        "Added record: b477ef7d97c532f286f0735c69a7c2494f8a81dc793cfef6853bb5db1a69dd2a",
-        "Added record: c08331895036465d2c0a46fcf675ed175f6d10d500c4c93dc29607e03283ce01",
-        "Added record: c085bffac846c882977e61e8d07ad1ca545a64f3b863a110aa15c9507393ff85",
-        "Added record: c5ff99e378cc464a2bf8dfae6c087587b795d7b3335cbf76cd6436d3122988fb",
-        "Added record: e793ab3a49b8d85685c982927d4b54d1de7e8f07c1692e3c8b42900dca630ea7",
-        "Added record: e7db175b682f6e8e849d5b04d49e24745c8eb4f5451a51bf42f57b7d09127079",
-        "Added record: f718fbbe890a72c1d40768cf953dfa5f129186e61d29b2f67fee2a1e5aafc080",
-        "Added record: faca75896954600a04c0ee30be5e4b48a591c264916ae1705fc895a588f78d16",
-        "Added record: fb227ccf7ad5d018bf1acee9b06445f1052b9ee4ea4c49d8b47eb393e70a7584",
-        "Added record: fba1be56faa0bcfbdd846ce0c4c42220785ff408946a64b1bf9cf7706d18185c"
-      ]
-    }
-  ]
+  "findings": []
 }
