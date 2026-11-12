@@ -16,6 +16,10 @@ Read the report and linked sources, update the affected page/snapshot, and run i
 
 The workflow commits only the observed baseline, check report and compact homepage status. Full run reports are retained as GitHub artifacts. No model API calls, credentials or package installation are needed.
 
+## Source review, 13 November 2026 — issue #54
+
+The artifact's 14 sources all read; the only changed source is Strands' decisions (41 records), and no sizing rate or availability moved. The additions extend the egress-gateway and credentials design without contradicting any comparison claim: destinations may re-route to one backend whose box-owned token attaches unconditionally while the destination secret stays phantom-only (a bare `aws://` backend auth is SigV4-signed in the gateway over the **backend** host after the Host rewrite, with an explicit `aws.service`/`aws.region`); `aws://PROFILE` resolves only that profile's static keys (never `credential_process`, SSO or assume-role) while a bare `aws://` runs the full default chain; and `secret.inject` renames the former strict/advisory phantom check to `phantom`/`always` with unchanged stripping and destination matching. The phantom-token swap, in-gateway signing, the box (not the process) as the credential boundary, OS isolation, the trusted-interpreter carve-outs, temporal policy and the macOS-default / ARM64-Linux-preview states all stand as written, so no comparison row changes. Accept observations only after a fresh workflow reads every source with no additional unresolved findings.
+
 ## Source review, 27 October 2026
 
 Issue #28's full artifact has 14 readable sources and only two changed sources. The current [Databricks Sandbox overview](https://docs.databricks.com/aws/en/compute/serverless/sandbox) now documents the creator credential in `~/.databrickscfg`, one-hour tokens refreshed for up to 24 hours independently of sign-in, closed non-configurable default ingress, changing public IPs and quota-increase requests. The comparison now states these credential, network and default quota constraints. Existing Agent Bricks tool scopes do not establish scopes for arbitrary SDK/CLI code.
