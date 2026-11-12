@@ -7284,8 +7284,8 @@
                 "DBU list rate $0.07 per DBU; committed-use discounts lower it."
               ],
               [
-                "Checkpoint review · 21 Oct 2026, updated 8 Nov",
-                "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Since the 21 Oct review, the OSS DBU table prices it: Standard 4.286/17.143/0.100 and Priority 7.500/30.000/0.175 DBU per million tokens — at $0.07/DBU $0.30/$1.20/$0.007 Standard (the rates shown here) and about $0.53/$2.10/$0.012 Priority. The Priority tier belongs to the 1017 endpoint, so it is not added to this card's original endpoint, which retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."
+                "Checkpoint review · 21 Oct 2026, updated 13 Nov",
+                "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Since the 21 Oct review, the OSS DBU table prices it: Standard 4.286/17.143/0.100 and Priority 7.500/30.000/0.175 DBU per million tokens — at $0.07/DBU $0.30/$1.20/$0.007 Standard (the rates shown here) and $0.525/$2.10/$0.01225 Priority (shown as the Priority tier; the arena model is the 1017 snapshot). The original databricks-deepseek-v4-1-flash endpoint retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes; the 1017 endpoint is its published replacement."
               ]
             ],
             "ids": [
@@ -7293,7 +7293,20 @@
               "databricks-deepseek-v4-1-flash-1017 (separate checkpoint; priced in the DBU table)"
             ],
             "cache_write": "input-rate"
-          }
+          },
+          "variants": [
+            {
+              "in": 0.525,
+              "out": 2.1,
+              "cache_read": 0.01225,
+              "label": "Priority · 1017 checkpoint",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-13",
+              "model_match": "confirmed",
+              "endpoint": "Default"
+            }
+          ]
         },
         "official": {
           "in": 0.3,

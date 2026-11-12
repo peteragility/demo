@@ -1024,8 +1024,8 @@ def review_october21(data):
             ["Caching", "Responses API writes: 30m (default) costs 1.25x input; 12h costs 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime. Minimum cacheable prefix: 1,024 tokens."]]
     c = data["models"]["deepseek/deepseek-v4.1-flash"]["platforms"]["databricks"]
     c["endpoints"]["ids"].append("databricks-deepseek-v4-1-flash-1017 (separate checkpoint; priced in the DBU table)")
-    c["endpoints"]["notes"].append(["Checkpoint review · 21 Oct 2026, updated 8 Nov",
-        "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Since the 21 Oct review, the OSS DBU table prices it: Standard 4.286/17.143/0.100 and Priority 7.500/30.000/0.175 DBU per million tokens — at $0.07/DBU $0.30/$1.20/$0.007 Standard (the rates shown here) and about $0.53/$2.10/$0.012 Priority. The Priority tier belongs to the 1017 endpoint, so it is not added to this card's original endpoint, which retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes."])
+    c["endpoints"]["notes"].append(["Checkpoint review · 21 Oct 2026, updated 13 Nov",
+        "Databricks lists a separate DeepSeek V4.1 Flash (1017) endpoint with text and image input. Since the 21 Oct review, the OSS DBU table prices it: Standard 4.286/17.143/0.100 and Priority 7.500/30.000/0.175 DBU per million tokens — at $0.07/DBU $0.30/$1.20/$0.007 Standard (the rates shown here) and $0.525/$2.10/$0.01225 Priority (shown as the Priority tier; the arena model is the 1017 snapshot). The original databricks-deepseek-v4-1-flash endpoint retires on 19 Nov 2026 in pay-per-token and provisioned-throughput modes; the 1017 endpoint is its published replacement."])
     c = data["models"]["google/gemini-4-argon"]["platforms"]["gcloud"]
     c["availability_checked_at"] = "2026-10-21"
     c["endpoints"]["checked_at"] = "2026-10-21"
@@ -1340,6 +1340,25 @@ def review_november12(data):
         availability_checked_at=day, model_match="confirmed")
 
 
+def review_november13(data):
+    """Issue #55 review, 13 Nov 2026.
+
+    The OSS DBU table prices DeepSeek V4.1 Flash (1017) Standard and Priority
+    (7.500/30.000/0.175 DBU per million tokens at $0.07/DBU). The tracked arena
+    model is the 1017 snapshot, so the Priority tier is added to this card as a
+    variant; the original endpoint's retirement (19 Nov 2026) is unchanged.
+    Vertex's new "Pricing for cache write effective January 12, 2027" notice and
+    *** cache-write cells concern untracked models (Gemini 4 Hydrogen, Gemini 2.5
+    Flash Image); tracked Google offers show N/A or unchanged cache-write records.
+    Tinker's Inkling 2 Small record gained a HuggingFace url with identical rates.
+    """
+    day = "2026-11-13"
+    c = data["models"]["deepseek/deepseek-v4.1-flash"]["platforms"]["databricks"]
+    c["variants"] = [dict(variant("Priority · 1017 checkpoint", 0.525, 2.1, 0.01225,
+                                  service="priority"), pricing_checked_at=day,
+                          model_match="confirmed", endpoint="Default")]
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1393,6 +1412,7 @@ def build():
     check_cache_reads(data)
     review_november11(data)
     review_november12(data)
+    review_november13(data)
     lifecycle_notices(data)
     # Highlights: neutral, dated facts re-checked against the v2 offers.
     # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
