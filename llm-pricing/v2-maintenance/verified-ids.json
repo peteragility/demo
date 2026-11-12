@@ -55,6 +55,7 @@
     "databricks-claude-sonnet-5",
     "databricks-claude-sonnet-4-6",
     "databricks-claude-sonnet-4-5",
+    "databricks-claude-fable-5-2",
     "databricks-claude-fable-5-1",
     "databricks-claude-fable-5",
     "databricks-claude-opus-5-5",

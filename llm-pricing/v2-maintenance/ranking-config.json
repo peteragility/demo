@@ -7,6 +7,7 @@
   "minimum_entries": 20,
   "note": "Each priced model matches arena display names (lowercase, - and _ as spaces; a version may read 4.8 or 4 8). The page lists the WebDev top-50 models that at least one compared platform sells, in rank order.",
   "models": {
+    "anthropic/claude-fable-5.2": "^claude fable 5[. ]2(?![\\d.]| \\d)",
     "anthropic/claude-fable-5.1": "^claude fable 5[. ]1(?![\\d.]| \\d)",
     "anthropic/claude-opus-5.5": "^claude opus 5[. ]5(?![\\d.]| \\d)",
     "anthropic/claude-sonnet-5.5": "^claude sonnet 5[. ]5(?![\\d.]| \\d)",
@@ -58,6 +59,7 @@
     "qwen/qwen3.8-27b": "^qwen ?3[. ]8 27b\\b",
     "minimax/minimax-m3": "^minimax m3\\b",
     "mistral/mistral-medium-3.5": "^mistral medium 3[. ]5\\b",
+    "mistral/mistral-large-4": "^mistral large 4(?![\\d.])",
     "qwen/qwen3.8-flash": "^qwen ?3[. ]8 flash(?: next)?(?![\\w.])",
     "anthropic/claude-opus-4.7": "^claude opus 4[. ]7(?![\\d.]| \\d)",
     "anthropic/claude-opus-4.6": "^claude opus 4[. ]6(?![\\d.]| \\d)",

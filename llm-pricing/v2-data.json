@@ -51,6 +51,7 @@
     "https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference-supported.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/endpoints-region-availability.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-fable-5-1.html",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-fable-5-2.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-fable-5.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-6.html",
     "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-7.html",
@@ -99,6 +100,7 @@
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/batch",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/fable-5",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/fable-5-1",
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/fable-5-2",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/opus-4-6",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/opus-4-7",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/opus-4-8",
@@ -516,6 +518,11 @@
     "gcp_claude_fable_5_1": {
       "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/fable-5-1",
       "label": "Claude Fable 5.1 on Google Cloud model page",
+      "short": "model page"
+    },
+    "gcp_claude_fable_5_2": {
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/fable-5-2",
+      "label": "Claude Fable 5.2 on Google Cloud model page",
       "short": "model page"
     },
     "gcp_claude_opus_5": {
@@ -1191,6 +1198,11 @@
     "aws_card_claude_fable_5_1": {
       "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-fable-5-1.html",
       "label": "Amazon Bedrock model card - Claude Fable 5.1",
+      "short": "model page"
+    },
+    "aws_card_claude_fable_5_2": {
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-fable-5-2.html",
+      "label": "Amazon Bedrock model card - Claude Fable 5.2",
       "short": "model page"
     },
     "aws_card_claude_opus_5_5": {
@@ -29124,41 +29136,15 @@
       "platforms": {
         "databricks": {
           "status": "unverified",
-          "note": "No verified Gemini 4 Carbon offer in the reviewed platform sources.",
+          "note": "Available through Unity Gateway pay-per-token (system.ai.gemini-4-carbon); no Gemini 4 Carbon rates are published in the checked Databricks DBU tables.",
           "src": "dbx_prop",
-          "model_id": null,
-          "available": null,
+          "model_id": "databricks-gemini-4-carbon",
+          "available": true,
           "pricing_checked_at": null,
-          "availability_checked_at": "2026-11-11",
-          "endpoints": {
-            "checked_at": "2026-10-09",
-            "src": [
-              "dbx_region",
-              "dbx_region_azure",
-              "dbx_region_gcp"
-            ],
-            "regions": [],
-            "hk": [
-              "unknown",
-              "Not in Databricks' region tables yet"
-            ],
-            "tw": [
-              "unknown",
-              "Not in Databricks' region tables yet"
-            ],
-            "notes": [
-              [
-                "Regions",
-                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
-              ],
-              [
-                "Billing",
-                "DBU list rate $0.07 per DBU; committed-use discounts lower it."
-              ]
-            ],
-            "ids": [],
-            "cache_write": "not-listed"
-          },
+          "availability_checked_at": "2026-11-13",
+          "model_id_source": "dbx_models",
+          "model_id_checked_at": "2026-11-13",
+          "model_match": "confirmed",
           "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
         },
         "official": {
@@ -29901,6 +29887,758 @@
           "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
         }
       }
+    },
+    "anthropic/claude-fable-5.2": {
+      "name": "Claude Fable 5.2",
+      "short": "Fable 5.2",
+      "maker": "Anthropic",
+      "group": "anthropic",
+      "oss": false,
+      "ctx": "1M",
+      "badges": [
+        "Added"
+      ],
+      "note": "Cache reads $0.20 (2.5% of input); Fast mode $16 / $80.",
+      "platforms": {
+        "databricks": {
+          "in": 8,
+          "out": 40,
+          "cache_read": 0.2,
+          "cache_write": 10,
+          "cache_write_1h": 16,
+          "src": "dbx_prop",
+          "tier": "Standard pay-per-token",
+          "model_id": "databricks-claude-fable-5-2",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-13",
+          "availability_checked_at": "2026-11-13",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_source": "dbx_models",
+          "dbu_rate_basis": 0.07,
+          "variants": [
+            {
+              "in": 8.8,
+              "out": 44,
+              "cache_read": 0.22,
+              "cache_write": 11,
+              "cache_write_1h": 17.6,
+              "label": "Regional processing ⌖ +10%",
+              "comparison_scope": "regional",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "Regional processing ⌖",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-11-13",
+          "endpoint": "Default",
+          "endpoints": {
+            "checked_at": "2026-11-13",
+            "src": [
+              "dbx_region",
+              "dbx_region_azure",
+              "dbx_region_gcp"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "in-region",
+                "In-region",
+                "AWS N. Virginia, Ohio, Oregon, Canada, São Paulo"
+              ],
+              [
+                "Americas",
+                "global",
+                "Cross-geo",
+                "Azure East US, East US 2, Central US, North Central US, South Central US, West US, West US 2, West US 3, Canada Central, Brazil South · GCP Iowa, S. Carolina, N. Virginia, Oregon"
+              ],
+              [
+                "Europe",
+                "global",
+                "Cross-geo",
+                "AWS Frankfurt, Ireland, London, Paris · Azure North Europe, West Europe, UK South, France Central, Germany West Central, Sweden Central, Switzerland North · GCP London, Frankfurt"
+              ],
+              [
+                "APAC",
+                "global",
+                "Cross-geo",
+                "AWS Tokyo, Seoul, Mumbai, Singapore, Sydney · Azure East Asia (Hong Kong), Southeast Asia (Singapore), Japan East, Korea Central, Central India, Australia East · GCP Mumbai, Singapore"
+              ]
+            ],
+            "hk": [
+              "routed",
+              "Azure East Asia (Hong Kong) through cross-geo routing"
+            ],
+            "tw": [
+              "none",
+              "No Taiwan region in Databricks' model-serving tables"
+            ],
+            "notes": [
+              [
+                "Residency",
+                "Cross-geo regions need cross-geography routing enabled; Databricks serves them based on GPU availability."
+              ],
+              [
+                "Regional processing",
+                "With regional processing (data residency) enabled, ⌖ models are charged 10% more."
+              ],
+              [
+                "Billing",
+                "DBU list rate $0.07 per DBU; committed-use discounts lower it."
+              ]
+            ],
+            "ids": [
+              "databricks-claude-fable-5-2"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "official": {
+          "in": 8,
+          "out": 40,
+          "cache_read": 0.2,
+          "cache_write": 10,
+          "cache_write_1h": 16,
+          "src": "anthropic",
+          "tier": "Claude API",
+          "model_id": "claude-fable-5-2",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-13",
+          "availability_checked_at": "2026-11-13",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 4.0,
+              "out": 20.0,
+              "cache_read": 0.1,
+              "cache_write": 5.0,
+              "cache_write_1h": 8.0,
+              "label": "Claude API · global · Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "Claude API · global",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 16.0,
+              "out": 80.0,
+              "cache_read": 0.4,
+              "cache_write": 20.0,
+              "cache_write_1h": 32.0,
+              "label": "Claude API · global · Fast",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "Claude API · global",
+              "tier_label": "Fast",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 8.8,
+              "out": 44.0,
+              "cache_read": 0.22,
+              "cache_write": 11.0,
+              "cache_write_1h": 17.6,
+              "label": "US-only inference · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "US-only inference",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 4.4,
+              "out": 22.0,
+              "cache_read": 0.11,
+              "cache_write": 5.5,
+              "cache_write_1h": 8.8,
+              "label": "US-only inference · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "US-only inference",
+              "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 17.6,
+              "out": 88.0,
+              "cache_read": 0.44,
+              "cache_write": 22.0,
+              "cache_write_1h": 35.2,
+              "label": "US-only inference · Fast",
+              "comparison_scope": "geographic",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "US-only inference",
+              "tier_label": "Fast",
+              "id": "variant-4",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-11-13",
+          "endpoint": "Claude API · global",
+          "endpoints": {
+            "checked_at": "2026-11-13",
+            "src": [
+              "api_west_anthropic_countries",
+              "api_west_anthropic_pricing",
+              "api_west_anthropic_residency"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "geo",
+                "US-only inference",
+                "United States, 1.1× price"
+              ],
+              [
+                "Americas",
+                "global",
+                "Global (default)",
+                "Any geography; locations not published"
+              ],
+              [
+                "Europe",
+                "none",
+                "None",
+                "No EU inference geography"
+              ],
+              [
+                "APAC",
+                "none",
+                "None",
+                "No APAC inference geography"
+              ]
+            ],
+            "hk": [
+              "none",
+              "Not available: Hong Kong is not on Anthropic's supported-regions list"
+            ],
+            "tw": [
+              "none",
+              "Available in Taiwan (supported region); no Taiwan processing region"
+            ],
+            "notes": [
+              [
+                "Caching",
+                "Cache reads cost 0.025x base input ($0.20/MTok); 5-minute writes 1.25x, 1-hour writes 2x."
+              ],
+              [
+                "Context",
+                "1M-token context at standard rates, no long-context surcharge."
+              ],
+              [
+                "Tiers",
+                "Fast mode is $16 / $80 (GA); Batch is 50% off and accepts US-only inference. No Priority Tier."
+              ]
+            ],
+            "ids": [
+              "claude-fable-5-2 (Claude API model ID; alias is the same)"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://platform.claude.com/docs/en/about-claude/pricing"
+        },
+        "bedrock": {
+          "in": 8,
+          "out": 40,
+          "cache_read": 0.2,
+          "cache_write": 10,
+          "cache_write_1h": 16,
+          "src": "aws_fm",
+          "tier": "Global cross-region",
+          "model_id": "anthropic.claude-fable-5-2",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-13",
+          "availability_checked_at": "2026-11-13",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 8.8,
+              "out": 44.0,
+              "cache_read": 0.22,
+              "cache_write": 11.0,
+              "cache_write_1h": 17.6,
+              "label": "US CRIS · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "US CRIS",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-11-13",
+          "endpoint": "Global CRIS",
+          "endpoints": {
+            "checked_at": "2026-11-13",
+            "src": [
+              "aws_card_claude_fable_5_2",
+              "aws_endpoint_regions",
+              "aws_fm_use1"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "geo",
+                "US CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+              ],
+              [
+                "Americas",
+                "global",
+                "Global CRIS",
+                "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global CRIS",
+                "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global CRIS",
+                "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No Bedrock endpoint in Hong Kong (ap-east-1)"
+            ],
+            "tw": [
+              "routed",
+              "Taipei (ap-east-2) through global cross-region inference only"
+            ],
+            "notes": [
+              [
+                "Caching",
+                "Global cache read is $0.20 per 1M, 2.5% of input; writes $10 (5m) and $16 (1h)."
+              ],
+              [
+                "Residency",
+                "Geo option is US only (US and Canada); Europe and APAC sources reach it only through Global CRIS."
+              ],
+              [
+                "Endpoints",
+                "bedrock-runtime and bedrock-mantle; no in-region endpoint. Adaptive thinking is always on."
+              ]
+            ],
+            "ids": [
+              "anthropic.claude-fable-5-2 (model ID; bedrock-runtime + bedrock-mantle)",
+              "us.anthropic.claude-fable-5-2 (US geo inference profile)",
+              "global.anthropic.claude-fable-5-2 (global inference profile; Anthropic's models page lists the global ID as the Bedrock ID)"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "in": 8,
+          "out": 40,
+          "cache_read": 0.2,
+          "cache_write": 10,
+          "cache_write_1h": 16,
+          "src": "azure_claude",
+          "tier": "Global Standard · billed via Azure Marketplace",
+          "model_id": "claude-fable-5-2",
+          "note": "Anthropic: Foundry is billed at standard API rates.",
+          "status": "priced",
+          "pricing_checked_at": "2026-11-13",
+          "availability_checked_at": "2026-11-13",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_checked_at": "2026-11-13",
+          "endpoint": "Global Standard",
+          "endpoints": {
+            "checked_at": "2026-11-13",
+            "src": [
+              "az_anthropic_countries",
+              "az_anthropic_pricing",
+              "az_learn_partners"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "global",
+                "Global Standard",
+                "East US"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global Standard",
+                "Switzerland North"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No Hong Kong (East Asia) region; Anthropic's API country list also excludes Hong Kong"
+            ],
+            "tw": [
+              "none",
+              "No Azure region in Taiwan"
+            ],
+            "notes": [
+              [
+                "Billing",
+                "Billed via Azure Marketplace in Claude Consumption Units ($0.01 each) at Anthropic list rates; not in Retail Prices API."
+              ],
+              [
+                "Tiers",
+                "Azure also lists claude-fable-5-2-fast (Global Standard, East US / Switzerland North); no separate Azure price is published for it."
+              ],
+              [
+                "Caching",
+                "Cache hits priced at 0.025× input ($0.20/M)."
+              ]
+            ],
+            "ids": [
+              "claude-fable-5-2 (Foundry deployment/model name)",
+              "claude-fable-5-2-fast (Fast variant listing)",
+              "Billing: 'Claude Platform on Foundry' Azure Marketplace offer, CCU meter"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-from-partners"
+        },
+        "gcloud": {
+          "in": 8,
+          "out": 40,
+          "cache_read": 0.2,
+          "cache_write": 10,
+          "cache_write_1h": 16,
+          "src": "vertex_partner",
+          "tier": "Global endpoint",
+          "model_id": "claude-fable-5-2",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-13",
+          "availability_checked_at": "2026-11-13",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 8.8,
+              "out": 44.0,
+              "cache_read": 0.22,
+              "cache_write": 11.0,
+              "cache_write_1h": 17.6,
+              "label": "US multi-region · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "US multi-region",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 8.8,
+              "out": 44.0,
+              "cache_read": 0.22,
+              "cache_write": 11.0,
+              "cache_write_1h": 17.6,
+              "label": "EU multi-region · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "EU multi-region",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 4.4,
+              "out": 22.0,
+              "cache_read": 0.11,
+              "cache_write": 5.5,
+              "cache_write_1h": 8.8,
+              "label": "US multi-region · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "US multi-region",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 4.4,
+              "out": 22.0,
+              "cache_read": 0.11,
+              "cache_write": 5.5,
+              "cache_write_1h": 8.8,
+              "label": "EU multi-region · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-13",
+              "endpoint": "EU multi-region",
+              "id": "variant-3",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-11-13",
+          "endpoint": "Global",
+          "endpoints": {
+            "checked_at": "2026-11-13",
+            "src": [
+              "gcp_claude_fable_5_2",
+              "gcp_locations",
+              "vertex_partner"
+            ],
+            "regions": [
+              [
+                "Global",
+                "global",
+                "Global",
+                "Any Google Cloud region; no data residency"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US multi-region",
+                "United States; processing stays in the US"
+              ],
+              [
+                "Europe",
+                "geo",
+                "EU multi-region",
+                "EU member states (not the UK or Switzerland); processing stays in the EU"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No Hong Kong (asia-east2) endpoint"
+            ],
+            "tw": [
+              "none",
+              "No Taiwan (asia-east1) endpoint for this model"
+            ],
+            "notes": [
+              [
+                "Batch",
+                "Batch isn't supported on the global endpoint; US/EU multi-region batch is $4.40/$22.00."
+              ],
+              [
+                "Context",
+                "1M input and 128K output tokens; no long-context premium is listed."
+              ],
+              [
+                "Version",
+                "claude-fable-5-2; GA from 9 Nov 2026, retirement not sooner than 9 Nov 2027."
+              ]
+            ],
+            "ids": [
+              "claude-fable-5-2 (Vertex model ID; publishers/anthropic/models/claude-fable-5-2; no @version suffix listed)"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks_nexus",
+          "note": "Fireworks sells open models only. Its Nexus router can call Claude or OpenAI models with your own Anthropic, OpenAI or Bedrock key, billed by that provider.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "anthropic/claude-fable-5.2"
+    },
+    "mistral/mistral-large-4": {
+      "name": "Mistral Large 4",
+      "short": "Mistral Large 4",
+      "maker": "Mistral",
+      "group": "oss",
+      "oss": false,
+      "ctx": "1M",
+      "badges": [
+        "Added"
+      ],
+      "about": "MoE · 52B active / 1.05T total · vision",
+      "platforms": {
+        "official": {
+          "in": 0.7,
+          "out": 2.1,
+          "cache_read": 0.07,
+          "src": "api_other_mistral_pricing",
+          "tier": "Mistral API",
+          "model_id": "mistral-large-4",
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-13",
+          "availability_checked_at": "2026-11-13",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "model_id_checked_at": "2026-11-13",
+          "endpoint": "Mistral API",
+          "endpoints": {
+            "checked_at": "2026-11-13",
+            "src": [
+              "api_other_mistral_pricing"
+            ],
+            "regions": [
+              [
+                "Europe",
+                "global",
+                "Mistral API",
+                "No inference-location commitment published"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No Hong Kong endpoint; Mistral offers only global, EU and US endpoints"
+            ],
+            "tw": [
+              "none",
+              "No Taiwan endpoint; Mistral offers only global, EU and US endpoints"
+            ],
+            "notes": [
+              [
+                "Caching",
+                "Cached input is $0.07 per million tokens (10% of input); no write premium is listed for Large 4."
+              ],
+              [
+                "Tiers",
+                "Only the Standard tab rates are verified for Large 4 ($0.70 / $2.10); no Batch or Priority rate is published for it."
+              ]
+            ],
+            "ids": [
+              "mistral-large-4 (model name in the Chat Completions API)",
+              "mistral-large-4-0 (docs model page slug)"
+            ],
+            "cache_write": "input-rate"
+          },
+          "url": "https://docs.mistral.ai/inference/pricing"
+        },
+        "azure_foundry": {
+          "status": "unverified",
+          "note": "Azure sells mistral-large-4-latest directly (Global Standard and Data Zone Standard); no Large 4 per-token prices are published in the checked Azure retail meters or its Mistral pricing page.",
+          "src": "az_learn_regions",
+          "model_id": "mistral-large-4-latest",
+          "available": true,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id_checked_at": "2026-11-13",
+          "endpoint": "Global Standard",
+          "endpoints": {
+            "checked_at": "2026-11-13",
+            "src": [
+              "az_learn_regions",
+              "az_mistral_pricing",
+              "az_retail"
+            ],
+            "regions": [
+              [
+                "Global",
+                "global",
+                "Global Standard",
+                "Many Azure regions; the sold-directly availability table lists mistral-large-4-latest GA"
+              ],
+              [
+                "Global",
+                "geo",
+                "Data Zone Standard",
+                "US and EU data zones list mistral-large-4-latest GA"
+              ]
+            ],
+            "hk": [
+              "unknown",
+              "Azure's Mistral region tables do not break out Hong Kong for Large 4"
+            ],
+            "tw": [
+              "none",
+              "No Azure region in Taiwan"
+            ],
+            "notes": [
+              [
+                "Pricing",
+                "Azure sells mistral-large-4-latest directly (Global Standard and Data Zone Standard), but neither the checked Azure retail meters nor Azure's Mistral pricing page publish Large 4 per-token prices."
+              ]
+            ],
+            "ids": [
+              "mistral-large-4-latest (Foundry model name, version 1)"
+            ],
+            "cache_write": "not-listed"
+          },
+          "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure-region-availability"
+        },
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Bedrock's Mistral listings stop at Large 3; no Large 4.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex_partner",
+          "note": "Vertex partner pricing lists Mistral Medium and Small, not Large 4.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id": null,
+          "url": "https://cloud.google.com/model-garden/partner-models/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Fireworks serverless pricing lists no Mistral model.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        },
+        "alicloud": {
+          "status": "unavailable",
+          "src": "ali",
+          "note": "Model Studio lists no Mistral Large 4.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-13",
+          "model_id": null,
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "model_key": "mistral/mistral-large-4"
     }
   },
   "reviewed_at": "2026-11-06",
@@ -29909,6 +30647,7 @@
     "2026-10-26: Databricks now prices Gemini 4 Argon at $2.5 / $12.5 per its DBU table, added by the daily check.",
     "2026-10-28: Claude Sonnet 5.5 on Databricks FMAPI: cache read $0.20 → $0.10, applied by the daily check from its official source.",
     "2026-10-24: DeepSeek V4.1 Flash on Databricks FMAPI: cache read $0.03 → $0.007, applied by the daily check from its official source.",
+    "2026-11-13: Added Claude Fable 5.2 (arena #1) at $8 / $40 with $0.20 cache reads (2.5%), $10 / $16 cache writes, Batch $4 / $20 and Fast $16 / $80, from its own sources on every selling platform: the Claude API, Databricks (⌖ DBU table, Unity Gateway), Bedrock Global CRIS, Azure Foundry (CCU, East US / Switzerland North) and Vertex global, with US / EU residency +10% everywhere. Added Mistral Large 4 (arena #47) at $0.70 / $2.10 with $0.07 cached input from the maker API; Azure sells mistral-large-4-latest directly but publishes no per-token prices (availability only). Databricks lists databricks-gemini-4-carbon pay-per-token through Unity Gateway with no DBU rates (availability only).",
     "2026-11-11: Added Gemini 4 Carbon (arena #3) from the Gemini API and Vertex pricing tables at Argon's tier rates ($2 / $10 Standard, $3.60 / $18 Priority, $1 / $5 Batch, US / EU multi-region +10%; introductory rates through 30 Nov 2026, list rates double from 1 Dec). Added Meta's Muse Spark 1.3 ($1.25 / $4.25), Muse Wonder 1.0 ($4 / $20) and Muse Ember 1.0 ($0.10 / $0.50 to 200K input, $0.30 / $1.50 above) from Vertex partner pricing; no other compared platform sells them. Azure's Fireworks catalog added FW-Kimi-K3.1-Pro and FW-DeepSeek-V4.1-Flash-1017 pay-per-token without published prices (availability recorded, no rates copied); FW-MiniMax-M3 pay-per-token retires 24 Nov 2026. Databricks deprecates GLM 5.2 with retirement on 4 Feb 2027 (use GLM 5.3). GPT-6 Luna adds Australia / India / Japan regional processing. Anthropic's Fable 5.2 / Mythos 5.2 launch changes no tracked rate.",
     "2026-11-05: Added Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') from Fireworks serverless ($2 / $10, $0.20 cached input; Priority $3 / $15) and the Moonshot API ($2 / $10, $0.20 cached input, $2 / $4 cache writes; Highspeed $4 / $20; Batch 60%). Databricks hosts it pay-per-token in us-east-1 with no published DBU rates yet; Bedrock, Vertex, Azure and Alibaba do not sell it. GPT-5.6 Sol's maker promotional rates extend to 30 Nov 2026; Databricks' own promotion still ends 21 Nov.",
     "2026-10-09: The list follows arena.ai's Best WebDev (Code | Overall) top 50 instead of Best Overall (Agent), shown when a compared platform sells the model with general access. Added Claude Opus 4.7 and Opus 4.6 (Databricks, Bedrock, Vertex, Azure Foundry) and Qwen3.8 Flash (Alibaba Cloud; arena: Qwen3.8 Flash Next); Claude Haiku 5.5 is #30, with a 1M context billed at 5x over 100K prompt tokens on every platform and US-only inference on the Claude API.",

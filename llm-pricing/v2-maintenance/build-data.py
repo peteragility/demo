@@ -18,7 +18,8 @@ PLATFORMS = ("databricks", "official", "bedrock", "azure_foundry", "fireworks", 
 # Share of the same tier's input price that Anthropic charges for a cache hit (pricing page, 2026-10-08):
 # 2.5% on Fable 5.1, 5% on Opus 5.5 and Sonnet 5.5, 10% on every other Claude model. Databricks bills
 # Claude from its own DBU tables (still 10% for Sonnet 5.5), which review-sources.py checks number by number.
-CACHE_HIT = {"anthropic/claude-fable-5.1": 0.025, "anthropic/claude-opus-5.5": 0.05, "anthropic/claude-sonnet-5.5": 0.05}
+CACHE_HIT = {"anthropic/claude-fable-5.2": 0.025, "anthropic/claude-fable-5.1": 0.025,
+             "anthropic/claude-opus-5.5": 0.05, "anthropic/claude-sonnet-5.5": 0.05}
 
 
 def rates(i, o, cr=None, cw=None, cw1h=None, storage=None):
@@ -1246,6 +1247,99 @@ def review_november11(data):
     gf["endpoints"]["checked_at"] = day
 
 
+def add_fable_52(data):
+    """Claude Fable 5.2 (arena #1, 'Claude Fable 5.2 (xHigh)') added 13 Nov 2026 from its own
+    verified sources. Anthropic, Bedrock Global CRIS, Vertex global and Databricks all list
+    $8 / $40 per million tokens with $0.20 cache reads (2.5% of input), $10 5-minute and
+    $16 1-hour writes; Batch is 50% off and Fast mode is $16 / $80 on the maker API
+    (Azure also lists claude-fable-5-2-fast). US / EU-resident processing is +10% everywhere.
+    Azure Foundry bills the same standard rates through Azure Marketplace CCUs (East US and
+    Switzerland Central, Global standard). Databricks' DBU table prices the ⌖ endpoint at
+    114.286 / 571.429 / 2.857 / 142.857 / 228.571 DBU per million tokens ($0.07 / DBU);
+    queries go through Unity Gateway (system.ai.claude-fable-5-2)."""
+    day = "2026-11-13"
+    nexus = data["models"]["anthropic/claude-fable-5"]["platforms"]["fireworks"]["note"]
+    official = offer(8, 40, 0.2, 10, 16, src="anthropic", tier="Claude API", model_id="claude-fable-5-2")
+    official["variants"] = [
+        variant("Claude API · global · Batch", 4, 20, 0.1, 5, 8, service="batch", endpoint="Claude API · global"),
+        variant("Claude API · global · Fast", 16, 80, 0.4, 20, 32, service="priority",
+                endpoint="Claude API · global", tier_label="Fast"),
+        variant("US-only inference · Standard", 8.8, 44, 0.22, 11, 17.6, scope="geographic", endpoint="US-only inference"),
+        variant("US-only inference · Batch", 4.4, 22, 0.11, 5.5, 8.8, scope="geographic", service="batch",
+                endpoint="US-only inference"),
+        variant("US-only inference · Fast", 17.6, 88, 0.44, 22, 35.2, scope="geographic", service="priority",
+                endpoint="US-only inference", tier_label="Fast"),
+    ]
+    dbx = offer(8, 40, 0.2, 10, 16, src="dbx_prop", tier="Standard pay-per-token",
+                model_id="databricks-claude-fable-5-2", model_id_source="dbx_models", dbu_rate_basis=0.07)
+    dbx["variants"] = [variant("Regional processing ⌖ +10%", 8.8, 44, 0.22, 11, 17.6, scope="regional")]
+    aws = offer(8, 40, 0.2, 10, 16, src="aws_fm", tier="Global cross-region", model_id="anthropic.claude-fable-5-2")
+    aws["variants"] = [variant("Geo CRIS · Standard", 8.8, 44, 0.22, 11, 17.6, scope="geographic", endpoint="Geo CRIS")]
+    azure = offer(8, 40, 0.2, 10, 16, src="azure_claude", tier="Global Standard · billed via Azure Marketplace",
+                  model_id="claude-fable-5-2", note="Anthropic: Foundry is billed at standard API rates.")
+    vertex = offer(8, 40, 0.2, 10, 16, src="vertex", tier="Global endpoint", model_id="claude-fable-5-2")
+    vertex["variants"] = [
+        variant("US multi-region · Standard", 8.8, 44, 0.22, 11, 17.6, scope="geographic", endpoint="US multi-region"),
+        variant("EU multi-region · Standard", 8.8, 44, 0.22, 11, 17.6, scope="geographic", endpoint="EU multi-region"),
+        variant("US multi-region · Batch", 4.4, 22, 0.11, 5.5, 8.8, scope="geographic", service="batch",
+                endpoint="US multi-region"),
+        variant("EU multi-region · Batch", 4.4, 22, 0.11, 5.5, 8.8, scope="geographic", service="batch",
+                endpoint="EU multi-region"),
+    ]
+    platforms = dict(databricks=dbx, official=official, bedrock=aws, azure_foundry=azure, gcloud=vertex,
+                     fireworks=unavailable("fireworks_nexus", nexus), alicloud=unavailable("ali"))
+    data["models"]["anthropic/claude-fable-5.2"] = dict(
+        name="Claude Fable 5.2", short="Fable 5.2", maker="Anthropic", group="anthropic", oss=False, ctx="1M",
+        badges=["Added"], note="Cache reads $0.20 (2.5% of input); Fast mode $16 / $80.",
+        platforms={pl: checked(c, day) for pl, c in platforms.items()})
+
+
+def add_mistral_large_4(data):
+    """Mistral Large 4 (arena #47, 'Mistral Large 4') added 13 Nov 2026. The maker API prices
+    mistral-large-4 at $0.70 / $2.10 per million tokens with $0.07 cached input (MoE, 52B
+    active / 1.05T total parameters, 1M context). Azure sells mistral-large-4-latest directly
+    (Global Standard and Data Zone Standard across many regions), which qualifies the model for
+    the page, but neither the checked Azure retail meters nor Azure's Mistral pricing page
+    publish Large 4 per-token prices, so availability is recorded without rates. Bedrock tops
+    out at Large 3 and Vertex partner pricing at Medium; neither sells Large 4."""
+    day = "2026-11-13"
+    api = offer(0.7, 2.1, 0.07, src="api_other_mistral_pricing", tier="Mistral API", model_id="mistral-large-4")
+    platforms = dict(
+        official=api,
+        azure_foundry=dict(
+            pending("Azure sells mistral-large-4-latest directly (Global Standard and Data Zone Standard); no Large 4 "
+                    "per-token prices are published in the checked Azure retail meters or its Mistral pricing page.",
+                    "az_learn_regions", model_id="mistral-large-4-latest", available=True),
+            availability_checked_at=day),
+        databricks=unavailable("dbx_models", "Not in the Databricks supported-models catalog."),
+        bedrock=unavailable("aws", "Bedrock's Mistral listings stop at Large 3; no Large 4."),
+        gcloud=unavailable("vertex_partner", "Vertex partner pricing lists Mistral Medium and Small, not Large 4."),
+        fireworks=unavailable("fireworks", "Fireworks serverless pricing lists no Mistral model."),
+        alicloud=unavailable("ali", "Model Studio lists no Mistral Large 4."))
+    data["models"]["mistral/mistral-large-4"] = dict(
+        name="Mistral Large 4", short="Mistral Large 4", maker="Mistral", group="oss", oss=False, ctx="1M",
+        badges=["Added"], about="MoE · 52B active / 1.05T total · vision",
+        platforms={pl: checked(c, day) for pl, c in platforms.items()})
+
+
+def review_november12(data):
+    """Issue #53 review, 13 Nov 2026.
+
+    Databricks' catalog lists databricks-gemini-4-carbon pay-per-token through Unity Gateway
+    (system.ai.gemini-4-carbon); neither checked DBU table prices it, so availability is
+    recorded without rates and no price is inferred. The endpoint is not yet in Databricks'
+    region tables."""
+    day = "2026-11-13"
+    carbon = data["models"]["google/gemini-4-carbon"]["platforms"]["databricks"]
+    carbon.clear()
+    carbon.update(
+        pending("Available through Unity Gateway pay-per-token (system.ai.gemini-4-carbon); no Gemini 4 Carbon "
+                "rates are published in the checked Databricks DBU tables.",
+                "dbx_prop", model_id="databricks-gemini-4-carbon", available=True),
+        model_id_source="dbx_models", model_id_checked_at=day,
+        availability_checked_at=day, model_match="confirmed")
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1275,6 +1369,8 @@ def build():
     add_kimi_k31_pro(data)
     add_gemini4_carbon(data)
     add_muse_models(data)
+    add_fable_52(data)
+    add_mistral_large_4(data)
     apply_endpoints(data)
     # Google moved all partner billing tables to Model Garden (29 Oct).
     # Keep Google's own models on the existing source and monitor partner prices separately.
@@ -1296,6 +1392,7 @@ def build():
                   "Databricks Argon 50% promotion", o.get("label", argon["tier"]))
     check_cache_reads(data)
     review_november11(data)
+    review_november12(data)
     lifecycle_notices(data)
     # Highlights: neutral, dated facts re-checked against the v2 offers.
     # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
@@ -1344,6 +1441,7 @@ def build():
     if proven_log:
         data["reviewed_at"] = max(data["reviewed_at"], max(line[:10] for line in proven_log))
     data["changes"] = proven_log[::-1] + [
+        "2026-11-13: Added Claude Fable 5.2 (arena #1) at $8 / $40 with $0.20 cache reads (2.5%), $10 / $16 cache writes, Batch $4 / $20 and Fast $16 / $80, from its own sources on every selling platform: the Claude API, Databricks (⌖ DBU table, Unity Gateway), Bedrock Global CRIS, Azure Foundry (CCU, East US / Switzerland North) and Vertex global, with US / EU residency +10% everywhere. Added Mistral Large 4 (arena #47) at $0.70 / $2.10 with $0.07 cached input from the maker API; Azure sells mistral-large-4-latest directly but publishes no per-token prices (availability only). Databricks lists databricks-gemini-4-carbon pay-per-token through Unity Gateway with no DBU rates (availability only).",
         "2026-11-11: Added Gemini 4 Carbon (arena #3) from the Gemini API and Vertex pricing tables at Argon's tier rates ($2 / $10 Standard, $3.60 / $18 Priority, $1 / $5 Batch, US / EU multi-region +10%; introductory rates through 30 Nov 2026, list rates double from 1 Dec). Added Meta's Muse Spark 1.3 ($1.25 / $4.25), Muse Wonder 1.0 ($4 / $20) and Muse Ember 1.0 ($0.10 / $0.50 to 200K input, $0.30 / $1.50 above) from Vertex partner pricing; no other compared platform sells them. Azure's Fireworks catalog added FW-Kimi-K3.1-Pro and FW-DeepSeek-V4.1-Flash-1017 pay-per-token without published prices (availability recorded, no rates copied); FW-MiniMax-M3 pay-per-token retires 24 Nov 2026. Databricks deprecates GLM 5.2 with retirement on 4 Feb 2027 (use GLM 5.3). GPT-6 Luna adds Australia / India / Japan regional processing. Anthropic's Fable 5.2 / Mythos 5.2 launch changes no tracked rate.",
         "2026-11-05: Added Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') from Fireworks serverless ($2 / $10, $0.20 cached input; Priority $3 / $15) and the Moonshot API ($2 / $10, $0.20 cached input, $2 / $4 cache writes; Highspeed $4 / $20; Batch 60%). Databricks hosts it pay-per-token in us-east-1 with no published DBU rates yet; Bedrock, Vertex, Azure and Alibaba do not sell it. GPT-5.6 Sol's maker promotional rates extend to 30 Nov 2026; Databricks' own promotion still ends 21 Nov.",
         "2026-10-09: The list follows arena.ai's Best WebDev (Code | Overall) top 50 instead of Best Overall (Agent), shown when a compared platform sells the model with general access. Added Claude Opus 4.7 and Opus 4.6 (Databricks, Bedrock, Vertex, Azure Foundry) and Qwen3.8 Flash (Alibaba Cloud; arena: Qwen3.8 Flash Next); Claude Haiku 5.5 is #30, with a 1M context billed at 5x over 100K prompt tokens on every platform and US-only inference on the Claude API.",

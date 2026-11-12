@@ -3,10 +3,14 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-11-12",
+ "ranked_at": "2026-11-13",
  "top": 50,
  "entries": 50,
  "models": {
+  "anthropic/claude-fable-5.2": {
+   "rank": 1,
+   "arena": "Claude Fable 5.2 (xHigh)"
+  },
   "anthropic/claude-opus-5.5": {
    "rank": 2,
    "arena": "Claude Opus 5.5 (Max)"
@@ -142,6 +146,10 @@
   "openai/gpt-6-luna": {
    "rank": 45,
    "arena": "GPT-6 Luna (Max)"
+  },
+  "mistral/mistral-large-4": {
+   "rank": 47,
+   "arena": "Mistral Large 4"
   },
   "anthropic/claude-opus-4.7": {
    "rank": 48,
