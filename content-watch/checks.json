@@ -14,10 +14,20 @@
       "checkedAt": "2026-11-13",
       "lastSuccess": "2026-11-13",
       "errors": 0,
-      "review": 0,
+      "review": 1,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Added record: ce8cccdec8a954b77433ab38af57c63cb518dd18d2d362f7a18f45a55030a925: `the_shell_holds_the_workloads_phantom_and_never_the_secret` checks this. Every process in the box"
+      ]
+    }
+  ]
 }

@@ -13,9 +13,9 @@
       "checkedAt": "2026-11-13",
       "lastSuccess": "2026-11-13",
       "errors": 0,
-      "review": 0,
+      "review": 1,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   }
 }
