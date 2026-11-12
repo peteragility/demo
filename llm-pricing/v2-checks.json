@@ -125,31 +125,7 @@
   "aws-card-gpt-6-1-terra": "2026-11-13",
   "vertex-partner-pricing": "2026-11-13"
  },
- "pending_general": [
-  {
-   "source": "google-pricing",
-   "url": "https://ai.google.dev/gemini-api/docs/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [],
-   "removed": [
-    "table: {\"cells\":[\"Context caching price\",\"Not available\",\"Not available\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Input price (text, image, video, audio, PDF)\",\"Free of charge\",\"$0.10\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Output price\",\"Not applicable (0 output tokens)\",\"Not applicable (0 output tokens)\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}"
-   ],
-   "added_all": [],
-   "removed_all": [
-    "table: {\"cells\":[\"Context caching price\",\"Not available\",\"Not available\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Feature\",\"Free Tier\",\"Paid Tier, per 1M tokens in USD\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Input price (text, image, video, audio, PDF)\",\"Free of charge\",\"$0.10\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Output price\",\"Not applicable (0 output tokens)\",\"Not applicable (0 output tokens)\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}",
-    "table: {\"cells\":[\"Used to improve our products\",\"Yes\",\"No\"],\"heading\":\"Gemini Developer API pricing / Gemini Decision / Standard\"}"
-   ],
-   "baseline_digest": "17d18a9042d1c284ba56de6fe61ea652659e5dc37a8e5fcf27dc72629a769bec"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-11-13",
@@ -159,12 +135,7 @@
   "published_at": "2026-11-10"
  },
  "databricks_coverage": [],
- "review": [
-  "Gemini 3.7 Flash · gcloud",
-  "Gemini 3.8 Flash · gcloud",
-  "Gemini 4 Argon · gcloud",
-  "Inkling · official"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -496,12 +467,7 @@
    "verified": "2026-11-13"
   },
   "deepseek/deepseek-v4.1-flash|databricks": {
-   "verified": "2026-11-06",
-   "changed_at": "2026-11-06",
-   "sources": [
-    "dbx-prices"
-   ],
-   "quiet": true
+   "verified": "2026-11-13"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
    "verified": "2026-11-13"
@@ -528,17 +494,10 @@
    "verified": "2026-11-13"
   },
   "google/gemini-3.1-flash-lite|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.1-flash-lite|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.1-pro|alicloud": {
    "verified": "2026-11-13"
@@ -556,20 +515,10 @@
    "verified": "2026-11-13"
   },
   "google/gemini-3.1-pro|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "vertex-pricing"
-   ],
-   "unchecked": [
-    "gcp-locations"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
    "verified": "2026-11-13"
@@ -587,17 +536,10 @@
    "verified": "2026-11-13"
   },
   "google/gemini-3.5-flash-lite|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.6-flash|alicloud": {
    "verified": "2026-11-13"
@@ -615,17 +557,10 @@
    "verified": "2026-11-13"
   },
   "google/gemini-3.6-flash|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.6-flash|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.7-flash|alicloud": {
    "verified": "2026-11-13"
@@ -643,17 +578,10 @@
    "verified": "2026-11-13"
   },
   "google/gemini-3.7-flash|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.8-flash|alicloud": {
    "verified": "2026-11-13"
@@ -671,17 +599,10 @@
    "verified": "2026-11-13"
   },
   "google/gemini-3.8-flash|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-4-argon|alicloud": {
    "verified": "2026-11-13"
@@ -699,17 +620,10 @@
    "verified": "2026-11-13"
   },
   "google/gemini-4-argon|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "vertex-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-4-argon|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemini-4-carbon|alicloud": {
    "verified": "2026-11-13"
@@ -730,10 +644,7 @@
    "verified": "2026-11-13"
   },
   "google/gemini-4-carbon|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-13"
   },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-11-13"
@@ -1302,11 +1213,7 @@
    "verified": "2026-11-13"
   },
   "tml/inkling|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-13",
-   "sources": [
-    "api-other-tml-serverless-json"
-   ]
+   "verified": "2026-11-13"
   },
   "xai/grok-4.6|alicloud": {
    "verified": "2026-11-13"
