@@ -807,6 +807,9 @@ def corrections(data):
         "deepseek/deepseek-v4.1-flash": ("2026-11-19", ["DeepSeek V4.1 Flash (1017)"], "2026-10-21"),
         # 11 Nov 2026: the catalog deprecates GLM 5.2 and the retirement policy names GLM 5.3.
         "zai/glm-5.2": ("2027-02-04", ["GLM 5.3"], "2026-11-11"),
+        # 14 Nov 2026: the catalog and retirement policy retire Gemini 3.6 Flash pay-per-token
+        # on 19 Nov 2026, redirecting calls to Gemini 3.8 Flash at identical prices.
+        "google/gemini-3.6-flash": ("2026-11-19", ["Gemini 3.8 Flash"], "2026-11-14"),
     }
     for key in ("deepseek/deepseek-v4-pro", "deepseek/deepseek-v4-flash"):
         day, _, _ = retirement[key]
@@ -1172,6 +1175,67 @@ def add_gemini4_carbon(data):
         group="google", oss=False, model_key="google/gemini-4-carbon", ctx="1M unified", badges=["Added"], platforms=platforms)
 
 
+def add_gemini4_hydrogen(data):
+    """Gemini 4 Hydrogen (arena #10, 'Gemini 4 Hydrogen (High)') added 14 Nov 2026 from the
+    Gemini API and Vertex pricing tables. Unlike Argon and Carbon, no introductory or
+    promotional pricing is published for Hydrogen; the checked rates are list rates:
+    Standard $1.50 / $7.50, Priority $2.70 / $13.50, Batch $0.75 / $3.75, cache reads 5%
+    of the tier's input. Vertex non-global (US / EU multi-region) rows are +10%. Caching is
+    implicit-only on the Gemini API; Vertex lists cache-write prices (1.25x the tier's
+    input) effective 12 Jan 2027, with no cache-write charge published before that date.
+    The invite-only Contributor tier is excluded from the general-access comparison.
+    Databricks' catalog lists databricks-gemini-4-hydrogen pay-per-token (text input only);
+    neither checked DBU table prices it, so availability is recorded without rates."""
+    day = "2026-11-14"
+    platforms = {pl: pending("No verified Gemini 4 Hydrogen offer in the reviewed platform sources.",
+                             data["models"]["google/gemini-4-argon"]["platforms"][pl].get("src"))
+                 for pl in PLATFORMS}
+    for pl, src in (("official", "google"), ("gcloud", "vertex")):
+        cell = offer(1.5, 7.5, 0.075, src=src, tier="Standard", model_id="gemini-4-hydrogen")
+        variants = []
+        tiers = [("priority", 2.7, 13.5, 0.135), ("batch", 0.75, 3.75, 0.0375)]
+        if pl == "official":
+            tiers.append(("flex", 0.75, 3.75, 0.0375))
+        else:
+            variants.append(variant("US / EU multi-region · Standard", 1.65, 8.25, 0.0825,
+                                    scope="geographic", endpoint="US / EU multi-region"))
+        for service, i, o, cr in tiers:
+            variants.append(variant("Global · " + service.title(), i, o, cr, service=service, endpoint="Global"))
+            if pl == "gcloud":
+                variants.append(variant("US / EU multi-region · " + service.title(), round(i * 1.1, 6), round(o * 1.1, 6),
+                                        round(cr * 1.1, 6), service=service, scope="geographic", endpoint="US / EU multi-region"))
+        cell["variants"] = variants
+        cell["endpoints"] = dict(checked_at=day,
+            src=[src, "gcp_locations"] if pl == "gcloud" else [src],
+            regions=[["Global", "global" if pl == "gcloud" else "unknown", "Global",
+                      "Public Gemini 4 Hydrogen endpoint" if pl == "gcloud" else "Gemini API global endpoint"]],
+            hk=["none", "No single-region Hong Kong endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            tw=["none", "No single-region Taiwan endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            notes=[["Context", "Unified 1M-token context window (1,048,576) with long decode, per the Gemini 4 Hydrogen model page; no separate long-context price band is listed."],
+                   ["Caching", "Implicit caching only on the Gemini API (explicit cache writes are not supported); cache reads cost 5% of the tier's input price."] if pl == "official" else
+                   ["Caching", "Cache reads cost 5% of the tier's input price. Vertex lists cache-write prices at 1.25x the tier's input effective 12 Jan 2027; no cache-write charge is published before that date, so the card shows none."],
+                   ["Version", "gemini-4-hydrogen (GA). No introductory or promotional pricing is published for Hydrogen; the listed rates are list rates."],
+                   ["Tiers", "Standard, Priority and Batch; Flex is listed on the Gemini API only. The Gemini API Contributor tier is an invite-only private preview and is excluded."]],
+            ids=["gemini-4-hydrogen"], cache_write="input-rate" if pl == "official" else "not-listed")
+        if pl == "gcloud":
+            cell["endpoints"]["regions"] += [
+                ["Americas", "geo", "US multi-region", "US endpoint; processing stays in the US (+10%)"],
+                ["Europe", "geo", "EU multi-region", "EU endpoint; processing stays in the EU (+10%)"]]
+        platforms[pl] = checked(cell, day)
+    for cell in platforms.values():
+        cell["availability_checked_at"] = day
+    data["models"]["google/gemini-4-hydrogen"] = dict(name="Gemini 4 Hydrogen", short="Gemini 4 H", maker="Google",
+        group="google", oss=False, model_key="google/gemini-4-hydrogen", ctx="1M unified", badges=["Added"], platforms=platforms)
+    dbx = data["models"]["google/gemini-4-hydrogen"]["platforms"]["databricks"]
+    dbx.clear()
+    dbx.update(
+        pending("Available through Unity Gateway pay-per-token (system.ai.gemini-4-hydrogen, text input only); no Gemini 4 Hydrogen "
+                "rates are published in the checked Databricks DBU tables.",
+                "dbx_prop", model_id="databricks-gemini-4-hydrogen", available=True),
+        model_id_source="dbx_models", model_id_checked_at=day,
+        availability_checked_at=day, model_match="confirmed")
+
+
 def add_muse_models(data):
     """Meta's Muse models on Vertex partner pricing (arena #19/#20/#30/#34), added 11 Nov 2026.
 
@@ -1387,6 +1451,7 @@ def build():
     add_terra61(data)
     add_kimi_k31_pro(data)
     add_gemini4_carbon(data)
+    add_gemini4_hydrogen(data)
     add_muse_models(data)
     add_fable_52(data)
     add_mistral_large_4(data)
@@ -1448,6 +1513,7 @@ def build():
                    {"text": "Gemini 3.8 / 3.7 Flash list at $1.50 / $7.50 everywhere since intro pricing ended 31 Dec 2026.", "from": "2027-01-01"},
                    "Only Databricks, Vertex and the Gemini API sell Gemini; Bedrock, Azure and Alibaba do not.",
                    {"text": "Gemini 4 Carbon (arena #3) joined at Argon's rates: $2 / $10 with $0.10 cached input through 30 Nov 2026, then $4 / $20.", "models": ["google/gemini-4-carbon"]},
+                   {"text": "Gemini 4 Hydrogen (arena #10) joined at $1.50 / $7.50 with $0.075 cached input (Priority $2.70 / $13.50, Batch $0.75 / $3.75); list rates, no promotion.", "models": ["google/gemini-4-hydrogen"]},
                    "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."],
         "other": ["Qwen3.8 Max, Qwen3.7 Max and Qwen3.7 Plus are sold on Alibaba Model Studio (Qwen3.8 Max also on Fireworks); none is on Databricks, Bedrock, Azure or Vertex.",
                   {"text": "Meta's Muse models sell only on Vertex: Muse Spark 1.3 $1.25 / $4.25, Muse Wonder 1.0 $4 / $20, Muse Ember 1.0 $0.10 / $0.50 up to 200K input and $0.30 / $1.50 above it.", "models": ["meta/muse-spark-1.3", "meta/muse-wonder", "meta/muse-ember"]},
@@ -1461,6 +1527,7 @@ def build():
     if proven_log:
         data["reviewed_at"] = max(data["reviewed_at"], max(line[:10] for line in proven_log))
     data["changes"] = proven_log[::-1] + [
+        "2026-11-14: Added Gemini 4 Hydrogen (arena #10) from the Gemini API and Vertex pricing tables at list rates ($1.50 / $7.50 Standard, $2.70 / $13.50 Priority, $0.75 / $3.75 Batch, cache reads 5% of input; US / EU multi-region +10%; no promotion published). Databricks' catalog lists databricks-gemini-4-hydrogen pay-per-token with text input only; neither DBU table prices it (availability only). Databricks retires Gemini 3.6 Flash pay-per-token on 19 Nov 2026, redirecting calls to Gemini 3.8 Flash at identical prices. OpenAI moved its data-residency region and endpoint tables to a dedicated data-residency guide, which is now monitored directly; regional processing keeps its gpt-6-luna subset in Australia / India / Japan and the +10% residency uplift is unchanged. DeepSeek's speech, file-parsing/OCR and renamed web search tables are scoped out as separate per-request products.",
         "2026-11-13: Added Claude Fable 5.2 (arena #1) at $8 / $40 with $0.20 cache reads (2.5%), $10 / $16 cache writes, Batch $4 / $20 and Fast $16 / $80, from its own sources on every selling platform: the Claude API, Databricks (⌖ DBU table, Unity Gateway), Bedrock Global CRIS, Azure Foundry (CCU, East US / Switzerland North) and Vertex global, with US / EU residency +10% everywhere. Added Mistral Large 4 (arena #47) at $0.70 / $2.10 with $0.07 cached input from the maker API; Azure sells mistral-large-4-latest directly but publishes no per-token prices (availability only). Databricks lists databricks-gemini-4-carbon pay-per-token through Unity Gateway with no DBU rates (availability only).",
         "2026-11-11: Added Gemini 4 Carbon (arena #3) from the Gemini API and Vertex pricing tables at Argon's tier rates ($2 / $10 Standard, $3.60 / $18 Priority, $1 / $5 Batch, US / EU multi-region +10%; introductory rates through 30 Nov 2026, list rates double from 1 Dec). Added Meta's Muse Spark 1.3 ($1.25 / $4.25), Muse Wonder 1.0 ($4 / $20) and Muse Ember 1.0 ($0.10 / $0.50 to 200K input, $0.30 / $1.50 above) from Vertex partner pricing; no other compared platform sells them. Azure's Fireworks catalog added FW-Kimi-K3.1-Pro and FW-DeepSeek-V4.1-Flash-1017 pay-per-token without published prices (availability recorded, no rates copied); FW-MiniMax-M3 pay-per-token retires 24 Nov 2026. Databricks deprecates GLM 5.2 with retirement on 4 Feb 2027 (use GLM 5.3). GPT-6 Luna adds Australia / India / Japan regional processing. Anthropic's Fable 5.2 / Mythos 5.2 launch changes no tracked rate.",
         "2026-11-05: Added Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') from Fireworks serverless ($2 / $10, $0.20 cached input; Priority $3 / $15) and the Moonshot API ($2 / $10, $0.20 cached input, $2 / $4 cache writes; Highspeed $4 / $20; Batch 60%). Databricks hosts it pay-per-token in us-east-1 with no published DBU rates yet; Bedrock, Vertex, Azure and Alibaba do not sell it. GPT-5.6 Sol's maker promotional rates extend to 30 Nov 2026; Databricks' own promotion still ends 21 Nov.",

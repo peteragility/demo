@@ -1717,6 +1717,12 @@
           "google/gemini-4-carbon"
         ]
       },
+      {
+        "text": "Gemini 4 Hydrogen (arena #10) joined at $1.50 / $7.50 with $0.075 cached input (Priority $2.70 / $13.50, Batch $0.75 / $3.75); list rates, no promotion.",
+        "models": [
+          "google/gemini-4-hydrogen"
+        ]
+      },
       "Context storage is a separate charge on the Gemini API. Audio and image-output rates are outside this text-token comparison."
     ],
     "other": [
@@ -24219,7 +24225,7 @@
           "note": null,
           "status": "priced",
           "pricing_checked_at": "2026-10-03",
-          "availability_checked_at": "2026-10-03",
+          "availability_checked_at": "2026-11-14",
           "comparison_scope": "global",
           "service_tier": "standard",
           "model_match": "confirmed",
@@ -24264,6 +24270,11 @@
             }
           ],
           "model_id_checked_at": "2026-10-03",
+          "retires_on": "2026-11-19",
+          "replacement": [
+            "Gemini 3.8 Flash"
+          ],
+          "retirement_src": "dbx_retirement",
           "promotion": {
             "ends_on": "2026-12-31",
             "after": {
@@ -24749,8 +24760,12 @@
       },
       "notices": [
         {
-          "text": "Intro price ends 31 Dec 2026, then $1.50 / $7.50",
-          "until": "2026-12-31"
+          "text": "Retires on Databricks 19 Nov 2026 · use Gemini 3.8 Flash",
+          "until": "2026-11-18"
+        },
+        {
+          "text": "Retired on Databricks 19 Nov 2026 · use Gemini 3.8 Flash",
+          "from": "2026-11-19"
         }
       ],
       "model_key": "google/gemini-3.6-flash"
@@ -29547,6 +29562,341 @@
         }
       }
     },
+    "google/gemini-4-hydrogen": {
+      "name": "Gemini 4 Hydrogen",
+      "short": "Gemini 4 H",
+      "maker": "Google",
+      "group": "google",
+      "oss": false,
+      "model_key": "google/gemini-4-hydrogen",
+      "ctx": "1M unified",
+      "badges": [
+        "Added"
+      ],
+      "platforms": {
+        "databricks": {
+          "status": "unverified",
+          "note": "Available through Unity Gateway pay-per-token (system.ai.gemini-4-hydrogen, text input only); no Gemini 4 Hydrogen rates are published in the checked Databricks DBU tables.",
+          "src": "dbx_prop",
+          "model_id": "databricks-gemini-4-hydrogen",
+          "available": true,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-14",
+          "model_id_source": "dbx_models",
+          "model_id_checked_at": "2026-11-14",
+          "model_match": "confirmed",
+          "endpoints": {
+            "checked_at": "2026-10-09",
+            "src": [
+              "dbx_region",
+              "dbx_region_azure",
+              "dbx_region_gcp"
+            ],
+            "regions": [],
+            "hk": [
+              "unknown",
+              "Not in Databricks' region tables yet"
+            ],
+            "tw": [
+              "unknown",
+              "Not in Databricks' region tables yet"
+            ],
+            "notes": [
+              [
+                "Regions",
+                "The endpoint is in the supported-models catalog but not yet in Databricks' region tables."
+              ],
+              [
+                "Billing",
+                "DBU list rate $0.07 per DBU; committed-use discounts lower it."
+              ]
+            ],
+            "ids": [
+              "databricks-gemini-4-hydrogen"
+            ],
+            "cache_write": "not-listed"
+          },
+          "url": "https://www.databricks.com/product/pricing/proprietary-foundation-model-serving"
+        },
+        "official": {
+          "in": 1.5,
+          "out": 7.5,
+          "cache_read": 0.075,
+          "src": "google",
+          "tier": "Standard",
+          "model_id": "gemini-4-hydrogen",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-14",
+          "availability_checked_at": "2026-11-14",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 2.7,
+              "out": 13.5,
+              "cache_read": 0.135,
+              "label": "Global · Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "Global",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.75,
+              "out": 3.75,
+              "cache_read": 0.0375,
+              "label": "Global · Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "Global",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.75,
+              "out": 3.75,
+              "cache_read": 0.0375,
+              "label": "Global · Flex",
+              "comparison_scope": "global",
+              "service_tier": "flex",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "Global",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "endpoints": {
+            "checked_at": "2026-11-14",
+            "src": [
+              "google"
+            ],
+            "regions": [
+              [
+                "Global",
+                "unknown",
+                "Global",
+                "Gemini API global endpoint"
+              ]
+            ],
+            "hk": [
+              "unknown",
+              "No verified processing residency"
+            ],
+            "tw": [
+              "unknown",
+              "No verified processing residency"
+            ],
+            "notes": [
+              [
+                "Context",
+                "Unified 1M-token context window (1,048,576) with long decode, per the Gemini 4 Hydrogen model page; no separate long-context price band is listed."
+              ],
+              [
+                "Caching",
+                "Implicit caching only on the Gemini API (explicit cache writes are not supported); cache reads cost 5% of the tier's input price."
+              ],
+              [
+                "Version",
+                "gemini-4-hydrogen (GA). No introductory or promotional pricing is published for Hydrogen; the listed rates are list rates."
+              ],
+              [
+                "Tiers",
+                "Standard, Priority and Batch; Flex is listed on the Gemini API only. The Gemini API Contributor tier is an invite-only private preview and is excluded."
+              ]
+            ],
+            "ids": [
+              "gemini-4-hydrogen"
+            ],
+            "cache_write": "input-rate"
+          },
+          "model_id_checked_at": "2026-11-14",
+          "url": "https://ai.google.dev/gemini-api/docs/pricing"
+        },
+        "bedrock": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Hydrogen offer in the reviewed platform sources.",
+          "src": "aws",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-14",
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Hydrogen offer in the reviewed platform sources.",
+          "src": "azure",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-14",
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "fireworks": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Hydrogen offer in the reviewed platform sources.",
+          "src": "fireworks_nexus",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-14",
+          "url": "https://docs.fireworks.ai/nexus/provider-keys"
+        },
+        "gcloud": {
+          "in": 1.5,
+          "out": 7.5,
+          "cache_read": 0.075,
+          "src": "vertex",
+          "tier": "Standard",
+          "model_id": "gemini-4-hydrogen",
+          "regions": null,
+          "note": null,
+          "status": "priced",
+          "pricing_checked_at": "2026-11-14",
+          "availability_checked_at": "2026-11-14",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 1.65,
+              "out": 8.25,
+              "cache_read": 0.0825,
+              "label": "US / EU multi-region · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "US / EU multi-region",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.7,
+              "out": 13.5,
+              "cache_read": 0.135,
+              "label": "Global · Priority",
+              "comparison_scope": "global",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "Global",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 2.97,
+              "out": 14.85,
+              "cache_read": 0.1485,
+              "label": "US / EU multi-region · Priority",
+              "comparison_scope": "geographic",
+              "service_tier": "priority",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "US / EU multi-region",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.75,
+              "out": 3.75,
+              "cache_read": 0.0375,
+              "label": "Global · Batch",
+              "comparison_scope": "global",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "Global",
+              "id": "variant-3",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.825,
+              "out": 4.125,
+              "cache_read": 0.04125,
+              "label": "US / EU multi-region · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-14",
+              "endpoint": "US / EU multi-region",
+              "id": "variant-4",
+              "model_match": "confirmed"
+            }
+          ],
+          "endpoints": {
+            "checked_at": "2026-11-14",
+            "src": [
+              "vertex",
+              "gcp_locations"
+            ],
+            "regions": [
+              [
+                "Global",
+                "global",
+                "Global",
+                "Public Gemini 4 Hydrogen endpoint"
+              ],
+              [
+                "Americas",
+                "geo",
+                "US multi-region",
+                "US endpoint; processing stays in the US (+10%)"
+              ],
+              [
+                "Europe",
+                "geo",
+                "EU multi-region",
+                "EU endpoint; processing stays in the EU (+10%)"
+              ]
+            ],
+            "hk": [
+              "none",
+              "No single-region Hong Kong endpoint"
+            ],
+            "tw": [
+              "none",
+              "No single-region Taiwan endpoint"
+            ],
+            "notes": [
+              [
+                "Context",
+                "Unified 1M-token context window (1,048,576) with long decode, per the Gemini 4 Hydrogen model page; no separate long-context price band is listed."
+              ],
+              [
+                "Caching",
+                "Cache reads cost 5% of the tier's input price. Vertex lists cache-write prices at 1.25x the tier's input effective 12 Jan 2027; no cache-write charge is published before that date, so the card shows none."
+              ],
+              [
+                "Version",
+                "gemini-4-hydrogen (GA). No introductory or promotional pricing is published for Hydrogen; the listed rates are list rates."
+              ],
+              [
+                "Tiers",
+                "Standard, Priority and Batch; Flex is listed on the Gemini API only. The Gemini API Contributor tier is an invite-only private preview and is excluded."
+              ]
+            ],
+            "ids": [
+              "gemini-4-hydrogen"
+            ],
+            "cache_write": "not-listed"
+          },
+          "model_id_checked_at": "2026-11-14",
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
+        },
+        "alicloud": {
+          "status": "unverified",
+          "note": "No verified Gemini 4 Hydrogen offer in the reviewed platform sources.",
+          "src": "ali",
+          "model_id": null,
+          "available": null,
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-14",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      }
+    },
     "meta/muse-spark-1.3": {
       "name": "Muse Spark 1.3",
       "short": "Muse Spark 1.3",
@@ -30660,6 +31010,7 @@
     "2026-10-26: Databricks now prices Gemini 4 Argon at $2.5 / $12.5 per its DBU table, added by the daily check.",
     "2026-10-28: Claude Sonnet 5.5 on Databricks FMAPI: cache read $0.20 → $0.10, applied by the daily check from its official source.",
     "2026-10-24: DeepSeek V4.1 Flash on Databricks FMAPI: cache read $0.03 → $0.007, applied by the daily check from its official source.",
+    "2026-11-14: Added Gemini 4 Hydrogen (arena #10) from the Gemini API and Vertex pricing tables at list rates ($1.50 / $7.50 Standard, $2.70 / $13.50 Priority, $0.75 / $3.75 Batch, cache reads 5% of input; US / EU multi-region +10%; no promotion published). Databricks' catalog lists databricks-gemini-4-hydrogen pay-per-token with text input only; neither DBU table prices it (availability only). Databricks retires Gemini 3.6 Flash pay-per-token on 19 Nov 2026, redirecting calls to Gemini 3.8 Flash at identical prices. OpenAI moved its data-residency region and endpoint tables to a dedicated data-residency guide, which is now monitored directly; regional processing keeps its gpt-6-luna subset in Australia / India / Japan and the +10% residency uplift is unchanged. DeepSeek's speech, file-parsing/OCR and renamed web search tables are scoped out as separate per-request products.",
     "2026-11-13: Added Claude Fable 5.2 (arena #1) at $8 / $40 with $0.20 cache reads (2.5%), $10 / $16 cache writes, Batch $4 / $20 and Fast $16 / $80, from its own sources on every selling platform: the Claude API, Databricks (⌖ DBU table, Unity Gateway), Bedrock Global CRIS, Azure Foundry (CCU, East US / Switzerland North) and Vertex global, with US / EU residency +10% everywhere. Added Mistral Large 4 (arena #47) at $0.70 / $2.10 with $0.07 cached input from the maker API; Azure sells mistral-large-4-latest directly but publishes no per-token prices (availability only). Databricks lists databricks-gemini-4-carbon pay-per-token through Unity Gateway with no DBU rates (availability only).",
     "2026-11-11: Added Gemini 4 Carbon (arena #3) from the Gemini API and Vertex pricing tables at Argon's tier rates ($2 / $10 Standard, $3.60 / $18 Priority, $1 / $5 Batch, US / EU multi-region +10%; introductory rates through 30 Nov 2026, list rates double from 1 Dec). Added Meta's Muse Spark 1.3 ($1.25 / $4.25), Muse Wonder 1.0 ($4 / $20) and Muse Ember 1.0 ($0.10 / $0.50 to 200K input, $0.30 / $1.50 above) from Vertex partner pricing; no other compared platform sells them. Azure's Fireworks catalog added FW-Kimi-K3.1-Pro and FW-DeepSeek-V4.1-Flash-1017 pay-per-token without published prices (availability recorded, no rates copied); FW-MiniMax-M3 pay-per-token retires 24 Nov 2026. Databricks deprecates GLM 5.2 with retirement on 4 Feb 2027 (use GLM 5.3). GPT-6 Luna adds Australia / India / Japan regional processing. Anthropic's Fable 5.2 / Mythos 5.2 launch changes no tracked rate.",
     "2026-11-05: Added Kimi K3.1 Pro (arena #9, 'Kimi K3.1 Pro (Max)') from Fireworks serverless ($2 / $10, $0.20 cached input; Priority $3 / $15) and the Moonshot API ($2 / $10, $0.20 cached input, $2 / $4 cache writes; Highspeed $4 / $20; Batch 60%). Databricks hosts it pay-per-token in us-east-1 with no published DBU rates yet; Bedrock, Vertex, Azure and Alibaba do not sell it. GPT-5.6 Sol's maker promotional rates extend to 30 Nov 2026; Databricks' own promotion still ends 21 Nov.",
