@@ -3,10 +3,10 @@
   "pages": {
     "llm-pricing/": {
       "checkedAt": "2026-11-14",
-      "lastSuccess": "2026-11-13",
-      "errors": 1,
-      "review": 41,
-      "status": "partial"
+      "lastSuccess": "2026-11-14",
+      "errors": 0,
+      "review": 0,
+      "status": "ok"
     }
   }
 }

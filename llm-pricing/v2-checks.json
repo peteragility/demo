@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "checked_at": "2026-11-14",
- "sources_checked": 120,
+ "sources_checked": 121,
  "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-11-14",
@@ -62,6 +62,7 @@
   "api-west-openai-countries": "2026-11-14",
   "api-west-openai-m-gpt-6-1-sol": "2026-11-14",
   "api-west-openai-your-data": "2026-11-14",
+  "api-west-openai-data-residency": "2026-11-14",
   "api-west-xai-pricing": "2026-11-14",
   "api-west-xai-regions": "2026-11-14",
   "aws-card-claude-fable-5": "2026-11-14",
@@ -125,699 +126,24 @@
   "aws-card-gpt-6-1-terra": "2026-11-14",
   "vertex-partner-pricing": "2026-11-14"
  },
- "pending_general": [
-  {
-   "source": "anthropic-pricing",
-   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"$0.25 / MTok for prompts over 100,000 tokens\",\"$1.25 / MTok\"],\"heading\":\"Feature-specific pricing / Batch processing\"}",
-    "table: {\"cells\":[\"$0.50 / MTok for prompts over 100,000 tokens\",\"$2.50 / MTok\",\"$0.625 / MTok\",\"$1 / MTok\",\"$0.05 / MTok\"],\"heading\":\"Model pricing\"}",
-    "table: {\"cells\":[\"1-hour cache write\",\"2x base input price\",\"Cache valid for 1 hour\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"5-minute cache write\",\"1.25x base input price\",\"Cache valid for 5 minutes\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"All other models\",\"0.1x\",\"See Model pricing\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"Batch API discount\",\"Sessions are stateful and interactive. There is no batch mode.\"],\"heading\":\"Claude Managed Agents pricing / Tokens\"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to AWS Marketplace; monthly invoices\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to the Azure Marketplace; monthly invoices\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"$0.25 / MTok for prompts over 100,000 tokens\",\"$1.25 / MTok\"],\"heading\":\"Feature-specific pricing  / Batch processing \"}",
-    "table: {\"cells\":[\"$0.50 / MTok for prompts over 100,000 tokens\",\"$2.50 / MTok\",\"$0.625 / MTok\",\"$1 / MTok\",\"$0.05 / MTok\"],\"heading\":\"Model pricing \"}",
-    "table: {\"cells\":[\"1-hour cache write\",\"2x base input price\",\"Cache valid for 1 hour\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"5-minute cache write\",\"1.25x base input price\",\"Cache valid for 5 minutes\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"All other models\",\"0.1x\",\"See Model pricing\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"Batch API discount\",\"Sessions are stateful and interactive. There is no batch mode.\"],\"heading\":\"Claude Managed Agents pricing  / Tokens \"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to AWS Marketplace; monthly invoices\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to the Azure Marketplace; monthly invoices\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"$0.25 / MTok for prompts over 100,000 tokens\",\"$1.25 / MTok\"],\"heading\":\"Feature-specific pricing / Batch processing\"}",
-    "table: {\"cells\":[\"$0.50 / MTok for prompts over 100,000 tokens\",\"$2.50 / MTok\",\"$0.625 / MTok\",\"$1 / MTok\",\"$0.05 / MTok\"],\"heading\":\"Model pricing\"}",
-    "table: {\"cells\":[\"1-hour cache write\",\"2x base input price\",\"Cache valid for 1 hour\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"5-minute cache write\",\"1.25x base input price\",\"Cache valid for 5 minutes\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"All other models\",\"0.1x\",\"See Model pricing\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"Batch API discount\",\"Sessions are stateful and interactive. There is no batch mode.\"],\"heading\":\"Claude Managed Agents pricing / Tokens\"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to AWS Marketplace; monthly invoices\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to the Azure Marketplace; monthly invoices\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Cache operation\",\"Multiplier\",\"Duration\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"Cache read (hit)\",\"0.1x base input price on most models\",\"Same duration as the preceding write\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008 USD\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"Cloud platform pricing\",\"Not available on partner-operated cloud platforms.\"],\"heading\":\"Claude Managed Agents pricing / Tokens\"}",
-    "table: {\"cells\":[\"Concept\",\"Details\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Concept\",\"Details\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Cost visibility\",\"Azure Cost Management shows aggregated CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Cost visibility\",\"Real-time breakdown in the Claude Console (access through the AWS Console); AWS Cost Explorer shows aggregated CCU\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Discounts\",\"Applied as fewer CCUs metered\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Discounts\",\"Applied as fewer CCUs metered\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20 USD\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"Line item\",\"Calculation\",\"Cost\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"Model\",\"Additional input tokens\"],\"heading\":\"Feature-specific pricing / Specific tool pricing / Bash tool\"}",
-    "table: {\"cells\":[\"Model\",\"Base tokens\",\"Prompt caching\"],\"heading\":\"Model pricing\"}",
-    "table: {\"cells\":[\"Model\",\"Batch tokens\"],\"heading\":\"Feature-specific pricing / Batch processing\"}",
-    "table: {\"cells\":[\"Model\",\"Cache hit multiplier\",\"Cache hit price per million tokens\"],\"heading\":\"Feature-specific pricing / Prompt caching\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Output\"],\"heading\":\"Feature-specific pricing / Fast mode pricing\"}",
-    "table: {\"cells\":[\"Model\",\"Tool use system prompt tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"Modifier\",\"Why it doesn’t apply\"],\"heading\":\"Claude Managed Agents pricing / Tokens\"}",
-    "table: {\"cells\":[\"Name\",\"Input\",\"Output\",\"5m writes\",\"1h writes\",\"Hits and refreshes\"],\"heading\":\"Model pricing\"}",
-    "table: {\"cells\":[\"Name\",\"Input\",\"Output\"],\"heading\":\"Feature-specific pricing / Batch processing\"}",
-    "table: {\"cells\":[\"Name\",\"Tool choice\",\"Token count\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30 USD\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"Payment model\",\"Arrears only (postpaid); no prepaid credits\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Payment model\",\"Arrears only (postpaid); no prepaid credits\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"SKU\",\"Rate\",\"Metering\"],\"heading\":\"Claude Managed Agents pricing / Session runtime\"}",
-    "table: {\"cells\":[\"Session runtime\",\"$0.08 USD per session-hour\",\"running status duration\"],\"heading\":\"Claude Managed Agents pricing / Session runtime\"}",
-    "table: {\"cells\":[\"Session runtime\",\"1.0 hour × $0.08\",\"$0.08 USD\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"Tax\",\"Pre-tax metering; AWS Marketplace handles tax\"],\"heading\":\"Claude Platform on AWS pricing\"}",
-    "table: {\"cells\":[\"Tax\",\"Pre-tax metering; Azure Marketplace handles tax\"],\"heading\":\"Claude in Microsoft Foundry pricing\"}",
-    "table: {\"cells\":[\"Tool\",\"Additional input tokens\"],\"heading\":\"Feature-specific pricing / Specific tool pricing / Text editor tool\"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.428 USD\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.58 USD\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04 USD\"],\"heading\":\"Claude Managed Agents pricing / Worked example\"}",
-    "table: {\"cells\":[\"any, tool\",\"315 tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"any, tool\",\"406 tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"any, tool\",\"410 tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"any, tool\",\"474 tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"any, tool\",\"588 tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"any, tool\",\"589 tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\"any, tool\",\"804 tokens\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\" Additional models\"],\"heading\":\"Feature-specific pricing / Batch processing\"}",
-    "table: {\"cells\":[\" Additional models\"],\"heading\":\"Feature-specific pricing / Tool use pricing\"}",
-    "table: {\"cells\":[\" Additional models\"],\"heading\":\"Model pricing\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"$0.25 / MTok for prompts over 100,000 tokens\",\"$1.25 / MTok\"],\"heading\":\"Feature-specific pricing  / Batch processing \"}",
-    "table: {\"cells\":[\"$0.50 / MTok for prompts over 100,000 tokens\",\"$2.50 / MTok\",\"$0.625 / MTok\",\"$1 / MTok\",\"$0.05 / MTok\"],\"heading\":\"Model pricing \"}",
-    "table: {\"cells\":[\"1-hour cache write\",\"2x base input price\",\"Cache valid for 1 hour\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"5-minute cache write\",\"1.25x base input price\",\"Cache valid for 5 minutes\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"All other models\",\"0.1x\",\"See Model pricing\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"Batch API discount\",\"Sessions are stateful and interactive. There is no batch mode.\"],\"heading\":\"Claude Managed Agents pricing  / Tokens \"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to AWS Marketplace; monthly invoices\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Billing cadence\",\"Hourly metering to the Azure Marketplace; monthly invoices\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Billing unit\",\"Claude Consumption Unit (CCU)\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"CCU price\",\"$0.01 USD per CCU (fixed; discounts apply at token-to-CCU conversion, not to the CCU price)\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Cache operation\",\"Multiplier\",\"Duration\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"Cache read (hit)\",\"0.1x base input price on most models\",\"Same duration as the preceding write\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"Cache read tokens\",\"40,000 × $4 × 0.05 / 1,000,000\",\"$0.008 USD\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Cloud platform pricing\",\"Not available on partner-operated cloud platforms.\"],\"heading\":\"Claude Managed Agents pricing  / Tokens \"}",
-    "table: {\"cells\":[\"Concept\",\"Details\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Concept\",\"Details\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Conversion\",\"Token usage rated in USD at standard per-model, per-feature rates (same as Model pricing), then converted to CCUs at $0.01 USD per CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Cost visibility\",\"Azure Cost Management shows aggregated CCU\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Cost visibility\",\"Real-time breakdown in the Claude Console (access through the AWS Console); AWS Cost Explorer shows aggregated CCU\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Discounts\",\"Applied as fewer CCUs metered\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Discounts\",\"Applied as fewer CCUs metered\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Input tokens\",\"50,000 × $4 / 1,000,000\",\"$0.20 USD\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Line item\",\"Calculation\",\"Cost\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Model\",\"Additional input tokens\"],\"heading\":\"Feature-specific pricing  / Specific tool pricing  / Bash tool \"}",
-    "table: {\"cells\":[\"Model\",\"Base tokens\",\"Prompt caching\"],\"heading\":\"Model pricing \"}",
-    "table: {\"cells\":[\"Model\",\"Batch tokens\"],\"heading\":\"Feature-specific pricing  / Batch processing \"}",
-    "table: {\"cells\":[\"Model\",\"Cache hit multiplier\",\"Cache hit price per million tokens\"],\"heading\":\"Feature-specific pricing  / Prompt caching \"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Output\"],\"heading\":\"Feature-specific pricing  / Fast mode pricing \"}",
-    "table: {\"cells\":[\"Model\",\"Tool use system prompt tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"Modifier\",\"Why it doesn’t apply\"],\"heading\":\"Claude Managed Agents pricing  / Tokens \"}",
-    "table: {\"cells\":[\"Name\",\"Input\",\"Output\",\"5m writes\",\"1h writes\",\"Hits and refreshes\"],\"heading\":\"Model pricing \"}",
-    "table: {\"cells\":[\"Name\",\"Input\",\"Output\"],\"heading\":\"Feature-specific pricing  / Batch processing \"}",
-    "table: {\"cells\":[\"Name\",\"Tool choice\",\"Token count\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"Output tokens\",\"15,000 × $20 / 1,000,000\",\"$0.30 USD\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Payment model\",\"Arrears only (postpaid); no prepaid credits\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Payment model\",\"Arrears only (postpaid); no prepaid credits\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"SKU\",\"Rate\",\"Metering\"],\"heading\":\"Claude Managed Agents pricing  / Session runtime \"}",
-    "table: {\"cells\":[\"Session runtime\",\"$0.08 USD per session-hour\",\"running status duration\"],\"heading\":\"Claude Managed Agents pricing  / Session runtime \"}",
-    "table: {\"cells\":[\"Session runtime\",\"1.0 hour × $0.08\",\"$0.08 USD\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Tax\",\"Pre-tax metering; AWS Marketplace handles tax\"],\"heading\":\"Claude Platform on AWS pricing \"}",
-    "table: {\"cells\":[\"Tax\",\"Pre-tax metering; Azure Marketplace handles tax\"],\"heading\":\"Claude in Microsoft Foundry pricing \"}",
-    "table: {\"cells\":[\"Tool\",\"Additional input tokens\"],\"heading\":\"Feature-specific pricing  / Specific tool pricing  / Text editor tool \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.428 USD\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Total\",\"\",\"$0.58 USD\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"Uncached input tokens\",\"10,000 × $4 / 1,000,000\",\"$0.04 USD\"],\"heading\":\"Claude Managed Agents pricing  / Worked example \"}",
-    "table: {\"cells\":[\"any, tool\",\"315 tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"any, tool\",\"406 tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"any, tool\",\"410 tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"any, tool\",\"474 tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"any, tool\",\"588 tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"any, tool\",\"589 tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\"any, tool\",\"804 tokens\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\" Additional models\"],\"heading\":\"Feature-specific pricing  / Batch processing \"}",
-    "table: {\"cells\":[\" Additional models\"],\"heading\":\"Feature-specific pricing  / Tool use pricing \"}",
-    "table: {\"cells\":[\" Additional models\"],\"heading\":\"Model pricing \"}"
-   ],
-   "baseline_digest": "ce2f5419357e41d901fba99fbd156953edf618da09661b2d9e021691a5e7a384"
-  },
-  {
-   "source": "anthropic-models",
-   "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Model\",\"Capabilities\",\"Base tokens\"],\"heading\":\"All models\"}",
-    "table: {\"cells\":[\"Name\",\"Context window\",\"Max output\",\"Input\",\"Output\"],\"heading\":\"All models\"}",
-    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Thinking\",\"Adaptive (always on)\",\"Adaptive (always on)\",\"Adaptive\",\"Adaptive\"],\"heading\":\"Latest models\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Model\",\"Capabilities\",\"Base tokens\"],\"heading\":\"All models \"}",
-    "table: {\"cells\":[\"Name\",\"Context window\",\"Max output\",\"Input\",\"Output\"],\"heading\":\"All models \"}",
-    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Thinking\",\"Adaptive (always on)\",\"Adaptive (always on)\",\"Adaptive\",\"Adaptive\"],\"heading\":\"Latest models \"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Model\",\"Capabilities\",\"Base tokens\"],\"heading\":\"All models\"}",
-    "table: {\"cells\":[\"Name\",\"Context window\",\"Max output\",\"Input\",\"Output\"],\"heading\":\"All models\"}",
-    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Thinking\",\"Adaptive (always on)\",\"Adaptive (always on)\",\"Adaptive\",\"Adaptive\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\"Training data cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models\"}",
-    "table: {\"cells\":[\" Additional details\",\"\"],\"heading\":\"Latest models\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Capabilities\",\"\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Comparative latency\",\"Moderate\",\"Moderate\",\"Fast\",\"Fastest\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Context window\",\"1M tokens\",\"1M tokens\",\"1M tokens\",\"1M tokens\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Default effort\",\"high\",\"medium\",\"high\",\"medium\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Max output\",\"128K tokens\",\"128K tokens\",\"128K tokens\",\"128K tokens\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Model IDs\",\"\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Model\",\"Capabilities\",\"Base tokens\"],\"heading\":\"All models \"}",
-    "table: {\"cells\":[\"Name\",\"Context window\",\"Max output\",\"Input\",\"Output\"],\"heading\":\"All models \"}",
-    "table: {\"cells\":[\"Pricing\",\"$8 / input MTok $40 / output MTok\",\"$4 / input MTok $20 / output MTok\",\"$2 / input MTok $10 / output MTok\",\"From $0.10 / input MTok From $0.50 / output MTok\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Reliable knowledge cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Retirement\",\"Not sooner than November 9, 2027\",\"Not sooner than September 22, 2027\",\"Not sooner than September 28, 2027\",\"Not sooner than October 7, 2027\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Thinking\",\"Adaptive (always on)\",\"Adaptive (always on)\",\"Adaptive\",\"Adaptive\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\"Training data cutoff\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\",\"Jun 2026\"],\"heading\":\"Latest models \"}",
-    "table: {\"cells\":[\" Additional details\",\"\"],\"heading\":\"Latest models \"}"
-   ],
-   "baseline_digest": "4f02c73f2f0f559d3002a8eec0e74196f8ab966550986be4ef460c065cb4e58b"
-  },
-  {
-   "source": "fireworks-pricing",
-   "url": "https://docs.fireworks.ai/serverless/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"150M – 350M\",\"$0.016\"],\"heading\":\"Embeddings\"}",
-    "table: {\"cells\":[\"4B – 16B parameters\",\"$0.20\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Base model parameter count\",\"$ / 1M input tokens\"],\"heading\":\"Embeddings\"}",
-    "table: {\"cells\":[\"Ember-1\",\"$3.00 / $0.30 / $15.00\",\"$3.75 / $0.375 / $18.75\"],\"heading\":\"Text and vision models\"}",
-    "table: {\"cells\":[\"Less than 4B parameters\",\"$0.10\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"$ / 1M tokens\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"Standard\",\"Priority\"],\"heading\":\"Text and vision models\"}",
-    "table: {\"cells\":[\"More than 16B parameters\",\"$0.90\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.15 / $0.03 / $0.50\",\"$0.1875 / $0.0375 / $0.625\"],\"heading\":\"Text and vision models\"}",
-    "table: {\"cells\":[\"up to 150M\",\"$0.008\"],\"heading\":\"Embeddings\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"150M – 350M\",\"$0.016\"],\"heading\":\"​ Embeddings\"}",
-    "table: {\"cells\":[\"4B – 16B parameters\",\"$0.20\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Base model parameter count\",\"$ / 1M input tokens\"],\"heading\":\"​ Embeddings\"}",
-    "table: {\"cells\":[\"Ember-1\",\"$3.00 / $0.30 / $15.00\",\"$3.75 / $0.375 / $18.75\"],\"heading\":\"​ Text and vision models\"}",
-    "table: {\"cells\":[\"Less than 4B parameters\",\"$0.10\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"$ / 1M tokens\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"Standard\",\"Priority\"],\"heading\":\"​ Text and vision models\"}",
-    "table: {\"cells\":[\"More than 16B parameters\",\"$0.90\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.15 / $0.03 / $0.50\",\"$0.1875 / $0.0375 / $0.625\"],\"heading\":\"​ Text and vision models\"}",
-    "table: {\"cells\":[\"up to 150M\",\"$0.008\"],\"heading\":\"​ Embeddings\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"150M – 350M\",\"$0.016\"],\"heading\":\"Embeddings\"}",
-    "table: {\"cells\":[\"4B – 16B parameters\",\"$0.20\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Base model parameter count\",\"$ / 1M input tokens\"],\"heading\":\"Embeddings\"}",
-    "table: {\"cells\":[\"Ember-1\",\"$3.00 / $0.30 / $15.00\",\"$3.75 / $0.375 / $18.75\"],\"heading\":\"Text and vision models\"}",
-    "table: {\"cells\":[\"Less than 4B parameters\",\"$0.10\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"$ / 1M tokens\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"Standard\",\"Priority\"],\"heading\":\"Text and vision models\"}",
-    "table: {\"cells\":[\"More than 16B parameters\",\"$0.90\"],\"heading\":\"Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.15 / $0.03 / $0.50\",\"$0.1875 / $0.0375 / $0.625\"],\"heading\":\"Text and vision models\"}",
-    "table: {\"cells\":[\"up to 150M\",\"$0.008\"],\"heading\":\"Embeddings\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"150M – 350M\",\"$0.016\"],\"heading\":\"​ Embeddings\"}",
-    "table: {\"cells\":[\"4B – 16B parameters\",\"$0.20\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Base model parameter count\",\"$ / 1M input tokens\"],\"heading\":\"​ Embeddings\"}",
-    "table: {\"cells\":[\"Ember-1\",\"$3.00 / $0.30 / $15.00\",\"$3.75 / $0.375 / $18.75\"],\"heading\":\"​ Text and vision models\"}",
-    "table: {\"cells\":[\"Less than 4B parameters\",\"$0.10\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"$ / 1M tokens\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Model\",\"Standard\",\"Priority\"],\"heading\":\"​ Text and vision models\"}",
-    "table: {\"cells\":[\"More than 16B parameters\",\"$0.90\"],\"heading\":\"​ Other base models — by size and architecture\"}",
-    "table: {\"cells\":[\"Ultramarine 1 Flash (US)\",\"$0.15 / $0.03 / $0.50\",\"$0.1875 / $0.0375 / $0.625\"],\"heading\":\"​ Text and vision models\"}",
-    "table: {\"cells\":[\"up to 150M\",\"$0.008\"],\"heading\":\"​ Embeddings\"}"
-   ],
-   "baseline_digest": "b2d26ccf17b89e9b399b3122feca6ff50038cb6e38571a69647a353ce59fe301"
-  },
-  {
-   "source": "deepseek-pricing",
-   "url": "https://api-docs.deepseek.com/quick_start/pricing/",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"API\",\"Unit\",\"List price\",\"Limited-time price (50% off)\"],\"heading\":\"Models & Pricing / Speech Pricing ​\"}",
-    "table: {\"cells\":[\"File parsing, OCR API\",\"Per 1,000 pages\",\"$0.225\"],\"heading\":\"Models & Pricing / File Parsing & OCR Pricing ​\"}",
-    "table: {\"cells\":[\"Item\",\"Unit\",\"Price\"],\"heading\":\"Models & Pricing / File Parsing & OCR Pricing ​\"}",
-    "table: {\"cells\":[\"Item\",\"Unit\",\"Price\"],\"heading\":\"Models & Pricing / Web Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Search (text, image)\",\"Per 1,000 searches\",\"$0.75\"],\"heading\":\"Models & Pricing / Web Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Speech to Text (ASR)\",\"Per hour of audio\",\"$0.116\",\"$0.058\"],\"heading\":\"Models & Pricing / Speech Pricing ​\"}",
-    "table: {\"cells\":[\"Text to Speech (TTS)\",\"Per 10,000 characters\",\"$0.45\",\"$0.225\"],\"heading\":\"Models & Pricing / Speech Pricing ​\"}",
-    "table: {\"cells\":[\"Web fetch\",\"Per 1,000 fetches\",\"$0.75\"],\"heading\":\"Models & Pricing / Web Search & Fetch Pricing ​\"}"
-   ],
-   "removed": [],
-   "added_all": [
-    "table: {\"cells\":[\"API\",\"Unit\",\"List price\",\"Limited-time price (50% off)\"],\"heading\":\"Models & Pricing / Speech Pricing ​\"}",
-    "table: {\"cells\":[\"File parsing, OCR API\",\"Per 1,000 pages\",\"$0.225\"],\"heading\":\"Models & Pricing / File Parsing & OCR Pricing ​\"}",
-    "table: {\"cells\":[\"Item\",\"Unit\",\"Price\"],\"heading\":\"Models & Pricing / File Parsing & OCR Pricing ​\"}",
-    "table: {\"cells\":[\"Item\",\"Unit\",\"Price\"],\"heading\":\"Models & Pricing / Web Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Search (text, image)\",\"Per 1,000 searches\",\"$0.75\"],\"heading\":\"Models & Pricing / Web Search & Fetch Pricing ​\"}",
-    "table: {\"cells\":[\"Speech to Text (ASR)\",\"Per hour of audio\",\"$0.116\",\"$0.058\"],\"heading\":\"Models & Pricing / Speech Pricing ​\"}",
-    "table: {\"cells\":[\"Text to Speech (TTS)\",\"Per 10,000 characters\",\"$0.45\",\"$0.225\"],\"heading\":\"Models & Pricing / Speech Pricing ​\"}",
-    "table: {\"cells\":[\"Web fetch\",\"Per 1,000 fetches\",\"$0.75\"],\"heading\":\"Models & Pricing / Web Search & Fetch Pricing ​\"}"
-   ],
-   "removed_all": [],
-   "baseline_digest": "ad3a6ad582a0389e9cdf2b8c402e3d1a830d67e8afc3b69631eff1c22602d393"
-  },
-  {
-   "source": "zai-pricing",
-   "url": "https://docs.z.ai/guides/overview/pricing",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Agent\",\"Price\"],\"heading\":\"Models / Agents\"}",
-    "table: {\"cells\":[\"CogVideoX-3\",\"$0.2\"],\"heading\":\"Models / Video Generation Models\"}",
-    "table: {\"cells\":[\"CogView-4\",\"$0.01\"],\"heading\":\"Models / Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM Slide/Poster Agent(beta)\",\"$0.7 / MTok\"],\"heading\":\"Models / Agents\"}",
-    "table: {\"cells\":[\"GLM-Image\",\"$0.015\"],\"heading\":\"Models / Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM-OCR\",\"$0.03\",\"\\\\\",\"\\\\\",\"$0.03\"],\"heading\":\"Models / Vision Models\"}",
-    "table: {\"cells\":[\"General-Purpose Translation\",\"$3 / MTok\"],\"heading\":\"Models / Agents\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"Models / Latest Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"Models / Text Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"Models / Vision Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"Models / Audio Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"Models / Image Generation Models\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Agent\",\"Price\"],\"heading\":\"​ Models / ​ Agents\"}",
-    "table: {\"cells\":[\"CogVideoX-3\",\"$0.2\"],\"heading\":\"​ Models / ​ Video Generation Models\"}",
-    "table: {\"cells\":[\"CogView-4\",\"$0.01\"],\"heading\":\"​ Models / ​ Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM Slide/Poster Agent(beta)\",\"$0.7 / MTok\"],\"heading\":\"​ Models / ​ Agents\"}",
-    "table: {\"cells\":[\"GLM-Image\",\"$0.015\"],\"heading\":\"​ Models / ​ Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM-OCR\",\"$0.03\",\"\\\\\",\"\\\\\",\"$0.03\"],\"heading\":\"​ Models / ​ Vision Models\"}",
-    "table: {\"cells\":[\"General-Purpose Translation\",\"$3 / MTok\"],\"heading\":\"​ Models / ​ Agents\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"​ Models / ​ Latest Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"​ Models / ​ Text Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"​ Models / ​ Vision Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Models / ​ Audio Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Models / ​ Image Generation Models\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Agent\",\"Price\"],\"heading\":\"Models / Agents\"}",
-    "table: {\"cells\":[\"CogVideoX-3\",\"$0.2\"],\"heading\":\"Models / Video Generation Models\"}",
-    "table: {\"cells\":[\"CogView-4\",\"$0.01\"],\"heading\":\"Models / Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM Slide/Poster Agent(beta)\",\"$0.7 / MTok\"],\"heading\":\"Models / Agents\"}",
-    "table: {\"cells\":[\"GLM-Image\",\"$0.015\"],\"heading\":\"Models / Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM-OCR\",\"$0.03\",\"\\\\\",\"\\\\\",\"$0.03\"],\"heading\":\"Models / Vision Models\"}",
-    "table: {\"cells\":[\"General-Purpose Translation\",\"$3 / MTok\"],\"heading\":\"Models / Agents\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"Models / Latest Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"Models / Text Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"Models / Vision Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"Models / Audio Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"Models / Image Generation Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"Models / Video Generation Models\"}",
-    "table: {\"cells\":[\"Popular Special Effects Video Templates\",\"$0.2 / video\"],\"heading\":\"Models / Agents\"}",
-    "table: {\"cells\":[\"Tool\",\"Cost\"],\"heading\":\"Models / Built-in Tools\"}",
-    "table: {\"cells\":[\"Web Search\",\"$0.01 / use\"],\"heading\":\"Models / Built-in Tools\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Agent\",\"Price\"],\"heading\":\"​ Models / ​ Agents\"}",
-    "table: {\"cells\":[\"CogVideoX-3\",\"$0.2\"],\"heading\":\"​ Models / ​ Video Generation Models\"}",
-    "table: {\"cells\":[\"CogView-4\",\"$0.01\"],\"heading\":\"​ Models / ​ Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM Slide/Poster Agent(beta)\",\"$0.7 / MTok\"],\"heading\":\"​ Models / ​ Agents\"}",
-    "table: {\"cells\":[\"GLM-Image\",\"$0.015\"],\"heading\":\"​ Models / ​ Image Generation Models\"}",
-    "table: {\"cells\":[\"GLM-OCR\",\"$0.03\",\"\\\\\",\"\\\\\",\"$0.03\"],\"heading\":\"​ Models / ​ Vision Models\"}",
-    "table: {\"cells\":[\"General-Purpose Translation\",\"$3 / MTok\"],\"heading\":\"​ Models / ​ Agents\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"​ Models / ​ Latest Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"​ Models / ​ Text Models\"}",
-    "table: {\"cells\":[\"Model\",\"Input\",\"Cached Input\",\"Cached Input Storage\",\"Output\"],\"heading\":\"​ Models / ​ Vision Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Models / ​ Audio Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Models / ​ Image Generation Models\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Models / ​ Video Generation Models\"}",
-    "table: {\"cells\":[\"Popular Special Effects Video Templates\",\"$0.2 / video\"],\"heading\":\"​ Models / ​ Agents\"}",
-    "table: {\"cells\":[\"Tool\",\"Cost\"],\"heading\":\"​ Models / ​ Built-in Tools\"}",
-    "table: {\"cells\":[\"Web Search\",\"$0.01 / use\"],\"heading\":\"​ Models / ​ Built-in Tools\"}"
-   ],
-   "baseline_digest": "6beac5068760be7a8ac6aa17456555ffa1d87531f8937a2abb195d3d63f654ef"
-  },
-  {
-   "source": "minimax-pricing",
-   "url": "https://platform.minimax.io/docs/pricing/overview",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Description\",\"Price\",\"Notes\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Endpoint\",\"Description\",\"Price\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Description\",\"Price\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Price\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API-vlm\",\"$0.01 / request\"],\"heading\":\"MCP\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Packages\"],\"heading\":\"Package Usage Rules / Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Audio Packages\"],\"heading\":\"Payment Methods / Compare Billing Options\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Description\",\"Price\",\"Notes\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Endpoint\",\"Description\",\"Price\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Description\",\"Price\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Price\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API-vlm\",\"$0.01 / request\"],\"heading\":\"​ MCP\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Audio Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Description\",\"Price\",\"Notes\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Endpoint\",\"Description\",\"Price\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Description\",\"Price\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Price\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"API-vlm\",\"$0.01 / request\"],\"heading\":\"MCP\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Packages\"],\"heading\":\"Package Usage Rules / Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Audio Packages\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Packages\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"H3-Image-Context-IR\",\"$2.30\"],\"heading\":\"Image / H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Package\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.02654\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.04525\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.02658\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.04576\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.07312 $0.03656 Limited-time 50% off\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.13673 $0.06837 Limited-time 50% off\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.03563\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.06037\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.04177\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.06069\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.07914 $0.03957 Limited-time 50% off\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.15407 $0.07703 Limited-time 50% off\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Included points\",\"Audio points per month\"],\"heading\":\"Package Usage Rules / Coverage\"}",
-    "table: {\"cells\":[\"Lyrics Generation\",\"$0.01 per song\"],\"heading\":\"FAQ / Billing and Usage\"}",
-    "table: {\"cells\":[\"Model / API\",\"Input $ / M tokens\"],\"heading\":\"Image / H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"Model\",\"Input $ / M tokens\",\"Output $ / M tokens\",\"Prompt caching Read $ / M tokens\"],\"heading\":\"LLM\"}",
-    "table: {\"cells\":[\"Model\",\"Input Price\"],\"heading\":\"MCP\"}",
-    "table: {\"cells\":[\"Model\",\"Input Text $ / M tokens\",\"Input Image $ / M tokens\",\"Output Image $ / M tokens\"],\"heading\":\"Image / Image Generation\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"FAQ / Billing and Usage\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"Image / H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Music-2.0\",\"$0.03 per track (up to 5 minutes)\"],\"heading\":\"FAQ / Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"FAQ / Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5+\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"FAQ / Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.6\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"FAQ / Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-3.0\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"FAQ / Billing and Usage\"}",
-    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\"],\"heading\":\"Package Usage Rules / Coverage\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio Packages\"],\"heading\":\"Package Usage Rules / Coverage\"}",
-    "table: {\"cells\":[\"Rapid Voice Cloning\",\"LLM-powered voice cloning that produces a high-fidelity replica in seconds, without long high-quality reference audio.\",\"$1.5 per voice\",\"Charged when the cloned voice is first used for synthesis, not at cloning time. Preview characters are billed at the selected preview model’s rate.\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Server Tool\",\"Description\",\"Price\"],\"heading\":\"Server Tools\"}",
-    "table: {\"cells\":[\"Speech Recognition\",\"Speech-to-Text\",\"Audio-to-text transcription with streaming, speaker diarization, and subtitle (srt/vtt) export.\",\"$0.38 / hour\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Supported APIs\",\"T2A v2 and T2A large v2\"],\"heading\":\"Package Usage Rules / Coverage\"}",
-    "table: {\"cells\":[\"Supported models\",\"All speech models\"],\"heading\":\"Package Usage Rules / Coverage\"}",
-    "table: {\"cells\":[\"T2A (Sync)\",\"speech-2.8-hd\",\"Real-time synthesis with volume/pitch/speed/mixing controls and bitrate/sample-rate options. Best for short-form conversational audio.\",\"$100 / M characters\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"T2A (Sync)\",\"speech-2.8-turbo\",\"Same capabilities as hd, optimized for speed and cost.\",\"$60 / M characters\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"T2A Async\",\"speech-2.8-hd\",\"Asynchronous long-form synthesis, up to 1M characters per request, retrieved asynchronously.\",\"$100 / M characters\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"T2A Async\",\"speech-2.8-turbo\",\"Same capabilities as hd, optimized for speed and cost.\",\"$60 / M characters\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"T2A\",\"speech-2.6-hd / speech-02-hd\",\"$100/M characters\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"T2A\",\"speech-2.6-turbo / speech-02-turbo\",\"$60/M characters\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Task\",\"Input image (each)\",\"Output image\",\"Example total cost $ / image\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"1K (1024 × 1024)\",\"$0.02179\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"1K (1024 × 1024)\",\"$0.03529\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"2K (2048 × 2048)\",\"$0.02333\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"2K (2048 × 2048)\",\"$0.03622\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"4K (4096 × 4096)\",\"$0.06879 $0.03439 Limited-time 50% off\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"4K (4096 × 4096)\",\"$0.13001 $0.06501 Limited-time 50% off\"],\"heading\":\"Image / Example cost per generated image\"}",
-    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech workloads where you expect to use the included audio points.\"],\"heading\":\"Payment Methods / Compare Billing Options\"}",
-    "table: {\"cells\":[\"Voice Design\",\"Generate a voice (voice_id) from a natural-language description; usable in both sync and async T2A endpoints.\",\"$3 per voice\",\"Charged when the designed voice is first used for synthesis, not at generation time. In-API preview synthesis is billed at $60 / M characters.\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"Yearly Subscription (20% off)\",\"$48\",\"$288\",\"$950\",\"$2,390\",\"$9,590\",\"/\"],\"heading\":\"Audio\"}",
-    "table: {\"cells\":[\"image-01 image-01-live\",\"$0.0035 per image\"],\"heading\":\"Image / H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"web_search\",\"Web search; the model runs the search on the server and answers based on the results. See Server Tools.\",\"$0.01 / request\"],\"heading\":\"Server Tools\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"3-month Subscription (10% off)\",\"$13.5\",\"$81\",\"$267\",\"$672\",\"$2,697\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Description\",\"Price\",\"Notes\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Endpoint\",\"Description\",\"Price\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Description\",\"Price\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API\",\"Model\",\"Price\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"API-vlm\",\"$0.01 / request\"],\"heading\":\"​ MCP\"}",
-    "table: {\"cells\":[\"Audio points per month\",\"100,000\",\"300,000\",\"1,100,000\",\"3,300,000\",\"20,000,000\",\"As many audio points as you need\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Billing units\",\"Varies by model, configuration, and type of usage\",\"Audio points per month\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Category\",\"Starter\",\"Standard\",\"Pro\",\"Scale\",\"Business\",\"Customer Pricing\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Coverage\",\"All MiniMax models and tools\",\"All speech models\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Feature\",\"Audio Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Feature\",\"Pay-as-you-go\",\"Audio Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Functions\",\"• Voice slots: 10 • RPM: 10 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 100 • RPM: 50 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 250 • RPM: 200 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 500 • RPM: 500 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Voice slots: 800 • RPM: 800 • Faster speed of generating speech • Supports T2A v2, T2A large v2 API • Supports all speech models\",\"• Unlimited RPM/TPM • Priority access to model updates • More voices and more cloning options • Exclusive security and stability guarantees\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Get started\",\"Recharge Now\",\"View Audio Packages\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"H3-Image-Context-IR\",\"$2.30\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"How you pay\",\"Add funds to your account and pay for what you use\",\"Purchase an Audio Package\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.02654\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.04525\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.02658\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.04576\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.07312 $0.03656 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (1 reference image)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.13673 $0.06837 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.03563\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"1K (1024 × 1024)\",\"$0.06037\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.04177\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"2K (2048 × 2048)\",\"$0.06069\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.07914 $0.03957 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Image editing (3 reference images)\",\"1K (1024 × 1024)\",\"4K (4096 × 4096)\",\"$0.15407 $0.07703 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Included points\",\"Audio points per month\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Lyrics Generation\",\"$0.01 per song\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Model / API\",\"Input $ / M tokens\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"Model\",\"Input $ / M tokens\",\"Output $ / M tokens\",\"Prompt caching Read $ / M tokens\"],\"heading\":\"​ LLM\"}",
-    "table: {\"cells\":[\"Model\",\"Input Price\"],\"heading\":\"​ MCP\"}",
-    "table: {\"cells\":[\"Model\",\"Input Text $ / M tokens\",\"Input Image $ / M tokens\",\"Output Image $ / M tokens\"],\"heading\":\"​ Image / ​ Image Generation\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Model\",\"Price\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"Monthly Subscription\",\"$5\",\"$30\",\"$99\",\"$249\",\"$999\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Music-2.0\",\"$0.03 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.5+\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-2.6\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Music-3.0\",\"$0.15 per track (up to 5 minutes)\"],\"heading\":\"​ FAQ / ​ Billing and Usage\"}",
-    "table: {\"cells\":[\"Package duration\",\"1 month, 3 months (10% off), or 1 year (20% off)\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Plan details\",\"Audio Packages\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Rapid Voice Cloning\",\"LLM-powered voice cloning that produces a high-fidelity replica in seconds, without long high-quality reference audio.\",\"$1.5 per voice\",\"Charged when the cloned voice is first used for synthesis, not at cloning time. Preview characters are billed at the selected preview model’s rate.\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Server Tool\",\"Description\",\"Price\"],\"heading\":\"​ Server Tools\"}",
-    "table: {\"cells\":[\"Speech Recognition\",\"Speech-to-Text\",\"Audio-to-text transcription with streaming, speaker diarization, and subtitle (srt/vtt) export.\",\"$0.38 / hour\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Supported APIs\",\"T2A v2 and T2A large v2\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"Supported models\",\"All speech models\"],\"heading\":\"​ Package Usage Rules / ​ Coverage\"}",
-    "table: {\"cells\":[\"T2A (Sync)\",\"speech-2.8-hd\",\"Real-time synthesis with volume/pitch/speed/mixing controls and bitrate/sample-rate options. Best for short-form conversational audio.\",\"$100 / M characters\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"T2A (Sync)\",\"speech-2.8-turbo\",\"Same capabilities as hd, optimized for speed and cost.\",\"$60 / M characters\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"T2A Async\",\"speech-2.8-hd\",\"Asynchronous long-form synthesis, up to 1M characters per request, retrieved asynchronously.\",\"$100 / M characters\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"T2A Async\",\"speech-2.8-turbo\",\"Same capabilities as hd, optimized for speed and cost.\",\"$60 / M characters\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"T2A\",\"speech-2.6-hd / speech-02-hd\",\"$100/M characters\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"T2A\",\"speech-2.6-turbo / speech-02-turbo\",\"$60/M characters\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Task\",\"Input image (each)\",\"Output image\",\"Example total cost $ / image\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"1K (1024 × 1024)\",\"$0.02179\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"1K (1024 × 1024)\",\"$0.03529\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"2K (2048 × 2048)\",\"$0.02333\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"2K (2048 × 2048)\",\"$0.03622\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"4K (4096 × 4096)\",\"$0.06879 $0.03439 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Text-to-image\",\"None\",\"4K (4096 × 4096)\",\"$0.13001 $0.06501 Limited-time 50% off\"],\"heading\":\"​ Image / ​ Example cost per generated image\"}",
-    "table: {\"cells\":[\"Use cases\",\"Use any MiniMax model or tool and pay for what you use, with the flexibility to support a wide range of business needs and API workloads.\",\"For speech workloads where you expect to use the included audio points.\"],\"heading\":\"​ Payment Methods / ​ Compare Billing Options\"}",
-    "table: {\"cells\":[\"Voice Design\",\"Generate a voice (voice_id) from a natural-language description; usable in both sync and async T2A endpoints.\",\"$3 per voice\",\"Charged when the designed voice is first used for synthesis, not at generation time. In-API preview synthesis is billed at $60 / M characters.\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"Yearly Subscription (20% off)\",\"$48\",\"$288\",\"$950\",\"$2,390\",\"$9,590\",\"/\"],\"heading\":\"​ Audio\"}",
-    "table: {\"cells\":[\"image-01 image-01-live\",\"$0.0035 per image\"],\"heading\":\"​ Image / ​ H3-Image-Context-IR (Prompt Enhancement)\"}",
-    "table: {\"cells\":[\"web_search\",\"Web search; the model runs the search on the server and answers based on the results. See Server Tools.\",\"$0.01 / request\"],\"heading\":\"​ Server Tools\"}"
-   ],
-   "baseline_digest": "2f493f358efc9a02f3d7917d011ad9fea11c5d8279d09604b9a4a6a2a3a59259"
-  },
-  {
-   "source": "api-west-openai-your-data",
-   "url": "https://developers.openai.com/api/docs/guides/your-data.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit and a region or its availability changed",
-   "added": [],
-   "removed": [
-    "item: {\"heading\":\"/v1/chat/completions\",\"text\":\"Cannot set store=true in non-US regions.\"}",
-    "item: {\"heading\":\"/v1/chat/completions\",\"text\":\"[Extended prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention) in regions that do not support Regional processing may require that OpenAI process and temporarily store Customer Content outside of the Region to deliver the services.\"}",
-    "item: {\"heading\":\"/v1/decisions\",\"text\":\"[Extended prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention) in regions that do not support Regional processing may require that OpenAI process and temporarily store Customer Content outside of the Region to deliver the services.\"}",
-    "item: {\"heading\":\"/v1/responses\",\"text\":\"[Extended prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention) in regions that do not support Regional processing may require that OpenAI process and temporarily store Customer Content outside of the Region to deliver the services.\"}",
-    "notice: Session storage is disabled by default. For projects with session storage enabled, `store: true` retains the completed session recording for 30 days so that it can be downloaded or used to start a forked session. Stored sessions and their index expire after 30 days. Recording downloads and forking require a data policy that permits persistence and are not available with Zero Data Retention.",
-    "table: {\"cells\":[\"Canada\\\\*\",\"`ca.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Endpoint or feature\",\"Service\",\"Storage regions\",\"Processing regions\",\"Supported models and snapshots\",\"Regional processing snapshot exceptions\",\"Notes\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"Europe (EEA + Switzerland)\",\"`eu.api.openai.com`\",\"Yes\",\"Yes\",\"Yes\\\\*\\\\*\",\"Text, Audio, Voice, Image\\\\*\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/evals`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/live/sessions`<br />`/v1/realtime`<br />`/v1/realtime/transcription_sessions`<br />`/v1/realtime/translations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/evals`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/live/sessions`<br />`/v1/realtime`<br />`/v1/realtime/transcription_sessions`<br />`/v1/realtime/translations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`Code Interpreter tool`<br />`File Search`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Region\",\"Domain prefix\",\"Regional storage\",\"Regional processing\",\"MAM or ZDR required\",\"Supported modes\",\"Storage services\",\"Processing services\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Singapore\\\\*\",\"`sg.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"South Korea\\\\*\",\"`kr.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"United Kingdom\\\\*\",\"`gb.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}"
-   ],
-   "added_all": [],
-   "removed_all": [
-    "item: {\"heading\":\"/v1/chat/completions\",\"text\":\"Cannot set store=true in non-US regions.\"}",
-    "item: {\"heading\":\"/v1/chat/completions\",\"text\":\"[Extended prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention) in regions that do not support Regional processing may require that OpenAI process and temporarily store Customer Content outside of the Region to deliver the services.\"}",
-    "item: {\"heading\":\"/v1/decisions\",\"text\":\"[Extended prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention) in regions that do not support Regional processing may require that OpenAI process and temporarily store Customer Content outside of the Region to deliver the services.\"}",
-    "item: {\"heading\":\"/v1/responses\",\"text\":\"[Extended prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention) in regions that do not support Regional processing may require that OpenAI process and temporarily store Customer Content outside of the Region to deliver the services.\"}",
-    "notice: Session storage is disabled by default. For projects with session storage enabled, `store: true` retains the completed session recording for 30 days so that it can be downloaded or used to start a forked session. Stored sessions and their index expire after 30 days. Recording downloads and forking require a data policy that permits persistence and are not available with Zero Data Retention.",
-    "table: {\"cells\":[\"Canada\\\\*\",\"`ca.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Endpoint or feature\",\"Service\",\"Storage regions\",\"Processing regions\",\"Supported models and snapshots\",\"Regional processing snapshot exceptions\",\"Notes\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"Europe (EEA + Switzerland)\",\"`eu.api.openai.com`\",\"Yes\",\"Yes\",\"Yes\\\\*\\\\*\",\"Text, Audio, Voice, Image\\\\*\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/evals`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/live/sessions`<br />`/v1/realtime`<br />`/v1/realtime/transcription_sessions`<br />`/v1/realtime/translations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/evals`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/live/sessions`<br />`/v1/realtime`<br />`/v1/realtime/transcription_sessions`<br />`/v1/realtime/translations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`Code Interpreter tool`<br />`File Search`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Region\",\"Domain prefix\",\"Regional storage\",\"Regional processing\",\"MAM or ZDR required\",\"Supported modes\",\"Storage services\",\"Processing services\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"Singapore\\\\*\",\"`sg.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"South Korea\\\\*\",\"`kr.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"United Kingdom\\\\*\",\"`gb.api.openai.com`\",\"Yes\",\"No\",\"Yes\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"None\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"United States\",\"`us.api.openai.com`\",\"Yes\",\"Yes\",\"No\",\"Text, Audio, Voice, Image\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/evals`<br />`/v1/files`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/live/sessions`<br />`/v1/realtime`<br />`/v1/realtime/transcription_sessions`<br />`/v1/realtime/translations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`/v1/vector_stores`<br />`Code Interpreter tool`<br />`File Search`<br />`File Uploads`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\",\"`/v1/audio/transcriptions, /v1/audio/translations, /v1/audio/speech`<br />`/v1/batches`<br />`/v1/chat/completions`<br />`/v1/decisions`<br />`/v1/embeddings`<br />`/v1/evals`<br />`/v1/fine_tuning/jobs`<br />`/v1/images/edits`<br />`/v1/images/generations`<br />`/v1/moderations`<br />`/v1/live/sessions`<br />`/v1/realtime`<br />`/v1/realtime/transcription_sessions`<br />`/v1/realtime/translations`<br />`/v1/responses`<br />`/v1/responses File Search`<br />`/v1/responses Web Search`<br />`Code Interpreter tool`<br />`File Search`<br />`Remote MCP server tool`<br />`Scale Tier`<br />`Structured Outputs (excluding schema)`<br />`Supported input modalities`\"],\"heading\":\"Support by region\"}",
-    "table: {\"cells\":[\"`/v1/embeddings`\",\"Embeddings\",\"All listed regions\",\"United States, Europe (EEA + Switzerland), United Arab Emirates\",\"`text-embedding-3-small`, `text-embedding-3-large`, `text-embedding-ada-002`\",\"United Arab Emirates: `text-embedding-3-large`\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`/v1/evals`\",\"Evals\",\"United States, Europe (EEA + Switzerland)\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`/v1/files`\",\"Files\",\"All listed regions\",\"None\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`/v1/moderations`\",\"Moderation\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"`omni-moderation-latest`\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`/v1/responses File Search`\",\"Responses\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`/v1/responses Web Search`\",\"Responses\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`/v1/vector_stores`\",\"Vector stores\",\"All listed regions\",\"None\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`Code Interpreter tool`\",\"Tools\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`File Search`\",\"Tools\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`File Uploads`\",\"Files\",\"All listed regions\",\"None\",\"Service-level support\",\"None\",\"Supported when used with base64 file uploads.\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`Remote MCP server tool`\",\"Tools\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"MCP servers are third-party services. Data sent to an MCP server is subject to its data residency policies.\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`Scale Tier`\",\"Other\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`Structured Outputs (excluding schema)`\",\"Other\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"Service-level support\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}",
-    "table: {\"cells\":[\"`Supported input modalities`\",\"Other\",\"All listed regions\",\"United States, Europe (EEA + Switzerland)\",\"`Text`, `Image`, `Audio/Voice`\",\"None\",\"—\"],\"heading\":\"API Endpoint, tool and model support\"}"
-   ],
-   "baseline_digest": "f07fc2e233a71691228bae575a681ad682a7ee5155b82c985e9e774360d0c511"
-  },
-  {
-   "source": "api-west-xai-pricing",
-   "url": "https://docs.x.ai/developers/pricing.md",
-   "risk": "high",
-   "reason": "a price, rate, multiplier or context limit changed",
-   "added": [
-    "table: {\"cells\":[\"Image Generation\",\"`image_generation`\",\"Generate and edit images\",\"[Image API rates](/developers/pricing#imagine-api-pricing)\"],\"heading\":\"Tool Invocation Costs\"}",
-    "table: {\"cells\":[\"Model\",\"Cost\"],\"heading\":\"Image & Video Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-image\",\"$0.02 / image\"],\"heading\":\"Image & Video Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-video\",\"$0.050 / sec\"],\"heading\":\"Image & Video Pricing\"}"
-   ],
-   "removed": [
-    "table: {\"cells\":[\"Image Generation\",\"`image_generation`\",\"Generate and edit images\",\"[Imagine API rates](/developers/pricing#imagine-api-pricing)\"],\"heading\":\"Tool Invocation Costs\"}",
-    "table: {\"cells\":[\"Model\",\"Cost\"],\"heading\":\"Imagine Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-image\",\"$0.02 / image\"],\"heading\":\"Imagine Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-video\",\"$0.050 / sec\"],\"heading\":\"Imagine Pricing\"}"
-   ],
-   "added_all": [
-    "table: {\"cells\":[\"Image Generation\",\"`image_generation`\",\"Generate and edit images\",\"[Image API rates](/developers/pricing#imagine-api-pricing)\"],\"heading\":\"Tool Invocation Costs\"}",
-    "table: {\"cells\":[\"Model\",\"Cost\"],\"heading\":\"Image & Video Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-image\",\"$0.02 / image\"],\"heading\":\"Image & Video Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-video\",\"$0.050 / sec\"],\"heading\":\"Image & Video Pricing\"}"
-   ],
-   "removed_all": [
-    "table: {\"cells\":[\"Image Generation\",\"`image_generation`\",\"Generate and edit images\",\"[Imagine API rates](/developers/pricing#imagine-api-pricing)\"],\"heading\":\"Tool Invocation Costs\"}",
-    "table: {\"cells\":[\"Model\",\"Cost\"],\"heading\":\"Imagine Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-image\",\"$0.02 / image\"],\"heading\":\"Imagine Pricing\"}",
-    "table: {\"cells\":[\"grok-imagine-video\",\"$0.050 / sec\"],\"heading\":\"Imagine Pricing\"}"
-   ],
-   "baseline_digest": "3d1f4e4fa85f3355b227779ece202f0c578273617c1299d71f16562ac9953b71"
-  }
- ],
+ "pending_general": [],
  "ranking": {
   "schema": 1,
   "checked_at": "2026-11-14",
-  "last_successful_read": "2026-11-13",
-  "source": "https://arena.ai/leaderboard/",
+  "last_successful_read": "2026-11-14",
+  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
   "board_id": "webdev",
-  "error": "Official dataset: HTTP Error 502: Bad Gateway; Arena website: HTTP Error 403: Forbidden"
+  "published_at": "2026-11-11"
  },
  "databricks_coverage": [],
- "review": [
-  "Claude Fable 5.1 · azure_foundry",
-  "Claude Fable 5.1 · official",
-  "Claude Fable 5.2 · azure_foundry",
-  "Claude Fable 5.2 · official",
-  "Claude Fable 5 · azure_foundry",
-  "Claude Fable 5 · official",
-  "Claude Haiku 5.5 · bedrock",
-  "Claude Haiku 5.5 · gcloud",
-  "Claude Haiku 5.5 · official",
-  "Claude Opus 4.7 · azure_foundry",
-  "Claude Opus 4.7 · official",
-  "Claude Opus 4.8 · azure_foundry",
-  "Claude Opus 4.8 · official",
-  "Claude Opus 5.5 · azure_foundry",
-  "Claude Opus 5.5 · official",
-  "Claude Opus 5 · azure_foundry",
-  "Claude Opus 5 · official",
-  "Claude Sonnet 5.5 · azure_foundry",
-  "Claude Sonnet 5.5 · bedrock",
-  "Claude Sonnet 5.5 · gcloud",
-  "Claude Sonnet 5.5 · official",
-  "DeepSeek V4.1 Flash · fireworks",
-  "Gemini 3.8 Flash · databricks",
-  "Gemini 3.8 Flash · official",
-  "MiniMax M3 · fireworks",
-  "MiniMax M3 · official",
-  "Kimi K3.1 Pro · fireworks",
-  "Kimi K3 · fireworks",
-  "GLM 5.2 · official",
-  "GLM 5.3 Flash · fireworks",
-  "GLM 5.3 Flash · official",
-  "GLM 5.3 · fireworks",
-  "GLM 5.3 · official"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5.1|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5.1|bedrock": {
    "verified": "2026-11-14"
@@ -832,27 +158,13 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5.1|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5.2|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5.2|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5.2|bedrock": {
    "verified": "2026-11-14"
@@ -867,27 +179,13 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5.2|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5|bedrock": {
    "verified": "2026-11-14"
@@ -902,14 +200,7 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-fable-5|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-haiku-4.5|alicloud": {
    "verified": "2026-11-14"
@@ -930,14 +221,7 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-haiku-4.5|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-haiku-5.5|alicloud": {
    "verified": "2026-11-14"
@@ -946,14 +230,7 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-haiku-5.5|bedrock": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-models"
-   ],
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-haiku-5.5|databricks": {
    "verified": "2026-11-14"
@@ -962,39 +239,16 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-haiku-5.5|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-models"
-   ],
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-haiku-5.5|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-models",
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-models",
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.6|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.6|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.6|bedrock": {
    "verified": "2026-11-14"
@@ -1009,27 +263,13 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.6|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.7|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.7|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.7|bedrock": {
    "verified": "2026-11-14"
@@ -1044,27 +284,13 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.7|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.8|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.8|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.8|bedrock": {
    "verified": "2026-11-14"
@@ -1079,27 +305,13 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-4.8|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5.5|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5.5|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5.5|bedrock": {
    "verified": "2026-11-14"
@@ -1114,27 +326,13 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5.5|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5|bedrock": {
    "verified": "2026-11-14"
@@ -1149,14 +347,7 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-opus-5|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-4.6|alicloud": {
    "verified": "2026-11-14"
@@ -1177,39 +368,16 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-4.6|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5.5|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5.5|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-models",
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-models",
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5.5|bedrock": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-models"
-   ],
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5.5|databricks": {
    "verified": "2026-11-14"
@@ -1218,39 +386,16 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5.5|gcloud": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-models"
-   ],
-   "unchecked": [
-    "anthropic-models"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5.5|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-models",
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-models",
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5|alicloud": {
    "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5|azure_foundry": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5|bedrock": {
    "verified": "2026-11-14"
@@ -1265,14 +410,7 @@
    "verified": "2026-11-14"
   },
   "anthropic/claude-sonnet-5|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "anthropic-pricing"
-   ],
-   "unchecked": [
-    "anthropic-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4-flash|alicloud": {
    "verified": "2026-11-14"
@@ -1289,19 +427,13 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true,
-   "unchecked": [
-    "dbx-models"
-   ]
+   "quiet": true
   },
   "deepseek/deepseek-v4-flash|fireworks": {
    "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4-flash|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4-pro|alicloud": {
    "verified": "2026-11-14"
@@ -1318,19 +450,13 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true,
-   "unchecked": [
-    "dbx-models"
-   ]
+   "quiet": true
   },
   "deepseek/deepseek-v4-pro|fireworks": {
    "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4-pro|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4.1-flash|alicloud": {
    "verified": "2026-11-14"
@@ -1345,23 +471,13 @@
    "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4.1-flash|fireworks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4.1-flash|gcloud": {
    "verified": "2026-11-14"
   },
   "deepseek/deepseek-v4.1-flash|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "deepseek-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "google/gemini-3.1-flash-lite|alicloud": {
    "verified": "2026-11-14"
@@ -1403,10 +519,7 @@
    "verified": "2026-11-14"
   },
   "google/gemini-3.1-pro|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "google/gemini-3.5-flash-lite|alicloud": {
    "verified": "2026-11-14"
@@ -1427,11 +540,7 @@
    "verified": "2026-11-14"
   },
   "google/gemini-3.5-flash-lite|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "google/gemini-3.6-flash|alicloud": {
    "verified": "2026-11-14"
@@ -1443,11 +552,7 @@
    "verified": "2026-11-14"
   },
   "google/gemini-3.6-flash|databricks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "dbx-models"
-   ]
+   "verified": "2026-11-14"
   },
   "google/gemini-3.6-flash|fireworks": {
    "verified": "2026-11-14"
@@ -1477,10 +582,7 @@
    "verified": "2026-11-14"
   },
   "google/gemini-3.7-flash|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "google/gemini-3.8-flash|alicloud": {
    "verified": "2026-11-14"
@@ -1492,11 +594,7 @@
    "verified": "2026-11-14"
   },
   "google/gemini-3.8-flash|databricks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "dbx-models"
-   ]
+   "verified": "2026-11-14"
   },
   "google/gemini-3.8-flash|fireworks": {
    "verified": "2026-11-14"
@@ -1505,11 +603,7 @@
    "verified": "2026-11-14"
   },
   "google/gemini-3.8-flash|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "google-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "google/gemini-4-argon|alicloud": {
    "verified": "2026-11-14"
@@ -1551,6 +645,27 @@
    "verified": "2026-11-14"
   },
   "google/gemini-4-carbon|official": {
+   "verified": "2026-11-14"
+  },
+  "google/gemini-4-hydrogen|alicloud": {
+   "verified": "2026-11-14"
+  },
+  "google/gemini-4-hydrogen|azure_foundry": {
+   "verified": "2026-11-14"
+  },
+  "google/gemini-4-hydrogen|bedrock": {
+   "verified": "2026-11-14"
+  },
+  "google/gemini-4-hydrogen|databricks": {
+   "verified": "2026-11-14"
+  },
+  "google/gemini-4-hydrogen|fireworks": {
+   "verified": "2026-11-14"
+  },
+  "google/gemini-4-hydrogen|gcloud": {
+   "verified": "2026-11-14"
+  },
+  "google/gemini-4-hydrogen|official": {
    "verified": "2026-11-14"
   },
   "google/gemma-3-12b|alicloud": {
@@ -1620,10 +735,7 @@
    "verified": "2026-11-14"
   },
   "meta/muse-ember|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "meta/muse-spark-1.3|alicloud": {
    "verified": "2026-11-14"
@@ -1638,10 +750,7 @@
    "verified": "2026-11-14"
   },
   "meta/muse-spark-1.3|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "meta/muse-wonder|alicloud": {
    "verified": "2026-11-14"
@@ -1656,10 +765,7 @@
    "verified": "2026-11-14"
   },
   "meta/muse-wonder|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "minimax/minimax-m3|alicloud": {
    "verified": "2026-11-14"
@@ -1674,24 +780,10 @@
    "verified": "2026-11-14"
   },
   "minimax/minimax-m3|fireworks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "minimax/minimax-m3|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "minimax-pricing"
-   ],
-   "unchecked": [
-    "minimax-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "mistral/mistral-large-4|alicloud": {
    "verified": "2026-11-14"
@@ -1706,10 +798,7 @@
    "verified": "2026-11-14"
   },
   "mistral/mistral-large-4|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "mistral/mistral-medium-3.5|alicloud": {
    "verified": "2026-11-14"
@@ -1724,10 +813,7 @@
    "verified": "2026-11-14"
   },
   "mistral/mistral-medium-3.5|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "mistral/mistral-medium-3.5|official": {
    "verified": "2026-11-14"
@@ -1742,10 +828,7 @@
    "verified": "2026-11-14"
   },
   "moonshot/kimi-k2.7|databricks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "dbx-retirement"
-   ]
+   "verified": "2026-11-14"
   },
   "moonshot/kimi-k2.7|fireworks": {
    "verified": "2026-11-14"
@@ -1766,14 +849,7 @@
    "verified": "2026-11-14"
   },
   "moonshot/kimi-k3.1-pro|fireworks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "moonshot/kimi-k3.1-pro|official": {
    "verified": "2026-11-14"
@@ -1791,14 +867,7 @@
    "verified": "2026-11-14"
   },
   "moonshot/kimi-k3|fireworks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "moonshot/kimi-k3|official": {
    "verified": "2026-11-14"
@@ -1819,10 +888,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-5.4|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-5.5|alicloud": {
    "verified": "2026-11-14"
@@ -1840,10 +906,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-5.5|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-5.6-luna|alicloud": {
    "verified": "2026-11-14"
@@ -1861,15 +924,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-5.6-luna|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-5.6-sol|alicloud": {
    "verified": "2026-11-14"
@@ -1887,15 +942,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-5.6-sol|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-5.6-terra|alicloud": {
    "verified": "2026-11-14"
@@ -1913,15 +960,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-5.6-terra|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-6-astra|alicloud": {
    "verified": "2026-11-14"
@@ -1939,15 +978,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-6-astra|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-6-luna|alicloud": {
    "verified": "2026-11-14"
@@ -1965,15 +996,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-6-luna|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-6-sol|alicloud": {
    "verified": "2026-11-14"
@@ -1991,15 +1014,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-6-sol|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-6.1-sol|alicloud": {
    "verified": "2026-11-14"
@@ -2017,15 +1032,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-6.1-sol|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "api-west-openai-your-data"
-   ],
-   "quiet": true,
-   "unchecked": [
-    "api-west-openai-your-data"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-6.1-terra|alicloud": {
    "verified": "2026-11-14"
@@ -2058,14 +1065,7 @@
    "verified": "2026-11-14"
   },
   "openai/gpt-oss-120b|fireworks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "openai/gpt-oss-120b|gcloud": {
    "verified": "2026-11-14"
@@ -2119,10 +1119,7 @@
    "verified": "2026-11-14"
   },
   "qwen/qwen3.5-122b|databricks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "dbx-models"
-   ]
+   "verified": "2026-11-14"
   },
   "qwen/qwen3.5-122b|official": {
    "verified": "2026-11-14"
@@ -2140,10 +1137,7 @@
    "verified": "2026-11-14"
   },
   "qwen/qwen3.7-max|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "qwen/qwen3.7-max|official": {
    "verified": "2026-11-14"
@@ -2161,10 +1155,7 @@
    "verified": "2026-11-14"
   },
   "qwen/qwen3.7-plus|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "qwen/qwen3.7-plus|official": {
    "verified": "2026-11-14"
@@ -2182,10 +1173,7 @@
    "verified": "2026-11-14"
   },
   "qwen/qwen3.8-27b|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "qwen/qwen3.8-27b|official": {
    "verified": "2026-11-14"
@@ -2203,10 +1191,7 @@
    "verified": "2026-11-14"
   },
   "qwen/qwen3.8-flash|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "qwen/qwen3.8-flash|official": {
    "verified": "2026-11-14"
@@ -2224,10 +1209,7 @@
    "verified": "2026-11-14"
   },
   "qwen/qwen3.8-max|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "qwen/qwen3.8-max|official": {
    "verified": "2026-11-14"
@@ -2247,10 +1229,7 @@
    "sources": [
     "dbx-regions"
    ],
-   "quiet": true,
-   "unchecked": [
-    "dbx-models"
-   ]
+   "quiet": true
   },
   "tml/inkling|fireworks": {
    "verified": "2026-11-14"
@@ -2274,10 +1253,7 @@
    "verified": "2026-11-14"
   },
   "xai/grok-4.6|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "api-west-xai-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "xai/grok-4.7|alicloud": {
    "verified": "2026-11-14"
@@ -2295,10 +1271,7 @@
    "verified": "2026-11-14"
   },
   "xai/grok-4.7|official": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "api-west-xai-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "zai/glm-5.2|alicloud": {
    "verified": "2026-11-14"
@@ -2313,23 +1286,13 @@
    "verified": "2026-11-14"
   },
   "zai/glm-5.2|fireworks": {
-   "verified": "2026-11-13",
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "zai/glm-5.2|gcloud": {
    "verified": "2026-11-14"
   },
   "zai/glm-5.2|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "zai-pricing"
-   ],
-   "unchecked": [
-    "zai-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "zai/glm-5.3-flash|alicloud": {
    "verified": "2026-11-14"
@@ -2344,24 +1307,10 @@
    "verified": "2026-11-14"
   },
   "zai/glm-5.3-flash|fireworks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "zai/glm-5.3-flash|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "zai-pricing"
-   ],
-   "unchecked": [
-    "zai-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "zai/glm-5.3|alicloud": {
    "verified": "2026-11-14"
@@ -2376,24 +1325,10 @@
    "verified": "2026-11-14"
   },
   "zai/glm-5.3|fireworks": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "fireworks-pricing"
-   ],
-   "unchecked": [
-    "fireworks-pricing"
-   ]
+   "verified": "2026-11-14"
   },
   "zai/glm-5.3|official": {
-   "verified": "2026-11-13",
-   "changed_at": "2026-11-14",
-   "sources": [
-    "zai-pricing"
-   ],
-   "unchecked": [
-    "zai-pricing"
-   ]
+   "verified": "2026-11-14"
   }
  }
 }
