@@ -1,14 +1,14 @@
 {
-  "observed": "2026-11-13",
+  "observed": "2026-11-14",
   "sources": {
     "aws-rds-price-index": {
       "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonRDS/current/region_index.json",
       "records": [
-        "RDS price-list version · ap-east-1 · /offers/v1.0/aws/AmazonRDS/20261112223441/ap-east-1/index.json",
-        "RDS price-list version · ap-northeast-1 · /offers/v1.0/aws/AmazonRDS/20261112223441/ap-northeast-1/index.json",
-        "RDS price-list version · ap-southeast-1 · /offers/v1.0/aws/AmazonRDS/20261112223441/ap-southeast-1/index.json",
-        "RDS price-list version · us-east-1 · /offers/v1.0/aws/AmazonRDS/20261112223441/us-east-1/index.json",
-        "RDS price-list version · us-west-2 · /offers/v1.0/aws/AmazonRDS/20261112223441/us-west-2/index.json"
+        "RDS price-list version · ap-east-1 · /offers/v1.0/aws/AmazonRDS/20261113215233/ap-east-1/index.json",
+        "RDS price-list version · ap-northeast-1 · /offers/v1.0/aws/AmazonRDS/20261113215233/ap-northeast-1/index.json",
+        "RDS price-list version · ap-southeast-1 · /offers/v1.0/aws/AmazonRDS/20261113215233/ap-southeast-1/index.json",
+        "RDS price-list version · us-east-1 · /offers/v1.0/aws/AmazonRDS/20261113215233/us-east-1/index.json",
+        "RDS price-list version · us-west-2 · /offers/v1.0/aws/AmazonRDS/20261113215233/us-west-2/index.json"
       ]
     },
     "azure-postgres-pricing": {
@@ -1208,21 +1208,29 @@
       "records": [
         "engine-versions:[\"16\",\"17\",\"18\"]",
         "engine-versions:[\"16\",\"17\"]",
-        "engine-versions:[\"16.15\",\"17.11\"]",
+        "engine-versions:[\"16.16\",\"17.12\",\"18.7\",\"30\"]",
+        "engine-versions:[\"16.16\",\"17.12\",\"18.7\"]",
         "engine-versions:[\"17\",\"18\"]",
+        "engine-versions:[\"17.11\",\"18.6\"]",
         "engine-versions:[\"18\"]",
         "limit:128 gb",
         "limit:3 days",
+        "limit:30 minutes",
         "limit:32 cu",
         "limit:64 cu",
         "limit:64 gb",
         "limit:7 days",
         "price:100x",
-        "price:16.15",
+        "price:16.16",
         "price:17.11",
+        "price:17.12",
+        "price:18.6",
+        "price:18.7",
         "price:2.21",
+        "price:cache-duration:30",
         "price:sequence:[\"100x\"]",
-        "price:sequence:[\"16.15\",\"17.11\"]",
+        "price:sequence:[\"18.6\",\"17.11\"]",
+        "price:sequence:[\"18.7\",\"17.12\",\"16.16\"]",
         "price:sequence:[\"2.21\"]",
         "status:autoscaling:beta",
         "status:autoscaling:ga",

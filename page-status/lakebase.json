@@ -5,15 +5,15 @@
       "checkedAt": "2026-11-14",
       "lastSuccess": "2026-11-14",
       "errors": 0,
-      "review": 2,
-      "status": "review"
+      "review": 0,
+      "status": "ok"
     },
     "lakebase-field-guide/": {
       "checkedAt": "2026-11-14",
       "lastSuccess": "2026-11-14",
       "errors": 0,
-      "review": 2,
-      "status": "review"
+      "review": 0,
+      "status": "ok"
     }
   }
 }
