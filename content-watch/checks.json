@@ -1,32 +1,82 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-13",
+  "checkedAt": "2026-11-14",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-13",
-      "lastSuccess": "2026-11-13",
+      "checkedAt": "2026-11-14",
+      "lastSuccess": "2026-11-14",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-13",
-      "lastSuccess": "2026-11-13",
+      "checkedAt": "2026-11-14",
+      "lastSuccess": "2026-11-14",
       "errors": 0,
-      "review": 1,
+      "review": 3,
       "sources": 10,
       "status": "review"
     }
   },
   "findings": [
     {
+      "id": "sandbox-databricks-limits",
+      "url": "https://docs.databricks.com/aws/en/compute/serverless/sandbox",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 5a1a00494663ceb97f65570cc2c7c0fa9ebd440d0814eff43c9c95e6b912f972",
+        "Added record: 5facec754576ba3be9baac6e427faba1a3a65715d82ec7bf1d93c124a89ed21c: So that code in a sandbox can call Databricks APIs, each sandbox is provisioned with a Databricks credential that authenticates as the sandbox's ident"
+      ]
+    },
+    {
+      "id": "sandbox-databricks",
+      "url": "https://docs.databricks.com/aws/en/compute/serverless/sandbox-quickstart",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: b0b9b591501a69c07ac93563ebdc1b5e2ceb2b23072baaaea1199eaa2bc89a45",
+        "Removed record: bc1c088fd96bd14ca0ce9918170d9c6b4ff68c7ccfc0cc953075002acec9d7b2",
+        "Removed record: f75bf7a04d7ca476117eec7e33ab1e58c9f2d6a28ed8036a921d094e731d6b6d",
+        "Added record: 523821fa9280fea6a66af9588ed75b7fc0def487b5baafcad0e5bc751d1e2e87: The command records the tool in the project's agent.toml, and the agent calls the sandbox at runtime through the system.ai.sandbox MCP service. Code i",
+        "Added record: b8c6918969e1596a0862c19cb480b5e526bf9b1bc16cc3445d5a4536caeb87eb: You don't create a sandbox first. The sandbox tool connects your agent to the Databricks -managed system.ai.sandbox service, which runs the agent's co"
+      ]
+    },
+    {
       "id": "sandbox-strands",
       "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
       "page": "sandbox-compare/",
       "error": null,
       "changes": [
-        "Added record: ce8cccdec8a954b77433ab38af57c63cb518dd18d2d362f7a18f45a55030a925: `the_shell_holds_the_workloads_phantom_and_never_the_secret` checks this. Every process in the box"
+        "Removed record: 13528161fe3a4beba233447fe7868f63a9fdbe6a75e644d56305208426d5a3ae",
+        "Removed record: 18bf656ecd5aa40657d5bb210f08d293b224f1b002867565d7a7bf9ce6fe2778",
+        "Removed record: 2b0a68a744965c300e17655a534299aacb0368904f58154e16ab8f9a23dff676",
+        "Removed record: 30f97c6737621ef1cb198cf19c5f58a0b720f699cab15b8286d7898ffc69983a",
+        "Removed record: 35830745be53a6a0115fcf025b1bb5a7885cf0dd720e56e4839c60b976d2348a",
+        "Removed record: 4e29173853241f17eb5ceff2654cdb33fad54e957d053283f19d647747dacc3f",
+        "Removed record: 67dfce0b3f5b99c07fb6f81f590a26e46aedeb1d6633fa5e94ce8dc0dc841588",
+        "Removed record: 7d43619af103cd48ef4d80195862c23592d1910322cd073e2056004d11aff941",
+        "Removed record: f1b1ea03b6f34564632508fe210ea05be2fa0834a22f461dbd5578d76c739118",
+        "Added record: 02b87a80e319af35ac68c5568825ce16f1900ab9b09329e26004cb8f85495540: other way. `run/broker/kernel/tests/fallback.rs::a_host_binary_is_refused_when_no_spawner_is_installed` pins it.",
+        "Added record: 2bc414669062ef3af4b5217a544e309f0245084729687d87ba7aba89f914e9ce: `box_shell::ShellKernel` resolves the program, decides `shell:spawn`, and runs the program through",
+        "Added record: 3bb10c1c85f1e7e235fc4df54ab98ece89bc541258b87cde33e73c31588b9522: the Shell's `VfsKernel`. It refuses every request when the box has no gateway. Otherwise, it runs the",
+        "Added record: 4a47273a2c652f592832c57e6323963c7915d7592ff47a6d9ce5b3b398933f85: supplies its own kernel.",
+        "Added record: 4bd2bfd0927b6133b75f7ad9af19a20f653b6a01319cba339fb0acf533bc4d50",
+        "Added record: 52c3a6ca27b8f35a9bc3017ecf8b670c85a14be265b0bb113899465574c1b1ba",
+        "Added record: 5dfec5577cac09e10fe6c7f80e57b611195c27954070e1894778a1c94542707a",
+        "Added record: 813a60813a92d335603e28c9eab541b99b4ef457496e7c6869aa2402cf843015",
+        "Added record: 90aa13dfe8cfee6a53423b5778e798cd5f5dbcbaeeb60daa7ae6e7a7422e4d42",
+        "Added record: 9712d70728f0e354b1f8c4ac55ea9a355aeef6bb4b440d41925013a6ebabf4eb",
+        "Added record: 99d669c2e80003e9af422ebd90c2562459c7be9693c55b6daa2d86e2e74de507",
+        "Added record: ac5d3fc670c7476c38d757815284453ffa5c1097a13a352606b390e9302fd806",
+        "Added record: b02c726ba5f6324446adc6a7e1270526b5aa8fb0c60bc52c34d02b8a0ed57e27",
+        "Added record: bd165503c530d7209415963e9f3a457c8e5a61a654d791b3edc94ab36510111b",
+        "Added record: c2acc45c06353235059c8b80f25cba70e8a9adec16564ba4955d5d4d7386f2a0",
+        "Added record: ce8cccdec8a954b77433ab38af57c63cb518dd18d2d362f7a18f45a55030a925",
+        "Added record: d2431b6e1dc3bbe940bc18a07a7b4f3b3070ac3737b3048623e7b800d9056e20",
+        "Added record: ded2828602e1a9e1e2f9f79b2060ca4b0b28b26be30b50885fbb9afe99d464bb",
+        "Added record: fddd69cc8afd495d7b082d0674a89e952329acfd1916a4fafcc9eeca10729f18"
       ]
     }
   ]
