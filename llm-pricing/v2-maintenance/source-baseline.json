@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-11-14",
+ "checked_at": "2026-11-15",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4-flash|databricks|retirement|2026-11-05",
   "deepseek/deepseek-v4-pro|databricks|retirement|2026-10-30",
@@ -2841,7 +2841,7 @@
   "api-west-anthropic-residency": {
    "url": "https://platform.claude.com/docs/en/manage-claude/data-residency.md",
    "kind": "markdown",
-   "digest": "c1162a4a4ac59459e03d2684d4574be65cb629be5b9c6c1a8bf4ce8600a34bad",
+   "digest": "202f034d6eeacc541c2ba2df17a496225755f445af727eefa19409b84d970d5d",
    "records": [
     "item: {\"heading\":\"\",\"text\":\"**Inference geo:** Controls where model inference runs, on a per-request basis. Set through the `inference_geo` API parameter or as a workspace default.\"}",
     "item: {\"heading\":\"\",\"text\":\"**Managed Agents**: Pin `inference_geo` in the agent’s model configuration; override it at session creation.\"}",
@@ -2871,8 +2871,8 @@
     "item: {\"heading\":\"Pricing\",\"text\":\"**Older models:** Don’t support `inference_geo` (see [Model availability](https://platform.claude.com/docs/en/manage-claude/data-residency#model-availability)). Standard pricing applies. Requests that include the parameter return a 400 error.\"}",
     "item: {\"heading\":\"What changed\",\"text\":\"**Per-request control:** The `inference_geo` parameter lets you specify `\\\"us\\\"` or `\\\"global\\\"` on each API call, giving you request-level flexibility.\"}",
     "item: {\"heading\":\"What changed\",\"text\":\"**Workspace controls:** The `default_inference_geo` and `allowed_inference_geos` settings in the Console let you enforce geo policies across all keys in a workspace.\"}",
-    "item: {\"heading\":\"Workspace-level restrictions\",\"text\":\"**`allowed_inference_geos`:** Restricts which geos a workspace can use. If a request specifies an `inference_geo` not in this list, the API returns an error.\"}",
-    "item: {\"heading\":\"Workspace-level restrictions\",\"text\":\"**`default_inference_geo`:** Sets the fallback geo when `inference_geo` is omitted from a request. Individual requests can override this by setting `inference_geo` explicitly.\"}",
+    "item: {\"heading\":\"Workspace-level restrictions\",\"text\":\"**`allowed_inference_geos`:** Restricts which geos a workspace can use. If a request specifies an `inference_geo` not in this list, the API returns a 400 error.\"}",
+    "item: {\"heading\":\"Workspace-level restrictions\",\"text\":\"**`default_inference_geo`:** Sets the fallback geo when `inference_geo` is omitted from a request. It must be one of the allowed geos. A request can override it with any other allowed geo.\"}",
     "item: {\"heading\":\"[Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview)\",\"text\":\"Availability: Available\"}",
     "item: {\"heading\":\"[Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview)\",\"text\":\"Usage: Pin `inference_geo` in the agent’s model configuration, and override it per session at session creation. An agent with no pin follows the workspace default.\"}",
     "item: {\"heading\":\"[Messages API](https://platform.claude.com/docs/en/build-with-claude/working-with-messages)\",\"text\":\"Availability: Available\"}",
@@ -13722,13 +13722,13 @@
   "fireworks-modes": {
    "url": "https://docs.fireworks.ai/serverless/serverless-modes",
    "kind": "text",
-   "digest": "d99539c24c6f281b4c82d1e0a9d204e723e7c7efd2a895b3ca6873f73b03f079",
+   "digest": "e526cdb63c792bbe83cf9391f43f1c5420511d29cbb502be477b954a06f8d4cc",
    "records": [
-    "table: {\"cells\":[\"Deepseek V4.1 Flash 1017\",\"accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast\"],\"heading\":\"Ultra-fast (Preview)\"}",
+    "table: {\"cells\":[\"Deepseek V4.1 Flash 1017\",\"accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast\"],\"heading\":\"Ultra-fast (preview)\"}",
     "table: {\"cells\":[\"GLM 5.3 Fast\",\"accounts/fireworks/routers/glm-5p3-fast\"],\"heading\":\"Fast\"}",
     "table: {\"cells\":[\"Kimi K3 Fast\",\"accounts/fireworks/routers/kimi-k3-fast\"],\"heading\":\"Fast\"}",
     "table: {\"cells\":[\"Model\",\"model ID\"],\"heading\":\"Fast\"}",
-    "table: {\"cells\":[\"Model\",\"model ID\"],\"heading\":\"Ultra-fast (Preview)\"}",
+    "table: {\"cells\":[\"Model\",\"model ID\"],\"heading\":\"Ultra-fast (preview)\"}",
     "text: Anthropic compatibility — service_tier is supported on both OpenAI-compatible chat completions and the Anthropic messages API.",
     "text: Documentation Index Fetch the complete documentation index at: /llms.txt Use this file to discover all available pages before exploring further.",
     "text: Fast is for workloads that require higher speeds.",
