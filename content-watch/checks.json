@@ -1,23 +1,50 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-14",
+  "checkedAt": "2026-11-15",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-14",
-      "lastSuccess": "2026-11-14",
+      "checkedAt": "2026-11-15",
+      "lastSuccess": "2026-11-15",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-14",
-      "lastSuccess": "2026-11-14",
+      "checkedAt": "2026-11-15",
+      "lastSuccess": "2026-11-15",
       "errors": 0,
-      "review": 0,
+      "review": 1,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 16ee9c6f5964c6c645588bacdf0a2f332bd0e1e3558993abf3f8bba132c8c69c",
+        "Removed record: 2d2ca24d3bcf0a89741eae1ca24c7bd2373681652949773ba64a8a9c48cd6bcd",
+        "Removed record: 4152180322dadabea51ca6101f9135e226402b52b8de1f45d8b3a30a1d1ed3ae",
+        "Removed record: 419a8bda433d41e98128c0b74d9ee237fdf77d171a181fe44f6224960cfa573f",
+        "Removed record: 7d30cbed47de16844374bea1168f4ccc6b13b9079d1dbf94126949c147708a85",
+        "Removed record: 96cb489d2af36b0fac1c391e94b1c01cef61d15b183f3762196e0e21b1fd2134",
+        "Removed record: a84ea1ba832c983484595e46afa06fce6a31daf1fb569c7165cb40118b233ca7",
+        "Removed record: ac319b7585a2d98563a6812cf712f908752885980f2d618649d6c0c61878ba49",
+        "Removed record: cf05434380512ac70686965ceea68d0a50ac6b7c42c15c6a697c63f6894f1a1b",
+        "Added record: 18eed37baf104824529c3cf39c6d10091a3e8ddc8fabca763ddf645242e51dcd: `credential_process`, assume-role, or web identity, never the ambient `AWS_*` keys or instance",
+        "Added record: 20513d1bacae3688867e7b8d5fe46a768e7b77dc31ac4bf874aee6157873d204: bare `aws://` resolves the default credential provider chain: the environment, the profile files,",
+        "Added record: 334fe26cec6dd5ef9a25dd67bb39b855745915c22860d370e40e4883ea35842e: does not count against that budget. Box adds limits of 60 seconds for each `fetch`, 3 minutes for",
+        "Added record: 560aa32e1aca6fc71ea5ac954023e88a5a9f81356a43864893612cddbe96ffca: period. Monty's limits also apply. A shorter Shell deadline can expire first, although synchronous",
+        "Added record: b29b964ce3a0f968d7a228ab2890dd4da321aebd643d8ae3e2e55d3bf947b1cb",
+        "Added record: bcfa3a4e8e08aa0f195483cbee28bd3199b6888d4d42c29530da39c8798f4a46",
+        "Added record: c401ab40367923fcc3340695072ec93062b70935ad450895dddafdb75d72b1ab",
+        "Added record: df489dd2135e5d79b40961c80a97e655f9482abfff1858131cacebc90c1595ce",
+        "Added record: fafd67f92a03c7936452d23eff27e2a865e7487ee8acf37716497b7526ee51cc"
+      ]
+    }
+  ]
 }
