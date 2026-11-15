@@ -482,21 +482,31 @@ def make_report(baseline, current, errors, data, today):
 SIBLINGS = r"flash|flashx|fast|lite|mini|nano|pro|prime|max|plus|turbo|instant|codex|air|image|thinking|preview|embedding|vl|coder|tts|audio|live|realtime|robotics|computer-use|cyber|law"
 
 
-def model_regex(model):
+def name_families(models):
+    """The first word of every model name. A short name ("3.1 Pro") preceded by one of them belongs
+    to that family, not to the model whose family word was dropped."""
+    return {official.norm(m.get("name") or "").split()[0] for m in models.values() if m.get("name")}
+
+
+def model_regex(model, families=()):
     """Finds a model's own lines in a multi-model source: 'Claude Opus 5.5', 'claude-opus-5-5',
-    'Opus 5.5' all match Opus 5.5; 'Opus 5.5 Pro' or 'GLM 5.3 Flash' do not match Opus 5.5 / GLM 5.3."""
+    'Opus 5.5' all match Opus 5.5; 'Opus 5.5 Pro' or 'GLM 5.3 Flash' do not match Opus 5.5 / GLM 5.3.
+    'Kimi 3.1 Pro' does not match Gemini 3.1 Pro: a family word before the short name claims it."""
     sep = r"[\s._/-]*"
-    def phrase(tokens):
+    def phrase(tokens, guard=""):
         parts = [re.escape(t).replace(r"\.", "[._ -]") for t in tokens]
         own = {t for t in tokens if re.fullmatch(SIBLINGS, t)}
         tail = "|".join(x for x in SIBLINGS.split("|") if x not in own)
         # A digit right after the version, directly or after one separator, is another version ("5.3", "5-3").
         # A sibling also excludes the named configurations joined by "for" ("GPT-6 Astra for Law").
-        return r"(?<![a-z0-9])" + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![a-z0-9])(?![._ -]?\d)(?!" + sep + r"(?:for" + sep + r")?(?:" + tail + r")\b)"
+        return r"(?<![a-z0-9])" + guard + sep.join(parts) + r"(?:[._ -]\d{4,8})?(?![a-z0-9])(?![._ -]?\d)(?!" + sep + r"(?:for" + sep + r")?(?:" + tail + r")\b)"
     tokens = official.norm(model.get("name") or "").split()
     options = [phrase(tokens)] if tokens else []
     if len(tokens) > 2 and tokens[0] in ("claude", "gemini", "grok", "kimi"):
-        options.append(phrase(tokens[1:]))
+        # The family word may be dropped ("Opus 5.5"), but another family's word in front of the
+        # short name — any tracked model's, or this one's — means the line is that family's own.
+        guard = "".join("(?<!%s%s)" % (word, mark) for word in sorted({*families, tokens[0]}) for mark in " ._/-")
+        options.append(phrase(tokens[1:], guard))
     return re.compile("|".join(options)) if options else None
 
 
@@ -842,7 +852,8 @@ def general_changes(data, config, baseline, current, errors, previous=None):
     track are ignored; the rest (a residency multiplier, a batch discount, a region list) concern every model
     the document covers, so a changed price, limit, date or region among them is held for review.
     An unreadable source keeps its previous high-risk finding unless its baseline was reviewed since."""
-    rxs = [rx for rx in map(model_regex, data["models"].values()) if rx]
+    families = name_families(data["models"])
+    rxs = [rx for rx in (model_regex(model, families) for model in data["models"].values()) if rx]
     found = []
     pending = {g["source"]: g for g in (previous or {}).get("pending_general", [])}
     for source in config:
@@ -1155,7 +1166,8 @@ def cell_checks(data, config, baseline, current, errors, fact_issues, previous, 
     applied = applied or {}
     held = {g["source"] for g in general if g["risk"] == "high"}
     wording = {g["source"] for g in general if g["risk"] == "low"}
-    rxs = {key: model_regex(model) for key, model in data["models"].items()}
+    families = name_families(data["models"])
+    rxs = {key: model_regex(model, families) for key, model in data["models"].items()}
     meta_index = {}
     for source in config:
         for meta in source.get("meta", []):

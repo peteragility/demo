@@ -1040,6 +1040,20 @@ class SourceReviewTests(unittest.TestCase):
         gemini_tts = review.model_regex({"name": "Gemini 3.8 Flash TTS"})
         self.assertTrue(gemini_tts.search(review.official.norm("Gemini 3.8 Flash TTS / Standard | $0.125")))
 
+    def test_a_short_name_preceded_by_another_family_is_not_the_model(self):
+        # Azure added Kimi 3.1 Pro meters; the bare "3.1 Pro" phrase must not read as a Gemini 3.1 Pro line.
+        models = {"g": {"name": "Gemini 3.1 Pro"}, "k": {"name": "Kimi K3"}, "o": {"name": "GPT-6 Sol"}}
+        rx = review.model_regex(models["g"], review.name_families(models))
+        for line in ["Kimi 3.1 Pro Inp Glbl 1M Tokens", "kimi 3.1 pro outp dz", "GPT 3.1 Pro | $1"]:
+            self.assertFalse(rx.search(review.official.norm(line)), line)
+        for line in ["Gemini 3.1 Pro | $1.25", "3.1 Pro | $1.25"]:
+            self.assertTrue(rx.search(review.official.norm(line)), line)
+        # The family word may be dropped only when no other family's word sits in front of it.
+        claude = review.model_regex({"name": "Claude Opus 5.5"}, review.name_families(models))
+        for line in ["Opus 5.5 (global)", "Anthropic's Opus 5.5 | $4"]:
+            self.assertTrue(claude.search(review.official.norm(line)), line)
+        self.assertFalse(claude.search(review.official.norm("Kimi Opus 5.5")))
+
     def test_fast_endpoint_does_not_change_base_offer_review(self):
         row = lambda name, context: 'table: ' + review.packed({
             "heading": "Anthropic / Subscription type and region support",
