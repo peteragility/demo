@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-11-15",
+ "checked_at": "2026-11-16",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4-flash|databricks|retirement|2026-11-05",
   "deepseek/deepseek-v4-pro|databricks|retirement|2026-10-30",
@@ -11320,7 +11320,7 @@
   "azure-prices": {
    "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27%20and%20armRegionName%20eq%20%27eastus%27",
    "kind": "azure",
-   "digest": "8ef697b594b52b7dafeae7e9e4d40c74f2e0fd5a3034bba5376ecc760451d106",
+   "digest": "6d2db2ea6587675d6e3806e19290a6c937a9edbecb57932d5fa31be291a6c356",
    "records": [
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"3.3 70b FT DZ Deployment Hosting Unit\",\"productName\":\"Azure Llama Models\",\"retailPrice\":0.33,\"skuName\":\"3.3 70b FT DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1/Hour\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"3.3 70b FT DZ Tokens\",\"productName\":\"Azure Llama Models\",\"retailPrice\":0.00495,\"skuName\":\"3.3 70b FT DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
@@ -11879,6 +11879,8 @@
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Cyber 1.1 Cd Inp glbl 1M Tokens\",\"productName\":\"MAI Models\",\"retailPrice\":0.06,\"skuName\":\"Cyber 1.1 Cd Inp glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Cyber 1.1 Inp glbl 1M Tokens\",\"productName\":\"MAI Models\",\"retailPrice\":0.6,\"skuName\":\"Cyber 1.1 Inp glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Cyber 1.1 Opt glbl 1M Tokens\",\"productName\":\"MAI Models\",\"retailPrice\":3.5,\"skuName\":\"Cyber 1.1 Opt glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Decision 1.1 DZ 1M Tokens\",\"productName\":\"Microsoft Decision Models\",\"retailPrice\":0.046,\"skuName\":\"Decision 1.1 DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Decision 1.1 Gl 1M Tokens\",\"productName\":\"Microsoft Decision Models\",\"retailPrice\":0.042,\"skuName\":\"Decision 1.1 Gl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Doc AI 2512 Dzone Pages\",\"productName\":\"Azure Mistral Models\",\"retailPrice\":3.3,\"skuName\":\"Doc AI 2512 Dzone\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Doc AI 2512 glbl Pages\",\"productName\":\"Azure Mistral Models\",\"retailPrice\":3.0,\"skuName\":\"Doc AI 2512 glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Doc AI DZone 2505 Pages\",\"productName\":\"Azure Mistral Models\",\"retailPrice\":3.3,\"skuName\":\"Doc AI DZone 2505\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
@@ -12213,6 +12215,12 @@
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"K2.7 Code Outp glbl Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":0.004,\"skuName\":\"K2.7 Code Outp glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"K2.7 Code cached DZ Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":0.000209,\"skuName\":\"K2.7 Code cached DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"K2.7 Code cached glbl Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":0.00019,\"skuName\":\"K2.7 Code cached glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kimi 3.1 Cached Inp Glbl 1M Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":0.23,\"skuName\":\"Kimi 3.1 Cached Inp Glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kimi 3.1 Pro Cached DZ 1M Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":0.253,\"skuName\":\"Kimi 3.1 Pro Cached DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kimi 3.1 Pro Inp DZ 1M Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":2.53,\"skuName\":\"Kimi 3.1 Pro Inp DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kimi 3.1 Pro Inp Glbl 1M Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":2.3,\"skuName\":\"Kimi 3.1 Pro Inp Glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kimi 3.1 Pro Outp DZ 1M Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":12.65,\"skuName\":\"Kimi 3.1 Pro Outp DZ\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
+    "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kimi 3.1 Pro Outp Glbl 1M Tokens\",\"productName\":\"Azure Kimi\",\"retailPrice\":11.5,\"skuName\":\"Kimi 3.1 Pro Outp Glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1M\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kontext Pro Dzone Images\",\"productName\":\"Azure BFL Flux Models\",\"retailPrice\":44.0,\"skuName\":\"Kontext Pro Dzone\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kontext Pro glbl Images\",\"productName\":\"Azure BFL Flux Models\",\"retailPrice\":40.0,\"skuName\":\"Kontext Pro glbl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
     "{\"armRegionName\":\"eastus\",\"currencyCode\":\"USD\",\"meterName\":\"Kontext Pro regnl Images\",\"productName\":\"Azure BFL Flux Models\",\"retailPrice\":44.0,\"skuName\":\"Kontext Pro regnl\",\"tierMinimumUnits\":0.0,\"unitOfMeasure\":\"1K\"}",
