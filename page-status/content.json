@@ -2,20 +2,20 @@
   "schema": 1,
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-16",
-      "lastSuccess": "2026-11-16",
+      "checkedAt": "2026-11-17",
+      "lastSuccess": "2026-11-17",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-16",
-      "lastSuccess": "2026-11-16",
+      "checkedAt": "2026-11-17",
+      "lastSuccess": "2026-11-17",
       "errors": 0,
-      "review": 0,
+      "review": 3,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   }
 }
