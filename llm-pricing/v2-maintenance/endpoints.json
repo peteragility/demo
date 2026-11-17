@@ -1376,7 +1376,7 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-15",
+   "checked_at": "2026-11-18",
    "base": {
     "endpoint": "Global Standard",
     "pricing_checked_at": "2026-10-04",
@@ -1431,11 +1431,16 @@
     [
      "Residency",
      "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary."
+    ],
+    [
+     "Billing",
+     "18 Nov 2026: Baseten-hosted meters ('Kimi K3 Inp|Opt|cd Inp Gl' and '... DZ', Azure Baseten Models) list rates identical to the Fireworks-hosted meters in every scope."
     ]
    ],
    "ids": [
     "FW-Kimi-K3 (Fireworks on Foundry model ID)",
-    "Meters: 'FW Kimi-K3 Gl Inp|Cd Inp|Opt', 'FW Kimi K3 Inp|Cd Inp|Opt DZ' (Azure Fireworks Models)"
+    "Meters: 'FW Kimi-K3 Gl Inp|Cd Inp|Opt', 'FW Kimi K3 Inp|Cd Inp|Opt DZ' (Azure Fireworks Models)",
+    "Meters: 'Kimi K3 Inp|Opt|cd Inp Gl' and 'Kimi K3 Inp|Opt|cd Inp DZ' (Azure Baseten Models)"
    ]
   },
   "fireworks": {
@@ -1805,6 +1810,79 @@
     "in.moonshotai.kimi-k3.1 (India geo inference profile)"
    ],
    "regions_from_card": true
+  },
+  "azure_foundry": {
+   "checked_at": "2026-11-18",
+   "offer": {
+    "in": 2.5,
+    "out": 12.5,
+    "cache_read": 0.25,
+    "src": "azure",
+    "tier": "Global Standard · FW-Kimi-K3.1-Pro (Fireworks-hosted)",
+    "note": "+25% vs Fireworks direct ($2 / $10 / $0.20).",
+    "model_id": "FW-Kimi-K3.1-Pro",
+    "model_id_source": "az_learn_fireworks",
+    "endpoint": "Global Standard"
+   },
+   "variants": [
+    {
+     "label": "Data Zone US · Standard",
+     "in": 3.0,
+     "out": 15.0,
+     "cache_read": 0.3,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Data Zone US",
+     "model_match": "confirmed"
+    }
+   ],
+   "src": [
+    "az_learn_fireworks",
+    "az_learn_fireworks_faq",
+    "az_learn_region_support",
+    "az_retail"
+   ],
+   "regions": [
+    [
+     "Global",
+     "global",
+     "Global Standard",
+     "All commercial Azure regions; inference runs on Fireworks infrastructure"
+    ],
+    [
+     "Americas",
+     "geo",
+     "Data Zone US",
+     "Central US, East US 2, North Central US, South Central US, West US 3"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Catalog lists Global Standard in all commercial Azure regions; processing is outside Microsoft facilities"
+   ],
+   "tw": [
+    "none",
+    "No Azure region in Taiwan"
+   ],
+   "cache_write": "input-rate",
+   "notes": [
+    [
+     "Billing",
+     "18 Nov 2026: retail meters publish Fireworks-hosted rates — Global $2.50 / $12.50 / $0.25 cached (+25% vs Fireworks direct) and Data Zone US $3.00 / $15.00 / $0.30."
+    ],
+    [
+     "Access",
+     "Admin must register the 'Fireworks.EnableDeploy' preview feature; pay-per-token models get 15 days' retirement notice."
+    ],
+    [
+     "Residency",
+     "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary."
+    ]
+   ],
+   "ids": [
+    "FW-Kimi-K3.1-Pro (Fireworks on Foundry model ID)",
+    "Meters: 'Kimi K3.1 Pro Inp|Opt|Cd inp - Global' and 'Kimi K3.1 Pro Inp|Opt|Cd inp - US DZ' (Azure Fireworks Models)"
+   ]
   }
  },
  "openai/gpt-6-astra": {
@@ -11639,22 +11717,42 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-15",
+   "checked_at": "2026-11-18",
    "base": {
-    "endpoint": "Global Standard",
-    "pricing_checked_at": "2026-10-04",
-    "availability_checked_at": "2026-10-15"
+    "in": 1.4,
+    "out": 4.4,
+    "cache_read": 0.14,
+    "tier": "Global Standard · Baseten-hosted",
+    "note": null,
+    "endpoint": "Global Standard"
    },
    "variants": [
     {
-     "label": "Data Zone US · Standard",
+     "label": "Data Zone US · Standard · Baseten",
+     "in": 1.54,
+     "out": 4.84,
+     "cache_read": 0.154,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Data Zone US"
+    },
+    {
+     "label": "Global Standard · Fireworks-hosted (+25%)",
+     "in": 1.75,
+     "out": 5.5,
+     "cache_read": 0.325,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "Global Standard"
+    },
+    {
+     "label": "Data Zone US · Fireworks-hosted",
      "in": 2.1,
      "out": 6.6,
      "cache_read": 0.39,
      "scope": "geographic",
      "service": "standard",
-     "endpoint": "Data Zone US",
-     "pricing_checked_at": "2026-10-04"
+     "endpoint": "Data Zone US"
     }
    ],
    "src": [
@@ -11668,7 +11766,7 @@
      "Global",
      "global",
      "Global Standard",
-     "All commercial Azure regions; inference runs on Fireworks infrastructure"
+     "All commercial Azure regions; Baseten- and Fireworks-hosted meters list Global Standard"
     ],
     [
      "Americas",
@@ -11689,7 +11787,7 @@
    "notes": [
     [
      "Billing",
-     "Priced only by Retail API meters (absent from the Fireworks pricing page); Data Zone costs +20%."
+     "18 Nov 2026: Baseten-hosted meters price Global at Z.ai list ($1.40 / $4.40 / $0.14 cached) with Data Zone +10%; Fireworks-hosted meters are +25% Global and +50% Data Zone."
     ],
     [
      "Access",
@@ -11697,12 +11795,12 @@
     ],
     [
      "Residency",
-     "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary."
+     "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary. The Baseten-hosted deployment location is not documented."
     ]
    ],
    "ids": [
     "FW-GLM-5.3 (Fireworks on Foundry model ID)",
-    "Meters: 'FW GLM 5.3 Inp|Cd Inp|Opt' and 'FW GLM 5.3 DZ Inp|Cd Inp|Opt' (Azure Fireworks Models)"
+    "Meters: 'GLM 5.3 Inp|Opt|cd Inp Gl' and 'GLM 5.3 Inp|Opt|cd Inp DZ' (Azure Baseten Models); 'FW GLM 5.3 Inp|Cd Inp|Opt' and 'FW GLM 5.3 DZ Inp|Cd Inp|Opt' (Azure Fireworks Models)"
    ]
   },
   "bedrock": {
@@ -13150,13 +13248,44 @@
    ]
   },
   "azure_foundry": {
-   "checked_at": "2026-10-15",
+   "checked_at": "2026-11-18",
    "base": {
-    "endpoint": "Global Standard",
-    "pricing_checked_at": "2026-10-04",
-    "availability_checked_at": "2026-10-15"
+    "in": 0.15,
+    "out": 0.5,
+    "cache_read": 0.03,
+    "tier": "Global Standard · Baseten-hosted",
+    "note": null,
+    "endpoint": "Global Standard"
    },
-   "variants": [],
+   "variants": [
+    {
+     "label": "Data Zone US · Standard · Baseten",
+     "in": 0.165,
+     "out": 0.55,
+     "cache_read": 0.033,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Data Zone US"
+    },
+    {
+     "label": "Global Standard · Fireworks-hosted (+25%)",
+     "in": 0.188,
+     "out": 0.625,
+     "cache_read": 0.038,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "Global Standard"
+    },
+    {
+     "label": "Data Zone US · Fireworks-hosted",
+     "in": 0.225,
+     "out": 0.75,
+     "cache_read": 0.045,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Data Zone US"
+    }
+   ],
    "src": [
     "az_learn_fireworks",
     "az_learn_fireworks_faq",
@@ -13168,7 +13297,13 @@
      "Global",
      "global",
      "Global Standard",
-     "All commercial Azure regions; inference runs on Fireworks infrastructure"
+     "All commercial Azure regions; Baseten- and Fireworks-hosted meters list Global Standard"
+    ],
+    [
+     "Americas",
+     "geo",
+     "Data Zone US",
+     "Central US, East US 2, North Central US, South Central US, West US 3"
     ]
    ],
    "hk": [
@@ -13182,17 +13317,21 @@
    "cache_write": "input-rate",
    "notes": [
     [
+     "Billing",
+     "18 Nov 2026: Baseten-hosted meters price Global at Z.ai list ($0.15 / $0.50 / $0.03 cached) with Data Zone +10%; Fireworks-hosted meters are +25% Global and +50% Data Zone."
+    ],
+    [
      "Access",
      "Admin must register the 'Fireworks.EnableDeploy' preview feature; pay-per-token models get 15 days' retirement notice."
     ],
     [
      "Residency",
-     "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary."
+     "Fireworks on Foundry: inference on Fireworks GPUs outside Microsoft facilities; Data Zone pinned to US; excluded from EU Data Boundary. The Baseten-hosted deployment location is not documented."
     ]
    ],
    "ids": [
     "FW-GLM-5.3-Flash (Fireworks on Foundry model ID)",
-    "Meters: 'FW GLM-5.3-Flash Gl Inp|Cd Inp|Opt' (Azure Fireworks Models)"
+    "Meters: 'GLM 5.3 Flash Inp|Opt|cd Inp Gl' and 'GLM 5.3 Flash Inp|Opt|cd Inp DZ' (Azure Baseten Models); 'GLM 5.3 Flash Inp|Opt|Cd Inp - US DZ' (Azure Fireworks Models)"
    ]
   }
  },

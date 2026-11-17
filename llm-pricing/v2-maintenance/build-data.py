@@ -1453,6 +1453,22 @@ def review_november13(data):
                           model_match="confirmed", endpoint="Default")]
 
 
+def review_november18(data):
+    """Issue #62 follow-up, 18 Nov 2026: Azure's retail meters add an 'Azure Baseten
+    Models' product. Its GLM 5.3 and GLM 5.3 Flash Global meters price at Z.ai list
+    (cheaper than the +25% Fireworks-hosted meters), so those cards' bases and variants
+    come from endpoints.json. Kimi K3's Baseten meters list rates identical to the
+    Fireworks-hosted meters in every scope (no rate change). FW-Kimi-K3.1-Pro, recorded
+    11 Nov without prices, now has Fireworks-hosted retail meters: Global $2.50 / $12.50
+    / $0.25 cached (+25% vs Fireworks direct) and Data Zone US $3.00 / $15.00 / $0.30.
+    The spec is re-applied here because review_november11() resets the cell after
+    apply_endpoints()."""
+    day = "2026-11-18"
+    spec = json.loads((HERE / "endpoints.json").read_text())["moonshot/kimi-k3.1-pro"]["azure_foundry"]
+    k = data["models"]["moonshot/kimi-k3.1-pro"]["platforms"]["azure_foundry"]
+    apply_spec(k, spec, data["source_meta"])
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1509,6 +1525,7 @@ def build():
     review_november11(data)
     review_november12(data)
     review_november13(data)
+    review_november18(data)
     lifecycle_notices(data)
     # Highlights: neutral, dated facts re-checked against the v2 offers.
     # Plain strings always apply; {"text", "from", "until"} lines apply within their dates, and lines
