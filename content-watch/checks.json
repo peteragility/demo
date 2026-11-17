@@ -1,59 +1,23 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-17",
+  "checkedAt": "2026-11-18",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-17",
-      "lastSuccess": "2026-11-17",
+      "checkedAt": "2026-11-18",
+      "lastSuccess": "2026-11-18",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-17",
-      "lastSuccess": "2026-11-17",
+      "checkedAt": "2026-11-18",
+      "lastSuccess": "2026-11-18",
       "errors": 0,
-      "review": 3,
+      "review": 0,
       "sources": 10,
-      "status": "review"
+      "status": "ok"
     }
   },
-  "findings": [
-    {
-      "id": "sandbox-docker",
-      "url": "https://docs.docker.com/ai/sandboxes/security/isolation/",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 20e3a371d800690df74b87104deb90ae591c948acda61d5719aed9ee29814743",
-        "Removed record: e71b2f3e172c1dd53400d49c7f9d269f66b8c880caeafcd85670694a8776391d",
-        "Added record: 27712f9b5a35094933967dbed180fb2ba3cdf4eca6f65c45606e5c24d8680f05: [Sandbox remote behavior](/ai/sandboxes/security/workflows/git/#sandbox-remote-behavior).",
-        "Added record: 34b1bcdbf1eb3b9b615fc1993be69cc2e1a2e1fd3be4938c49a3e54103e869cb: fetching commits from the sandbox. By default, fetching uses the daemon",
-        "Added record: 48c2d0c32054e1ca5ad7c486ae2f68b5ec6e83fbf9f56490f676030b04a5e783: - Your host repository gets a `sandbox-<sandbox-name>` Git remote for"
-      ]
-    },
-    {
-      "id": "sandbox-daytona",
-      "url": "https://www.daytona.io/docs/",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: cbd3b741593d42ea971b69ac7bc3825f44872fa8bf747f574444cf290bddc6b1",
-        "Added record: 91178877d78deaae440c7375744a5f6478fb002b5193dbf7bd0c42bf22210b78: Create a sandbox and run code Terminal window daytona-v0 create --name hello daytona-v0 exec hello -- python3 -c ' print(\"Hello World\") '"
-      ]
-    },
-    {
-      "id": "sandbox-strands",
-      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 3585ce29b872b6638a8d3251feff85a0d46d8ffd8b0147980a384f75686546cf",
-        "Added record: 1063e29e3f477eec416e4f07081da55906f2a432d0b635d7972eb6b0b6374460: covers exactly the bytes the backend receives, under the service and region the `aws://` auth states",
-        "Added record: 658b88dad454eb8e778125db57e82a1bfc0dc9afabb673e61c86f5e041a79b51: own real folder, and every other list still refuses a link. A link inside a credential store is",
-        "Added record: bfe57575d2f743e98d3bd8b27fcf0b1dc988b212f471c059828300efe7fb0424: On macOS, Box discloses the limitation for every selected table before the agent starts, including stdio MCP servers that remain unstarted, and repeat"
-      ]
-    }
-  ]
+  "findings": []
 }
