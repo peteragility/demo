@@ -54,6 +54,7 @@
     "google/gemini-3.6-flash": "^gemini 3[. ]6 flash\\b(?! lite)",
     "zai/glm-5.2": "^glm 5[. ]2(?![\\d.]| \\d)(?! flash)",
     "qwen/qwen3.8-max": "^qwen ?3[. ]8 max\\b",
+    "qwen/qwen4-max": "^qwen ?4 max\\b",
     "qwen/qwen3.7-max": "^qwen ?3[. ]7 max\\b",
     "qwen/qwen3.7-plus": "^qwen ?3[. ]7 plus\\b",
     "qwen/qwen3.8-27b": "^qwen ?3[. ]8 27b\\b",

@@ -1358,6 +1358,36 @@ def add_fable_52(data):
         platforms={pl: checked(c, day) for pl, c in platforms.items()})
 
 
+def add_qwen4_max(data):
+    """Qwen4 Max (arena #6, 'Qwen4-Max (xHigh)') added 18 Nov 2026 from Alibaba Model
+    Studio's pricing table. Global scope (US Virginia, Frankfurt, Hong Kong, Tokyo) and
+    China (Beijing) list $1.413 / $4.24 per million input/output tokens with published
+    cache prices: 5-minute write $1.767, 1-hour write $2.827, explicit/implicit read
+    $0.071. International (Singapore) lists $1.5 / $4.5 with $1.875 / $3 / $0.075.
+    Beijing adds Batch File at $0.707 / $2.12 (Batch Chat is a limited-time 50% off the
+    Global rates). No other compared platform sells qwen4-max: Databricks' catalog, Azure
+    Foundry and Vertex MaaS list no Qwen4, and Fireworks serverless tops out at
+    qwen3p8-max; no predecessor Qwen3.8 Max rate is copied."""
+    day = "2026-11-18"
+    cells = {}
+    for pl, label in [("official", "Alibaba Model Studio · Global scope"), ("alicloud", "Global scope")]:
+        c = offer(1.413, 4.24, 0.071, 1.767, 2.827, src="ali", tier=label, model_id="qwen4-max",
+                  note="Published cache prices per million tokens: write $1.767 (5m) / $2.827 (1h), read $0.071.")
+        c["variants"] = [variant("International (Singapore)", 1.5, 4.5, 0.075, 1.875, 3.0,
+                                 endpoint="International (Singapore)")]
+        cells[pl] = c
+    platforms = dict(
+        databricks=off_dbx(), **cells,
+        bedrock=unavailable("aws", "Bedrock lists no Qwen models."),
+        azure_foundry=unavailable("azure", "Azure Foundry lists no Qwen models."),
+        gcloud=unavailable("vertex", "Vertex MaaS lists Qwen3.x models, not qwen4-max."),
+        fireworks=unavailable("fireworks", "Fireworks serverless lists qwen3p8-max, not qwen4-max."))
+    data["models"]["qwen/qwen4-max"] = dict(
+        name="Qwen4 Max", short="Qwen4 Max", maker="Alibaba Qwen", group="other", oss=False, ctx=None,
+        badges=["Added"],
+        platforms={pl: checked(c, day) for pl, c in platforms.items()})
+
+
 def add_mistral_large_4(data):
     """Mistral Large 4 (arena #47, 'Mistral Large 4') added 13 Nov 2026. The maker API prices
     mistral-large-4 at $0.70 / $2.10 per million tokens with $0.07 cached input (MoE, 52B
@@ -1455,6 +1485,7 @@ def build():
     add_muse_models(data)
     add_fable_52(data)
     add_mistral_large_4(data)
+    add_qwen4_max(data)
     apply_endpoints(data)
     # Google moved all partner billing tables to Model Garden (29 Oct).
     # Keep Google's own models on the existing source and monitor partner prices separately.

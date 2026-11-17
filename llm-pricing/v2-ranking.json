@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-11-17",
+ "ranked_at": "2026-11-18",
  "top": 50,
  "entries": 50,
  "models": {
@@ -26,6 +26,10 @@
   "openai/gpt-6-astra": {
    "rank": 5,
    "arena": "GPT-6 Astra (Max)"
+  },
+  "qwen/qwen4-max": {
+   "rank": 6,
+   "arena": "Qwen4-Max (xHigh)"
   },
   "anthropic/claude-fable-5.1": {
    "rank": 7,

@@ -7553,10 +7553,15 @@
               [
                 "Tiers",
                 "Only the published managed-API on-demand rates are modeled; no Batch or Priority rates are listed for V4.1 Flash."
+              ],
+              [
+                "Checkpoint",
+                "18 Nov 2026: the MaaS page also lists DeepSeek-V4.1-Flash-1017 (deepseek-v4.1-flash-1017-maas, global endpoint, preview), an update with shorter outputs; Model Garden partner pricing publishes no separate 1017 rate, so the card keeps pricing the deepseek-v4.1-flash-maas offer and no 1017 price is inferred."
               ]
             ],
             "ids": [
-              "deepseek-v4.1-flash-maas (managed API model name)"
+              "deepseek-v4.1-flash-maas (managed API model name)",
+              "deepseek-v4.1-flash-1017-maas (1017 checkpoint, global, preview)"
             ],
             "cache_write": "not-listed"
           }
@@ -31002,6 +31007,319 @@
         }
       },
       "model_key": "mistral/mistral-large-4"
+    },
+    "qwen/qwen4-max": {
+      "name": "Qwen4 Max",
+      "short": "Qwen4 Max",
+      "maker": "Alibaba Qwen",
+      "group": "other",
+      "oss": false,
+      "ctx": null,
+      "badges": [
+        "Added"
+      ],
+      "platforms": {
+        "databricks": {
+          "status": "unavailable",
+          "src": "dbx_models",
+          "note": "Not in the Databricks supported-models catalog.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-18",
+          "model_id": null,
+          "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models"
+        },
+        "official": {
+          "in": 1.413,
+          "out": 4.24,
+          "cache_read": 0.071,
+          "cache_write": 1.767,
+          "cache_write_1h": 2.827,
+          "src": "ali",
+          "tier": "Alibaba Model Studio · Global scope",
+          "model_id": "qwen4-max",
+          "note": "Published cache prices per million tokens: write $1.767 (5m) / $2.827 (1h), read $0.071.",
+          "status": "priced",
+          "pricing_checked_at": "2026-11-18",
+          "availability_checked_at": "2026-11-18",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 1.5,
+              "out": 4.5,
+              "cache_read": 0.075,
+              "cache_write": 1.875,
+              "cache_write_1h": 3.0,
+              "label": "International (Singapore) · Standard",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-18",
+              "endpoint": "International (Singapore)",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.413,
+              "out": 4.24,
+              "cache_read": 0.071,
+              "cache_write": 1.767,
+              "cache_write_1h": 2.827,
+              "label": "Chinese mainland (Beijing) · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-18",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.707,
+              "out": 2.12,
+              "label": "Chinese mainland (Beijing) · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-18",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-11-18",
+          "endpoint": "Global",
+          "endpoints": {
+            "checked_at": "2026-11-18",
+            "src": [
+              "ali_ali_batch",
+              "ali_ali_pricing",
+              "ali_ali_regions"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "global",
+                "Global",
+                "US (Virginia)"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global",
+                "Germany (Frankfurt)"
+              ],
+              [
+                "APAC",
+                "global",
+                "International",
+                "Singapore"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global",
+                "Hong Kong, Tokyo"
+              ],
+              [
+                "APAC",
+                "geo",
+                "Chinese mainland",
+                "Beijing"
+              ]
+            ],
+            "hk": [
+              "routed",
+              "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+            ],
+            "tw": [
+              "none",
+              "No Taiwan region"
+            ],
+            "notes": [
+              [
+                "Caching",
+                "Published cache prices per million tokens: Global and Beijing write $1.767 (5m) / $2.827 (1h), explicit or implicit read $0.071; Singapore $1.875 / $3 / $0.075."
+              ],
+              [
+                "Batch",
+                "Batch only in Beijing: Batch File $0.707 / $2.12; Batch Chat is a limited-time 50% off the $1.413 / $4.24 Global rates."
+              ],
+              [
+                "Free quota",
+                "Singapore lists a 1-million-token free quota (90 days); Global scopes list none."
+              ]
+            ],
+            "ids": [
+              "qwen4-max (model ID)"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "alicloud": {
+          "in": 1.413,
+          "out": 4.24,
+          "cache_read": 0.071,
+          "cache_write": 1.767,
+          "cache_write_1h": 2.827,
+          "src": "ali",
+          "tier": "Global scope",
+          "model_id": "qwen4-max",
+          "note": "Published cache prices per million tokens: write $1.767 (5m) / $2.827 (1h), read $0.071.",
+          "status": "priced",
+          "pricing_checked_at": "2026-11-18",
+          "availability_checked_at": "2026-11-18",
+          "comparison_scope": "global",
+          "service_tier": "standard",
+          "model_match": "confirmed",
+          "variants": [
+            {
+              "in": 1.5,
+              "out": 4.5,
+              "cache_read": 0.075,
+              "cache_write": 1.875,
+              "cache_write_1h": 3.0,
+              "label": "International (Singapore) · Standard",
+              "comparison_scope": "global",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-18",
+              "endpoint": "International (Singapore)",
+              "id": "variant-0",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 1.413,
+              "out": 4.24,
+              "cache_read": 0.071,
+              "cache_write": 1.767,
+              "cache_write_1h": 2.827,
+              "label": "Chinese mainland (Beijing) · Standard",
+              "comparison_scope": "geographic",
+              "service_tier": "standard",
+              "pricing_checked_at": "2026-11-18",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-1",
+              "model_match": "confirmed"
+            },
+            {
+              "in": 0.707,
+              "out": 2.12,
+              "label": "Chinese mainland (Beijing) · Batch",
+              "comparison_scope": "geographic",
+              "service_tier": "batch",
+              "pricing_checked_at": "2026-11-18",
+              "endpoint": "Chinese mainland (Beijing)",
+              "id": "variant-2",
+              "model_match": "confirmed"
+            }
+          ],
+          "model_id_checked_at": "2026-11-18",
+          "endpoint": "Global",
+          "endpoints": {
+            "checked_at": "2026-11-18",
+            "src": [
+              "ali_ali_batch",
+              "ali_ali_pricing",
+              "ali_ali_regions"
+            ],
+            "regions": [
+              [
+                "Americas",
+                "global",
+                "Global",
+                "US (Virginia)"
+              ],
+              [
+                "Europe",
+                "global",
+                "Global",
+                "Germany (Frankfurt)"
+              ],
+              [
+                "APAC",
+                "global",
+                "International",
+                "Singapore"
+              ],
+              [
+                "APAC",
+                "global",
+                "Global",
+                "Hong Kong, Tokyo"
+              ],
+              [
+                "APAC",
+                "geo",
+                "Chinese mainland",
+                "Beijing"
+              ]
+            ],
+            "hk": [
+              "routed",
+              "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+            ],
+            "tw": [
+              "none",
+              "No Taiwan region"
+            ],
+            "notes": [
+              [
+                "Caching",
+                "Published cache prices per million tokens: Global and Beijing write $1.767 (5m) / $2.827 (1h), explicit or implicit read $0.071; Singapore $1.875 / $3 / $0.075."
+              ],
+              [
+                "Batch",
+                "Batch only in Beijing: Batch File $0.707 / $2.12; Batch Chat is a limited-time 50% off the $1.413 / $4.24 Global rates."
+              ],
+              [
+                "Free quota",
+                "Singapore lists a 1-million-token free quota (90 days); Global scopes list none."
+              ]
+            ],
+            "ids": [
+              "qwen4-max (model ID)"
+            ],
+            "cache_write": "priced"
+          },
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "bedrock": {
+          "status": "unavailable",
+          "src": "aws",
+          "note": "Bedrock lists no Qwen models.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-18",
+          "model_id": null,
+          "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrock/current/us-east-1/index.json"
+        },
+        "azure_foundry": {
+          "status": "unavailable",
+          "src": "azure",
+          "note": "Azure Foundry lists no Qwen models.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-18",
+          "model_id": null,
+          "url": "https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Foundry%20Models%27"
+        },
+        "gcloud": {
+          "status": "unavailable",
+          "src": "vertex",
+          "note": "Vertex MaaS lists Qwen3.x models, not qwen4-max.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-18",
+          "model_id": null,
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
+        },
+        "fireworks": {
+          "status": "unavailable",
+          "src": "fireworks",
+          "note": "Fireworks serverless lists qwen3p8-max, not qwen4-max.",
+          "pricing_checked_at": null,
+          "availability_checked_at": "2026-11-18",
+          "model_id": null,
+          "url": "https://docs.fireworks.ai/serverless/pricing"
+        }
+      },
+      "model_key": "qwen/qwen4-max"
     }
   },
   "reviewed_at": "2026-11-06",

@@ -11071,10 +11071,15 @@
     [
      "Tiers",
      "Only the published managed-API on-demand rates are modeled; no Batch or Priority rates are listed for V4.1 Flash."
+    ],
+    [
+     "Checkpoint",
+     "18 Nov 2026: the MaaS page also lists DeepSeek-V4.1-Flash-1017 (deepseek-v4.1-flash-1017-maas, global endpoint, preview), an update with shorter outputs; Model Garden partner pricing publishes no separate 1017 rate, so the card keeps pricing the deepseek-v4.1-flash-maas offer and no 1017 price is inferred."
     ]
    ],
    "ids": [
-    "deepseek-v4.1-flash-maas (managed API model name)"
+    "deepseek-v4.1-flash-maas (managed API model name)",
+    "deepseek-v4.1-flash-1017-maas (1017 checkpoint, global, preview)"
    ]
   }
  },
@@ -12090,6 +12095,210 @@
     "DeepSeek-V4-Pro (Azure-sold model; version 2026-04-23)",
     "FW-DeepSeek-V4-Pro (Fireworks on Foundry model ID)",
     "Meters: 'V4 Pro Inp|cached|Outp glbl|DZ' (Azure Deepseek Models); 'FW DeepSeek-V4-Pro Inp|Ch Inp|Outp DZ' (Azure Fireworks Models)"
+   ]
+  }
+ },
+ "qwen/qwen4-max": {
+  "alicloud": {
+   "checked_at": "2026-11-18",
+   "base": {
+    "endpoint": "Global"
+   },
+   "variants": [
+    {
+     "label": "International (Singapore) · Standard",
+     "in": 1.5,
+     "out": 4.5,
+     "cache_read": 0.075,
+     "cache_write": 1.875,
+     "cache_write_1h": 3.0,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "International (Singapore)"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Standard",
+     "in": 1.413,
+     "out": 4.24,
+     "cache_read": 0.071,
+     "cache_write": 1.767,
+     "cache_write_1h": 2.827,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Chinese mainland (Beijing)"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Batch",
+     "in": 0.707,
+     "out": 2.12,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "Chinese mainland (Beijing)"
+    }
+   ],
+   "src": [
+    "ali_ali_batch",
+    "ali_ali_pricing",
+    "ali_ali_regions"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "global",
+     "Global",
+     "US (Virginia)"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global",
+     "Germany (Frankfurt)"
+    ],
+    [
+     "APAC",
+     "global",
+     "International",
+     "Singapore"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global",
+     "Hong Kong, Tokyo"
+    ],
+    [
+     "APAC",
+     "geo",
+     "Chinese mainland",
+     "Beijing"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "Published cache prices per million tokens: Global and Beijing write $1.767 (5m) / $2.827 (1h), explicit or implicit read $0.071; Singapore $1.875 / $3 / $0.075."
+    ],
+    [
+     "Batch",
+     "Batch only in Beijing: Batch File $0.707 / $2.12; Batch Chat is a limited-time 50% off the $1.413 / $4.24 Global rates."
+    ],
+    [
+     "Free quota",
+     "Singapore lists a 1-million-token free quota (90 days); Global scopes list none."
+    ]
+   ],
+   "ids": [
+    "qwen4-max (model ID)"
+   ]
+  },
+  "official": {
+   "checked_at": "2026-11-18",
+   "base": {
+    "endpoint": "Global"
+   },
+   "variants": [
+    {
+     "label": "International (Singapore) · Standard",
+     "in": 1.5,
+     "out": 4.5,
+     "cache_read": 0.075,
+     "cache_write": 1.875,
+     "cache_write_1h": 3.0,
+     "scope": "global",
+     "service": "standard",
+     "endpoint": "International (Singapore)"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Standard",
+     "in": 1.413,
+     "out": 4.24,
+     "cache_read": 0.071,
+     "cache_write": 1.767,
+     "cache_write_1h": 2.827,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "Chinese mainland (Beijing)"
+    },
+    {
+     "label": "Chinese mainland (Beijing) · Batch",
+     "in": 0.707,
+     "out": 2.12,
+     "scope": "geographic",
+     "service": "batch",
+     "endpoint": "Chinese mainland (Beijing)"
+    }
+   ],
+   "src": [
+    "ali_ali_batch",
+    "ali_ali_pricing",
+    "ali_ali_regions"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "global",
+     "Global",
+     "US (Virginia)"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global",
+     "Germany (Frankfurt)"
+    ],
+    [
+     "APAC",
+     "global",
+     "International",
+     "Singapore"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global",
+     "Hong Kong, Tokyo"
+    ],
+    [
+     "APAC",
+     "geo",
+     "Chinese mainland",
+     "Beijing"
+    ]
+   ],
+   "hk": [
+    "routed",
+    "Hong Kong endpoint (cn-hongkong), Global scope only: data stays in Hong Kong, inference may run in any region"
+   ],
+   "tw": [
+    "none",
+    "No Taiwan region"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "Published cache prices per million tokens: Global and Beijing write $1.767 (5m) / $2.827 (1h), explicit or implicit read $0.071; Singapore $1.875 / $3 / $0.075."
+    ],
+    [
+     "Batch",
+     "Batch only in Beijing: Batch File $0.707 / $2.12; Batch Chat is a limited-time 50% off the $1.413 / $4.24 Global rates."
+    ],
+    [
+     "Free quota",
+     "Singapore lists a 1-million-token free quota (90 days); Global scopes list none."
+    ]
+   ],
+   "ids": [
+    "qwen4-max (model ID)"
    ]
   }
  },
