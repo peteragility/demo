@@ -131,15 +131,13 @@
   "schema": 1,
   "checked_at": "2026-11-18",
   "last_successful_read": "2026-11-18",
-  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
+  "source": "https://arena.ai/leaderboard/",
   "board_id": "webdev",
-  "published_at": "2026-11-15"
+  "error": "Official dataset: The read operation timed out; Arena website: HTTP Error 403: Forbidden"
  },
  "databricks_coverage": [],
  "review": [
-  "Kimi K3 · azure_foundry",
-  "GLM 5.3 Flash · azure_foundry",
-  "GLM 5.3 · azure_foundry"
+  "Kimi K3.1 Pro · azure_foundry"
  ],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
@@ -709,11 +707,7 @@
    "verified": "2026-11-18"
   },
   "meta/llama-3.3-70b|azure_foundry": {
-   "verified": "2026-11-17",
-   "changed_at": "2026-11-18",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "meta/llama-3.3-70b|bedrock": {
    "verified": "2026-11-18"
@@ -869,7 +863,11 @@
    "verified": "2026-11-18"
   },
   "moonshot/kimi-k3.1-pro|azure_foundry": {
-   "verified": "2026-11-18"
+   "verified": "2026-11-18",
+   "changed_at": "2026-11-18",
+   "sources": [
+    "azure-prices"
+   ]
   },
   "moonshot/kimi-k3.1-pro|bedrock": {
    "verified": "2026-11-18"
@@ -887,11 +885,7 @@
    "verified": "2026-11-18"
   },
   "moonshot/kimi-k3|azure_foundry": {
-   "verified": "2026-11-17",
-   "changed_at": "2026-11-18",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "moonshot/kimi-k3|bedrock": {
    "verified": "2026-11-18"
@@ -1113,11 +1107,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-oss-120b|azure_foundry": {
-   "verified": "2026-11-17",
-   "changed_at": "2026-11-18",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-oss-120b|bedrock": {
    "verified": "2026-11-18"
@@ -1380,11 +1370,7 @@
    "verified": "2026-11-18"
   },
   "zai/glm-5.3-flash|azure_foundry": {
-   "verified": "2026-11-17",
-   "changed_at": "2026-11-18",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "zai/glm-5.3-flash|bedrock": {
    "verified": "2026-11-18"
@@ -1402,11 +1388,7 @@
    "verified": "2026-11-18"
   },
   "zai/glm-5.3|azure_foundry": {
-   "verified": "2026-11-17",
-   "changed_at": "2026-11-18",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "zai/glm-5.3|bedrock": {
    "verified": "2026-11-18"

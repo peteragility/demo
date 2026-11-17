@@ -4,9 +4,9 @@
     "llm-pricing/": {
       "checkedAt": "2026-11-18",
       "lastSuccess": "2026-11-18",
-      "errors": 0,
-      "review": 3,
-      "status": "review"
+      "errors": 1,
+      "review": 1,
+      "status": "partial"
     }
   }
 }
