@@ -131,14 +131,12 @@
   "schema": 1,
   "checked_at": "2026-11-18",
   "last_successful_read": "2026-11-18",
-  "source": "https://arena.ai/leaderboard/",
+  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
   "board_id": "webdev",
-  "error": "Official dataset: The read operation timed out; Arena website: HTTP Error 403: Forbidden"
+  "published_at": "2026-11-15"
  },
  "databricks_coverage": [],
- "review": [
-  "Kimi K3.1 Pro · azure_foundry"
- ],
+ "review": [],
  "issue_url": "https://github.com/peteragility/demo/issues?q=is%3Aopen+label%3Allm-pricing-review",
  "cells": {
   "anthropic/claude-fable-5.1|alicloud": {
@@ -418,10 +416,7 @@
    "verified": "2026-11-18"
   },
   "deepseek/deepseek-v4-flash|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "deepseek/deepseek-v4-flash|bedrock": {
    "verified": "2026-11-18"
@@ -444,10 +439,7 @@
    "verified": "2026-11-18"
   },
   "deepseek/deepseek-v4-pro|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "deepseek/deepseek-v4-pro|bedrock": {
    "verified": "2026-11-18"
@@ -470,10 +462,7 @@
    "verified": "2026-11-18"
   },
   "deepseek/deepseek-v4.1-flash|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "deepseek/deepseek-v4.1-flash|bedrock": {
    "verified": "2026-11-18"
@@ -722,10 +711,7 @@
    "verified": "2026-11-18"
   },
   "meta/llama-4-maverick|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "meta/llama-4-maverick|bedrock": {
    "verified": "2026-11-18"
@@ -785,10 +771,7 @@
    "verified": "2026-11-18"
   },
   "minimax/minimax-m3|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "minimax/minimax-m3|bedrock": {
    "verified": "2026-11-18"
@@ -806,10 +789,7 @@
    "verified": "2026-11-18"
   },
   "mistral/mistral-large-4|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "mistral/mistral-large-4|bedrock": {
    "verified": "2026-11-18"
@@ -824,10 +804,7 @@
    "verified": "2026-11-18"
   },
   "mistral/mistral-medium-3.5|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "mistral/mistral-medium-3.5|bedrock": {
    "verified": "2026-11-18"
@@ -863,11 +840,7 @@
    "verified": "2026-11-18"
   },
   "moonshot/kimi-k3.1-pro|azure_foundry": {
-   "verified": "2026-11-18",
-   "changed_at": "2026-11-18",
-   "sources": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "moonshot/kimi-k3.1-pro|bedrock": {
    "verified": "2026-11-18"
@@ -903,10 +876,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-5.4|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-5.4|bedrock": {
    "verified": "2026-11-18"
@@ -924,10 +894,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-5.5|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-5.5|bedrock": {
    "verified": "2026-11-18"
@@ -945,10 +912,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-5.6-luna|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-5.6-luna|bedrock": {
    "verified": "2026-11-18"
@@ -966,10 +930,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-5.6-sol|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-5.6-sol|bedrock": {
    "verified": "2026-11-18"
@@ -987,10 +948,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-5.6-terra|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-5.6-terra|bedrock": {
    "verified": "2026-11-18"
@@ -1008,10 +966,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-6-astra|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-6-astra|bedrock": {
    "verified": "2026-11-18"
@@ -1029,10 +984,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-6-luna|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-6-luna|bedrock": {
    "verified": "2026-11-18"
@@ -1050,10 +1002,7 @@
    "verified": "2026-11-18"
   },
   "openai/gpt-6-sol|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "openai/gpt-6-sol|bedrock": {
    "verified": "2026-11-18"
@@ -1310,10 +1259,7 @@
    "verified": "2026-11-18"
   },
   "xai/grok-4.6|azure_foundry": {
-   "verified": "2026-11-17",
-   "unchecked": [
-    "azure-prices"
-   ]
+   "verified": "2026-11-18"
   },
   "xai/grok-4.6|bedrock": {
    "verified": "2026-11-18"
