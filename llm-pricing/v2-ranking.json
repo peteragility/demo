@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-11-18",
+ "ranked_at": "2026-11-20",
  "top": 50,
  "entries": 50,
  "models": {
@@ -16,152 +16,144 @@
    "arena": "Claude Opus 5.5 (Max)"
   },
   "anthropic/claude-sonnet-5.5": {
-   "rank": 3,
+   "rank": 4,
    "arena": "Claude Sonnet 5.5 (xHigh)"
   },
   "google/gemini-4-carbon": {
-   "rank": 4,
+   "rank": 5,
    "arena": "Gemini 4 Carbon (High)"
   },
   "openai/gpt-6-astra": {
-   "rank": 5,
+   "rank": 7,
    "arena": "GPT-6 Astra (Max)"
   },
   "qwen/qwen4-max": {
-   "rank": 6,
+   "rank": 9,
    "arena": "Qwen4-Max (xHigh)"
   },
-  "anthropic/claude-fable-5.1": {
-   "rank": 7,
-   "arena": "Claude Fable 5.1 (Max)"
-  },
   "openai/gpt-6.1-sol": {
-   "rank": 8,
+   "rank": 10,
    "arena": "GPT-6.1 Sol (Max)"
   },
-  "google/gemini-4-hydrogen": {
+  "anthropic/claude-fable-5.1": {
    "rank": 11,
+   "arena": "Claude Fable 5.1 (Max)"
+  },
+  "google/gemini-4-hydrogen": {
+   "rank": 14,
    "arena": "Gemini 4 Hydrogen (High)"
   },
   "anthropic/claude-opus-5": {
-   "rank": 12,
+   "rank": 15,
    "arena": "Claude Opus 5 (Max)"
   },
   "moonshot/kimi-k3.1-pro": {
-   "rank": 13,
+   "rank": 16,
    "arena": "Kimi K3.1 Pro (Max)"
   },
   "openai/gpt-6.1-terra": {
-   "rank": 14,
+   "rank": 17,
    "arena": "GPT-6.1 Terra (Max)"
   },
   "google/gemini-4-argon": {
-   "rank": 15,
+   "rank": 18,
    "arena": "Gemini 4 Argon (High)"
   },
   "qwen/qwen3.8-max": {
-   "rank": 16,
+   "rank": 19,
    "arena": "Qwen3.8-Max (0902)"
   },
   "openai/gpt-6-sol": {
-   "rank": 17,
+   "rank": 20,
    "arena": "GPT-6 Sol (Max)"
   },
   "deepseek/deepseek-v4.1-flash": {
-   "rank": 19,
+   "rank": 22,
    "arena": "DeepSeek-V4.1-Flash-20261017 (Max)"
   },
   "moonshot/kimi-k3": {
-   "rank": 20,
+   "rank": 23,
    "arena": "Kimi K3 (Max)"
   },
   "meta/muse-spark-1.3": {
-   "rank": 22,
+   "rank": 25,
    "arena": "Muse Spark 1.3 (Max)"
   },
   "meta/muse-wonder": {
-   "rank": 23,
+   "rank": 26,
    "arena": "Muse Wonder (Max)"
   },
   "tml/inkling": {
-   "rank": 24,
+   "rank": 27,
    "arena": "Inkling 2 Small"
   },
   "xai/grok-4.7": {
-   "rank": 25,
+   "rank": 28,
    "arena": "Grok 4.7 (xHigh)"
   },
   "anthropic/claude-fable-5": {
-   "rank": 28,
+   "rank": 31,
    "arena": "Claude Fable 5 (High)"
   },
   "qwen/qwen3.8-flash": {
-   "rank": 29,
+   "rank": 32,
    "arena": "Qwen3.8-Flash-Next"
   },
   "zai/glm-5.3": {
-   "rank": 31,
+   "rank": 34,
    "arena": "GLM-5.3 (Max)"
   },
   "xai/grok-4.6": {
-   "rank": 34,
+   "rank": 37,
    "arena": "Grok 4.6 (High)"
   },
   "openai/gpt-5.6-sol": {
-   "rank": 35,
+   "rank": 38,
    "arena": "GPT-5.6 Sol (xHigh, Codex Harness)"
   },
   "zai/glm-5.3-flash": {
-   "rank": 37,
+   "rank": 39,
    "arena": "GLM-5.3-Flash"
   },
   "meta/muse-ember": {
-   "rank": 38,
+   "rank": 41,
    "arena": "Muse Ember (Max)"
   },
   "zai/glm-5.2": {
-   "rank": 39,
+   "rank": 42,
    "arena": "GLM-5.2 (Max)"
   },
   "anthropic/claude-haiku-5.5": {
-   "rank": 40,
+   "rank": 43,
    "arena": "Claude Haiku 5.5 (High)"
   },
   "qwen/qwen3.8-27b": {
-   "rank": 41,
+   "rank": 44,
    "arena": "Qwen3.8-27B"
   },
   "google/gemini-3.7-flash": {
-   "rank": 42,
+   "rank": 45,
    "arena": "Gemini 3.7 Flash (High)"
   },
   "google/gemini-3.8-flash": {
-   "rank": 43,
+   "rank": 46,
    "arena": "Gemini 3.8 Flash (High)"
   },
   "minimax/minimax-m3": {
-   "rank": 44,
+   "rank": 47,
    "arena": "MiniMax-M3.1-Flash"
   },
   "deepseek/deepseek-v4-flash": {
-   "rank": 45,
+   "rank": 48,
    "arena": "DeepSeek-V4-Flash (High)"
   },
   "deepseek/deepseek-v4-pro": {
-   "rank": 46,
+   "rank": 49,
    "arena": "DeepSeek-V4-Pro (High, 20260813)"
   },
   "openai/gpt-6-luna": {
-   "rank": 47,
-   "arena": "GPT-6 Luna (Max)"
-  },
-  "mistral/mistral-large-4": {
-   "rank": 49,
-   "arena": "Mistral Large 4"
-  },
-  "anthropic/claude-opus-4.7": {
    "rank": 50,
-   "arena": "Claude Opus 4.7 (High)"
+   "arena": "GPT-6 Luna (Max)"
   }
  }
 }
