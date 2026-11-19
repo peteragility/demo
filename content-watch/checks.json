@@ -1,23 +1,37 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-18",
+  "checkedAt": "2026-11-19",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-18",
-      "lastSuccess": "2026-11-18",
+      "checkedAt": "2026-11-19",
+      "lastSuccess": "2026-11-19",
       "errors": 0,
       "review": 0,
       "sources": 4,
       "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-18",
-      "lastSuccess": "2026-11-18",
+      "checkedAt": "2026-11-19",
+      "lastSuccess": "2026-11-19",
       "errors": 0,
-      "review": 0,
+      "review": 1,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 830aece9ab5b2ca01605d7542ab82d0ad16f747eeb436ebbb95f2db22768ed8d",
+        "Removed record: ff37d8e73235c6a0785e9eb5490cf375f214d54d9b02351e5e55a323b8596bda",
+        "Added record: 15ef3ebad7c3b1f919e33c640fed3a5391ef68134c5af6ce3540403addcff3a5: release owner must establish Linux readiness before each release. Linux previews leave the latest",
+        "Added record: 967f343c6f10a71abaecdd2c535fbdb95320eba42d39038fdf27f6cdd97e1d46: `test_stable_and_preview_publish_arm64_with_x86_off_by_default` pins the release contents. The",
+        "Added record: dd437b06fd2f14708bf28cd72d197493a30febc96f94baf97f6b2e8d51744671: Every release, stable or Linux preview, includes macOS and Linux ARM64. The release workflow has no"
+      ]
+    }
+  ]
 }
