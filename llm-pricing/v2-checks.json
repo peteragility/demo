@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "checked_at": "2026-11-20",
- "sources_checked": 121,
+ "sources_checked": 123,
  "sources_failed": [],
  "sources_read": {
   "dbx-models": "2026-11-20",
@@ -124,6 +124,8 @@
   "gcp-deepseek-v4-1-flash": "2026-11-20",
   "api-west-openai-m-gpt-6-1-terra": "2026-11-20",
   "aws-card-gpt-6-1-terra": "2026-11-20",
+  "aws-card-gpt-6-2-astra": "2026-11-20",
+  "aws-card-gpt-6-2-sol": "2026-11-20",
   "vertex-partner-pricing": "2026-11-20"
  },
  "pending_general": [],
@@ -698,6 +700,27 @@
   "google/gemini-4-hydrogen|official": {
    "verified": "2026-11-20"
   },
+  "google/gemini-4-neon|alicloud": {
+   "verified": "2026-11-20"
+  },
+  "google/gemini-4-neon|azure_foundry": {
+   "verified": "2026-11-20"
+  },
+  "google/gemini-4-neon|bedrock": {
+   "verified": "2026-11-20"
+  },
+  "google/gemini-4-neon|databricks": {
+   "verified": "2026-11-20"
+  },
+  "google/gemini-4-neon|fireworks": {
+   "verified": "2026-11-20"
+  },
+  "google/gemini-4-neon|gcloud": {
+   "verified": "2026-11-20"
+  },
+  "google/gemini-4-neon|official": {
+   "verified": "2026-11-20"
+  },
   "google/gemma-3-12b|alicloud": {
    "verified": "2026-11-20"
   },
@@ -1080,6 +1103,42 @@
    "verified": "2026-11-20"
   },
   "openai/gpt-6.1-terra|official": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-astra|alicloud": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-astra|azure_foundry": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-astra|bedrock": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-astra|databricks": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-astra|fireworks": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-astra|official": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-sol|alicloud": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-sol|azure_foundry": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-sol|bedrock": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-sol|databricks": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-sol|fireworks": {
+   "verified": "2026-11-20"
+  },
+  "openai/gpt-6.2-sol|official": {
    "verified": "2026-11-20"
   },
   "openai/gpt-oss-120b|alicloud": {
