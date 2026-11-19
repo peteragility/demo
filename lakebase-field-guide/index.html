@@ -390,7 +390,7 @@ footer{max-width:var(--maxw);margin:0 auto;padding:26px 24px 40px;font-size:13px
   <details class="deep"><summary>Tools and accelerators</summary>
     <ul>
       <li><strong>Conversion:</strong> open-source ora2pg (Oracle, MySQL) and pgloader (MySQL, SQL Server), the AWS Schema Conversion Tool, and partner AI-assisted converters for PL/SQL and T-SQL.</li>
-      <li><strong>Data and CDC:</strong> tools that support a Postgres target, such as AWS DMS, Debezium with a JDBC sink, Oracle GoldenGate or commercial CDC. Validate Lakebase as the target: Postgres 16–18, a password role, the network path and throughput.</li>
+      <li><strong>Data and CDC:</strong> tools that support a Postgres target, such as AWS DMS, Debezium with a JDBC sink, Oracle GoldenGate or commercial CDC. Validate Lakebase as the target: Postgres 16–19, a password role, the network path and throughput.</li>
       <li><strong>Lakebase Express:</strong> an open-source Databricks Solutions app that assesses, sizes, converts and loads SQL Server and Azure SQL databases into Lakebase. It is not an official Databricks product and has no support or SLA, so run it on non-production data first.</li>
       <li><strong>Partners:</strong> Databricks lists partner accelerators that automate assessment, schema conversion and code migration from Oracle and SQL Server, using Lakebase branching to rehearse cutovers.</li>
     </ul>
@@ -637,7 +637,7 @@ query_wait_timeout = 120 seconds</pre>
   <button type="button" class="go-deep simple-only" data-deep="migrate">Compatibility, cutover steps and regions ▸</button>
   <details class="deep"><summary>Technical detail: compatibility gates</summary>
     <ul>
-      <li>Postgres 16, 17 and 18 are supported (17 is the default). Check extension names and versions; job schedulers such as pg_cron aren't on the supported list.</li>
+      <li>Postgres 16, 17, 18 and 19 are supported (18 is the default). Some features aren't available on Postgres 19 — for example the wal2json decoder plugin and the pg_graphql / pg_jsonschema extensions — so check the Postgres 19 limitations before choosing it. Check extension names and versions; job schedulers such as pg_cron aren't on the supported list. (20 Nov 2026)</li>
       <li>There is no OS access, true Postgres superuser or custom tablespace. <code>databricks_superuser</code> is a managed role, not host access. Postgres log files aren't directly accessible; logs arrive through the telemetry system tables (Beta).</li>
       <li>Temporary and unlogged tables live on compute-local disk (20 GiB, or 15 GiB × the maximum CU if larger) and don't survive a restart or scale-to-zero. Cumulative statistics also reset on scale-to-zero.</li>
       <li>The default collation is C.UTF-8; ICU locales are available. Encoding and collation can't change after a database is created.</li>

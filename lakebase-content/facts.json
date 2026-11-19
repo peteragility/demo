@@ -1,9 +1,9 @@
 {
   "facts": {
     "table.engine": {
-      "value": "Postgres 16–18",
+      "value": "Postgres 16–19",
       "source": "https://docs.databricks.com/aws/en/oltp/projects/compatibility",
-      "checked": "2026-10-19"
+      "checked": "2026-11-20"
     },
     "table.billing": {
       "source": "https://www.databricks.com/product/pricing/lakebase",
