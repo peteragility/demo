@@ -15890,5 +15890,271 @@
     ]
    ]
   }
+ },
+ "openai/gpt-6.2-astra": {
+  "official": {
+   "checked_at": "2026-11-20",
+   "base": {
+    "endpoint": "Global (api.openai.com)"
+   },
+   "src": [
+    "openai"
+   ],
+   "regions": [
+    [
+     "Global",
+     "global",
+     "Global API",
+     "Regional processing carries +10% where available; exact processing locations require confirmation."
+    ]
+   ],
+   "hk": [
+    "unknown",
+    "No Hong Kong processing location verified for this model"
+   ],
+   "tw": [
+    "unknown",
+    "No Taiwan processing location verified for this model"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "30m writes cost 1.25x input; 12h writes cost 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime."
+    ],
+    [
+     "Context",
+     "Short context is ≤272K input; above it input and cache rates double and output is 1.5x for the full request (API context window 1,050,000 tokens)."
+    ],
+    [
+     "Tiers",
+     "Fast mode, Batch and Ultrafast; no Flex tier. Ultrafast costs 3x Standard through 28 Feb 2027 and 6x from 1 Mar 2027. Eligible background requests are 30% (2-hour window) / 40% (8-hour window) below Standard."
+    ]
+   ],
+   "ids": [
+    "gpt-6.2-astra"
+   ]
+  },
+  "bedrock": {
+   "checked_at": "2026-11-20",
+   "regions_from_card": true,
+   "src": [
+    "aws_gpt62"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Endpoints",
+     "Mantle in-region in N. Virginia; runtime uses US geographic or global cross-region profiles, without direct in-region inference. Ultrafast is available on bedrock-mantle only in us-east-1."
+    ],
+    [
+     "Tiers",
+     "Standard and the Ultrafast speed tier; Ultrafast costs 3x Standard through 28 Feb 2027 and 6x from 1 Mar 2027. No Batch, Flex or Priority offer is verified on Bedrock."
+    ],
+    [
+     "Caching",
+     "Published write rates retain prefixes for 30 minutes; no 12h write price is inferred."
+    ],
+    [
+     "Long context",
+     "Above 272K input tokens the whole request moves to long-context rates."
+    ]
+   ],
+   "ids": [
+    "openai.gpt-6.2-astra (model ID; bedrock-mantle + bedrock-runtime)",
+    "us.openai.gpt-6.2-astra (US geo inference profile)",
+    "global.openai.gpt-6.2-astra (global inference profile)"
+   ]
+  },
+  "databricks": {
+   "checked_at": "2026-11-20",
+   "notes": [
+    [
+     "Billing",
+     "Standard/Priority are DBU per million tokens at $0.07/DBU; the separate Batch table is DBU/hour, not a token rate."
+    ],
+    [
+     "Context",
+     "Short context is ≤272K input; above it, the exact published long-context rates apply."
+    ],
+    [
+     "Endpoints",
+     "Pay-per-token through Unity Gateway (system.ai.gpt-6-2-astra)."
+    ]
+   ]
+  }
+ },
+ "openai/gpt-6.2-sol": {
+  "official": {
+   "checked_at": "2026-11-20",
+   "base": {
+    "endpoint": "Global (api.openai.com)"
+   },
+   "src": [
+    "openai"
+   ],
+   "regions": [
+    [
+     "Global",
+     "global",
+     "Global API",
+     "Regional processing carries +10% where available; exact processing locations require confirmation."
+    ]
+   ],
+   "hk": [
+    "unknown",
+    "No Hong Kong processing location verified for this model"
+   ],
+   "tw": [
+    "unknown",
+    "No Taiwan processing location verified for this model"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Caching",
+     "30m writes cost 1.25x input; 12h writes cost 2.5x input. These are total write rates, not surcharges. Reads cost the same for either lifetime."
+    ],
+    [
+     "Context",
+     "Short context is ≤272K input; above it input and cache rates double and output is 1.5x for the full request (API context window 1,050,000 tokens)."
+    ],
+    [
+     "Tiers",
+     "Fast mode, Batch and Ultrafast; no Flex tier. Ultrafast costs 3x Standard through 28 Feb 2027 and 6x from 1 Mar 2027. Eligible background requests are 30% (2-hour window) / 40% (8-hour window) below Standard."
+    ]
+   ],
+   "ids": [
+    "gpt-6.2-sol"
+   ]
+  },
+  "bedrock": {
+   "checked_at": "2026-11-20",
+   "regions_from_card": true,
+   "src": [
+    "aws_gpt62"
+   ],
+   "regions": [
+    [
+     "Americas",
+     "in-region",
+     "In-region",
+     "N. Virginia"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary"
+    ],
+    [
+     "Americas",
+     "global",
+     "Global CRIS",
+     "N. Virginia, Ohio, N. California, Oregon, Canada, Calgary, Mexico, São Paulo"
+    ],
+    [
+     "Europe",
+     "global",
+     "Global CRIS",
+     "Frankfurt, Zurich, Stockholm, Milan, Spain, Ireland, London, Paris"
+    ],
+    [
+     "APAC",
+     "global",
+     "Global CRIS",
+     "Taipei (ap-east-2), Tokyo, Seoul, Osaka, Mumbai, Hyderabad, Singapore, Sydney, Jakarta, Melbourne, Malaysia, New Zealand, Thailand"
+    ]
+   ],
+   "hk": [
+    "none",
+    "No Bedrock endpoint in Hong Kong (ap-east-1)"
+   ],
+   "tw": [
+    "routed",
+    "Taipei (ap-east-2) through global cross-region inference only"
+   ],
+   "cache_write": "priced",
+   "notes": [
+    [
+     "Endpoints",
+     "Mantle in-region in N. Virginia; runtime uses US geographic or global cross-region profiles, without direct in-region inference. Ultrafast is available on bedrock-mantle only in us-east-1."
+    ],
+    [
+     "Tiers",
+     "Standard and the Ultrafast speed tier; Ultrafast costs 3x Standard through 28 Feb 2027 and 6x from 1 Mar 2027. No Batch, Flex or Priority offer is verified on Bedrock."
+    ],
+    [
+     "Caching",
+     "Published write rates retain prefixes for 30 minutes; no 12h write price is inferred."
+    ],
+    [
+     "Long context",
+     "Above 272K input tokens the whole request moves to long-context rates."
+    ]
+   ],
+   "ids": [
+    "openai.gpt-6.2-sol (model ID; bedrock-mantle + bedrock-runtime)",
+    "us.openai.gpt-6.2-sol (US geo inference profile)",
+    "global.openai.gpt-6.2-sol (global inference profile)"
+   ]
+  },
+  "databricks": {
+   "checked_at": "2026-11-20",
+   "notes": [
+    [
+     "Billing",
+     "Standard/Priority are DBU per million tokens at $0.07/DBU; the separate Batch table is DBU/hour, not a token rate. The DBU table prices GPT-6.2 Sol in the shared 'GPT-6.1 Sol, 6.2 Sol' row, so the Databricks rates equal GPT-6.1 Sol's; no GPT-6 Sol price is copied."
+    ],
+    [
+     "Context",
+     "Short context is ≤272K input; above it, the exact published long-context rates apply."
+    ],
+    [
+     "Endpoints",
+     "Pay-per-token through Unity Gateway (system.ai.gpt-6-2-sol)."
+    ]
+   ]
+  }
  }
 }

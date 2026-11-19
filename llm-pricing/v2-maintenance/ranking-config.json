@@ -70,7 +70,10 @@
     "google/gemini-4-hydrogen": "^gemini 4 hydrogen\\b(?! cyber)",
     "meta/muse-spark-1.3": "^muse spark 1[.]3\\b",
     "meta/muse-wonder": "^muse wonder\\b(?! full)",
-    "meta/muse-ember": "^muse ember\\b"
+    "meta/muse-ember": "^muse ember\\b",
+    "openai/gpt-6.2-astra": "^gpt 6[. ]2 astra\\b",
+    "openai/gpt-6.2-sol": "^gpt 6[. ]2 sol\\b",
+    "google/gemini-4-neon": "^gemini 4 neon\\b(?! cyber)"
   },
   "top": 50,
   "not_sold_note": "Top-50 models that a compared platform's page names but that it does not sell with general access (a gated or on-request preview). Any other top-50 model with no reviewed prices that a platform page names opens the review issue. Reviewed 2026-10-20: Muse Spark Open is a limited serverless preview through 2026-10-29 on US-only capacity; production uses dedicated capacity, not a general-access per-token offer (https://fireworks.ai/models/fireworks/muse-spark-open). Recheck after the preview ends.",

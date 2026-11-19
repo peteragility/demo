@@ -1469,6 +1469,130 @@ def review_november18(data):
     apply_spec(k, spec, data["source_meta"])
 
 
+def add_november20(data):
+    """Issue #65 review, 20 Nov 2026: three new arena top-50 models added from their own
+    verified sources. GPT-6.2 Astra (#3) and GPT-6.2 Sol (#8) launch 17 Nov 2026: OpenAI's
+    pricing page (short ≤272K / long >272K, Fast, Batch, no Flex; Ultrafast at 3x Standard
+    through 2027-02-28 and 6x from 2027-03-01), Databricks' DBU tables (GPT-6.2 Astra has its
+    own rows; GPT-6.2 Sol shares GPT-6.1 Sol's row, so no price is inferred from GPT-6 Sol),
+    Bedrock's official price feed and model cards (Global CRIS at list; mantle in-region and
+    US geographic at +10%; Ultrafast promo), and Azure's sold-directly list (version
+    2026-11-17, no retail meters yet). Gemini 4 Neon (#6) is sold on the Gemini API and
+    Vertex at list rates with no promotion; caching is implicit-only on the Gemini API and
+    Vertex's cache-write prices are effective 12 Jan 2027. No predecessor price is copied."""
+    day = "2026-11-20"
+    ultrafast_ends = "2027-02-28"
+
+    for key, name, s_in, s_out, s_cr, s_cw, s_cw12, l_in, l_out, l_cr, l_cw, l_cw12, about in (
+        ("openai/gpt-6.2-astra", "GPT-6.2 Astra", 8, 40, 0.4, 10, 20, 16, 60, 0.8, 20, 40,
+         "Frontier model for complex, multistep projects"),
+        ("openai/gpt-6.2-sol", "GPT-6.2 Sol", 2, 10, 0.1, 2.5, 5, 4, 15, 0.2, 5, 10,
+         "Fast, versatile model for everyday coding")):
+        short_id = key.split("/", 1)[1]
+        direct = offer(s_in, s_out, s_cr, s_cw, src="openai", tier="Standard · ≤272K input",
+                       model_id=short_id, context_threshold=272000, cache_write_12h=s_cw12,
+                       long_context=dict(rates(l_in, l_out, l_cr, l_cw), cache_write_12h=l_cw12))
+        fast = variant("Fast mode", s_in * 2, s_out * 2, s_cr * 2, s_cw * 2, service="priority",
+                       endpoint="Fast mode", cache_write_12h=s_cw12 * 2,
+                       long_context=dict(rates(l_in * 2, l_out * 2, l_cr * 2, l_cw * 2), cache_write_12h=l_cw12 * 2))
+        batch = variant("Batch", s_in / 2, s_out / 2, s_cr / 2, s_cw / 2, service="batch",
+                        endpoint="Batch API", cache_write_12h=s_cw12 / 2,
+                        long_context=dict(rates(l_in / 2, l_out / 2, l_cr / 2, l_cw / 2), cache_write_12h=l_cw12 / 2))
+        regional = variant("Regional processing +10%", round(s_in * 1.1, 6), round(s_out * 1.1, 6),
+                           round(s_cr * 1.1, 6), round(s_cw * 1.1, 6), scope="regional",
+                           endpoint="Regional processing", cache_write_12h=round(s_cw12 * 1.1, 6),
+                           long_context=dict(rates(round(l_in * 1.1, 6), round(l_out * 1.1, 6), round(l_cr * 1.1, 6), round(l_cw * 1.1, 6)),
+                                             cache_write_12h=round(l_cw12 * 1.1, 6)))
+        ultrafast = variant("Ultrafast", round(s_in * 3, 6), round(s_out * 3, 6), round(s_cr * 3, 6), round(s_cw * 3, 6), service="priority",
+                            endpoint="Ultrafast", tier_label="Ultrafast", cache_write_12h=round(s_cw12 * 3, 6),
+                            long_context=dict(rates(round(l_in * 3, 6), round(l_out * 3, 6), round(l_cr * 3, 6), round(l_cw * 3, 6)), cache_write_12h=round(l_cw12 * 3, 6)))
+        promo(ultrafast, ultrafast_ends,
+              dict(rates(round(s_in * 6, 6), round(s_out * 6, 6), round(s_cr * 6, 6), round(s_cw * 6, 6)), cache_write_12h=round(s_cw12 * 6, 6),
+                   long_context=dict(rates(round(l_in * 6, 6), round(l_out * 6, 6), round(l_cr * 6, 6), round(l_cw * 6, 6)), cache_write_12h=round(l_cw12 * 6, 6))),
+              "Ultrafast promotional 3x pricing", "Ultrafast")
+        direct["variants"] = [fast, batch, regional, ultrafast]
+        dbx = offer(s_in, s_out, s_cr, s_cw, src="dbx_prop", tier="Standard · short context",
+                    model_id="system.ai." + short_id.replace(".", "-"), model_id_source="dbx_models",
+                    dbu_rate_basis=0.07, context_threshold=272000,
+                    long_context=rates(l_in, l_out, l_cr, l_cw))
+        dbx["variants"] = [
+            variant("Priority", s_in * 2, s_out * 2, s_cr * 2, s_cw * 2, service="priority",
+                    long_context=rates(l_in * 2, l_out * 2, l_cr * 2, l_cw * 2)),
+            variant("Regional processing ⌖ +10%", round(s_in * 1.1, 6), round(s_out * 1.1, 6),
+                    round(s_cr * 1.1, 6), round(s_cw * 1.1, 6), scope="regional"),
+        ]
+        aws = offer(s_in, s_out, s_cr, s_cw, src="aws_gpt62", tier="Global CRIS · Standard",
+                    model_id="openai." + short_id, context_threshold=272000,
+                    long_context=rates(l_in, l_out, l_cr, l_cw))
+        aws["variants"] = [
+            variant("Mantle in-region (us-east-1)", round(s_in * 1.1, 6), round(s_out * 1.1, 6),
+                    round(s_cr * 1.1, 6), round(s_cw * 1.1, 6), scope="regional", endpoint="In-region",
+                    long_context=rates(round(l_in * 1.1, 6), round(l_out * 1.1, 6), round(l_cr * 1.1, 6), round(l_cw * 1.1, 6))),
+            variant("US CRIS · Standard", round(s_in * 1.1, 6), round(s_out * 1.1, 6),
+                    round(s_cr * 1.1, 6), round(s_cw * 1.1, 6), scope="geographic", endpoint="US CRIS",
+                    long_context=rates(round(l_in * 1.1, 6), round(l_out * 1.1, 6), round(l_cr * 1.1, 6), round(l_cw * 1.1, 6))),
+            variant("Global CRIS · Ultrafast", round(s_in * 3, 6), round(s_out * 3, 6), round(s_cr * 3, 6), round(s_cw * 3, 6),
+                    service="priority", endpoint="Global CRIS", tier_label="Ultrafast",
+                    long_context=rates(round(l_in * 3, 6), round(l_out * 3, 6), round(l_cr * 3, 6), round(l_cw * 3, 6))),
+        ]
+        promo(aws["variants"][2], ultrafast_ends,
+              dict(rates(round(s_in * 6, 6), round(s_out * 6, 6), round(s_cr * 6, 6), round(s_cw * 6, 6)),
+                   long_context=dict(rates(round(l_in * 6, 6), round(l_out * 6, 6), round(l_cr * 6, 6), round(l_cw * 6, 6)))),
+              "Ultrafast promotional 3x pricing", "Ultrafast")
+        platforms = dict(official=direct, databricks=dbx, bedrock=aws,
+            azure_foundry=pending("Azure's sold-directly list has this model (version 2026-11-17); "
+                                  "the checked Azure retail meters publish no GPT-6.2 rates yet.",
+                                  "az_learn_regions", short_id, True),
+            gcloud=unavailable("vertex", "No GPT offer verified in the reviewed Vertex catalog."),
+            fireworks=unavailable("fireworks_nexus", "Nexus uses your provider key; no Fireworks per-token offer verified."),
+            alicloud=unavailable("ali", "No closed GPT offer in the reviewed Model Studio catalog."))
+        data["models"][key] = dict(name=name,
+            short=short_id, maker="OpenAI", group="openai", oss=False, ctx="1.05M", badges=["Added"],
+            about=about, platforms={pl: checked(c, day) for pl, c in platforms.items()})
+
+    # Gemini 4 Neon (arena #6, 'Gemini 4 Neon (High)') — list rates, no promotion.
+    platforms = {pl: pending("No verified Gemini 4 Neon offer in the reviewed platform sources.",
+                             data["models"]["google/gemini-4-argon"]["platforms"][pl].get("src"))
+                 for pl in PLATFORMS}
+    for pl, src in (("official", "google"), ("gcloud", "vertex")):
+        cell = offer(3, 15, 0.15, src=src, tier="Standard", model_id="gemini-4-neon")
+        variants = []
+        tiers = [("priority", 5.4, 27, 0.27), ("batch", 1.5, 7.5, 0.075)]
+        if pl == "official":
+            tiers.append(("flex", 1.5, 7.5, 0.075))
+        else:
+            variants.append(variant("US / EU multi-region · Standard", 3.3, 16.5, 0.165,
+                                    scope="geographic", endpoint="US / EU multi-region"))
+        for service, i, o, cr in tiers:
+            variants.append(variant("Global · " + service.title(), i, o, cr, service=service, endpoint="Global"))
+            if pl == "gcloud":
+                variants.append(variant("US / EU multi-region · " + service.title(), round(i * 1.1, 6), round(o * 1.1, 6),
+                                        round(cr * 1.1, 6), service=service, scope="geographic", endpoint="US / EU multi-region"))
+        cell["variants"] = variants
+        cell["endpoints"] = dict(checked_at=day,
+            src=[src, "gcp_locations"] if pl == "gcloud" else [src],
+            regions=[["Global", "global" if pl == "gcloud" else "unknown", "Global",
+                      "Public Gemini 4 Neon endpoint" if pl == "gcloud" else "Gemini API global endpoint"]],
+            hk=["none", "No single-region Hong Kong endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            tw=["none", "No single-region Taiwan endpoint"] if pl == "gcloud" else ["unknown", "No verified processing residency"],
+            notes=[["Context", "Unified 1M-token context window with long decode, per the Gemini 4 Neon pricing page; no separate long-context price band is listed."],
+                   ["Caching", "Implicit caching only on the Gemini API (explicit cache writes are not supported); cache reads cost 5% of the tier's input price."] if pl == "official" else
+                   ["Caching", "Cache reads cost 5% of the tier's input price. Vertex lists cache-write prices at 1.25x the tier's input effective 12 Jan 2027; no cache-write charge is published before that date, so the card shows none."],
+                   ["Version", "gemini-4-neon (GA). No introductory or promotional pricing is published for Neon; the listed rates are list rates."],
+                   ["Tiers", "Standard, Priority and Batch; Flex is listed on the Gemini API only. The Gemini API Contributor tier is an invite-only private preview and is excluded. Neon is not available on the Free tier."]],
+            ids=["gemini-4-neon"], cache_write="input-rate" if pl == "official" else "not-listed")
+        if pl == "gcloud":
+            cell["endpoints"]["regions"] += [
+                ["Americas", "geo", "US multi-region", "US endpoint; processing stays in the US (+10%)"],
+                ["Europe", "geo", "EU multi-region", "EU endpoint; processing stays in the EU (+10%)"]]
+        platforms[pl] = checked(cell, day)
+    for cell in platforms.values():
+        cell["availability_checked_at"] = day
+    data["models"]["google/gemini-4-neon"] = dict(name="Gemini 4 Neon", short="Gemini 4 N", maker="Google",
+        group="google", oss=False, model_key="google/gemini-4-neon", ctx="1M unified", badges=["Added"], platforms=platforms)
+    data["models"]["google/gemini-4-neon"]["platforms"]["databricks"] = off_dbx()
+
+
 def build():
     data = json.loads((HERE / "seed-data.json").read_text())
     data.pop("fetched_at", None)
@@ -1484,6 +1608,8 @@ def build():
         "aws_grok46": ("https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-xai-grok-4-6.html", "Bedrock Grok 4.6 endpoints and service tiers"),
         "xai_47": ("https://docs.x.ai/developers/models/grok-4.7", "xAI Grok 4.7 pricing"),
         "xai_46": ("https://docs.x.ai/developers/models/grok-4.6", "xAI Grok 4.6 pricing"),
+        "aws_gpt62": ("https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json",
+                      "Bedrock GPT-6.2 Astra / GPT-6.2 Sol price feed (with the model cards)"),
     }
     for sid, (url, label) in sources.items():
         data["source_meta"][sid] = dict(url=url, label=label)
@@ -1502,6 +1628,7 @@ def build():
     add_fable_52(data)
     add_mistral_large_4(data)
     add_qwen4_max(data)
+    add_november20(data)
     apply_endpoints(data)
     # Google moved all partner billing tables to Model Garden (29 Oct).
     # Keep Google's own models on the existing source and monitor partner prices separately.

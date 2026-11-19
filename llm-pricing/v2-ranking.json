@@ -15,6 +15,10 @@
    "rank": 2,
    "arena": "Claude Opus 5.5 (Max)"
   },
+  "openai/gpt-6.2-astra": {
+   "rank": 3,
+   "arena": "GPT-6.2 Astra (Max)"
+  },
   "anthropic/claude-sonnet-5.5": {
    "rank": 4,
    "arena": "Claude Sonnet 5.5 (xHigh)"
@@ -23,9 +27,17 @@
    "rank": 5,
    "arena": "Gemini 4 Carbon (High)"
   },
+  "google/gemini-4-neon": {
+   "rank": 6,
+   "arena": "Gemini 4 Neon (High)"
+  },
   "openai/gpt-6-astra": {
    "rank": 7,
    "arena": "GPT-6 Astra (Max)"
+  },
+  "openai/gpt-6.2-sol": {
+   "rank": 8,
+   "arena": "GPT-6.2 Sol (Max)"
   },
   "qwen/qwen4-max": {
    "rank": 9,

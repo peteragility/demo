@@ -295,7 +295,7 @@ def dbx_regions(html):
         if len(row) < 2:
             continue
         region, cell = row[0].strip(), row[1]
-        for name, marks in re.findall(r"(databricks-[a-z0-9-]+)((?:\s*[⥂†‡])*)", cell):
+        for name, marks in re.findall(r"((?:databricks-[a-z0-9-]+|system\.ai\.[a-z0-9-]+))((?:\s*[⥂†‡])*)", cell):
             out.setdefault(name, {})[region] = {"cross": "⥂" in marks, "adi": "†" in marks}
     if len(out) < 10:
         raise ValueError("Too few Databricks endpoints in the region table.")
