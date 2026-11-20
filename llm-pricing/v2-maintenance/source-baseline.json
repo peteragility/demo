@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "checked_at": "2026-11-20",
+ "checked_at": "2026-11-21",
  "acknowledged_lifecycle": [
   "deepseek/deepseek-v4-flash|databricks|retirement|2026-11-05",
   "deepseek/deepseek-v4-pro|databricks|retirement|2026-10-30",
@@ -2950,7 +2950,7 @@
   "api-west-google-regions": {
    "url": "https://ai.google.dev/gemini-api/docs/available-regions",
    "kind": "text",
-   "digest": "78f15c22bca26b5163b6c9173c44d7e6c7522abfe5b357d51de54fc27df8371e",
+   "digest": "7d16e2e2c8e78f2af826724c55ceb366194ade943af6b5e1f12f290d64903daa",
    "records": [
     "text: Albania",
     "text: Algeria",
@@ -3149,6 +3149,7 @@
     "text: Suriname",
     "text: Sweden",
     "text: Switzerland",
+    "text: Syria",
     "text: São Tomé and Príncipe",
     "text: Taiwan",
     "text: Tajikistan",
@@ -3671,7 +3672,7 @@
   "api-west-xai-pricing": {
    "url": "https://docs.x.ai/developers/pricing.md",
    "kind": "markdown",
-   "digest": "23e3a6f74e3efccea6dbe3c57c1a49803f97404058252db768d6eabb3ebe206b",
+   "digest": "230b13aafaf4dd71b1ef949df3fd9fed7f170b3f12e69f9890d922998b889516",
    "records": [
     "item: {\"heading\":\"Batch API Pricing\",\"text\":\"grok-4.20-0309-non-reasoning\"}",
     "item: {\"heading\":\"Batch API Pricing\",\"text\":\"grok-4.20-0309-reasoning\"}",
@@ -3748,6 +3749,8 @@
     "table: {\"cells\":[\"grok-4.6 (≥ 200k prompt tokens)\",\"500k\",\"$4.00\",\"$1.00\",\"$12.00\"],\"heading\":\"Text API Pricing\"}",
     "table: {\"cells\":[\"grok-4.7 (< 200k prompt tokens)\",\"500k\",\"$2.00\",\"$0.50\",\"$6.00\"],\"heading\":\"Text API Pricing\"}",
     "table: {\"cells\":[\"grok-4.7 (≥ 200k prompt tokens)\",\"500k\",\"$4.00\",\"$1.00\",\"$12.00\"],\"heading\":\"Text API Pricing\"}",
+    "table: {\"cells\":[\"grok-build-0.1 (< 200k prompt tokens)\",\"500k\",\"$1.00\",\"$0.20\",\"$2.00\"],\"heading\":\"Text API Pricing\"}",
+    "table: {\"cells\":[\"grok-build-0.1 (≥ 200k prompt tokens)\",\"500k\",\"$2.00\",\"$0.40\",\"$4.00\"],\"heading\":\"Text API Pricing\"}",
     "table: {\"cells\":[\"grok-imagine-image\",\"$0.02 / image\"],\"heading\":\"Image & Video Pricing\"}",
     "table: {\"cells\":[\"grok-imagine-image-2.0\",\"$0.04 / image\"],\"heading\":\"Image & Video Pricing\"}",
     "table: {\"cells\":[\"grok-imagine-video\",\"$0.050 / sec\"],\"heading\":\"Image & Video Pricing\"}",
@@ -4352,7 +4355,7 @@
   "aws-card-claude-opus-4-7": {
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-7.html",
    "kind": "text",
-   "digest": "7e45cf7b786b9846ddd3728a7736047c8f78bbbdf72047df10de12c746334312",
+   "digest": "b0f042584efea4c64e213420b0c508d428db792392316895b9c0d0e746c83f7f",
    "records": [
     "notice: Claude Opus 4.7 only supports thinking.type: \"adaptive\" for extended thinking. Unlike Claude Opus 4.6, thinking.type: \"enabled\" with budget_tokens is not supported and will return a 400 error. If you are migrating from Opus 4.6, update your requests to use thinking.type: \"adaptive\". For more information, see Adaptive thinking.",
     "notice: Reasoning: Supported (off by default; set thinking.type: \"adaptive\" to turn on adaptive thinking; \"disabled\" is also accepted; manual extended thinking with budget_tokens is not supported) See Adaptive thinking.",
@@ -4436,8 +4439,8 @@
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"no\",\"yes\",\"yes\"],\"heading\":\"Claude Opus 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"us-west-2 (Oregon)\",\"us-east-1 (N. Virginia), us-east-2 (Ohio), us-west-2 (Oregon)\"],\"heading\":\"Claude Opus 4.7 / Regional Availability\"}",
     "table: {\"cells\":[\"yes Image\",\"no Image\"],\"heading\":\"Claude Opus 4.7 / Model Details\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Implicit Prompt Caching no Watermarking\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
-    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Structured outputs\",\"no Intelligent prompt routing no Count tokens no Implicit Prompt Caching no Watermarking\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Count tokens yes Computer use yes Structured outputs yes Watermarking\",\"no Guardrails no Prompt optimization no Knowledge base no Model evaluation no Prompt management no Flows no Agents no Intelligent prompt routing no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
+    "table: {\"cells\":[\"yes Response streaming yes Explicit Prompt Caching yes Abuse detection yes Guardrails yes Prompt optimization yes Knowledge base yes Model evaluation yes Prompt management yes Flows yes Agents yes Computer use yes Structured outputs yes Watermarking\",\"no Intelligent prompt routing no Count tokens no Implicit Prompt Caching\"],\"heading\":\"Claude Opus 4.7 / Capabilities and Features\"}",
     "table: {\"cells\":[\"yes Text\",\"yes Text\"],\"heading\":\"Claude Opus 4.7 / Model Details\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 4.7 / Endpoints and APIs supported\"}",
     "table: {\"cells\":[\"yes\",\"no\",\"no\",\"no\"],\"heading\":\"Claude Opus 4.7 / Service Tiers\"}",
@@ -13771,7 +13774,7 @@
   "dbx-models": {
    "url": "https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models",
    "kind": "catalog",
-   "digest": "9ac9a5244e306098df6b637fb9809accb85f143063bb41bd3906b439be0c52ce",
+   "digest": "c3209f8507371740b74c0dc86d9db48bb0bfaa8da260c89a4cde241d1cef7b02",
    "records": [
     "endpoint: databricks-bge-large-en",
     "endpoint: databricks-claude-fable-5",
@@ -13846,6 +13849,8 @@
     "notice: DeepSeek V4.1 Flash will be retired on November 19, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: GPT-6 Astra is OpenAI's frontier model for enterprise reasoning, structured document processing, coding, agentic search, multimodal inputs, and long-context workloads.",
     "notice: Gemini 4 Hydrogen is a multimodal reasoning model developed by Google for text generation and coding. Google's model accepts text, image, video, and audio inputs and generates text responses. The Databricks integration supports text input only. Image, video, and audio inputs are not supported on Databricks.",
+    "notice: OpenAI GPT-5 mini will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
+    "notice: OpenAI GPT-5 will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Qwen3-Next-80B-A3B-Instruct is a highly efficient large language model optimized for instruction-following tasks built and trained by Alibaba Cloud. This model is designed to handle ultra-long contexts and excels at multi-step workflows, retrieval-augmented generation, and enterprise applications that require deterministic outputs at high throughput.",
     "notice: The model supports 100+ languages (including code) and handles long contexts up to ~32K tokens, making it suitable for embedding long documents. It produces embeddings with a configurable dimensionality up to 1024 and is instruction-aware, allowing task-specific biasing through prompts.",
     "notice: This integration returns one response segment. Google's limit for a segment is 65,536 output tokens, including thinking tokens. Long decode continuation is not supported.",
@@ -14111,11 +14116,13 @@
   "dbx-region-aws": {
    "url": "https://docs.databricks.com/aws/en/unity-gateway/model-region-availability",
    "kind": "tables",
-   "digest": "7ecf2c500bf54ed45e265a4972f0cfb049c07dcc697a27bca05059d295ae4401",
+   "digest": "488e1977dfe058e5e13e51edfc02b3bcc4091e057a85e4b477ba67605fb0a6ee",
    "records": [
     "notice: Anthropic Claude 3.7 Sonnet is no longer available. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Anthropic Claude Sonnet 4 is deprecated and planned for retirement on October 9, 2026. See Legacy, deprecated, and retired models for its retirement date, recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: DeepSeek V4.1 Flash will be retired on November 19, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
+    "notice: OpenAI GPT-5 mini will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
+    "notice: OpenAI GPT-5 will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Several older model families have been retired. See Legacy, deprecated, and retired models for the full list of retired models and recommended replacements.",
     "notice: Zhipu AI GLM 5.2 is deprecated and is planned for retirement on February 4, 2027. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "table: {\"cells\":[\"Region\",\"Foundation Model APIs pay-per-token\",\"AI Functions (batch inference)\",\"Foundation Model APIs provisioned throughput\"],\"heading\":\"Foundation models hosted on Databricks ​\"}",
@@ -14140,12 +14147,14 @@
   "dbx-region-azure": {
    "url": "https://learn.microsoft.com/en-us/azure/databricks/unity-gateway/model-region-availability",
    "kind": "tables",
-   "digest": "39d3902830368d6947c285fd89528d8d5e4a56afac8aa6a4dc2df895062abc67",
+   "digest": "36c804641d61ad79971317607c661dcb621d826413e6eb559ba250ab83ffd8e7",
    "records": [
     "notice: Anthropic Claude 3.7 Sonnet is no longer available. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Anthropic Claude Sonnet 4 is deprecated. See Legacy, deprecated, and retired models for its retirement date, recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: DeepSeek V4.1 Flash will be retired on November 19, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Meta-Llama-3.1-405B-Instruct is no longer available for pay-per-token or provisioned throughput workloads. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
+    "notice: OpenAI GPT-5 mini will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
+    "notice: OpenAI GPT-5 will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Several older model families have been retired. See Legacy, deprecated, and retired models for the full list of retired models and recommended replacements.",
     "notice: Zhipu AI GLM 5.2 is deprecated and is planned for retirement on February 4, 2027. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "table: {\"cells\":[\"Region\",\"Foundation Model APIs pay-per-token\",\"AI Functions (batch inference)\",\"Foundation Model APIs provisioned throughput\"],\"heading\":\"Model availability by region / Foundation models hosted on Databricks\"}",
@@ -14196,11 +14205,13 @@
   "dbx-region-gcp": {
    "url": "https://docs.databricks.com/gcp/en/unity-gateway/model-region-availability",
    "kind": "tables",
-   "digest": "fcd7187b6a4e67692d3d7a6def47e038bdd3cecfd26cf1a329b08af118fccade",
+   "digest": "1994d6779e7594def50fc0057f86156f61156235e6b675fd04c53c302eadb693",
    "records": [
     "notice: Anthropic Claude 3.7 Sonnet is no longer available. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Anthropic Claude Sonnet 4 is deprecated. See Legacy, deprecated, and retired models for its retirement date, recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: DeepSeek V4.1 Flash will be retired on November 19, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
+    "notice: OpenAI GPT-5 mini will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
+    "notice: OpenAI GPT-5 will be retired on December 11, 2026. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "notice: Zhipu AI GLM 5.2 is deprecated and is planned for retirement on February 4, 2027. See Legacy, deprecated, and retired models for the recommended replacement model and guidance for how to migrate during deprecation.",
     "table: {\"cells\":[\"Region\",\"Foundation Model APIs pay-per-token\",\"AI Functions (batch inference)\",\"Foundation Model APIs provisioned throughput\"],\"heading\":\"Foundation models hosted on Databricks ​\"}",
     "table: {\"cells\":[\"asia-northeast1\",\"Not supported\",\"Not supported\",\"Not supported\"],\"heading\":\"Foundation models hosted on Databricks ​\"}",
@@ -14221,7 +14232,7 @@
   "dbx-retirement": {
    "url": "https://docs.databricks.com/aws/en/machine-learning/retired-models-policy",
    "kind": "tables",
-   "digest": "3c629469348a9a6917f4ff08a21c0abb474b387a272e8830ce87a559b6097d5f",
+   "digest": "12995704e0399aaad1ad2e883087df21936b00e3c0d776f335d5030d8cba6dd4",
    "records": [
     "notice: Databricks takes the following steps to notify customers about a model deprecation: In the Databricks UI, a warning message indicates that the model is deprecated. The applicable documentation contains a notice that indicates the model is deprecated, along with a retirement date.",
     "notice: Deprecation notification and transition to retirement",
@@ -14266,6 +14277,8 @@
     "table: {\"cells\":[\"Mistral 7B\",\"Provisioned throughput: February 27, 2026\",\"Comparable model on the same offering, like Llama 3.2, 3.3, or 4 model of similar size.\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
     "table: {\"cells\":[\"Mixtral 8x7B / Mixtral-8x7B Instruct\",\"Pay-per-token: April 30, 2025 Provisioned throughput: February 27, 2026\",\"Pay-per-token: Meta-Llama-4-Maverick Provisioned throughput: Comparable model on the same offering, like Llama 3.2, 3.3, or 4 model of similar size.\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
     "table: {\"cells\":[\"Open model\",\"Retirement date\",\"Recommended replacement model\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
+    "table: {\"cells\":[\"OpenAI GPT-5 mini\",\"Pay-per-token: December 11, 2026\",\"OpenAI GPT-6.1 Terra\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
+    "table: {\"cells\":[\"OpenAI GPT-5\",\"Pay-per-token: December 11, 2026\",\"OpenAI GPT-6.1 Sol\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
     "table: {\"cells\":[\"OpenAI GPT-5.1 Codex Max\",\"Pay-per-token: July 16, 2026\",\"OpenAI GPT-5.5\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
     "table: {\"cells\":[\"OpenAI GPT-5.1 Codex Mini\",\"Pay-per-token: July 16, 2026\",\"OpenAI GPT-5.4 Codex Mini\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
     "table: {\"cells\":[\"OpenAI GPT-5.2 Codex\",\"Pay-per-token: July 16, 2026\",\"OpenAI GPT-5.5\"],\"heading\":\"Legacy, deprecated, and retired models ​\"}",
@@ -14411,13 +14424,14 @@
   "fireworks-us": {
    "url": "https://docs.fireworks.ai/serverless/us-only-serverless",
    "kind": "text",
-   "digest": "5bb6d8ebc77fabfa72290d260038807474201f018d1bdad64cb753c2b789fac3",
+   "digest": "77fcdb40863135362c3fe31b5507972b3d8913c940b83de504525464c73244c4",
    "records": [
     "table: {\"cells\":[\"DeepSeek V4.1 Flash 1017\",\"accounts/fireworks/routers/deepseek-v4p1-flash-1017-us\"],\"heading\":\"Available models\"}",
     "table: {\"cells\":[\"DeepSeek V4.1 Flash\",\"accounts/fireworks/routers/deepseek-v4p1-flash-us\"],\"heading\":\"Available models\"}",
     "table: {\"cells\":[\"GLM 5.3 Flash\",\"accounts/fireworks/routers/glm-5p3-flash-us\"],\"heading\":\"Available models\"}",
     "table: {\"cells\":[\"GLM 5.3\",\"accounts/fireworks/routers/glm-5p3-us\"],\"heading\":\"Available models\"}",
     "table: {\"cells\":[\"Kimi K3\",\"accounts/fireworks/routers/kimi-k3-us\"],\"heading\":\"Available models\"}",
+    "table: {\"cells\":[\"Kimi K3.1 Pro\",\"accounts/fireworks/routers/kimi-k3p1-pro-us\"],\"heading\":\"Available models\"}",
     "table: {\"cells\":[\"Model\",\"model ID\"],\"heading\":\"Available models\"}",
     "table: {\"cells\":[\"Muse Spark Open\",\"accounts/fireworks/models/muse-spark-open\"],\"heading\":\"Available models\"}",
     "text: Documentation Index Fetch the complete documentation index at: /llms.txt Use this file to discover all available pages before exploring further.",
@@ -15478,7 +15492,7 @@
   "gcp-gemini-3-8-flash": {
    "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-8-flash",
    "kind": "text",
-   "digest": "9a03d8533a612cdc23930b7153118aad8a5cc6601288db39709915c8aaa38b1d",
+   "digest": "ad7ee911e2ba0f04e380676070aac68cae33e59109521866e797090fdc446610",
    "records": [
     "notice: Fixed quota Not supported",
     "notice: Gemini Live API Not supported",
@@ -15487,7 +15501,7 @@
     "table: {\"cells\":[\"APIs\",\"GenerateContent API Supported Interactions API Supported Gemini Live API Not supported Count Tokens API Supported Chat Completions API Supported\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Audio mic\",\"Maximum audio length per prompt: Approximately 8.4 hours, or up to 1 million tokens Maximum number of audio files per prompt: 1,000 Maximum inline part size (GenerateContent API): 256 MB Maximum file size per file from Cloud Storage: 2 GiB minus 500 KiB Maximum file size per file from public HTTP or HTTPS URLs: 15 MiB Speech understanding for: Audio summarization, transcription, and translation Supported MIME types: audio/x-aac, audio/flac, audio/mp3, audio/m4a, audio/mpeg, audio/mpga, audio/mp4, audio/ogg, audio/pcm, audio/wav, audio/webm\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Batch inference\",\"Data residency CMEK VPC-SC AXT\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
-    "table: {\"cells\":[\"Capabilities\",\"Thinking Supported System instructions Supported Structured output Supported Context caching Implicit context caching, explicit context caching Supported RAG Engine Supported Tuning Supervised fine-tuning Supported Agentic video understanding Supported\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
+    "table: {\"cells\":[\"Capabilities\",\"Thinking Supported System instructions Supported Structured output Supported Context caching Implicit context caching, explicit context caching Supported RAG Engine Supported Tuning Supervised fine-tuning, continuous tuning, tuning checkpoints Supported Agentic video understanding Supported\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Consumption options\",\"Provisioned Throughput Supported Batch inference Supported Pay-as-you-go Standard PayGo with Usage Tiers, Flex PayGo, Priority PayGo Supported Deferred tier Supported Fixed quota Not supported\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Context caching\",\"Data residency CMEK VPC-SC AXT\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Input size limit\",\"GenerateContent API: 500 MiB compressed Interactions API: 256 MiB compressed (synchronous or streaming); 9.75 MiB uncompressed (deferred, when background and store are true)\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
@@ -15506,6 +15520,7 @@
     "table: {\"cells\":[\"Text description\",\"Maximum number of files per prompt: 3,000 PDFs (shared with images; up to 6,500 total files when including plain text) Maximum number of pages per file: 3,000 Maximum inline part size (GenerateContent API): 256 MB Maximum file size per file from Cloud Storage: 2 GiB minus 500 KiB Maximum file size per file from public HTTP or HTTPS URLs: 15 MiB Maximum file size per file for direct local uploads in the console: 7 MiB inline (up to 50 MiB staged to Cloud Storage) Maximum file size per file for Google Drive imports in the console: 7 MB (10 MB total) Default resolution tokens: 560 OCR for scanned PDFs: Not used by default Supported MIME types: application/pdf, text/plain\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Token limits\",\"Context window\",\"1,048,576\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Tools\",\"Grounding Google Search, Google Maps, Parallel Web Search, Exa Web Search Supported Code execution Supported Function calling Supported URL context Supported Computer use Supported\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
+    "table: {\"cells\":[\"Tuning\",\"Data residency CMEK VPC-SC AXT\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Versions\",\"gemini-3.8-flash Launch stage: GA Release date: September 2, 2026 Retirement date †: September 2, 2027 or later\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Video videocam\",\"Maximum video length (with audio): Approximately 45 minutes Maximum video length (without audio): Approximately 1 hour Maximum number of videos per prompt: 10 Maximum inline part size (GenerateContent API): 256 MB Maximum file size per file from Cloud Storage: 2 GiB minus 500 KiB Maximum file size per file from public HTTP or HTTPS URLs: 15 MiB Default resolution tokens per frame: 70 Supported MIME types: video/x-flv, video/quicktime, video/mpeg, video/mpegs, video/mpg, video/mp4, video/webm, video/wmv, video/3gpp\"],\"heading\":\"Gemini 3.8 Flash Stay organized with collections Save and categorize content based on your preferences.\"}",
     "text: Agentic video understanding Supported",
@@ -15565,7 +15580,7 @@
     "text: Supported MIME types: video/x-flv, video/quicktime, video/mpeg, video/mpegs, video/mpg, video/mp4, video/webm, video/wmv, video/3gpp",
     "text: System instructions Supported",
     "text: Try in Agent Studio Deploy example app Developer guide Pricing",
-    "text: Tuning Supervised fine-tuning Supported",
+    "text: Tuning Supervised fine-tuning, continuous tuning, tuning checkpoints Supported",
     "text: URL context Supported",
     "text: † Listed retirement dates refer to retirement of support in Gemini Enterprise Agent Platform. Models may remain accessible through the Gemini API after these dates have passed. The Gemini API is not a Google Cloud offering and is subject to its own terms of service. For details, see the Gemini API documentation."
    ]
@@ -15573,11 +15588,10 @@
   "gcp-gemini-4-argon": {
    "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/4-argon",
    "kind": "text",
-   "digest": "c1205489fa9737aee17baf68b070318ac9a954daeea61a9035fb9f1a9eb73b8c",
+   "digest": "b7c3cc9e0ca9bab7edb63f4cb14b4e071f4929f9057bd60685a137b77fc45f0c",
    "records": [
     "notice: Fixed quota Not supported",
     "notice: Gemini Live API Not supported",
-    "notice: RAG Engine Not supported",
     "notice: Retirement date †: October 13, 2027 or later",
     "notice: Tuning Not supported",
     "notice: † Listed retirement dates refer to retirement of support in Gemini Enterprise Agent Platform. Models may remain accessible through the Gemini API after these dates have passed. The Gemini API is not a Google Cloud offering and is subject to its own terms of service. For details, see the Gemini API documentation.",
@@ -15586,7 +15600,7 @@
     "table: {\"cells\":[\"Access\",\"Publicly available\",\"Allowlist only (Fairwind Program)\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences. / Gemini 4 Argon Cyber Permissive\"}",
     "table: {\"cells\":[\"Audio mic\",\"Maximum audio length per prompt: Approximately 8.4 hours, or up to 1 million tokens Maximum number of audio files per prompt: 1,000 Maximum inline part size (GenerateContent API): 256 MB Maximum file size per file from Cloud Storage: 2 GiB minus 500 KiB Maximum file size per file from public HTTP or HTTPS URLs: 15 MiB Speech understanding for: Audio summarization, transcription, and translation Supported MIME types: audio/x-aac, audio/flac, audio/mp3, audio/m4a, audio/mpeg, audio/mpga, audio/mp4, audio/ogg, audio/pcm, audio/wav, audio/webm\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Batch inference\",\"Data residency CMEK VPC-SC AXT\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences.\"}",
-    "table: {\"cells\":[\"Capabilities\",\"Thinking Supported System instructions Supported Structured output Supported Context caching Implicit context caching Supported RAG Engine Not supported Tuning Not supported Agentic video understanding Supported\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences.\"}",
+    "table: {\"cells\":[\"Capabilities\",\"Thinking Supported System instructions Supported Structured output Supported Context caching Implicit context caching Supported RAG Engine Supported Tuning Not supported Agentic video understanding Supported\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Computer use\",\"Supported\",\"Not supported\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences. / Gemini 4 Argon Cyber Permissive\"}",
     "table: {\"cells\":[\"Consumption options\",\"Provisioned Throughput Supported Batch inference Supported Pay-as-you-go Standard PayGo with Usage Tiers, Priority PayGo Supported Deferred tier Supported Fixed quota Not supported\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences.\"}",
     "table: {\"cells\":[\"Context caching\",\"Data residency CMEK VPC-SC AXT\"],\"heading\":\"Gemini 4 Argon Stay organized with collections Save and categorize content based on your preferences.\"}",
@@ -15658,7 +15672,7 @@
     "text: Pay-as-you-go Standard PayGo with Usage Tiers, Priority PayGo Supported",
     "text: Provisioned Throughput",
     "text: Provisioned Throughput Supported",
-    "text: RAG Engine Not supported",
+    "text: RAG Engine Supported",
     "text: Release date: October 13, 2026",
     "text: Retirement date †: October 13, 2027 or later",
     "text: Sampling parameters: Custom values for sampling parameters (temperature, top_p, and top_k) are ignored.",
@@ -17287,7 +17301,7 @@
   "openai-pricing": {
    "url": "https://developers.openai.com/api/docs/pricing.md",
    "kind": "markdown",
-   "digest": "086985b5285f7e7f4f4c818da83108c707f8c5befddc96164888f6fdf8412daa",
+   "digest": "a30821b18132d0ebc6ffd4564c576325f45a0215c9f72160d79e423780d3716c",
    "records": [
     "item: {\"heading\":\"Grouped Pricing Table data\",\"text\":\"[Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/)\"}",
     "item: {\"heading\":\"Grouped Pricing Table data\",\"text\":\"[Microsoft Azure pricing](https://azure.microsoft.com/en-us/pricing/details/azure-openai/)\"}",
@@ -17299,6 +17313,7 @@
     "notice: Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol’s promotional pricing is available until November 30, 2026.",
     "notice: Short context: ≤272K input tokens. Long context: >272K input tokens.",
     "notice: [Deprecation timeline](https://developers.openai.com/api/docs/deprecations#update-to-openais-self-serve-fine-tuning).",
+    "notice: \\* Flex remains available on the models listed here as we wind down the beta. We won’t be adding Flex to new models. We’ll publish the retirement date in the [Flex processing guide](https://developers.openai.com/api/docs/guides/flex-processing) once confirmed.",
     "table: {\"cells\":[\"<a id=\\\"cyber-models\\\"></a>Cyber — Trusted Access: [Daybreak](https://openai.com/daybreak/)\",\"gpt-6-cyber (short context)\",\"$20.00\",\"$100.00\",\"$2.00\",\"$25.00\",\"$50.00\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"<a id=\\\"legal-model-configurations\\\"></a>Legal model configurations\",\"gpt-6.2-astra-law (short context)\",\"$8.00\",\"$40.00\",\"$0.40\",\"$10.00\",\"$20.00\"],\"heading\":\"Grouped Pricing Table data\"}",
     "table: {\"cells\":[\"<a id=\\\"life-sciences-models\\\"></a>Life Sciences — Trusted Access: [Rosalind](https://help.openai.com/en/articles/20001193-gpt-rosalind-for-life-sciences-research)\",\"gpt-6-rosalind (short context)\",\"$10.00\",\"$50.00\",\"$1.00\",\"$12.50\",\"$25.00\"],\"heading\":\"Grouped Pricing Table data\"}",

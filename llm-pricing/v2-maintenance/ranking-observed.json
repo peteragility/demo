@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "checked_at": "2026-11-20",
+ "checked_at": "2026-11-21",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
- "published_at": "2026-11-18",
+ "published_at": "2026-11-19",
  "board_id": "webdev",
  "entries": [
   {
@@ -17,27 +17,27 @@
   },
   {
    "rank": 3,
-   "modelDisplayName": "GPT-6.2 Astra (Max)",
-   "modelOrganization": "openai"
-  },
-  {
-   "rank": 4,
    "modelDisplayName": "Claude Sonnet 5.5 (xHigh)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 5,
+   "rank": 4,
    "modelDisplayName": "Gemini 4 Carbon (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 6,
+   "rank": 5,
    "modelDisplayName": "Gemini 4 Neon (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 7,
+   "rank": 6,
    "modelDisplayName": "GPT-6 Astra (Max)",
+   "modelOrganization": "openai"
+  },
+  {
+   "rank": 7,
+   "modelDisplayName": "GPT-6.2 Astra (Max)",
    "modelOrganization": "openai"
   },
   {
@@ -82,13 +82,13 @@
   },
   {
    "rank": 16,
-   "modelDisplayName": "Kimi K3.1 Pro (Max)",
-   "modelOrganization": "moonshot"
+   "modelDisplayName": "GPT-6.1 Terra (Max)",
+   "modelOrganization": "openai"
   },
   {
    "rank": 17,
-   "modelDisplayName": "GPT-6.1 Terra (Max)",
-   "modelOrganization": "openai"
+   "modelDisplayName": "Kimi K3.1 Pro (Max)",
+   "modelOrganization": "moonshot"
   },
   {
    "rank": 18,
@@ -132,33 +132,33 @@
   },
   {
    "rank": 26,
+   "modelDisplayName": "Hy4",
+   "modelOrganization": "tencent"
+  },
+  {
+   "rank": 27,
    "modelDisplayName": "Muse Wonder (Max)",
    "modelOrganization": "meta"
   },
   {
-   "rank": 27,
+   "rank": 28,
    "modelDisplayName": "Inkling 2 Small",
    "modelOrganization": "thinky"
   },
   {
-   "rank": 28,
+   "rank": 29,
    "modelDisplayName": "Grok 4.7 (xHigh)",
    "modelOrganization": "xai"
   },
   {
-   "rank": 29,
+   "rank": 30,
    "modelDisplayName": "MiMo-V2.6-Flash",
    "modelOrganization": "xiaomi"
   },
   {
-   "rank": 30,
+   "rank": 31,
    "modelDisplayName": "Hy4 preview",
    "modelOrganization": "tencent"
-  },
-  {
-   "rank": 31,
-   "modelDisplayName": "Claude Fable 5 (High)",
-   "modelOrganization": "anthropic"
   },
   {
    "rank": 32,
@@ -167,8 +167,8 @@
   },
   {
    "rank": 33,
-   "modelDisplayName": "MiMo-V2.6-Pro",
-   "modelOrganization": "xiaomi"
+   "modelDisplayName": "Claude Fable 5 (High)",
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 34,
@@ -177,8 +177,8 @@
   },
   {
    "rank": 35,
-   "modelDisplayName": "Muse Spark 1.3 (xHigh)",
-   "modelOrganization": "meta"
+   "modelDisplayName": "MiMo-V2.6-Pro",
+   "modelOrganization": "xiaomi"
   },
   {
    "rank": 36,
@@ -187,23 +187,23 @@
   },
   {
    "rank": 37,
+   "modelDisplayName": "Muse Spark 1.3 (xHigh)",
+   "modelOrganization": "meta"
+  },
+  {
+   "rank": 38,
    "modelDisplayName": "Grok 4.6 (High)",
    "modelOrganization": "xai"
   },
   {
-   "rank": 38,
+   "rank": 39,
    "modelDisplayName": "GPT-5.6 Sol (xHigh, Codex Harness)",
    "modelOrganization": "openai"
   },
   {
-   "rank": 39,
+   "rank": 40,
    "modelDisplayName": "GLM-5.3-Flash",
    "modelOrganization": "zai"
-  },
-  {
-   "rank": 40,
-   "modelDisplayName": "U2 Flash",
-   "modelOrganization": "unisound"
   },
   {
    "rank": 41,
@@ -212,33 +212,33 @@
   },
   {
    "rank": 42,
+   "modelDisplayName": "U2 Flash",
+   "modelOrganization": "unisound"
+  },
+  {
+   "rank": 43,
    "modelDisplayName": "GLM-5.2 (Max)",
    "modelOrganization": "zai"
   },
   {
-   "rank": 43,
+   "rank": 44,
    "modelDisplayName": "Claude Haiku 5.5 (High)",
    "modelOrganization": "anthropic"
   },
   {
-   "rank": 44,
+   "rank": 45,
    "modelDisplayName": "Qwen3.8-27B",
    "modelOrganization": "alibaba"
   },
   {
-   "rank": 45,
+   "rank": 46,
    "modelDisplayName": "Gemini 3.7 Flash (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 46,
+   "rank": 47,
    "modelDisplayName": "Gemini 3.8 Flash (High)",
    "modelOrganization": "google"
-  },
-  {
-   "rank": 47,
-   "modelDisplayName": "MiniMax-M3.1-Flash",
-   "modelOrganization": "minimax"
   },
   {
    "rank": 48,
@@ -247,13 +247,13 @@
   },
   {
    "rank": 49,
-   "modelDisplayName": "DeepSeek-V4-Pro (High, 20260813)",
-   "modelOrganization": "deepseek"
+   "modelDisplayName": "MiniMax-M3.1-Flash",
+   "modelOrganization": "minimax"
   },
   {
    "rank": 50,
-   "modelDisplayName": "GPT-6 Luna (Max)",
-   "modelOrganization": "openai"
+   "modelDisplayName": "DeepSeek-V4-Pro (High, 20260813)",
+   "modelOrganization": "deepseek"
   }
  ]
 }
