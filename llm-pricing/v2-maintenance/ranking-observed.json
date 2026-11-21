@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "checked_at": "2026-11-21",
+ "checked_at": "2026-11-22",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
- "published_at": "2026-11-19",
+ "published_at": "2026-11-20",
  "board_id": "webdev",
  "entries": [
   {
@@ -27,17 +27,17 @@
   },
   {
    "rank": 5,
+   "modelDisplayName": "GPT-6.2 Astra (Max)",
+   "modelOrganization": "openai"
+  },
+  {
+   "rank": 6,
    "modelDisplayName": "Gemini 4 Neon (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 6,
-   "modelDisplayName": "GPT-6 Astra (Max)",
-   "modelOrganization": "openai"
-  },
-  {
    "rank": 7,
-   "modelDisplayName": "GPT-6.2 Astra (Max)",
+   "modelDisplayName": "GPT-6 Astra (Max)",
    "modelOrganization": "openai"
   },
   {
@@ -97,13 +97,13 @@
   },
   {
    "rank": 19,
-   "modelDisplayName": "Qwen3.8-Max (0902)",
-   "modelOrganization": "alibaba"
+   "modelDisplayName": "GPT-6 Sol (Max)",
+   "modelOrganization": "openai"
   },
   {
    "rank": 20,
-   "modelDisplayName": "GPT-6 Sol (Max)",
-   "modelOrganization": "openai"
+   "modelDisplayName": "Qwen3.8-Max (0902)",
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 21,
@@ -112,13 +112,13 @@
   },
   {
    "rank": 22,
-   "modelDisplayName": "DeepSeek-V4.1-Flash-20261017 (Max)",
-   "modelOrganization": "deepseek"
+   "modelDisplayName": "Kimi K3 (Max)",
+   "modelOrganization": "moonshot"
   },
   {
    "rank": 23,
-   "modelDisplayName": "Kimi K3 (Max)",
-   "modelOrganization": "moonshot"
+   "modelDisplayName": "DeepSeek-V4.1-Flash-20261017 (Max)",
+   "modelOrganization": "deepseek"
   },
   {
    "rank": 24,
@@ -162,13 +162,13 @@
   },
   {
    "rank": 32,
-   "modelDisplayName": "Qwen3.8-Flash-Next",
-   "modelOrganization": "alibaba"
+   "modelDisplayName": "Claude Fable 5 (High)",
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 33,
-   "modelDisplayName": "Claude Fable 5 (High)",
-   "modelOrganization": "anthropic"
+   "modelDisplayName": "Qwen3.8-Flash-Next",
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 34,
@@ -207,13 +207,13 @@
   },
   {
    "rank": 41,
-   "modelDisplayName": "Muse Ember (Max)",
-   "modelOrganization": "meta"
+   "modelDisplayName": "U2 Flash",
+   "modelOrganization": "unisound"
   },
   {
    "rank": 42,
-   "modelDisplayName": "U2 Flash",
-   "modelOrganization": "unisound"
+   "modelDisplayName": "Muse Ember (Max)",
+   "modelOrganization": "meta"
   },
   {
    "rank": 43,
