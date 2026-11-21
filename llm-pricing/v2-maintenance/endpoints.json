@@ -1693,7 +1693,7 @@
    ]
   },
   "fireworks": {
-   "checked_at": "2026-11-05",
+   "checked_at": "2026-11-22",
    "base": {
     "endpoint": "Serverless"
    },
@@ -1706,10 +1706,35 @@
      "scope": "unverified",
      "service": "priority",
      "endpoint": "Serverless"
+    },
+    {
+     "label": "US-only serverless · Standard",
+     "in": 2.5,
+     "out": 12.5,
+     "cache_read": 0.25,
+     "scope": "geographic",
+     "service": "standard",
+     "endpoint": "US-only serverless",
+     "model_id": "accounts/fireworks/routers/kimi-k3p1-pro-us",
+     "pricing_checked_at": "2026-11-22",
+     "url": "https://docs.fireworks.ai/serverless/us-only-serverless"
+    },
+    {
+     "label": "US-only serverless · Priority",
+     "in": 3.75,
+     "out": 18.75,
+     "cache_read": 0.375,
+     "scope": "geographic",
+     "service": "priority",
+     "endpoint": "US-only serverless",
+     "model_id": "accounts/fireworks/routers/kimi-k3p1-pro-us",
+     "pricing_checked_at": "2026-11-22",
+     "url": "https://docs.fireworks.ai/serverless/us-only-serverless"
     }
    ],
    "src": [
-    "fw_fw_pricing"
+    "fw_fw_pricing",
+    "fw_fw_us_only"
    ],
    "regions": [
     [
@@ -1717,6 +1742,12 @@
      "unknown",
      "Serverless",
      "Location of the default endpoint is not published"
+    ],
+    [
+     "Americas",
+     "geo",
+     "US-only serverless",
+     "United States (specific locations not published)"
     ]
    ],
    "hk": [
@@ -1732,10 +1763,15 @@
     [
      "Input limits",
      "Fireworks serves a 1,048,576-token context; text and image input. Batch is 50% of serverless pricing."
+    ],
+    [
+     "US-only · 22 Nov 2026",
+     "Fireworks lists a US-only Kimi K3.1 Pro router at +25% (Standard $2.50 / $0.25 cached / $12.50; Priority $3.75 / $0.375 / $18.75 per million tokens), served exclusively from the United States through accounts/fireworks/routers/kimi-k3p1-pro-us on us.api.fireworks.ai."
     ]
    ],
    "ids": [
-    "accounts/fireworks/models/kimi-k3p1-pro (serverless)"
+    "accounts/fireworks/models/kimi-k3p1-pro (serverless)",
+    "accounts/fireworks/routers/kimi-k3p1-pro-us (US-only; reviewed 2026-11-22)"
    ]
   },
   "bedrock": {
@@ -11152,7 +11188,7 @@
     ],
     [
      "Checkpoint",
-     "18 Nov 2026: the MaaS page also lists DeepSeek-V4.1-Flash-1017 (deepseek-v4.1-flash-1017-maas, global endpoint, preview), an update with shorter outputs; Model Garden partner pricing publishes no separate 1017 rate, so the card keeps pricing the deepseek-v4.1-flash-maas offer and no 1017 price is inferred."
+     "18 Nov 2026: the MaaS page also lists DeepSeek-V4.1-Flash-1017 (deepseek-v4.1-flash-1017-maas, global endpoint, preview), an update with shorter outputs. 22 Nov 2026: Model Garden partner pricing now lists DeepSeek-V4.1-Flash-1017 separately at input $0.30, output $1.20, cache hit $0.006 per million tokens, and the base row lost its asterisk and no-charge footnote with rates unchanged. The card keeps pricing the deepseek-v4.1-flash-maas offer; the 1017 cache-hit rate is not applied to it."
     ]
    ],
    "ids": [
