@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-10-31",
+ "checkedAt": "2026-11-22",
  "lakebase": {
   "AWS": {
    "status": "available",
@@ -13,10 +13,13 @@
     "Europe (Frankfurt)",
     "Europe (Ireland)",
     "Europe (London)",
+    "Europe (France)",
     "AP (Mumbai)",
     "AP (Singapore)",
     "AP (Sydney)",
-    "AP (Tokyo)"
+    "AP (Jakarta)",
+    "AP (Tokyo)",
+    "AP (Seoul)"
    ]
   },
   "Azure": {
@@ -30,18 +33,27 @@
     "US South Central",
     "US West",
     "US West 2",
+    "US West 3",
+    "US West Central",
     "Canada Central",
+    "Canada East",
     "Brazil South",
     "North Europe",
     "UK South",
     "West Europe",
     "France Central",
     "Germany West Central",
+    "Sweden Central",
+    "Switzerland North",
+    "UAE North",
+    "South Africa North",
     "Australia East",
+    "Australia Southeast",
     "India Central",
     "Asia Southeast",
     "Asia East",
-    "Japan East"
+    "Japan East",
+    "Korea Central"
    ]
   },
   "GCP": {
