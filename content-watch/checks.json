@@ -1,109 +1,23 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-21",
+  "checkedAt": "2026-11-22",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-21",
-      "lastSuccess": "2026-11-21",
+      "checkedAt": "2026-11-22",
+      "lastSuccess": "2026-11-22",
       "errors": 0,
-      "review": 2,
+      "review": 0,
       "sources": 4,
-      "status": "review"
+      "status": "ok"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-21",
-      "lastSuccess": "2026-11-21",
+      "checkedAt": "2026-11-22",
+      "lastSuccess": "2026-11-22",
       "errors": 0,
-      "review": 4,
+      "review": 0,
       "sources": 10,
-      "status": "review"
+      "status": "ok"
     }
   },
-  "findings": [
-    {
-      "id": "sizing-availability-aws",
-      "url": "https://docs.databricks.com/aws/en/oltp/projects/manage-projects#region-availability",
-      "page": "databricks-sizing/",
-      "error": null,
-      "changes": [
-        "Added record: 686bd11cefe1869204fcbd30bb891ac70137acf29ba81deb73999df74a6bbdf6: ap-northeast-2 (Asia Pacific - Seoul)",
-        "Added record: dfac2be12b742b3f0bb2037eaa90e262fa1007a8227697d0f6fe6808400a35d2: ap-southeast-3 (Asia Pacific - Jakarta)",
-        "Added record: f80bd69995ca21a26affc7fe709d6a434379b44699feb51cd101ad6be9c6e81f: eu-west-3 (Europe - Paris)"
-      ]
-    },
-    {
-      "id": "sizing-availability-azure",
-      "url": "https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects#region-availability",
-      "page": "databricks-sizing/",
-      "error": null,
-      "changes": [
-        "Added record: 547a5ecd65980295df92f793d1a7637b4575d12446ff66bc900d1529be0d3b16: australiasoutheast (Australia Southeast)",
-        "Added record: a6090e53979db5f84b0cc2617667655f4f9f1a5334b91ee9978e623228900dc8: switzerlandnorth (Switzerland North)",
-        "Added record: d1de3986f09fde7fefa10d62d93bf3c16e233e0149d8b415774612d48ebd323c: canadaeast (Canada East)"
-      ]
-    },
-    {
-      "id": "sandbox-e2b",
-      "url": "https://e2b.dev/",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 6da96a7a75d86630825b41672b7abba940354c67867e9cead81389ed7e67e2c5",
-        "Removed record: c44bbbc3609ab2995b58889abdad964b9a3c0b7942cc21562730971d33ec5c63",
-        "Removed record: ea9084d2a73bf4ea252a9896108ccddabaf163cb8fc3ad817534fa7c959f7c98",
-        "Added record: 41fb922e58658c07818a41512232a4e59e7612dcff6588e8662f42ef2b46f69e: 3B+ Sandboxes started",
-        "Added record: 61cf46f99f038d32b5287e1e2767e9dbb2377a713d7d50563648727390a70de0: Battle-tested across 3B+ sandboxes, MicroVMs come standard. E2B is SOC 2 Type II and HIPAA compliant.",
-        "Added record: d96c0c553999a4fc0a87d548dd89c529d3eed324964cb4aed454f422013c4c2e: *Some accounts are asked to verify with a one-time $5 card payment to help prevent abuse. The $5 is added to your project as usage credits and is non-",
-        "Added record: efd930cd88b00e4d5efc89b053f645b381441a733d38805246a61d57ceb98094: 3B+ sandboxes started"
-      ]
-    },
-    {
-      "id": "sandbox-agentcore",
-      "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 169e20fbd42c43cf71a786c707232687af70c88a2387610b4ae9287984c90a35",
-        "Added record: 11c159a99af7729363f24331ebfdf2dd94cf423b00f63bdc362342bc1c11ee1b: Use a unique session ID for each user. For agent runtimes on platform version V1 or on Instances, AgentCore does not enforce session-to-user mappings.",
-        "Added record: 9c57a24e38ed88c1faa99a69475e3ee50c2e1aa99c7a144def9c2ce928fa84e0: Session pinning is available only for agent runtimes that use platform version V2 on microVMs. For those agent runtimes, session pinning is turned on ",
-        "Added record: e84ab84a30f9b1a497fe2b2ac6000923d62cc1d3fd548c3c2a8d401337a03883: Session pinning isn’t available for agent runtimes on platform version V1 or on Instances. For those agent runtimes, AgentCore Runtime doesn’t enforce"
-      ]
-    },
-    {
-      "id": "sandbox-daytona",
-      "url": "https://www.daytona.io/docs/",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 727f4c347d8e519fc5c6906ba1b1f8e71d7d96d03874dcf47560e43ab735c58a",
-        "Removed record: d52899d5d8c264503c76f43245309630ed0253f4a9c07bc06cec1302cee7d545",
-        "Added record: 168fcbced5ac0ca3b674cd636f2579f939feda0d31e50a81f8e94ef03c5a7898: Create a sandbox and run code // Import the Daytona SDK import {Daytona} from ' @daytona/sdk ' // Initialize the Daytona client const daytona = new Da",
-        "Added record: 722ad3e7c5338065d402fb0eb69af14abf62aa49d4f2dec21461d6a220e188ac: Create a sandbox and run code # Import the Daytona SDK from daytona import Daytona, DaytonaConfig # Define the configuration config = DaytonaConfig (a"
-      ]
-    },
-    {
-      "id": "sandbox-strands",
-      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
-      "page": "sandbox-compare/",
-      "error": null,
-      "changes": [
-        "Removed record: 17fd1b23d053c75dc3175acc115a85889a0111aac17851d2d09f04f7354d16eb",
-        "Removed record: 676229dad1994d54ee06c1c9c0b3cafc3856d1a1230d0362859549e952546538",
-        "Removed record: 8993cf1434ddacc447be7abfaf36a1557d4fbabd8c4d94012325ddbad76a8f3d",
-        "Removed record: 8b634b1d4c8da6800f54ca429049066496fc49286635e4dec6ba970850a571dc",
-        "Removed record: a426329f7fbc454fe706141fe3023990b668e97cc92766ff966ea80ed982f126",
-        "Removed record: ac7fe9ba4723a57a578f4909a3a602ab99cdfec2b830cf9b798f0529947a6764",
-        "Removed record: ae347d764b1e8f26f3c205a6f0cb1642cb78dedf39a994aaa492395fbcd64138",
-        "Added record: 281b95f81143840d36be51d21719e9aaa2c80546b353d8690dc9d1a21c9fe97a: TLS](#a-secret-rides-only-tls).",
-        "Added record: 57ceb078b6c87b6c4f50f52e44d829828ad5df3d54f392014ab01cca6e756451: host would otherwise receive the real secret. The plain-HTTP path therefore refuses with `403` when",
-        "Added record: 5cb2a9bceb266494d2ff247fd8bd4c37bc29b90a14ceec673ddff62a1d64ba75: **Cost.** Plain HTTP does not authenticate the server, so the secret goes to whatever process holds",
-        "Added record: 5d5663eaddef4234b5d4f5f651cb1950307ee918414f43949f1a812c6b8705ab: refusal, and `failed` on a request it didn't refuse but couldn't complete. Box's kernel wrapper",
-        "Added record: 635d65d50bfaf5ec5c4196e9a9bf13980ff0c1423fcae08ac4384a1093f22d2a",
-        "Added record: 94ea7ef521f061ced022c6e243cc50dd7e64c2462b4464f7a0256cdc9f5959a4",
-        "Added record: a82dfd13f13b80812c64b405da651ae457b8e9265c96a0d17a17bb5c587009fe",
-        "Added record: af0a16717964e96353ed35e2fec3f46793137fcaac94ee448fab023732d5f219",
-        "Added record: de49ffacbc7b355a1dc0a5cf735b63dfff5470f48e9b3ca646b8568866c095e8"
-      ]
-    }
-  ]
+  "findings": []
 }
