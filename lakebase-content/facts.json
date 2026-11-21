@@ -96,9 +96,9 @@
       "checked": "2026-10-19"
     },
     "status.ltap": {
-      "value": "GA; LTAP Direct Writes is Beta",
+      "value": "GA; LTAP Direct Writes GA (18 Nov 2026)",
       "source": "https://docs.databricks.com/aws/en/oltp/projects/ltap-overview",
-      "checked": "2026-10-19"
+      "checked": "2026-11-22"
     },
     "status.logrep": {
       "value": "Supported on AWS and Azure since 15 Oct 2026; public networking only",
