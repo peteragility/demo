@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "checked_at": "2026-11-23",
+ "checked_at": "2026-11-24",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
- "published_at": "2026-11-20",
+ "published_at": "2026-11-22",
  "board_id": "webdev",
  "entries": [
   {
@@ -27,17 +27,17 @@
   },
   {
    "rank": 5,
-   "modelDisplayName": "GPT-6.2 Astra (Max)",
-   "modelOrganization": "openai"
-  },
-  {
-   "rank": 6,
    "modelDisplayName": "Gemini 4 Neon (High)",
    "modelOrganization": "google"
   },
   {
-   "rank": 7,
+   "rank": 6,
    "modelDisplayName": "GPT-6 Astra (Max)",
+   "modelOrganization": "openai"
+  },
+  {
+   "rank": 7,
+   "modelDisplayName": "GPT-6.2 Astra (Max)",
    "modelOrganization": "openai"
   },
   {

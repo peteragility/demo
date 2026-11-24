@@ -2,10 +2,10 @@
   "schema": 1,
   "pages": {
     "llm-pricing/": {
-      "checkedAt": "2026-11-23",
-      "lastSuccess": "2026-11-23",
+      "checkedAt": "2026-11-24",
+      "lastSuccess": "2026-11-24",
       "errors": 0,
-      "review": 1,
+      "review": 10,
       "status": "review"
     }
   }

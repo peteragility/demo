@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-11-22",
+ "ranked_at": "2026-11-24",
  "top": 50,
  "entries": 50,
  "models": {
@@ -23,17 +23,17 @@
    "rank": 4,
    "arena": "Gemini 4 Carbon (High)"
   },
-  "openai/gpt-6.2-astra": {
-   "rank": 5,
-   "arena": "GPT-6.2 Astra (Max)"
-  },
   "google/gemini-4-neon": {
-   "rank": 6,
+   "rank": 5,
    "arena": "Gemini 4 Neon (High)"
   },
   "openai/gpt-6-astra": {
-   "rank": 7,
+   "rank": 6,
    "arena": "GPT-6 Astra (Max)"
+  },
+  "openai/gpt-6.2-astra": {
+   "rank": 7,
+   "arena": "GPT-6.2 Astra (Max)"
   },
   "openai/gpt-6.2-sol": {
    "rank": 8,
