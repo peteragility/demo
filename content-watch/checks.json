@@ -1,23 +1,42 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-23",
+  "checkedAt": "2026-11-24",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-23",
-      "lastSuccess": "2026-11-23",
+      "checkedAt": "2026-11-24",
+      "lastSuccess": "2026-11-24",
       "errors": 0,
-      "review": 0,
+      "review": 2,
       "sources": 4,
-      "status": "ok"
+      "status": "review"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-23",
-      "lastSuccess": "2026-11-23",
+      "checkedAt": "2026-11-24",
+      "lastSuccess": "2026-11-24",
       "errors": 0,
       "review": 0,
       "sources": 10,
       "status": "ok"
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "id": "sizing-availability-azure",
+      "url": "https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects#region-availability",
+      "page": "databricks-sizing/",
+      "error": null,
+      "changes": [
+        "Added record: 61a1efb2b0a92d85ea9eeea24307155620c79523d66e28afd9b838891bb2039e: jioindiawest (Jio India West)"
+      ]
+    },
+    {
+      "id": "sizing-availability-gcp",
+      "url": "https://docs.databricks.com/gcp/en/oltp/projects/manage-projects#region-availability",
+      "page": "databricks-sizing/",
+      "error": null,
+      "changes": [
+        "Added record: cb783101561cc4ef80e094a2fd08320fda01fef1b191b81036f7fb96c29d488b: us-east1 (US East - South Carolina)"
+      ]
+    }
+  ]
 }
