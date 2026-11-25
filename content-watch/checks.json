@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-24",
+  "checkedAt": "2026-11-25",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-24",
-      "lastSuccess": "2026-11-24",
+      "checkedAt": "2026-11-25",
+      "lastSuccess": "2026-11-25",
       "errors": 0,
       "review": 2,
       "sources": 4,
       "status": "review"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-24",
-      "lastSuccess": "2026-11-24",
+      "checkedAt": "2026-11-25",
+      "lastSuccess": "2026-11-25",
       "errors": 0,
-      "review": 0,
+      "review": 1,
       "sources": 10,
-      "status": "ok"
+      "status": "review"
     }
   },
   "findings": [
@@ -36,6 +36,17 @@
       "error": null,
       "changes": [
         "Added record: cb783101561cc4ef80e094a2fd08320fda01fef1b191b81036f7fb96c29d488b: us-east1 (US East - South Carolina)"
+      ]
+    },
+    {
+      "id": "sandbox-strands",
+      "url": "https://raw.githubusercontent.com/strands-agents/box/main/docs/design/decisions.md",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: bd165503c530d7209415963e9f3a457c8e5a61a654d791b3edc94ab36510111b",
+        "Added record: 258b8a006f4debb5c4b0b3397de95203c3964795c9ef27836916fd60cf5bf7ab: command such as `cat` or `jq`, or with a program that the Shell starts in its own sandbox. Plugin",
+        "Added record: cdfa2a14ad673e6453495093abff77dc495a7554896d253446167b63f67d7ac9: no credential in a message. A decision for each message lost, because it cost policy time on every"
       ]
     }
   ]
