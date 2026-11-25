@@ -3,7 +3,7 @@
  "source": "https://arena.ai/leaderboard/",
  "board": "Best WebDev (Code | Overall)",
  "board_url": "https://arena.ai/leaderboard/code/webdev",
- "ranked_at": "2026-11-24",
+ "ranked_at": "2026-11-25",
  "top": 50,
  "entries": 50,
  "models": {
@@ -25,7 +25,7 @@
   },
   "google/gemini-4-neon": {
    "rank": 5,
-   "arena": "Gemini 4 Neon (High)"
+   "arena": "Gemini 4 Neon (xHigh)"
   },
   "openai/gpt-6-astra": {
    "rank": 6,
@@ -53,7 +53,7 @@
   },
   "google/gemini-4-hydrogen": {
    "rank": 14,
-   "arena": "Gemini 4 Hydrogen (High)"
+   "arena": "Gemini 4 Hydrogen (xHigh)"
   },
   "anthropic/claude-opus-5": {
    "rank": 15,
@@ -79,13 +79,13 @@
    "rank": 20,
    "arena": "Qwen3.8-Max (0902)"
   },
-  "moonshot/kimi-k3": {
-   "rank": 22,
-   "arena": "Kimi K3 (Max)"
-  },
   "deepseek/deepseek-v4.1-flash": {
-   "rank": 23,
+   "rank": 22,
    "arena": "DeepSeek-V4.1-Flash-20261017 (Max)"
+  },
+  "moonshot/kimi-k3": {
+   "rank": 23,
+   "arena": "Kimi K3 (Max)"
   },
   "meta/muse-spark-1.3": {
    "rank": 25,
@@ -103,13 +103,13 @@
    "rank": 29,
    "arena": "Grok 4.7 (xHigh)"
   },
-  "anthropic/claude-fable-5": {
-   "rank": 32,
-   "arena": "Claude Fable 5 (High)"
-  },
   "qwen/qwen3.8-flash": {
-   "rank": 33,
+   "rank": 32,
    "arena": "Qwen3.8-Flash-Next"
+  },
+  "anthropic/claude-fable-5": {
+   "rank": 33,
+   "arena": "Claude Fable 5 (High)"
   },
   "zai/glm-5.3": {
    "rank": 34,

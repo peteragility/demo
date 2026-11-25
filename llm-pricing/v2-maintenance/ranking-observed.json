@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "checked_at": "2026-11-24",
+ "checked_at": "2026-11-25",
  "source": "https://datasets-server.huggingface.co/rows?dataset=lmarena-ai%2Fleaderboard-dataset&config=webdev&split=latest",
- "published_at": "2026-11-22",
+ "published_at": "2026-11-23",
  "board_id": "webdev",
  "entries": [
   {
@@ -27,7 +27,7 @@
   },
   {
    "rank": 5,
-   "modelDisplayName": "Gemini 4 Neon (High)",
+   "modelDisplayName": "Gemini 4 Neon (xHigh)",
    "modelOrganization": "google"
   },
   {
@@ -72,7 +72,7 @@
   },
   {
    "rank": 14,
-   "modelDisplayName": "Gemini 4 Hydrogen (High)",
+   "modelDisplayName": "Gemini 4 Hydrogen (xHigh)",
    "modelOrganization": "google"
   },
   {
@@ -112,13 +112,13 @@
   },
   {
    "rank": 22,
-   "modelDisplayName": "Kimi K3 (Max)",
-   "modelOrganization": "moonshot"
+   "modelDisplayName": "DeepSeek-V4.1-Flash-20261017 (Max)",
+   "modelOrganization": "deepseek"
   },
   {
    "rank": 23,
-   "modelDisplayName": "DeepSeek-V4.1-Flash-20261017 (Max)",
-   "modelOrganization": "deepseek"
+   "modelDisplayName": "Kimi K3 (Max)",
+   "modelOrganization": "moonshot"
   },
   {
    "rank": 24,
@@ -162,13 +162,13 @@
   },
   {
    "rank": 32,
-   "modelDisplayName": "Claude Fable 5 (High)",
-   "modelOrganization": "anthropic"
+   "modelDisplayName": "Qwen3.8-Flash-Next",
+   "modelOrganization": "alibaba"
   },
   {
    "rank": 33,
-   "modelDisplayName": "Qwen3.8-Flash-Next",
-   "modelOrganization": "alibaba"
+   "modelDisplayName": "Claude Fable 5 (High)",
+   "modelOrganization": "anthropic"
   },
   {
    "rank": 34,
