@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-25",
+  "checkedAt": "2026-11-26",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-25",
-      "lastSuccess": "2026-11-25",
+      "checkedAt": "2026-11-26",
+      "lastSuccess": "2026-11-26",
       "errors": 0,
       "review": 2,
       "sources": 4,
       "status": "review"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-25",
-      "lastSuccess": "2026-11-25",
+      "checkedAt": "2026-11-26",
+      "lastSuccess": "2026-11-26",
       "errors": 0,
       "review": 1,
       "sources": 10,
@@ -46,7 +46,14 @@
       "changes": [
         "Removed record: bd165503c530d7209415963e9f3a457c8e5a61a654d791b3edc94ab36510111b",
         "Added record: 258b8a006f4debb5c4b0b3397de95203c3964795c9ef27836916fd60cf5bf7ab: command such as `cat` or `jq`, or with a program that the Shell starts in its own sandbox. Plugin",
-        "Added record: cdfa2a14ad673e6453495093abff77dc495a7554896d253446167b63f67d7ac9: no credential in a message. A decision for each message lost, because it cost policy time on every"
+        "Added record: 39f6e35621c14cf5ead880f88fa6a6ed1149dac0e4f6816ec2d0d3fc1b98f4e3: for one token are allowed, as they are for a declared secret source, with one read each.",
+        "Added record: 73682cf6231638733e493e9842f78e9e5534ab4c9b462c144db480309c364360: daemon. Inferring it from the other keys, such as `secret.env` for a token: the kind becomes a side",
+        "Added record: a21fc068f1f4eff85ff0ed6eddca484fdd990685981e53627ae6f284690409b2: expiry is held for the run, as an `env://` route or a secret source holds its secret. Routes that",
+        "Added record: a2c24bfa0860942409a3d9c23367370dd2fc6f9263fbdc48eca4f540ae4fc97a",
+        "Added record: ab722c56f692de1077a57666f8cc6f6a80adc90570e840a669ded683fc7f7b49",
+        "Added record: bebb02b3a580836695d82e4e4c699f642b666d75d49b0802c94f08a5f9dabfeb",
+        "Added record: cdfa2a14ad673e6453495093abff77dc495a7554896d253446167b63f67d7ac9",
+        "Added record: fb77c67d95330f70f7d9bab07ae29489f2da79026d78b6b68a1926f404ecd788"
       ]
     }
   ]
