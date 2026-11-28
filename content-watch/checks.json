@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "checkedAt": "2026-11-27",
+  "checkedAt": "2026-11-28",
   "pages": {
     "databricks-sizing/": {
-      "checkedAt": "2026-11-27",
-      "lastSuccess": "2026-11-27",
+      "checkedAt": "2026-11-28",
+      "lastSuccess": "2026-11-28",
       "errors": 0,
       "review": 2,
       "sources": 4,
       "status": "review"
     },
     "sandbox-compare/": {
-      "checkedAt": "2026-11-27",
-      "lastSuccess": "2026-11-27",
+      "checkedAt": "2026-11-28",
+      "lastSuccess": "2026-11-28",
       "errors": 0,
-      "review": 1,
+      "review": 2,
       "sources": 10,
       "status": "review"
     }
@@ -36,6 +36,43 @@
       "error": null,
       "changes": [
         "Added record: cb783101561cc4ef80e094a2fd08320fda01fef1b191b81036f7fb96c29d488b: us-east1 (US East - South Carolina)"
+      ]
+    },
+    {
+      "id": "sandbox-docker",
+      "url": "https://docs.docker.com/ai/sandboxes/security/isolation/",
+      "page": "sandbox-compare/",
+      "error": null,
+      "changes": [
+        "Removed record: 03db6495d2d0fd854649265205df45707f270f7036b39975f3ecba9ec98502d7",
+        "Removed record: 053b623f816087ed88696315615fe56887bfb8951f64aaf5dff2646973902a43",
+        "Removed record: 27712f9b5a35094933967dbed180fb2ba3cdf4eca6f65c45606e5c24d8680f05",
+        "Removed record: 29d7727ee063851d4ffa3b448e00ee6f57ebc1abfc132c5cdeaf6880c0306fe4",
+        "Removed record: 33d651790b21e352f9d902c03e11c6df9e8056096ba5afcfd8b07604e628d3be",
+        "Removed record: 3840711aac1d890f51e5f051ef797088fc810baf4ada4766554f93c2927d6fd9",
+        "Removed record: 513c750776bafd64400a3c1f6e593c181e6a1357ff8f40365dcea565db6c73bd",
+        "Removed record: 5f663c0abe11a46a67cdb6209bc198e5b699dab589194540a0f483ffb44daea3",
+        "Removed record: 65b6b7e9b0c3d96bf31c221bae088524319f47b4679b79f95d1f818d13db2aae",
+        "Removed record: 8584b93f51ef6b91431ffc2268562d1f5fa9b8b88272e761d25e08cdf42d3b34",
+        "Removed record: 8ca84e133a8febb9e8dcd171143f1a6ff1b45be2b4f69b11e0d4913c34e36aba",
+        "Removed record: a58a6dca81a0901df51a12e3ce01ab122f8b121354b7e8dbda7f4b9b8bdd5b85",
+        "Removed record: c4ef9727096ac341e1a34a61e53bb8915547562bb488a4ff1be537ecba065b28",
+        "Removed record: f5a5a88f008f7c4f18852255934bbee8216b77ba701af7c5f92aa911683c5a03",
+        "Removed record: f9dafd4c3109395b0c028a9bbb86f5aeaac10360bf857b3c9a61a2cc669a9d44",
+        "Added record: 1ab32888243476761e4318bf077cb04832b03f8e9d241abfe7e7825721a6bbe5: [Sandbox governance](https://docs.docker.com/ai/governance/). Only the",
+        "Added record: 371291df1d209d30961b0fa2518f0b60d70569bb9f8896136e7d5d41a14215ee: forward proxy [injects credentials](https://docs.docker.com/ai/sandboxes/configuration/credentials/) for AI services.",
+        "Added record: 39b536081e2de8f2e6ad8cea50eb948a0af7c765f3b15ae896d59fd924e3cd27: [Sandbox remote behavior](https://docs.docker.com/ai/sandboxes/workflows/git/#sandbox-remote-behavior).",
+        "Added record: 3cee5e96756dfa07af68dcf3929ec98ff39703baaabbe4ab4d26fe431cae3d04: When you start a sandbox with [`--clone`](https://docs.docker.com/ai/sandboxes/usage/#clone-mode), the agent",
+        "Added record: 545517b27829171d24a3ed7582ad9a4042a2efb252754df2aac3a0b5b5543e8e",
+        "Added record: 5cc64c13551f71ccbd5ca57ff698f090f66152841fa5f7c8d657293b11cbddd1",
+        "Added record: 5ecdbce23a3229e741079b9584b3ee69423165abb07999cdd29a8b6bc1092af6",
+        "Added record: 6b4fc924d5a7dcb033c50f56d16716142a9469205c0e11ed78dc9d09342b601a",
+        "Added record: 736f1a11840f31a4f8d9fe063093dc6c16fe9010ca150d99b35916cd2d5d62bc",
+        "Added record: ab99726dfd61100ad313d4e5783f922098522ac6c929459370e324eb33cc437c",
+        "Added record: be517c8347363d9fe5fd39c9c80b62db0457990e7b36bab51d5ab3a476ecf52f",
+        "Added record: c9caecadc6fd73cf68ef89da7224e8c5df634796179512a47f5747eafeb7b507",
+        "Added record: cc2cbe9dd23dfd1badf5796b8fc8f19d43870780fafd100a2df9a091d2162ae8",
+        "Added record: e5ac830abce14848ac475f9494e3ac6f402d1c93557504cbe25007c335ff6738"
       ]
     },
     {
